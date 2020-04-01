@@ -1,0 +1,50 @@
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+  <category name="Python">
+    <block type="exec_python"></block>
+    <block type="exec_python_output">
+      <field name="EXEC_PYTHON_OUTPUT">Execute Python custom with output</field>
+    </block>
+  </category>
+  <category name="Machine">
+    <block type="delay"></block>
+    <block type="reset"></block>
+    <block type="gpio_set"></block>
+    <block type="adc"></block>
+    <block type="gpio_get"></block>
+    <block type="clear_oled"></block>
+    <block type="write_oled"></block>
+    <block type="move_servo"></block>
+    <block type="dht_read_temp">
+      <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
+    </block>
+    <block type="dht_init">
+      <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
+      <field name="DHT_PIN_MSG">pin</field>
+    </block>
+  </category>
+  <category name="Network">
+    <block type="wifi_client_connect">
+      <field name="NAME">Connect to Wifi network</field>
+      <field name="WIFI_CLIENT_NET_NAME">Network name</field>
+      <field name="WIFI_CLIENT_NET_KEY">Network key</field>
+    </block>
+    <block type="net_ap_mode">
+      <field name="NAME">Configure Access Point Mode</field>
+      <field name="NET_NETWORK_NAME">Network name</field>
+      <field name="NET_NETWORK_KEY">Network password</field>
+    </block>
+    <block type="wifi_client_scan_networks">
+      <field name="NET_SCAN_WIFI">Scan Wifi networks</field>
+    </block>
+    <block type="net_ifconfig">
+      <field name="NET_IFCONFIG">Wifi current IP</field>
+    </block>
+    <block type="net_get_request">
+      <field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
+    </block>
+    <block type="net_post_request">
+      <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
+      <field name="NET_POST_REQUEST_DATA">Data</field>
+    </block>
+  </category>
+</xml>

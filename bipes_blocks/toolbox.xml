@@ -1,0 +1,10 @@
+<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+  <category name="Python">
+    <block type="exec_python"></block>
+  </category>
+  <category name="Machine">
+    <block type="delay"></block>
+    <block type="reset"></block>
+    <block type="gpio_set"></block>
+  </category>
+</xml>
