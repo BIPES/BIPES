@@ -228,7 +228,10 @@
      <td>
         <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
 
-            <input type="button" value="Run" onclick="runPython(); return false;" />
+            <input type="button" value="Run block based program" onclick="runPython(); return false;" />
+	    <br>
+	    <br>
+            <input type="button" value="Stop running program" onclick="stopPython(); return false;" />
 
 	    <!--
             <div class="file-box">
@@ -2049,6 +2052,10 @@ function sleep(milliseconds) {
 }
 
 
+function stopPython(evt) {
+	//Send Ctrl+C to stop program
+        ws.send('\x03');
+}
 function runPython(evt) {
 
 	var devSel = document.getElementById("device_selector").value;
