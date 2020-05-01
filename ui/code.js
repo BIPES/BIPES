@@ -336,6 +336,35 @@ Code.checkAllGeneratorFunctionsDefined = function(generator) {
 };
 
 /**
+ * Rafael -test 
+ *
+ */
+
+Code.reloadToolbox = function() {
+  alert("reload toolbox");
+  // Construct the toolbox XML, replacing translated variable names.
+  var toolboxText = document.getElementById('toolbox').outerHTML;
+  toolboxText = toolboxText.replace(/(^|[^%]){(\w+)}/g,
+      function(m, p1, p2) {return p1 + MSG[p2];});
+  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+
+  Code.workspace = Blockly.inject('content_blocks',
+      {grid:
+          {spacing: 25,
+           length: 3,
+           colour: '#ccc',
+           snap: true},
+       media: 'media/',
+       rtl: rtl,
+       toolbox: toolboxXml,
+       zoom:
+           {controls: true,
+            wheel: true}
+      });
+}
+
+
+/**
  * Initialize Blockly.  Called on page load.
  */
 Code.init = function() {
@@ -414,7 +443,7 @@ Code.init = function() {
 
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
-//  Code.bindClick('runButton', Code.runJS);
+
   Code.bindClick('runButton', runPython)
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
@@ -486,27 +515,6 @@ Code.initLanguage = function() {
   document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];
-};
-
-/**
- * Execute the user's code.
- * Just a quick and dirty eval.  Catch infinite loops.
- */
-Code.runJS = function() {
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = '  checkTimeout();\n';
-  var timeouts = 0;
-  var checkTimeout = function() {
-    if (timeouts++ > 1000000) {
-      throw MSG['timeout'];
-    }
-  };
-  var code = Blockly.JavaScript.workspaceToCode(Code.workspace);
-  Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-  try {
-    eval(code);
-  } catch (e) {
-    alert(MSG['badCode'].replace('%1', e));
-  }
 };
 
 /**

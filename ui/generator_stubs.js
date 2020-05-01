@@ -19,12 +19,15 @@ Blockly.Python['project_metadata'] = function(block) {
 
 Blockly.Python['delay'] = function(block) {
   var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
-  var code = 'import time\ntime.sleep(' + value_time + ')\n';
+  Blockly.Python.definitions_['import_time'] = 'import time';
+  var code = 'time.sleep(' + value_time + ')\n';
   return code;
 };
 
 Blockly.Python['reset'] = function(block) {
-  var code = 'import machine\nmachine.reset()\n';
+  //var code = 'import machine\nmachine.reset()\n';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var code = 'machine.reset()\n';
   return code;
 };
 
@@ -32,7 +35,8 @@ Blockly.Python['gpio_set'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
-  var code = 'import machine\np = machine.Pin(' + value_pin + ', machine.Pin.OUT)\n';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var code = 'p = machine.Pin(' + value_pin + ', machine.Pin.OUT)\n';
   if ((value_value >= 1) || (value_value == 'True')) 
 	  code += 'p.on()\n';
   else
@@ -55,7 +59,8 @@ Blockly.Python['adc'] = function(block) {
 
 Blockly.Python['gpio_get'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  var code = 'import machine\np2= Pin(' + value_pin + ', Pin.IN)\ngpio_value=p2.value()\n';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var code = 'p2= Pin(' + value_pin + ', Pin.IN)\ngpio_value=p2.value()\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -75,12 +80,14 @@ Blockly.Python['write_oled'] = function(block) {
 Blockly.Python['move_servo'] = function(block) {
   var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
-  var code = '...\n';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var code = 'p4 = machine.Pin(4); servo = machine.PWM(p4,freq=50); servo.duty(' + value_angle + ')\n';
   return code;
 };
 
 Blockly.Python['net_get_request'] = function(block) {
   var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_urequests'] = 'import urequests';
   var code = 'urequests.get(' + value_url + ')\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -88,12 +95,14 @@ Blockly.Python['net_get_request'] = function(block) {
 Blockly.Python['net_post_request'] = function(block) {
   var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
   var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
-  var code = 'import urequests\nresponse=urequests.post(\"' + value_url + '\", data = \"' + value_url + '\")\nprint(response.contet)\n';
+  Blockly.Python.definitions_['import_urequests'] = 'import urequests';
+  var code = 'response=urequests.post(\"' + value_url + '\", data = \"' + value_url + '\")\nprint(response.contet)\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['net_ifconfig'] = function(block) {
-  var code = 'import network\nsta_if = network.WLAN(network.STA_IF); sta_if.ifconfig()\n';
+  Blockly.Python.definitions_['import_network'] = 'import network';
+  var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.ifconfig()\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -116,19 +125,23 @@ Blockly.Python['net_ap_mode'] = function(block) {
 Blockly.Python['wifi_client_connect'] = function(block) {
   var value_wifi_client_essid = Blockly.Python.valueToCode(block, 'wifi_client_essid', Blockly.Python.ORDER_ATOMIC);
   var value_wifi_client_key = Blockly.Python.valueToCode(block, 'wifi_client_key', Blockly.Python.ORDER_ATOMIC);
-  var code = 'import network\nsta_if = network.WLAN(network.STA_IF); sta_if.connect()\n';
+  Blockly.Python.definitions_['import_network'] = 'import network';
+  var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.connect()\n';
   return code;
 };
 
 Blockly.Python['wifi_client_scan_networks'] = function(block) {
-  var code = 'import network\nsta_if = network.WLAN(network.STA_IF); sta_if.active(True)\nsta_if.scan()\n';
+  Blockly.Python.definitions_['import_network'] = 'import network';
+  var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True)\nsta_if.scan()\n';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['dht_init'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  var code = 'import dht\nimport machine\ndhts=dht.DHT11(machine.Pin(' + value_pin + '))\n';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  Blockly.Python.definitions_['import_dht'] = 'import dht';
+  var code = 'dhts=dht.DHT11(machine.Pin(' + value_pin + '))\n';
   return code;
 };
 
