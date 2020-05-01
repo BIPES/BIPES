@@ -1,0 +1,51 @@
+machine.rst
+machine.Pin.rst
+machine.Signal.rst
+machine.ADC.rst
+machine.UART.rst
+machine.SPI.rst
+machine.I2C.rst
+machine.RTC.rst
+machine.Timer.rst
+machine.WDT.rst
+machine.SD.rst
+machine.SDCard.rst
+#
+   builtins.rst
+   cmath.rst
+   gc.rst
+   math.rst
+   sys.rst
+   uarray.rst
+   uasyncio.rst
+   ubinascii.rst
+   ucollections.rst
+   uerrno.rst
+   uhashlib.rst
+   uheapq.rst
+   uio.rst
+   ujson.rst
+   uos.rst
+   ure.rst
+   uselect.rst
+   usocket.rst
+   ussl.rst
+   ustruct.rst
+   utime.rst
+   uzlib.rst
+   _thread.rst
+   btree.rst
+   framebuf.rst
+   machine.rst
+   micropython.rst
+   network.rst
+   ubluetooth.rst
+   ucryptolib.rst
+   uctypes.rst
+  pyb.rst
+  lcd160cr.rst
+  wipy.rst
+  machine.ADCWiPy.rst
+  machine.TimerWiPy.rst
+  esp.rst
+  esp32.rst
