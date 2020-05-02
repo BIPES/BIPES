@@ -261,6 +261,8 @@
   </div>
 
 
+<!-- ################################################## -->
+
   <div id="content_device" class="content">
 	  <center>
 		  <label id="device_title"><b>ESP8266</b><br></label>
@@ -273,9 +275,29 @@
 
   </div>
 
+
+<!-- ################################################## -->
+
   <div id="content_files" class="content">
+
+<div style="width: 50%; float:left">
+ Text editor for files in device's filesystem
+		    <br>
+
+  <textarea id="content_file_code" cols=90 rows=20 wrap="off"></textarea>
+  <br>
+  <input type="button" value="Save As: " onclick="files_saves_as(); return false;" />
+  <input type=text id=content_file_name>
+  <input type="button" value="Run" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
+
+
+</div>
+
+<div style="width: 50%; float:right">
+
 	  <center>
-		  <h2>Device File Manager</h2>
+Device file manager
+<br>
   <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
 
             <input type="button" value="Run Blocks" onclick="runPython(); return false;" />
@@ -284,11 +306,6 @@
 	    <!--
             <input type="button" value="Test" onclick="updateTable(); return false;" />
 	    -->
-
-  <textarea id="content_file_code"  wrap="off"></textarea>
-  <br>
-  <input type=text id=content_file_name>
-  <input type="button" value="Save As" onclick="files_saves_as(); return false;" />
             <div class="file-box">
                 <strong>Send a file</strong>
                 <input type="file" id="put-file-select" />
@@ -297,16 +314,20 @@
             </div>
         <div class="file-box" id="file-status"><span style="color:#707070">(file operation status)</span></div>
     </div>
+ </td>
 
+  </div>
 	  <center>
 		  <br>
 		  <br>
 		  <div id="fileList">
 			List of files will be shown here.
 		  </div>
-  </div>
 
+</div>
+	   
 
+<!-- ################################################## -->
 
   <div id="content_iot" class="content">
 	  <center>
@@ -314,6 +335,7 @@
 	  <center>
   </div>
 
+<!-- ################################################## -->
 
   <xml id="toolbox" style="display: none">
     <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
@@ -576,6 +598,16 @@
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
 
+    <sep></sep>
+     <category name="Info">
+    <block type="project_metadata">
+      <field name="NAME">Project INFO</field>
+      <field name="project_author">Author</field>
+      <field name="project_iot_id">IOT ID</field>
+      <field name="project_description">Description</field>
+    </block>
+
+     </category>
 
 
     <!-- Rafael - 24/03/2020 -->
