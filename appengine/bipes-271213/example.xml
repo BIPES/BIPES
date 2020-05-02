@@ -1,0 +1,22 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+	<block type="controls_repeat_ext" x="10" y="10"><value name="TIMES"><shadow type="math_number"><field name="NUM">12</field></shadow></value><statement name="DO"><block type="text_print"><value name="TEXT"><shadow type="text"><field name="TEXT">Running test.</field></shadow></value><next><block type="delay"><value name="time"><block type="math_number"><field name="NUM">12</field></block></value><next><block type="gpio_set"><value name="pin"><block type="math_number"><field name="NUM">2</field></block></value><value name="value"><block type="logic_boolean"><field name="BOOL">TRUE</field></block></value><next><block type="delay"><value name="time"><block type="math_number"><field name="NUM">1</field></block></value><next><block type="gpio_set"><value name="pin"><block type="math_number"><field name="NUM">22</field></block></value><value name="value"><block type="logic_boolean"><field name="BOOL">FALSE</field></block></value></block></next></block></next></block></next></block></next></block></statement><next><block type="delay"><value name="time"><block type="math_number"><field name="NUM">0.2</field></block></value><next><block type="text_print"><value name="TEXT"><shadow type="text"><field name="TEXT">Fim!!</field></shadow></value><next><block type="reset" disabled="true"/></next></block></next></block></next></block>
+	
+<block type="project_metadata" x="362" y="88">
+<field name="NAME">Project INFO</field>
+<field name="project_author">Author</field>
+<field name="project_iot_id">IOT ID</field>
+<field name="project_description">Description</field>
+<value name="project_author">
+<block type="text">
+<field name="TEXT">Rafael</field>
+</block>
+</value>
+<value name="project_iot_id">
+	<block type="math_number">
+		<field name="NUM">123</field></block>
+</value>
+<value name="project_name"><block type="text"><field name="TEXT">My project</field></block></value>
+</block>
+
+</xml>
+
