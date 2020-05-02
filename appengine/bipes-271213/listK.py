@@ -81,7 +81,7 @@ def app(environ, start_response):
       out+="<br><center>No shared blocks :-(<br>"
   else:
       out+="<br><br><center>Shared blocks (click to access the program):<br>"
-      out+="<table border=1><tr><td>Link to access</td><td>Author</td><td>Date</td><td>Description</td></tr>"
+      out+="<table border=1><tr><td>Link to access</td><td><center>Author</center></td><td><center>Date</center></td><td><center>Description</center></td></tr>"
       for k in res:
           linkOld = str(k.xml_hash)
           link = xmlToKey(k.xml_content) # I dont like this, but cant access id() from ndb

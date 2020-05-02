@@ -25,6 +25,7 @@ import hashlib
 from random import randint
 from google.cloud import ndb
 import datetime
+import xml.dom.minidom
 
 class Xml(ndb.Model):
   # A row in the database.
@@ -62,11 +63,45 @@ def xmlToKey(xml_content):
           raise Exception("Sorry, the generator failed to get a key for you.")
         xml_key = keyGen()
         result = Xml.get_by_id(xml_key)
+
+        #Project metadata to store on the database
         now = datetime.datetime.now()
         currentDate = now.strftime("%Y-%m-%d %H:%M:%S")
-      row = Xml(id = xml_key, xml_hash = xml_hash, xml_content = xml_content, xml_author = "Author", xml_desc = "Desc", xml_date = currentDate)
-      #row = Xml(id = xml_key, xml_hash = xml_hash, xml_content = xml_content )
-      row.put()
+
+        #get metadata from project XML sent by blockly
+        #Get from xml_content
+        #print(xml_content)
+        
+       
+        #doc = xml.dom.minidom.parse("example.xml");
+        doc = xml.dom.minidom.parseString(xml_content)
+
+        vals = doc.getElementsByTagName("value")
+        author = "-"
+        desc = "-"
+        for e in vals:
+            #print e.getAttribute("name")
+            if e.getAttribute("name") == "project_author":
+                vals2 = e.getElementsByTagName("field")
+                
+                for e2 in vals2:
+                    if e2.getAttribute("name") == "TEXT" and e2.nodeName == "field":
+                        pAuthor=e2.firstChild.nodeValue
+
+            if e.getAttribute("name") == "project_name":
+                vals2 = e.getElementsByTagName("field")
+                
+                for e2 in vals2:
+                    if e2.getAttribute("name") == "TEXT" and e2.nodeName == "field":
+                        pDesc=e2.firstChild.nodeValue
+
+        print("Author = " + pAuthor)
+        print("Desc = " + pDesc)
+        print("Date = " + currentDate)
+
+        row = Xml(id = xml_key, xml_hash = xml_hash, xml_content = xml_content, xml_author = pAuthor, xml_desc = pDesc, xml_date = currentDate)
+        #row = Xml(id = xml_key, xml_hash = xml_hash, xml_content = xml_content )
+        row.put()
   return xml_key
 
 
