@@ -232,6 +232,9 @@
 	    <br>
 	    <br>
             <input type="button" value="Stop running program" onclick="stopPython(); return false;" />
+	    <br>
+	    <br>
+	    <input type="button" value="Run edited Python File" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
 
 	    <!--
             <div class="file-box">
@@ -290,14 +293,27 @@
   <div id="content_files" class="content">
 
 <div style="width: 50%; float:left">
- Text editor for files in device's filesystem
+	<center>
+ Text editor for files in device's filesystem:
+	</center>
 		    <br>
-
   <textarea id="content_file_code" cols=90 rows=20 wrap="off"></textarea>
   <br>
-  <input type="button" value="Save As: " onclick="files_saves_as(); return false;" />
+  Save as:
   <input type=text id=content_file_name>
+  <input type="button" value="Save" onclick="files_save_as(); return false;" />
   <input type="button" value="Run" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
+  <input type="button" value="Stop" onclick="stopPython(); return false;" />
+
+  <link rel="stylesheet" href="codemirror/codemirror.css">
+<script src="codemirror/codemirror.js"></script>
+<script src="codemirror/mode/python/python.js"></script>
+<script>
+  var editor = CodeMirror.fromTextArea(content_file_code, {
+    lineNumbers: true,
+    mode: "python"
+  });
+</script>
 
 
 </div>
@@ -311,6 +327,8 @@ Device file manager
 
             <input type="button" value="Run Blocks" onclick="runPython(); return false;" />
             <input type="button" value="List Files" onclick="listFiles(); return false;" />
+	    <br>
+            <input type="button" value="Blocks to editable Python (here)" onclick="blocksToPython(); return false;" />
 
 	    <!--
             <input type="button" value="Test" onclick="updateTable(); return false;" />
@@ -2097,6 +2115,7 @@ function stopPython(evt) {
 	//Send Ctrl+C to stop program
         ws.send('\x03');
 }
+
 function runPython(evt) {
 
 	var devSel = document.getElementById("device_selector").value;
@@ -2142,6 +2161,10 @@ function files_run(file) {
 	ws.send('import sys \r');
 	ws.send('sys.modules.pop(\'' + fileS + '\')\r');
 
+	//Another way of executing a script
+	//ws.send( ==>> exec(open('./cardio.py').read(),globals())
+
+
 	ws.send('import ' + fileS + '\r');
 
 }						  
@@ -2164,10 +2187,21 @@ function files_delete(file) {
 
 }						  
 
-function files_saves_as() {
+
+function blocksToPython() {
+        var code = Blockly.Python.workspaceToCode(Code.workspace);
+	editor.getDoc().setValue(code);
+}
+
+function files_save_as() {
 	var file = document.getElementById('content_file_name');
-	var Textarea = document.getElementById('content_file_code');
-	var codeStr = Textarea.value;
+
+	//For standard textarea
+	//var Textarea = document.getElementById('content_file_code');
+	//var codeStr = Textarea.value;
+
+	//For codemirror
+	var codeStr = editor.getDoc().getValue("\n")
 
 	var bufCode = new Uint8Array(codeStr.length);
 	for (var i=0, strLen=codeStr.length; i < strLen; i++) {
@@ -2194,8 +2228,15 @@ function updateSourceCode(code, file_name) {
 		text = e.srcElement.result;
 		console.log(text);
 
+		//Works for standard <inpyt type=textarea...
 		var Textarea = document.getElementById('content_file_code');
-		Textarea.value = text;
+		//Works for standard textarea. Commented for codemirror usage
+		//Textarea.value = text;
+
+		//For codemirror
+		//var editor = CodeMirror.fromTextArea(Textarea);
+		editor.getDoc().setValue(text);
+
 		var TextareaF = document.getElementById('content_file_name');
 		TextareaF.value = file_name;
 
