@@ -270,7 +270,13 @@
 
     <sep></sep>
 
-  <category name="Python">
+  <category name="Linux">
+    <block type="play_mp3"></block>
+    <block type="run_cmd"></block>
+    </category>
+ 
+
+  <category name="Python (Linux)">
     <block type="exec_python"></block>
     <block type="exec_python_output">
       <field name="EXEC_PYTHON_OUTPUT">Execute Python custom with output</field>

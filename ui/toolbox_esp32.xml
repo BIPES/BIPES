@@ -289,8 +289,18 @@
       <field name="EXEC_PYTHON_OUTPUT">Execute Python custom with output</field>
     </block>
   </category>
-  <category name="Machine">
+  <category name="Timing (ESP32)">
     <block type="delay"></block>
+    <block type="delay_ms"></block>
+    <block type="delay_us"></block>
+    <block type="ticks_ms"></block>
+    <block type="ticks_diff"></block>
+    <block type="set_rtc"></block>
+    <block type="get_rtc"></block>
+    <block type="timer"></block>
+    <block type="stop_timer"></block>
+  </category>
+  <category name="Machine (ESP32)">
     <block type="reset"></block>
     <block type="gpio_set"></block>
     <block type="adc"></block>

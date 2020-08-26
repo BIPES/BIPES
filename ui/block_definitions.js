@@ -1,16 +1,162 @@
-//Automatically generated
+
 Blockly.Blocks['delay'] = {
   init: function() {
     this.appendValueInput("time")
         .setCheck("Number")
-        .appendField("delay");
+        .appendField("delay seconds");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Delay processing in miliseconds");
+ this.setTooltip("Delay processing in seconds");
  this.setHelpUrl("http://www.bipes.net.br/");
   }
 };
+
+Blockly.Blocks['delay_ms'] = {
+  init: function() {
+    this.appendValueInput("time")
+        .setCheck("Number")
+        .appendField("delay milliseconds");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Delay processing in milliseconds");
+ this.setHelpUrl("http://www.bipes.net.br/");
+  }
+};
+
+Blockly.Blocks['delay_us'] = {
+  init: function() {
+    this.appendValueInput("time")
+        .setCheck("Number")
+        .appendField("delay microseconds");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Delay processing in microseconds");
+ this.setHelpUrl("http://www.bipes.net.br/");
+  }
+};
+
+Blockly.Blocks['ticks_ms'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Get milliseconds counter"), "MSG_GET_MS");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get millisecond counter");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['ticks_diff'] = {
+  init: function() {
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Compute time difference"), "DIFF_TS");
+    this.setOutput(true, null);
+    this.appendValueInput("end")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("end");
+    this.appendValueInput("start")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("start");
+    //this.setPreviousStatement(true, null);
+    //this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Compute time difference");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['set_rtc'] = {
+  init: function() {
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value"), "SET_RTC");
+    this.appendValueInput("year")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("year");
+
+    this.appendValueInput("month")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("month");
+
+    this.appendValueInput("day")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("day");
+
+    this.appendValueInput("hour")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("hour");
+
+    this.appendValueInput("minute")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("minute");
+
+    this.appendValueInput("second")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("second");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Set RTC value");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['get_rtc'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Get RTC value"), "MSG_GET_RTC");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get RTC value");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['timer'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Timer # ")
+        .appendField(new Blockly.FieldTextInput("0"), "timerNumber")
+        .appendField(" Interval (ms): ")
+        .appendField(new Blockly.FieldTextInput("1000"), "interval");
+    this.appendStatementInput("statements")
+        .setCheck("image");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['stop_timer'] = {
+  init: function() {
+
+    this.appendValueInput("timerNumber")
+        .setCheck("Number")
+        .appendField("Stop Timer");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Stop Timer");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+
 
 Blockly.Blocks['reset'] = {
   init: function() {
@@ -6960,4 +7106,31 @@ Blockly.Blocks["wipy_heartbeat"] = {
   }
 };
 
+
+Blockly.Blocks['run_cmd'] = {
+  init: function() {
+    this.appendValueInput("command")
+        .setCheck("String")
+        .appendField("Run Linux command");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(240);
+ this.setTooltip("Run custo Linux command");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['play_mp3'] = {
+  init: function() {
+    this.appendValueInput("command")
+        .setCheck("String")
+        .appendField("Play MP3 file");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(240);
+ this.setTooltip("Play MP3 file");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 

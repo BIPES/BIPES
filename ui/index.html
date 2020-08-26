@@ -5,6 +5,12 @@
   <meta name="google" value="notranslate">
   <title>BIPES Project - Beta2</title>
 
+  <!-- Progressive Web Application setup 
+  <link rel="manifest" href="manifest.json"></link>
+  <script src="manup.js"></script>
+  End of Progressive Web Application setup -->
+
+
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162001686-1"></script>
@@ -65,6 +71,35 @@
   <!-- WebREPL part --> 
   <script src="term.js"></script>
   <script src="FileSaver.js"></script>
+
+  <!-- Progressive Web Application setup -->
+  <script type="module">
+  // This is the "Offline copy of pages" service worker
+
+/*
+ This code uses the pwa-update web component https://github.com/pwa-builder/pwa-update to register your service worker, tell the user when there is an update available and let the user know when your PWA is ready to use offline.
+
+*/
+
+//import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+//const el = document.createElement('pwa-update');
+//document.body.appendChild(el);
+
+</script>
+
+  <!-- End of Progressive Web Application setup -->
+
+
+  <!-- From https://github.com/rafaelaroca/blockly-cv2 for OpenCV  --> 
+  <!-- 
+  <script src="jsCv/en.js"></script>
+  <script src="jsCv/cv2.js"></script>
+  -->
+  <script src="jsCv/v30.js"></script>
+  <script src="jsCv/v30/python.js"></script>
+  <script src="jsCv/v30/blocks.js"></script>
+
+
 </head>
 <body>
 
@@ -74,7 +109,7 @@
     <tr>
       <td>
         <h1>
-		<span id="title"><a href=http://www.bipes.net.br>BIPES</a> Beta</span>
+		<span id="title"><a href=http://www.bipes.net.br>BIPES</a> Beta (<a href=https://bipes.net.br/beta2serial/ui>USB/Serial</a> | <a href=http://bipes.net.br/beta2/ui/>Network</a>)</span>
         </h1>
       </td>
       <td class="farSide">
@@ -135,6 +170,20 @@
 				loadFileToElement('toolbox_esp8266.xml','toolbox');
 				Code.workspace.updateToolbox(document.getElementById('toolbox'));
 			}
+
+			if (dev == 'ESP32-oled') {
+				document.getElementById('device_title').innerHTML = '<b>ESP32 board with OLED LCD and Battery</b><br>';
+				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/esp32-oled.png";
+				//document.getElementById("toolbox")=document.getElementById("toolbox2");
+				//Code.reloadToolbox();
+				loadFileToElement('toolbox_esp32.xml','toolbox');
+				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+
+				document.getElementById("device_desc").innerHTML = "Yet another ESP32 board";
+
+			}
+
+
 			if (dev == 'ESP32') {
 				document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/ESP32-Pinout.jpg";
@@ -144,10 +193,37 @@
 				Code.workspace.updateToolbox(document.getElementById('toolbox'));
 
 			}
+
+			if (dev == 'M5STICK') {
+				document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
+				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/m5stickc.png";
+				//document.getElementById("toolbox")=document.getElementById("toolbox2");
+				//Code.reloadToolbox();
+				loadFileToElement('toolbox_esp32.xml','toolbox');
+				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+
+				document.getElementById("device_desc").innerHTML = "M5STICK-C is based on ESP32 processor. More info at:";
+
+			}
+
 			if (dev == 'Nucleo') {
 				document.getElementById('device_title').innerHTML = '<b>mBed: NUCLEO-F446RE</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/NUCLEO-F446RE-3-500x500.png";
 			}
+
+			if (dev == 'RPI4') {
+				document.getElementById('device_title').innerHTML = '<b>Raspberry Pi 4 </b><br>';
+				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/rpi4.png";
+				loadFileToElement('toolbox_linux.xml','toolbox');
+				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+				document.getElementById("device_desc").innerHTML = "Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv";
+
+
+			}
+
+
+
+
 			if (dev == 'BBBlack') {
 				document.getElementById('device_title').innerHTML = '<b>Beagle Bone Black</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/cape-headers.png";
@@ -156,6 +232,19 @@
 
 
 			}
+
+			if (dev == 'BBC') {
+				document.getElementById('device_title').innerHTML = '<b>BBC MicroBit</b><br>';
+				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/microbit.png";
+				//document.getElementById("toolbox")=document.getElementById("toolbox2");
+				//Code.reloadToolbox();
+				loadFileToElement('toolbox_esp32.xml','toolbox');
+				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+				document.getElementById("device_desc").innerHTML = "Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>";
+
+			}
+
+
 			if (dev == 'RPI') {
 			}
 
@@ -173,8 +262,11 @@
 			<select id="device_selector" onchange="changeDevice(this.value)">
 			  <option value="ESP8266">ESP8266</option>
 			  <option value="ESP32">ESP32</option>
+			  <option value="ESP32-oled">ESP32 + Display + Battery</option>
+			  <option value="M5STICK">m5stick (ESP32)</option>
 			  <option value="Nucleo">ST Nucleo (mBed)</option>
 			  <option value="BBBlack">Beagle Bone Black</option>
+			  <option value="BBC">BBC Microbit</option>
 			  <option value="PocketBeagle">Pocket Beagle</option>
 			  <option value="LinkIt Smart">LinkIt Smart</option>
 			  <option value="RPI1">Raspberry Pi 1</option>
@@ -185,7 +277,6 @@
 			  <option value="UNO">Arduino UNO</option>
 			  <option value="MEGA">Arduino Mega</option>
 			  <option value="NANO">Arduino Nano</option>
-			  <option value="BBC">BBC Microbit</option>
 			  <option value="EV3">Lego EV3</option>
 			</select>
               <button id="trashButton" class="notext" title="...">
@@ -648,7 +739,7 @@ Device file manager
     <category name="Machine" colour="%{BKY_VARIABLES_HUE}">
     -->
 
-  <category name="Python">
+  <category name="MicroPython">
     <block type="exec_python"></block>
     <block type="exec_python_output">
       <field name="EXEC_PYTHON_OUTPUT">Execute Python custom with output</field>
@@ -2313,3 +2404,6 @@ function listFiles(evt) {
 
 </script>
 </html>
+
+
+
