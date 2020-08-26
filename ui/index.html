@@ -61,8 +61,7 @@
   <script src="blocks_compressed.js"></script>
   <script src="javascript_compressed.js"></script>
   <script src="python_compressed.js"></script>
-  <script src="arduino_compressed.js"></script>
-  <script src="code.js"></script>
+	  <script src="code.js"></script>
 
   <!-- Custom Blocks for BIPES Project --> 
   <script src="block_definitions.js"></script> <!-- Rafael 24/03/2020 -->
@@ -2364,7 +2363,7 @@ function updateTable(evt) {
 	filesD = eval("[" + filesC + "]");
 
 	fileTable = "Device File List: <br> <br> <table border=2> ";
-						       fileTable += "<tr><td><center>File</center></td><td><center>Actions</center></td><td>Run at boot?</td></tr>";
+	fileTable += "<tr><td><center>File</center></td><td><center>Actions</center></td><td>Run at boot?</td></tr>";
 
 	//Build table with files on device and actions
 	for(var i=0, len=filesD.length; i < len; i++){

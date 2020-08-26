@@ -84,16 +84,39 @@ Blockly.Python['gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['init_oled'] = function(block) {
+  var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+  var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_oled_a'] = 'from machine import Pin, I2C';
+  Blockly.Python.definitions_['import_ssd'] = 'import ssd1306';
+  Blockly.Python.definitions_['import_sleep'] = 'from time import sleep';
+
+  var code = 'i2c=I2C(-1, scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+      code += 'oled_width = 128\n';
+      code += 'oled_height = 64\n';
+      code += 'oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2c)\n';
+
+  return code;
+};
+
 Blockly.Python['clear_oled'] = function(block) {
-  // TODO: Assemble Python into code variable.
-  var code = '...\n';
+  var code = 'oled.fill(0)\n';
+  return code;
+};
+
+Blockly.Python['fill_oled'] = function(block) {
+  var v = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+  var code = 'oled.fill(' + v + ')\n';
   return code;
 };
 
 Blockly.Python['write_oled'] = function(block) {
-  var value_text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
-  // TODO: Assemble Python into code variable.
-  var code = '...\n';
+  var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+  var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+  var t = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'oled.text(' + t + ', ' + x + ', ' + y + ')\noled.show()\n';
   return code;
 };
 

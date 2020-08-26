@@ -225,10 +225,44 @@ Blockly.Blocks['gpio_get'] = {
   }
 };
 
+Blockly.Blocks['init_oled'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init I2C SSD1306 OLED Display");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['fill_oled'] = {
+  init: function() {
+    this.appendValueInput("value")
+        .setCheck("Number")
+        .appendField("Fill OLED Display with ");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Fill OLED Disiplay");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['clear_oled'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Clear OLED Disiplay");
+        .appendField("Clear OLED Display");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -239,10 +273,26 @@ Blockly.Blocks['clear_oled'] = {
 
 Blockly.Blocks['write_oled'] = {
   init: function() {
+    this.appendDummyInput()
+        .appendField("Write text on display");
+
+    this.appendValueInput("x")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X position");
+    this.appendValueInput("y")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Y position");
     this.appendValueInput("text")
-        .setCheck(null)
-        .appendField("Write text to OLED Display");
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Text");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
     this.setColour(230);
+
  this.setTooltip("Write text to OLED Display");
  this.setHelpUrl("http://www.bipes.net.br");
   }

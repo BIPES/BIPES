@@ -300,13 +300,17 @@
     <block type="timer"></block>
     <block type="stop_timer"></block>
   </category>
+  <category name="Display (ESP32)">
+    <block type="init_oled"></block>
+    <block type="write_oled"></block>
+    <block type="clear_oled"></block>
+    <block type="fill_oled"></block>
+  </category>
   <category name="Machine (ESP32)">
     <block type="reset"></block>
     <block type="gpio_set"></block>
     <block type="adc"></block>
     <block type="gpio_get"></block>
-    <block type="clear_oled"></block>
-    <block type="write_oled"></block>
     <block type="move_servo"></block>
     <block type="dht_read_temp">
       <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
