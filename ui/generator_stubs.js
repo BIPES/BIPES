@@ -3476,3 +3476,20 @@ Blockly.Python['timer'] = function(block) {
   return code;
 };
 
+Blockly.Python['deep_sleep'] = function(block) {
+	var value_interval = Blockly.Python.valueToCode(block, 'interval', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = 'machine.deepsleep(' + value_interval + ')\n';
+	return code;
+  };
+	  
+  Blockly.Python['pwm'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_frequency = Blockly.Python.valueToCode(block, 'frequency', Blockly.Python.ORDER_ATOMIC);
+	var value_duty = Blockly.Python.valueToCode(block, 'duty', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+	var code = 'PWM(Pin(' + value_pin +'), freq=' + value_frequency + ', duty = ' + value_duty + ')\n';
+	return code;
+  };
+

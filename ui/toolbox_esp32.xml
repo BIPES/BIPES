@@ -299,6 +299,7 @@
     <block type="get_rtc"></block>
     <block type="timer"></block>
     <block type="stop_timer"></block>
+    <block type="deep_sleep"></block>
   </category>
   <category name="Display (ESP32)">
     <block type="init_oled"></block>
@@ -319,6 +320,7 @@
       <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
       <field name="DHT_PIN_MSG">pin</field>
     </block>
+    <block type="pwm"></block>
   </category>
   <category name="Network">
     <block type="wifi_client_connect">
@@ -426,7 +428,7 @@
 </block>
 <block type="builtins_next">
 </block>
-<block type="builtins_oct">
+<block type="bu/var/www/html/beta2-andouglas/ui_backupiltins_oct">
 </block>
 <block type="builtins_open">
 </block>

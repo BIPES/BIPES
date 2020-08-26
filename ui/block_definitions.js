@@ -1,3 +1,36 @@
+Blockly.Blocks['pwm'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("PWM"), "MSG_GET_MS");
+    this.appendValueInput("pin")
+        .setCheck(null)
+	.appendField("Pin");
+    this.appendValueInput("frequency")
+        .setCheck("Number")
+	  .appendField("Frequency");
+    this.appendValueInput("duty")
+        .setCheck(null)
+	  .appendField("Duty");	
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("pwm");
+ this.setHelpUrl("http://www.bipes.net.br");
+ }
+};
+
+Blockly.Blocks['deep_sleep'] = {
+	init: function() {
+    this.appendValueInput("interval")
+        .setCheck("Number")
+	.appendField("deep sleep");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Deep sleep process in milliseconds");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
 Blockly.Blocks['delay'] = {
   init: function() {
