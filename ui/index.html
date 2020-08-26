@@ -170,6 +170,18 @@
 				Code.workspace.updateToolbox(document.getElementById('toolbox'));
 			}
 
+			if (dev == 'wemos_d1_mini') {
+				document.getElementById('device_title').innerHTML = '<b>ESP8266 - Wemos D1 Mini</b><br>';
+				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Wemos-D1-Mini.png";
+				document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/";
+
+				//document.getElementById("toolbox")=document.getElementById("toolbox1");
+				//Code.reloadToolbox();
+				loadFileToElement('toolbox_esp8266.xml','toolbox');
+				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+			}
+
+
 			if (dev == 'ESP32-oled') {
 				document.getElementById('device_title').innerHTML = '<b>ESP32 board with OLED LCD and Battery</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/esp32-oled.png";
@@ -220,6 +232,16 @@
 
 			}
 
+			if (dev == 'EV3') {
+				document.getElementById('device_title').innerHTML = '<b>Lego EV3 </b><br>';
+				document.getElementById("device_img").src = "";
+				document.getElementById("device_desc").innerHTML = "Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!";
+
+
+			}
+
+
+
 
 
 
@@ -259,23 +281,14 @@
 	</script>
 		     Target device:
 			<select id="device_selector" onchange="changeDevice(this.value)">
-			  <option value="ESP8266">ESP8266</option>
-			  <option value="ESP32">ESP32</option>
+			  <option value="ESP8266">ESP8266 (NodeMCU)</option>
+			  <option value="wemos_d1_mini">ESP8266 (Wemos D1 mini)</option>
+			  <option value="ESP32">ESP32 (DevKitV1)</option>
 			  <option value="ESP32-oled">ESP32 + Display + Battery</option>
 			  <option value="M5STICK">m5stick (ESP32)</option>
 			  <option value="Nucleo">ST Nucleo (mBed)</option>
-			  <option value="BBBlack">Beagle Bone Black</option>
 			  <option value="BBC">BBC Microbit</option>
-			  <option value="PocketBeagle">Pocket Beagle</option>
-			  <option value="LinkIt Smart">LinkIt Smart</option>
-			  <option value="RPI1">Raspberry Pi 1</option>
-			  <option value="RPI2">Raspberry Pi 2</option>
-			  <option value="RPI3">Raspberry Pi 3</option>
-			  <option value="RPI4">Raspberry Pi 4</option>
-			  <option value="RPI0">Raspberry Pi Zero</option>
-			  <option value="UNO">Arduino UNO</option>
-			  <option value="MEGA">Arduino Mega</option>
-			  <option value="NANO">Arduino Nano</option>
+			  <option value="RPI4">Raspberry Pi (any Linux)</option>
 			  <option value="EV3">Lego EV3</option>
 			</select>
               <button id="trashButton" class="notext" title="...">
@@ -404,6 +417,42 @@
     mode: "python"
   });
 </script>
+
+<script>
+function getText(pName){
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://bipes.net.br/beta2/ui/pylibs/' + pName, true);
+    request.send(null);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            var type = request.getResponseHeader('Content-Type');
+            if (type.indexOf("text") !== 1) {
+
+		var Textarea = document.getElementById('content_file_code');
+		editor.getDoc().setValue(request.responseText);
+
+		var TextareaF = document.getElementById('content_file_name');
+		TextareaF.value = pName;
+
+
+                return request.responseText;
+            }
+        }
+    }
+}
+</script>
+
+  <br>
+  <br>
+  Python code templates and libraries:
+  <br>
+  (libraries and startup codes to load and send to your board)
+  <br>
+
+  <input type="button" value="main.py" onclick="getText('main.py'); return false;" />
+  <input type="button" value="ssd1306.py" onclick="getText('ssd1306.py'); return false;" />
+
 
 
 </div>
