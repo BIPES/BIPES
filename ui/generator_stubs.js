@@ -76,7 +76,8 @@ Blockly.Python['adc'] = function(block) {
 
 Blockly.Python['gpio_get'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['import_machine'] = 'import machine\nfrom machine import Pin\n';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
   Blockly.Python.definitions_['gpio_get' + value_pin] = 'pIn' + value_pin + '=Pin(' + value_pin + ', Pin.IN)\n\n';
 
   var code = 'pIn' + value_pin + '.value()\n';
@@ -88,7 +89,8 @@ Blockly.Python['init_oled'] = function(block) {
   var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
   var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_oled_a'] = 'from machine import Pin, I2C';
+  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+  Blockly.Python.definitions_['import_oled_a'] = 'from machine import I2C';
   Blockly.Python.definitions_['import_ssd'] = 'import ssd1306';
   Blockly.Python.definitions_['import_sleep'] = 'from time import sleep';
 
