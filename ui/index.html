@@ -315,13 +315,14 @@
     <tr height="25%" id="termTR">
      <td>
         <form>
-        <input type="text" name="webrepl_url" id="url" value="ws://192.168.0.16:8266/" />
+        Address: <input type="text" name="webrepl_url" id="url" value="ws://192.168.0.35:8266/" />
+        Password: <input type="text" name="webrepl_pass" id="password" value="bipes" />
         <input type="submit" id="button" value="Connect" onclick="button_click(); return false;" />
         </form>
         
         
         <div style="display:inline-block; vertical-align:top; ">
-            <div id="term">
+		<div id="term">
             </div>
         </div>
 <!--        <br clear="both" />
@@ -1976,7 +1977,7 @@ function button_click() {
         document.getElementById('url').disabled = true;
         document.getElementById('button').value = "Disconnect";
         connected = true;
-        connect(document.getElementById('url').value);
+        connect(document.getElementById('url').value, document.getElementById('password').value);
     }
 }
 
@@ -1989,7 +1990,7 @@ function update_file_status(s) {
     document.getElementById('file-status').innerHTML = s;
 }
 
-function connect(url) {
+function connect(url, password) {
     ws = new WebSocket(url);
     ws.binaryType = 'arraybuffer';
     ws.onopen = function() {
@@ -2009,9 +2010,13 @@ function connect(url) {
         term.element.focus();
         term.write('\x1b[31mWelcome to BIPES Project using MicroPython!\x1b[m\r\n');
 
+        term.write('\x1b[31mSending password...\x1b[m\r\n');
+	ws.send(password + '\n\n');
+
         ws.onmessage = function(event) {
             if (event.data instanceof ArrayBuffer) {
                 var data = new Uint8Array(event.data);
+				console.log('binary state = ' + binary_state);
                 switch (binary_state) {
                     case 11:
                         // first response for put
@@ -2035,7 +2040,9 @@ function connect(url) {
 
                     case 21:
                         // first response for get
+			console.log('get 1');
                         if (decode_resp(data) == 0) {
+			    console.log('get 2');
                             binary_state = 22;
                             var rec = new Uint8Array(1);
                             rec[0] = 0;
