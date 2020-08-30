@@ -3495,3 +3495,29 @@ Blockly.Python['deep_sleep'] = function(block) {
 	return code;
   };
 
+//Sckit-Learn Test
+//Author: Andouglas Junior
+
+Blockly.Python['randomforestclassifier'] = function(block) {
+	var value_random_state = Blockly.Python.valueToCode(block, 'random_state', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_random_forest_classifier'] = 'from sklearn.ensemble import RandomForestClassifier';
+	var code = 'RandomForestClassifier(random_state='+value_random_state+')\n';
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+
+  Blockly.Python['fit'] = function(block) {
+	var value_classifier = Blockly.Python.valueToCode(block, 'classifier', Blockly.Python.ORDER_ATOMIC);
+	var value_x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_ATOMIC);
+	var value_y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var code = value_classifier+'.fit('+value_x+','+value_y+')\n';
+	return code;
+  };
+
+  Blockly.Python['predict'] = function(block) {
+	var value_classifier = Blockly.Python.valueToCode(block, 'classifier', Blockly.Python.ORDER_ATOMIC);
+	var value_x = Blockly.Python.valueToCode(block, 'X', Blockly.Python.ORDER_ATOMIC);
+	var code = value_classifier+'.predict('+value_x+')\n';
+	// TODO: Change ORDER_NONE to the correct strength.
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+  

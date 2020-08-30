@@ -7217,3 +7217,61 @@ Blockly.Blocks['play_mp3'] = {
   }
 };
 
+Blockly.Blocks['randomforestclassifier'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("Random Forest Classifier");
+    this.appendValueInput("random_state")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("random_state");
+    this.setOutput(true, null);
+    this.setColour(60);
+ this.setTooltip("randomforestclassifier");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['fit'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("fit");
+    this.appendValueInput("classifier")
+        .setCheck(null)
+        .appendField("classifier");
+    this.appendValueInput("X")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X");
+    this.appendValueInput("y")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("y");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("fit");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['predict'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("predict");
+    this.appendValueInput("classifier")
+        .setCheck(null)
+        .appendField("classifier");
+    this.appendValueInput("X")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X");
+    this.setOutput(true, null);
+    this.setColour(60);
+ this.setTooltip("predict");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};

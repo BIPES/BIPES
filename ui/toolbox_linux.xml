@@ -983,5 +983,13 @@
     <block type="ximgproc_GuidedFilter_filter"></block>
   </category>
 </category>
+
+<category name="scikit-learn">
+<block type="fit"></block>
+<block type="predict"></block>
+  <category name="classifier">
+    <block type="randomforestclassifier"></block>
+  </category>
+</category>
   
 <hr>
