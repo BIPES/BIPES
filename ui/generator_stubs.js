@@ -85,6 +85,14 @@ Blockly.Python['gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['text_to_str'] = function(block) {
+  var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'str(' + variable + ')';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
 Blockly.Python['init_oled'] = function(block) {
   var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
   var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
