@@ -837,13 +837,21 @@ Device file manager
     <block type="clear_oled"></block>
     <block type="write_oled"></block>
     <block type="move_servo"></block>
-    <block type="dht_read_temp">
-      <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
-    </block>
-    <block type="dht_init">
-      <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
-      <field name="DHT_PIN_MSG">pin</field>
-    </block>
+    <category name="DTH11/22 Sensor">
+      <block type="dht_init">
+        <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
+        <field name="DHT_PIN_MSG">pin</field>
+      </block>
+      <block type="dht_measure">
+        <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
+      </block>
+      <block type="dht_read_temp">
+        <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
+      </block>
+      <block type="dht_read_humidity">
+        <field name="MSG_READ_DHT_HUMIDITY">Read DHT11/22 Humidity</field>
+      </block>
+    </category>
   </category>
   <category name="Network">
     <block type="wifi_client_connect">
@@ -869,7 +877,40 @@ Device file manager
       <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
       <field name="NET_POST_REQUEST_DATA">Data</field>
     </block>
+    <category name="MQTT">
+      <block type="mqtt_init">
+        <field name="BLOCK_MQTT_INIT">Initialize MQTT Client</field>
+        <field name="MQTT_SERVER">Server Address</field>
+        <field name="MQTT_PORT">Server Port</field>
+        <field name="MQTT_USER">Username</field>
+        <field name="MQTT_PASSWORD">Password</field>
+      </block>
+      <block type="mqtt_add_to_buffer">
+        <field name="BLOCK_MQTT_ADD_TO_BUFFER">Add data to MQTT Buffer</field>
+        <field name="MQTT_FIELDNAME">Field Name</field>
+        <field name="MQTT_VALUE">Value</field>
+      </block>
+      <block type="mqtt_publish">
+        <field name="BLOCK_MQTT_PUBLISH">Publish Buffer to MQTT Server</field>
+        <field name="MQTT_TOPIC">Topic</field>
+      </block>
+      <block type="mqtt_set_callback">
+        <field name="BLOCK_MQTT_SET_CALLBACK">Set Callback to MQTT Messages</field>
+        <field name="MQTT_CALLBACK">Callback Function</field>
+      </block>
+      <block type="mqtt_subscribe">
+        <field name="BLOCK_MQTT_SUBSCRIBE">Subscribe to MQTT Topic</field>
+        <field name="MQTT_TOPIC">Topic</field>
+      </block>
+      <block type="mqtt_check_msg">
+        <field name="BLOCK_MQTT_CHECK_MSG">Check for MQTT Server messages</field>
+      </block>
+      <block type="mqtt_wait_msg">
+        <field name="BLOCK_MQTT_WAIT_MSG">Wait for MQTT Server messages</field>
+      </block>
+    </category>
   </category>
+
 
 <category name="micropython">
 <category name="btree">
