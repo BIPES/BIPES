@@ -258,6 +258,30 @@ Blockly.Blocks['gpio_get'] = {
   }
 };
 
+Blockly.Blocks['pinout'] = {
+  update_list: function() {
+    if (document.getElementById('device_selector').value in pinout){
+      this.options = pinout[document.getElementById('device_selector').value];
+    }else{
+      this.options = [["Pins are not defined","None"]];
+    }
+    
+  },
+
+  options: [],
+
+  init: function() {
+    this.update_list();
+    this.appendDummyInput()
+        .appendField('pin')
+        .appendField(new Blockly.FieldDropdown(this.options), 'PIN');
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("Pins");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['init_oled'] = {
   init: function() {
     this.setColour(135);
@@ -637,6 +661,17 @@ Blockly.Blocks['text_to_str'] = {
     this.setColour(160);
     this.setOutput(true, null);
     this.setTooltip("Convert anything to String.");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['var_to_int'] = {
+  init: function() {
+    this.appendValueInput("var")
+        .appendField(new Blockly.FieldLabelSerializable("to int"), "VAR");
+    this.setColour(230);
+    this.setOutput(true, null);
+    this.setTooltip("Convert anything to Int.");
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };

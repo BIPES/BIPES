@@ -187,7 +187,27 @@ function checkCookie() {
 	    document.getElementById(elementId).innerHTML=xmlHTTP.responseText;
 	}
 
-
+  var pinout = {
+    'ESP8266': [
+      ['D0', "16"],
+      ['D1', "5"],
+      ['D2', "4"],
+      ['D3', "0"],
+      ['D4/LED', "2"],
+      ['D5', "14"],
+      ['D6', "12"],
+      ['D7', "13"],
+      ['D8', "15"],
+      ['RX', "3"],
+      ['TX', "1"],
+      ['SD3', "10"],
+      ['SD2', "9"],
+      ['SD1', "8"],
+      ['CMD', "11"],
+      ['SD0', "7"],
+      ['CLK', "6"]
+    ]
+  };
 
 
 		function changeDevice(dev) {
@@ -203,7 +223,7 @@ function checkCookie() {
 				Code.workspace.updateToolbox(document.getElementById('toolbox'));
 			}
 
-			if (dev == 'wemos_d1_mini') {
+			else if (dev == 'wemos_d1_mini') {
 				document.getElementById('device_title').innerHTML = '<b>ESP8266 - Wemos D1 Mini</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Wemos-D1-Mini.png";
 				document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/";
@@ -215,7 +235,7 @@ function checkCookie() {
 			}
 
 
-			if (dev == 'ESP32-oled') {
+			else if (dev == 'ESP32-oled') {
 				document.getElementById('device_title').innerHTML = '<b>ESP32 board with OLED LCD and Battery</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/esp32-oled.png";
 				//document.getElementById("toolbox")=document.getElementById("toolbox2");
@@ -228,7 +248,7 @@ function checkCookie() {
 			}
 
 
-			if (dev == 'ESP32') {
+			else if (dev == 'ESP32') {
 				document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/ESP32-Pinout.jpg";
 				//document.getElementById("toolbox")=document.getElementById("toolbox2");
@@ -238,7 +258,7 @@ function checkCookie() {
 
 			}
 
-			if (dev == 'M5STICK') {
+			else if (dev == 'M5STICK') {
 				document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/m5stickc.png";
 				//document.getElementById("toolbox")=document.getElementById("toolbox2");
@@ -250,12 +270,12 @@ function checkCookie() {
 
 			}
 
-			if (dev == 'Nucleo') {
+			else if (dev == 'Nucleo') {
 				document.getElementById('device_title').innerHTML = '<b>mBed: NUCLEO-F446RE</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/NUCLEO-F446RE-3-500x500.png";
 			}
 
-			if (dev == 'RPI4') {
+			else if (dev == 'RPI4') {
 				document.getElementById('device_title').innerHTML = '<b>Raspberry Pi 4 </b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/rpi4.png";
 				loadFileToElement('toolbox_linux.xml','toolbox');
@@ -265,7 +285,7 @@ function checkCookie() {
 
 			}
 
-			if (dev == 'EV3') {
+			else if (dev == 'EV3') {
 				document.getElementById('device_title').innerHTML = '<b>Lego EV3 </b><br>';
 				document.getElementById("device_img").src = "";
 				document.getElementById("device_desc").innerHTML = "Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!";
@@ -273,12 +293,7 @@ function checkCookie() {
 
 			}
 
-
-
-
-
-
-			if (dev == 'BBBlack') {
+			else if (dev == 'BBBlack') {
 				document.getElementById('device_title').innerHTML = '<b>Beagle Bone Black</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/cape-headers.png";
 				loadFileToElement('toolbox_bbblack.xml','toolbox');
@@ -287,7 +302,7 @@ function checkCookie() {
 
 			}
 
-			if (dev == 'BBC') {
+			else if (dev == 'BBC') {
 				document.getElementById('device_title').innerHTML = '<b>BBC MicroBit</b><br>';
 				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/microbit.png";
 				//document.getElementById("toolbox")=document.getElementById("toolbox2");
@@ -299,10 +314,10 @@ function checkCookie() {
 			}
 
 
-			if (dev == 'RPI') {
+			else if (dev == 'RPI') {
 			}
 
-			if (dev == 'UNO') {
+			else if (dev == 'UNO') {
 				document.getElementById('device_title').innerHTML = '<b>Arduino UNO. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>';
 				document.getElementById("device_img").src = "https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png";
 				loadFileToElement('toolbox_arduino.xml','toolbox');
@@ -310,6 +325,10 @@ function checkCookie() {
 
 
 			}
+
+      else {
+        alert("Invalid Device");
+      }
 		}
 	</script>
 		     Target device:
@@ -664,6 +683,9 @@ Device file manager
         </value>
       </block>
       <block type="math_random_float"></block>
+      <block type="var_to_int">  
+        <field name="VAR">to int</field>
+      </block>
     </category>
     <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
@@ -837,6 +859,7 @@ Device file manager
     <block type="gpio_set"></block>
     <block type="adc"></block>
     <block type="gpio_get"></block>
+    <block type="pinout"></block>
     <block type="clear_oled"></block>
     <block type="write_oled"></block>
     <block type="move_servo"></block>

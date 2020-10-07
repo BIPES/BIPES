@@ -36,11 +36,9 @@ Blockly.Python['gpio_set'] = function(block) {
   var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
   Blockly.Python.definitions_['import_machine'] = 'import machine';
-  var code = 'p = machine.Pin(' + value_pin + ', machine.Pin.OUT)\n';
-  if ((value_value >= 1) || (value_value == 'True')) 
-	  code += 'p.on()\n';
-  else
-	  code += 'p.off()\n';
+  Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    machine.Pin(pin, machine.Pin.OUT).on()\n  else:\n    machine.Pin(pin, machine.Pin.OUT).off()';
+
+  var code = 'gpio_set(' + value_pin + ', ' + value_value + ')\n';
   return code;
 
 };
@@ -85,10 +83,24 @@ Blockly.Python['gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['pinout'] = function(block) {
+  var pin = block.getFieldValue('PIN');
+  
+  return [pin, Blockly.Python.ORDER_NONE];
+};
+
 Blockly.Python['text_to_str'] = function(block) {
   var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
 
   var code = 'str(' + variable + ')';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['var_to_int'] = function(block) {
+  var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'int(' + variable + ')';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -181,7 +193,7 @@ Blockly.Python['wifi_client_connect'] = function(block) {
   var value_wifi_client_essid = Blockly.Python.valueToCode(block, 'wifi_client_essid', Blockly.Python.ORDER_ATOMIC);
   var value_wifi_client_key = Blockly.Python.valueToCode(block, 'wifi_client_key', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_network'] = 'import network';
-  var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \nsta_if.scan() \nsta_if.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ') \nprint("Waiting for Wifi connection")\nwhile not sta_if.isconnected(): time.sleep(1)\n';
+  var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \nsta_if.scan() \nsta_if.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ') \nprint("Waiting for Wifi connection")\nwhile not sta_if.isconnected(): time.sleep(1)\nprint("Connected")\n';
   return code;
 };
 
