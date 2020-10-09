@@ -516,13 +516,15 @@ Blockly.Blocks['dht_read_temp'] = {
 Blockly.Blocks['dht_read_humidity'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Humidity"), "MSG_DHT_READ_HUMIDITY");
+        .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Humidity"), "MSG_READ_DHT_HUMI");
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Read DHT11/22 Humidity");
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+
+// MQTT
 
 Blockly.Blocks['mqtt_init'] = {
   init: function() {
@@ -531,15 +533,15 @@ Blockly.Blocks['mqtt_init'] = {
     this.appendValueInput("server")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Server"), "MQTT_SERVER");
+        .appendField(new Blockly.FieldLabelSerializable("Server Address"), "MQTT_SERVER");
     this.appendValueInput("port")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Port"), "MQTT_PORT");
+        .appendField(new Blockly.FieldLabelSerializable("Server Port"), "MQTT_PORT");
     this.appendValueInput("user")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("User"), "MQTT_USER");
+        .appendField(new Blockly.FieldLabelSerializable("Username"), "MQTT_USER");
     this.appendValueInput("password")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -571,10 +573,10 @@ Blockly.Blocks['mqtt_add_to_buffer'] = {
   }
 };
 
-Blockly.Blocks['mqtt_publish'] = {
+Blockly.Blocks['mqtt_publish_buffer'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Publish Buffer to MQTT Server"), "BLOCK_MQTT_PUBLISH");
+        .appendField(new Blockly.FieldLabelSerializable("Publish Buffer to MQTT Topic"), "BLOCK_MQTT_PUBLISH");
     this.appendValueInput("topic")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -583,6 +585,25 @@ Blockly.Blocks['mqtt_publish'] = {
     this.setNextStatement(true, null);
     this.setColour(230);
  this.setTooltip("Publish Buffer to MQTT Server");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['mqtt_publish_payload'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Publish Payload to MQTT Topic"), "BLOCK_MQTT_PUBLISH");
+    this.appendValueInput("topic")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("Topic"), "MQTT_TOPIC");
+    this.appendValueInput("payload")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("Payload"), "MQTT_PAYLOAD");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Publish Payload to MQTT Server");
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -654,6 +675,137 @@ Blockly.Blocks['mqtt_wait_msg'] = {
   }
 };
 
+Blockly.Blocks['mqtt_disconnect'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Disconnect MQTT Client"), "BLOCK_MQTT_DISCONNECT");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Disconnect the MQTT Client from Server.");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+// EasyMQTT
+Blockly.Blocks['easymqtt_init'] = {
+  generate_id: function(){
+    return Math.random().toString(36).substring(7);
+  },
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Start"), "BLOCK_EASYMQTT_INIT");
+    this.appendDummyInput()
+        .appendField("Session ID")
+        .appendField(new Blockly.FieldTextInput(this.generate_id()),
+            'EASYMQTT_SESSION_ID');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Start EasyMQTT Client");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['easymqtt_publish_data'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Publish Data"), "BLOCK_EASYMQTT_PUBLISH");
+    this.appendValueInput("topic")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("Topic"), "EASYMQTT_TOPIC");
+    this.appendValueInput("data")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("Data"), "EASYMQTT_PAYLOAD");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Publish Data to EasyMQTT Server");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['easymqtt_subscribe'] = {
+  init: function() {
+    this.appendValueInput("topic")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Subscribe to Topic"), "EASYMQTT_TOPIC");
+    // this.appendDummyInput()
+    //     .appendField('wait for data')
+    //     .appendField(new Blockly.FieldDropdown([
+    //         ['no', '0'],
+    //         ['yes', '1']
+    //     ]), 'EASYMQTT_WAIT');
+    this.appendDummyInput()
+        .appendField('when')
+        .appendField(new Blockly.FieldVariable(
+          'data',
+          null,
+          ['String'],
+          'String'
+        ), 'EASYMQTT_VAR')
+        .appendField('is received');
+    this.appendStatementInput('do')
+        .appendField('do');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setInputsInline(false);
+ this.setTooltip("Subscribe to a topic and define what to do when data is received from EasyMQTT Server");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['easymqtt_receive_data'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Receive Data"), "BLOCK_EASYMQTT_RECEIVE");
+    this.appendDummyInput()
+        .appendField('wait for data')
+        .appendField(new Blockly.FieldDropdown([
+            ['no', '0'],
+            ['yes', '1']
+        ]), 'EASYMQTT_WAIT');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Receive Data from EasyMQTT Server");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['easymqtt_disconnect'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Stop"), "BLOCK_EASYMQTT_DISCONNECT");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Disconnect the EasyMQTT Client from Server.");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['relay_switch'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .appendField('Turn')
+        .appendField(new Blockly.FieldDropdown([
+            ['off', '0'],
+            ['on', '1']
+        ]), 'RELAY_STATUS')
+        .appendField('relay on pin');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Turn On Relay on GPIO digital pin");
+    this.setHelpUrl("bipes.net.br");
+  }
+};
+
 Blockly.Blocks['text_to_str'] = {
   init: function() {
     this.appendValueInput("var")
@@ -688,7 +840,7 @@ Blockly.Blocks['project_metadata'] = {
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabelSerializable("IOT ID"), "project_iot_id");
-    this.appendValueInput("project_name")
+    this.appendValueInput("project_description")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabelSerializable("Description"), "project_description");
