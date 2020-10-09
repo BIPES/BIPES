@@ -1,0 +1,13 @@
+[Unit]
+Description=EasyMQTT Subscriber Service
+Requires=mongod.service
+Requires=mosquitto.service
+
+[Service]
+WorkingDirectory=/opt/easymqtt/
+Type=idle
+ExecStart=/usr/bin/python3 /opt/easymqtt/subscriber.py &> /dev/null
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
