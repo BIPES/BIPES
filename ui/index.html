@@ -94,7 +94,7 @@ function checkCookie() {
   <script src="blocks_compressed.js"></script>
   <script src="javascript_compressed.js"></script>
   <script src="python_compressed.js"></script>
-	  <script src="code.js"></script>
+    <script src="code.js"></script>
 
   <!-- Custom Blocks for BIPES Project --> 
   <script src="block_definitions.js"></script> <!-- Rafael 24/03/2020 -->
@@ -141,7 +141,7 @@ function checkCookie() {
     <tr>
       <td>
         <h1>
-		<span id="title"><a href=http://www.bipes.net.br>BIPES</a> Beta (<a href=https://bipes.net.br/beta2serial/ui>USB/Serial</a> | <a href=http://bipes.net.br/beta2/ui/>Network</a>)</span>
+    <span id="title"><a href=http://www.bipes.net.br>BIPES</a> Beta (<a href=https://bipes.net.br/beta2serial/ui>USB/Serial</a> | <a href=http://bipes.net.br/beta2/ui/>Network</a>)</span>
         </h1>
       </td>
       <td class="farSide">
@@ -166,26 +166,28 @@ function checkCookie() {
             <td class="tabmin">&nbsp;</td>
             <td id="tab_iot" class="taboff">IOT</td>
             <td class="tabmin">&nbsp;</td>
+            <td id="tab_mqtt" class="taboff" onclick="startEasyMQTT()">EasyMQTT</td>
+            <td class="tabmin">&nbsp;</td>
             <td id="tab_xml" class="taboff">XML</td>
             <td class="tabmax">
 
-	<script>
+  <script>
 
-	function loadFileToElement(filename, elementId)
-	{
-	    var xmlHTTP = new XMLHttpRequest();
-	    try
-	    {
-	    xmlHTTP.open("GET", filename, false);
-	    xmlHTTP.send(null);
-	    }
-	    catch (e) {
-		window.alert("Unable to load the requested file.");
-		return;
-	    }
+  function loadFileToElement(filename, elementId)
+  {
+      var xmlHTTP = new XMLHttpRequest();
+      try
+      {
+      xmlHTTP.open("GET", filename, false);
+      xmlHTTP.send(null);
+      }
+      catch (e) {
+    window.alert("Unable to load the requested file.");
+    return;
+      }
 
-	    document.getElementById(elementId).innerHTML=xmlHTTP.responseText;
-	}
+      document.getElementById(elementId).innerHTML=xmlHTTP.responseText;
+  }
 
   var pinout = {
     'ESP8266': [
@@ -210,139 +212,139 @@ function checkCookie() {
   };
 
 
-		function changeDevice(dev) {
-			//alert(dev);
-			if (dev == 'ESP8266') {
-				document.getElementById('device_title').innerHTML = '<b>ESP8266</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg";
-				document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.";
+    function changeDevice(dev) {
+      //alert(dev);
+      if (dev == 'ESP8266') {
+        document.getElementById('device_title').innerHTML = '<b>ESP8266</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg";
+        document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.";
 
-				//document.getElementById("toolbox")=document.getElementById("toolbox1");
-				//Code.reloadToolbox();
-				loadFileToElement('toolbox_esp8266.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
-			}
+        //document.getElementById("toolbox")=document.getElementById("toolbox1");
+        //Code.reloadToolbox();
+        loadFileToElement('toolbox_esp8266.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
+      }
 
-			else if (dev == 'wemos_d1_mini') {
-				document.getElementById('device_title').innerHTML = '<b>ESP8266 - Wemos D1 Mini</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Wemos-D1-Mini.png";
-				document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/";
+      else if (dev == 'wemos_d1_mini') {
+        document.getElementById('device_title').innerHTML = '<b>ESP8266 - Wemos D1 Mini</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Wemos-D1-Mini.png";
+        document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/";
 
-				//document.getElementById("toolbox")=document.getElementById("toolbox1");
-				//Code.reloadToolbox();
-				loadFileToElement('toolbox_esp8266.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
-			}
-
-
-			else if (dev == 'ESP32-oled') {
-				document.getElementById('device_title').innerHTML = '<b>ESP32 board with OLED LCD and Battery</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/esp32-oled.png";
-				//document.getElementById("toolbox")=document.getElementById("toolbox2");
-				//Code.reloadToolbox();
-				loadFileToElement('toolbox_esp32.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
-
-				document.getElementById("device_desc").innerHTML = "Yet another ESP32 board";
-
-			}
+        //document.getElementById("toolbox")=document.getElementById("toolbox1");
+        //Code.reloadToolbox();
+        loadFileToElement('toolbox_esp8266.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
+      }
 
 
-			else if (dev == 'ESP32') {
-				document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/ESP32-Pinout.jpg";
-				//document.getElementById("toolbox")=document.getElementById("toolbox2");
-				//Code.reloadToolbox();
-				loadFileToElement('toolbox_esp32.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+      else if (dev == 'ESP32-oled') {
+        document.getElementById('device_title').innerHTML = '<b>ESP32 board with OLED LCD and Battery</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/esp32-oled.png";
+        //document.getElementById("toolbox")=document.getElementById("toolbox2");
+        //Code.reloadToolbox();
+        loadFileToElement('toolbox_esp32.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
 
-			}
+        document.getElementById("device_desc").innerHTML = "Yet another ESP32 board";
 
-			else if (dev == 'M5STICK') {
-				document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/m5stickc.png";
-				//document.getElementById("toolbox")=document.getElementById("toolbox2");
-				//Code.reloadToolbox();
-				loadFileToElement('toolbox_esp32.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
-
-				document.getElementById("device_desc").innerHTML = "M5STICK-C is based on ESP32 processor. More info at:";
-
-			}
-
-			else if (dev == 'Nucleo') {
-				document.getElementById('device_title').innerHTML = '<b>mBed: NUCLEO-F446RE</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/NUCLEO-F446RE-3-500x500.png";
-			}
-
-			else if (dev == 'RPI4') {
-				document.getElementById('device_title').innerHTML = '<b>Raspberry Pi 4 </b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/rpi4.png";
-				loadFileToElement('toolbox_linux.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
-				document.getElementById("device_desc").innerHTML = "Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv";
+      }
 
 
-			}
+      else if (dev == 'ESP32') {
+        document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/ESP32-Pinout.jpg";
+        //document.getElementById("toolbox")=document.getElementById("toolbox2");
+        //Code.reloadToolbox();
+        loadFileToElement('toolbox_esp32.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
 
-			else if (dev == 'EV3') {
-				document.getElementById('device_title').innerHTML = '<b>Lego EV3 </b><br>';
-				document.getElementById("device_img").src = "";
-				document.getElementById("device_desc").innerHTML = "Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!";
+      }
 
+      else if (dev == 'M5STICK') {
+        document.getElementById('device_title').innerHTML = '<b>ESP32</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/m5stickc.png";
+        //document.getElementById("toolbox")=document.getElementById("toolbox2");
+        //Code.reloadToolbox();
+        loadFileToElement('toolbox_esp32.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
 
-			}
+        document.getElementById("device_desc").innerHTML = "M5STICK-C is based on ESP32 processor. More info at:";
 
-			else if (dev == 'BBBlack') {
-				document.getElementById('device_title').innerHTML = '<b>Beagle Bone Black</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/cape-headers.png";
-				loadFileToElement('toolbox_bbblack.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+      }
 
+      else if (dev == 'Nucleo') {
+        document.getElementById('device_title').innerHTML = '<b>mBed: NUCLEO-F446RE</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/NUCLEO-F446RE-3-500x500.png";
+      }
 
-			}
-
-			else if (dev == 'BBC') {
-				document.getElementById('device_title').innerHTML = '<b>BBC MicroBit</b><br>';
-				document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/microbit.png";
-				//document.getElementById("toolbox")=document.getElementById("toolbox2");
-				//Code.reloadToolbox();
-				loadFileToElement('toolbox_esp32.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
-				document.getElementById("device_desc").innerHTML = "Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>";
-
-			}
-
-
-			else if (dev == 'RPI') {
-			}
-
-			else if (dev == 'UNO') {
-				document.getElementById('device_title').innerHTML = '<b>Arduino UNO. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>';
-				document.getElementById("device_img").src = "https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png";
-				loadFileToElement('toolbox_arduino.xml','toolbox');
-				Code.workspace.updateToolbox(document.getElementById('toolbox'));
+      else if (dev == 'RPI4') {
+        document.getElementById('device_title').innerHTML = '<b>Raspberry Pi 4 </b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/rpi4.png";
+        loadFileToElement('toolbox_linux.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
+        document.getElementById("device_desc").innerHTML = "Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv";
 
 
-			}
+      }
+
+      else if (dev == 'EV3') {
+        document.getElementById('device_title').innerHTML = '<b>Lego EV3 </b><br>';
+        document.getElementById("device_img").src = "";
+        document.getElementById("device_desc").innerHTML = "Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!";
+
+
+      }
+
+      else if (dev == 'BBBlack') {
+        document.getElementById('device_title').innerHTML = '<b>Beagle Bone Black</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/cape-headers.png";
+        loadFileToElement('toolbox_bbblack.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
+
+
+      }
+
+      else if (dev == 'BBC') {
+        document.getElementById('device_title').innerHTML = '<b>BBC MicroBit</b><br>';
+        document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/microbit.png";
+        //document.getElementById("toolbox")=document.getElementById("toolbox2");
+        //Code.reloadToolbox();
+        loadFileToElement('toolbox_esp32.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
+        document.getElementById("device_desc").innerHTML = "Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>";
+
+      }
+
+
+      else if (dev == 'RPI') {
+      }
+
+      else if (dev == 'UNO') {
+        document.getElementById('device_title').innerHTML = '<b>Arduino UNO. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>';
+        document.getElementById("device_img").src = "https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png";
+        loadFileToElement('toolbox_arduino.xml','toolbox');
+        Code.workspace.updateToolbox(document.getElementById('toolbox'));
+
+
+      }
 
       else {
         alert("Invalid Device");
       }
-		}
-	</script>
-		     Target device:
-			<select id="device_selector" onchange="changeDevice(this.value)">
-			  <option value="ESP8266">ESP8266 (NodeMCU)</option>
-			  <option value="wemos_d1_mini">ESP8266 (Wemos D1 mini)</option>
-			  <option value="ESP32">ESP32 (DevKitV1)</option>
-			  <option value="ESP32-oled">ESP32 + Display + Battery</option>
-			  <option value="M5STICK">m5stick (ESP32)</option>
-			  <option value="Nucleo">ST Nucleo (mBed)</option>
-			  <option value="BBC">BBC Microbit</option>
-			  <option value="RPI4">Raspberry Pi (any Linux)</option>
-			  <option value="EV3">Lego EV3</option>
-			</select>
+    }
+  </script>
+         Target device:
+      <select id="device_selector" onchange="changeDevice(this.value)">
+        <option value="ESP8266">ESP8266 (NodeMCU)</option>
+        <option value="wemos_d1_mini">ESP8266 (Wemos D1 mini)</option>
+        <option value="ESP32">ESP32 (DevKitV1)</option>
+        <option value="ESP32-oled">ESP32 + Display + Battery</option>
+        <option value="M5STICK">m5stick (ESP32)</option>
+        <option value="Nucleo">ST Nucleo (mBed)</option>
+        <option value="BBC">BBC Microbit</option>
+        <option value="RPI4">Raspberry Pi (any Linux)</option>
+        <option value="EV3">Lego EV3</option>
+      </select>
               <button id="trashButton" class="notext" title="...">
                 <img src='media/1x1.gif' class="trash icon21">
               </button>
@@ -374,7 +376,7 @@ function checkCookie() {
         
         
         <div style="display:inline-block; vertical-align:top; ">
-		<div id="term">
+    <div id="term">
             </div>
         </div>
 <!--        <br clear="both" />
@@ -385,14 +387,14 @@ function checkCookie() {
         <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
 
             <input type="button" value="Run block based program" onclick="runPython(); return false;" />
-	    <br>
-	    <br>
+      <br>
+      <br>
             <input type="button" value="Stop running program" onclick="stopPython(); return false;" />
-	    <br>
-	    <br>
-	    <input type="button" value="Run edited Python File" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
+      <br>
+      <br>
+      <input type="button" value="Run edited Python File" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
 
-	    <!--
+      <!--
             <div class="file-box">
                 <strong>Send a file</strong>
                 <input type="file" id="put-file-select" />
@@ -405,7 +407,7 @@ function checkCookie() {
             <input type="button" value="Get from device" onclick="get_file(); return false;" />
         </div>
         <div class="file-box" id="file-status"><span style="color:#707070">(file operation status)</span></div>
-	    -->
+      -->
     </div>
     </td>
    </tr>
@@ -423,23 +425,23 @@ function checkCookie() {
 <!-- ################################################## -->
 
   <div id="content_programs" class="content">
-	  <center>
-	  <iframe src="https://bipes-271213.appspot.com/list" width="100%" height="500" frameBorder="0"></iframe>
-	  </center>
+    <center>
+    <iframe src="https://bipes-271213.appspot.com/list" width="100%" height="500" frameBorder="0"></iframe>
+    </center>
   </div>
 
 
 <!-- ################################################## -->
 
   <div id="content_device" class="content">
-	  <center>
-		  <label id="device_title"><b>ESP8266</b><br></label>
-	  <br>
-	  <img id="device_img" src=devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg width="40%">
-	  <br>
+    <center>
+      <label id="device_title"><b>ESP8266</b><br></label>
+    <br>
+    <img id="device_img" src=devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg width="40%">
+    <br>
 
-	  <label id="device_desc">Description about chosen device</label>
-	  </center>
+    <label id="device_desc">Description about chosen device</label>
+    </center>
 
   </div>
 
@@ -449,10 +451,10 @@ function checkCookie() {
   <div id="content_files" class="content">
 
 <div style="width: 50%; float:left">
-	<center>
+  <center>
  Text editor for files in device's filesystem:
-	</center>
-		    <br>
+  </center>
+        <br>
   <textarea id="content_file_code" cols=90 rows=20 wrap="off"></textarea>
   <br>
   Save as:
@@ -482,11 +484,11 @@ function getText(pName){
             var type = request.getResponseHeader('Content-Type');
             if (type.indexOf("text") !== 1) {
 
-		var Textarea = document.getElementById('content_file_code');
-		editor.getDoc().setValue(request.responseText);
+    var Textarea = document.getElementById('content_file_code');
+    editor.getDoc().setValue(request.responseText);
 
-		var TextareaF = document.getElementById('content_file_name');
-		TextareaF.value = pName;
+    var TextareaF = document.getElementById('content_file_name');
+    TextareaF.value = pName;
 
 
                 return request.responseText;
@@ -512,19 +514,19 @@ function getText(pName){
 
 <div style="width: 50%; float:right">
 
-	  <center>
+    <center>
 Device file manager
 <br>
   <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
 
             <input type="button" value="Run Blocks" onclick="runPython(); return false;" />
             <input type="button" value="List Files" onclick="listFiles(); return false;" />
-	    <br>
+      <br>
             <input type="button" value="Blocks to editable Python (here)" onclick="blocksToPython(); return false;" />
 
-	    <!--
+      <!--
             <input type="button" value="Test" onclick="updateTable(); return false;" />
-	    -->
+      -->
             <div class="file-box">
                 <strong>Send a file</strong>
                 <input type="file" id="put-file-select" />
@@ -536,23 +538,200 @@ Device file manager
  </td>
 
   </div>
-	  <center>
-		  <br>
-		  <br>
-		  <div id="fileList">
-			List of files will be shown here.
-		  </div>
+    <center>
+      <br>
+      <br>
+      <div id="fileList">
+      List of files will be shown here.
+      </div>
 
 </div>
-	   
+     
 
 <!-- ################################################## -->
 
   <div id="content_iot" class="content">
-	  <center>
-	  <iframe id="content_iot" src="/sensors/index.php?id=1" width="100%" height="700" frameBorder="0"></iframe>
-	  <center>
+    <center>
+    <iframe id="content_iot" src="/sensors/index.php?id=1" width="100%" height="700" frameBorder="0"></iframe>
+    <center>
   </div>
+
+<!-- ################################################## -->
+<style>
+.easymqtt-content{
+  background-color: #aaa;
+  overflow-y: scroll;
+}
+
+.card{
+  margin: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  background-color: #fff;
+}
+
+.card:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.easymqtt-charts{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.easymqtt-chart{
+  flex: 1;
+  min-width: 500px;
+}
+.easymqtt-warning{
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 20px;
+}
+.easymqtt-warning span{
+  font-size: 12px;
+  font-weight: 400;
+}
+
+</style>
+<div id="content_mqtt" class="content easymqtt-content">
+  <script src="jquery-3.5.1.min.js"></script>
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <script type="text/javascript">
+    var timerUpdateEasyMQTT;
+    var MQTTCharts = {};
+    var MQTTLastUpdate = {};
+
+
+    function startEasyMQTT(){
+      if (typeof window.easyMQTT_session == 'undefined'){
+        errorEasyMQTT("EasyMQTT Session ID is not currently defined!<br><span>If the EasyMQTT Start block is set try clicking on 'Python' tab first.</span>");
+        if (typeof timerUpdateEasyMQTT !== 'undefined')
+          cancelTimer(timerUpdateEasyMQTT);
+        return;
+      }
+      dismissEasyMQTTError();
+      updateEasyMQTTJson();
+      if (typeof timerUpdateEasyMQTT == 'undefined')
+        timerUpdateEasyMQTT = setInterval(updateEasyMQTTJson,10000);
+    }
+
+    function dismissEasyMQTTError(){
+      $('#easymqtt-warning').html("");
+      $('#easymqtt-warning').hide();
+    }
+
+    function errorEasyMQTT(error){
+      $('#easymqtt-warning').html(error);
+    }
+
+    function addNewChart(topic){
+      MQTTCharts[topic] = new Highcharts.stockChart({
+            chart: {
+              renderTo: 'easymqtt-'+topic,
+              //defaultSeriesType: 'spline'
+            },
+            time: {
+              useUTC: false
+            },
+            title: {
+              text: 'Live data from ' + topic
+            },
+            rangeSelector: {
+                buttons: [{
+                    count: 1,
+                    type: 'minute',
+                    text: '1M'
+                }, {
+                    count: 5,
+                    type: 'minute',
+                    text: '5M'
+                }, {
+                    count: 1,
+                    type: 'hour',
+                    text: '1H'
+                }, {
+                    count: 12,
+                    type: 'hour',
+                    text: '12H'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                inputEnabled: false,
+                selected: 4
+            },
+            exporting: {
+                enabled: true
+            },
+            xAxis: {
+              type: 'datetime',
+            },
+            yAxis: {
+              title: {
+                text: 'Value'
+              }
+            },
+            series: [{
+              name: topic,
+              data: [],
+              marker: {
+                enabled: true,
+                radius: 2
+            },
+            }]
+          });
+    }
+
+    function updateEasyMQTTTopic(topic,since=0){
+      $.get( "http://bipes.net.br/easymqtt/gettopic.php?session="+easyMQTT_session+"&topic="+topic+"&since="+since, function( data ) {
+        if (data.success){
+          if (data.result.length > 0){
+            if (!(topic in MQTTCharts)){
+              $("#easymqtt-charts").append('<div id="easymqtt-'+topic+'" class="easymqtt-chart card"></div>')
+              addNewChart(topic);
+              for (i in MQTTCharts){
+                MQTTCharts[i].reflow();
+              }
+            }
+            for (i in data.result){
+              MQTTCharts[topic].series[0].addPoint([data.result[i].timestamp*1000,parseFloat(data.result[i].data)],true);
+            }
+            MQTTLastUpdate[topic] = data.result[data.result.length-1].timestamp;
+          }
+        }else{
+          errorEasyMQTT(data.result);
+        }
+      }, "json" );
+    }
+    function updateEasyMQTTJson(){
+      $(".highcharts-navigator").removeAttr("visibility");
+      $.get( "http://bipes.net.br/easymqtt/getsession.php?session="+easyMQTT_session, function( data ) {
+        if (data.success){
+          for (i in data.result){
+            if (data.result[i] in MQTTLastUpdate){
+              updateEasyMQTTTopic(data.result[i],MQTTLastUpdate[data.result[i]]+1);
+            }else{
+              updateEasyMQTTTopic(data.result[i]);
+            }
+          }
+        }else{
+          errorEasyMQTT(data.result);
+        }
+      }, "json" );
+    }
+  </script>
+  <div id="easymqtt-warning" class="easymqtt-warning card"></div>
+  <div id="easymqtt-charts" class="easymqtt-charts"></div>
+  <div id="easymqtt-config" class="easymqtt-config card">
+    
+  </div>
+
+</div>
 
 <!-- ################################################## -->
 
@@ -827,9 +1006,21 @@ Device file manager
      <category name="Info">
     <block type="project_metadata">
       <field name="NAME">Project INFO</field>
-      <field name="project_author">Author</field>
-      <field name="project_iot_id">IOT ID</field>
-      <field name="project_description">Description</field>
+      <value name="project_author">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="project_iot_id">
+        <shadow type="math_number">
+          <field name="NUM"></field>
+        </shadow>
+      </value>
+      <value name="project_description">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
     </block>
 
      </category>
@@ -854,19 +1045,46 @@ Device file manager
   </category>
 
   <category name="Machine">
-    <block type="delay"></block>
+    <block type="delay">
+      <value name="time">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
     <block type="reset"></block>
-    <block type="gpio_set"></block>
+    <block type="gpio_set">
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
+      <value name="value">
+        <shadow type="logic_boolean">
+          <field name="BOOL"></field>
+        </shadow>
+      </value>
+    </block>
     <block type="adc"></block>
-    <block type="gpio_get"></block>
+    <block type="gpio_get">
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
+    </block>
     <block type="pinout"></block>
-    <block type="clear_oled"></block>
-    <block type="write_oled"></block>
     <block type="move_servo"></block>
+  </category>
+  <category name="Devices">
     <category name="DTH11/22 Sensor">
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
-        <field name="DHT_PIN_MSG">pin</field>
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
       </block>
       <block type="dht_measure">
         <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
@@ -875,20 +1093,49 @@ Device file manager
         <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
       </block>
       <block type="dht_read_humidity">
-        <field name="MSG_READ_DHT_HUMIDITY">Read DHT11/22 Humidity</field>
+        <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
+      </block>
+    </category>
+    <category name="OLED Display">
+      <block type="clear_oled"></block>
+      <block type="write_oled"></block>
+    </category>
+    <category name="Relay">
+      <block type="relay_switch">
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
       </block>
     </category>
   </category>
   <category name="Network">
     <block type="wifi_client_connect">
       <field name="NAME">Connect to Wifi network</field>
-      <field name="WIFI_CLIENT_NET_NAME">Network name</field>
-      <field name="WIFI_CLIENT_NET_KEY">Network key</field>
+      <value name="wifi_client_essid">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="wifi_client_key">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
     </block>
     <block type="net_ap_mode">
       <field name="NAME">Configure Access Point Mode</field>
-      <field name="NET_NETWORK_NAME">Network name</field>
-      <field name="NET_NETWORK_KEY">Network password</field>
+      <value name="wifi_essid">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="wifi_key">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
     </block>
     <block type="wifi_client_scan_networks">
       <field name="NET_SCAN_WIFI">Scan Wifi networks</field>
@@ -905,20 +1152,57 @@ Device file manager
     </block>
     <category name="MQTT">
       <block type="mqtt_init">
-        <field name="BLOCK_MQTT_INIT">Initialize MQTT Client</field>
-        <field name="MQTT_SERVER">Server Address</field>
-        <field name="MQTT_PORT">Server Port</field>
-        <field name="MQTT_USER">Username</field>
-        <field name="MQTT_PASSWORD">Password</field>
+        <field name="BLOCK_MQTT_INIT">Start MQTT Client</field>
+        <value name="server">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="port">
+          <shadow type="math_number">
+            <field name="NUM">1883</field>
+          </shadow>
+        </value>
+        <value name="user">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="password">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
       </block>
       <block type="mqtt_add_to_buffer">
         <field name="BLOCK_MQTT_ADD_TO_BUFFER">Add data to MQTT Buffer</field>
-        <field name="MQTT_FIELDNAME">Field Name</field>
+        <value name="fieldname">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
         <field name="MQTT_VALUE">Value</field>
       </block>
-      <block type="mqtt_publish">
-        <field name="BLOCK_MQTT_PUBLISH">Publish Buffer to MQTT Server</field>
-        <field name="MQTT_TOPIC">Topic</field>
+      <block type="mqtt_publish_buffer">
+        <field name="BLOCK_MQTT_PUBLISH">Publish Buffer to MQTT Topic</field>
+        <value name="topic">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="mqtt_publish_payload">
+        <field name="BLOCK_MQTT_PUBLISH">Publish Payload to MQTT Topic</field>
+        <value name="topic">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="payload">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
       </block>
       <block type="mqtt_set_callback">
         <field name="BLOCK_MQTT_SET_CALLBACK">Set Callback to MQTT Messages</field>
@@ -926,13 +1210,49 @@ Device file manager
       </block>
       <block type="mqtt_subscribe">
         <field name="BLOCK_MQTT_SUBSCRIBE">Subscribe to MQTT Topic</field>
-        <field name="MQTT_TOPIC">Topic</field>
+        <value name="topic">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
       </block>
       <block type="mqtt_check_msg">
         <field name="BLOCK_MQTT_CHECK_MSG">Check for MQTT Server messages</field>
       </block>
       <block type="mqtt_wait_msg">
         <field name="BLOCK_MQTT_WAIT_MSG">Wait for MQTT Server messages</field>
+      </block>
+      <block type="mqtt_disconnect">
+        <field name="BLOCK_MQTT_DISCONNECT">Disconnect MQTT Client</field>
+      </block>
+    </category>
+    <category name="EasyMQTT">
+      <block type="easymqtt_init">
+        <field name="BLOCK_EASYMQTT_INIT">EasyMQTT Start</field>
+      </block>
+      <block type="easymqtt_publish_data">
+        <field name="BLOCK_EASYMQTT_PUBLISH">EasyMQTT Publish Data</field>
+        <value name="topic">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="easymqtt_subscribe">
+        <value name="topic">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="easymqtt_receive_data"></block>
+      <block type="easymqtt_disconnect">
+        <field name="BLOCK_EASYMQTT_DISCONNECT">EasyMQTT Stop</field>
       </block>
     </category>
   </category>
@@ -2114,12 +2434,12 @@ function connect(url, password) {
         term.write('\x1b[31mWelcome to BIPES Project using MicroPython!\x1b[m\r\n');
 
         term.write('\x1b[31mSending password...\x1b[m\r\n');
-	ws.send(password + '\n\n');
+  ws.send(password + '\n\n');
 
         ws.onmessage = function(event) {
             if (event.data instanceof ArrayBuffer) {
                 var data = new Uint8Array(event.data);
-				console.log('binary state = ' + binary_state);
+        console.log('binary state = ' + binary_state);
                 switch (binary_state) {
                     case 11:
                         // first response for put
@@ -2143,9 +2463,9 @@ function connect(url, password) {
 
                     case 21:
                         // first response for get
-			console.log('get 1');
+      console.log('get 1');
                         if (decode_resp(data) == 0) {
-			    console.log('get 2');
+          console.log('get 2');
                             binary_state = 22;
                             var rec = new Uint8Array(1);
                             rec[0] = 0;
@@ -2182,10 +2502,10 @@ function connect(url, password) {
                         if (decode_resp(data) == 0) {
                             update_file_status('Got ' + get_file_name + ', ' + get_file_data.length + ' bytes');
                             if (!viewOnly)
-				saveAs(new Blob([get_file_data], {type: "application/octet-stream"}), get_file_name);
-			    else
-				//updateSourceCode([get_file_data]);
-				updateSourceCode(new Blob([get_file_data], {type: "text/plain"}), get_file_name);
+        saveAs(new Blob([get_file_data], {type: "application/octet-stream"}), get_file_name);
+          else
+        //updateSourceCode([get_file_data]);
+        updateSourceCode(new Blob([get_file_data], {type: "text/plain"}), get_file_name);
                         } else {
                             update_file_status('Failed getting ' + get_file_name);
                         }
@@ -2200,9 +2520,9 @@ function connect(url, password) {
             }
             term.write(event.data);
             
-	    //byte by byte...
-	    //alert(event.data);
-	    received_string = received_string.concat(event.data);
+      //byte by byte...
+      //alert(event.data);
+      received_string = received_string.concat(event.data);
         };
     };
 
@@ -2361,203 +2681,203 @@ function sleep(milliseconds) {
 
 
 function stopPython(evt) {
-	//Send Ctrl+C to stop program
+  //Send Ctrl+C to stop program
         ws.send('\x03');
 }
 
 function runPython(evt) {
 
-	var devSel = document.getElementById("device_selector").value;
-	
-	if (devSel == "UNO") {
-		alert("Generating code for Arduino Uno");
-		var code = Blockly.Arduino.workspaceToCode(Code.workspace);
+  var devSel = document.getElementById("device_selector").value;
+  
+  if (devSel == "UNO") {
+    alert("Generating code for Arduino Uno");
+    var code = Blockly.Arduino.workspaceToCode(Code.workspace);
 
-		return;
-	}
+    return;
+  }
 
 
 
-	if (!connected) {
-		alert('Must be connected to run code');
-		return;
-	}
+  if (!connected) {
+    alert('Must be connected to run code');
+    return;
+  }
 
         var code = Blockly.Python.workspaceToCode(Code.workspace);
         var textArray = code.split(/\r\n|\r|\n/);
 
         console.log(code);
         ws.send('\x05');
-	sleep(50);
+  sleep(50);
         textArray.forEach(function(line, index, array) {
            ws.send(line+'\r');
-	   sleep(25);
+     sleep(25);
         });
         ws.send('\x04');
-	
+  
 }
 
 function files_run(file) {
 
         update_file_status('Executing  ' + file);
 
-	//Filename without .py
-	fileS = file.split('.')[0];
+  //Filename without .py
+  fileS = file.split('.')[0];
 
-	//import only works once
-	//In case module already loaded, unloaded it
-	//to allow it to work all the time
-	ws.send('import sys \r');
-	ws.send('sys.modules.pop(\'' + fileS + '\')\r');
+  //import only works once
+  //In case module already loaded, unloaded it
+  //to allow it to work all the time
+  ws.send('import sys \r');
+  ws.send('sys.modules.pop(\'' + fileS + '\')\r');
 
-	//Another way of executing a script
-	//ws.send( ==>> exec(open('./cardio.py').read(),globals())
+  //Another way of executing a script
+  //ws.send( ==>> exec(open('./cardio.py').read(),globals())
 
 
-	ws.send('import ' + fileS + '\r');
+  ws.send('import ' + fileS + '\r');
 
-}						  
+}             
 
 
 
 function files_delete(file) {
 
-	msg = "Are you sure you want to delete " + file + "?";
+  msg = "Are you sure you want to delete " + file + "?";
 
-	if (confirm(msg)) {
-		txt = "Will delete file " + file;
-		ws.send('os.remove(\'' + file + '\')\r');
-		setTimeout(updateTable, 350);
-		update_file_status('Deleted  ' + file);
-	} else {
-		txt = "Delete aborted";
-		update_file_status('Delete aborted for ' + file);
-	}
+  if (confirm(msg)) {
+    txt = "Will delete file " + file;
+    ws.send('os.remove(\'' + file + '\')\r');
+    setTimeout(updateTable, 350);
+    update_file_status('Deleted  ' + file);
+  } else {
+    txt = "Delete aborted";
+    update_file_status('Delete aborted for ' + file);
+  }
 
-}						  
+}             
 
 
 function blocksToPython() {
         var code = Blockly.Python.workspaceToCode(Code.workspace);
-	editor.getDoc().setValue(code);
+  editor.getDoc().setValue(code);
 }
 
 function files_save_as() {
-	var file = document.getElementById('content_file_name');
+  var file = document.getElementById('content_file_name');
 
-	//For standard textarea
-	//var Textarea = document.getElementById('content_file_code');
-	//var codeStr = Textarea.value;
+  //For standard textarea
+  //var Textarea = document.getElementById('content_file_code');
+  //var codeStr = Textarea.value;
 
-	//For codemirror
-	var codeStr = editor.getDoc().getValue("\n")
+  //For codemirror
+  var codeStr = editor.getDoc().getValue("\n")
 
-	var bufCode = new Uint8Array(codeStr.length);
-	for (var i=0, strLen=codeStr.length; i < strLen; i++) {
-		bufCode[i] = codeStr.charCodeAt(i);
-	}
+  var bufCode = new Uint8Array(codeStr.length);
+  for (var i=0, strLen=codeStr.length; i < strLen; i++) {
+    bufCode[i] = codeStr.charCodeAt(i);
+  }
 
         put_file_name = file.value;
         put_file_data = bufCode;
         //put_file_data = new Uint8Array(e.target.result);
         //put_file_data = Textarea.value;
 
-	put_file();
+  put_file();
 }
 
 function updateSourceCode(code, file_name) {
 
-	//const blb    = new Blob(["Lorem ipsum sit"], {type: "text/plain"});
-	blb = code;
-	const reader = new FileReader();
-	text="";
+  //const blb    = new Blob(["Lorem ipsum sit"], {type: "text/plain"});
+  blb = code;
+  const reader = new FileReader();
+  text="";
 
-	// This fires after the blob has been read/loaded.
-	reader.addEventListener('loadend', (e) => {
-		text = e.srcElement.result;
-		console.log(text);
+  // This fires after the blob has been read/loaded.
+  reader.addEventListener('loadend', (e) => {
+    text = e.srcElement.result;
+    console.log(text);
 
-		//Works for standard <inpyt type=textarea...
-		var Textarea = document.getElementById('content_file_code');
-		//Works for standard textarea. Commented for codemirror usage
-		//Textarea.value = text;
+    //Works for standard <inpyt type=textarea...
+    var Textarea = document.getElementById('content_file_code');
+    //Works for standard textarea. Commented for codemirror usage
+    //Textarea.value = text;
 
-		//For codemirror
-		//var editor = CodeMirror.fromTextArea(Textarea);
-		editor.getDoc().setValue(text);
+    //For codemirror
+    //var editor = CodeMirror.fromTextArea(Textarea);
+    editor.getDoc().setValue(text);
 
-		var TextareaF = document.getElementById('content_file_name');
-		TextareaF.value = file_name;
+    var TextareaF = document.getElementById('content_file_name');
+    TextareaF.value = file_name;
 
-	});
+  });
 
-	// Start reading the blob as text.
-	reader.readAsText(blb);
+  // Start reading the blob as text.
+  reader.readAsText(blb);
 
 
 }
 
 function files_view(file) {
-	str = "Loading " + file;
-	//alert(str);
-	viewOnly=true;
-	get_file2(file);
-	update_file_status('Downloading ' + file);
-	str = "Loaded " + file;
-}		
+  str = "Loading " + file;
+  //alert(str);
+  viewOnly=true;
+  get_file2(file);
+  update_file_status('Downloading ' + file);
+  str = "Loaded " + file;
+}   
 
 function files_download(file) {
-	str = "Download " + file;
-	viewOnly=false;
-	//alert(str);
-	get_file2(file);
-	update_file_status('Downloading ' + file);
-}						  
+  str = "Download " + file;
+  viewOnly=false;
+  //alert(str);
+  get_file2(file);
+  update_file_status('Downloading ' + file);
+}             
 
 function updateTable(evt) {
 
-	filesA = received_string.split('[')[1];
-	filesB = filesA.split(']')[0];
-	filesC = filesB.split('"'[0]);
-	filesD = eval("[" + filesC + "]");
+  filesA = received_string.split('[')[1];
+  filesB = filesA.split(']')[0];
+  filesC = filesB.split('"'[0]);
+  filesD = eval("[" + filesC + "]");
 
-	fileTable = "Device File List: <br> <br> <table border=2> ";
-	fileTable += "<tr><td><center>File</center></td><td><center>Actions</center></td><td>Run at boot?</td></tr>";
+  fileTable = "Device File List: <br> <br> <table border=2> ";
+  fileTable += "<tr><td><center>File</center></td><td><center>Actions</center></td><td>Run at boot?</td></tr>";
 
-	//Build table with files on device and actions
-	for(var i=0, len=filesD.length; i < len; i++){
+  //Build table with files on device and actions
+  for(var i=0, len=filesD.length; i < len; i++){
 
-		//File name
-		file = filesD[i];
-		fileTable += "<tr><td>" + file + "</td><td>";
+    //File name
+    file = filesD[i];
+    fileTable += "<tr><td>" + file + "</td><td>";
 
-		//Action buttons
-		fileTable += '<input type=button value=Run onclick="files_run(\'' + file + '\'); return false;" />';
-		fileTable += '<input type=button value=Open onclick="files_view(\'' + file + '\'); return false;" />';
-		fileTable += '<input type=button value=Download onclick="files_download(\'' + file + '\'); return false;" />';
-		fileTable += '<input type=button value=Delete onclick="files_delete(\'' + file + '\'); return false;" />';
+    //Action buttons
+    fileTable += '<input type=button value=Run onclick="files_run(\'' + file + '\'); return false;" />';
+    fileTable += '<input type=button value=Open onclick="files_view(\'' + file + '\'); return false;" />';
+    fileTable += '<input type=button value=Download onclick="files_download(\'' + file + '\'); return false;" />';
+    fileTable += '<input type=button value=Delete onclick="files_delete(\'' + file + '\'); return false;" />';
 
-		fileTable += "</td><td><center>No</center></td></tr>";
-	}
+    fileTable += "</td><td><center>No</center></td></tr>";
+  }
 
-	fileTable += "</table>";
-	dom  = document.getElementById("fileList");
-	dom.innerHTML = fileTable;
+  fileTable += "</table>";
+  dom  = document.getElementById("fileList");
+  dom.innerHTML = fileTable;
 }
 
 function listFiles(evt) {
-	if (!connected) {
-		alert('Must be connected to list files');
-		return;
-	}
-	//alert('See file list in console tab'); 
-	received_string="";
+  if (!connected) {
+    alert('Must be connected to list files');
+    return;
+  }
+  //alert('See file list in console tab'); 
+  received_string="";
         ws.send('import os\r');
-	sleep(25);
+  sleep(25);
         ws.send('os.listdir()\r');
 
-	setTimeout(updateTable, 250);
-	
+  setTimeout(updateTable, 250);
+  
 }
 
 </script>

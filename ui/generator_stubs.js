@@ -231,6 +231,97 @@ Blockly.Python['dht_read_humidity'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['relay_switch'] = function(block) {
+  var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+  var status = block.getFieldValue('RELAY_STATUS');
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  if (status == '1'){
+  	var code = 'machine.Pin(' + pin + ').off()';
+  }else{
+  	var code = 'machine.Pin(' + pin + ').on()';
+  }
+  return code;
+};
+
+// EasyMQTT
+
+Blockly.Python['easymqtt_init'] = function(block) {
+  var server = '"bipes.net.br"';
+  var port = '1883';
+  var user = '"bipes"';
+  var pass = '"m8YLUr5uW3T"';
+  var session = block.getFieldValue('EASYMQTT_SESSION_ID');
+  window.easyMQTT_session = session;
+
+
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+  var code = 'easymqtt_session = "' + session + '"; easymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = ' + server + ', port = ' + port + ', user = ' + user + ', password = ' + pass + '); easymqtt_client.connect()\n'
+  return code;
+};
+
+Blockly.Python['easymqtt_publish_data'] = function(block) {
+  var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
+  var data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+
+
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+
+
+  var code = 'easymqtt_client.publish(easymqtt_session + "/" + ' + topic + ', str(' + data + '))\n';
+  return code;
+};
+
+Blockly.Python['easymqtt_disconnect'] = function(block) {
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+
+  var code = 'easymqtt_client.disconnect()\n';
+  return code;
+};
+
+Blockly.Python['easymqtt_subscribe'] = function(block) {
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+  var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
+  var funct_code = Blockly.Python.statementToCode(block, 'do');
+  var name = topic.replace(/\W/g, '_');
+  var var_name = Blockly.Python.variableDB_.getName(
+      block.getFieldValue('EASYMQTT_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
+
+
+  var function_name = Blockly.Python.provideFunction_(
+    'easymqtt'+name,
+    ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '('+var_name+'):',funct_code]);
+
+  Blockly.Python.definitions_['easymqtt_callback'] = 'easymqtt_callback_list = {}\ndef easymqtt_callback(topic_,msg_):\n  if topic_ in easymqtt_callback_list: easymqtt_callback_list[topic_](msg_.decode())';
+
+
+  var code = "easymqtt_callback_list["+topic+"]="+function_name+"\neasymqtt_client.subscribe(" + topic + ")\neasymqtt_client.set_callback(easymqtt_callback)\n"
+  return code;
+};
+
+Blockly.Python['easymqtt_receive_data'] = function(block) {
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+  var wait = block.getFieldValue('EASYMQTT_WAIT');
+  if (wait == '1'){
+    var code = 'easymqtt_client.wait_msg()\n';
+  }else{
+    var code = 'easymqtt_client.check_msg()\n';
+  }
+  
+  return code;
+};
+
+
+
+Blockly.Python['mqtt_add_to_buffer'] = function(block) {
+  var name = Blockly.Python.valueToCode(block, 'fieldname', Blockly.Python.ORDER_ATOMIC);
+  var value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'mqtt_buffer += (' + name + ' + "=" + str(' + value + ')) if not len(mqtt_buffer) else ("&" + ' + name + ' + "=" + str(' + value + '))\n'
+  return code;
+};
+
+// MQTT
+
 Blockly.Python['mqtt_init'] = function(block) {
   var server = Blockly.Python.valueToCode(block, 'server', Blockly.Python.ORDER_ATOMIC);
   var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
@@ -250,13 +341,26 @@ Blockly.Python['mqtt_add_to_buffer'] = function(block) {
   return code;
 };
 
-Blockly.Python['mqtt_publish'] = function(block) {
+Blockly.Python['mqtt_publish_buffer'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
+  var qos = block.getFieldValue('MQTT_QOS');
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
 
-  var code = 'mqtt_client.publish(' + topic + ', mqtt_buffer); mqtt_buffer = ""\n';
+  var code = 'mqtt_client.publish(' + topic + ', mqtt_buffer,qos=' + qos + '); mqtt_buffer = ""\n';
+  return code;
+};
+
+Blockly.Python['mqtt_publish_payload'] = function(block) {
+  var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
+  var payload = Blockly.Python.valueToCode(block, 'payload', Blockly.Python.ORDER_ATOMIC);
+  var qos = block.getFieldValue('MQTT_QOS');
+
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+
+
+  var code = 'mqtt_client.publish(' + topic + ', ' + payload + ',qos=' + qos + ')\n';
   return code;
 };
 
@@ -289,6 +393,13 @@ Blockly.Python['mqtt_wait_msg'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
   var code = 'mqtt_client.wait_msg()\n';
+  return code;
+};
+
+Blockly.Python['mqtt_disconnect'] = function(block) {
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+
+  var code = 'mqtt_client.disconnect()\n';
   return code;
 };
 

@@ -197,7 +197,7 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'console', 'python', 'xml', 'files', 'iot', 'device', 'programs'];
+Code.TABS_ = ['blocks', 'console', 'python', 'xml', 'files', 'iot', 'mqtt', 'device', 'programs'];
 //Code.TABS_ = ['blocks', 'console', 'javascript', 'python', 'xml'];
 
 Code.selected = 'blocks';
@@ -271,6 +271,9 @@ Code.renderContent = function() {
     nArea.focus();
   } else if (content.id == 'content_iot') {
     var nArea = document.getElementById('content_iot');
+    nArea.focus();
+  } else if (content.id == 'content_mqtt') {
+    var nArea = document.getElementById('content_mqtt');
     nArea.focus();
   } else if (content.id == 'content_programs') {
     var nArea = document.getElementById('content_programs');
