@@ -581,9 +581,18 @@ Blockly.Blocks['mqtt_publish_buffer'] = {
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabelSerializable("Topic"), "MQTT_TOPIC");
+    this.appendDummyInput()
+        .appendField('QOS:')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldDropdown([
+            ['0 - at most\u00A0once', '0'],
+            ['1 - at least\u00A0once', '1'],
+            ['2 - exactly\u00A0once', '2']
+        ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
+    this.setInputsInline(false);
  this.setTooltip("Publish Buffer to MQTT Server");
  this.setHelpUrl("http://www.bipes.net.br");
   }
@@ -600,9 +609,18 @@ Blockly.Blocks['mqtt_publish_payload'] = {
     this.appendValueInput("payload")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabelSerializable("Payload"), "MQTT_PAYLOAD");
+    this.appendDummyInput()
+        .appendField('QOS:')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldDropdown([
+            ['0 - at most\u00A0once', '0'],
+            ['1 - at least\u00A0once', '1'],
+            ['2 - exactly\u00A0once', '2']
+        ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
+    this.setInputsInline(false);
  this.setTooltip("Publish Payload to MQTT Server");
  this.setHelpUrl("http://www.bipes.net.br");
   }
@@ -732,12 +750,6 @@ Blockly.Blocks['easymqtt_subscribe'] = {
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Subscribe to Topic"), "EASYMQTT_TOPIC");
-    // this.appendDummyInput()
-    //     .appendField('wait for data')
-    //     .appendField(new Blockly.FieldDropdown([
-    //         ['no', '0'],
-    //         ['yes', '1']
-    //     ]), 'EASYMQTT_WAIT');
     this.appendDummyInput()
         .appendField('when')
         .appendField(new Blockly.FieldVariable(

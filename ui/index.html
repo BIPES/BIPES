@@ -590,6 +590,10 @@ Device file manager
   font-weight: 800;
   padding: 20px;
 }
+.easymqtt-warning span{
+  font-size: 12px;
+  font-weight: 400;
+}
 
 </style>
 <div id="content_mqtt" class="content easymqtt-content">
@@ -605,7 +609,7 @@ Device file manager
 
     function startEasyMQTT(){
       if (typeof window.easyMQTT_session == 'undefined'){
-        errorEasyMQTT("EasyMQTT Session ID is not currently defined!");
+        errorEasyMQTT("EasyMQTT Session ID is not currently defined!<br><span>If the EasyMQTT Start block is set try clicking on 'Python' tab first.</span>");
         if (typeof timerUpdateEasyMQTT !== 'undefined')
           cancelTimer(timerUpdateEasyMQTT);
         return;
@@ -659,7 +663,7 @@ Device file manager
                     text: 'All'
                 }],
                 inputEnabled: false,
-                selected: 1
+                selected: 4
             },
             exporting: {
                 enabled: true

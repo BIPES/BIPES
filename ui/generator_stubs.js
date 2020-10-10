@@ -343,23 +343,24 @@ Blockly.Python['mqtt_add_to_buffer'] = function(block) {
 
 Blockly.Python['mqtt_publish_buffer'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
+  var qos = block.getFieldValue('MQTT_QOS');
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
 
-  var code = 'mqtt_client.publish(' + topic + ', mqtt_buffer); mqtt_buffer = ""\n';
+  var code = 'mqtt_client.publish(' + topic + ', mqtt_buffer,qos=' + qos + '); mqtt_buffer = ""\n';
   return code;
 };
 
 Blockly.Python['mqtt_publish_payload'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
   var payload = Blockly.Python.valueToCode(block, 'payload', Blockly.Python.ORDER_ATOMIC);
-
+  var qos = block.getFieldValue('MQTT_QOS');
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
 
-  var code = 'mqtt_client.publish(' + topic + ', ' + payload + ')\n';
+  var code = 'mqtt_client.publish(' + topic + ', ' + payload + ',qos=' + qos + ')\n';
   return code;
 };
 
