@@ -1347,11 +1347,227 @@ Device file manager
       </value>
     </block>
 
+    <block type="tm1640_custom">
+                    <field name="A0">FALSE</field>
+                    <field name="A1">FALSE</field>
+                    <field name="A2">FALSE</field>
+                    <field name="A3">FALSE</field>
+                    <field name="A4">FALSE</field>
+                    <field name="A5">FALSE</field>
+                    <field name="A6">FALSE</field>
+                    <field name="A7">FALSE</field>
+                    <field name="B0">FALSE</field>
+                    <field name="B1">FALSE</field>
+                    <field name="B2">FALSE</field>
+                    <field name="B3">FALSE</field>
+                    <field name="B4">FALSE</field>
+                    <field name="B5">FALSE</field>
+                    <field name="B6">FALSE</field>
+                    <field name="B7">FALSE</field>
+                    <field name="C0">FALSE</field>
+                    <field name="C1">FALSE</field>
+                    <field name="C2">FALSE</field>
+                    <field name="C3">FALSE</field>
+                    <field name="C4">FALSE</field>
+                    <field name="C5">FALSE</field>
+                    <field name="C6">FALSE</field>
+                    <field name="C7">FALSE</field>
+                    <field name="D0">FALSE</field>
+                    <field name="D1">FALSE</field>
+                    <field name="D2">FALSE</field>
+                    <field name="D3">FALSE</field>
+                    <field name="D4">FALSE</field>
+                    <field name="D5">FALSE</field>
+                    <field name="D6">FALSE</field>
+                    <field name="D7">FALSE</field>
+                    <field name="E0">FALSE</field>
+                    <field name="E1">FALSE</field>
+                    <field name="E2">FALSE</field>
+                    <field name="E3">FALSE</field>
+                    <field name="E4">FALSE</field>
+                    <field name="E5">FALSE</field>
+                    <field name="E6">FALSE</field>
+                    <field name="E7">FALSE</field>
+                    <field name="F0">FALSE</field>
+                    <field name="F1">FALSE</field>
+                    <field name="F2">FALSE</field>
+                    <field name="F3">FALSE</field>
+                    <field name="F4">FALSE</field>
+                    <field name="F5">FALSE</field>
+                    <field name="F6">FALSE</field>
+                    <field name="F7">FALSE</field>
+                    <field name="G0">FALSE</field>
+                    <field name="G1">FALSE</field>
+                    <field name="G2">FALSE</field>
+                    <field name="G3">FALSE</field>
+                    <field name="G4">FALSE</field>
+                    <field name="G5">FALSE</field>
+                    <field name="G6">FALSE</field>
+                    <field name="G7">FALSE</field>
+                    <field name="H0">FALSE</field>
+                    <field name="H1">FALSE</field>
+                    <field name="H2">FALSE</field>
+                    <field name="H3">FALSE</field>
+                    <field name="H4">FALSE</field>
+                    <field name="H5">FALSE</field>
+                    <field name="H6">FALSE</field>
+                    <field name="H7">FALSE</field>
+                </block>
+
+
+  </category>
+
+  <category name="Ultrasound">
+      <label text="HCR04 ultrasound distance sensor"></label>
+  </category>
+
+  <category name="GPS">
+      <label text="Global Positioning System sensor"></label>
+  </category>
+
+  <category name="Oximeter">
+      <label text="MAX30100 pulse oximeter sensor"></label>
+  </category>
+
+  <category name="Acelerometer">
+      <label text="MPU6050 acelerometer"></label>
   </category>
 
 
 
+
   </category>
+
+
+  <category name="Communication">
+      <label text="Communication"></label>
+      <category name="UART">
+      <label text="UART Serial Port"></label>
+<block type="machine.UART_UART.init">
+</block>
+<block type="machine.UART_UART.deinit">
+</block>
+<block type="machine.UART_UART.any">
+</block>
+<block type="machine.UART_UART.read">
+</block>
+<block type="machine.UART_UART.readinto">
+</block>
+<block type="machine.UART_UART.readline">
+</block>
+<block type="machine.UART_UART.write">
+</block>
+<block type="machine.UART_UART.sendbreak">
+</block>
+<block type="machine.UART_UART.irq">
+</block>
+
+      </category>
+      <category name="SPI">
+      <label text="SPI"></label>
+<block type="machine.SPI_SPI.init">
+</block>
+<block type="machine.SPI_SPI.deinit">
+</block>
+<block type="machine.SPI_SPI.read">
+</block>
+<block type="machine.SPI_SPI.readinto">
+</block>
+<block type="machine.SPI_SPI.write">
+</block>
+<block type="machine.SPI_SPI.write_readinto">
+</block>
+
+      </category>
+      <category name="I2C">
+      <label text="I2c"></label>
+<block type="machine.I2C_I2C.init">
+</block>
+<block type="machine.I2C_I2C.deinit">
+</block>
+<block type="machine.I2C_I2C.scan">
+</block>
+<block type="machine.I2C_I2C.start">
+</block>
+<block type="machine.I2C_I2C.stop">
+</block>
+<block type="machine.I2C_I2C.readinto">
+</block>
+<block type="machine.I2C_I2C.write">
+</block>
+<block type="machine.I2C_I2C.readfrom">
+</block>
+<block type="machine.I2C_I2C.readfrom_into">
+</block>
+<block type="machine.I2C_I2C.writeto">
+</block>
+<block type="machine.I2C_I2C.writevto">
+</block>
+<block type="machine.I2C_I2C.readfrom_mem">
+</block>
+<block type="machine.I2C_I2C.readfrom_mem_into">
+</block>
+<block type="machine.I2C_I2C.writeto_mem">
+</block>
+
+      </category>
+      <category name="OneWire">
+      <label text="OneWire"></label>
+      </category>
+  </category>
+ 
+ 
+  <category name="Files">
+      <label text="Disk file operations"></label>
+<block type="uos_uname">
+</block>
+<block type="uos_urandom">
+</block>
+<block type="uos_chdir">
+</block>
+<block type="uos_getcwd">
+</block>
+<block type="uos_ilistdir">
+</block>
+<block type="uos_listdir">
+</block>
+<block type="uos_mkdir">
+</block>
+<block type="uos_remove">
+</block>
+<block type="uos_rmdir">
+</block>
+<block type="uos_rename">
+</block>
+<block type="uos_stat">
+</block>
+<block type="uos_statvfs">
+</block>
+<block type="uos_sync">
+</block>
+<block type="uos_dupterm">
+</block>
+<block type="uos_mount">
+</block>
+<block type="uos_umount">
+</block>
+<block type="uos_readblocks">
+</block>
+<block type="uos_readblocks">
+</block>
+<block type="uos_writeblocks">
+</block>
+<block type="uos_writeblocks">
+</block>
+<block type="uos_ioctl">
+</block>
+
+  </category>
+ 
+
+ 
+
+
   <category name="Network">
     <block type="wifi_client_connect">
       <field name="NAME">Connect to Wifi network</field>
