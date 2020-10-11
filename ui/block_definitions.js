@@ -706,13 +706,13 @@ Blockly.Blocks['tm1640_custom'] = {
                 .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A0")
 	    	//Heart
                 //.appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2661'}), "A0")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "A1")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "A2")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "A3")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "A4")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "A5")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "A6")
-                .appendField(new Blockly.FieldCheckbox("TRUE"), "A7");
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A1")
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A2")
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A3")
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A4")
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A5")
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A6")
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A7");
         this.appendDummyInput()
                 .appendField(new Blockly.FieldCheckbox("TRUE"), "B0")
                 .appendField(new Blockly.FieldCheckbox("TRUE"), "B1")
@@ -779,7 +779,7 @@ Blockly.Blocks['tm1640_custom'] = {
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(230);
- this.setTooltip("Start DHT11 ou DHT22 sensor");
+ this.setTooltip("Write to LED Matrix");
  this.setHelpUrl("http://www.bipes.net.br");
 
     }
@@ -903,6 +903,56 @@ Blockly.Blocks['files_list'] = {
   }
 };
 
+Blockly.Blocks['hcsr_init'] = {
+  init: function() {
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/hcsr04.png",
+        55,
+        55,
+        "*"))
+      .appendField("Start HCSR04 Ultrasound sensor")
+	  ;
+
+    this.appendValueInput("echo")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("echo pin"), "DHT_PIN_MSG");
+
+
+    this.appendValueInput("trigger")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("trigger pin"), "DHT_PIN_MSG");
+
+
+    this.appendValueInput("timeout")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("timeout (us)"), "DHT_PIN_MSG");
+
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Start HCSR04 ultrasound distance sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['hcsr_read'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Get distance (ultrasound sensor)"), "MSG_READ_DHT_TEMP");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Measure distance with ultrasound sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
 
 

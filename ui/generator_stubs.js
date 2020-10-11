@@ -3930,3 +3930,23 @@ Blockly.Python['files_list'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+//HCSR04 ultrasound
+
+Blockly.Python['hcsr_init'] = function(block) {
+  var pEcho = Blockly.Python.valueToCode(block, 'echo', Blockly.Python.ORDER_ATOMIC);
+  var pTrig = Blockly.Python.valueToCode(block, 'trigger', Blockly.Python.ORDER_ATOMIC);
+  var pTime = Blockly.Python.valueToCode(block, 'timeout', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_hcr'] = 'from hcsr04 import HCSR04';
+
+  var code = 'ultraSoundSensor = HCSR04(trigger_pin=' + pTrig + ', echo_pin=' + pEcho + ', echo_timeout_us=' + pTime + ')';
+
+  return code;
+};
+
+
+Blockly.Python['hcsr_read'] = function(block) {
+  var code = 'ultraSoundSensor.distance_cm()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
