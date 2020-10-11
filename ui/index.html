@@ -1039,9 +1039,24 @@ Device file manager
 
   <category name="Python">
       <label text="Python"></label>
-    <block type="exec_python"></block>
+    <block type="exec_python">
+  <value name="command">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+
+    
+    </block>
+
     <block type="exec_python_output">
       <field name="EXEC_PYTHON_OUTPUT">Execute Python custom with output</field>
+  <value name="commnad">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+
     </block>
   </category>
 
@@ -1057,15 +1072,47 @@ Device file manager
       </value>
     </block>
 
-    <block type="delay_ms"></block>
-    <block type="delay_us"></block>
+    <block type="delay_ms">
+ <value name="time">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+
+    </block>
+    <block type="delay_us">
+ <value name="time">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+
+    </block>
     <block type="ticks_ms"></block>
     <block type="ticks_diff"></block>
     <block type="set_rtc"></block>
     <block type="get_rtc"></block>
     <block type="timer"></block>
-    <block type="stop_timer"></block>
-    <block type="deep_sleep"></block>
+    <block type="stop_timer">
+ <value name="timerNumber">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
+
+    
+    </block>
+
+    <block type="deep_sleep">
+     <value name="interval">
+        <shadow type="math_number">
+          <field name="NUM">60</field>
+        </shadow>
+      </value>
+
+
+    </block>
   </category>
 
 
@@ -1075,14 +1122,27 @@ Device file manager
 
   <category name="Machine">
       <label text="Machine"></label>
-    <block type="delay">
-      <value name="time">
+      <category name="CPU">
+      <label text="ESP8266 CPU"></label>
+    <block type="get_freq"></block>
+    <block type="set_freq">
+     <value name="freq">
         <shadow type="math_number">
-          <field name="NUM">1</field>
+          <field name="NUM">160000000</field>
         </shadow>
       </value>
     </block>
+
     <block type="reset"></block>
+    <block type="machine_unique_id"></block>
+    <block type="machine_reset_cause"></block>
+    <block type="reset_cause_soft"></block>
+    <block type="reset_cause_hard"></block>
+    <block type="reset_cause_wdt"></block>
+    <block type="reset_cause_deep"></block>
+      </category>
+    
+      <category name="In/Out Pins">
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
@@ -1095,7 +1155,7 @@ Device file manager
         </shadow>
       </value>
     </block>
-    <block type="adc"></block>
+
     <block type="gpio_get">
       <value name="pin">
         <shadow type="pinout">
@@ -1104,11 +1164,45 @@ Device file manager
       </value>
     </block>
     <block type="pinout"></block>
-    <block type="move_servo"></block>
-    <block type="pwm"></block>
+
+    <block type="adc">
+ <value name="pin">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+
+
+    <block type="pwm">
+
+  <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
+
+
+ <value name="frequency">
+        <shadow type="math_number">
+          <field name="NUM">1000</field>
+        </shadow>
+      </value>
+
+ <value name="duty">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+      </value>
+
+    
+    
+    
+    </block>
   </category>
 
 
+  </category>
 
 
   <category name="Devices">
@@ -1135,8 +1229,46 @@ Device file manager
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
 
-    <block type="init_oled"></block>
-    <block type="write_oled"></block>
+    <block type="init_oled">
+
+ <value name="scl">
+        <shadow type="math_number">
+          <field name="NUM">5</field>
+        </shadow>
+      </value>
+
+ <value name="sda">
+        <shadow type="math_number">
+          <field name="NUM">4</field>
+        </shadow>
+      </value>
+
+
+    
+    </block>
+    <block type="write_oled">
+
+ <value name="x">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+
+ <value name="y">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+
+ <value name="text">
+        <shadow type="text">
+          <field name="TEXT">Hello</field>
+        </shadow>
+      </value>
+
+
+    
+    </block>
     <block type="clear_oled"></block>
     <block type="fill_oled"></block>
 
@@ -1155,6 +1287,70 @@ Device file manager
         </value>
       </block>
     </category>
+
+  <category name="RC Servo">
+      <label text="Hobby RC Servo Motor"></label>
+    <block type="move_servo">
+    <value name="angle">
+        <shadow type="math_number">
+          <field name="NUM">90</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+
+
+  <category name="LED Matrix">
+      <label text="TM1640 LED Matrix"></label>
+      <label text="Library: https://github.com/mcauser/micropython-tm1640"></label>
+
+    <block type="tm1640_init">
+
+ <value name="clk">
+        <shadow type="math_number">
+          <field name="NUM">14</field>
+        </shadow>
+      </value>
+
+ <value name="dio">
+        <shadow type="math_number">
+          <field name="NUM">13</field>
+        </shadow>
+      </value>
+
+
+      </block>
+
+    <block type="tm1640_write">
+  <value name="vector">
+        <shadow type="text">
+          <field name="TEXT">1, 2, 4, 8, 16, 32, 64, 128</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="tm1640_brig">
+    <value name="brig">
+        <shadow type="math_number">
+          <field name="NUM">7</field>
+        </shadow>
+      </value>
+
+    </block>
+
+
+    <block type="tm1640_num">
+    <value name="num">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+
+  </category>
+
+
+
   </category>
   <category name="Network">
     <block type="wifi_client_connect">
@@ -1301,6 +1497,15 @@ Device file manager
         <field name="BLOCK_EASYMQTT_DISCONNECT">EasyMQTT Stop</field>
       </block>
     </category>
+
+  <category name="WebREPL">
+      <label text="WebREPL"></label>
+      <block type="webrepl_setup"></block>
+      <block type="webrepl_start"></block>
+    </category>
+  </category>
+
+
   </category>
 
 

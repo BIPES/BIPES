@@ -190,6 +190,30 @@ Blockly.Blocks['stop_timer'] = {
 };
 
 
+Blockly.Blocks['webrepl_setup'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("WebREPL Setup");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Configure WebREPL");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['webrepl_start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Start WebREPL");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Start WebREPL Server");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
 
 Blockly.Blocks['reset'] = {
   init: function() {
@@ -202,6 +226,53 @@ Blockly.Blocks['reset'] = {
  this.setHelpUrl("www.bipes.net.br");
   }
 };
+
+Blockly.Blocks['reset_cause_soft'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: soft reset");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['reset_cause_hard'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: hard reset");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['reset_cause_wdt'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: reset by watchdog timer");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['reset_cause_deep'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: woke up from deepsleep");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
+
+
+
+
 
 Blockly.Blocks['gpio_set'] = {
   init: function() {
@@ -223,9 +294,21 @@ Blockly.Blocks['gpio_set'] = {
 
 Blockly.Blocks['exec_python'] = {
   init: function() {
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/600px-Python-logo-notext.svg.png",
+        55,
+        55,
+        "*"))
+      .appendField("Run Python Code")
+	  ;
+
+
     this.appendValueInput("command")
         .setCheck("String")
-        .appendField("Execute Python Code");
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Commnad");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(240);
@@ -245,6 +328,36 @@ Blockly.Blocks['adc'] = {
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+
+Blockly.Blocks['set_freq'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Set CPU Clock Frequency");
+
+    this.appendValueInput("freq")
+        .setCheck("Number")
+        .appendField("Frequency (Hz)");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Set ESP8266 CPU Clock Frequency");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['get_freq'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get CPU Clock Frequency");
+		
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get current CPU Clock Frequency");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
 
 Blockly.Blocks['gpio_get'] = {
   init: function() {
@@ -288,10 +401,20 @@ Blockly.Blocks['init_oled'] = {
     this.appendDummyInput()
         .appendField("Init I2C SSD1306 OLED Display");
 
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/oled.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
     this.appendValueInput("scl")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("SCL");
+
     this.appendValueInput("sda")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -361,7 +484,7 @@ Blockly.Blocks['move_servo'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "https://cdn.pixabay.com/photo/2015/09/21/19/28/servo-motor-950527_640.png",
+        "/beta2/ui/media/servo.png",
         55,
         55,
         "*"))
@@ -420,8 +543,8 @@ Blockly.Blocks['net_ifconfig'] = {
 
 Blockly.Blocks['exec_python_output'] = {
   init: function() {
-    this.appendValueInput("NAME")
-        .setCheck(null)
+    this.appendValueInput("command")
+        .setCheck("String")
         .appendField(new Blockly.FieldLabelSerializable("Execute Python custom with output"), "EXEC_PYTHON_OUTPUT");
     this.setOutput(true, null);
     this.setColour(230);
@@ -481,13 +604,108 @@ Blockly.Blocks['wifi_client_scan_networks'] = {
   }
 };
 
+Blockly.Blocks['tm1640_init'] = {
+  init: function() {
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/matrix.png",
+        55,
+        55,
+        "*"))
+      .appendField("Start TM1640 LED Matrix")
+	  ;
+
+
+    this.appendValueInput("clk")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("CLK");
+
+    this.appendValueInput("dio")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("DIO");
+
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Start TM1640 LED Matrix");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1640_write'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Write array to Led Matrix");
+
+ this.appendValueInput("vector")
+        .setCheck("String")
+        .appendField("LED array value");
+
+ this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+ this.setTooltip("Write to TM1640 LED Matrix");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['tm1640_num'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Write Number on Led Matrix");
+
+    this.appendValueInput("num")
+        .setCheck("Number")
+        .appendField("value (0-9)");
+
+
+ this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+
+    this.setColour(230);
+ this.setTooltip("Write number on TM1640 LED Matrix");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1640_brig'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Set Brightness of Led Matrix");
+
+    this.appendValueInput("brig")
+        .setCheck("Number")
+        .appendField("value (1-7)");
+
+
+ this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+
+
+    this.setColour(230);
+ this.setTooltip("Set brightness of TM1640 LED Matrix");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
 Blockly.Blocks['dht_init'] = {
   init: function() {
 
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "https://www.baudaeletronica.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/d/h/dht-11.png",
+        "/beta2/ui/media/dht.png",
         55,
         55,
         "*"))
@@ -829,7 +1047,7 @@ Blockly.Blocks['relay_switch'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "https://cdn-reichelt.de/bilder/web/xxl_ws/A300/KY-019.png",
+        "/beta2/ui/media/relay.png",
         55,
         55,
         "*"))
@@ -1702,7 +1920,7 @@ Blockly.Blocks["cmath_log"] = {
         .appendField(" log");
         this.setColour(0);
     this.setOutput(true, null);
- this.setTooltip(".. function:: log(z) Return the natural logarithm of ``z``. The branch cut is along the negative real axis. ");
+ this.setTooltip(".. function:: log(z) Return the natural logarithm of ``z``. The branch cut is along the negative eeal axis. ");
  this.setHelpUrl("https://docs.micropython.org/en/latest/library/cmath.html");
   }
 };
@@ -3642,8 +3860,9 @@ Blockly.Blocks["machine_unique_id"] = {
     this.appendDummyInput()
         .appendField(" unique_id");
     this.setColour(0);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    
+    this.setOutput(true, null);
+   
  this.setTooltip(".. function:: unique_id() Returns a byte string with a unique identifier of a board/SoC. It will vary from a board/SoC instance to another, if underlying hardware allows. Length ");
  this.setHelpUrl("https://docs.micropython.org/en/latest/library/machine.html");
   }

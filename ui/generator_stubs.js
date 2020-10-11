@@ -23,11 +23,48 @@ Blockly.Python['delay'] = function(block) {
 };
 
 Blockly.Python['reset'] = function(block) {
-  //var code = 'import machine\nmachine.reset()\n';
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   var code = 'machine.reset()\n';
   return code;
 };
+
+Blockly.Python["reset_cause_soft"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "4"; 
+	return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+
+Blockly.Python["reset_cause_hard"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "6"; 
+	return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.Python["reset_cause_wdt"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "1"; 
+	return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.Python["reset_cause_deep"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "5"; 
+	return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.Python['webrepl_start'] = function(block) {
+  Blockly.Python.definitions_['import_webrepl'] = 'import webrepl';
+  var code = 'webrepl.start()\n';
+  return code;
+};
+
+Blockly.Python['webrepl_setup'] = function(block) {
+  var code = 'import webrepl_setup\n';
+  return code;
+};
+
+
 
 Blockly.Python['gpio_set'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
@@ -46,6 +83,32 @@ Blockly.Python['exec_python'] = function(block) {
   var code = value_command.replace('\'','').replace('\'','') + '\n';
   return code;
 };
+
+
+Blockly.Python['set_freq'] = function(block) {
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var value_command = Blockly.Python.valueToCode(block, 'freq', Blockly.Python.ORDER_ATOMIC);
+  var code = 'machine.freq(' + value_command + ')\n';
+  return code;
+};
+
+
+Blockly.Python['get_freq'] = function(block) {
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var code = 'machine.freq()\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
+
+Blockly.Python['exec_python_output'] = function(block) {
+  var value_name = Blockly.Python.valueToCode(block, 'command', Blockly.Python.ORDER_ATOMIC);
+  var value_command = Blockly.Python.valueToCode(block, 'command', Blockly.Python.ORDER_ATOMIC);
+  var code = value_command.replace('\'','').replace('\'','') + '\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
 
 Blockly.Python['run_cmd'] = function(block) {
   var value_command = Blockly.Python.valueToCode(block, 'command', Blockly.Python.ORDER_ATOMIC);
@@ -171,14 +234,6 @@ Blockly.Python['net_ifconfig'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['exec_python_output'] = function(block) {
-  var value_name = Blockly.Python.valueToCode(block, 'NAME', Blockly.Python.ORDER_ATOMIC);
-  // TODO: Assemble Python into code variable.
-  var code = '...';
-  // TODO: Change ORDER_NONE to the correct strength.
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
 Blockly.Python['net_ap_mode'] = function(block) {
   var value_wifi_essid = Blockly.Python.valueToCode(block, 'wifi_essid', Blockly.Python.ORDER_ATOMIC);
   var value_wifi_key = Blockly.Python.valueToCode(block, 'wifi_key', Blockly.Python.ORDER_ATOMIC);
@@ -231,6 +286,41 @@ Blockly.Python['dht_read_humidity'] = function(block) {
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+Blockly.Python['tm1640_init'] = function(block) {
+  var clk = Blockly.Python.valueToCode(block, 'clk', Blockly.Python.ORDER_ATOMIC);
+  var dio = Blockly.Python.valueToCode(block, 'dio', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_tm1640'] = 'import tm1640';
+  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+
+  var code = 'tm = tm1640.TM1640(clk=Pin(14), dio=Pin(13))\n';
+  return code;
+};
+
+
+
+Blockly.Python['tm1640_write'] = function(block) {
+  var pIn = Blockly.Python.valueToCode(block, 'vector', Blockly.Python.ORDER_ATOMIC);
+  var x = pIn.replace('\'','').replace('\'','');
+  var code = 'tm.write([' + x + '])\n';
+  return code;
+};
+
+Blockly.Python['tm1640_brig'] = function(block) {
+  var pIn = Blockly.Python.valueToCode(block, 'brig', Blockly.Python.ORDER_ATOMIC);
+  var code = 'tm.brightness(' + pIn + ')\n';
+  return code;
+};
+
+Blockly.Python['tm1640_num'] = function(block) {
+  //Reference: https://github.com/mcauser/micropython-tm1640
+	//https://github.com/mcauser/micropython-tm1640/blob/master/tm1640_test.py
+  var pIn = Blockly.Python.valueToCode(block, 'num', Blockly.Python.ORDER_ATOMIC);
+  var code = 'digits = [0x3c66666e76663c00, 0x7e1818181c181800, 0x7e060c3060663c00, 0x3c66603860663c00, 0x30307e3234383000, 0x3c6660603e067e00, 0x3c66663e06663c00, 0x1818183030667e00, 0x3c66663c66663c00, 0x3c66607c66663c00]\ntm.write_int(digits[' + pIn + '])\n';
+  return code;
+};
+
 
 Blockly.Python['relay_switch'] = function(block) {
   var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
@@ -1392,7 +1482,7 @@ Blockly.Python["machine_wake_reason"] = function(block) {
 Blockly.Python["machine_unique_id"] = function(block) {
 		Blockly.Python.definitions_['import_machine'] = 'import machine';
 	var code = "machine.unique_id()\n"; 
-	return code;
+	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 Blockly.Python["machine_time_pulse_us"] = function(block) {
 		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
