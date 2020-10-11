@@ -1037,14 +1037,44 @@ Device file manager
     <category name="Machine" colour="%{BKY_VARIABLES_HUE}">
     -->
 
-  <category name="MicroPython">
+  <category name="Python">
+      <label text="Python"></label>
     <block type="exec_python"></block>
     <block type="exec_python_output">
       <field name="EXEC_PYTHON_OUTPUT">Execute Python custom with output</field>
     </block>
   </category>
 
+
+
+  <category name="Timing">
+      <label text="Timing"></label>
+    <block type="delay">
+      <value name="time">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="delay_ms"></block>
+    <block type="delay_us"></block>
+    <block type="ticks_ms"></block>
+    <block type="ticks_diff"></block>
+    <block type="set_rtc"></block>
+    <block type="get_rtc"></block>
+    <block type="timer"></block>
+    <block type="stop_timer"></block>
+    <block type="deep_sleep"></block>
+  </category>
+
+
+  </category>
+
+
+
   <category name="Machine">
+      <label text="Machine"></label>
     <block type="delay">
       <value name="time">
         <shadow type="math_number">
@@ -1075,7 +1105,12 @@ Device file manager
     </block>
     <block type="pinout"></block>
     <block type="move_servo"></block>
+    <block type="pwm"></block>
   </category>
+
+
+
+
   <category name="Devices">
     <category name="DTH11/22 Sensor">
       <label text="DHT11/11 Temperature and Humidity Sensor"></label>
@@ -1099,8 +1134,16 @@ Device file manager
     </category>
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
-      <block type="clear_oled"></block>
-      <block type="write_oled"></block>
+
+    <block type="init_oled"></block>
+    <block type="write_oled"></block>
+    <block type="clear_oled"></block>
+    <block type="fill_oled"></block>
+
+
+
+
+
     </category>
     <category name="Relay">
       <label text="Relay"></label>
