@@ -3890,3 +3890,43 @@ Blockly.Python['randomforestclassifier'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
   };
   
+Blockly.Python['file_open_write'] = function(block) {
+  var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
+  var code = 'f = open(' + pIn + ', \'w\')\n';
+  return code;
+};
+
+
+Blockly.Python['file_open_read'] = function(block) {
+  var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
+  var code = 'f = open(' + pIn + ')\n';
+  return code;
+};
+
+
+Blockly.Python['file_close'] = function(block) {
+  var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
+  var code = 'f.close()\n';
+  return code;
+};
+
+
+Blockly.Python['file_read'] = function(block) {
+  var code = 'f.read()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['file_write'] = function(block) {
+  var pIn = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+  var code = 'f.write(' + pIn + ')\n';
+  return code;
+};
+
+
+Blockly.Python['files_list'] = function(block) {
+  Blockly.Python.definitions_['import_os'] = 'import os';
+  var code = 'os.listdir()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+

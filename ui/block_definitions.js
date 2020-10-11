@@ -697,6 +697,213 @@ Blockly.Blocks['tm1640_brig'] = {
   }
 };
 
+Blockly.Blocks['tm1640_custom'] = {
+    init: function () {
+	
+        this.appendDummyInput()
+                .appendField("Custom Data Matrix layout");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A0")
+	    	//Heart
+                //.appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2661'}), "A0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "A1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "A2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "A3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "A4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "A5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "A6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "A7");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "B7");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "C7");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "D7");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "E7");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "F7");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "G7");
+        this.appendDummyInput()
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H0")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H1")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H2")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H3")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H4")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H5")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H6")
+                .appendField(new Blockly.FieldCheckbox("TRUE"), "H7");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(230);
+ this.setTooltip("Start DHT11 ou DHT22 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+
+    }
+};
+
+Blockly.Blocks['file_open_write'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Open text file for writing");
+
+ this.appendValueInput("filename")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("filename");
+
+ this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+ this.setTooltip("Open text file for writing on the filesystem");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['file_open_read'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Open text file for reading");
+
+ this.appendValueInput("filename")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("filename");
+
+ this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+ this.setTooltip("Open text file for reading on the filesystem");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['file_close'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Close file");
+
+ this.appendValueInput("filename")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("filename");
+
+ this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+ this.setTooltip("Safely close file");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['file_write'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Write text to file");
+
+
+ this.appendValueInput("filename")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("filename");
+
+ this.appendValueInput("data")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("data");
+
+ this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+ this.setTooltip("Write string to file");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['file_read'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Read text from the file");
+
+ this.appendValueInput("filename")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("filename");
+
+    this.setOutput(true, null);
+
+    this.setColour(230);
+ this.setTooltip("Read string from a file");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['files_list'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("List files");
+
+    this.setOutput(true, null);
+
+    this.setColour(230);
+ this.setTooltip("List files from current directory ");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
 
 
 Blockly.Blocks['dht_init'] = {
@@ -6792,8 +6999,14 @@ Blockly.Blocks["uos_listdir"] = {
 
 Blockly.Blocks["uos_mkdir"] = {
   init: function() {
+
+   this.appendDummyInput()
+        .appendField("Create new folder");
+
   this.appendValueInput("pIn")
-        .appendField(" mkdir");
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("name");
+
         this.setColour(0);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -6806,8 +7019,14 @@ Blockly.Blocks["uos_mkdir"] = {
 
 Blockly.Blocks["uos_remove"] = {
   init: function() {
+
+   this.appendDummyInput()
+        .appendField("Delete file");
+
   this.appendValueInput("pIn")
-        .appendField(" remove");
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("filename");
+
         this.setColour(0);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

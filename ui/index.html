@@ -1518,9 +1518,92 @@ Device file manager
  
  
   <category name="Files">
-      <label text="Disk file operations"></label>
-<block type="uos_uname">
+      <label text="Read and write files"></label>
+<block type="file_open_write"> 
+
+  <value name="filename">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+      </value>
+
 </block>
+<block type="file_open_read"> 
+
+  <value name="filename">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+      </value>
+
+
+</block>
+<block type="file_write"> 
+
+
+  <value name="data">
+        <shadow type="text">
+          <field name="TEXT">File contents</field>
+        </shadow>
+      </value>
+
+
+  <value name="filename">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+      </value>
+
+</block>
+<block type="file_read"> 
+
+  <value name="filename">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+      </value>
+
+</block>
+<block type="file_close"> 
+
+  <value name="filename">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+      </value>
+
+
+</block>
+
+      <label text="Disk file operations"></label>
+<block type="files_list">
+</block>
+<block type="uos_mkdir">
+
+  <value name="pIn">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+      </value>
+
+
+</block>
+<block type="uos_remove">
+
+  <value name="pIn">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+      </value>
+
+
+</block>
+
+<block type="uos_listdir">
+</block>
+
+
+<block type="uos_uname"> </block>
 <block type="uos_urandom">
 </block>
 <block type="uos_chdir">
@@ -1528,12 +1611,6 @@ Device file manager
 <block type="uos_getcwd">
 </block>
 <block type="uos_ilistdir">
-</block>
-<block type="uos_listdir">
-</block>
-<block type="uos_mkdir">
-</block>
-<block type="uos_remove">
 </block>
 <block type="uos_rmdir">
 </block>
