@@ -1078,6 +1078,7 @@ Device file manager
   </category>
   <category name="Devices">
     <category name="DTH11/22 Sensor">
+      <label text="DHT11/11 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
         <value name="pin">
@@ -1097,10 +1098,12 @@ Device file manager
       </block>
     </category>
     <category name="OLED Display">
+      <label text="SSD1306 OLED I2C Display"></label>
       <block type="clear_oled"></block>
       <block type="write_oled"></block>
     </category>
     <category name="Relay">
+      <label text="Relay"></label>
       <block type="relay_switch">
         <value name="pin">
           <shadow type="pinout">

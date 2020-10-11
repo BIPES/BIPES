@@ -357,11 +357,24 @@ Blockly.Blocks['write_oled'] = {
 
 Blockly.Blocks['move_servo'] = {
   init: function() {
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "https://cdn.pixabay.com/photo/2015/09/21/19/28/servo-motor-950527_640.png",
+        55,
+        55,
+        "*"))
+      .appendField("RC Servo Motor")
+	  ;
+
+
     this.appendValueInput("angle")
         .setCheck("Number")
-        .appendField("Move servo motor to");
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Angle");
     this.setColour(230);
- this.setTooltip("Move servo motor to degrees");
+ this.setTooltip("Move RC servo motor to degrees");
  this.setHelpUrl("http://www.bipes.net.ebr");
   }
 };
@@ -470,8 +483,19 @@ Blockly.Blocks['wifi_client_scan_networks'] = {
 
 Blockly.Blocks['dht_init'] = {
   init: function() {
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Start DHT sensor"), "BLOCK_DHT_INIT");
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "https://www.baudaeletronica.com.br/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/d/h/dht-11.png",
+        55,
+        55,
+        "*"))
+      .appendField("Start DHT Sensor")
+	  ;
+
+    //this.appendDummyInput()
+     //   .appendField(new Blockly.FieldLabelSerializable("Start DHT sensor"), "BLOCK_DHT_INIT");
     this.appendDummyInput()
         .appendField('Type')
         .appendField(new Blockly.FieldDropdown([
@@ -802,6 +826,18 @@ Blockly.Blocks['easymqtt_disconnect'] = {
 
 Blockly.Blocks['relay_switch'] = {
   init: function() {
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "https://cdn-reichelt.de/bilder/web/xxl_ws/A300/KY-019.png",
+        55,
+        55,
+        "*"))
+        .setAlign(Blockly.ALIGN_CENTRE)
+      .appendField("Relay")
+	  ;
+
+
     this.appendValueInput("pin")
         .setCheck("Number")
         .appendField('Turn')
