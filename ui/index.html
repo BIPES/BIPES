@@ -173,6 +173,7 @@ function checkCookie() {
 
   <script>
 
+
   function loadFileToElement(filename, elementId)
   {
       var xmlHTTP = new XMLHttpRequest();
@@ -332,6 +333,19 @@ function checkCookie() {
         alert("Invalid Device");
       }
     }
+
+
+  function installLib() {
+	  alter('This will download and install the library. Your board must be connected to the Internet');
+  }
+
+  //Code.workspace.registerButtonCallback("installPyLib", "installLib");
+	
+  //Code.workspace.registerButtonCallback('installPyLib', function(button) {
+   //     alert("foo");
+    //  });
+
+
   </script>
          Target device:
       <select id="device_selector" onchange="changeDevice(this.value)">
@@ -1118,12 +1132,11 @@ Device file manager
 
   </category>
 
-
-
   <category name="Machine">
       <label text="Machine"></label>
       <category name="CPU">
       <label text="ESP8266 CPU"></label>
+
     <block type="get_freq"></block>
     <block type="set_freq">
      <value name="freq">
@@ -1143,6 +1156,7 @@ Device file manager
       </category>
     
       <category name="In/Out Pins">
+      <label text="In/Out Pins"></label>
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
@@ -1228,6 +1242,9 @@ Device file manager
     </category>
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
+        <button text="Install library on device" callbackKey="installPyLib"></button>
+
+
 
     <block type="init_oled">
 
@@ -1709,6 +1726,7 @@ Device file manager
       <field name="NET_POST_REQUEST_DATA">Data</field>
     </block>
     <category name="MQTT">
+      <label text="MQTT (Message Queue Telemetry Transport)"></label>
       <block type="mqtt_init">
         <field name="BLOCK_MQTT_INIT">Start MQTT Client</field>
         <value name="server">
@@ -1785,6 +1803,7 @@ Device file manager
       </block>
     </category>
     <category name="EasyMQTT">
+      <label text="IoT: EasyMQTT"></label>
       <block type="easymqtt_init">
         <field name="BLOCK_EASYMQTT_INIT">EasyMQTT Start</field>
       </block>
@@ -3294,14 +3313,14 @@ function files_run(file) {
   //import only works once
   //In case module already loaded, unloaded it
   //to allow it to work all the time
-  ws.send('import sys \r');
-  ws.send('sys.modules.pop(\'' + fileS + '\')\r');
+  //ws.send('import sys \r');
+  //ws.send('sys.modules.pop(\'' + fileS + '\')\r');
+  //ws.send('import ' + fileS + '\r');
 
   //Another way of executing a script
-  //ws.send( ==>> exec(open('./cardio.py').read(),globals())
+  ws.send('exec(open(\'./' + file + '\').read(),globals())' + '\r');
 
 
-  ws.send('import ' + fileS + '\r');
 
 }             
 
