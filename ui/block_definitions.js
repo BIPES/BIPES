@@ -1234,6 +1234,7 @@ Blockly.Blocks['easymqtt_publish_data'] = {
         .appendField(new Blockly.FieldLabelSerializable("Topic"), "EASYMQTT_TOPIC");
     this.appendValueInput("data")
         .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
         .appendField(new Blockly.FieldLabelSerializable("Data"), "EASYMQTT_PAYLOAD");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
