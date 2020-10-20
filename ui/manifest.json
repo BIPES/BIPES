@@ -1,0 +1,18 @@
+{
+    "dir": "ltr",
+    "lang": "en",
+    "name": "BIPES Project Beta2",
+    "short_name": "BIPES Project  ",
+    "scope": "/beta2/ui/",
+    "display": "browser",
+    "start_url": "https://bipes.net.br/beta2/ui/",
+    "background_color": "transparent",
+    "theme_color": "transparent",
+    "description": "",
+    "orientation": "any",
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "icons": [],
+    "url": "https://bipes.net.br/beta2/ui/#",
+    "screenshots": []
+}
