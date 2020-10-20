@@ -22,7 +22,7 @@ foreach ($results as $collection) {
 if (count($topics)>0)
     $return = array("success" => True, "result" => $topics);
 else
-    $return = array("success" => False, "result" => "Session '" . $session . "' does not contain any valid topic");
+    $return = array("success" => False, "result" => "Session '" . $session . "' does not contain any topic");
 
 
 echo(json_encode($return));

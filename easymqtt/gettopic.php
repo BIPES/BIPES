@@ -28,10 +28,7 @@ $values = array();
 foreach ($results as $item) {
     $values[] = array("timestamp" => $item['timestamp'], "data" => $item['data']);
 }
-if (count($values)>0)
-    $return = array("success" => True, "result" => $values);
-else
-    $return = array("success" => False, "result" => "Topic '" . $topic . "' does not contain any data");
+$return = array("success" => True, "result" => $values);
 
 
 echo(json_encode($return));
