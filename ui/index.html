@@ -559,7 +559,7 @@ Device file manager
 <!-- ################################################## -->
 <style>
 .easymqtt-content{
-  background-color: #aaa;
+  background-color: #1f2b38;
   overflow-y: scroll;
 }
 
@@ -614,10 +614,11 @@ Device file manager
           cancelTimer(timerUpdateEasyMQTT);
         return;
       }
-      dismissEasyMQTTError();
-      updateEasyMQTTJson();
-      if (typeof timerUpdateEasyMQTT == 'undefined')
-        timerUpdateEasyMQTT = setInterval(updateEasyMQTTJson,10000);
+      errorEasyMQTT("Updating...");
+      if (typeof timerUpdateEasyMQTT == 'undefined'){
+        updateEasyMQTTJson();
+        timerUpdateEasyMQTT = setInterval(updateEasyMQTTJson,1000);
+      }
     }
 
     function dismissEasyMQTTError(){
@@ -627,6 +628,8 @@ Device file manager
 
     function errorEasyMQTT(error){
       $('#easymqtt-warning').html(error);
+      $('#easymqtt-warning').show();
+
     }
 
     function addNewChart(topic){
@@ -713,12 +716,16 @@ Device file manager
       $(".highcharts-navigator").removeAttr("visibility");
       $.get( "http://bipes.net.br/easymqtt/getsession.php?session="+easyMQTT_session, function( data ) {
         if (data.success){
+          dismissEasyMQTTError();
           for (i in data.result){
             if (data.result[i] in MQTTLastUpdate){
               updateEasyMQTTTopic(data.result[i],MQTTLastUpdate[data.result[i]]+1);
             }else{
               updateEasyMQTTTopic(data.result[i]);
             }
+          }
+          for (topic in MQTTCharts){
+            console.log(topic);
           }
         }else{
           errorEasyMQTT(data.result);
