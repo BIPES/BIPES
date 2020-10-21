@@ -676,6 +676,7 @@ Device file manager
             for (topic in MQTTCharts){
               MQTTCharts[topic].destroy();
               delete MQTTCharts[topic];
+              $('#easymqtt-'+topic).remove();
             }
             errorEasyMQTT(data.result);
           }else{
