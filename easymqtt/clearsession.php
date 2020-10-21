@@ -12,7 +12,7 @@ $client = new MongoDB\Client("mongodb://localhost:27017");
 $session = htmlspecialchars($_GET["session"]);
 
 $client->dropDatabase($session);
-$return = array("success" => True, "result" => "Session '" . $session . "'cleaned");
+$return = array("success" => True, "result" => "Session '" . $session . "' cleaned");
 
 echo(json_encode($return));
 

@@ -594,6 +594,23 @@ Device file manager
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.easymqtt-config{
+  display: flex;
+  flex-direction: row;
+  font-size:14px;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.easymqtt-config button{
+  font-size:14px;
+}
+
+.easymqtt-config div{
+  margin: 10px;
+}
+
 .easymqtt-chart{
   flex: 1;
   min-width: 500px;
@@ -618,7 +635,7 @@ Device file manager
   <script type="text/javascript">
     var timerUpdateEasyMQTT;
     var MQTTCharts = {};
-    var MQTTLastUpdate = {};
+    //var MQTTLastUpdate = {};
 
 
     function startEasyMQTT(){
@@ -628,11 +645,16 @@ Device file manager
           cancelTimer(timerUpdateEasyMQTT);
         return;
       }
-      errorEasyMQTT("Updating...");
+      //errorEasyMQTT("Updating...");
       if (typeof timerUpdateEasyMQTT == 'undefined'){
-        updateEasyMQTTJson();
-        timerUpdateEasyMQTT = setInterval(updateEasyMQTTJson,1000);
+        setEasyMQTTUpdate($('#easymqtt-update-freq').val());
       }
+    }
+
+    function setEasyMQTTUpdate(interval){
+      clearInterval(timerUpdateEasyMQTT);
+      updateEasyMQTTJson();
+      timerUpdateEasyMQTT = setInterval(updateEasyMQTTJson,interval*1000);
     }
 
     function dismissEasyMQTTError(){
@@ -644,6 +666,26 @@ Device file manager
       $('#easymqtt-warning').html(error);
       $('#easymqtt-warning').show();
 
+    }
+
+    function clearEasyMQTTSession(){
+      $.get( "http://bipes.net.br/easymqtt/clearsession.php", 
+        {"session": easyMQTT_session}, 
+        function( data ) {
+          if (data.success){
+            for (topic in MQTTCharts){
+              MQTTCharts[topic].destroy();
+              delete MQTTCharts[topic];
+            }
+            errorEasyMQTT(data.result);
+          }else{
+            errorEasyMQTT(data.result);
+          }
+        }, "json")
+      .fail(function(xhr, status, error){
+          errorEasyMQTT("Error clearing session. " + status + " " + error);
+        }
+      );
     }
 
     function addNewChart(topic){
@@ -705,26 +747,31 @@ Device file manager
     }
 
     function updateEasyMQTTTopic(topic,since=0){
-      $.get( "http://bipes.net.br/easymqtt/gettopic.php?session="+easyMQTT_session+"&topic="+topic+"&since="+since, function( data ) {
-        if (data.success){
-          if (data.result.length > 0){
-            if (!(topic in MQTTCharts)){
-              $("#easymqtt-charts").append('<div id="easymqtt-'+topic+'" class="easymqtt-chart card"></div>')
-              addNewChart(topic);
-              for (i in MQTTCharts){
-                MQTTCharts[i].reflow();
+      $.get( "http://bipes.net.br/easymqtt/gettopic.php", 
+        {"session": easyMQTT_session, "topic": topic, "since": since}, 
+        function( data ) {
+          if (data.success){
+            if (data.result.length > 0){
+              if (!(topic in MQTTCharts)){
+                $("#easymqtt-charts").append('<div id="easymqtt-'+topic+'" class="easymqtt-chart card"></div>')
+                addNewChart(topic);
+                for (i in MQTTCharts){
+                  MQTTCharts[i].reflow();
+                }
               }
+              for (i in data.result){
+                MQTTCharts[topic].series[0].addPoint([data.result[i].timestamp*1000,parseFloat(data.result[i].data)],false);
+              }
+              MQTTCharts[topic].redraw();
             }
-            for (i in data.result){
-              MQTTCharts[topic].series[0].addPoint([data.result[i].timestamp*1000,parseFloat(data.result[i].data)],false);
-            }
-            MQTTCharts[topic].redraw();
-            MQTTLastUpdate[topic] = data.result[data.result.length-1].timestamp;
+          }else{
+            errorEasyMQTT(data.result);
           }
-        }else{
-          errorEasyMQTT(data.result);
+        }, "json")
+      .fail(function(xhr, status, error){
+          errorEasyMQTT(topic + " request error. " + status + " " + error);
         }
-      }, "json" );
+      );
     }
     function updateEasyMQTTJson(){
       $(".highcharts-navigator").removeAttr("visibility");
@@ -732,14 +779,12 @@ Device file manager
         if (data.success){
           dismissEasyMQTTError();
           for (i in data.result){
-            if (data.result[i] in MQTTLastUpdate){
-              updateEasyMQTTTopic(data.result[i],MQTTLastUpdate[data.result[i]]+1);
+            if (data.result[i] in MQTTCharts){
+              let last_update = MQTTCharts["temperatura"].series[0].points[MQTTCharts["temperatura"].series[0].points.length-1].x / 1000;
+              updateEasyMQTTTopic(data.result[i],last_update + 1);
             }else{
               updateEasyMQTTTopic(data.result[i]);
             }
-          }
-          for (topic in MQTTCharts){
-            console.log(topic);
           }
         }else{
           errorEasyMQTT(data.result);
@@ -750,7 +795,14 @@ Device file manager
   <div id="easymqtt-warning" class="easymqtt-warning card"></div>
   <div id="easymqtt-charts" class="easymqtt-charts"></div>
   <div id="easymqtt-config" class="easymqtt-config card">
-    
+    <div id="easymqtt-config-update">
+      <label for="easymqtt-update-freq">Update frequency (s):</label>
+      <input type="number" id="easymqtt-update-freq" name="easymqtt-update-freq" min="1" max="3600" step="1" value="5">
+      <button id="easymqtt-update-freq-set" type="button" onclick="setEasyMQTTUpdate($('#easymqtt-update-freq').val())">Set</button>
+    </div>
+    <div id="easymqtt-config-clear">
+      <button id="easymqtt-clear-data" type="button" onclick="clearEasyMQTTSession()">Clear Data</button>
+    </div>
   </div>
 
 </div>
