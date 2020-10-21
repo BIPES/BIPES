@@ -780,7 +780,7 @@ Device file manager
           dismissEasyMQTTError();
           for (i in data.result){
             if (data.result[i] in MQTTCharts){
-              let last_update = MQTTCharts["temperatura"].series[0].points[MQTTCharts["temperatura"].series[0].points.length-1].x / 1000;
+              let last_update = MQTTCharts[data.result[i]].series[0].points[MQTTCharts[data.result[i]].series[0].points.length-1].x / 1000;
               updateEasyMQTTTopic(data.result[i],last_update + 1);
             }else{
               updateEasyMQTTTopic(data.result[i]);
