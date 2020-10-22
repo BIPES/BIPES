@@ -166,7 +166,7 @@ function checkCookie() {
             <td class="tabmin">&nbsp;</td>
             <td id="tab_iot" class="taboff">IOT</td>
             <td class="tabmin">&nbsp;</td>
-            <td id="tab_mqtt" class="taboff" onclick="startEasyMQTT()">EasyMQTT</td>
+            <td id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_xml" class="taboff">XML</td>
             <td class="tabmax">
