@@ -98,17 +98,17 @@
     function getSessionFromURL(){
       let searchParams = new URLSearchParams(window.location.search);
       if (searchParams.has('session')){
-        easyMQTT_session = searchParams.get('session');
-        return true;
+        return searchParams.get('session');
       }
-      return false;
+      return null;
     }
 
     // Init
-    if (getSessionFromURL()){
-      startEasyMQTT(easyMQTT_session);
+    let urlSession = getSessionFromURL();
+    if (urlSession){
+      startEasyMQTT(urlSession);
     }else{
-      if (typeof parent == 'undefined'){
+      if (parent === window){
         errorEasyMQTT("EasyMQTT Session ID is not currently defined!<br><span>Try passing it as parameter in URL (?session=<session_id>)</span>");
       }else{
           errorEasyMQTT("EasyMQTT Session ID is not currently defined!<br><span>If the EasyMQTT Start block is set try clicking on 'Python' tab first.</span>");
@@ -116,16 +116,29 @@
     }
 
     function startEasyMQTT(session){ 
-      easyMQTT_session = session;
-      if (typeof easyMQTT_session == 'undefined'){
+      if (typeof session === 'undefined'){
         errorEasyMQTT("EasyMQTT Session ID is not currently defined!<br><span>If the EasyMQTT Start block is set try clicking on 'Python' tab first.</span>");
         if (typeof timerUpdateEasyMQTT !== 'undefined')
           cancelTimer(timerUpdateEasyMQTT);
-        return;
-      }
-      if (typeof timerUpdateEasyMQTT == 'undefined'){
+      }else{
+        if (easyMQTT_session == session && typeof timerUpdateEasyMQTT !== 'undefined'){
+          return;
+        }
+        if (typeof easyMQTT_session !== 'undefined' && easyMQTT_session != session){
+          clearInterval(timerUpdateEasyMQTT);
+          resetEasyMQTTCharts();
+        } 
+        easyMQTT_session = session;
         $("#easymqtt-config").show();
         setEasyMQTTUpdate($('#easymqtt-update-freq').val());
+      }
+    }
+
+    function resetEasyMQTTCharts(){
+      for (topic in MQTTCharts){
+        MQTTCharts[topic].destroy();
+        delete MQTTCharts[topic];
+        $('#easymqtt-'+topic).remove();
       }
     }
 
@@ -151,11 +164,7 @@
         {"session": easyMQTT_session}, 
         function( data ) {
           if (data.success){
-            for (topic in MQTTCharts){
-              MQTTCharts[topic].destroy();
-              delete MQTTCharts[topic];
-              $('#easymqtt-'+topic).remove();
-            }
+            resetEasyMQTTCharts();
             errorEasyMQTT(data.result);
           }else{
             errorEasyMQTT(data.result);
@@ -253,7 +262,7 @@
       );
     }
     function updateEasyMQTTJson(){
-      $(".highcharts-navigator").removeAttr("visibility");
+      //$(".highcharts-navigator").removeAttr("visibility"); //needed only if not used as an iframe in the main page
       $.get( "http://bipes.net.br/easymqtt/getsession.php?session="+easyMQTT_session, function( data ) {
         if (data.success){
           dismissEasyMQTTError();
