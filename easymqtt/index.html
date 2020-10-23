@@ -4,6 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BIPES EasyMQTT</title>
   <style>
   body{
@@ -29,9 +30,14 @@
 
   .easymqtt-charts{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
+  }
+  @media only screen and (min-width: 768px) {
+    .easymqtt-charts{
+      flex-direction: row;
+    }
   }
 
   .easymqtt-config{
@@ -52,7 +58,13 @@
 
   .easymqtt-chart{
     flex: 1;
-    min-width: 500px;
+    min-width: 280px;
+  }
+
+  @media only screen and (min-width: 768px) {
+    .easymqtt-chart{
+      min-width: 500px;
+    }
   }
   .easymqtt-warning{
     text-align: center;
