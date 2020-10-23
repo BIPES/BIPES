@@ -151,7 +151,7 @@
 
     function setEasyMQTTUpdate(interval){
       if (typeof interval === 'undefined' || interval < 0){
-        alert("Invalid update interval.");
+        alert("Invalid update interval");
         return;
       }
       clearInterval(timerUpdateEasyMQTT);
