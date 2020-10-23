@@ -426,7 +426,7 @@ Blockly.Python['easymqtt_init'] = function(block) {
 
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
-  var code = 'easymqtt_session = "' + session + '"; easymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = ' + server + ', port = ' + port + ', user = ' + user + ', password = ' + pass + '); easymqtt_client.connect()\n'
+  var code = 'easymqtt_session = "' + session + '"; easymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = ' + server + ', port = ' + port + ', user = ' + user + ', password = ' + pass + '); easymqtt_client.connect()\nprint("EasyMQTT connected")\n'
   return code;
 };
 
@@ -438,14 +438,14 @@ Blockly.Python['easymqtt_publish_data'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
 
-  var code = 'easymqtt_client.publish(easymqtt_session + "/" + ' + topic + ', str(' + data + '))\n';
+  var code = 'easymqtt_client.publish(easymqtt_session + "/" + ' + topic + ', str(' + data + '))\nprint("EasyMQTT Publish - Session:",easymqtt_session,"Topic:",' + topic + ',"Value:",str(' + data + '))\n'
   return code;
 };
 
 Blockly.Python['easymqtt_disconnect'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
-  var code = 'easymqtt_client.disconnect()\n';
+  var code = 'easymqtt_client.disconnect()\nprint("EasyMQTT disconnected")\n';
   return code;
 };
 
