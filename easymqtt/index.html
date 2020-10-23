@@ -79,9 +79,16 @@
     <div id="easymqtt-warning" class="easymqtt-warning card"></div>
     <div id="easymqtt-charts" class="easymqtt-charts"></div>
     <div id="easymqtt-config" class="easymqtt-config card" style="display: none;">
+      <div id="easymqtt-config-publish">
+        <label for="easymqtt-publish-value">Publish value:</label>
+        <input type="number" id="easymqtt-publish-value" name="easymqtt-publish-value" step="0.1" value="0" style="width: 40px;">
+        <label for="easymqtt-publish-topic">to topic:</label>
+        <input type="text" id="easymqtt-publish-topic" name="easymqtt-publish-topic" style="width: 100px;">
+        <button id="easymqtt-publish-submit" type="button" onclick="publishEasyMQTT($('#easymqtt-publish-topic').val(),$('#easymqtt-publish-value').val())">Submit</button>
+      </div>
       <div id="easymqtt-config-update">
         <label for="easymqtt-update-freq">Update frequency (s):</label>
-        <input type="number" id="easymqtt-update-freq" name="easymqtt-update-freq" min="1" max="3600" step="1" value="5">
+        <input type="number" id="easymqtt-update-freq" name="easymqtt-update-freq" min="1" step="1" value="5" style="width: 40px;">
         <button id="easymqtt-update-freq-set" type="button" onclick="setEasyMQTTUpdate($('#easymqtt-update-freq').val())">Set</button>
       </div>
       <div id="easymqtt-config-clear">
@@ -143,6 +150,10 @@
     }
 
     function setEasyMQTTUpdate(interval){
+      if (typeof interval === 'undefined' || interval < 0){
+        alert("Invalid update interval.");
+        return;
+      }
       clearInterval(timerUpdateEasyMQTT);
       updateEasyMQTTJson();
       timerUpdateEasyMQTT = setInterval(updateEasyMQTTJson,interval*1000);
@@ -172,6 +183,25 @@
         }, "json")
       .fail(function(xhr, status, error){
           errorEasyMQTT("Error clearing session. " + status + " " + error);
+        }
+      );
+    }
+
+    function publishEasyMQTT(topic,value){
+      if (typeof topic === 'undefined' || typeof value === 'undefined' || topic.length < 1){
+        alert("Invalid input");
+        return;
+      }
+      $.get( "http://bipes.net.br/easymqtt/publish.php", 
+        {"session": easyMQTT_session,
+         "topic": topic,
+         "value": value
+        }, 
+        function( data ) {
+          errorEasyMQTT(data.result);
+        }, "json")
+      .fail(function(xhr, status, error){
+          errorEasyMQTT("Error publising data. " + status + " " + error);
         }
       );
     }
@@ -263,7 +293,9 @@
     }
     function updateEasyMQTTJson(){
       //$(".highcharts-navigator").removeAttr("visibility"); //needed only if not used as an iframe in the main page
-      $.get( "http://bipes.net.br/easymqtt/getsession.php?session="+easyMQTT_session, function( data ) {
+      $.get( "http://bipes.net.br/easymqtt/getsession.php", 
+      {"session": easyMQTT_session}, 
+      function( data ) {
         if (data.success){
           dismissEasyMQTTError();
           for (i in data.result){
@@ -277,7 +309,11 @@
         }else{
           errorEasyMQTT(data.result);
         }
-      }, "json" );
+      }, "json" )
+      .fail(function(xhr, status, error){
+          errorEasyMQTT("Session" + session + " request error. " + status + " " + error);
+        }
+      );
     }
   </script>
 </body>
