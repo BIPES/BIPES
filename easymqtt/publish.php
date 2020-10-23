@@ -12,7 +12,7 @@ $topic = htmlspecialchars($_GET["topic"]);
 $value = htmlspecialchars($_GET["value"]);
 
 if (!is_numeric($value)){
-	$return = array("success" => False, "result" => "Error publishing value '".$value."'' to topic '".$topic."'. Non-numeric input value!");
+	$return = array("success" => False, "result" => "Error publishing value '".$value."' to topic '".$topic."'. Non-numeric input value!");
 
 }else{
 	$ret;
@@ -20,9 +20,9 @@ if (!is_numeric($value)){
 
 	$err=exec("python3 server/publish.py ".$session."/".$topic." ".$value,$out,$ret);
 	if ($ret == 0)
-		$return = array("success" => True, "result" => "Value '".$value."'' published to topic '".$topic."'' sucessfully!");
+		$return = array("success" => True, "result" => "Value '".$value."' published to topic '".$topic."' sucessfully!");
 	else
-		$return = array("success" => False, "result" => "Error publishing value '".$value."'' to topic '".$topic."'. ".$err);
+		$return = array("success" => False, "result" => "Error publishing value '".$value."' to topic '".$topic."'. ".$err);
 }
 
 echo(json_encode($return));
