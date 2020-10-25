@@ -520,7 +520,7 @@ function getText(pName){
   <br>
 
   <input type="button" value="main.py" onclick="getText('main.py'); return false;" />
-  <input type="button" value="ssd1306.py" onclick="getText('ssd1306.py'); return false;" />
+  <input type="button" value="SSD1306.py" onclick="getText('SSD1306.py'); return false;" />
 
 
 
@@ -1069,9 +1069,14 @@ Device file manager
         <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
       </block>
     </category>
+
+  <category name="Display">
+      <label text="PCF8574 Display controller"></label>
+  </category>
+
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
-        <button text="Install library on device" callbackKey="installPyLib"></button>
+        <button text="Install SSD1306 library" callbackKey="installPyLib"></button>
 
 
 
@@ -1149,6 +1154,7 @@ Device file manager
   <category name="LED Matrix">
       <label text="TM1640 LED Matrix"></label>
       <label text="Library: https://github.com/mcauser/micropython-tm1640"></label>
+        <button text="Install TM1640 library" callbackKey="installPyLib"></button>
 
     <block type="tm1640_init">
 
@@ -1266,6 +1272,8 @@ Device file manager
   <category name="Ultrasound">
       <label text="HCSR04 ultrasound distance sensor"></label>
       <label text="Library: https://github.com/rsc1975/micropython-hcsr04"></label>
+        <button text="Install HCSR04 library" callbackKey="installPyLib"></button>
+
 
       <block type="hcsr_init">
         <field name="BLOCK_HCSR_INIT">Start HCSR04 Ultrasound sensor</field>
@@ -1292,14 +1300,37 @@ Device file manager
 
   <category name="GPS">
       <label text="Global Positioning System sensor"></label>
+   <label text="Library: https://github.com/"></label>
+        <button text="Install GPS library" callbackKey="installPyLib"></button>
+
+
+
   </category>
 
   <category name="Oximeter">
       <label text="MAX30100 pulse oximeter sensor"></label>
+   <label text="Library: https://github.com/"></label>
+        <button text="Install MAX30100 library" callbackKey="installPyLib"></button>
+
+
+
   </category>
 
   <category name="Acelerometer">
       <label text="MPU6050 acelerometer"></label>
+   <label text="Library: https://github.com/"></label>
+        <button text="Install MPU6050 library" callbackKey="installPyLib"></button>
+
+
+  </category>
+
+
+  <category name="RFID Reader">
+      <label text="RC522 13.56MHz RFID Reader"></label>
+      <label text="Library: https://github.com/"></label>
+        <button text="Install RC522 library" callbackKey="installPyLib"></button>
+
+
   </category>
 
 
@@ -3099,6 +3130,28 @@ function stopPython(evt) {
   //Send Ctrl+C to stop program
         ws.send('\x03');
 }
+
+function runPythonCode(pCodeIn) {
+
+	if (!connected) {
+		alert('Must be connected to run code');
+		return;
+	}
+
+        var code = pCodeIn;
+        var textArray = code.split(/\r\n|\r|\n/);
+
+        console.log(code);
+        ws.send('\x05');
+	sleep(10);
+        textArray.forEach(function(line, index, array) {
+           ws.send(line+'\r');
+	   sleep(15);
+        });
+        ws.send('\x04');
+  
+}
+
 
 function runPython(evt) {
 

@@ -14,6 +14,9 @@
  */
 var Code = {};
 
+//Lib to installed
+var libToInstall = '';
+
 /**
  * Lookup for names of supported languages.  Keys should be in ISO 639 format.
  */
@@ -456,7 +459,56 @@ Code.init = function() {
   Blockly.svgResize(Code.workspace);
 
     Code.workspace.registerButtonCallback('installPyLib', function(button) {
-        alert("Installing library on the board");
+
+	var lib = button.text_.split(" ")[1];
+	console.log(button.text_);
+	console.log(lib)
+        alert("This will automatic download and install the library on the connected board: " + lib + ". Internet is required for this operation.");
+
+
+	var installCmd = `
+def bipesInstall(url, lib):
+    import socket
+    _, _, host, path = url.split('/', 3)
+    addr = socket.getaddrinfo(host, 80)[0][-1]
+    s = socket.socket()
+    s.connect(addr)
+    print('Downloading from ' + url)
+    s.send(bytes('GET /%s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n' % (path, host), 'utf8'))
+
+    f = open(lib, 'w')
+
+    while True:
+        data = s.recv(100)
+        if data:
+            #print(str(data, 'utf8'), end='')
+            f.write(data)
+            #print('.')
+        else:
+            break
+    s.close()
+    f.close()
+    print('Install done')
+
+`;
+ 
+    installCmd = installCmd + "lib = '" + lib + ".py'" + '\r';
+    installCmd = installCmd + "bipesInstall('http://bipes.net.br/beta2/ui/pylibs/' + lib, lib)";
+	    
+
+	runPythonCode(installCmd);
+
+	    /*
+		console.debug(arr[i]);
+	var arr = installCmd.split("\r");
+
+	for (var i = 0; i < arr.length; i++) {
+		ws.send(arr[i] + '\r');
+		sleep(10);
+	}
+	*/
+
+
       });
 
   // Lazy-load the syntax-highlighting.
