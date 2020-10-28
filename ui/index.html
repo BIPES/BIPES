@@ -1316,10 +1316,35 @@ Device file manager
 
   </category>
 
-  <category name="Acelerometer">
+  <category name="Inertial Measurement">
       <label text="MPU6050 acelerometer"></label>
    <label text="Library: https://github.com/"></label>
         <button text="Install MPU6050 library" callbackKey="installPyLib"></button>
+
+
+    <block type="init_mpu6050">
+
+ <value name="scl">
+        <shadow type="math_number">
+          <field name="NUM">5</field>
+        </shadow>
+      </value>
+
+ <value name="sda">
+        <shadow type="math_number">
+          <field name="NUM">4</field>
+        </shadow>
+      </value>
+
+    </block>
+
+    <block type="mpu6050_read_acc_x"> </block>
+    <block type="mpu6050_read_acc_y"> </block>
+    <block type="mpu6050_read_acc_z"> </block>
+
+    <block type="mpu6050_read_gyro_x"> </block>
+    <block type="mpu6050_read_gyro_y"> </block>
+    <block type="mpu6050_read_gyro_z"> </block>
 
 
   </category>

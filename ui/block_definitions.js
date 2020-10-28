@@ -395,6 +395,114 @@ Blockly.Blocks['pinout'] = {
   }
 };
 
+//MPU6050
+Blockly.Blocks['init_mpu6050'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init MPU6050 IMU");
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/mpu6050.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['mpu6050_read_acc_x'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Acceleration - X axis"), "MSG_READ_MPU6050");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Acceleration on X axis");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
+Blockly.Blocks['mpu6050_read_acc_y'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Acceleration - Y axis"), "MSG_READ_MPU6050");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Acceleration on Y axis");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['mpu6050_read_acc_z'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Acceleration - Z axis"), "MSG_READ_MPU6050");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Acceleration on Z axis");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['mpu6050_read_gyro_x'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Gyro - X axis"), "MSG_READ_MPU6050");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Gyro on X axis");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
+Blockly.Blocks['mpu6050_read_gyro_y'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Gyro - Y axis"), "MSG_READ_MPU6050");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Gyro on Y axis");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['mpu6050_read_gyro_z'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Gyro - Z axis"), "MSG_READ_MPU6050");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Gyro on Z axis");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+//End of MPU6050
+
 Blockly.Blocks['init_oled'] = {
   init: function() {
     this.setColour(135);

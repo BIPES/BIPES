@@ -168,6 +168,63 @@ Blockly.Python['var_to_int'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+//MPU6050
+
+Blockly.Python['init_mpu6050'] = function(block) {
+  var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+  var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_imu'] = 'import imu';
+
+//  var code = 'i2c=I2C(-1, scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+ //     code += 'oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2c)\n';
+    var code = "imu.init_MPU()\nimu.calibrate_sensors()\n";
+
+  return code;
+};
+
+
+Blockly.Python['mpu6050_read_acc_x'] = function(block) {
+  var code = 'imu.read_mpu6050v(1)';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['mpu6050_read_acc_y'] = function(block) {
+  var code = 'imu.read_mpu6050v(2)';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['mpu6050_read_acc_z'] = function(block) {
+  var code = 'imu.read_mpu6050v(3)';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['mpu6050_read_gyro_x'] = function(block) {
+  var code = 'imu.read_mpu6050v(4)';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['mpu6050_read_gyro_y'] = function(block) {
+  var code = 'imu.read_mpu6050v(5)';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['mpu6050_read_gyro_z'] = function(block) {
+  var code = 'imu.read_mpu6050v(6)';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
+
+
+//End of MPU6050
+
 Blockly.Python['init_oled'] = function(block) {
   var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
   var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
