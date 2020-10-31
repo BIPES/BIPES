@@ -30,26 +30,26 @@ Blockly.Python['reset'] = function(block) {
 
 Blockly.Python["reset_cause_soft"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
-	var code = "4"; 
+	var code = "machine.SOFT_RESET"; 
 	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 
 Blockly.Python["reset_cause_hard"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
-	var code = "6"; 
+	var code = "machine.HARD_RESET"; 
 	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.Python["reset_cause_wdt"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
-	var code = "1"; 
+	var code = "machine.WDT_RESET"; 
 	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
 Blockly.Python["reset_cause_deep"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
-	var code = "5"; 
+	var code = "machine.DEEPSLEEP_RESET"; 
 	return [code, Blockly.JavaScript.ORDER_NONE];
 };
 
@@ -95,7 +95,7 @@ Blockly.Python['set_freq'] = function(block) {
 
 Blockly.Python['get_freq'] = function(block) {
   Blockly.Python.definitions_['import_machine'] = 'import machine';
-  var code = 'machine.freq()\n';
+  var code = 'machine.freq()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -131,7 +131,7 @@ Blockly.Python['adc'] = function(block) {
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['init_adc'] = 'adc=machine.ADC(' + value_pin + ')';
-  var code = 'adc.read()\n';
+  var code = 'adc.read()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -165,6 +165,37 @@ Blockly.Python['var_to_int'] = function(block) {
 
   var code = 'int(' + variable + ')';
 
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+//OneWire
+
+Blockly.Python['onewire_ds18x20_init'] = function(block) {
+  var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  Blockly.Python.definitions_['import_onewire'] = 'import onewire,ds18x20';
+
+  var code = 'onewire_pin = machine.Pin(' + pin + ')\n';
+      code += 'ds = ds18x20.DS18X20(onewire.OneWire(onewire_pin))\n';
+
+  return code;
+};
+
+
+Blockly.Python['onewire_ds18x20_scan'] = function(block) {
+  var code = 'ds.scan()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['onewire_ds18x20_convert'] = function(block) {
+  var code = 'ds.convert_temp()\n';
+  return code;
+};
+
+Blockly.Python['onewire_ds18x20_read_temp'] = function(block) {
+  var rom = Blockly.Python.valueToCode(block, 'rom', Blockly.Python.ORDER_ATOMIC);
+  var code = 'ds.read_temp(' + rom + ')';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -1577,8 +1608,8 @@ Blockly.Python["machine_soft_reset"] = function(block) {
 	return code;
 };
 Blockly.Python["machine_reset_cause"] = function(block) {
-		Blockly.Python.definitions_['import_machine'] = 'import machine';
-	var code = "machine.reset_cause()\n"; 
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "machine.reset_cause()"; 
 	return [code, Blockly.JavaScript.ORDER_NONE]; 
 };
 Blockly.Python["machine_disable_irq"] = function(block) {
@@ -3903,6 +3934,18 @@ Blockly.Python['timer'] = function(block) {
              
   return code;
 };
+
+
+Blockly.Python['deep_sleep8266'] = function(block) {
+	var value_interval = Blockly.Python.valueToCode(block, 'interval', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = 'rtc = machine.RTC()\n';
+	code += 'rtc.irq(trigger=rtc.ALARM0, wake=machine.DEEPSLEEP)\n';
+	code += 'rtc.alarm(rtc.ALARM0, ' + value_interval + ')\n';
+	code += 'machine.deepsleep()\n';
+	return code;
+  };
+
 
 Blockly.Python['deep_sleep'] = function(block) {
 	var value_interval = Blockly.Python.valueToCode(block, 'interval', Blockly.Python.ORDER_ATOMIC);

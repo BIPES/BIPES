@@ -962,7 +962,7 @@ Device file manager
     
     </block>
 
-    <block type="deep_sleep">
+    <block type="deep_sleep8266">
      <value name="interval">
         <shadow type="math_number">
           <field name="NUM">60</field>
@@ -1453,6 +1453,23 @@ Device file manager
       </category>
       <category name="OneWire">
       <label text="OneWire"></label>
+      <block type="onewire_ds18x20_init">
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="onewire_ds18x20_scan"></block>
+      <block type="onewire_ds18x20_convert"></block>
+      <block type="onewire_ds18x20_read_temp">
+	  <value name="rom">
+          <shadow type="math_number">
+            <field name="NUM">10000</field>
+          </shadow>
+        </value>
+ 
+      </block>
       </category>
   </category>
  

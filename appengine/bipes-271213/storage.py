@@ -71,29 +71,35 @@ def xmlToKey(xml_content):
         #get metadata from project XML sent by blockly
         #Get from xml_content
         #print(xml_content)
-        
-       
-        #doc = xml.dom.minidom.parse("example.xml");
-        doc = xml.dom.minidom.parseString(xml_content)
-
-        vals = doc.getElementsByTagName("value")
         author = "-"
         desc = "-"
-        for e in vals:
-            #print e.getAttribute("name")
-            if e.getAttribute("name") == "project_author":
-                vals2 = e.getElementsByTagName("field")
-                
-                for e2 in vals2:
-                    if e2.getAttribute("name") == "TEXT" and e2.nodeName == "field":
-                        pAuthor=e2.firstChild.nodeValue
+        pAuthor=author
+        pDesc=desc
+        
+       
+        try:
+            #doc = xml.dom.minidom.parse("example.xml");
+            doc = xml.dom.minidom.parseString(xml_content)
 
-            if e.getAttribute("name") == "project_name":
-                vals2 = e.getElementsByTagName("field")
-                
-                for e2 in vals2:
-                    if e2.getAttribute("name") == "TEXT" and e2.nodeName == "field":
-                        pDesc=e2.firstChild.nodeValue
+            vals = doc.getElementsByTagName("value")
+            for e in vals:
+                #print e.getAttribute("name")
+                if e.getAttribute("name") == "project_author":
+                    vals2 = e.getElementsByTagName("field")
+                    
+                    for e2 in vals2:
+                        if e2.getAttribute("name") == "TEXT" and e2.nodeName == "field":
+                            pAuthor=e2.firstChild.nodeValue
+
+                if e.getAttribute("name") == "project_name":
+                    vals2 = e.getElementsByTagName("field")
+                    
+                    for e2 in vals2:
+                        if e2.getAttribute("name") == "TEXT" and e2.nodeName == "field":
+                            pDesc=e2.firstChild.nodeValue
+        except:
+            print("Error")
+
 
         print("Author = " + pAuthor)
         print("Desc = " + pDesc)

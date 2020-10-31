@@ -19,6 +19,21 @@ Blockly.Blocks['pwm'] = {
  }
 };
 
+
+Blockly.Blocks['deep_sleep8266'] = {
+	init: function() {
+    this.appendValueInput("interval")
+        .setCheck("Number")
+	.appendField("deep sleep");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Deep sleep process in milliseconds");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
 Blockly.Blocks['deep_sleep'] = {
 	init: function() {
     this.appendValueInput("interval")
@@ -337,7 +352,12 @@ Blockly.Blocks['set_freq'] = {
     this.appendValueInput("freq")
         .setCheck("Number")
         .appendField("Frequency (Hz)");
-    this.setOutput(true, null);
+    //this.setOutput(true, null);
+
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
     this.setColour(230);
  this.setTooltip("Set ESP8266 CPU Clock Frequency");
  this.setHelpUrl("http://www.bipes.net.br");
@@ -394,6 +414,66 @@ Blockly.Blocks['pinout'] = {
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+
+//OneWire and DS1820 
+//
+
+Blockly.Blocks['onewire_ds18x20_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init OneWire Bus");
+
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("GPIO");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['onewire_ds18x20_scan'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Scan DS1820 sensors");
+
+    this.setOutput(true, null);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['onewire_ds18x20_convert'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Trigger DS1820 reading");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['onewire_ds18x20_read_temp'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("DS1820 Temperature reading");
+
+    this.appendValueInput("rom")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ID");
+
+    this.setOutput(true, null);
+    this.setTooltip('');
+  }
+};
+
 
 //MPU6050
 Blockly.Blocks['init_mpu6050'] = {
