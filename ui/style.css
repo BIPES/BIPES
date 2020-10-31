@@ -166,6 +166,22 @@ button {
   background-position: -42px 0px;
 }
 
+
+/* Sprited icons. */
+.icon22 {
+  height: 21px;
+  width: 21px;
+  background-image: url(icons2.png);
+}
+.save {
+  background-position: 0px 0px;
+}
+.load {
+  background-position: -21px 0px;
+}
+
+
+
 @media (max-width: 710px) {
   .tab_collapse {
     display: none;

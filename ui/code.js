@@ -186,6 +186,7 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
+
 Code.TABS_ = ['blocks', 'console', 'python', 'xml', 'files', 'iot', 'mqtt', 'device', 'programs'];
 //Code.TABS_ = ['blocks', 'console', 'javascript', 'python', 'xml'];
 
@@ -197,6 +198,8 @@ Code.selected = 'blocks';
  */
 Code.tabClick = function(clickedName) {
   // If the XML tab was open, save and render the content.
+	//
+
   if (document.getElementById('tab_xml').className == 'tabon') {
     var xmlTextarea = document.getElementById('content_xml');
     var xmlText = xmlTextarea.value;
@@ -216,6 +219,7 @@ Code.tabClick = function(clickedName) {
       Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
     }
   }
+  
 
   if (document.getElementById('tab_blocks').className == 'tabon') {
     Code.workspace.setVisible(false);
@@ -436,7 +440,12 @@ Code.init = function() {
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
 
-  Code.bindClick('runButton', runPython)
+  Code.bindClick('runButton', runPython);
+
+  Code.bindClick('saveButton', saveXml);
+  Code.bindClick('loadButton', loadXml);
+
+
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
   if ('BlocklyStorage' in window) {
@@ -560,6 +569,8 @@ Code.initLanguage = function() {
   document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
   document.getElementById('trashButton').title = MSG['trashTooltip'];
+  document.getElementById('saveButton').title = MSG['saveTooltip'];
+  document.getElementById('loadButton').title = MSG['loadTooltip'];
 };
 
 /**

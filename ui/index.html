@@ -168,7 +168,9 @@ function checkCookie() {
             <td class="tabmin">&nbsp;</td>
             <td id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</td>
             <td class="tabmin">&nbsp;</td>
+	    
             <td id="tab_xml" class="taboff">XML</td>
+	   
             <td class="tabmax">
 
   <script>
@@ -347,7 +349,7 @@ function checkCookie() {
 
 
   </script>
-         Target device:
+         Device:
       <select id="device_selector" onchange="changeDevice(this.value)">
         <option value="ESP8266">ESP8266 (NodeMCU)</option>
         <option value="wemos_d1_mini">ESP8266 (Wemos D1 mini)</option>
@@ -359,15 +361,28 @@ function checkCookie() {
         <option value="RPI4">Raspberry Pi (any Linux)</option>
         <option value="EV3">Lego EV3</option>
       </select>
-              <button id="trashButton" class="notext" title="...">
-                <img src='media/1x1.gif' class="trash icon21">
-              </button>
-              <button id="linkButton" class="notext" title="...">
-                <img src='media/1x1.gif' class="link icon21">
-              </button>
+
+
               <button id="runButton" class="notext primary" title="...">
                 <img src='media/1x1.gif' class="run icon21">
               </button>
+
+               <button id="linkButton" class="notext" title="...">
+                <img src='media/1x1.gif' class="link icon21">
+              </button>
+
+               <button id="saveButton" class="notext" title="...">
+                <img src='media/1x1.gif' class="save icon22">
+              </button>
+
+               <button id="loadButton" class="notext" title="...">
+                <img src='media/1x1.gif' class="load icon22">
+              </button>
+
+	      <button id="trashButton" class="notext" title="...">
+                <img src='media/1x1.gif' class="trash icon21">
+              </button>
+
             </td>
           </tr>
         </table>
@@ -3154,6 +3169,73 @@ function sleep(milliseconds) {
 function stopPython(evt) {
   //Send Ctrl+C to stop program
         ws.send('\x03');
+}
+
+function saveXml() {
+
+	Code.tabClick('xml');
+
+	var xmlTextarea = document.getElementById('content_xml');
+	var xmlText = xmlTextarea.value;
+
+	function dataUrl(data) {
+		return "data:x-application/xml;charset=utf-8," + escape(data);
+        }
+
+	var downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl(xmlText);
+        downloadLink.download = "bipes_blocks.xml";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+
+}
+
+function promptFile(contentType, multiple) {
+  var input = document.createElement("input");
+  input.type = "file";
+
+  input.multiple = false;
+  //input.multiple = multiple;
+  input.accept = contentType;
+  return new Promise(function(resolve) {
+    document.activeElement.onfocus = function() {
+      document.activeElement.onfocus = null;
+      setTimeout(resolve, 100);
+    };
+    input.onchange = function() {
+      var files = Array.from(input.files);
+      if (multiple)
+        return resolve(files);
+      resolve(files[0]);
+    };
+    input.click();
+  });
+}
+
+function promptFilename() {
+  promptFile().then(function(file) {
+	  //alert(file.name);
+
+	  var reader = new FileReader();
+	  reader.readAsText(file,'UTF-8');
+
+	  reader.onload = readerEvent => {
+	      var content = readerEvent.target.result; 
+	      console.log("Loading blocks from file...");
+	      console.log( content );
+	      var xml = Blockly.Xml.textToDom(content);
+	      Blockly.Xml.domToWorkspace(xml, Code.workspace);
+	      alert("Blocks loaded from file " + file.name );
+	  }
+
+  });
+}
+
+function loadXml() {
+	promptFilename();
 }
 
 function runPythonCode(pCodeIn) {
