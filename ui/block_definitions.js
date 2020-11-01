@@ -589,7 +589,6 @@ Blockly.Blocks['init_oled'] = {
     this.appendDummyInput()
         .appendField("Init I2C SSD1306 OLED Display");
 
-
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
         "/beta2/ui/media/oled.png",
@@ -666,9 +665,9 @@ Blockly.Blocks['write_oled'] = {
   }
 };
 
-Blockly.Blocks['move_servo'] = {
-  init: function() {
 
+Blockly.Blocks['init_servo'] = {
+  init: function() {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
@@ -676,8 +675,30 @@ Blockly.Blocks['move_servo'] = {
         55,
         55,
         "*"))
-      .appendField("RC Servo Motor")
+      .appendField("Init RC Servo Motor")
 	  ;
+
+
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pin");
+    this.setColour(230);
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+ this.setTooltip("Init RC servo motor");
+ this.setHelpUrl("http://www.bipes.net.ebr");
+  }
+};
+
+
+Blockly.Blocks['move_servo'] = {
+  init: function() {
+
+
+ this.appendDummyInput().appendField("Move Servo Motor");
 
 
     this.appendValueInput("angle")
@@ -685,6 +706,10 @@ Blockly.Blocks['move_servo'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Angle");
     this.setColour(230);
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
  this.setTooltip("Move RC servo motor to degrees");
  this.setHelpUrl("http://www.bipes.net.ebr");
   }
@@ -8346,3 +8371,207 @@ Blockly.Blocks['predict'] = {
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+
+//RC522 RFID module
+
+Blockly.Blocks['rfid_rc522_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init RC522 RFID Module");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/RC522.jpg",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['rfid_rc522_detect_card'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Detect RFID Card");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+//rfid_rc522_read_card
+Blockly.Blocks['rfid_rc522_read_card'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Read RFID Card Memory");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+//rfid_rc522_write_card
+Blockly.Blocks['rfid_rc522_write_card'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Write RFID Card Memory");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+
+//I2C Char LCD
+
+Blockly.Blocks['char_lcd_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init I2C Character LCD Display");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/lcd20x4.jpg",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+	  //
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("lines")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Lines");
+
+    this.appendValueInput("columns")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Columns");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['char_lcd_clear'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Clear LCD");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['char_lcd_putstr'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Write text on LCD");
+
+    this.appendValueInput("text")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Text");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['char_lcd_moveto'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Move LCD Cursor to");
+
+    this.appendValueInput("x")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X");
+
+    this.appendValueInput("y")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Y");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['char_lcd_backlight'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("LCD Backlight");
+
+    this.appendValueInput("state")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ON/OFF");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['char_lcd_display'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("LCD Power");
+
+    this.appendValueInput("state")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ON/OFF");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+

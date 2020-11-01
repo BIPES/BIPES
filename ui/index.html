@@ -1063,35 +1063,23 @@ Device file manager
   </category>
 
 
-  <category name="Devices">
-    <category name="DTH11/22 Sensor">
-      <label text="DHT11/11 Temperature and Humidity Sensor"></label>
-      <block type="dht_init">
-        <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
-        <value name="pin">
-          <shadow type="pinout">
-            <field name="PIN"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="dht_measure">
-        <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
-      </block>
-      <block type="dht_read_temp">
-        <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
-      </block>
-      <block type="dht_read_humidity">
-        <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
-      </block>
-    </category>
+  <category name="Displays">
 
-  <category name="Display">
+  <category name="Character display">
       <label text="PCF8574 Display controller"></label>
+      <button text="Install I2CLCD library" callbackKey="installPyLib"></button>
+	<block type="char_lcd_init"></block>
+	<block type="char_lcd_clear"></block>
+	<block type="char_lcd_putstr"></block>
+	<block type="char_lcd_moveto"></block>
+	<block type="char_lcd_backlight"></block>
+	<block type="char_lcd_display"></block>
+
   </category>
 
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
-        <button text="Install SSD1306 library" callbackKey="installPyLib"></button>
+      <button text="Install SSD1306 library" callbackKey="installPyLib"></button>
 
 
 
@@ -1143,28 +1131,6 @@ Device file manager
 
 
     </category>
-    <category name="Relay">
-      <label text="Relay"></label>
-      <block type="relay_switch">
-        <value name="pin">
-          <shadow type="pinout">
-            <field name="PIN"></field>
-          </shadow>
-        </value>
-      </block>
-    </category>
-
-  <category name="RC Servo">
-      <label text="Hobby RC Servo Motor"></label>
-    <block type="move_servo">
-    <value name="angle">
-        <shadow type="math_number">
-          <field name="NUM">90</field>
-        </shadow>
-      </value>
-    </block>
-  </category>
-
 
   <category name="LED Matrix">
       <label text="TM1640 LED Matrix"></label>
@@ -1284,6 +1250,34 @@ Device file manager
 
   </category>
 
+
+
+
+  </category>
+
+  <category name="Sensors">
+    <category name="DTH11/22 Sensor">
+      <label text="DHT11/11 Temperature and Humidity Sensor"></label>
+      <block type="dht_init">
+        <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dht_measure">
+        <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
+      </block>
+      <block type="dht_read_temp">
+        <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
+      </block>
+      <block type="dht_read_humidity">
+        <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
+      </block>
+    </category>
+
+
   <category name="Ultrasound">
       <label text="HCSR04 ultrasound distance sensor"></label>
       <label text="Library: https://github.com/rsc1975/micropython-hcsr04"></label>
@@ -1364,20 +1358,78 @@ Device file manager
 
   </category>
 
+      <category name="OneWire">
+      <label text="OneWire"></label>
+      <block type="onewire_ds18x20_init">
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="onewire_ds18x20_scan"></block>
+      <block type="onewire_ds18x20_convert"></block>
+      <block type="onewire_ds18x20_read_temp">
+	  <value name="rom">
+          <shadow type="math_number">
+            <field name="NUM">10000</field>
+          </shadow>
+        </value>
+ 
+      </block>
+      </category>
+
 
   <category name="RFID Reader">
       <label text="RC522 13.56MHz RFID Reader"></label>
       <label text="Library: https://github.com/"></label>
         <button text="Install RC522 library" callbackKey="installPyLib"></button>
 
+      <block type="rfid_rc522_init"></block>
+      <block type="rfid_rc522_detect_card"></block>
+      <block type="rfid_rc522_read_card"></block>
+      <block type="rfid_rc522_write_card"></block>
+
+  </category>
 
   </category>
 
 
+  <category name="Actuators">
+
+
+    <category name="Relay">
+      <label text="Relay"></label>
+      <block type="relay_switch">
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+
+  <category name="RC Servo">
+      <label text="Hobby RC Servo Motor"></label>
+    <block type="init_servo">
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
+    </block>
+
+    <block type="move_servo">
+    <value name="angle">
+        <shadow type="math_number">
+          <field name="NUM">90</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
 
 
   </category>
-
 
   <category name="Communication">
       <label text="Communication"></label>
@@ -1419,6 +1471,8 @@ Device file manager
 </block>
 
       </category>
+      <category name="GSM Modem">
+      </category>
       <category name="I2C">
       <label text="I2c"></label>
 <block type="machine.I2C_I2C.init">
@@ -1450,26 +1504,6 @@ Device file manager
 <block type="machine.I2C_I2C.writeto_mem">
 </block>
 
-      </category>
-      <category name="OneWire">
-      <label text="OneWire"></label>
-      <block type="onewire_ds18x20_init">
-        <value name="pin">
-          <shadow type="pinout">
-            <field name="PIN"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="onewire_ds18x20_scan"></block>
-      <block type="onewire_ds18x20_convert"></block>
-      <block type="onewire_ds18x20_read_temp">
-	  <value name="rom">
-          <shadow type="math_number">
-            <field name="NUM">10000</field>
-          </shadow>
-        </value>
- 
-      </block>
       </category>
   </category>
  

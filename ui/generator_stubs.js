@@ -293,11 +293,20 @@ Blockly.Python['write_oled'] = function(block) {
   return code;
 };
 
-Blockly.Python['move_servo'] = function(block) {
+
+Blockly.Python['init_servo'] = function(block) {
   var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
   Blockly.Python.definitions_['import_machine'] = 'import machine';
-  var code = 'p4 = machine.Pin(4); servo = machine.PWM(p4,freq=50); servo.duty(' + value_angle + ')\n';
+  var code = 'p4 = machine.Pin(4)\n';
+      code += 'servo = machine.PWM(p4,freq=50)\n';
+  return code;
+};
+
+Blockly.Python['move_servo'] = function(block) {
+  var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'servo.duty(' + value_angle + ')\n';
   return code;
 };
 
@@ -4044,9 +4053,69 @@ Blockly.Python['hcsr_init'] = function(block) {
   return code;
 };
 
-
 Blockly.Python['hcsr_read'] = function(block) {
   var code = 'ultraSoundSensor.distance_cm()';
   return [code, Blockly.Python.ORDER_NONE];
+};
+
+//I2C Character LCD
+
+Blockly.Python['char_lcd_init'] = function(block) {
+  Blockly.Python.definitions_['import_i2c_lcd'] = 'from esp8266_i2c_lcd import I2cLcd';
+  var code = 'lcd = I2cLcd(i2c, DEFAULT_I2C_ADDR, 2, 16)\n';
+  return code;
+};
+
+Blockly.Python['char_lcd_clear'] = function(block) {
+  var code = 'lcd.clear()\n';
+  return code;
+};
+
+Blockly.Python['char_lcd_putstr'] = function(block) {
+  var code = "lcd.putstr('test')\n";
+  return code;
+};
+
+Blockly.Python['char_lcd_moveto'] = function(block) {
+  var code = 'lcd.move_to(0,0)\n';
+  return code;
+};
+
+Blockly.Python['char_lcd_backlight'] = function(block) {
+  var code = 'lcd.backlight_on()\n';
+  return code;
+};
+
+Blockly.Python['char_lcd_display'] = function(block) {
+  var code = 'lcd.display_on()\n';
+  return code;
+};
+
+
+//MFRC522 RFID module
+
+Blockly.Python['rfid_rc522_init'] = function(block) {
+  Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
+  var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
+  return code;
+};
+
+
+Blockly.Python['rfid_rc522_detect_card'] = function(block) {
+  Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
+  var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
+  return code;
+};
+
+
+Blockly.Python['rfid_rc522_read_card'] = function(block) {
+  var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
+  return code;
+};
+
+
+Blockly.Python['rfid_rc522_write_card'] = function(block) {
+  var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
+  return code;
 };
 
