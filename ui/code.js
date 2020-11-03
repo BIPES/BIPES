@@ -360,6 +360,33 @@ Code.reloadToolbox = function() {
 }
 
 
+
+function loadExampleFromURL(pName){
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://bipes.net.br/beta2/ui/examples/' + pName + '.xml', true);
+    request.send(null);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            var type = request.getResponseHeader('Content-Type');
+            if (type.indexOf("text") !== 1) {
+
+		    //alert(request.responseText);
+
+		    var content = request.responseText;
+              	    console.log("Loading blocks from example URL...");
+                    console.log( content );
+                    var xml = Blockly.Xml.textToDom(content);
+                    Blockly.Xml.domToWorkspace(xml, Code.workspace);
+                    alert("Example " + pName + " loaded");
+
+                return request.responseText;
+            }
+        }
+    }
+}
+
+
 /**
  * Initialize Blockly.  Called on page load.
  */
@@ -472,8 +499,10 @@ Code.init = function() {
 	var lib = button.text_.split(" ")[1];
 	console.log(button.text_);
 	console.log(lib)
-        alert("This will automatic download and install the library on the connected board: " + lib + ". Internet is required for this operation.");
+        alert("This will automatic download and install the library on the connected board: " + lib + ". Internet is required for this operation. Install results will be shown on console tab.");
 
+
+	Code.tabClick('console');
 
 	var installCmd = `
 def bipesInstall(url, lib):
@@ -485,7 +514,8 @@ def bipesInstall(url, lib):
     print('Downloading from ' + url)
     s.send(bytes('GET /%s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n' % (path, host), 'utf8'))
 
-    f = open(lib, 'w')
+    f = open('tmplib.py', 'w')
+    #f = open(lib, 'w')
 
     while True:
         data = s.recv(100)
@@ -497,7 +527,7 @@ def bipesInstall(url, lib):
             break
     s.close()
     f.close()
-    print('Install done')
+    print('Download done')
 
 `;
  
@@ -505,7 +535,27 @@ def bipesInstall(url, lib):
     installCmd = installCmd + "bipesInstall('http://bipes.net.br/beta2/ui/pylibs/' + lib, lib)";
 	    
 
-	runPythonCode(installCmd);
+     runPythonCode(installCmd);
+
+     var copyCmd = `
+f=open("tmplib.py", "r")
+c=open("`;
+
+copyCmd += lib + `.py", "w")
+lineC=0
+for line in f:
+	lineC=lineC+1
+	#Jump 10 lines to skip HTTP header
+	if lineC >= 10:
+		r=c.write(line)
+		print('.', end='')
+f.close()
+c.close()
+print('Install done.')
+
+`;
+ 
+     runPythonCode(copyCmd);
 
 	    /*
 		console.debug(arr[i]);
@@ -519,6 +569,53 @@ def bipesInstall(url, lib):
 
 
       });
+
+
+    Code.workspace.registerButtonCallback('loadExample', function(button) {
+
+	var tmp = button.text_.split(":")[1];
+	var lib = tmp.replace(/\s/g,'');
+
+        var msgCon = "This will load Example: " + lib + ". Internet is required for this operation. Important: all blocks on workspace will be lost and replaced by the example blocks. Do you want to continue?";
+
+	if (confirm(msgCon)) {
+		//console.log('Thing was saved to the database.');
+      		Code.discard(); 
+		Code.renderContent();
+		loadExampleFromURL(lib);
+		Code.renderContent();
+	} else {
+		console.log('Example load canceled.');
+	}
+
+      });
+
+
+    Code.workspace.registerButtonCallback('loadDoc', function(button) {
+
+	var tmp = button.text_.split(":")[1];
+	var lib = tmp.replace(/\s/g,'');
+
+
+	
+	var url = "https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub";
+
+	    if (lib == "mfrc522") {
+		url = 'https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub#h.owhbali4ayaj';
+	    }
+
+	    var win = window.open(url, '_blank');
+	    win.focus();
+
+
+
+      });
+
+
+
+
+
+
 
   // Lazy-load the syntax-highlighting.
   window.setTimeout(Code.importPrettify, 1);

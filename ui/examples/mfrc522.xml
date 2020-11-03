@@ -1,0 +1,52 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="controls_repeat_ext" id="KvRy;MTJfD*79kaKy]Px" x="88" y="37">
+    <value name="TIMES">
+      <shadow type="math_number" id=",-mTR=D=3w)7CP+A9/vY">
+        <field name="NUM">10</field>
+      </shadow>
+    </value>
+    <statement name="DO">
+      <block type="text_print" id="Q|vZ133As!.g$Gn6tg)T">
+        <value name="TEXT">
+          <shadow type="text" id="#.(9q#B?enNVEd9@]Glc">
+            <field name="TEXT">Hello</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="controls_repeat_ext" id="a(s+~0N}mx(n}%?h=:LX" x="88" y="37">
+    <value name="TIMES">
+      <shadow type="math_number" id="BD~fe6H(;s:],_A{obb)">
+        <field name="NUM">10</field>
+      </shadow>
+    </value>
+    <statement name="DO">
+      <block type="text_print" id="P5-9uO(tU1wxs[WKKB2)">
+        <value name="TEXT">
+          <shadow type="text" id=":-U$+CR)BlA1,V3s73?=">
+            <field name="TEXT">Oi beaty</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+  <block type="text_prompt_ext" id="7#e3?q;CG7k!3m+n?erk" x="288" y="38">
+    <mutation type="TEXT"/>
+    <field name="TYPE">TEXT</field>
+    <value name="TEXT">
+      <shadow type="text" id="]M]!0r`EzDEQp#k~cax8">
+        <field name="TEXT">Teste</field>
+      </shadow>
+    </value>
+  </block>
+  <block type="text_prompt_ext" id="S3fXMwq1P6=V`ZXEUzRD" x="213" y="113">
+    <mutation type="TEXT"/>
+    <field name="TYPE">TEXT</field>
+    <value name="TEXT">
+      <shadow type="text" id="vSI{rqmG]8z7vDuHW.:4">
+        <field name="TEXT">Teste myes</field>
+      </shadow>
+    </value>
+  </block>
+</xml>

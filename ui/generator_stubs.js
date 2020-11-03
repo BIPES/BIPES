@@ -4103,8 +4103,15 @@ Blockly.Python['rfid_rc522_init'] = function(block) {
 
 Blockly.Python['rfid_rc522_detect_card'] = function(block) {
   Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
-  var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
-  return code;
+  var code = 'rdr.request(rdr.REQIDL)';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['rfid_rc522_anticoll'] = function(block) {
+  Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
+  var code = 'rdr.anticoll()';
+  return [code, Blockly.Python.ORDER_NONE];
 };
 
 

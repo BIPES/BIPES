@@ -8388,15 +8388,30 @@ Blockly.Blocks['rfid_rc522_init'] = {
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
 
-    this.appendValueInput("scl")
+    this.appendValueInput("sck")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SCL");
+        .appendField("SCK");
 
-    this.appendValueInput("sda")
+    this.appendValueInput("mosi")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SDA");
+        .appendField("MOSI");
+
+    this.appendValueInput("miso")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("MISO");
+
+    this.appendValueInput("rst")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("RST");
+
+    this.appendValueInput("cs")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("CS");
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -8414,6 +8429,19 @@ Blockly.Blocks['rfid_rc522_detect_card'] = {
     this.setTooltip('');
   }
 };
+
+
+Blockly.Blocks['rfid_rc522_anticoll'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Anticoll");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
 
 
 //rfid_rc522_read_card
@@ -8462,10 +8490,10 @@ Blockly.Blocks['char_lcd_init'] = {
         //.setAlign(Blockly.ALIGN_CENTRE);
 	  //
 
-    this.appendValueInput("scl")
+    this.appendValueInput("sda")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SCL");
+        .appendField("SDA");
 
     this.appendValueInput("scl")
         .setCheck("Number")

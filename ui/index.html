@@ -338,7 +338,7 @@ function checkCookie() {
 
 
   function installLib() {
-	  alter('This will download and install the library. Your board must be connected to the Internet');
+	  alert('This will download and install the library. Your board must be connected to the Internet');
   }
 
   //Code.workspace.registerButtonCallback("installPyLib", "installLib");
@@ -1067,8 +1067,38 @@ Device file manager
 
   <category name="Character display">
       <label text="PCF8574 Display controller"></label>
+
+      <label text="Library: https://github.com/dhylands/python_lcd"></label>
       <button text="Install I2CLCD library" callbackKey="installPyLib"></button>
-	<block type="char_lcd_init"></block>
+	<block type="char_lcd_init">
+        <value name="scl">
+          <shadow type="pinout">
+            <field name="SCL"></field>
+          </shadow>
+        </value>
+
+        <value name="sda">
+          <shadow type="pinout">
+            <field name="SDA"></field>
+          </shadow>
+        </value>
+ 
+	 <value name="lines">
+        <shadow type="math_number">
+          <field name="NUM">4</field>
+        </shadow>
+      </value>
+
+	 <value name="columns">
+        <shadow type="math_number">
+          <field name="NUM">20</field>
+        </shadow>
+      </value>
+
+
+
+ 
+	</block>
 	<block type="char_lcd_clear"></block>
 	<block type="char_lcd_putstr"></block>
 	<block type="char_lcd_moveto"></block>
@@ -1256,7 +1286,7 @@ Device file manager
   </category>
 
   <category name="Sensors">
-    <category name="DTH11/22 Sensor">
+    <category name="DHT11/22 Sensor">
       <label text="DHT11/11 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
@@ -1382,11 +1412,45 @@ Device file manager
 
   <category name="RFID Reader">
       <label text="RC522 13.56MHz RFID Reader"></label>
-      <label text="Library: https://github.com/"></label>
-        <button text="Install RC522 library" callbackKey="installPyLib"></button>
+      <label text="Library: https://github.com/wendlers/micropython-mfrc522"></label>
+        <button text="Install mfrc522 library" callbackKey="installPyLib"></button>
+        <button text="Load example: mfrc522" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: mfrc522" callbackKey="loadDoc"></button>
 
-      <block type="rfid_rc522_init"></block>
+      <block type="rfid_rc522_init">
+        <value name="sck">
+          <shadow type="pinout">
+            <field name="CSK"></field>
+          </shadow>
+        </value>
+ 
+        <value name="mosi">
+          <shadow type="pinout">
+            <field name="MOSI"></field>
+          </shadow>
+        </value>
+
+         <value name="miso">
+          <shadow type="pinout">
+            <field name="MISO"></field>
+          </shadow>
+        </value>
+ 
+        <value name="rst">
+          <shadow type="pinout">
+            <field name="RST"></field>
+          </shadow>
+        </value>
+ 
+        <value name="cs">
+          <shadow type="pinout">
+            <field name="RST"></field>
+          </shadow>
+        </value>
+
+      </block>
       <block type="rfid_rc522_detect_card"></block>
+      <block type="rfid_rc522_anticoll"></block>
       <block type="rfid_rc522_read_card"></block>
       <block type="rfid_rc522_write_card"></block>
 
@@ -3483,7 +3547,10 @@ function updateTable(evt) {
     fileTable += '<input type=button value=Download onclick="files_download(\'' + file + '\'); return false;" />';
     fileTable += '<input type=button value=Delete onclick="files_delete(\'' + file + '\'); return false;" />';
 
-    fileTable += "</td><td><center>No</center></td></tr>";
+    if ((file == "boot.py") || (file == "main.py"))
+	    fileTable += "</td><td><center>Yes</center></td></tr>";
+    else
+	    fileTable += "</td><td><center>No</center></td></tr>";
   }
 
   fileTable += "</table>";
