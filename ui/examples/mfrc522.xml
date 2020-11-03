@@ -1,51 +1,318 @@
 <xml xmlns="https://developers.google.com/blockly/xml">
-  <block type="controls_repeat_ext" id="KvRy;MTJfD*79kaKy]Px" x="88" y="37">
-    <value name="TIMES">
-      <shadow type="math_number" id=",-mTR=D=3w)7CP+A9/vY">
-        <field name="NUM">10</field>
+  <variables>
+    <variable id="$a/.=sg*nZ5om7d%rV#[">stat</variable>
+    <variable id="w*2MM#UO}$18v{wS.i!V">tag_type</variable>
+    <variable id="P3,.4w7MA[3?l*beToLj">uid</variable>
+    <variable id="V)*8N=7xSPum^D+ZOy]i">AuthorizedCard</variable>
+  </variables>
+  <block type="rfid_rc522_init" id=",ZZD`|[ZxQmK.rmk^:DE" x="88" y="13">
+    <value name="sck">
+      <shadow type="pinout" id="{Cf(G:PGiKo*sVq{+^]_">
+        <field name="PIN">0</field>
       </shadow>
     </value>
-    <statement name="DO">
-      <block type="text_print" id="Q|vZ133As!.g$Gn6tg)T">
-        <value name="TEXT">
-          <shadow type="text" id="#.(9q#B?enNVEd9@]Glc">
-            <field name="TEXT">Hello</field>
-          </shadow>
+    <value name="mosi">
+      <shadow type="pinout" id="g4kvh2}%@(B-k%n3ka4X">
+        <field name="PIN">2</field>
+      </shadow>
+    </value>
+    <value name="miso">
+      <shadow type="pinout" id="=:Z,+Ikf4!d@-tRNY-:)">
+        <field name="PIN">4</field>
+      </shadow>
+    </value>
+    <value name="rst">
+      <shadow type="pinout" id="Jw?JC}52Xjh]FiiEIYQT">
+        <field name="PIN">5</field>
+      </shadow>
+    </value>
+    <value name="cs">
+      <shadow type="pinout" id="~)8N=j8,k^3GWDT^Fas^">
+        <field name="PIN">14</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="controls_whileUntil" id="huefjYkWoQtk]W;Q8WVL">
+        <field name="MODE">WHILE</field>
+        <value name="BOOL">
+          <block type="logic_boolean" id="!.tp@LbsK6T~O#[EW968">
+            <field name="BOOL">TRUE</field>
+          </block>
         </value>
+        <statement name="DO">
+          <block type="rfid_rc522_detect_card" id="hH?-N|P*4s{E?CFQg(01">
+            <value name="stat">
+              <block type="variables_get" id="W(3fEDXv!t_`3}odRT]1">
+                <field name="VAR" id="$a/.=sg*nZ5om7d%rV#[">stat</field>
+              </block>
+            </value>
+            <value name="tag">
+              <block type="variables_get" id="`l.f0V,oukyjvB)8k-Ou">
+                <field name="VAR" id="w*2MM#UO}$18v{wS.i!V">tag_type</field>
+              </block>
+            </value>
+            <next>
+              <block type="text_print" id="nTrlH10$BwC04VGZL-]p">
+                <value name="TEXT">
+                  <shadow type="text" id="L4cX~NX8q_SUr.WWLC$G">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                  <block type="text_join" id="dbh4-KKtSlds2f:a[lpl">
+                    <mutation items="4"/>
+                    <value name="ADD0">
+                      <block type="text" id="_83Z9p`nXeJ,{#=e)Qtu">
+                        <field name="TEXT">Stat: </field>
+                      </block>
+                    </value>
+                    <value name="ADD1">
+                      <block type="variables_get" id="C%:{{jvFJQ{%p70n,}].">
+                        <field name="VAR" id="$a/.=sg*nZ5om7d%rV#[">stat</field>
+                      </block>
+                    </value>
+                    <value name="ADD2">
+                      <block type="text" id="uP/[g[V*d/)GD.bFB,*]">
+                        <field name="TEXT"> Tag type: </field>
+                      </block>
+                    </value>
+                    <value name="ADD3">
+                      <block type="variables_get" id="GwbptNx}sv7-=,K9c2IR">
+                        <field name="VAR" id="w*2MM#UO}$18v{wS.i!V">tag_type</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type="controls_if" id="XGL9X*^64m$Ru6]Je_*6">
+                    <value name="IF0">
+                      <block type="logic_compare" id="TDXZKz[7q)ylolMW1DNh">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="variables_get" id="Odmu${[pl$tFBFmVLF$#">
+                            <field name="VAR" id="$a/.=sg*nZ5om7d%rV#[">stat</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number" id="$ny4].,zU3`Lo4$)[rhL">
+                            <field name="NUM">0</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="text_print" id=":+^~SCc^obzKMx[Ji4^.">
+                        <value name="TEXT">
+                          <shadow type="text" id="X%hybobVXtE|M#ZxV8hc">
+                            <field name="TEXT">abc</field>
+                          </shadow>
+                          <block type="text" id="!.M^y`AK)U8F9rljT06v">
+                            <field name="TEXT">Card detected!</field>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="rfid_rc522_anticoll" id="Uzdm8e.]cph61tQ}~R@k">
+                            <value name="stat">
+                              <block type="variables_get" id="Xc}QWL,:9faPoSY_yMQ6">
+                                <field name="VAR" id="$a/.=sg*nZ5om7d%rV#[">stat</field>
+                              </block>
+                            </value>
+                            <value name="tag">
+                              <block type="variables_get" id="o#bCf,^QLi7B%5mW,a`8">
+                                <field name="VAR" id="P3,.4w7MA[3?l*beToLj">uid</field>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="text_print" id="gq)yJZ)%BY/Cw+iV8,F+">
+                                <value name="TEXT">
+                                  <shadow type="text">
+                                    <field name="TEXT">abc</field>
+                                  </shadow>
+                                  <block type="text_join" id="7//n}Q#Qe2`Z::E^]{3d">
+                                    <mutation items="2"/>
+                                    <value name="ADD0">
+                                      <block type="text" id="V}FTLI~4p-7MUp?)@5Iz">
+                                        <field name="TEXT">Detected Card: </field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD1">
+                                      <block type="variables_get" id="B@j!INpmEu_`TcfFP2Lr">
+                                        <field name="VAR" id="P3,.4w7MA[3?l*beToLj">uid</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="variables_set" id=")#dCSMwGpP^8)X)D2!Ww">
+                                    <field name="VAR" id="V)*8N=7xSPum^D+ZOy]i">AuthorizedCard</field>
+                                    <value name="VALUE">
+                                      <block type="lists_create_with" id="sIW^2:7MPY)x|:_`m9~C">
+                                        <mutation items="5"/>
+                                        <value name="ADD0">
+                                          <block type="math_number" id="3BUgpqG~.OyqwJT_EGBw">
+                                            <field name="NUM">155</field>
+                                          </block>
+                                        </value>
+                                        <value name="ADD1">
+                                          <block type="math_number" id="VS(E6!kI_ycj5EN[6,.-">
+                                            <field name="NUM">47</field>
+                                          </block>
+                                        </value>
+                                        <value name="ADD2">
+                                          <block type="math_number" id="t3;F$#W%J~PXLoO3j$M2">
+                                            <field name="NUM">86</field>
+                                          </block>
+                                        </value>
+                                        <value name="ADD3">
+                                          <block type="math_number" id="rG}xoVahAkHT}KH1r35O">
+                                            <field name="NUM">34</field>
+                                          </block>
+                                        </value>
+                                        <value name="ADD4">
+                                          <block type="math_number" id="z1QZ)y!:|e-!dq|c,O#?">
+                                            <field name="NUM">192</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="text_print" id="t[e|[_I5t0Gp?95_%.e}">
+                                        <value name="TEXT">
+                                          <shadow type="text">
+                                            <field name="TEXT">abc</field>
+                                          </shadow>
+                                          <block type="text_join" id="o4h-zA;cCovWOmX}{12^">
+                                            <mutation items="2"/>
+                                            <value name="ADD0">
+                                              <block type="text" id="3:[MVijb!ASk3PcR@P6H">
+                                                <field name="TEXT">Authorized Card: </field>
+                                              </block>
+                                            </value>
+                                            <value name="ADD1">
+                                              <block type="variables_get" id="#hJ|olgr?2z?rj~nnhCX">
+                                                <field name="VAR" id="V)*8N=7xSPum^D+ZOy]i">AuthorizedCard</field>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <next>
+                                          <block type="controls_if" id="Z|LpSY!(7@m+S.83qFn5">
+                                            <mutation else="1"/>
+                                            <value name="IF0">
+                                              <block type="logic_compare" id="@~I{@7cc:S(8PDn=Y6c#">
+                                                <field name="OP">EQ</field>
+                                                <value name="A">
+                                                  <block type="variables_get" id="FF0MBLY2p1`Fb)LT/IV|">
+                                                    <field name="VAR" id="P3,.4w7MA[3?l*beToLj">uid</field>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <block type="variables_get" id="z0ZOg2nNnvW}s}X{KD5o">
+                                                    <field name="VAR" id="V)*8N=7xSPum^D+ZOy]i">AuthorizedCard</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <statement name="DO0">
+                                              <block type="text_print" id="qij5d[aEJ!j,7TH.[u;u">
+                                                <value name="TEXT">
+                                                  <shadow type="text">
+                                                    <field name="TEXT">abc</field>
+                                                  </shadow>
+                                                  <block type="text" id="Y|+a|?A_pB#:Z^~4Ms})">
+                                                    <field name="TEXT">Open the door</field>
+                                                  </block>
+                                                </value>
+                                                <next>
+                                                  <block type="relay_switch" id="$s)aNCJT/a64#$g^-i`A">
+                                                    <field name="RELAY_STATUS">1</field>
+                                                    <comment pinned="false" h="80" w="160">Let the relay open the door</comment>
+                                                    <value name="pin">
+                                                      <shadow type="pinout" id="spV~)YKcM(|EUl)?9Lr6">
+                                                        <field name="PIN">16</field>
+                                                      </shadow>
+                                                    </value>
+                                                    <next>
+                                                      <block type="delay_ms" id=".[w`~a7)tr4$hU#QL_RM">
+                                                        <value name="time">
+                                                          <shadow type="math_number" id="F/O*sS]XG{?MSvs0fyIy">
+                                                            <field name="NUM">500</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <next>
+                                                          <block type="relay_switch" id="S,q7CE}G-R{sxIC0Dl=Z">
+                                                            <field name="RELAY_STATUS">0</field>
+                                                            <value name="pin">
+                                                              <shadow type="pinout" id="Q/V=|jQI{p.eD_}r18PR">
+                                                                <field name="PIN">16</field>
+                                                              </shadow>
+                                                            </value>
+                                                            <next>
+                                                              <block type="delay_ms" id="k-W{3b=93XF}h?;EAP#A">
+                                                                <value name="time">
+                                                                  <shadow type="math_number" id="6}C~:sVNeStQ/T)VoC+[">
+                                                                    <field name="NUM">500</field>
+                                                                  </shadow>
+                                                                </value>
+                                                              </block>
+                                                            </next>
+                                                          </block>
+                                                        </next>
+                                                      </block>
+                                                    </next>
+                                                  </block>
+                                                </next>
+                                              </block>
+                                            </statement>
+                                            <statement name="ELSE">
+                                              <block type="text_print" id="+Qm:}%qe+ZbLof%|q08Q">
+                                                <value name="TEXT">
+                                                  <shadow type="text">
+                                                    <field name="TEXT">abc</field>
+                                                  </shadow>
+                                                  <block type="text" id="*eIUJy%rk@E4:aEURlPP">
+                                                    <field name="TEXT">Access Denied</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </statement>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
       </block>
-    </statement>
+    </next>
   </block>
-  <block type="controls_repeat_ext" id="a(s+~0N}mx(n}%?h=:LX" x="88" y="37">
-    <value name="TIMES">
-      <shadow type="math_number" id="BD~fe6H(;s:],_A{obb)">
-        <field name="NUM">10</field>
+  <block type="project_metadata" id="]|!$q3^KX/CwF`mw^B}S" x="462" y="37">
+    <field name="NAME">Project INFO</field>
+    <field name="project_author">Author</field>
+    <field name="project_iot_id">IOT ID</field>
+    <field name="project_description">Description</field>
+    <value name="project_author">
+      <shadow type="text" id="Adt}.)c]gl(3E(*CwX-Y">
+        <field name="TEXT">Rafael V. Aroca</field>
       </shadow>
     </value>
-    <statement name="DO">
-      <block type="text_print" id="P5-9uO(tU1wxs[WKKB2)">
-        <value name="TEXT">
-          <shadow type="text" id=":-U$+CR)BlA1,V3s73?=">
-            <field name="TEXT">Oi beaty</field>
-          </shadow>
-        </value>
-      </block>
-    </statement>
-  </block>
-  <block type="text_prompt_ext" id="7#e3?q;CG7k!3m+n?erk" x="288" y="38">
-    <mutation type="TEXT"/>
-    <field name="TYPE">TEXT</field>
-    <value name="TEXT">
-      <shadow type="text" id="]M]!0r`EzDEQp#k~cax8">
-        <field name="TEXT">Teste</field>
+    <value name="project_iot_id">
+      <shadow type="math_number" id="6tp.P!7E1{`q4KLdAM,w">
+        <field name="NUM">0</field>
       </shadow>
     </value>
-  </block>
-  <block type="text_prompt_ext" id="S3fXMwq1P6=V`ZXEUzRD" x="213" y="113">
-    <mutation type="TEXT"/>
-    <field name="TYPE">TEXT</field>
-    <value name="TEXT">
-      <shadow type="text" id="vSI{rqmG]8z7vDuHW.:4">
-        <field name="TEXT">Teste myes</field>
+    <value name="project_description">
+      <shadow type="text" id="O9y^)c9}LD{C8$zg}fwS">
+        <field name="TEXT">RC522 RFID Module example - Open a door when the card is valid</field>
       </shadow>
     </value>
   </block>

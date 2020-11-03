@@ -504,9 +504,9 @@ Blockly.Python['relay_switch'] = function(block) {
   var status = block.getFieldValue('RELAY_STATUS');
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   if (status == '1'){
-  	var code = 'machine.Pin(' + pin + ').off()';
+  	var code = 'machine.Pin(' + pin + ').off()\n';
   }else{
-  	var code = 'machine.Pin(' + pin + ').on()';
+  	var code = 'machine.Pin(' + pin + ').on()\n';
   }
   return code;
 };
@@ -4095,23 +4095,41 @@ Blockly.Python['char_lcd_display'] = function(block) {
 //MFRC522 RFID module
 
 Blockly.Python['rfid_rc522_init'] = function(block) {
+  var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);
+  var mosi = Blockly.Python.valueToCode(block, 'mosi', Blockly.Python.ORDER_ATOMIC);
+  var miso = Blockly.Python.valueToCode(block, 'miso', Blockly.Python.ORDER_ATOMIC);
+  var rst = Blockly.Python.valueToCode(block, 'rst', Blockly.Python.ORDER_ATOMIC);
+  var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
-  var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
+
+  //var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
+  var code = 'rdr=mfrc522.MFRC522(' + sck + ',' + mosi + ',' + miso + ',' + rst + ',' + cs + ')\n';
   return code;
 };
 
 
 Blockly.Python['rfid_rc522_detect_card'] = function(block) {
+  var stat = Blockly.Python.valueToCode(block, 'stat', Blockly.Python.ORDER_ATOMIC);
+  var tag = Blockly.Python.valueToCode(block, 'tag', Blockly.Python.ORDER_ATOMIC);
+
   Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
-  var code = 'rdr.request(rdr.REQIDL)';
-  return [code, Blockly.Python.ORDER_NONE];
+
+  var code = '(' + stat + ',' + tag + ') = rdr.request(rdr.REQIDL)\n';
+  //return [code, Blockly.Python.ORDER_NONE];
+  return code;
 };
 
 
 Blockly.Python['rfid_rc522_anticoll'] = function(block) {
-  Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
-  var code = 'rdr.anticoll()';
-  return [code, Blockly.Python.ORDER_NONE];
+  var stat = Blockly.Python.valueToCode(block, 'stat', Blockly.Python.ORDER_ATOMIC);
+  var tag = Blockly.Python.valueToCode(block, 'tag', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '(' + stat + ',' + tag + ') = rdr.anticoll()\n';
+  return code;
+
+  //Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
+  //var code = 'rdr.anticoll()';
+  //return [code, Blockly.Python.ORDER_NONE];
 };
 
 

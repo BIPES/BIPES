@@ -8423,9 +8423,24 @@ Blockly.Blocks['rfid_rc522_detect_card'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Detect RFID Card");
+        .appendField("Check if RFID Card is present");
 
-    this.setOutput(true);
+    this.appendValueInput("stat")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("status");
+
+    this.appendValueInput("tag")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("tag");
+
+
+    //this.setOutput(true);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
     this.setTooltip('');
   }
 };
@@ -8435,9 +8450,24 @@ Blockly.Blocks['rfid_rc522_anticoll'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Anticoll");
+        .appendField("Get card identification (UID)");
 
-    this.setOutput(true);
+    this.appendValueInput("stat")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("status");
+
+    this.appendValueInput("tag")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("tag");
+
+
+    //this.setOutput(true);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
     this.setTooltip('');
   }
 };

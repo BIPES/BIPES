@@ -378,7 +378,7 @@ function loadExampleFromURL(pName){
                     console.log( content );
                     var xml = Blockly.Xml.textToDom(content);
                     Blockly.Xml.domToWorkspace(xml, Code.workspace);
-                    alert("Example " + pName + " loaded");
+                    //alert("Example " + pName + " loaded");
 
                 return request.responseText;
             }
@@ -580,7 +580,12 @@ print('Install done.')
 
 	if (confirm(msgCon)) {
 		//console.log('Thing was saved to the database.');
-      		Code.discard(); 
+		
+		//Ask for confirmation
+      		//Code.discard(); 
+		//Delete blocks without asking for confirmation
+		Code.workspace.clear();
+
 		Code.renderContent();
 		loadExampleFromURL(lib);
 		Code.renderContent();
@@ -599,6 +604,18 @@ print('Install done.')
 
 	
 	var url = "https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub";
+
+
+	    if (lib == "mpu6050") {
+		url = 'https://docs.google.com/document/d/1EjkiVzuEtFIfapse4G1BThguLICfsbci3bHwvAOzhKo/edit#heading=h.79fbsr8dha21';
+	    }
+
+
+
+	    if (lib == "ds1820") {
+		url = 'https://docs.google.com/document/d/1EjkiVzuEtFIfapse4G1BThguLICfsbci3bHwvAOzhKo/edit#heading=h.w84555jgod5j';
+	    }
+
 
 	    if (lib == "mfrc522") {
 		url = 'https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub#h.owhbali4ayaj';

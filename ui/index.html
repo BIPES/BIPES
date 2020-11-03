@@ -1353,12 +1353,17 @@ Device file manager
 
 
 
+
   </category>
 
   <category name="Inertial Measurement">
       <label text="MPU6050 IMU"></label>
    <label text="Library: https://github.com/"></label>
         <button text="Install MPU6050 library" callbackKey="installPyLib"></button>
+
+        <button text="Load example: mpu6050" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
+
 
 
     <block type="init_mpu6050">
@@ -1390,6 +1395,10 @@ Device file manager
 
       <category name="OneWire">
       <label text="OneWire"></label>
+
+        <button text="Load example: ds1820" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: ds1820" callbackKey="loadDoc"></button>
+
       <block type="onewire_ds18x20_init">
         <value name="pin">
           <shadow type="pinout">
@@ -1420,7 +1429,7 @@ Device file manager
       <block type="rfid_rc522_init">
         <value name="sck">
           <shadow type="pinout">
-            <field name="CSK"></field>
+            <field name="SCK"></field>
           </shadow>
         </value>
  
