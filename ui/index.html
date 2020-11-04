@@ -408,9 +408,11 @@ function checkCookie() {
     <div id="term">
             </div>
         </div>
-<!--        <br clear="both" />
+<!--        
+	<br clear="both" />
         <i>Terminal widget should be focused (text cursor visible) to accept input. Click on it if not.</i><br/>
-        <i>To paste, press Ctrl+A, then Ctrl+V</i> -->
+<i>To paste, press Ctrl+A, then Ctrl+V. To copy, use Ctrl+A and Ctrl+C</i> <br>
+-->
      </td>
      <td>
         <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
@@ -422,6 +424,9 @@ function checkCookie() {
       <br>
       <br>
       <input type="button" value="Run edited Python File" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
+      <br>
+      <br>
+      <input type="button" value="Clear terminal output" onclick="term.write('\x1bc');  " />
 
       <!--
             <div class="file-box">
