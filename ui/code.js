@@ -610,6 +610,10 @@ print('Install done.')
 		url = 'https://docs.google.com/document/d/1EjkiVzuEtFIfapse4G1BThguLICfsbci3bHwvAOzhKo/edit#heading=h.79fbsr8dha21';
 	    }
 
+	    if (lib == "tm1640") {
+		url = 'https://docs.google.com/document/d/1EjkiVzuEtFIfapse4G1BThguLICfsbci3bHwvAOzhKo/edit#heading=h.iw35vui9vzi1';
+	    }
+
 
 
 	    if (lib == "ds1820") {

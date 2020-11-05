@@ -1,0 +1,82 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="init_mpu6050" id="LJ{~*vz:#M$HTwi3#hoD" x="138" y="88">
+    <value name="scl">
+      <shadow type="math_number" id="|Qe]vnT+}B)[Xc,n8C#n">
+        <field name="NUM">5</field>
+      </shadow>
+    </value>
+    <value name="sda">
+      <shadow type="math_number" id="Z[y4tWj^K}#X.rT*eYPy">
+        <field name="NUM">4</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="controls_whileUntil" id="A;W$.L{8-)@:0kfeyu^X">
+        <field name="MODE">WHILE</field>
+        <value name="BOOL">
+          <block type="logic_boolean" id="H[2O`G`Zuzp}1rrYw;SY">
+            <field name="BOOL">TRUE</field>
+          </block>
+        </value>
+        <statement name="DO">
+          <block type="text_print" id="5k^3Mq;sp3te%(61*dP^">
+            <value name="TEXT">
+              <shadow type="text" id="q_wA?(uI.#{QM)g+?oJo">
+                <field name="TEXT">abc</field>
+              </shadow>
+              <block type="text_join" id="UaBkpbqyhuHczBMJ1d_Y">
+                <mutation items="5"/>
+                <value name="ADD0">
+                  <block type="mpu6050_read_acc_x" id="($glQ[P@*3/_q(IpNEEn">
+                    <field name="MSG_READ_MPU6050">Acceleration - X axis</field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="text" id="XF+B$J}@l1n-B*C$=/Ev">
+                    <field name="TEXT">,</field>
+                  </block>
+                </value>
+                <value name="ADD2">
+                  <block type="mpu6050_read_acc_y" id="I:gU8Bu{{Q;SwLVb`#o}">
+                    <field name="MSG_READ_MPU6050">Acceleration - Y axis</field>
+                  </block>
+                </value>
+                <value name="ADD3">
+                  <block type="text" id="v`k1s#ON!_:*G95vbSf;">
+                    <field name="TEXT">, </field>
+                  </block>
+                </value>
+                <value name="ADD4">
+                  <block type="mpu6050_read_acc_z" id="!rUtBqKG$JGgVLE6knSL">
+                    <field name="MSG_READ_MPU6050">Acceleration - Z axis</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </next>
+  </block>
+  <block type="project_metadata" id="|dVlT(aN(GC)TcWb/}(C" x="163" y="463">
+    <field name="NAME">Project INFO</field>
+    <field name="project_author">Author</field>
+    <field name="project_iot_id">IOT ID</field>
+    <field name="project_description">Description</field>
+    <value name="project_author">
+      <shadow type="text" id="ox?f?4SAcdWOhCf;IGVA">
+        <field name="TEXT">Rafael</field>
+      </shadow>
+    </value>
+    <value name="project_iot_id">
+      <shadow type="math_number" id="P}UEgLUF){wF/A)6AGd!">
+        <field name="NUM">0</field>
+      </shadow>
+    </value>
+    <value name="project_description">
+      <shadow type="text" id="ZM+2,h4=d_1#eJL-Y{ig">
+        <field name="TEXT">MPU6050 Demo</field>
+      </shadow>
+    </value>
+  </block>
+</xml>

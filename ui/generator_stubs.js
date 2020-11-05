@@ -494,7 +494,7 @@ Blockly.Python['tm1640_custom'] = function (block) {
     var line8 = Number(checkbox_h0) * 2**0 + Number(checkbox_h1) * 2**1 + Number(checkbox_h2) * 2**2 + Number(checkbox_h3) * 2**3 + Number(checkbox_h4) * 2**4 + Number(checkbox_h5) * 2**5 + Number(checkbox_h6) * 2**6 + Number(checkbox_h7) * 2**7;
 
 
-    var code = 'tm.write([' + line1 + ' ' + line2 + ' ' + line3 + ' ' + line4 + ' ' + line5 + ' ' + line6 + ' ' + line7 + ' ' + line8 + '])\n';
+    var code = 'tm.write([' + line8 + ',' + line7 + ',' + line6 + ',' + line5 + ',' + line5 + ',' + line3 + ',' + line2 + ',' + line1 + '])\n';
     return code;
 };
 

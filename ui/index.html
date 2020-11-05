@@ -1170,7 +1170,9 @@ Device file manager
   <category name="LED Matrix">
       <label text="TM1640 LED Matrix"></label>
       <label text="Library: https://github.com/mcauser/micropython-tm1640"></label>
-        <button text="Install TM1640 library" callbackKey="installPyLib"></button>
+        <button text="Install tm1640 library" callbackKey="installPyLib"></button>
+        <button text="Load example: tm1640" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: tm1640" callbackKey="loadDoc"></button>
 
     <block type="tm1640_init">
 
@@ -1364,7 +1366,7 @@ Device file manager
   <category name="Inertial Measurement">
       <label text="MPU6050 IMU"></label>
    <label text="Library: https://github.com/"></label>
-        <button text="Install MPU6050 library" callbackKey="installPyLib"></button>
+        <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
 
         <button text="Load example: mpu6050" callbackKey="loadExample"></button>
         <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
@@ -3453,24 +3455,23 @@ function runPython(evt) {
     return;
   }
 
-
-
   if (!connected) {
     alert('Must be connected to run code');
     return;
   }
 
-        var code = Blockly.Python.workspaceToCode(Code.workspace);
-        var textArray = code.split(/\r\n|\r|\n/);
+  var code = Blockly.Python.workspaceToCode(Code.workspace);
+  var textArray = code.split(/\r\n|\r|\n/);
 
-        console.log(code);
-        ws.send('\x05');
+  Code.tabClick('console');
+  console.log(code);
+  ws.send('\x05');
   sleep(50);
-        textArray.forEach(function(line, index, array) {
-           ws.send(line+'\r');
-     sleep(25);
-        });
-        ws.send('\x04');
+  textArray.forEach(function(line, index, array) {
+	  ws.send(line+'\r');
+	  sleep(15);
+  });
+  ws.send('\x04');
   
 }
 
