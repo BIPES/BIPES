@@ -1754,6 +1754,59 @@ Device file manager
       <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
       <field name="NET_POST_REQUEST_DATA">Data</field>
     </block>
+
+    <category name="EMAIL">
+      <label text="Email sender using uMail"></label>
+      <label text="Library: https://github.com/shawwwn/uMail"></label>
+        <button text="Install umail library" callbackKey="installPyLib"></button>
+        <button text="Documentation: uMail" callbackKey="loadDoc"></button>
+
+      <block type="umail_init">
+	  <value name="host">
+          <shadow type="text">
+            <field name="TEXT">smtp.gmail.com</field>
+          </shadow>
+        </value>
+        <value name="port">
+          <shadow type="math_number">
+            <field name="NUM">587</field>
+          </shadow>
+        </value>
+        <value name="username">
+          <shadow type="text">
+            <field name="TEXT">email@gmail.com</field>
+          </shadow>
+        </value>
+        <value name="password">
+          <shadow type="text">
+            <field name="TEXT">gmail_password</field>
+          </shadow>
+        </value>
+      </block>
+
+      <block type="umail_send">
+	  <value name="to">
+          <shadow type="text">
+            <field name="TEXT">email@email.com</field>
+          </shadow>
+        </value>
+        <value name="subject">
+          <shadow type="text">
+            <field name="TEXT">Email from BIPES!</field>
+          </shadow>
+        </value>
+        <value name="contents">
+          <shadow type="text">
+            <field name="TEXT">BIPES is nice!</field>
+          </shadow>
+        </value>
+      </block>
+
+
+
+
+    </category>
+
     <category name="MQTT">
       <label text="MQTT (Message Queue Telemetry Transport)"></label>
       <block type="mqtt_init">

@@ -4144,3 +4144,35 @@ Blockly.Python['rfid_rc522_write_card'] = function(block) {
   return code;
 };
 
+
+Blockly.Python['umail_init'] = function(block) {
+  var host = Blockly.Python.valueToCode(block, 'host', Blockly.Python.ORDER_ATOMIC);
+  var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+  var username = Blockly.Python.valueToCode(block, 'username', Blockly.Python.ORDER_ATOMIC);
+  var password = Blockly.Python.valueToCode(block, 'password', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_umail'] = 'import umail';
+
+  var code = 'smtp = umail.SMTP(' + host + ',' + port + ',' + 'username=' + username + ',' + 'password=' + password + ')\n';
+  return code;
+
+};
+
+Blockly.Python['umail_send'] = function(block) {
+  var to = Blockly.Python.valueToCode(block, 'to', Blockly.Python.ORDER_ATOMIC);
+  var subject = Blockly.Python.valueToCode(block, 'subject', Blockly.Python.ORDER_ATOMIC);
+  var contents = Blockly.Python.valueToCode(block, 'contents', Blockly.Python.ORDER_ATOMIC);
+
+  var s = subject.replace('\'','').replace('\'','');
+  var c = contents.replace('\'','').replace('\'','');
+  var msg = 'Subject: ' + s + '\\n\\n' + c;
+
+
+  var code = 'smtp.to(' + to + ')\n';
+	code += 'smtp.send(\'' + msg + '\')\n';
+	code += 'smtp.quit()\n';
+  return code;
+
+};
+
+
