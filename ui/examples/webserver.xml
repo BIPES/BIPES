@@ -1,0 +1,220 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id="z1#lT$]dQ#rm,JfYedci">volts</variable>
+    <variable id="r7,m)LIJH6l^iI+|=xwB">res</variable>
+  </variables>
+  <block type="net_http_server_start" id="u$=^vHJ(#($u%s3H?TA7" x="112" y="-12">
+    <value name="port">
+      <shadow type="math_number" id="?WW+OZUvV{5iWJas;bXZ">
+        <field name="NUM">80</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="controls_whileUntil" id="MTXHDe7NO~he`JbsaTCB">
+        <field name="MODE">WHILE</field>
+        <value name="BOOL">
+          <block type="logic_boolean" id="UWFJZU=,$y++,pKjhGpe">
+            <field name="BOOL">TRUE</field>
+          </block>
+        </value>
+        <statement name="DO">
+          <block type="net_http_server_accept" id="C2KMm,^rlnwWJ|w43Y@;">
+            <next>
+              <block type="text_print" id="[qN[SHr#Fcf#ENWup.fr">
+                <value name="TEXT">
+                  <shadow type="text" id="F+Bn9DL?CBV_dXN[a@oa">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                  <block type="net_http_server_requested_page" id="E||pon|4smM$-..i=mYI"/>
+                </value>
+                <next>
+                  <block type="controls_if" id="nN*-R@Qqk_Y~|4%YNedn">
+                    <value name="IF0">
+                      <block type="logic_compare" id="XeWsv=r!_ln!yLBC|JU^">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="net_http_server_requested_page" id="8T1Oq?}X2okmaKw$72fg"/>
+                        </value>
+                        <value name="B">
+                          <block type="text" id="WfwdTK~|Z(YP3CMTi]_4">
+                            <field name="TEXT">on</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="gpio_set" id="NB|rUAXE{6NiR}b9P;a*">
+                        <value name="pin">
+                          <shadow type="pinout" id="ep%H[0x/]zarEQNn!%g$">
+                            <field name="PIN">2</field>
+                          </shadow>
+                        </value>
+                        <value name="value">
+                          <shadow type="logic_boolean" id="p};8{;1hSzG[h-H%R8X$">
+                            <field name="BOOL">TRUE</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="text_print" id="t~TDLB#2]QepZ`HyDCdk">
+                            <value name="TEXT">
+                              <shadow type="text" id="8V5kK5wlw+0j-WxlCME8">
+                                <field name="TEXT">abc</field>
+                              </shadow>
+                              <block type="text" id="+XLThG[5IoLC.{eT)DTA">
+                                <field name="TEXT">ON Requested</field>
+                              </block>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="controls_if" id="k:3%8:G*r??CZzCE^)Ja">
+                        <value name="IF0">
+                          <block type="logic_compare" id="gL)!VX.t^(Vf+)-HBdCW">
+                            <field name="OP">EQ</field>
+                            <value name="A">
+                              <block type="net_http_server_requested_page" id=";0WD`%vUg@sFd/#=0ckw"/>
+                            </value>
+                            <value name="B">
+                              <block type="text" id="f3xM;Q?ENG9SmPZBziO|">
+                                <field name="TEXT">off</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <statement name="DO0">
+                          <block type="gpio_set" id="{!iJ]5gWLRerSUy7T=]*">
+                            <value name="pin">
+                              <shadow type="pinout" id="3V{u)*e`j$+}r[;oP-9y">
+                                <field name="PIN">2</field>
+                              </shadow>
+                            </value>
+                            <value name="value">
+                              <shadow type="logic_boolean" id=".UsWwKz~4ja^`QRoKk;]">
+                                <field name="BOOL">FALSE</field>
+                              </shadow>
+                            </value>
+                            <next>
+                              <block type="text_print" id="a)E7r]JFpXh{q6@d#(GU">
+                                <value name="TEXT">
+                                  <shadow type="text">
+                                    <field name="TEXT">abc</field>
+                                  </shadow>
+                                  <block type="text" id="%7S^U09]FFHCnCT3aq#O">
+                                    <field name="TEXT">OFF Requested</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </next>
+                          </block>
+                        </statement>
+                        <next>
+                          <block type="variables_set" id="y~bB:jcI7wOZ0e/HD7Cb">
+                            <field name="VAR" id="z1#lT$]dQ#rm,JfYedci">volts</field>
+                            <value name="VALUE">
+                              <block type="math_arithmetic" id="`_T:@7n;5Ui_0p5kUi@S">
+                                <field name="OP">MULTIPLY</field>
+                                <value name="A">
+                                  <shadow type="math_number" id="M)O22C}a.^LTz*|3r(n^">
+                                    <field name="NUM">1</field>
+                                  </shadow>
+                                  <block type="adc" id="fw-^NGHQu/ARcImc*pX4">
+                                    <value name="pin">
+                                      <shadow type="math_number" id="!c1tXesw;rqsO?/.Olz9">
+                                        <field name="NUM">0</field>
+                                      </shadow>
+                                    </value>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <shadow type="math_number" id="2Q1yM=q%us/R.@MtOFs-">
+                                    <field name="NUM">0.0032</field>
+                                  </shadow>
+                                </value>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="variables_set" id="f.^dO3eX0:5/r=n:77@w">
+                                <field name="VAR" id="r7,m)LIJH6l^iI+|=xwB">res</field>
+                                <value name="VALUE">
+                                  <block type="text_join" id="Hd2?pwT]?ko7B-7=6!!^">
+                                    <mutation items="10"/>
+                                    <value name="ADD0">
+                                      <block type="text" id="kJ~@:rJ3-i:qX0uS1xyl">
+                                        <field name="TEXT">BIPES WebServer</field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD1">
+                                      <block type="text" id="7*0O#ab%/P(~YD#:uTYl">
+                                        <field name="TEXT">&lt;BR&gt;&lt;BR&gt;</field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD2">
+                                      <block type="text" id=")nAq.zmK.1VD#H]M~MHo">
+                                        <field name="TEXT">LED Command: </field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD3">
+                                      <block type="net_http_server_requested_page" id="-2|OqXpX2y1@HWY}QZ**"/>
+                                    </value>
+                                    <value name="ADD4">
+                                      <block type="text" id="qcDn~zYvTV}R2h@.+x8)">
+                                        <field name="TEXT">&lt;BR&gt;&lt;BR&gt;</field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD5">
+                                      <block type="text" id="|+aQR0,,Ec{(xDEeF)8p">
+                                        <field name="TEXT">Analog Port: </field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD6">
+                                      <block type="variables_get" id="@*RYOVS]PJ3N}i~@)Bvx">
+                                        <field name="VAR" id="z1#lT$]dQ#rm,JfYedci">volts</field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD7">
+                                      <block type="text" id="~KCsOKSn_=o`{V7+WiPo">
+                                        <field name="TEXT"> Volts</field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD8">
+                                      <block type="text" id="DzzY?*bPq,5*xAgP7jTt">
+                                        <field name="TEXT">&lt;BR&gt;&lt;BR&gt;</field>
+                                      </block>
+                                    </value>
+                                    <value name="ADD9">
+                                      <block type="text" id="R{[uMSv$C{(;yIu/E:hH">
+                                        <field name="TEXT">&lt;a href=/on&gt;LED ON&lt;/a&gt; | &lt;a href=/off&gt;LED OFF&lt;/a&gt;</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="net_http_server_send_response" id="sE?M.0rdnw43ro,]yKp~">
+                                    <value name="html">
+                                      <shadow type="text" id="@FH1EeG4bjv2+FmB|rJv">
+                                        <field name="TEXT">You reached BIPES WebServer!</field>
+                                      </shadow>
+                                      <block type="variables_get" id=")O}6nW3S~Jct^Gtt$-U8">
+                                        <field name="VAR" id="r7,m)LIJH6l^iI+|=xwB">res</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </next>
+  </block>
+</xml>

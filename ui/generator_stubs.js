@@ -4176,3 +4176,420 @@ Blockly.Python['umail_send'] = function(block) {
 };
 
 
+//New Network related functions
+
+Blockly.Python['net_ntp_sync'] = function(block) {
+//  var server = Blockly.Python.valueToCode(block, 'server', Blockly.Python.ORDER_ATOMIC);
+  var tz = Blockly.Python.valueToCode(block, 'tz', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_ntptime'] = 'import ntptime';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  Blockly.Python.definitions_['import_utime'] = 'import utime';
+
+  var code = 'ntptime.settime()\n';
+	code += 'rtc = machine.RTC()\n';
+	code += 'utc_shift=' + tz + '\n';
+	code += 'tm = utime.localtime(utime.mktime(utime.localtime()) + utc_shift*3600)\n';
+	code += 'tm = tm[0:3] + (0,) + tm[3:6] + (0,)\n';
+	code += 'rtc.datetime(tm)\n';
+	code += "rtc.datetime()\n";
+
+	/*Useful:
+	 * >>>from machine import RTC
+>>>(year, month, mday, week_of_year, hour, minute, second, milisecond)=RTC().datetime()
+>>>RTC().init((year, month, mday, week_of_year, hour+2, minute, second, milisecond)) # GMT correction. GMT+2
+>>>print ("Fecha/Hora (year, month, mday, week of year, hour, minute, second, milisecond):", RTC().datetime())
+>>>print ("{:02d}/{:02d}/{} {:02d}:{:02d}:{:02d}".format(RTC().datetime()[2],RTC().datetime()[1],RTC().datetime()[0],RTC().datetime()[4],RTC().datetime()[5],RTC
+*/
+  return code;
+
+};
+
+
+Blockly.Python['net_wiznet5k_init'] = function(block) {
+
+  //Reference: https://docs.micropython.org/en/latest/library/network.WIZNET5K.html
+	
+  var spi = Blockly.Python.valueToCode(block, 'spi', Blockly.Python.ORDER_ATOMIC);
+  var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
+  var rst = Blockly.Python.valueToCode(block, 'rst', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_network'] = 'import utime';
+
+  var code = 'nic = network.WIZNET5K(' + spi + ',' + cs + ',' + rst + '\n';
+
+  return code;
+
+};
+
+
+Blockly.Python['net_wiznet5k_isconnected'] = function(block) {
+
+  var code = 'WIZNET5K.isconnected()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_wiznet5k_regs'] = function(block) {
+
+  var code = 'WIZNET5K.regs()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_wiznet5k_ifconfig'] = function(block) {
+  var ip = Blockly.Python.valueToCode(block, 'ip', Blockly.Python.ORDER_ATOMIC);
+  var subnet = Blockly.Python.valueToCode(block, 'subnet', Blockly.Python.ORDER_ATOMIC);
+  var gw = Blockly.Python.valueToCode(block, 'gw', Blockly.Python.ORDER_ATOMIC);
+  var dns = Blockly.Python.valueToCode(block, 'dns', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'nic.ifconfig((' + ip + ',' + subnet + ',' + gw + ',' + dns + '))\n';
+
+  return code;
+};
+
+
+Blockly.Python['net_socket_connect'] = function(block) {
+  var host = Blockly.Python.valueToCode(block, 'host', Blockly.Python.ORDER_ATOMIC);
+  var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_socket'] = 'import socket';
+
+  //var code = 'addr_info = socket.getaddrinfo("towel.blinkenlights.nl", 23)';
+  var code = 'addr_info = socket.getaddrinfo(' + host + ',' + port + ')\n';
+      code += 'addr = addr_info[0][-1]\n';
+      code += 's = socket.socket()\n';
+      code += 's.connect(addr)\n';
+
+  return code;
+};
+
+Blockly.Python['net_socket_receive'] = function(block) {
+  var bytes = Blockly.Python.valueToCode(block, 'bytes', Blockly.Python.ORDER_ATOMIC);
+
+  var code = "str(s.recv(" + bytes + "), 'utf8')";
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_socket_send'] = function(block) {
+  var bytes = Blockly.Python.valueToCode(block, 'bytes', Blockly.Python.ORDER_ATOMIC);
+
+  var code = "s.send(bytes(" + bytes + ", 'utf8'))\n";
+
+  return code;
+};
+
+
+Blockly.Python['net_socket_close'] = function(block) {
+
+  var code = 's.close()\n';
+
+  return code;
+};
+
+
+/*
+ *
+ *
+ *
+ * HTTP Web Server Example From MicroPython
+import machine
+pins = [machine.Pin(i, machine.Pin.IN) for i in (0, 2, 4, 5, 12, 13, 14, 15)]
+
+html = """<!DOCTYPE html>
+<html>
+    <head> <title>ESP8266 Pins</title> </head>
+    <body> <h1>ESP8266 Pins</h1>
+        <table border="1"> <tr><th>Pin</th><th>Value</th></tr> %s </table>
+    </body>
+</html>
+"""
+
+import socket
+addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1]
+
+s = socket.socket()
+s.bind(addr)
+s.listen(1)
+
+print('listening on', addr)
+
+while True:
+    cl, addr = s.accept()
+    print('client connected from', addr)
+    cl_file = cl.makefile('rwb', 0)
+    while True:
+        line = cl_file.readline()
+        if not line or line == b'\r\n':
+            break
+    rows = ['<tr><td>%s</td><td>%d</td></tr>' % (str(p), p.value()) for p in pins]
+    response = html % '\n'.join(rows)
+    cl.send('HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n')
+    cl.send(response)
+    cl.close()
+*/
+
+Blockly.Python['net_http_server_start'] = function(block) {
+  var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_socket'] = 'import socket';
+
+  var code = "http_addr = socket.getaddrinfo('0.0.0.0'," + port + ")[0][-1]\n";
+      code += 's = socket.socket()\n';
+      code += 's.bind(http_addr)\n';
+      code += 's.listen(1)\n';
+      code += "print('BIPES HTTP Server Listening on', http_addr)\n";
+
+  return code;
+};
+
+
+Blockly.Python['net_http_server_accept'] = function(block) {
+
+  var code = "cl, http_addr = s.accept()\n";
+      code += "print('client connected from', http_addr)\n";
+      code += "cl_file = cl.makefile('rwb', 0)\n";
+      code += "while True:\n";
+      code += "    line = cl_file.readline()\n";
+      code += "    lineS = str(line, 'utf8')\n";
+      code += "    print(line)\n";
+      code += "    if lineS.startswith('GET /'):\n";
+      code += "        http_request_page = (lineS.split('/')[1]).split(' ')[0]\n";
+      code += "        print('Request page = ' + http_request_page)\n";
+      code += "    if not line or line == b'\\r\\n':\n";
+      code += "        break\n";
+
+  return code;
+};
+
+Blockly.Python['net_http_server_requested_page'] = function(block) {
+
+  var code = 'http_request_page';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_http_server_send_response'] = function(block) {
+  var html = Blockly.Python.valueToCode(block, 'html', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'response = ' + html + '\n';
+      code += "cl.send('HTTP/1.0 200 OK\\r\\nContent-type: text/html\\r\\n\\r\\n')\n";
+      code += 'cl.send(response)\n';
+      code += 'cl.close()\n';
+
+  return code;
+};
+
+
+Blockly.Python['net_http_server_close'] = function(block) {
+
+  var code = 'cl.close()\n';
+
+  return code;
+};
+
+//SIM900L GSM MODEM
+Blockly.Python['gsm_modem_init'] = function(block) {
+  var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
+  var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
+  var bps = Blockly.Python.valueToCode(block, 'bps', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '#init GSM Module \n';
+
+  return code;
+};
+
+Blockly.Python['gsm_modem_send_at'] = function(block) {
+  var cmd = Blockly.Python.valueToCode(block, 'cmd', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '#init GSM Module AT \n';
+
+  return code;
+};
+
+Blockly.Python['gsm_modem_send_sms'] = function(block) {
+  var dst = Blockly.Python.valueToCode(block, 'dst', Blockly.Python.ORDER_ATOMIC);
+  var msg = Blockly.Python.valueToCode(block, 'msg', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '#Send SMS \n';
+
+  return code;
+};
+
+Blockly.Python['gsm_modem_http_get'] = function(block) {
+  var cmd = Blockly.Python.valueToCode(block, 'cmd', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '#GSM Module HTTP GET\n';
+
+  return code;
+};
+
+
+Blockly.Python['gsm_modem_response'] = function(block) {
+  var timeout = Blockly.Python.valueToCode(block, 'timeout', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '#GSM Module Response \n';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
+//UART
+Blockly.Python['uart_init'] = function(block) {
+  //Reference: 
+  var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+  var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
+  var bits = Blockly.Python.valueToCode(block, 'bits', Blockly.Python.ORDER_ATOMIC);
+  var par = Blockly.Python.valueToCode(block, 'par', Blockly.Python.ORDER_ATOMIC);
+  var stop = Blockly.Python.valueToCode(block, 'stop', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_machine_uart'] = 'from machine import uart';
+
+  var code = 'uart = UART(1, 9600)\n';
+      code += "uart.init(" + speed + ', bits=' + bits + ', parity=' + par + ', stop=' + stop + ')\n';
+
+  return code;
+};
+
+Blockly.Python['uart_write'] = function(block) {
+  var buf = Blockly.Python.valueToCode(block, 'buf', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'uart.write(' + buf + ')\n';
+
+  return code;
+};
+
+Blockly.Python['uart_read'] = function(block) {
+  var s = Blockly.Python.valueToCode(block, 's', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'uart.read(' + s + ')';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['uart_read_all'] = function(block) {
+
+  var code = 'uart.read()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['uart_readline'] = function(block) {
+
+  var code = 'uart.readline()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['uart_read_into'] = function(block) {
+  var b = Blockly.Python.valueToCode(block, 'buffer', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'uart.readinto(' + b + ')';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
+//MAX30100 oximeter
+Blockly.Python['max30100_init'] = function(block) {
+  var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+  var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '#TODO: init max30100\n';
+
+  return code;
+};
+
+Blockly.Python['max30100_read'] = function(block) {
+
+  var code = '#read max30100\n';
+
+  return code;
+};
+
+Blockly.Python['max30100_red'] = function(block) {
+
+  var code = '1';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['max30100_ir'] = function(block) {
+
+  var code = '2';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+//GPS Module
+Blockly.Python['gps_init'] = function(block) {
+  var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
+  var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
+  var bps = Blockly.Python.valueToCode(block, 'bps', Blockly.Python.ORDER_ATOMIC);
+
+  var code = '#TODO: init GPS\n';
+
+  return code;
+};
+
+Blockly.Python['gps_update'] = function(block) {
+
+  var code = '#update gps \n';
+
+  return code;
+};
+
+Blockly.Python['gps_get_lat'] = function(block) {
+
+  var code = 'gps_lat';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['gps_get_long'] = function(block) {
+
+  var code = 'gps_long';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['gps_get_height'] = function(block) {
+
+  var code = 'gps_speed';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['gps_get_speed'] = function(block) {
+
+  var code = 'gps_speed';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['gps_get_datetime'] = function(block) {
+
+  var code = 'gps_datetime';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
+
+
+
+

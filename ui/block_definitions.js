@@ -323,7 +323,8 @@ Blockly.Blocks['exec_python'] = {
     this.appendValueInput("command")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Commnad");
+        .appendField("Command");
+
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(240);
@@ -8666,8 +8667,6 @@ Blockly.Blocks['umail_init'] = {
   }
 };
 
-
-
 Blockly.Blocks['umail_send'] = {
   init: function() {
     this.setColour(135);
@@ -8694,5 +8693,658 @@ Blockly.Blocks['umail_send'] = {
     this.setTooltip('');
   }
 };
+
+
+//New Network related functions
+//
+Blockly.Blocks['net_ntp_sync'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Sync date and time");
+
+    this.appendDummyInput()
+        .appendField("NTP: Network Time Protocol");
+
+    this.appendValueInput("tz")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Timezone:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['net_wiznet5k_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init WizNet5000");
+	  
+    this.appendDummyInput()
+        .appendField("Ethernet Controller");
+
+    this.appendValueInput("spi")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SPI Bus:");
+
+    this.appendValueInput("cs")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("CS:");
+
+    this.appendValueInput("rst")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("RST:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_wiznet5k_isconnected'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Check if Ethernet is Connected");
+	  
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks['net_wiznet5k_regs'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Dump Ethernet Registers");
+	  
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_wiznet5k_ifconfig'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Configure WizNet5000");
+	  
+    this.appendDummyInput()
+        .appendField("Ethernet Controller");
+
+    this.appendValueInput("ip")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("IP:");
+
+    this.appendValueInput("subnet")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Subnet:");
+
+    this.appendValueInput("gw")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Gateway:");
+
+    this.appendValueInput("dns")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("DNS:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+//TCP/IP Sockets
+
+Blockly.Blocks['net_socket_connect'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("TCP/IP Socket Connect");
+	  
+    this.appendValueInput("host")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Host:");
+
+    this.appendValueInput("port")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Port:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['net_socket_receive'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Socket Receive");
+	  
+    this.appendValueInput("bytes")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Bytes to receive:");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['net_socket_send'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Socket Send");
+	  
+    this.appendValueInput("bytes")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Data:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_socket_close'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Socket Close");
+	  
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['net_http_server_start'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Start HTTP Web Server");
+	  
+    this.appendValueInput("port")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Port:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_http_server_accept'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Wait for HTTP Client");
+	  
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_http_server_requested_page'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Requested Web Page");
+	  
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_http_server_send_response'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Sent HTTP Response to Client");
+	  
+    this.appendValueInput("html")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("HTML Data:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_http_server_close'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Close HTTP Web Server");
+	  
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['gsm_modem_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init SIM800/900 GSM MODEM");
+	  
+    this.appendValueInput("tx")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("TX Pin:");
+ 
+    this.appendValueInput("rx")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("RX Pin:");
+
+    this.appendValueInput("bps")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Baud rate:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gsm_modem_send_sms'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Send SMS Message");
+	  
+    this.appendValueInput("dst")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Destination:");
+ 
+    this.appendValueInput("msg")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Message:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['gsm_modem_send_at'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Send AT Command");
+	  
+    this.appendValueInput("cmd")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Command:");
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gsm_modem_http_get'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("GSM: Send HTTP GET Request");
+	  
+    this.appendValueInput("cmd")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Request:");
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gsm_modem_response'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Get GSM Modem Response");
+ 
+    this.appendValueInput("timeout")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Timeout:");
+	  
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+//UART
+
+Blockly.Blocks['uart_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init UART Serial Port");
+ 
+    this.appendValueInput("port")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Port:");
+
+    this.appendValueInput("speed")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Baud rate:");
+
+    this.appendValueInput("bits")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Start bit:");
+
+    this.appendValueInput("stop")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Stop bit:");
+
+    this.appendValueInput("par")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Parity:");
+	  
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['uart_write'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Send data to UART");
+ 
+    this.appendValueInput("buf")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Data:");
+	  
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['uart_read'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Read data from UART");
+ 
+    this.appendValueInput("s")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Bytes to read:");
+	  
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['uart_read_all'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Read all data from UART");
+ 
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['uart_readline'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Read one line from UART");
+ 
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['uart_read_into'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Read from UART into a Buffer");
+ 
+    this.appendValueInput("b")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Destination Buffer:");
+	  
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+//MAX30100
+Blockly.Blocks['max30100_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init MAX30100 Sensor");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/max30100.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['max30100_read'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Update MAX30100 Reading");
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['max30100_red'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Get MAX30100 Red Value");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['max30100_ir'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Get MAX30100 IR Value");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+//GPS Module
+//
+Blockly.Blocks['gps_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init GPS Module");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/ublox_gps.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("tx")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("TX");
+
+    this.appendValueInput("rx")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("RX");
+
+    this.appendValueInput("bps")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Baud Rate");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['gps_update'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Update GPS Readings");
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gps_get_lat'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("GPS Latitude");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gps_get_long'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("GPS Longitude");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gps_get_height'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("GPS Altitude");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gps_get_speed'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("GPS Speed");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gps_get_datetime'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("GPS Date and Time");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+
+
 
 

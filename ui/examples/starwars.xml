@@ -1,0 +1,40 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="net_socket_connect" id="v=B@dK{3--V`--LN6kv*" x="238" y="138">
+    <value name="host">
+      <shadow type="text" id="7Lh-kmeWqb2R~i-~;u5~">
+        <field name="TEXT">towel.blinkenlights.nl</field>
+      </shadow>
+    </value>
+    <value name="port">
+      <shadow type="math_number" id="|Aq=~x@e_7q*8/6*qAT)">
+        <field name="NUM">23</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="controls_whileUntil" id="GumCCUR.u2:qV61FyHzl">
+        <field name="MODE">WHILE</field>
+        <value name="BOOL">
+          <block type="logic_boolean" id=";_G#YdBn,MN=0QBRT[O2">
+            <field name="BOOL">TRUE</field>
+          </block>
+        </value>
+        <statement name="DO">
+          <block type="text_print" id="yG}4IF).fFlMictRceGD">
+            <value name="TEXT">
+              <shadow type="text" id="jN|:fB9fkllTY6{$M9pc">
+                <field name="TEXT">abc</field>
+              </shadow>
+              <block type="net_socket_receive" id="CkP(Js,oS.c`i{Db^X/4">
+                <value name="bytes">
+                  <shadow type="math_number" id="m(2gm:|eF}cCh,*aJmXw">
+                    <field name="NUM">500</field>
+                  </shadow>
+                </value>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </next>
+  </block>
+</xml>

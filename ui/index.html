@@ -1349,6 +1349,20 @@ Device file manager
    <label text="Library: https://github.com/"></label>
         <button text="Install GPS library" callbackKey="installPyLib"></button>
 
+	<block type="gps_init">
+      </block>
+	<block type="gps_update">
+      </block>
+	<block type="gps_get_lat">
+      </block>
+	<block type="gps_get_long">
+      </block>
+	<block type="gps_get_height">
+      </block>
+	<block type="gps_get_speed">
+      </block>
+	<block type="gps_get_datetime">
+      </block>
 
 
   </category>
@@ -1357,6 +1371,15 @@ Device file manager
       <label text="MAX30100 pulse oximeter sensor"></label>
    <label text="Library: https://github.com/"></label>
         <button text="Install MAX30100 library" callbackKey="installPyLib"></button>
+
+	<block type="max30100_init">
+      </block>
+	<block type="max30100_read">
+      </block>
+	<block type="max30100_red">
+      </block>
+	<block type="max30100_ir">
+      </block>
 
 
 
@@ -1515,23 +1538,18 @@ Device file manager
       <label text="Communication"></label>
       <category name="UART">
       <label text="UART Serial Port"></label>
-<block type="machine.UART_UART.init">
+<block type="uart_init">
 </block>
-<block type="machine.UART_UART.deinit">
+
+<block type="uart_write">
 </block>
-<block type="machine.UART_UART.any">
+<block type="uart_read">
 </block>
-<block type="machine.UART_UART.read">
+<block type="uart_read_into">
 </block>
-<block type="machine.UART_UART.readinto">
+<block type="uart_readline">
 </block>
-<block type="machine.UART_UART.readline">
-</block>
-<block type="machine.UART_UART.write">
-</block>
-<block type="machine.UART_UART.sendbreak">
-</block>
-<block type="machine.UART_UART.irq">
+<block type="uart_read_all">
 </block>
 
       </category>
@@ -1551,7 +1569,22 @@ Device file manager
 </block>
 
       </category>
+
       <category name="GSM Modem">
+
+      <block type="gsm_modem_init">
+</block>
+      <block type="gsm_modem_send_sms">
+</block>
+      <block type="gsm_modem_send_at">
+</block>
+      <block type="gsm_modem_http_get">
+</block>
+      <block type="gsm_modem_response">
+</block>
+
+
+
       </category>
       <category name="I2C">
       <label text="I2c"></label>
@@ -1749,6 +1782,19 @@ Device file manager
     <block type="net_ifconfig">
       <field name="NET_IFCONFIG">Wifi current IP</field>
     </block>
+
+    <block type="net_wiznet5k_init">
+    </block>
+    <block type="net_wiznet5k_isconnected">
+    </block>
+    <block type="net_wiznet5k_regs">
+    </block>
+    <block type="net_wiznet5k_ifconfig">
+    </block>
+
+    <category name="HTTP Client">
+      <label text="HTTP Client"></label>
+
     <block type="net_get_request">
       <field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
     </block>
@@ -1756,6 +1802,37 @@ Device file manager
       <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
       <field name="NET_POST_REQUEST_DATA">Data</field>
     </block>
+
+    </category>
+
+    <category name="HTTP Server">
+      <label text="HTTP Web Server"></label>
+      <button text="Load example: webserver" callbackKey="loadExample"></button>
+      <button text="Documentation: webserver" callbackKey="loadDoc"></button>
+
+    <block type="net_http_server_start">
+        <value name="port">
+          <shadow type="math_number">
+            <field name="NUM">80</field>
+          </shadow>
+        </value>
+    </block>
+    <block type="net_http_server_accept">
+    </block>
+    <block type="net_http_server_requested_page">
+    </block>
+    <block type="net_http_server_send_response">
+	 <value name="html">
+          <shadow type="text">
+            <field name="TEXT">You reached BIPES WebServer!</field>
+          </shadow>
+        </value>
+
+    </block>
+    <block type="net_http_server_close">
+    </block>
+
+    </category>
 
     <category name="EMAIL">
       <label text="Email sender using uMail"></label>
@@ -1803,9 +1880,65 @@ Device file manager
           </shadow>
         </value>
       </block>
+    </category>
 
 
+    <category name="NTP Time">
+     <label text="Network Time Protocol (NTP)"></label>
+     <label text="Adjusts RTC using Internet"></label>
+        <button text="Load example: ntp" callbackKey="loadExample"></button>
+        <button text="Documentation: ntp" callbackKey="loadDoc"></button>
 
+
+    <block type="net_ntp_sync">
+	 <value name="tz">
+          <shadow type="math_number">
+            <field name="NUM">3</field>
+          </shadow>
+        </value>
+
+
+    </block>
+    </category>
+
+    <category name="TCP/IP Socket">
+      <label text="TCP/IP Socket"></label>
+        <button text="Load example: starwars" callbackKey="loadExample"></button>
+        <button text="Documentation: sockets" callbackKey="loadDoc"></button>
+
+
+    <block type="net_socket_connect">
+	 <value name="host">
+          <shadow type="text">
+            <field name="TEXT">towel.blinkenlights.nl</field>
+          </shadow>
+        </value>
+	 <value name="port">
+          <shadow type="math_number">
+            <field name="NUM">23</field>
+          </shadow>
+        </value>
+
+    </block>
+    <block type="net_socket_receive">
+	<value name="bytes">
+          <shadow type="math_number">
+            <field name="NUM">500</field>
+          </shadow>
+        </value>
+
+
+    </block>
+    <block type="net_socket_send">
+     <value name="bytes">
+          <shadow type="text">
+            <field name="TEXT">Hello</field>
+          </shadow>
+        </value>
+
+    </block>
+    <block type="net_socket_close">
+    </block>
 
     </category>
 
