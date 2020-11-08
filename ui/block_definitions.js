@@ -9345,6 +9345,92 @@ Blockly.Blocks['gps_get_datetime'] = {
 };
 
 
+//ESP32 specific functions
+
+//CAN BUS
+//https://github.com/nos86/micropython/blob/esp32-can-driver-v3/docs/library/machine.CAN.rst
+
+Blockly.Blocks['esp32_can_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init ESP32 CAN Bus Controller");
+
+    this.appendValueInput("mode")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Mode");
+
+    this.appendValueInput("baudrate")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Baud Rate");
+
+    this.appendValueInput("extframe")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Extended CAN Frame");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks['esp32_can_filter'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Set CAN Filter");
+
+    this.appendValueInput("filter")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Frame Filter");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['esp32_can_send'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Send CAN Frame");
+
+    this.appendValueInput("id")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ID");
+
+    this.appendValueInput("data")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Frame Data");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['esp32_can_recv'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Receive CAN Frame");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
 
 
 

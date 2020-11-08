@@ -4588,8 +4588,46 @@ Blockly.Python['gps_get_datetime'] = function(block) {
 };
 
 
+//ESP32 specific functions
 
+//CAN BUS
+//https://github.com/nos86/micropython/blob/esp32-can-driver-v3/docs/library/machine.CAN.rst
+Blockly.Python['esp32_can_init'] = function(block) {
+  var mode = Blockly.Python.valueToCode(block, 'mode', Blockly.Python.ORDER_ATOMIC);
+  var baudrate = Blockly.Python.valueToCode(block, 'baudrate', Blockly.Python.ORDER_ATOMIC);
+  var extframe = Blockly.Python.valueToCode(block, 'extframe', Blockly.Python.ORDER_ATOMIC);
 
+  Blockly.Python.definitions_['import_can'] = 'from machine import CAN';
 
+  //BAUDRATE_500k = 500
+  var code = 'can = CAN(0, extframe=True, mode=CAN.LOOPBACK, baudrate=500)\n';
+
+  return code;
+};
+
+Blockly.Python['esp32_can_filter'] = function(block) {
+  var filter = Blockly.Python.valueToCode(block, 'filter', Blockly.Python.ORDER_ATOMIC);
+
+  //dev.setfilter(0, CAN.FILTER_ADDRESS, [0x102, 0])  # set a filter to receive messages with id = 0x102
+  var code = 'can.setfilter(0, CAN.FILTER_ADDRESS, [0x102, 0]) \n';
+
+  return code;
+};
+
+Blockly.Python['esp32_can_send'] = function(block) {
+  var id = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_ATOMIC);
+  var data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'can.send([1,2,3], 0x102) \n';
+
+  return code;
+};
+
+Blockly.Python['esp32_can_recv'] = function(block) {
+
+  var code = 'can.recv()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
 
 
