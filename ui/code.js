@@ -364,7 +364,8 @@ Code.reloadToolbox = function() {
 function loadExampleFromURL(pName){
 
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://bipes.net.br/beta2/ui/examples/' + pName + '.xml', true);
+    request.open('GET', '/beta2/ui/examples/' + pName + '.xml', true);
+    //request.open('GET', 'http://bipes.net.br/beta2/ui/examples/' + pName + '.xml', true);
     request.send(null);
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
