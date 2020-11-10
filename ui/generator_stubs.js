@@ -4588,7 +4588,6 @@ Blockly.Python['gps_get_datetime'] = function(block) {
 };
 
 //Optical Encoder
-
 Blockly.Python['encoder_init'] = function(block) {
   var p0 = Blockly.Python.valueToCode(block, 'p0', Blockly.Python.ORDER_ATOMIC);
   var p1 = Blockly.Python.valueToCode(block, 'p1', Blockly.Python.ORDER_ATOMIC);
@@ -4667,6 +4666,109 @@ Blockly.Python['encoder_read'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+
+//Stepper Motor
+Blockly.Python['stepper_init'] = function(block) {
+  var p0 = Blockly.Python.valueToCode(block, 'p0', Blockly.Python.ORDER_ATOMIC);
+  var p1 = Blockly.Python.valueToCode(block, 'p1', Blockly.Python.ORDER_ATOMIC);
+  var p2 = Blockly.Python.valueToCode(block, 'p2', Blockly.Python.ORDER_ATOMIC);
+  var p3 = Blockly.Python.valueToCode(block, 'p3', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  Blockly.Python.definitions_['import_time'] = 'import time';
+
+  var code = `
+pins = [
+    machine.Pin(` + p0 + `, machine.Pin.OUT),  # 1
+    machine.Pin(` + p1 + `, machine.Pin.OUT),  # 2
+    machine.Pin(` + p2 + `, machine.Pin.OUT),  # 4
+    machine.Pin(` + p3 + `, machine.Pin.OUT),  # 8
+]
+
+phases = [ 1, 5, 4, 6, 2, 10, 8, 9 ]
+`;
+
+  return code;
+};
+
+Blockly.Python['stepper_step'] = function(block) {
+  var step = Blockly.Python.valueToCode(block, 'steps', Blockly.Python.ORDER_ATOMIC);
+
+  //Source example: http://mpy-tut.zoic.org/tut/motors.html
+  var code = `
+for i in range(1, ` + step + `):
+	for phase in phases:
+		for n, p in enumerate(pins):
+			pins[n](phase & 1 < < n)
+		time.sleep(0.001)
+`;
+
+  return code;
+};
+
+
+//DC Motor with H-Bridge
+Blockly.Python['dc_motor_init'] = function(block) {
+  var pwm = Blockly.Python.valueToCode(block, 'pwm', Blockly.Python.ORDER_ATOMIC);
+  var dir1 = Blockly.Python.valueToCode(block, 'dir1', Blockly.Python.ORDER_ATOMIC);
+  var dir2 = Blockly.Python.valueToCode(block, 'dir2', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+
+  var code =  "dc_motor_pin_a = machine.Pin(" + dir1 + ", machine.Pin.OUT)\n";
+      code +=  "dc_motor_pin_b = machine.Pin(" + dir2 + ", machine.Pin.OUT)\n";
+      code +=  "dc_motor_pwm = machine.PWM(" + pwm + ")\n";
+
+  return code;
+};
+
+Blockly.Python['dc_motor_power'] = function(block) {
+  var pwr = Blockly.Python.valueToCode(block, 'power', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'dc_motor_pwm.duty(' + pwr + ')\n';
+
+  return code;
+};
+
+Blockly.Python['dc_motor_direction'] = function(block) {
+  var dir = Blockly.Python.valueToCode(block, 'dir', Blockly.Python.ORDER_ATOMIC);
+
+  var code='\n';
+
+  if (dir == 0) 
+	code = `
+dc_motor_pin_a.value=0
+dc_motor_pin_b.value=0
+`;
+
+  if (dir == 1) 
+	code = `
+dc_motor_pin_a.value=1
+dc_motor_pin_b.value=0
+`;
+
+  if (dir == 2) 
+	code = `
+dc_motor_pin_a.value=0
+dc_motor_pin_b.value=1
+`;
+
+  if (dir == 3) 
+	code = `
+dc_motor_pin_a.value=1
+dc_motor_pin_b.value=1
+`;
+
+  return code;
+};
+
+Blockly.Python['dc_motor_stop'] = function(block) {
+
+  var code = 'dc_motor_pin_a.value=0\n';
+      code += 'dc_motor_pin_b.value=0\n';
+
+  return code;
+};
 
 
 //ESP32 specific functions

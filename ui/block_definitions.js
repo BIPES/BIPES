@@ -9345,9 +9345,6 @@ Blockly.Blocks['gps_get_datetime'] = {
 };
 
 //Rotatory Encoder
-//
-//
-
 Blockly.Blocks['encoder_init'] = {
   init: function() {
     this.setColour(135);
@@ -9404,6 +9401,158 @@ Blockly.Blocks['encoder_read'] = {
     this.setTooltip('');
   }
 };
+
+//Stepper Motor
+//
+//
+
+Blockly.Blocks['stepper_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init Stepper Motor");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/stepper.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("p0")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pin0");
+
+    this.appendValueInput("p1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pin1");
+
+    this.appendValueInput("p2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pin2");
+
+    this.appendValueInput("p3")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pin3");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['stepper_step'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Stepper Step");
+ 
+    this.appendValueInput("steps")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Steps");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+
+
+//DC Motor with H-Bridge
+Blockly.Blocks['dc_motor_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init DC Motor");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/dcmotor.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+
+    this.appendValueInput("pwm")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("PWM");
+
+    this.appendValueInput("dir1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Dir1");
+
+    this.appendValueInput("dir2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Dir2");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['dc_motor_power'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Set DC Motor Power");
+ 
+    this.appendValueInput("power")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Power");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['dc_motor_direction'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Set DC Motor Direction");
+
+this.appendValueInput("dir")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Direction");
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['dc_motor_stop'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Stop DC Motor");
+ 
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
 
 
 //ESP32 specific functions

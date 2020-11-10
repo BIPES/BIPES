@@ -1537,7 +1537,7 @@ Device file manager
       </block>
     </category>
 
-  <category name="RC Servo">
+  <category name="RC Servo Motor">
       <label text="Hobby RC Servo Motor"></label>
     <block type="init_servo">
         <value name="pin">
@@ -1554,6 +1554,86 @@ Device file manager
         </shadow>
       </value>
     </block>
+  </category>
+
+
+  <category name="Stepper Motor">
+      <label text="Stepper Motor"></label>
+    <block type="stepper_init">
+      <value name="p0">
+        <shadow type="pinout">
+          <field name="Pin0"></field>
+        </shadow>
+      </value>
+      <value name="p1">
+        <shadow type="pinout">
+          <field name="Pin1"></field>
+        </shadow>
+      </value>
+      <value name="p2">
+        <shadow type="pinout">
+          <field name="Pin2"></field>
+        </shadow>
+      </value>
+      <value name="p3">
+        <shadow type="pinout">
+          <field name="Pin3"></field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="stepper_step">
+     <value name="steps">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+
+  <category name="DC Motor">
+      <label text="DC Motor"></label>
+    <block type="dc_motor_init">
+      <value name="pwm">
+        <shadow type="pinout">
+          <field name="PWM"></field>
+        </shadow>
+      </value>
+      <value name="dir1">
+        <shadow type="pinout">
+          <field name="Dir1"></field>
+        </shadow>
+      </value>
+      <value name="dir2">
+        <shadow type="pinout">
+          <field name="Dir2"></field>
+        </shadow>
+      </value>
+
+    </block>
+
+    <block type="dc_motor_power">
+     <value name="power">
+        <shadow type="math_number">
+          <field name="NUM">70</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="dc_motor_direction">
+     <value name="dir">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+_
+    <block type="dc_motor_stop">
+    </block>
+
+
+  </category>
+
   </category>
 
 
