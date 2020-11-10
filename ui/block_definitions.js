@@ -9344,6 +9344,67 @@ Blockly.Blocks['gps_get_datetime'] = {
   }
 };
 
+//Rotatory Encoder
+//
+//
+
+Blockly.Blocks['encoder_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init Rotatory Encoder");
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "/beta2/ui/media/encoder.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+
+    this.appendValueInput("p0")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ch0");
+
+    this.appendValueInput("p1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ch1");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['encoder_reset'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Reset Encoder");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['encoder_read'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Read Encoder Value");
+ 
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
 
 //ESP32 specific functions
 

@@ -889,6 +889,29 @@
 
   </category>
 
+
+  <category name="Rotatory Encoder">
+      <label text="Rotatory Incremental Encoder"></label>
+        <button text="Load example: encoder" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: encoder" callbackKey="loadDoc"></button>
+
+      <block type="encoder_init">
+        <value name="p0">
+          <shadow type="pinout">
+            <field name="ch0"></field>
+          </shadow>
+        </value>
+ 
+        <value name="p1">
+          <shadow type="pinout">
+            <field name="ch1"></field>
+          </shadow>
+        </value>
+
+      </block>
+      <block type="encoder_reset"></block>
+      <block type="encoder_read"></block>
+  </category>
   </category>
 
 
