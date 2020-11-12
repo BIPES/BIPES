@@ -220,7 +220,7 @@ function checkCookie() {
       if (dev == 'ESP8266') {
         document.getElementById('device_title').innerHTML = '<b>ESP8266</b><br>';
         document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg";
-        document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.";
+	      document.getElementById("device_desc").innerHTML = "<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.";
 
         //document.getElementById("toolbox")=document.getElementById("toolbox1");
         //Code.reloadToolbox();
@@ -231,7 +231,9 @@ function checkCookie() {
       else if (dev == 'wemos_d1_mini') {
         document.getElementById('device_title').innerHTML = '<b>ESP8266 - Wemos D1 Mini</b><br>';
         document.getElementById("device_img").src = "http://bipes.net.br/beta2/ui/devinfo/Wemos-D1-Mini.png";
-        document.getElementById("device_desc").innerHTML = "To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/";
+
+
+	document.getElementById("device_desc").innerHTML = "<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/";
 
         //document.getElementById("toolbox")=document.getElementById("toolbox1");
         //Code.reloadToolbox();
@@ -471,10 +473,13 @@ function checkCookie() {
     <center>
       <label id="device_title"><b>ESP8266</b><br></label>
     <br>
-    <img id="device_img" src=devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg width="40%">
+    <img id="device_img" src=devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg width=300>
     <br>
 
-    <label id="device_desc">Description about chosen device</label>
+    <label id="device_desc">
+	      <BR><BR><input type='button' onclick='loadDoc();' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed on the board. Follow these instructions to install it.
+    </label>
+
     </center>
 
   </div>

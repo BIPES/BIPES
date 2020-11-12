@@ -602,33 +602,34 @@ print('Install done.')
 	var tmp = button.text_.split(":")[1];
 	var lib = tmp.replace(/\s/g,'');
 
-
-	
 	var url = "https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub";
 
+        if (Code.getLang() == 'pt-br') {
+		url = "https://docs.google.com/document/d/e/2PACX-1vT7dc6hP4sKyMJupklbGK4adIf3qCkt4r-HrEWO8jTRMx9uUOUSfboKG749IF3DZr8k6zUPSLXkrDGY/pub";
+	}
+        if (Code.getLang() == 'en') {
+		url = "https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub";
 
-	    if (lib == "mpu6050") {
-		url = 'https://docs.google.com/document/d/1EjkiVzuEtFIfapse4G1BThguLICfsbci3bHwvAOzhKo/edit#heading=h.79fbsr8dha21';
-	    }
+	}
+	
+	if (lib == "mpu6050") {
+		url = url + '#h.79fbsr8dha21';
+	}
 
-	    if (lib == "tm1640") {
-		url = 'https://docs.google.com/document/d/1EjkiVzuEtFIfapse4G1BThguLICfsbci3bHwvAOzhKo/edit#heading=h.iw35vui9vzi1';
-	    }
+	if (lib == "tm1640") {
+		url = url + '#h.iw35vui9vzi1';
+	}
 
+	if (lib == "ds1820") {
+		url = url + '#h.w84555jgod5j';
+	}
 
+	if (lib == "mfrc522") {
+		url = url + '#h.owhbali4ayaj';
+	}
 
-	    if (lib == "ds1820") {
-		url = 'https://docs.google.com/document/d/1EjkiVzuEtFIfapse4G1BThguLICfsbci3bHwvAOzhKo/edit#heading=h.w84555jgod5j';
-	    }
-
-
-	    if (lib == "mfrc522") {
-		url = 'https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub#h.owhbali4ayaj';
-	    }
-
-	    var win = window.open(url, '_blank');
-	    win.focus();
-
+	var win = window.open(url, '_blank');
+	win.focus();
 
 
       });
@@ -642,6 +643,25 @@ print('Install done.')
   // Lazy-load the syntax-highlighting.
   window.setTimeout(Code.importPrettify, 1);
 };
+
+function loadDoc() {
+
+	var url="";
+        if (Code.getLang() == 'pt-br') {
+		url = "https://docs.google.com/document/d/e/2PACX-1vT7dc6hP4sKyMJupklbGK4adIf3qCkt4r-HrEWO8jTRMx9uUOUSfboKG749IF3DZr8k6zUPSLXkrDGY/pub";
+	}
+        if (Code.getLang() == 'en') {
+		url = "https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub";
+
+	}
+	
+	var win = window.open(url, '_blank');
+	win.focus();
+
+}
+
+
+
 
 /**
  * Initialize the page language.

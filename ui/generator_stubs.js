@@ -327,6 +327,9 @@ Blockly.Python['net_post_request'] = function(block) {
 
 Blockly.Python['net_ifconfig'] = function(block) {
   Blockly.Python.definitions_['import_network'] = 'import network';
+  Blockly.Python.definitions_['import_network_a'] = 'sta_if = network.WLAN(network.STA_IF)';
+  Blockly.Python.definitions_['import_network_b'] = 'sta_if.active(True)';
+
   var code = 'sta_if.ifconfig()\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
