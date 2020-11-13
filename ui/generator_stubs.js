@@ -295,11 +295,11 @@ Blockly.Python['write_oled'] = function(block) {
 
 
 Blockly.Python['init_servo'] = function(block) {
-  var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+  var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble Python into code variable.
   Blockly.Python.definitions_['import_machine'] = 'import machine';
-  var code = 'p4 = machine.Pin(4)\n';
-      code += 'servo = machine.PWM(p4,freq=50)\n';
+  var code = 'pservo = machine.Pin(' + pin + ')\n';
+      code += 'servo = machine.PWM(pservo,freq=50)\n';
   return code;
 };
 
