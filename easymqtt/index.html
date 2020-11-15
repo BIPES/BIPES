@@ -117,7 +117,7 @@
    <script type="text/javascript">
     var timerUpdateEasyMQTT;
     var MQTTCharts = {};
-    var easyMQTT_session;
+    var easyMQTT_session_chart;
 
     function getSessionFromURL(){
       let searchParams = new URLSearchParams(window.location.search);
@@ -145,14 +145,14 @@
         if (typeof timerUpdateEasyMQTT !== 'undefined')
           cancelTimer(timerUpdateEasyMQTT);
       }else{
-        if (easyMQTT_session == session && typeof timerUpdateEasyMQTT !== 'undefined'){
+        if (easyMQTT_session_chart == session && typeof timerUpdateEasyMQTT !== 'undefined'){
           return;
         }
-        if (typeof easyMQTT_session !== 'undefined' && easyMQTT_session != session){
+        if (typeof easyMQTT_session_chart !== 'undefined' && easyMQTT_session_chart != session){
           clearInterval(timerUpdateEasyMQTT);
           resetEasyMQTTCharts();
         } 
-        easyMQTT_session = session;
+        easyMQTT_session_chart = session;
         $("#easymqtt-config").show();
         setEasyMQTTUpdate($('#easymqtt-update-freq').val());
       }
@@ -189,7 +189,7 @@
 
     function clearEasyMQTTSession(){
       $.get( "http://bipes.net.br/easymqtt/clearsession.php", 
-        {"session": easyMQTT_session}, 
+        {"session": easyMQTT_session_chart}, 
         function( data ) {
           if (data.success){
             resetEasyMQTTCharts();
@@ -210,7 +210,7 @@
         return;
       }
       $.get( "http://bipes.net.br/easymqtt/publish.php", 
-        {"session": easyMQTT_session,
+        {"session": easyMQTT_session_chart,
          "topic": topic,
          "value": value
         }, 
@@ -283,7 +283,7 @@
 
     function updateEasyMQTTTopic(topic,since=0){
       $.get( "http://bipes.net.br/easymqtt/gettopic.php", 
-        {"session": easyMQTT_session, "topic": topic, "since": since}, 
+        {"session": easyMQTT_session_chart, "topic": topic, "since": since}, 
         function( data ) {
           if (data.success){
             if (data.result.length > 0){
@@ -311,7 +311,7 @@
     function updateEasyMQTTJson(){
       //$(".highcharts-navigator").removeAttr("visibility"); //needed only if not used as an iframe in the main page
       $.get( "http://bipes.net.br/easymqtt/getsession.php", 
-      {"session": easyMQTT_session}, 
+      {"session": easyMQTT_session_chart}, 
       function( data ) {
         if (data.success){
           dismissEasyMQTTError();
