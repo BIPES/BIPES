@@ -550,6 +550,8 @@ Blockly.Python['easymqtt_disconnect'] = function(block) {
 };
 
 Blockly.Python['easymqtt_subscribe'] = function(block) {
+  var var_name = Blockly.Python.variableDB_.getName(
+      block.getFieldValue('EASYMQTT_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
   // Fix for global variables inside callback
   // Piece of code from generators/python/procedures.js
   // Define a procedure with a return value.
@@ -561,7 +563,7 @@ Blockly.Python['easymqtt_subscribe'] = function(block) {
   var variables = Blockly.Variables.allUsedVarModels(workspace) || [];
   for (var i = 0, variable; variable = variables[i]; i++) {
     varName = variable.name;
-    if (block.getVars().indexOf(varName) == -1) {
+    if (block.getVars().indexOf(varName) == -1 && varName != var_name) {
       globals.push(Blockly.Python.variableDB_.getName(varName,
           Blockly.VARIABLE_CATEGORY_NAME));
     }
@@ -578,8 +580,6 @@ Blockly.Python['easymqtt_subscribe'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
   var funct_code = Blockly.Python.statementToCode(block, 'do');
   var name = topic.replace(/\W/g, '_');
-  var var_name = Blockly.Python.variableDB_.getName(
-      block.getFieldValue('EASYMQTT_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
 
 
   var function_name = Blockly.Python.provideFunction_(
