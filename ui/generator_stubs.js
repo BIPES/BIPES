@@ -550,6 +550,30 @@ Blockly.Python['easymqtt_disconnect'] = function(block) {
 };
 
 Blockly.Python['easymqtt_subscribe'] = function(block) {
+  // Fix for global variables inside callback
+  // Piece of code from generators/python/procedures.js
+  // Define a procedure with a return value.
+  // First, add a 'global' statement for every variable that is not shadowed by
+  // a local parameter.
+  var globals = [];
+  var varName;
+  var workspace = block.workspace;
+  var variables = Blockly.Variables.allUsedVarModels(workspace) || [];
+  for (var i = 0, variable; variable = variables[i]; i++) {
+    varName = variable.name;
+    if (block.getVars().indexOf(varName) == -1) {
+      globals.push(Blockly.Python.variableDB_.getName(varName,
+          Blockly.VARIABLE_CATEGORY_NAME));
+    }
+  }
+  // Add developer variables.
+  var devVarList = Blockly.Variables.allDeveloperVariables(workspace);
+  for (var i = 0; i < devVarList.length; i++) {
+    globals.push(Blockly.Python.variableDB_.getName(devVarList[i],
+        Blockly.Names.DEVELOPER_VARIABLE_TYPE));
+  }
+  globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') + '\n' : '';
+
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
   var funct_code = Blockly.Python.statementToCode(block, 'do');
@@ -560,12 +584,12 @@ Blockly.Python['easymqtt_subscribe'] = function(block) {
 
   var function_name = Blockly.Python.provideFunction_(
     'easymqtt'+name,
-    ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '('+var_name+'):',funct_code]);
+    ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '('+var_name+'):',globals,funct_code]);
 
-  Blockly.Python.definitions_['easymqtt_callback'] = 'easymqtt_callback_list = {}\ndef easymqtt_callback(topic_,msg_):\n  if topic_ in easymqtt_callback_list: easymqtt_callback_list[topic_](msg_.decode())';
+  Blockly.Python.definitions_['easymqtt_callback'] = 'easymqtt_callback_list = {}\ndef easymqtt_callback(topic_,msg_):\n  topic_=topic_.decode();msg_=msg_.decode()\n  if topic_ in easymqtt_callback_list: easymqtt_callback_list[topic_](float(msg_))';
 
 
-  var code = "easymqtt_callback_list["+topic+"]="+function_name+"\neasymqtt_client.subscribe(" + topic + ")\neasymqtt_client.set_callback(easymqtt_callback)\n"
+  var code = "easymqtt_client.set_callback(easymqtt_callback)\neasymqtt_callback_list['"+window.easyMQTT_session+"/' + "+topic+"]="+function_name+"\neasymqtt_client.subscribe('"+window.easyMQTT_session+"/' + "+topic+")\n"
   return code;
 };
 
