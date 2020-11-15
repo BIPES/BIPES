@@ -188,20 +188,22 @@
     }
 
     function clearEasyMQTTSession(){
-      $.get( "http://bipes.net.br/easymqtt/clearsession.php", 
-        {"session": easyMQTT_session_chart}, 
-        function( data ) {
-          if (data.success){
-            resetEasyMQTTCharts();
-            errorEasyMQTT(data.result);
-          }else{
-            errorEasyMQTT(data.result);
+      if (confirm("Are you sure you want to clear all data in this topic?\nThis action can not be reverted") == true){
+        $.get( "http://bipes.net.br/easymqtt/clearsession.php", 
+          {"session": easyMQTT_session_chart}, 
+          function( data ) {
+            if (data.success){
+              resetEasyMQTTCharts();
+              errorEasyMQTT(data.result);
+            }else{
+              errorEasyMQTT(data.result);
+            }
+          }, "json")
+        .fail(function(xhr, status, error){
+            errorEasyMQTT("Error clearing session. " + status + " " + error);
           }
-        }, "json")
-      .fail(function(xhr, status, error){
-          errorEasyMQTT("Error clearing session. " + status + " " + error);
-        }
-      );
+        );
+      }
     }
 
     function publishEasyMQTT(topic,value){
