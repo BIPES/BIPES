@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
-if(!isset($_GET['session']) || empty($_GET['session']) || !isset($_GET['topic']) || empty($_GET['topic']) || !isset($_GET['value']) || empty($_GET['value']))
+if(!isset($_GET['session']) || empty($_GET['session']) || !isset($_GET['topic']) || empty($_GET['topic']) || !isset($_GET['value']))
 {
     echo(json_encode(array("success" => False, "result" => "Invalid Parameters")));
     die();
