@@ -160,6 +160,14 @@ Blockly.Python['text_to_str'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['decode_bytes_to_text'] = function(block) {
+	var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
+  
+	var code =  variable + '.decode()';
+  
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+
 Blockly.Python['var_to_int'] = function(block) {
   var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
 
@@ -167,6 +175,14 @@ Blockly.Python['var_to_int'] = function(block) {
 
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+Blockly.Python['var_to_float'] = function(block) {
+	var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'float(' + variable + ')';
+  
+	return [code, Blockly.Python.ORDER_NONE];
+  };
 
 //OneWire
 
@@ -377,13 +393,11 @@ Blockly.Python['dht_measure'] = function(block) {
 
 Blockly.Python['dht_read_temp'] = function(block) {
   var code = 'dhts.temperature()';
-  // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['dht_read_humidity'] = function(block) {
   var code = 'dhts.humidity()';
-  // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -660,12 +674,46 @@ Blockly.Python['mqtt_publish_payload'] = function(block) {
 };
 
 Blockly.Python['mqtt_set_callback'] = function(block) {
-  var callback = block.getFieldValue('MQTT_CALLBACK');
+	var data_var_name = Blockly.Python.variableDB_.getName(block.getFieldValue('MQTT_DATA_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
+	var topic_var_name = Blockly.Python.variableDB_.getName(block.getFieldValue('MQTT_TOPIC_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
+	// Fix for global variables inside callback
+	// Piece of code from generators/python/procedures.js
+	// Define a procedure with a return value.
+	// First, add a 'global' statement for every variable that is not shadowed by
+	// a local parameter.
+	var globals = [];
+	var varName;
+	var workspace = block.workspace;
+	var variables = Blockly.Variables.allUsedVarModels(workspace) || [];
+	for (var i = 0, variable; variable = variables[i]; i++) {
+		varName = variable.name;
+		if (block.getVars().indexOf(varName) == -1 && varName != data_var_name && varName != topic_var_name) {
+		globals.push(Blockly.Python.variableDB_.getName(varName,
+			Blockly.VARIABLE_CATEGORY_NAME));
+		}
+	}
+	// Add developer variables.
+	var devVarList = Blockly.Variables.allDeveloperVariables(workspace);
+	for (var i = 0; i < devVarList.length; i++) {
+		globals.push(Blockly.Python.variableDB_.getName(devVarList[i],
+			Blockly.Names.DEVELOPER_VARIABLE_TYPE));
+	}
+	globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') : '';
 
-  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+	Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
-  var code = 'mqtt_client.set_callback(' + callback + ')\n';
-  return code;
+	var funct_code = Blockly.Python.statementToCode(block, 'do');
+
+
+	var function_name = Blockly.Python.provideFunction_(
+		'mqtt_callback',
+		['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '('+topic_var_name+','+data_var_name+'):',
+		globals,
+		Blockly.Python.INDENT + topic_var_name + " = " + topic_var_name + ".decode()",
+		funct_code]);
+
+	var code = 'mqtt_client.set_callback(' + function_name + ')\n';
+	return code;
 };
 
 Blockly.Python['mqtt_subscribe'] = function(block) {

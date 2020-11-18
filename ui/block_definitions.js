@@ -1172,24 +1172,18 @@ Blockly.Blocks['hcsr_read'] = {
 
 Blockly.Blocks['dht_init'] = {
   init: function() {
-
-
- this.appendDummyInput()
-      .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/dht.png",
-        55,
-        55,
-        "*"))
-      .appendField("Start DHT Sensor")
-	  ;
-
-    //this.appendDummyInput()
-     //   .appendField(new Blockly.FieldLabelSerializable("Start DHT sensor"), "BLOCK_DHT_INIT");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+                     "/beta2/ui/media/dht.png",
+                     55,
+                     55,
+                     "*"))
+        .appendField("Start DHT Sensor");
     this.appendDummyInput()
         .appendField('Type')
         .appendField(new Blockly.FieldDropdown([
-            ['DHT11', 'DHT11'],
-            ['DHT22', 'DHT22']
+                     ['DHT11', 'DHT11'],
+                     ['DHT22', 'DHT22']
         ]), 'DHT_TYPE');
     this.appendValueInput("pin")
         .setCheck("Number")
@@ -1198,8 +1192,8 @@ Blockly.Blocks['dht_init'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Start DHT11 ou DHT22 sensor");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Start DHT11 ou DHT22 sensor");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
@@ -1210,8 +1204,8 @@ Blockly.Blocks['dht_measure'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Measure DHT11/22 Sensor");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Measure DHT11/22 Sensor");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
@@ -1221,8 +1215,8 @@ Blockly.Blocks['dht_read_temp'] = {
         .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Temperature"), "MSG_READ_DHT_TEMP");
     this.setOutput(true, null);
     this.setColour(230);
- this.setTooltip("Read DHT11/22 Temperature");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Read DHT11/22 Temperature");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
@@ -1232,8 +1226,8 @@ Blockly.Blocks['dht_read_humidity'] = {
         .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Humidity"), "MSG_READ_DHT_HUMI");
     this.setOutput(true, null);
     this.setColour(230);
- this.setTooltip("Read DHT11/22 Humidity");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Read DHT11/22 Humidity");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
@@ -1355,28 +1349,26 @@ Blockly.Blocks['mqtt_subscribe'] = {
   }
 };
 
-
 Blockly.Blocks['mqtt_set_callback'] = {
   init: function() {
-    var validator = function(value){
-      let proc_list = Blockly.Procedures.allProcedures(Code.workspace)[0];
-      for (let i in proc_list){
-        if (proc_list[i][0] == value){
-          return value;
-        }
-      }
-      return null;
-    }
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabelSerializable("Set Callback to MQTT Messages"), "BLOCK_MQTT_SET_CALLBACK");
     this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Callback Function")
-        .appendField(new Blockly.FieldTextInput('None'), 'MQTT_CALLBACK');
-        //.appendField(new Blockly.FieldTextInput('None',validator), 'MQTT_CALLBACK'); bug
+        .appendField('with')
+        .appendField(new Blockly.FieldVariable('data_bytes'), 'MQTT_DATA_VAR')
+        .appendField('received from')
+        .appendField(new Blockly.FieldVariable(
+          'topic',
+          null,
+          ['String'],
+          'String'
+        ), 'MQTT_TOPIC_VAR');
+    this.appendStatementInput('do')
+        .appendField('do');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
+    this.setInputsInline(false);
  this.setTooltip("Callback function must have topic and msg parameters");
  this.setHelpUrl("http://www.bipes.net.br");
   }
@@ -1469,8 +1461,8 @@ Blockly.Blocks['easymqtt_subscribe'] = {
         .appendField(new Blockly.FieldVariable(
           'data',
           null,
-          ['String'],
-          'String'
+          ['Number'],
+          'Number'
         ), 'EASYMQTT_VAR')
         .appendField('is received');
     this.appendStatementInput('do')
@@ -1555,6 +1547,17 @@ Blockly.Blocks['text_to_str'] = {
   }
 };
 
+Blockly.Blocks['decode_bytes_to_text'] = {
+  init: function() {
+    this.appendValueInput("var")
+        .appendField(new Blockly.FieldLabelSerializable("decode bytes to text"), "VAR");
+    this.setColour(160);
+    this.setOutput(true, null);
+    this.setTooltip("Decode bytes to a String.");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['var_to_int'] = {
   init: function() {
     this.appendValueInput("var")
@@ -1562,6 +1565,17 @@ Blockly.Blocks['var_to_int'] = {
     this.setColour(230);
     this.setOutput(true, null);
     this.setTooltip("Convert anything to Int.");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['var_to_float'] = {
+  init: function() {
+    this.appendValueInput("var")
+        .appendField(new Blockly.FieldLabelSerializable("to float"), "VAR");
+    this.setColour(230);
+    this.setOutput(true, null);
+    this.setTooltip("Convert anything to float.");
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };

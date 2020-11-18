@@ -733,6 +733,9 @@ Device file manager
       <block type="var_to_int">  
         <field name="VAR">to int</field>
       </block>
+      <block type="var_to_float">  
+        <field name="VAR">to float</field>
+      </block>
     </category>
     <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
@@ -812,6 +815,9 @@ Device file manager
       </block>
       <block type="text_to_str">  
         <field name="VAR">to str</field>
+      </block>
+      <block type="decode_bytes_to_text">  
+        <field name="VAR">decode bytes to text</field>
       </block>
     </category>
     <category name="%{BKY_CATLISTS}" colour="%{BKY_LISTS_HUE}">
@@ -2109,7 +2115,6 @@ _
       </block>
       <block type="mqtt_set_callback">
         <field name="BLOCK_MQTT_SET_CALLBACK">Set Callback to MQTT Messages</field>
-        <field name="MQTT_CALLBACK">Callback Function</field>
       </block>
       <block type="mqtt_subscribe">
         <field name="BLOCK_MQTT_SUBSCRIBE">Subscribe to MQTT Topic</field>
