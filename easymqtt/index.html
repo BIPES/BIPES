@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
-
 <html>
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Caio Augusto Silva - BIPES Project">
+  <meta name="description" content="EasyMQTT dashboard for data visualization">
   <title>BIPES EasyMQTT</title>
   <style>
   body{
@@ -88,11 +88,8 @@
   <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
 </head>
-
 <body>
-
   <div id="easymqtt-content" class="content easymqtt-content">
-    
     <div id="easymqtt-warning" class="easymqtt-warning card"></div>
     <div id="easymqtt-charts" class="easymqtt-charts"></div>
     <div id="easymqtt-config" class="easymqtt-config card" style="display: none;">
@@ -112,9 +109,8 @@
         <button id="easymqtt-clear-data" type="button" onclick="clearEasyMQTTSession()">Clear Data</button>
       </div>
     </div>
-
   </div>
-   <script type="text/javascript">
+  <script type="text/javascript">
     var timerUpdateEasyMQTT;
     var MQTTCharts = {};
     var easyMQTT_session_chart;
@@ -227,60 +223,59 @@
 
     function addNewChart(topic){
       MQTTCharts[topic] = new Highcharts.stockChart({
-            chart: {
-              renderTo: 'easymqtt-'+topic,
-              //defaultSeriesType: 'spline'
-            },
-            time: {
-              useUTC: false
-            },
-            title: {
-              text: 'Live data from ' + topic
-            },
-            rangeSelector: {
-                buttons: [{
-                    count: 1,
-                    type: 'minute',
-                    text: '1M'
-                }, {
-                    count: 5,
-                    type: 'minute',
-                    text: '5M'
-                }, {
-                    count: 1,
-                    type: 'hour',
-                    text: '1H'
-                }, {
-                    count: 12,
-                    type: 'hour',
-                    text: '12H'
-                }, {
-                    type: 'all',
-                    text: 'All'
-                }],
-                inputEnabled: false,
-                selected: 4
-            },
-            exporting: {
-                enabled: true
-            },
-            xAxis: {
-              type: 'datetime',
-            },
-            yAxis: {
-              title: {
-                text: 'Value'
-              }
-            },
-            series: [{
-              name: topic,
-              data: [],
-              marker: {
-                enabled: true,
-                radius: 2
-            },
-            }]
-          });
+        chart: {
+          renderTo: 'easymqtt-'+topic,
+        },
+        time: {
+          useUTC: false
+        },
+        title: {
+          text: 'Live data from ' + topic
+        },
+        rangeSelector: {
+          buttons: [{
+              count: 1,
+              type: 'minute',
+              text: '1M'
+          }, {
+              count: 5,
+              type: 'minute',
+              text: '5M'
+          }, {
+              count: 1,
+              type: 'hour',
+              text: '1H'
+          }, {
+              count: 12,
+              type: 'hour',
+              text: '12H'
+          }, {
+              type: 'all',
+              text: 'All'
+          }],
+          inputEnabled: false,
+          selected: 4
+        },
+        exporting: {
+            enabled: true
+        },
+        xAxis: {
+          type: 'datetime',
+        },
+        yAxis: {
+          title: {
+            text: 'Value'
+          }
+        },
+        series: [{
+          name: topic,
+          data: [],
+          marker: {
+            enabled: true,
+            radius: 2
+        },
+        }]
+      });
     }
 
     function updateEasyMQTTTopic(topic,since=0){
@@ -336,7 +331,4 @@
     }
   </script>
 </body>
-
-
-
 </html>
