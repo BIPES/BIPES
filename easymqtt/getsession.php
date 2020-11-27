@@ -12,7 +12,6 @@ $client = new MongoDB\Client("mongodb://localhost:27017");
 $session = htmlspecialchars($_GET["session"]);
 
 $db = $client->selectDatabase($session);
-//$collection = $client->demo->beers;
 $results = $db->listCollections();
 
 $topics = array();
@@ -22,10 +21,7 @@ foreach ($results as $collection) {
 if (count($topics)>0)
     $return = array("success" => True, "result" => $topics);
 else
-    $return = array("success" => False, "result" => "Session '" . $session . "' does not contain any topic");
-
+    $return = array("success" => False, "result" => "Session '" . $session . "' is empty.<br /><span>As soon as something reaches the broker, it will be displayed here!</span>");
 
 echo(json_encode($return));
-
-
 ?>

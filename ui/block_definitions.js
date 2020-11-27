@@ -392,6 +392,7 @@ Blockly.Blocks['gpio_get'] = {
   }
 };
 
+/// Pinout
 Blockly.Blocks['pinout'] = {
   update_list: function() {
     if (document.getElementById('device_selector').value in pinout){
@@ -401,9 +402,7 @@ Blockly.Blocks['pinout'] = {
     }
     
   },
-
   options: [],
-
   init: function() {
     this.update_list();
     this.appendDummyInput()
@@ -486,7 +485,7 @@ Blockly.Blocks['init_mpu6050'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/mpu6050.png",
+        "media/mpu6050.png",
         55,
         55,
         "*"));
@@ -592,7 +591,7 @@ Blockly.Blocks['init_oled'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/oled.png",
+        "media/oled.png",
         55,
         55,
         "*"));
@@ -672,7 +671,7 @@ Blockly.Blocks['init_servo'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/servo.png",
+        "media/servo.png",
         55,
         55,
         "*"))
@@ -824,7 +823,7 @@ Blockly.Blocks['tm1640_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/matrix.png",
+        "media/matrix.png",
         55,
         55,
         "*"))
@@ -1123,7 +1122,7 @@ Blockly.Blocks['hcsr_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/hcsr04.png",
+        "media/hcsr04.png",
         55,
         55,
         "*"))
@@ -1169,27 +1168,21 @@ Blockly.Blocks['hcsr_read'] = {
 };
 
 
-
+/// Start DHT Sensor
 Blockly.Blocks['dht_init'] = {
   init: function() {
-
-
- this.appendDummyInput()
-      .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/dht.png",
-        55,
-        55,
-        "*"))
-      .appendField("Start DHT Sensor")
-	  ;
-
-    //this.appendDummyInput()
-     //   .appendField(new Blockly.FieldLabelSerializable("Start DHT sensor"), "BLOCK_DHT_INIT");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+                     "media/dht.png",
+                     55,
+                     55,
+                     "*"))
+        .appendField("Start DHT Sensor");
     this.appendDummyInput()
         .appendField('Type')
         .appendField(new Blockly.FieldDropdown([
-            ['DHT11', 'DHT11'],
-            ['DHT22', 'DHT22']
+                     ['DHT11', 'DHT11'],
+                     ['DHT22', 'DHT22']
         ]), 'DHT_TYPE');
     this.appendValueInput("pin")
         .setCheck("Number")
@@ -1198,11 +1191,12 @@ Blockly.Blocks['dht_init'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Start DHT11 ou DHT22 sensor");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Start DHT11 ou DHT22 sensor");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Measure DHT11/22 Sensor
 Blockly.Blocks['dht_measure'] = {
   init: function() {
     this.appendDummyInput()
@@ -1210,35 +1204,37 @@ Blockly.Blocks['dht_measure'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Measure DHT11/22 Sensor");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Measure DHT11/22 Sensor");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Read DHT11/22 Temperature
 Blockly.Blocks['dht_read_temp'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Temperature"), "MSG_READ_DHT_TEMP");
     this.setOutput(true, null);
     this.setColour(230);
- this.setTooltip("Read DHT11/22 Temperature");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Read DHT11/22 Temperature");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Read DHT11/22 Humidity
 Blockly.Blocks['dht_read_humidity'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Humidity"), "MSG_READ_DHT_HUMI");
     this.setOutput(true, null);
     this.setColour(230);
- this.setTooltip("Read DHT11/22 Humidity");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Read DHT11/22 Humidity");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
-// MQTT
-
+/// MQTT
+/// Start MQTT Client
 Blockly.Blocks['mqtt_init'] = {
   init: function() {
     this.appendDummyInput()
@@ -1262,11 +1258,12 @@ Blockly.Blocks['mqtt_init'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Start MQTT Client");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Start MQTT Client");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Add Data to MQTT Buffer
 Blockly.Blocks['mqtt_add_to_buffer'] = {
   init: function() {
     this.appendDummyInput()
@@ -1281,11 +1278,12 @@ Blockly.Blocks['mqtt_add_to_buffer'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Add Data to MQTT Buffer");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Add Data to MQTT Buffer");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Publish Buffer to MQTT Topic
 Blockly.Blocks['mqtt_publish_buffer'] = {
   init: function() {
     this.appendDummyInput()
@@ -1299,18 +1297,18 @@ Blockly.Blocks['mqtt_publish_buffer'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldDropdown([
             ['0 - at most\u00A0once', '0'],
-            ['1 - at least\u00A0once', '1'],
-            ['2 - exactly\u00A0once', '2']
+            ['1 - at least\u00A0once', '1']
         ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setInputsInline(false);
- this.setTooltip("Publish Buffer to MQTT Server");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Publish Buffer to MQTT Server");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Publish Payload to MQTT Topic
 Blockly.Blocks['mqtt_publish_payload'] = {
   init: function() {
     this.appendDummyInput()
@@ -1327,18 +1325,18 @@ Blockly.Blocks['mqtt_publish_payload'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldDropdown([
             ['0 - at most\u00A0once', '0'],
-            ['1 - at least\u00A0once', '1'],
-            ['2 - exactly\u00A0once', '2']
+            ['1 - at least\u00A0once', '1']
         ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setInputsInline(false);
- this.setTooltip("Publish Payload to MQTT Server");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Publish Payload to MQTT Server");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Subscribe to MQTT Topic
 Blockly.Blocks['mqtt_subscribe'] = {
   init: function() {
     this.appendDummyInput()
@@ -1350,38 +1348,38 @@ Blockly.Blocks['mqtt_subscribe'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Subscribe to MQTT Topic");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Subscribe to MQTT Topic");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
-
+/// Set Callback to MQTT Messages
 Blockly.Blocks['mqtt_set_callback'] = {
   init: function() {
-    var validator = function(value){
-      let proc_list = Blockly.Procedures.allProcedures(Code.workspace)[0];
-      for (let i in proc_list){
-        if (proc_list[i][0] == value){
-          return value;
-        }
-      }
-      return null;
-    }
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabelSerializable("Set Callback to MQTT Messages"), "BLOCK_MQTT_SET_CALLBACK");
     this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Callback Function")
-        .appendField(new Blockly.FieldTextInput('None'), 'MQTT_CALLBACK');
-        //.appendField(new Blockly.FieldTextInput('None',validator), 'MQTT_CALLBACK'); bug
+        .appendField('with')
+        .appendField(new Blockly.FieldVariable('data_bytes'), 'MQTT_DATA_VAR')
+        .appendField('received from')
+        .appendField(new Blockly.FieldVariable(
+          'topic',
+          null,
+          ['String'],
+          'String'
+        ), 'MQTT_TOPIC_VAR');
+    this.appendStatementInput('do')
+        .appendField('do');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Callback function must have topic and msg parameters");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setInputsInline(false);
+    this.setTooltip("Callback function must have topic and msg parameters");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Check MQTT Server for pending messages
 Blockly.Blocks['mqtt_check_msg'] = {
   init: function() {
     this.appendDummyInput()
@@ -1389,11 +1387,12 @@ Blockly.Blocks['mqtt_check_msg'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Check if the server has any pending messages. Non-blocking method. Subscription messages will be passed to the callback.");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Check if the server has any pending messages. Non-blocking method. Subscription messages will be passed to the callback.");
+     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Wait for MQTT Server messages
 Blockly.Blocks['mqtt_wait_msg'] = {
   init: function() {
     this.appendDummyInput()
@@ -1401,11 +1400,12 @@ Blockly.Blocks['mqtt_wait_msg'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Wait for server sending any message. Blocking method. Subscription messages will be passed to the callback.");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Wait for server sending any message. Blocking method. Subscription messages will be passed to the callback.");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Disconnect MQTT Client
 Blockly.Blocks['mqtt_disconnect'] = {
   init: function() {
     this.appendDummyInput()
@@ -1413,12 +1413,13 @@ Blockly.Blocks['mqtt_disconnect'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Disconnect the MQTT Client from Server.");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Disconnect the MQTT Client from Server.");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
-// EasyMQTT
+/// EasyMQTT
+/// EasyMQTT Init
 Blockly.Blocks['easymqtt_init'] = {
   generate_id: function(){
     return Math.random().toString(36).substring(7);
@@ -1433,11 +1434,12 @@ Blockly.Blocks['easymqtt_init'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Start EasyMQTT Client");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Start EasyMQTT Client");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// EasyMQTT Publish Data
 Blockly.Blocks['easymqtt_publish_data'] = {
   init: function() {
     this.appendDummyInput()
@@ -1453,11 +1455,12 @@ Blockly.Blocks['easymqtt_publish_data'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Publish Data to EasyMQTT Server");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Publish Data to EasyMQTT Server");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+///EasyMQTT Subscribe
 Blockly.Blocks['easymqtt_subscribe'] = {
   init: function() {
     this.appendValueInput("topic")
@@ -1469,8 +1472,8 @@ Blockly.Blocks['easymqtt_subscribe'] = {
         .appendField(new Blockly.FieldVariable(
           'data',
           null,
-          ['String'],
-          'String'
+          ['Number'],
+          'Number'
         ), 'EASYMQTT_VAR')
         .appendField('is received');
     this.appendStatementInput('do')
@@ -1479,11 +1482,12 @@ Blockly.Blocks['easymqtt_subscribe'] = {
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setInputsInline(false);
- this.setTooltip("Subscribe to a topic and define what to do when data is received from EasyMQTT Server");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Subscribe to a topic and define what to do when data is received from EasyMQTT Server");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// EasyMQTT Receive Data
 Blockly.Blocks['easymqtt_receive_data'] = {
   init: function() {
     this.appendDummyInput()
@@ -1497,11 +1501,12 @@ Blockly.Blocks['easymqtt_receive_data'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Receive Data from EasyMQTT Server");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Receive Data from EasyMQTT Server");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// EasyMQTT Disconnect
 Blockly.Blocks['easymqtt_disconnect'] = {
   init: function() {
     this.appendDummyInput()
@@ -1509,32 +1514,29 @@ Blockly.Blocks['easymqtt_disconnect'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Disconnect the EasyMQTT Client from Server.");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Disconnect the EasyMQTT Client from Server.");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
+/// Relay Switch
 Blockly.Blocks['relay_switch'] = {
   init: function() {
-
- this.appendDummyInput()
-      .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/relay.png",
-        55,
-        55,
-        "*"))
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+                     "media/relay.png",
+                     55,
+                     55,
+                     "*"))
         .setAlign(Blockly.ALIGN_CENTRE)
-      .appendField("Relay")
-	  ;
-
-
+        .appendField("Relay");
     this.appendValueInput("pin")
         .setCheck("Number")
         .appendField('Turn')
         .appendField(new Blockly.FieldDropdown([
-            ['off', '0'],
-            ['on', '1']
-        ]), 'RELAY_STATUS')
+                       ['off', '0'],
+                       ['on', '1']
+                     ]), 'RELAY_STATUS')
         .appendField('relay on pin');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -1544,6 +1546,7 @@ Blockly.Blocks['relay_switch'] = {
   }
 };
 
+/// Convert to Str
 Blockly.Blocks['text_to_str'] = {
   init: function() {
     this.appendValueInput("var")
@@ -1555,6 +1558,19 @@ Blockly.Blocks['text_to_str'] = {
   }
 };
 
+/// Decode Bytes to Str
+Blockly.Blocks['decode_bytes_to_text'] = {
+  init: function() {
+    this.appendValueInput("var")
+        .appendField(new Blockly.FieldLabelSerializable("decode bytes to text"), "VAR");
+    this.setColour(160);
+    this.setOutput(true, null);
+    this.setTooltip("Decode bytes to a String.");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+/// Convert to Int
 Blockly.Blocks['var_to_int'] = {
   init: function() {
     this.appendValueInput("var")
@@ -1562,6 +1578,18 @@ Blockly.Blocks['var_to_int'] = {
     this.setColour(230);
     this.setOutput(true, null);
     this.setTooltip("Convert anything to Int.");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+/// Convert to Float
+Blockly.Blocks['var_to_float'] = {
+  init: function() {
+    this.appendValueInput("var")
+        .appendField(new Blockly.FieldLabelSerializable("to float"), "VAR");
+    this.setColour(230);
+    this.setOutput(true, null);
+    this.setTooltip("Convert anything to float.");
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -8383,7 +8411,7 @@ Blockly.Blocks['rfid_rc522_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/RC522.jpg",
+        "media/RC522.jpg",
         55,
         55,
         "*"));
@@ -8514,7 +8542,7 @@ Blockly.Blocks['char_lcd_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/lcd20x4.jpg",
+        "media/lcd20x4.jpg",
         55,
         55,
         "*"));
@@ -9172,7 +9200,7 @@ Blockly.Blocks['max30100_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/max30100.png",
+        "media/max30100.png",
         55,
         55,
         "*"));
@@ -9243,7 +9271,7 @@ Blockly.Blocks['gps_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/ublox_gps.png",
+        "media/ublox_gps.png",
         55,
         55,
         "*"));
@@ -9354,7 +9382,7 @@ Blockly.Blocks['encoder_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/encoder.png",
+        "media/encoder.png",
         55,
         55,
         "*"));
@@ -9414,7 +9442,7 @@ Blockly.Blocks['stepper_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/stepper.png",
+        "media/stepper.png",
         55,
         55,
         "*"));
@@ -9475,7 +9503,7 @@ Blockly.Blocks['dc_motor_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "/beta2/ui/media/dcmotor.png",
+        "media/dcmotor.png",
         55,
         55,
         "*"));

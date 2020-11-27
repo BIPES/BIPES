@@ -23,14 +23,11 @@ if (isset($_GET["since"]) && !empty($_GET["since"])){
     $results = $collection->find();
 }
 
-
 $values = array();
 foreach ($results as $item) {
     $values[] = array("timestamp" => $item['timestamp'], "data" => $item['data']);
 }
 $return = array("success" => True, "result" => $values);
 
-
 echo(json_encode($return));
-
 ?>

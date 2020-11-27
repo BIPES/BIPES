@@ -148,26 +148,42 @@ Blockly.Python['gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+/// Pinout
 Blockly.Python['pinout'] = function(block) {
   var pin = block.getFieldValue('PIN');
   
   return [pin, Blockly.Python.ORDER_NONE];
 };
 
+/// Convert to Str
 Blockly.Python['text_to_str'] = function(block) {
   var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
-
   var code = 'str(' + variable + ')';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+/// Decode Bytes to Str
+Blockly.Python['decode_bytes_to_text'] = function(block) {
+	var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
+	var code =  variable + '.decode()';
+
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+/// Convert to Int
 Blockly.Python['var_to_int'] = function(block) {
   var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
-
   var code = 'int(' + variable + ')';
 
   return [code, Blockly.Python.ORDER_NONE];
+};
+/// Convert to Float
+Blockly.Python['var_to_float'] = function(block) {
+	var variable = Blockly.Python.valueToCode(block, 'var', Blockly.Python.ORDER_ATOMIC);
+	var code = 'float(' + variable + ')';
+  
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 //OneWire
@@ -362,30 +378,33 @@ Blockly.Python['wifi_client_scan_networks'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+/// DHT11/22
+/// Start DHT Sensor
 Blockly.Python['dht_init'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var type = block.getFieldValue('DHT_TYPE');
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   Blockly.Python.definitions_['import_dht'] = 'import dht';
   Blockly.Python.definitions_['import_time'] = 'import time';
-  var code = 'dhts=dht.' + type + '(machine.Pin(' + value_pin + '));dhts.measure();time.sleep(1)\n';
+  var code = 'dhts=dht.' + type + '(machine.Pin(' + value_pin + '));dhts.measure();time.sleep(2)\n';
   return code;
 };
 
+/// Measure DHT11/22 Sensor
 Blockly.Python['dht_measure'] = function(block) {
   var code = 'dhts.measure()\n';
   return code;
 };
 
+/// Read DHT11/22 Temperature
 Blockly.Python['dht_read_temp'] = function(block) {
   var code = 'dhts.temperature()';
-  // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+/// Read DHT11/22 Humidity
 Blockly.Python['dht_read_humidity'] = function(block) {
   var code = 'dhts.humidity()';
-  // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -503,7 +522,7 @@ Blockly.Python['tm1640_custom'] = function (block) {
     return code;
 };
 
-
+/// Relay Switch
 Blockly.Python['relay_switch'] = function(block) {
   var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var status = block.getFieldValue('RELAY_STATUS');
@@ -516,8 +535,8 @@ Blockly.Python['relay_switch'] = function(block) {
   return code;
 };
 
-// EasyMQTT
-
+/// EasyMQTT
+/// EasyMQTT Init
 Blockly.Python['easymqtt_init'] = function(block) {
   var server = '"bipes.net.br"';
   var port = '1883';
@@ -526,24 +545,23 @@ Blockly.Python['easymqtt_init'] = function(block) {
   var session = block.getFieldValue('EASYMQTT_SESSION_ID');
   window.easyMQTT_session = session;
 
-
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
   var code = 'easymqtt_session = "' + session + '"; \neasymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = ' + server + ', port = ' + port + ', user = ' + user + ', password = ' + pass + '); \neasymqtt_client.connect()\nprint("EasyMQTT connected")\n'
   return code;
 };
 
+/// EasyMQTT Publish Data
 Blockly.Python['easymqtt_publish_data'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
   var data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
 
-
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
-
 
   var code = 'easymqtt_client.publish(easymqtt_session + "/" + ' + topic + ', str(' + data + '))\nprint("EasyMQTT Publish - Session:",easymqtt_session,"Topic:",' + topic + ',"Value:",str(' + data + '))\n'
   return code;
 };
 
+/// EasyMQTT Disconnect
 Blockly.Python['easymqtt_disconnect'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
@@ -551,6 +569,7 @@ Blockly.Python['easymqtt_disconnect'] = function(block) {
   return code;
 };
 
+///EasyMQTT Subscribe
 Blockly.Python['easymqtt_subscribe'] = function(block) {
   var var_name = Blockly.Python.variableDB_.getName(
       block.getFieldValue('EASYMQTT_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
@@ -583,18 +602,17 @@ Blockly.Python['easymqtt_subscribe'] = function(block) {
   var funct_code = Blockly.Python.statementToCode(block, 'do');
   var name = topic.replace(/\W/g, '_');
 
-
   var function_name = Blockly.Python.provideFunction_(
     'easymqtt'+name,
     ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '('+var_name+'):',globals,funct_code]);
 
   Blockly.Python.definitions_['easymqtt_callback'] = 'easymqtt_callback_list = {}\ndef easymqtt_callback(topic_,msg_):\n  topic_=topic_.decode();msg_=msg_.decode()\n  if topic_ in easymqtt_callback_list: easymqtt_callback_list[topic_](float(msg_))';
 
-
   var code = "easymqtt_client.set_callback(easymqtt_callback)\neasymqtt_callback_list['"+window.easyMQTT_session+"/' + "+topic+"]="+function_name+"\neasymqtt_client.subscribe('"+window.easyMQTT_session+"/' + "+topic+")\n"
   return code;
 };
 
+/// EasyMQTT Receive Data
 Blockly.Python['easymqtt_receive_data'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
   var wait = block.getFieldValue('EASYMQTT_WAIT');
@@ -617,8 +635,8 @@ Blockly.Python['mqtt_add_to_buffer'] = function(block) {
   return code;
 };
 
-// MQTT
-
+/// MQTT
+/// Start MQTT Client
 Blockly.Python['mqtt_init'] = function(block) {
   var server = Blockly.Python.valueToCode(block, 'server', Blockly.Python.ORDER_ATOMIC);
   var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
@@ -630,6 +648,7 @@ Blockly.Python['mqtt_init'] = function(block) {
   return code;
 };
 
+/// Add Data to MQTT Buffer
 Blockly.Python['mqtt_add_to_buffer'] = function(block) {
   var name = Blockly.Python.valueToCode(block, 'fieldname', Blockly.Python.ORDER_ATOMIC);
   var value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
@@ -638,17 +657,18 @@ Blockly.Python['mqtt_add_to_buffer'] = function(block) {
   return code;
 };
 
+/// Publish Buffer to MQTT Topic
 Blockly.Python['mqtt_publish_buffer'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
   var qos = block.getFieldValue('MQTT_QOS');
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
-
   var code = 'mqtt_client.publish(' + topic + ', mqtt_buffer,qos=' + qos + '); mqtt_buffer = ""\n';
   return code;
 };
 
+/// Publish Payload to MQTT Topic
 Blockly.Python['mqtt_publish_payload'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
   var payload = Blockly.Python.valueToCode(block, 'payload', Blockly.Python.ORDER_ATOMIC);
@@ -656,20 +676,54 @@ Blockly.Python['mqtt_publish_payload'] = function(block) {
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
-
   var code = 'mqtt_client.publish(' + topic + ', ' + payload + ',qos=' + qos + ')\n';
   return code;
 };
 
+/// Set Callback to MQTT Messages
 Blockly.Python['mqtt_set_callback'] = function(block) {
-  var callback = block.getFieldValue('MQTT_CALLBACK');
+	var data_var_name = Blockly.Python.variableDB_.getName(block.getFieldValue('MQTT_DATA_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
+	var topic_var_name = Blockly.Python.variableDB_.getName(block.getFieldValue('MQTT_TOPIC_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
+	// Fix for global variables inside callback
+	// Piece of code from generators/python/procedures.js
+	// Add a 'global' statement for every variable that is not shadowed by a local parameter.
+	var globals = [];
+	var varName;
+	var workspace = block.workspace;
+	var variables = Blockly.Variables.allUsedVarModels(workspace) || [];
+	for (var i = 0, variable; variable = variables[i]; i++) {
+		varName = variable.name;
+		if (block.getVars().indexOf(varName) == -1 && varName != data_var_name && varName != topic_var_name) {
+		globals.push(Blockly.Python.variableDB_.getName(varName,
+			Blockly.VARIABLE_CATEGORY_NAME));
+		}
+	}
+	// Add developer variables.
+	var devVarList = Blockly.Variables.allDeveloperVariables(workspace);
+	for (var i = 0; i < devVarList.length; i++) {
+		globals.push(Blockly.Python.variableDB_.getName(devVarList[i],
+			Blockly.Names.DEVELOPER_VARIABLE_TYPE));
+	}
+	globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') : '';
+	// End of code from generators/python/procedures.js
 
-  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+	Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
-  var code = 'mqtt_client.set_callback(' + callback + ')\n';
-  return code;
+	var funct_code = Blockly.Python.statementToCode(block, 'do');
+
+
+	var function_name = Blockly.Python.provideFunction_(
+		'mqtt_callback',
+		['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '('+topic_var_name+','+data_var_name+'):',
+		globals,
+		Blockly.Python.INDENT + topic_var_name + " = " + topic_var_name + ".decode()",
+		funct_code]);
+
+	var code = 'mqtt_client.set_callback(' + function_name + ')\n';
+	return code;
 };
 
+/// Subscribe to MQTT Topic
 Blockly.Python['mqtt_subscribe'] = function(block) {
   var topic = Blockly.Python.valueToCode(block, 'topic', Blockly.Python.ORDER_ATOMIC);
 
@@ -679,6 +733,7 @@ Blockly.Python['mqtt_subscribe'] = function(block) {
   return code;
 };
 
+/// Check for MQTT Server messages
 Blockly.Python['mqtt_check_msg'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
@@ -686,6 +741,7 @@ Blockly.Python['mqtt_check_msg'] = function(block) {
   return code;
 };
 
+/// Wait for MQTT Server messages
 Blockly.Python['mqtt_wait_msg'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
@@ -693,6 +749,7 @@ Blockly.Python['mqtt_wait_msg'] = function(block) {
   return code;
 };
 
+/// Disconnect MQTT Client
 Blockly.Python['mqtt_disconnect'] = function(block) {
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 

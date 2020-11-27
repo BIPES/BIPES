@@ -16,5 +16,4 @@ $return = array("success" => True, "result" => "Session '" . $session . "' clean
 
 echo(json_encode($return));
 
-
 ?>
