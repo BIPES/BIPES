@@ -139,9 +139,11 @@ Blockly.Python['gpio_get'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  Blockly.Python.definitions_['gpio_get' + value_pin] = 'pIn' + value_pin + '=Pin(' + value_pin + ', Pin.IN)\n\n';
+  var x = value_pin.replace('(','').replace(')','');
 
-  var code = 'pIn' + value_pin + '.value()';
+  Blockly.Python.definitions_['gpio_get' + x] = 'pIn' + x + '=Pin(' + x + ', Pin.IN)\n\n';
+
+  var code = 'pIn' + x + '.value()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -526,7 +528,7 @@ Blockly.Python['easymqtt_init'] = function(block) {
 
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
-  var code = 'easymqtt_session = "' + session + '"; easymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = ' + server + ', port = ' + port + ', user = ' + user + ', password = ' + pass + '); easymqtt_client.connect()\nprint("EasyMQTT connected")\n'
+  var code = 'easymqtt_session = "' + session + '"; \neasymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = ' + server + ', port = ' + port + ', user = ' + user + ', password = ' + pass + '); \neasymqtt_client.connect()\nprint("EasyMQTT connected")\n'
   return code;
 };
 
@@ -4028,7 +4030,8 @@ Blockly.Python['randomforestclassifier'] = function(block) {
   
 Blockly.Python['file_open_write'] = function(block) {
   var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
-  var code = 'f = open(' + pIn + ', \'w\')\n';
+  var code = 'f = open(' + pIn + ', \'a+\')\n';
+  //var code = 'f = open(' + pIn + ', \'w\')\n';
   return code;
 };
 
@@ -4056,6 +4059,7 @@ Blockly.Python['file_read'] = function(block) {
 Blockly.Python['file_write'] = function(block) {
   var pIn = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
   var code = 'f.write(' + pIn + ')\n';
+  code += "f.write('\\n')\n";
   return code;
 };
 
