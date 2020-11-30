@@ -1,0 +1,158 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable type="Number" id="pT-%,kO|g~w8d/8#G#st">data</variable>
+  </variables>
+  <block type="wifi_client_connect" id="nBBeXPqg=lvPC*hQZ,eC" x="738" y="-313">
+    <field name="NAME">Connect to Wifi network</field>
+    <field name="WIFI_CLIENT_NET_NAME">Network name</field>
+    <field name="WIFI_CLIENT_NET_KEY">Network key</field>
+    <value name="wifi_client_essid">
+      <shadow type="text" id="PEO~J3Wu2|PEUB|Fo~S:">
+        <field name="TEXT">ssid</field>
+      </shadow>
+    </value>
+    <value name="wifi_client_key">
+      <shadow type="text" id="%,R|fGxzF`)=n@gc(5Z7">
+        <field name="TEXT">password</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="easymqtt_init" id="6~,MUC)8Z[Q%xLK$Ft:[">
+        <field name="BLOCK_EASYMQTT_INIT">EasyMQTT Start</field>
+        <field name="EASYMQTT_SESSION_ID">test123</field>
+        <next>
+          <block type="dht_init" id="}WF[M.{LkA!)gc=n]bsJ">
+            <field name="DHT_TYPE">DHT11</field>
+            <field name="DHT_PIN_MSG">pin</field>
+            <value name="pin">
+              <shadow type="pinout" id="d{NnuEsq${3|7V=o-T=e">
+                <field name="PIN">0</field>
+              </shadow>
+            </value>
+            <next>
+              <block type="easymqtt_subscribe" id="g#$wy|`+o,$gz+2gJM7p">
+                <field name="EASYMQTT_TOPIC">EasyMQTT Subscribe to Topic</field>
+                <field name="EASYMQTT_VAR" id="pT-%,kO|g~w8d/8#G#st" variabletype="Number">data</field>
+                <value name="topic">
+                  <shadow type="text" id="):f9*8zB)hbLxv[;5})V">
+                    <field name="TEXT">relay</field>
+                  </shadow>
+                </value>
+                <statement name="do">
+                  <block type="controls_if" id="[7B4aJtw4j8:|T2`A`lf">
+                    <mutation else="1"/>
+                    <value name="IF0">
+                      <block type="logic_compare" id="3zmosFfd88phC~(VOoT7">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="variables_get" id="]E2c#:UZ7Gmj]2wskra*">
+                            <field name="VAR" id="pT-%,kO|g~w8d/8#G#st" variabletype="Number">data</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number" id="F(xmuq`gi8w^h~c`=Lk[">
+                            <field name="NUM">1</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="relay_switch" id="-x2/+qHf2W9-?M+DK}}+">
+                        <field name="RELAY_STATUS">1</field>
+                        <value name="pin">
+                          <shadow type="pinout" id="OPSd:m%6+2RavS7Dpz!8">
+                            <field name="PIN">4</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </statement>
+                    <statement name="ELSE">
+                      <block type="relay_switch" id="HZV[[iqRp1P;p_P^OO;n">
+                        <field name="RELAY_STATUS">0</field>
+                        <value name="pin">
+                          <shadow type="pinout" id="ifb58f8JMg(X_o+zPIRx">
+                            <field name="PIN">4</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </statement>
+                  </block>
+                </statement>
+                <next>
+                  <block type="controls_whileUntil" id="j#~sV+Zw~Uz8A2Lir-aq">
+                    <field name="MODE">WHILE</field>
+                    <value name="BOOL">
+                      <block type="logic_boolean" id="2t4dka|h$bx!+6!vQtJ#">
+                        <field name="BOOL">TRUE</field>
+                      </block>
+                    </value>
+                    <statement name="DO">
+                      <block type="dht_measure" id="E7lTQa9ZURX+*.@5:J6R">
+                        <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
+                        <next>
+                          <block type="easymqtt_publish_data" id="^).Z@lgwYsdg6?EzjLDI">
+                            <field name="BLOCK_EASYMQTT_PUBLISH">EasyMQTT Publish Data</field>
+                            <field name="EASYMQTT_TOPIC">Topic</field>
+                            <field name="EASYMQTT_PAYLOAD">Data</field>
+                            <value name="topic">
+                              <shadow type="text" id="({yR)}nbWhiRwuV.aiT^">
+                                <field name="TEXT">temperature</field>
+                              </shadow>
+                            </value>
+                            <value name="data">
+                              <shadow type="math_number" id=",Y`LV`bKrLC~*P4po#OX">
+                                <field name="NUM">0</field>
+                              </shadow>
+                              <block type="dht_read_temp" id="_gqk$)77Tnqoh{hmFZYh">
+                                <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
+                              </block>
+                            </value>
+                            <next>
+                              <block type="easymqtt_publish_data" id="}j3ct0zA*Y:x3pb9UOSI">
+                                <field name="BLOCK_EASYMQTT_PUBLISH">EasyMQTT Publish Data</field>
+                                <field name="EASYMQTT_TOPIC">Topic</field>
+                                <field name="EASYMQTT_PAYLOAD">Data</field>
+                                <value name="topic">
+                                  <shadow type="text" id="*iL9g3dhdZNO`NfEemkQ">
+                                    <field name="TEXT">humidity</field>
+                                  </shadow>
+                                </value>
+                                <value name="data">
+                                  <shadow type="math_number" id="ZXoIqZFkC`Ars:oYgw6H">
+                                    <field name="NUM">0</field>
+                                  </shadow>
+                                  <block type="dht_read_humidity" id="SU_v`Z*~?TeV|pIU).XW">
+                                    <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="easymqtt_receive_data" id="qzi],E9-y*2sEIi4rBp4">
+                                    <field name="BLOCK_EASYMQTT_RECEIVE">EasyMQTT Receive Data</field>
+                                    <field name="EASYMQTT_WAIT">0</field>
+                                    <next>
+                                      <block type="delay" id="FSe%:U5_}5V{.(nRbkl2">
+                                        <value name="time">
+                                          <shadow type="math_number" id="%?K)bvxKJiy.3B4K5CSl">
+                                            <field name="NUM">60</field>
+                                          </shadow>
+                                        </value>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

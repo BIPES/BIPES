@@ -1,0 +1,199 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id="C}d:J]HBq[F$6f3X!8$f">data_bytes</variable>
+    <variable type="String" id="O@xP,FLL;[vpZ4L,1|_-">topic</variable>
+  </variables>
+  <block type="wifi_client_connect" id="~L3bNp,YN;.2bA%Fj-hk" x="-88" y="-263">
+    <field name="NAME">Connect to Wifi network</field>
+    <field name="WIFI_CLIENT_NET_NAME">Network name</field>
+    <field name="WIFI_CLIENT_NET_KEY">Network key</field>
+    <value name="wifi_client_essid">
+      <shadow type="text" id="(YDc!)O74kqshC+zmB_.">
+        <field name="TEXT">&lt;ssid&gt;</field>
+      </shadow>
+    </value>
+    <value name="wifi_client_key">
+      <shadow type="text" id="bG;V@rKF5VX@a792)oxg">
+        <field name="TEXT">&lt;password&gt;</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="dht_init" id="nTgFW#X1a_vENrs!8PA`">
+        <field name="DHT_TYPE">DHT11</field>
+        <field name="DHT_PIN_MSG">pin</field>
+        <value name="pin">
+          <shadow type="pinout" id="y,+JPlp]l=-?V-3-q9i4">
+            <field name="PIN">0</field>
+          </shadow>
+        </value>
+        <next>
+          <block type="mqtt_init" id="8/#{m?vEMi^l6{cwwuIZ">
+            <field name="BLOCK_MQTT_INIT">Start MQTT Client</field>
+            <field name="MQTT_SERVER">Server Address</field>
+            <field name="MQTT_PORT">Server Port</field>
+            <field name="MQTT_USER">Username</field>
+            <field name="MQTT_PASSWORD">Password</field>
+            <value name="server">
+              <shadow type="text" id="I%Vj#^t0_oT{Wl[2Zqz,">
+                <field name="TEXT">mqtt.thingspeak.com</field>
+              </shadow>
+            </value>
+            <value name="port">
+              <shadow type="math_number" id="viUslbm$rTW`aMx^0t4=">
+                <field name="NUM">1883</field>
+              </shadow>
+            </value>
+            <value name="user">
+              <shadow type="text" id="W+IT)4tr!LTg(d_Y2Qz!">
+                <field name="TEXT">&lt;api_user&gt;</field>
+              </shadow>
+            </value>
+            <value name="password">
+              <shadow type="text" id="!zJD.zy9u.P(BeH7C[*%">
+                <field name="TEXT">&lt;api_key&gt;</field>
+              </shadow>
+            </value>
+            <next>
+              <block type="mqtt_set_callback" id="%qz|ds6lg)lvl4z8Iodx">
+                <field name="BLOCK_MQTT_SET_CALLBACK">Set Callback to MQTT Messages</field>
+                <field name="MQTT_DATA_VAR" id="C}d:J]HBq[F$6f3X!8$f">data_bytes</field>
+                <field name="MQTT_TOPIC_VAR" id="O@xP,FLL;[vpZ4L,1|_-" variabletype="String">topic</field>
+                <statement name="do">
+                  <block type="controls_if" id="ybCz|zwTSh}8a2qftT=8">
+                    <mutation else="1"/>
+                    <value name="IF0">
+                      <block type="logic_compare" id="8:M`-U0Yv|oaFWS#5Eol">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="decode_bytes_to_text" id="!i~dL|I9CH^o{Gitl^]k">
+                            <field name="VAR">decode bytes to text</field>
+                            <value name="var">
+                              <block type="variables_get" id="},|L5{9YOXQnAJ[^I?mF">
+                                <field name="VAR" id="C}d:J]HBq[F$6f3X!8$f">data_bytes</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="text" id="^n_LSR{,,6!+rpZRwLxW">
+                            <field name="TEXT">1</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="relay_switch" id="y5|JH;8+jTWp|0CP:hg$">
+                        <field name="RELAY_STATUS">1</field>
+                        <value name="pin">
+                          <shadow type="pinout" id="0j=^J[rF!d^@akjRcm;`">
+                            <field name="PIN">4</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </statement>
+                    <statement name="ELSE">
+                      <block type="relay_switch" id="bfDEcSs}7f`;uBr()E?n">
+                        <field name="RELAY_STATUS">0</field>
+                        <value name="pin">
+                          <shadow type="pinout" id="OBE=XDUN~rM7b.s6]/5h">
+                            <field name="PIN">4</field>
+                          </shadow>
+                        </value>
+                      </block>
+                    </statement>
+                  </block>
+                </statement>
+                <next>
+                  <block type="mqtt_subscribe" id="uJY2#]P(SR=0@tkax76|">
+                    <field name="BLOCK_MQTT_SUBSCRIBE">Subscribe to MQTT Topic</field>
+                    <field name="MQTT_TOPIC">Topic</field>
+                    <value name="topic">
+                      <shadow type="text" id="aALpyQh.,lhQ;+16?*M%">
+                        <field name="TEXT">channels/&lt;channel_id&gt;/subscribe/fields/field1/&lt;topic_key&gt;</field>
+                      </shadow>
+                    </value>
+                    <next>
+                      <block type="controls_whileUntil" id="7;9-bW#pU8:Id`MD*}if">
+                        <field name="MODE">WHILE</field>
+                        <value name="BOOL">
+                          <block type="logic_boolean" id="Af3oaknXt6#{^[WlJ$vj">
+                            <field name="BOOL">TRUE</field>
+                          </block>
+                        </value>
+                        <statement name="DO">
+                          <block type="dht_measure" id="/Rzl.qN1NQk[am3(|b6)">
+                            <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
+                            <next>
+                              <block type="mqtt_add_to_buffer" id="QA72Q$MY7/}HA)5}Pa4T">
+                                <field name="BLOCK_MQTT_ADD_TO_BUFFER">Add data to MQTT Buffer</field>
+                                <field name="MQTT_FIELDNAME">Field Name</field>
+                                <field name="MQTT_VALUE">Value</field>
+                                <value name="fieldname">
+                                  <shadow type="text" id="0{2s~I2$|j1^a^)gMatn">
+                                    <field name="TEXT">field1</field>
+                                  </shadow>
+                                </value>
+                                <value name="value">
+                                  <block type="dht_read_temp" id="!x,?`W.mv2eIY1NfOT=^">
+                                    <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="mqtt_add_to_buffer" id="}|I9/Vm;je7ouXJdOfuo">
+                                    <field name="BLOCK_MQTT_ADD_TO_BUFFER">Add data to MQTT Buffer</field>
+                                    <field name="MQTT_FIELDNAME">Field Name</field>
+                                    <field name="MQTT_VALUE">Value</field>
+                                    <value name="fieldname">
+                                      <shadow type="text" id="@I(;GIs!Wbn:h6U0v)D_">
+                                        <field name="TEXT">field2</field>
+                                      </shadow>
+                                    </value>
+                                    <value name="value">
+                                      <block type="dht_read_humidity" id="3oolfjqZ2zeMMbl~NTS#">
+                                        <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="mqtt_publish_buffer" id="Gn5ewo-)#4CI,77@x.SK">
+                                        <field name="BLOCK_MQTT_PUBLISH">Publish Buffer to MQTT Topic</field>
+                                        <field name="MQTT_TOPIC">Topic</field>
+                                        <field name="MQTT_QOS">0</field>
+                                        <value name="topic">
+                                          <shadow type="text" id="g,-+|{We2WTK-0Cs(}4H">
+                                            <field name="TEXT">channels/&lt;channel_id&gt;/publish/&lt;topic_key&gt;</field>
+                                          </shadow>
+                                        </value>
+                                        <next>
+                                          <block type="mqtt_check_msg" id="_*ua)hiR%|ee|cO+P16~">
+                                            <field name="BLOCK_MQTT_CHECK_MSG">Check for MQTT Server messages</field>
+                                            <next>
+                                              <block type="delay" id="*.v$kb{2}Dh;|yj11+ld">
+                                                <value name="time">
+                                                  <shadow type="math_number" id="M=o#/J]xa_?@U1{Mu/ef">
+                                                    <field name="NUM">60</field>
+                                                  </shadow>
+                                                </value>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </next>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </statement>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>
