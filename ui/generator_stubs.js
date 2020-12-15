@@ -528,9 +528,9 @@ Blockly.Python['relay_switch'] = function(block) {
   var status = block.getFieldValue('RELAY_STATUS');
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   if (status == '1'){
-  	var code = 'machine.Pin(' + pin + ').off()\n';
+  	var code = 'machine.Pin(' + pin + ', machine.Pin.OUT).off()\n';
   }else{
-  	var code = 'machine.Pin(' + pin + ').on()\n';
+  	var code = 'machine.Pin(' + pin + ', machine.Pin.OUT).on()\n';
   }
   return code;
 };
