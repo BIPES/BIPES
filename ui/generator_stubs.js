@@ -4903,3 +4903,13 @@ Blockly.Python['esp32_can_recv'] = function(block) {
 
 
 
+Blockly.Python['python_try_catch'] = function(block) {
+
+  var funct_code = Blockly.Python.statementToCode(block, 'try');
+  var c = Blockly.Python.statementToCode(block, 'catch');
+
+  var code = "try:\n"+funct_code+"except:\n"+c+"\n";
+  return code;
+};
+
+

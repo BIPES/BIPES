@@ -9671,4 +9671,25 @@ Blockly.Blocks['esp32_can_recv'] = {
 };
 
 
+Blockly.Blocks['python_try_catch'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Try/Catch");
+ 
+
+    this.appendStatementInput('try')
+        .appendField('try');
+
+    this.appendStatementInput('catch')
+        .appendField('catch');
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.setTooltip("Python Try/Catch");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 

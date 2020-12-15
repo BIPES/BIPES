@@ -932,6 +932,9 @@ Device file manager
       </value>
 
     </block>
+
+
+    <block type="python_try_catch"></block>
   </category>
 
 
@@ -3685,7 +3688,7 @@ function runPythonCode(pCodeIn) {
 	sleep(10);
         textArray.forEach(function(line, index, array) {
            ws.send(line+'\r');
-	   sleep(25);
+	   sleep(100);
         });
         ws.send('\x04');
   
@@ -3717,7 +3720,7 @@ function runPython(evt) {
   sleep(50);
   textArray.forEach(function(line, index, array) {
 	  ws.send(line+'\r');
-	  sleep(15);
+	  sleep(100);
   });
   ws.send('\x04');
   
