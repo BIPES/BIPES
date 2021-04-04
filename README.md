@@ -13,11 +13,9 @@ http://www.bipes.net.br/beta2/ui/
 
 
 
+# More information
 
-
-Test code for BIPES Project User Interface
-
-Based on WebREPL and Blockly. Must clone these submodules into the same folder before using the project:
+Integrates WebREPL and Blockly. Must clone these submodules into the same folder before using the project:
 
 git clone https://github.com/google/blockly.git
 
