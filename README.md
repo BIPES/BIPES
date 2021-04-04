@@ -1,4 +1,20 @@
-# BIPES_ui_testing
+# BIPES: Block based Integrated Platform for Embedded Systems.
+
+![BIPES](bipes.png)
+
+
+More information at the project website:
+
+https://bipes.net.br/
+
+Use it online:
+
+http://www.bipes.net.br/beta2/ui/
+
+
+
+
+
 Test code for BIPES Project User Interface
 
 Based on WebREPL and Blockly. Must clone these submodules into the same folder before using the project:
