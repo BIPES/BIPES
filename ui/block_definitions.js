@@ -8595,7 +8595,6 @@ Blockly.Blocks['char_lcd_putstr'] = {
         .appendField("Write text on LCD");
 
     this.appendValueInput("text")
-        .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Text");
 
