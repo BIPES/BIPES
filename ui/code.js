@@ -472,6 +472,8 @@ Code.init = function() {
 
   Code.bindClick('saveButton', saveXml);
   Code.bindClick('loadButton', loadXml);
+  Code.bindClick('notificationButton', () => {BIPES ['notify'].showPanel ()})
+  Code.bindClick('languageButton', () => {BIPES ['language'].showPanel ()})
 
 
   // Disable the link button if page isn't backed by App Engine storage.
@@ -710,6 +712,8 @@ Code.initLanguage = function() {
   document.getElementById('trashButton').title = MSG['trashTooltip'];
   document.getElementById('saveButton').title = MSG['saveTooltip'];
   document.getElementById('loadButton').title = MSG['loadTooltip'];
+  document.getElementById('notificationButton').title = MSG['notificationTooltip'];
+  document.getElementById('languageButton').title = MSG['languageTooltip'];
 };
 
 /**
