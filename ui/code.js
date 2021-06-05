@@ -23,7 +23,7 @@ var libToInstall = '';
 Code.LANGUAGE_NAME = {
   'en': 'English',
   'es': 'Espanol',
-  'pt-br': 'Português Brasilerio'
+  'pt-br': 'Português Brasileiro'
 };
 
 /**
