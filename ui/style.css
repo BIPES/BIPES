@@ -338,7 +338,7 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
 .notify {
   z-index: 999;
 	right: -18em;
-  bottom: 0.5em;
+  top: 4rem;
 	padding: 1em 1em 0em 1em;
 	position: absolute;
   box-shadow: 0 .125em .5em #ccc;
@@ -386,6 +386,7 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
   border-left: solid 1px #ccc;
 	display: flex;
   flex-direction: column-reverse;
+  justify-content: start;
 }
 .language-panel#show, .notify-panel#show {
 	opacity: 1;
