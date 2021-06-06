@@ -105,7 +105,75 @@ function workspace () {
       title:'<b>ESP32</b><br>',
       img:'devinfo/ESP32-Pinout.jpg',
       description:"",
-      toolbox:'toolbox_esp32.xml'}
+      toolbox:'toolbox_esp32.xml'},
+
+      {name:'wemos_d1_mini',
+      title:'<b>ESP8266 - Wemos D1 Mini</b><br>',
+      img:'devinfo/Wemos-D1-Mini.png',
+      description:"<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/",
+      toolbox:'toolbox_esp8266.xml'},
+
+      {name:'ESP32-oled',
+      title:'<b>ESP32 board with OLED LCD and Battery</b><br>',
+      img:'devinfo/esp32-oled.png',
+      description:"Yet another ESP32 board",
+      toolbox:'toolbox_esp32.xml'},
+
+      {name:'M5STICK',
+      title:'<b>ESP32</b><br>',
+      img:'devinfo/m5stickc.png',
+      description:"M5STICK-C is based on ESP32 processor. More info at:",
+      toolbox:'toolbox_esp32.xml'},
+
+      {name:'Nucleo',
+      title:'<b>mBed: NUCLEO-F446RE</b><br>',
+      img:'devinfo/NUCLEO-F446RE-3-500x500.png',
+      description:"",
+      toolbox:''},
+
+      {name:'RPI4',
+      title:'<b>Raspberry Pi 4 </b><br>',
+      img:'devinfo/rpi4.png',
+      description:"Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv",
+      toolbox:'toolbox_linux.xml'},
+
+      {name:'EV3',
+      title:'<b>Lego EV3 </b><br>',
+      img:'',
+      description:"Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!",
+      toolbox:''},
+
+      {name:'BBBlack',
+      title:'<b>Beagle Bone Black</b><br>',
+      img:'devinfo/cape-headers.png',
+      description:"",
+      toolbox:'toolbox_bbblack.xml'},
+
+      {name:'BBC',
+      title:'<b>BBC MicroBit</b><br>',
+      img:'devinfo/microbit.png',
+      description:"Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>",
+      toolbox:'toolbox_esp32.xml'},
+
+      {name:'RPI',
+      title:'',
+      img:'',
+      description:"",
+      toolbox:''},
+
+      {name:'UNO',
+      title:'<b>Arduino UNO. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>',
+      img:'https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png',
+      description:"",
+      toolbox:'toolbox_arduino.xml'},
+
+      /* Template
+      {name:'',
+      title:'',
+      img:'',
+      description:"",
+      toolbox:''},
+      */
     ];
 
     this.selector.onchange = () => {this.change ()};
@@ -119,14 +187,15 @@ workspace.prototype.change = function () {
     this.device_img.src = selected.img,
     this.device_desc.innerHTML = selected.description;
 
-
-     xhrGET(selected.toolbox, (response) => {
-      this.toolbox.innerHTML = response;
-      Code.workspace.updateToolbox(this.toolbox);
-    }, () => {
-       BIPES ['notify'].send(MSG['ErrorGET']);
-
-    });
+    if (!!selected.toolbox) { // checks if toolbox is set
+       xhrGET(selected.toolbox, (response) => {
+        this.toolbox.innerHTML = response;
+        Code.workspace.updateToolbox(this.toolbox);
+      }, () => {
+         BIPES ['notify'].send(MSG['ErrorGET']);
+      });
+    } else
+        BIPES ['notify'].send(MSG['noToolbox']);
   } else
     BIPES ['notify'].send(MSG['invalidBoard']);
 }

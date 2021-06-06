@@ -25,6 +25,7 @@ var MSG = {
   loadTooltip: "Carregar blocos de arquivo.",
   notificationTooltip: "Painel de notificações.",
   ErrorGET: "O arquivo solicitado não carregou.",
-  invalidBoard: "Placa inválida!",
-  languageTooltip: "Mudar idioma."
+  invalidDevice: "Aparelho inválido.",
+  languageTooltip: "Mudar idioma.",
+  noToolbox: "O aparelho não possui placa definida."
 };

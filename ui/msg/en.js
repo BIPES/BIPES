@@ -25,6 +25,7 @@ var MSG = {
   loadTooltip: "Load blocks from file.",
   notificationTooltip: "Notifications panel.",
   ErrorGET: "Unable to load requested file.",
-  invalidBoard: "Invalid board!",
-  languageTooltip: "Change language."
+  invalidDevice: "Invalid device.",
+  languageTooltip: "Change language.",
+  noToolbox: "The device has no board set."
 };
