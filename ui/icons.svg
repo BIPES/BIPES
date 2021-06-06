@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="216"
+   width="288"
    height="24"
-   viewBox="0 0 57.149999 6.3500002"
+   viewBox="0 0 76.199999 6.3500002"
    version="1.1"
    id="svg5"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
@@ -24,11 +24,11 @@
      inkscape:document-units="mm"
      showgrid="true"
      units="px"
-     width="168px"
+     width="288px"
      height="24px"
-     inkscape:zoom="2.2518999"
-     inkscape:cx="100.80377"
-     inkscape:cy="80.154539"
+     inkscape:zoom="4.5037998"
+     inkscape:cx="158.5328"
+     inkscape:cy="21.870422"
      inkscape:window-width="2560"
      inkscape:window-height="1016"
      inkscape:window-x="0"
@@ -182,5 +182,31 @@
        fill="url(#a)"
        id="path7"
        style="fill:url(#a);stroke-width:0.0535868" />
+    <g
+       style="fill:#000000"
+       id="g864"
+       transform="matrix(0.26458333,0,0,0.26458333,57.15,0)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path852" />
+      <path
+         d="m 15,7 v 4 h 1 v 2 H 13 V 5 h 2 L 12,1 9,5 h 2 v 8 H 8 V 10.93 C 8.7,10.56 9.2,9.85 9.2,9 9.2,7.79 8.21,6.8 7,6.8 5.79,6.8 4.8,7.79 4.8,9 4.8,9.85 5.3,10.56 6,10.93 V 13 c 0,1.11 0.89,2 2,2 h 3 v 3.05 c -0.71,0.37 -1.2,1.1 -1.2,1.95 0,1.22 0.99,2.2 2.2,2.2 1.21,0 2.2,-0.98 2.2,-2.2 0,-0.85 -0.49,-1.58 -1.2,-1.95 V 15 h 3 c 1.11,0 2,-0.89 2,-2 v -2 h 1 V 7 Z"
+         id="path854"
+         style="fill:#000000;fill-opacity:1" />
+    </g>
+    <g
+       style="fill:#000000"
+       id="g878"
+       transform="matrix(0.26458333,0,0,0.26458333,63.5,0)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path866" />
+      <path
+         d="m 1,9 2,2 C 7.97,6.03 16.03,6.03 21,11 L 23,9 C 16.93,2.93 7.08,2.93 1,9 Z m 8,8 3,3 3,-3 c -1.65,-1.66 -4.34,-1.66 -6,0 z m -4,-4 2,2 c 2.76,-2.76 7.24,-2.76 10,0 l 2,-2 C 15.14,9.14 8.87,9.14 5,13 Z"
+         id="path868"
+         style="fill:#000000;fill-opacity:1" />
+    </g>
   </g>
 </svg>

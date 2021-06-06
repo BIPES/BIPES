@@ -94,6 +94,7 @@ h1 {
 }
 .top-menu > .toolbar {
   display: flex;
+  height: 2.125rem;
 }
 .top-menu > .tabs {
   margin: 0 0.5rem;
@@ -101,6 +102,32 @@ h1 {
   width: 100%;
   overflow-x: auto;
   padding: .5rem 0;
+}
+.top-menu #serial_network {
+  display: flex;
+  border-radius: 2rem;
+  border: 1px solid #888;
+  margin-right: .5rem;
+  box-sizing: border-box;
+  background-color: #eee;
+}
+.top-menu #serial_network > a {
+  display: inline-block;
+  border-radius: 2rem;
+  padding: .25rem;
+  border: 1px solid transparent;
+  box-sizing: content-box;
+  margin: -1px;
+  opacity: 0.6;
+}
+.top-menu #serial_network > a.selected {
+  opacity: 1;
+  border: 1px solid #777;
+  transition: box-shadow ease .125s;
+  background-color: #fff;
+}
+.top-menu #serial_network:hover  > a.selected{
+  box-shadow: -1px 0 3px  #aaa;
 }
 
 /* Tabs */
@@ -193,7 +220,7 @@ pre.content {
 button.icon {
   cursor: pointer;
 }
-button.icon:before, #deviceSelect.icon:before  {
+button.icon:before, #deviceSelect.icon:before, a.icon:before  {
   content:"";
   display:block;
   width: 1.5rem;
@@ -225,6 +252,12 @@ button.icon:before, #deviceSelect.icon:before  {
 }
 #languageButton:before {
   background-position: calc(-1.5rem*6);
+}
+#serialButton:before {
+  background-position: calc(-1.5rem*9);
+}
+#networkButton:before {
+  background-position: calc(-1.5rem*10);
 }
 
 @media (max-width: 710px) {
@@ -260,7 +293,8 @@ button.icon:before, #deviceSelect.icon:before  {
 /* Run button */
 #runButton {
   border: none;
-  border-left: 1px solid #327ae7;
+  border: 1px solid #327ae7;
+  margin: -1px;
   opacity: 1;
   padding: 0.25rem .5rem;
   transition: box-shadow ease .125s;

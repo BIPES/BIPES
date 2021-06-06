@@ -714,6 +714,8 @@ Code.initLanguage = function() {
   document.getElementById('loadButton').title = MSG['loadTooltip'];
   document.getElementById('notificationButton').title = MSG['notificationTooltip'];
   document.getElementById('languageButton').title = MSG['languageTooltip'];
+  document.getElementById('serialButton').title = MSG['serialTooltip'];
+  document.getElementById('networkButton').title = MSG['networkTooltip'];
 };
 
 /**
