@@ -27,7 +27,7 @@ var MSG = {
   ErrorGET: "O arquivo solicitado não carregou.",
   invalidDevice: "Aparelho inválido.",
   languageTooltip: "Mudar idioma.",
-  noToolbox: "O aparelho não possui placa definida.",
+  noToolbox: "O aparelho não possui toolbox definida.",
   networkTooltip: "Conectar via rede (WebSocket, https).",
   serialTooltip: "Conectar via serial/USB (WebREPL, http)."
 };

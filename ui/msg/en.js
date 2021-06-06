@@ -27,7 +27,7 @@ var MSG = {
   ErrorGET: "Unable to load requested file.",
   invalidDevice: "Invalid device.",
   languageTooltip: "Change language.",
-  noToolbox: "The device has no board set.",
+  noToolbox: "The device has no toolbox set.",
   networkTooltip: "Connect through network (WebSocket, https).",
   serialTooltip: "Connect through serial/USB (WebREPL, http)."
 };
