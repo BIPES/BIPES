@@ -1,5 +1,5 @@
 var MSG = {
-  title: "Código",
+  title: "BIPES Beta",
   blocks: "Blocos",
   linkTooltip: "Salvar e ligar aos blocos.",
   runTooltip: "Execute o programa definido pelos blocos na área de trabalho.",
