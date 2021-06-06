@@ -290,6 +290,11 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
   height: 2rem;
   color: #327ae7;
 }
+#device_selector:focus {
+  /* removes black border on focus with mouse, replaces with a more coherent one */
+  outline: none;
+  color: #000;
+}
 /* Run button */
 #runButton {
   border: none;
@@ -310,7 +315,6 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
   text-decoration: none;
 }
 
-/*<!-- START Jorge - 03/06/2021 -->*/
 .language-panel {
   position: absolute;
   top: 3.5rem;
@@ -386,10 +390,9 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
   border-left: solid 1px #ccc;
 	display: flex;
   flex-direction: column-reverse;
-  justify-content: start;
+  justify-content: flex-end;
 }
 .language-panel#show, .notify-panel#show {
 	opacity: 1;
 	right: 0;
 }
-/*<!-- END Jorge - 03/06/2021 -->*/

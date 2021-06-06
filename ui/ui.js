@@ -88,7 +88,7 @@ function workspace () {
     this.device_img = getIn(this.content, '#device_img'),
     this.device_desc = getIn(this.content, '#device_desc');
     this.toolbox = get('#toolbox');
-		
+
     // setup, could be used and external JSON file instead.
     this.devices = [
       {name:'ESP8266',
@@ -193,5 +193,5 @@ workspace.prototype.change = function () {
     } else
         BIPES ['notify'].send(MSG['noToolbox']);
   } else
-    BIPES ['notify'].send(MSG['invalidBoard']);
+    BIPES ['notify'].send(MSG['invalidDevice']);
 }
