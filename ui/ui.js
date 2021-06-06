@@ -88,11 +88,7 @@ function workspace () {
     this.device_img = getIn(this.content, '#device_img'),
     this.device_desc = getIn(this.content, '#device_desc');
     this.toolbox = get('#toolbox');
-
-
-    // list of implemented devices
-    this.devices = ['ESP8266','ESP32-oled'];
-
+		
     // setup, could be used and external JSON file instead.
     this.devices = [
       {name:'ESP8266',
