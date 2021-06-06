@@ -6,8 +6,6 @@ var MSG = {
   badCode: "Program error:\n%1",
   timeout: "Maximum execution iterations exceeded.",
   trashTooltip: "Discard all blocks.",
-  saveTooltip: "Save blocks to file.",
-  loadTooltip: "Load blocks from file.",
   catLogic: "Logic",
   catLoops: "Loops",
   catMath: "Math",
@@ -22,5 +20,14 @@ var MSG = {
   linkAlert: "Share your blocks with this link:\n\n%1",
   hashError: "Sorry, '%1' doesn't correspond with any saved program.",
   xmlError: "Could not load your saved file. Perhaps it was created with a different version of Blockly?",
-  badXml: "Error parsing XML:\n%1\n\nSelect 'OK' to abandon your changes or 'Cancel' to further edit the XML."
+  badXml: "Error parsing XML:\n%1\n\nSelect 'OK' to abandon your changes or 'Cancel' to further edit the XML.",
+  saveTooltip: "Save blocks to file.",
+  loadTooltip: "Load blocks from file.",
+  notificationTooltip: "Notifications panel.",
+  ErrorGET: "Unable to load requested file.",
+  invalidDevice: "Invalid device.",
+  languageTooltip: "Change language.",
+  noToolbox: "The device has no toolbox set.",
+  networkTooltip: "Connect through network (WebSocket, https).",
+  serialTooltip: "Connect through serial/USB (WebREPL, http)."
 };
