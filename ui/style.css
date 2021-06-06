@@ -20,7 +20,7 @@ html[dir="RTL"] .farSide {
 }
 
 /* Buttons */
-button {
+button.icon {
   opacity: 0.6;
   border-radius: 2rem;
   border: 1px solid #fff;
@@ -39,12 +39,12 @@ button {
 /*   border: 1px solid #327ae7; */
 /*   background-color: #e6edf9; */
 /* } */
-button:hover {
+button.icon:hover {
   opacity: 1;
   border: 1px solid #aaa;
 }
 
-button:active {
+button.icon:active {
   border-color: #000;
 }
 button.disabled:hover {
