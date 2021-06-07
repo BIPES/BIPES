@@ -20,5 +20,14 @@ var MSG = {
   linkAlert: "Comparte tus bloques con este enlace:\n\n%1",
   hashError: "«%1» no corresponde con ningún programa guardado.",
   xmlError: "No se pudo cargar el archivo guardado.  ¿Quizá fue creado con otra versión de Blockly?",
-  badXml: "Error de análisis XML:\n%1\n\nSelecciona OK para abandonar tus cambios o Cancelar para seguir editando el XML."
+  badXml: "Error de análisis XML:\n%1\n\nSelecciona OK para abandonar tus cambios o Cancelar para seguir editando el XML.",
+  saveTooltip: "Guarde los bloques en el archivo.",
+  loadTooltip: "Cargar bloques del archivo.",
+  notificationTooltip: "Panel de notificaciones.",
+  ErrorGET: "No se puede cargar el archivo solicitado. ",
+  invalidDevice: "Dispositivo inválido.",
+  languageTooltip: "Cambiar idioma.",
+  noToolbox: "El dispositivo no tiene una toolbox.",
+  networkTooltip: "Conectarse a través de la red  (WebSocket, https).",
+  serialTooltip: "Conectarse a través de serial/USB (WebREPL, http)."
 };
