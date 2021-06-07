@@ -316,7 +316,7 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
 }
 
 .language-panel {
-  position: absolute;
+  position: fixed;
   top: 3.5rem;
   right: -17.5rem;
 	border-radius: 3px;
@@ -344,7 +344,7 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
 	right: -18em;
   top: 4rem;
 	padding: 1em 1em 0em 1em;
-	position: absolute;
+	position: fixed;
   box-shadow: 0 .125em .5em #ccc;
   background: #3298dc;
   color:#fff;
@@ -380,7 +380,7 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before  {
 .notify-panel {
   overflow-y: auto;
   z-index: 998;
-  position: absolute;
+  position: fixed;
   width: 17em;
   padding: 1em 1em 0em 1em;
   top:3.5rem;
