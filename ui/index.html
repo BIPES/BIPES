@@ -198,7 +198,7 @@ function checkCookie() {
   </script>
   <div class="toolbar">
     <div id="serial_network">
-    <a class="icon" id="serialButton" href="../../beta2serial/ui" title="..."></a><a class="icon selected" id="networkButton" href="../../beta2/ui" title="..."></a>
+      <a class="icon" id="serialButton" href="https://bipes.net.br/beta2serial/ui" title="..."></a><a class="icon selected" id="networkButton" href="http://bipes.net.br/beta2/ui" title="..."></a>
     </div>
     <div class="icon" id="deviceSelect">
       <!--<select id="device_selector" onchange="changeDevice(this.value)">-->
@@ -3137,7 +3137,6 @@ var BIPES = {};
 BIPES ['language'] = new language ();
 BIPES ['notify'] = new notify ();
 BIPES ['workspace'] = new workspace ();
-BIPES ['workspace'].change ();
 
 (function() {
     window.onload = function() {
@@ -3153,6 +3152,8 @@ BIPES ['workspace'].change ();
       });
       term.open(document.getElementById("term"));
       show_https_warning();
+
+      BIPES ['workspace'].change ();
     };
     window.addEventListener('resize', function() {
         dom  = document.getElementById("termTR")
