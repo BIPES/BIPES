@@ -29,5 +29,6 @@ var MSG = {
   languageTooltip: "Mudar idioma.",
   noToolbox: "O aparelho não possui toolbox definida.",
   networkTooltip: "Conectar via rede (WebSocket, https).",
-  serialTooltip: "Conectar via serial/USB (WebREPL, http)."
+  serialTooltip: "Conectar via serial/USB (WebREPL, http).",
+  toolbarTooltip: "Mostrar barra de ferramentas"
 };
