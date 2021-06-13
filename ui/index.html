@@ -177,7 +177,34 @@ function checkCookie() {
       ['SD1', "8"],
       ['CMD', "11"],
       ['SD0', "7"],
-      ['CLK', "6"]
+      ['CLK', "6"],
+     ],
+     'ESP32': [
+      ['VP', "36"],
+      ['VN', "39"],
+      ['D34', "34"],
+      ['D35', "35"],
+      ['D32', "32"],
+      ['D33', "33"],
+      ['D25', "25"],
+      ['D26', "26"],
+      ['D27', "27"],
+      ['D14', "14"],
+      ['D12', "12"],
+      ['D13', "13"],
+      ['D15', "15"],
+      ['D25', "2"],
+      ['D4', "4"],
+      ['RX2', "16"],
+      ['TX2', "17"],
+      ['D5', "5"],
+      ['D18', "18"],
+      ['D19', "19"],
+      ['D21', "21"],
+      ['RX0', "3"],
+      ['TX0', "1"],
+      ['D22', "22"],
+      ['D23', "23"]
     ]
   };
 
@@ -3138,9 +3165,9 @@ var BIPES = {};
 // Setup UI using global BIPES variable (see ui.js)
 BIPES ['responsive'] = new responsive ();
 BIPES ['notify'] = new notify ();
-BIPES ['.language-panel'] = new language ('#languageButton','.language-panel');
-BIPES ['.notify-panel'] = new panel ('#notificationButton','.notify-panel');
-BIPES ['.toolbar'] = new panel ('#toolbarButton','.toolbar');
+BIPES ['language'] = new language ('#languageButton','.language-panel');
+BIPES ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
+BIPES ['toolbar'] = new panel ('#toolbarButton','.toolbar');
 BIPES ['workspace'] = new workspace ();
 
 (function() {

@@ -14,10 +14,10 @@ function panel (button_, panel_) {
   this.button.onclick = () => {this.showPanel ()};
 }
 panel.prototype.showPanel = function () {
-  let panel_ = BIPES ['responsive'].panels.find ( ({name}) => name === this.panel_);
+  let panel_ = BIPES ['responsive'].panels [this.panel_];
   if(!panel_.show) {
     this.panel.id = 'show';
-    if(panel_.name == '.notify-panel')
+    if(panel_.dom == '.notify-panel')
       BIPES ['notify'].container.id = '';
  } else
     this.panel.id = '';
@@ -51,7 +51,7 @@ notify.prototype.send = function (message) {
   this_message.div.onclick = (ev) => {try {this.panel.removeChild(ev.target.parentNode)}catch(e){};};
   this.panel.appendChild(this_message.div);
 
-  let panel_ = BIPES ['responsive'].panels.find ( ({name}) => name === this.panel_);
+  let panel_ = BIPES ['responsive'].panels [this.panel_];
   if(!panel_.show) {
     this.container.innerHTML = message + "<p>" + this.container.innerHTML;
     this.container.id = 'show';
@@ -69,9 +69,9 @@ notify.prototype.send = function (message) {
 
 function responsive () {
   this.body = get ('body');
-	this.panels = [{name:'.toolbar',x:$em*18.5, y:$em*7.5, show:false},
-	               {name:'.notify-panel',x:$em*18.5, y:0, show:false},
-	               {name:'.language-panel',x:$em*18.5, y:$em*13, show:false}];
+	this.panels = {'.toolbar':{from:'toolbar',x:$em*18.5, y:$em*7.5, show:false},
+	               '.notify-panel':{from:'notify-panel',x:$em*18.5, y:0, show:false},
+	               '.language-panel':{from:'language',x:$em*18.5, y:$em*13, show:false}};
   this.binded = false;
 
   this.body.onclick = (ev) => {this.hidePanels (ev)};
@@ -93,7 +93,8 @@ responsive.prototype.hidePanels = function (ev) {
   if (ev.x !== 0 && ev.y !== 0) {
     let minx = 0;
     let miny = 0;
-    this.panels.forEach ((item) => {
+    for (const prop in this.panels) {
+      let item = this.panels[prop];
       if (item.show === true) {
         if (item.x > minx)
           minx = item.x;
@@ -102,13 +103,13 @@ responsive.prototype.hidePanels = function (ev) {
         if (item.y === 0)
           miny = window.innerHeight;
       }
-    });
-    this.panels.forEach ((item) => {
-      if (((window.innerWidth - minx) > (ev.x) || miny < (ev.y)) && item.show === true) {
-        BIPES [item.name].panel.id='';
-        item.show = false;
+    };
+    for (const prop in this.panels) {
+      if (((window.innerWidth - minx) > (ev.x) || miny < (ev.y)) && this.panels[prop].show === true) {
+        BIPES [this.panels[prop].from].panel.id='';
+        this.panels[prop].show = false;
       }
-    });
+    };
   }
 }
 

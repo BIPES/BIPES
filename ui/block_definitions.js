@@ -395,13 +395,15 @@ Blockly.Blocks['gpio_get'] = {
 /// Pinout
 Blockly.Blocks['pinout'] = {
   update_list: function() {
-    if (document.getElementById('device_selector').value in pinout){
-      this.options = pinout[document.getElementById('device_selector').value];
+    this.device = document.getElementById('device_selector').value;
+    if (this.device in pinout){
+      this.options = pinout[this.device];
     }else{
       this.options = [["Pins are not defined","None"]];
     }
     
   },
+  device: '',
   options: [],
   init: function() {
     this.update_list();
@@ -410,7 +412,7 @@ Blockly.Blocks['pinout'] = {
         .appendField(new Blockly.FieldDropdown(this.options), 'PIN');
     this.setOutput(true, null);
     this.setColour(230);
-    this.setTooltip("Pins");
+    this.setTooltip(this.device + " Pins");
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
