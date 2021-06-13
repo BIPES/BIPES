@@ -28,6 +28,7 @@ var MSG = {
   invalidDevice: "Invalid device.",
   languageTooltip: "Change language.",
   noToolbox: "The device has no toolbox set.",
-  networkTooltip: "Connect through network (WebSocket, https).",
-  serialTooltip: "Connect through serial/USB (WebREPL, http)."
+  networkTooltip: "Connect through network (WebREPL, https).",
+  serialTooltip: "Connect through serial/USB (Web Serial API, http).",
+  toolbarTooltip: "Show toolbar"
 };

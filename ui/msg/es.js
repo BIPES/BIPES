@@ -28,6 +28,7 @@ var MSG = {
   invalidDevice: "Dispositivo inválido.",
   languageTooltip: "Cambiar idioma.",
   noToolbox: "El dispositivo no tiene una toolbox.",
-  networkTooltip: "Conectarse a través de la red  (WebSocket, https).",
-  serialTooltip: "Conectarse a través de serial/USB (WebREPL, http)."
+  networkTooltip: "Conectarse a través de la red  (WebREPL, https).",
+  serialTooltip: "Conectarse a través de serial/USB (Web Serial API, http).",
+  toolbarTooltip: "Barra de herramientas"
 };

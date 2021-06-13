@@ -5,10 +5,36 @@ function getAll (e, f) {return get (e).querySelectorAll (f); }
 function style (e) {return get (e).style; }
 function fx (e, vfx) {e.style.Transition = vfx; }
 
+$em = 16; // size of 1em
+
+function panel (button_, panel_) {
+  this.panel_ = panel_;
+  this.button = get (button_);
+  this.panel = get (panel_);
+  this.button.onclick = () => {this.showPanel ()};
+}
+panel.prototype.showPanel = function () {
+  let panel_ = BIPES ['responsive'].panels.find ( ({name}) => name === this.panel_);
+  if(!panel_.show) {
+    this.panel.id = 'show';
+    if(panel_.name == '.notify-panel')
+      BIPES ['notify'].container.id = '';
+ } else
+    this.panel.id = '';
+  panel_.show = !panel_.show;
+}
+
+
+language.prototype = Object.create (panel.prototype);
+function language (button_, panel_) {
+	panel.call (this, button_, panel_);
+  this.panel.appendChild(document.createTextNode(MSG['languageTooltip']));
+}
+
 function notify () {
+  this.panel_ = '.notify-panel'
 	this.container = get ('.notify');
-	this.panel = get ('.notify-panel');
-	this.panelEnabled = false;
+	this.panel = get (this.panel_);
   this.messages = [];
   this.timeOut;
   this.timeOut2;
@@ -22,12 +48,12 @@ notify.prototype.send = function (message) {
   this_message.div.appendChild(document.createTextNode(message));
   this_message.div.appendChild(closeButton_);
   // remove notification on click
-  this_message.div.onclick = (ev) => {this.panel.removeChild(ev.target.parentNode);};
-
-  this.container.innerHTML = message + "<p>" + this.container.innerHTML,
+  this_message.div.onclick = (ev) => {try {this.panel.removeChild(ev.target.parentNode)}catch(e){};};
   this.panel.appendChild(this_message.div);
 
-  if(!this.panelEnabled) {
+  let panel_ = BIPES ['responsive'].panels.find ( ({name}) => name === this.panel_);
+  if(!panel_.show) {
+    this.container.innerHTML = message + "<p>" + this.container.innerHTML;
     this.container.id = 'show';
 
     clearTimeout(this.TimeOut);
@@ -41,30 +67,14 @@ notify.prototype.send = function (message) {
 }
 
 
+function responsive () {
+  this.body = get ('body');
+	this.panels = [{name:'.toolbar',x:$em*18.5, y:$em*7.5, show:false},
+	               {name:'.notify-panel',x:$em*18.5, y:0, show:false},
+	               {name:'.language-panel',x:$em*18.5, y:$em*13, show:false}];
+  this.binded = false;
 
-
-notify.prototype.showPanel = function () {
-  if(!this.panelEnabled)
-    this.container.id = '',
-    setTimeout( () => {this.container.innerHTML = '';}, 150),
-    this.panel.id = 'show';
-  else
-    this.panel.id = '';
-  this.panelEnabled = !this.panelEnabled;
-}
-
-function language () {
-	this.panel = get ('.language-panel');
-	this.panelEnabled = false;
-  this.panel.appendChild(document.createTextNode(MSG['languageTooltip']))
-}
-
-language.prototype.showPanel = function () {
-  if(!this.panelEnabled)
-    this.panel.id = 'show';
-  else
-    this.panel.id = '';
-  this.panelEnabled = !this.panelEnabled;
+  this.body.onclick = (ev) => {this.hidePanels (ev)};
 }
 
 function xhrGET (filename, onsuccess, onfail) {
@@ -78,6 +88,28 @@ function xhrGET (filename, onsuccess, onfail) {
       onfail ();
 	}
 	xmlHTTP.send(null);
+}
+responsive.prototype.hidePanels = function (ev) {
+  if (ev.x !== 0 && ev.y !== 0) {
+    let minx = 0;
+    let miny = 0;
+    this.panels.forEach ((item) => {
+      if (item.show === true) {
+        if (item.x > minx)
+          minx = item.x;
+        if (item.y > miny)
+          miny = item.y;
+        if (item.y === 0)
+          miny = window.innerHeight;
+      }
+    });
+    this.panels.forEach ((item) => {
+      if (((window.innerWidth - minx) > (ev.x) || miny < (ev.y)) && item.show === true) {
+        BIPES [item.name].panel.id='';
+        item.show = false;
+      }
+    });
+  }
 }
 
 

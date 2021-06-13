@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="google" value="notranslate">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
   <title>BIPES Project - Beta2</title>
 
   <!-- Progressive Web Application setup 
@@ -196,6 +197,7 @@ function checkCookie() {
 
 
   </script>
+  <button id="toolbarButton" class="notext icon medium" title="..."></button>
   <div class="toolbar">
     <div id="serial_network">
       <a class="icon" id="serialButton" href="https://bipes.net.br/beta2serial/ui" title="..."></a><a class="icon selected" id="networkButton" href="http://bipes.net.br/beta2/ui" title="..."></a>
@@ -3134,8 +3136,11 @@ function calculate_size(win) {
 // global BIPES ui variable
 var BIPES = {};
 // Setup UI using global BIPES variable (see ui.js)
-BIPES ['language'] = new language ();
+BIPES ['responsive'] = new responsive ();
 BIPES ['notify'] = new notify ();
+BIPES ['.language-panel'] = new language ('#languageButton','.language-panel');
+BIPES ['.notify-panel'] = new panel ('#notificationButton','.notify-panel');
+BIPES ['.toolbar'] = new panel ('#toolbarButton','.toolbar');
 BIPES ['workspace'] = new workspace ();
 
 (function() {
