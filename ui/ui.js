@@ -7,6 +7,22 @@ function fx (e, vfx) {e.style.Transition = vfx; }
 
 $em = 16; // size of 1em
 
+/* clear all schedules timeouts */
+function clearAllTimeouts () {
+  let id = window.setTimeout(() => {}, 0);
+  while (id--) {
+    window.clearTimeout(id);
+  }
+}
+
+function unix2date (timestamp) {
+  var date = new Date(timestamp);
+  var hours = date.getHours();
+  var minutes = "0" + date.getMinutes();
+  var seconds = "0" + date.getSeconds();
+  return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+}
+
 function panel (button_, panel_) {
   this.panel_ = panel_;
   this.button = get (button_);
@@ -17,7 +33,7 @@ panel.prototype.showPanel = function () {
   let panel_ = BIPES ['responsive'].panels [this.panel_];
   if(!panel_.show) {
     this.panel.id = 'show';
-    if(panel_.dom == '.notify-panel')
+    if(panel_.from == 'notify-panel')
       BIPES ['notify'].container.id = '';
  } else
     this.panel.id = '';
@@ -36,15 +52,21 @@ function notify () {
 	this.container = get ('.notify');
 	this.panel = get (this.panel_);
   this.messages = [];
+  this.buffer_count = 0;
   this.timeOut;
   this.timeOut2;
 }
 notify.prototype.send = function (message) {
   console.log (message);
   this.messages.push({timestamp: +new Date, message: message});
-  let this_message = this.messages [this.messages.length-1];
+  let last_message;
+  let this_message = this.messages [this.messages.length - 1];
+  if(!!this.messages [this.messages.length - 2]) last_message = this.messages [this.messages.length - 2].message;
   let closeButton_ = document.createElement ('span');
+  closeButton_.classList.add("icon");
+  closeButton_.id="trashIcon";
   this_message.div = document.createElement ('span');
+  this_message.div.title = unix2date(this_message.timestamp) + ": " + message;
   this_message.div.appendChild(document.createTextNode(message));
   this_message.div.appendChild(closeButton_);
   // remove notification on click
@@ -52,17 +74,24 @@ notify.prototype.send = function (message) {
   this.panel.appendChild(this_message.div);
 
   let panel_ = BIPES ['responsive'].panels [this.panel_];
-  if(!panel_.show) {
-    this.container.innerHTML = message + "<p>" + this.container.innerHTML;
+  if (!panel_.show) {
+    if(last_message == message) {
+        this.buffer_count = this.buffer_count + 1;
+        this.container.innerHTML = "(" + this.buffer_count + "x) " + message;
+    } else {
+        this.container.innerHTML = message,
+        this.buffer_count = 0;
+    }
+
     this.container.id = 'show';
 
-    clearTimeout(this.TimeOut);
-    clearTimeout(this.TimeOut2);
+    clearAllTimeouts();
     this.timeOut = setTimeout( () => {
       this.container.id = '';
+      this.buffer_count = 0;
       this.timeOut2 = setTimeout( () => {
       this.container.innerHTML = '';}, 150);
-    }, 5000);
+    }, 2500);
   }
 }
 

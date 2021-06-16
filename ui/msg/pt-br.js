@@ -31,5 +31,6 @@ var MSG = {
   networkTooltip: "Conectar via rede (WebREPL, https).",
   serialTooltip: "Conectar via serial/USB (Web Serial API, http).",
   toolbarTooltip: "Mostrar barra de ferramentas",
-  wrongDevicePin: "Verifique os pinos, o aparelho alvo mudou!"
+  wrongDevicePin: "Verifique os pinos, o aparelho alvo mudou!",
+  notDefined: "não definido"
 };

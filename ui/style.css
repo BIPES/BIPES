@@ -262,7 +262,7 @@ button.icon {
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
-button.icon:before, #deviceSelect.icon:before, a.icon:before  {
+button.icon:before, #deviceSelect.icon:before, a.icon:before, .notify-panel > span > span.icon:before {
   content:"";
   display:block;
   background-size: cover;
@@ -283,7 +283,7 @@ button.icon.medium:before  {
 #loadButton:before {
   background-position: calc(-1.5rem*2);
 }
-#trashButton:before {
+#trashButton:before, #trashIcon:before {
   background-position: calc(-1.5rem*3);
 }
 #notificationButton:before {
@@ -412,7 +412,7 @@ button.icon.medium:before  {
 .language-panel, .notify-panel, .notify {
 	transition: top ease .5s, right ease .5s, opacity ease .125s, background linear .5s, margin-right ease .125s;
   transition-delay: 0s, 0s, .1s, 0s, 0s;
-  color: #666;
+  color: #222;
 	opacity: 0;
   background: #fff;
 }
@@ -422,11 +422,12 @@ button.icon.medium:before  {
   z-index: 997;
 	right: -18em;
   bottom:.5em;
-	padding: 1em 1em 0em 1em;
+	padding: 1em;
 	position: fixed;
-  box-shadow: 0 .125em .5em #ccc;
+  box-shadow: 0 .125em .5em rgba(0,0,0,.6);
   background: #3298dc;
   color:#fff;
+  user-select: none;
 }
 .notify#show {
 	opacity: 1;
@@ -438,8 +439,10 @@ button.icon.medium:before  {
 .notify-panel > span {
   background: #fff;
 	padding: 1em;
-	display: block;
-	margin-bottom: .5em;
+	display: flex;
+	align-items:center;
+	justify-content: space-between;
+	margin: .25rem 0;
 	transition: box-shadow ease .125s;
 	box-sizing: border-box;
 	border: solid 1px #ccc;
@@ -450,17 +453,18 @@ button.icon.medium:before  {
 }
 .notify-panel > span > span {
   cursor: pointer;
-  float: right;
+  opacity: .6;
+  transition: opacity linear .125s;
 }
-.notify-panel > span > span:before {
-  content: 'X';
+.notify-panel > span > span:hover  {
+  opacity: 1;
 }
 .notify-panel {
   position: fixed;
   overflow-y: auto;
   z-index: 998;
   width: 17.5rem;
-  padding: .5em .5em 0em .5em;
+  padding: 0 .5em;
   top:3.5rem;
   bottom:0;
   right:-17.5em;
