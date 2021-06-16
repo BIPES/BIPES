@@ -30,5 +30,6 @@ var MSG = {
   noToolbox: "O aparelho não possui toolbox definida.",
   networkTooltip: "Conectar via rede (WebREPL, https).",
   serialTooltip: "Conectar via serial/USB (Web Serial API, http).",
-  toolbarTooltip: "Mostrar barra de ferramentas"
+  toolbarTooltip: "Mostrar barra de ferramentas",
+  wrongDevicePin: "Verifique os pinos, o aparelho alvo mudou!"
 };

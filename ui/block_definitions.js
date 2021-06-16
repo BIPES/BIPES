@@ -394,25 +394,34 @@ Blockly.Blocks['gpio_get'] = {
 
 /// Pinout
 Blockly.Blocks['pinout'] = {
-  update_list: function() {
-    this.device = document.getElementById('device_selector').value;
-    if (this.device in pinout){
-      this.options = pinout[this.device];
+  update_list: function(device_, device_init_) {
+    if (!device_) device_ = device_init_;
+    /* make device name if it do not match with workspace */
+    if (device_ != device_init_) {
+      this.getField('DEVICE').setVisible(true);
+      BIPES ['notify'].send (MSG['wrongDevicePin']);
+    }
+    this.setTooltip(device_ + " Pins");
+    if (device_ in pinout){
+      return pinout[device_];
     }else{
-      this.options = [["Pins are not defined","None"]];
+      return [["Pins are not defined","None"]];
     }
     
   },
-  device: '',
   options: [],
   init: function() {
-    this.update_list();
+    /*
+    "this.getField('DEVICE').SERIALIZABLE = true;" could be used instead of FieldLabelSerializable
+    */
+    let device_init = document.querySelector ('#device_selector').value;
     this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable(device_init), 'DEVICE') // will use device_init if new block or no device specification on XML.
         .appendField('pin')
-        .appendField(new Blockly.FieldDropdown(this.options), 'PIN');
+        .appendField(new Blockly.FieldDropdown(() => {return this.update_list(this.getFieldValue('DEVICE'),device_init);}), 'PIN');
+    this.getField('DEVICE').setVisible(false);
     this.setOutput(true, null);
     this.setColour(230);
-    this.setTooltip(this.device + " Pins");
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
