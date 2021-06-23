@@ -245,10 +245,18 @@ workspace.prototype.change = function () {
     this.device_img.src = selected.img,
     this.device_desc.innerHTML = selected.description;
 
+    /* refreshes block pinout with device change */
+    let blocks = Code.workspace.getBlocksByType('pinout');
+     Code.workspace.getBlocksByType('pinout').forEach ((block, id) => {
+       block.refresh ();
+     });
+    if (blocks.length != 0) BIPES ['notify'].send (MSG['wrongDevicePin']);;
+    /* close toolbox/flyouts */
+    Code.workspace.toolbox_
+
     if (!!selected.toolbox) { // checks if toolbox is set
        xhrGET(selected.toolbox, (response) => {
         this.toolbox.innerHTML = response;
-        Code.workspace.updateToolbox(this.toolbox);
       }, () => {
          BIPES ['notify'].send(MSG['ErrorGET']);
       });

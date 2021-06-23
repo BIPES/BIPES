@@ -394,12 +394,22 @@ Blockly.Blocks['gpio_get'] = {
 
 /// Pinout
 Blockly.Blocks['pinout'] = {
-  update_list: function(device_, device_init_) {
+  update_list: function(load_) {
+    let device_init_ = this.device_init;
+    let device_ = this.getFieldValue('DEVICE');
     if (!device_) device_ = device_init_;
     /* make device name if it do not match with workspace */
-    if (device_ != device_init_) {
-      this.getField('DEVICE').setVisible(true);
-      BIPES ['notify'].send (MSG['wrongDevicePin']);
+    if (device_ !== device_init_)
+      this.setColour(1);
+    else if (device_ === device_init_)
+      this.setColour(230);  // this.setDisabled causes all modifiers to stop working at the workspace, using visual colour feedback instead.
+
+    if(this.first_load < 1 && load_) {
+      device_ = device_init_;
+      this.setEnabled(230);
+      this.getField('DEVICE').doValueUpdate_(device_);
+    } else {
+      this.first_load = this.first_load - 1; // function is triggered twice on load due to setting values
     }
     this.setTooltip(device_ + " Pins");
     if (device_ in pinout){
@@ -408,22 +418,31 @@ Blockly.Blocks['pinout'] = {
       return [[MSG["notDefined"],"None"]];
     }
     
+
   },
+  refresh: function() {
+    console.log(this);
+    this.device_init = document.querySelector ('#device_selector').value
+    this.update_list(false);
+  },
+  device_init: '',
   options: [],
+  first_load: 2,
   init: function() {
+
     /*
     "this.getField('DEVICE').SERIALIZABLE = true;" could be used instead of FieldLabelSerializable
     */
-    let device_init = document.querySelector ('#device_selector').value;
+    this.device_init = document.querySelector ('#device_selector').value;
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable(device_init), 'DEVICE') // will use device_init if new block or no device specification on XML.
+        .appendField(new Blockly.FieldLabelSerializable(this.device_init), 'DEVICE') // will use device_init if new block or no device specification on XML.
         .appendField('pin')
-        .appendField(new Blockly.FieldDropdown(() => {return this.update_list(this.getFieldValue('DEVICE'),device_init);}), 'PIN');
+        .appendField(new Blockly.FieldDropdown(() => { return this.update_list(true);}), 'PIN');
     this.getField('DEVICE').setVisible(false);
     this.setOutput(true, null);
     this.setColour(230);
     this.setHelpUrl("http://www.bipes.net.br");
-  }
+  },
 };
 
 //OneWire and DS1820 
