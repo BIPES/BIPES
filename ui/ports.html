@@ -5,11 +5,24 @@
 	</head>
 <script>
 
+function ValidateIPaddress(ipaddress) {
+  //if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+  if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+    return (true)
+  }
+  alert("You have entered an invalid network prefix!")
+  return (false)
+}
+
 function scan() {
 	var ports = [8266, 8261];
 	var found=0;
 	var count=0;
 	var last=255;
+	net = document.getElementById("network").value;
+	if (!ValidateIPaddress(net))
+		return;
+
 	for (var i = 1; i <= last; i++) {
 
 		net = document.getElementById("network").value;
