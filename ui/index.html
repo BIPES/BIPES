@@ -156,33 +156,8 @@ function checkCookie() {
                 <div id="tab_xml" class="taboff">XML</div>
             </div>
 
-  <script>
-
-
-  var pinout = {
-    'ESP8266': [
-      ['D0', "16"],
-      ['D1', "5"],
-      ['D2', "4"],
-      ['D3', "0"],
-      ['D4/LED', "2"],
-      ['D5', "14"],
-      ['D6', "12"],
-      ['D7', "13"],
-      ['D8', "15"],
-      ['RX', "3"],
-      ['TX', "1"],
-      ['SD3', "10"],
-      ['SD2', "9"],
-      ['SD1', "8"],
-      ['CMD', "11"],
-      ['SD0', "7"],
-      ['CLK', "6"]
-    ]
-  };
-
-
-
+<script src="pinout.js"></script>
+	<script>
 
 
   function installLib() {
@@ -206,7 +181,7 @@ function checkCookie() {
       <!--<select id="device_selector" onchange="changeDevice(this.value)">-->
         <select id="device_selector">
             <option value="ESP8266">ESP8266 (NodeMCU)</option>
-            <option value="ESP8266">Franzininho Wifi </option>
+            <option value="ESP32S2">Franzininho Wifi (ESP32-S2)</option>
             <option value="wemos_d1_mini">ESP8266 (Wemos D1 mini)</option>
             <option value="ESP32">ESP32 (DevKitV1)</option>
             <option value="ESP32-oled">ESP32 + Display + Battery</option>
@@ -3766,6 +3741,7 @@ function listFiles(evt) {
 
 </script>
 </html>
+
 
 
 
