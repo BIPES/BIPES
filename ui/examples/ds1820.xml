@@ -1,0 +1,111 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <variables>
+    <variable id="paqQvAIei_K6d8qG6XA(">roms</variable>
+    <variable id="9!$X7TC/IDcEQ4fj/fm1">rom</variable>
+  </variables>
+  <block type="onewire_ds18x20_init" id="vux:RFPsrWPDv-C8m0-8" x="-362" y="-462">
+    <value name="pin">
+      <shadow type="pinout" id="*%/.|~k^vD99eLds9ySB">
+        <field name="DEVICE">ESP32</field>
+        <field name="PIN">4</field>
+      </shadow>
+    </value>
+    <next>
+      <block type="variables_set" id="9Nq+~-$Gj1Zah270l0S/">
+        <field name="VAR" id="paqQvAIei_K6d8qG6XA(">roms</field>
+        <value name="VALUE">
+          <block type="onewire_ds18x20_scan" id="zb@sXtqGDB:j!iWGf,rm"></block>
+        </value>
+        <next>
+          <block type="text_print" id="MQ/yAsKw-@^W/~rBn/n;">
+            <value name="TEXT">
+              <shadow type="text" id="Tg)[IOge+s@9C;jAtVS,">
+                <field name="TEXT">abc</field>
+              </shadow>
+              <block type="text_join" id="K[A4heg3KSxa4pZml*y[">
+                <mutation items="2"></mutation>
+                <value name="ADD0">
+                  <block type="text" id="US(KWX:.!D$NA]XWmEi(">
+                    <field name="TEXT">Found DS devices: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="variables_get" id="Z:.IjEUa}[49n0*u]=i5">
+                    <field name="VAR" id="paqQvAIei_K6d8qG6XA(">roms</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <next>
+              <block type="controls_repeat_ext" id="AGpQV_Z0(?18Fh3?Qb^?">
+                <value name="TIMES">
+                  <shadow type="math_number" id="_A2+`RT/){2HY`zPL%uW">
+                    <field name="NUM">10</field>
+                  </shadow>
+                </value>
+                <statement name="DO">
+                  <block type="onewire_ds18x20_convert" id="R0-f(oSbaL8[E@!fiMY0">
+                    <next>
+                      <block type="delay_ms" id="mGv;$Dp]vw|q|5LqqR%+">
+                        <comment pinned="true" h="80" w="160">for X resolution delay Y:
+9bit, 93.75ms
+10bit, 187.5ms
+11bit, 375ms
+12bit, 750ms
+                        
+                        </comment>
+                        <value name="time">
+                          <shadow type="math_number" id="w(X_g)VqAXACiyD#O{S`">
+                            <field name="NUM">750</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="controls_forEach" id="N^%Q![ktWmJK}G1vPesu">
+                            <field name="VAR" id="9!$X7TC/IDcEQ4fj/fm1">rom</field>
+                            <value name="LIST">
+                              <block type="variables_get" id="d6}b:mb8EASJgBV~[F]u">
+                                <field name="VAR" id="paqQvAIei_K6d8qG6XA(">roms</field>
+                              </block>
+                            </value>
+                            <statement name="DO">
+                              <block type="text_print" id="9+}}dA)BW4C)lB88^K;W">
+                                <value name="TEXT">
+                                  <shadow type="text" id="r[=EyeM8s4f*[!Uu|P:(">
+                                    <field name="TEXT">abc</field>
+                                  </shadow>
+                                  <block type="onewire_ds18x20_read_temp" id="/fnk?F1Q-Gu1@|,^N|qH">
+                                    <value name="rom">
+                                      <shadow type="math_number" id="TSz~aNe#sqs@d?FmSOa8">
+                                        <field name="NUM">10000</field>
+                                      </shadow>
+                                      <block type="variables_get" id="1Ys5rz[EV~-z7#5Yx:(s">
+                                        <field name="VAR" id="9!$X7TC/IDcEQ4fj/fm1">rom</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                              </block>
+                            </statement>
+                            <next>
+                              <block type="delay" id="..)]+vc|l-_P*,!]WyWp">
+                                <value name="time">
+                                  <shadow type="math_number" id="HjXj]Clu}(C/!T(Y~|nY">
+                                    <field name="NUM">1</field>
+                                  </shadow>
+                                </value>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

@@ -394,25 +394,55 @@ Blockly.Blocks['gpio_get'] = {
 
 /// Pinout
 Blockly.Blocks['pinout'] = {
-  update_list: function() {
-    if (document.getElementById('device_selector').value in pinout){
-      this.options = pinout[document.getElementById('device_selector').value];
+  update_list: function(load_) {
+    let device_init_ = this.device_init;
+    let device_ = this.getFieldValue('DEVICE');
+    if (!device_) device_ = device_init_;
+    /* make device name if it do not match with workspace */
+    if (device_ !== device_init_)
+      this.setColour(1);
+    else if (device_ === device_init_)
+      this.setColour(230);  // this.setDisabled causes all modifiers to stop working at the workspace, using visual colour feedback instead.
+
+    if(this.first_load < 1 && load_) {
+      device_ = device_init_;
+      this.setEnabled(230);
+      this.getField('DEVICE').doValueUpdate_(device_);
+    } else {
+      this.first_load = this.first_load - 1; // function is triggered twice on load due to setting values
+    }
+    this.setTooltip(device_ + " Pins");
+    let devices = BIPES ['workspace'].devices
+    if (device_ in  devices && 'pinout' in devices [device_]){
+      return devices [device_].pinout;
     }else{
-      this.options = [["Pins are not defined","None"]];
+      return [[MSG["notDefined"],"None"]];
     }
     
+
   },
+  refresh: function() {
+    this.device_init = document.querySelector ('#device_selector').value
+    this.update_list(false);
+  },
+  device_init: '',
   options: [],
+  first_load: 2,
   init: function() {
-    this.update_list();
+
+    /*
+    "this.getField('DEVICE').SERIALIZABLE = true;" could be used instead of FieldLabelSerializable
+    */
+    this.device_init = document.querySelector ('#device_selector').value;
     this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable(this.device_init), 'DEVICE') // will use device_init if new block or no device specification on XML.
         .appendField('pin')
-        .appendField(new Blockly.FieldDropdown(this.options), 'PIN');
+        .appendField(new Blockly.FieldDropdown(() => { return this.update_list(true);}), 'PIN');
+    this.getField('DEVICE').setVisible(false);
     this.setOutput(true, null);
     this.setColour(230);
-    this.setTooltip("Pins");
     this.setHelpUrl("http://www.bipes.net.br");
-  }
+  },
 };
 
 //OneWire and DS1820 

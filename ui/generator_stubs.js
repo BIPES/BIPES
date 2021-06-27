@@ -4023,7 +4023,7 @@ Blockly.Python['timer'] = function(block) {
   Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
   Blockly.Python.definitions_['import_timer_start' + timerNumber] = 'tim' + timerNumber + '=Timer(' + timerNumber + ')'; //-1)';
 
-  Blockly.Python.definitions_['import_timer_callback' + timerNumber] = '\n#Timer Function Callback\ndef timerFunc' + timerNumber + '(t):\n\t' + statements_name + '\n\n'; 
+  Blockly.Python.definitions_['import_timer_callback' + timerNumber] = '\n#Timer Function Callback\ndef timerFunc' + timerNumber + '(t):\n' + statements_name + '\n\n';
 
   var code = 'tim' + timerNumber + '.init(period=' + interval + ', mode=Timer.PERIODIC, callback=timerFunc' + timerNumber + ')\n';
              

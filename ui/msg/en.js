@@ -30,5 +30,10 @@ var MSG = {
   noToolbox: "The device has no toolbox set.",
   networkTooltip: "Connect through network (WebREPL, https).",
   serialTooltip: "Connect through serial/USB (Web Serial API, http).",
-  toolbarTooltip: "Show toolbar"
+  toolbarTooltip: "Show toolbar",
+  wrongDevicePin: "Check pins, target device changed!",
+  notDefined: "not defined",
+  editAsFileValue: "Edit as a file",
+  editAsFileTooltip: "Edit python code and save to device's filesystem.",
+  forumTooltip: "Help forum"
 };

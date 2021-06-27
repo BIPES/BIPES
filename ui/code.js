@@ -186,7 +186,7 @@ Code.LANG = Code.getLang();
  * @private
  */
 
-Code.TABS_ = ['blocks', 'console', 'python', 'xml', 'files', 'iot', 'mqtt', 'device', 'programs'];
+Code.TABS_ = ['blocks', 'console', 'code', 'files', 'iot', 'mqtt', 'device', 'programs'];
 //Code.TABS_ = ['blocks', 'console', 'javascript', 'python', 'xml'];
 
 Code.selected = 'blocks';
@@ -199,9 +199,9 @@ Code.tabClick = function(clickedName) {
   // If the XML tab was open, save and render the content.
 	//
 
-  if (document.getElementById('tab_xml').className == 'tabon') {
+  if (document.getElementById('tab_code').className == 'tabon') {
     var xmlTextarea = document.getElementById('content_xml');
-    var xmlText = xmlTextarea.value;
+    var xmlText = xmlTextarea.innerText;
     var xmlDom = null;
     try {
       xmlDom = Blockly.Xml.textToDom(xmlText);
@@ -249,12 +249,12 @@ Code.tabClick = function(clickedName) {
 Code.renderContent = function() {
   var content = document.getElementById('content_' + Code.selected);
   // Initialize the pane.
-  if (content.id == 'content_xml') {
+  if (content.id == 'content_code') {
     var xmlTextarea = document.getElementById('content_xml');
     var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    xmlTextarea.value = xmlText;
-    xmlTextarea.focus();
+    xmlTextarea.innerText = xmlText;
+    Code.attemptCodeGeneration(Blockly.Python, 'py', 'content_python');
   } else if (content.id == 'content_files') {
     var nArea = document.getElementById('content_files');
     nArea.focus();
@@ -280,8 +280,6 @@ Code.renderContent = function() {
 
   } else if (content.id == 'content_javascript') {
     Code.attemptCodeGeneration(Blockly.JavaScript, 'js');
-  } else if (content.id == 'content_python') {
-    Code.attemptCodeGeneration(Blockly.Python, 'py');
   }
 };
 
@@ -289,9 +287,10 @@ Code.renderContent = function() {
  * Attempt to generate the code and display it in the UI, pretty printed.
  * @param generator {!Blockly.Generator} The generator to use.
  * @param prettyPrintType {string} The file type key for the pretty printer.
+ * @param domTarget {string} The id for the dom element to render the code.
  */
-Code.attemptCodeGeneration = function(generator, prettyPrintType) {
-  var content = document.getElementById('content_' + Code.selected);
+Code.attemptCodeGeneration = function(generator, prettyPrintType, domTarget) {
+  var content = document.getElementById(domTarget);
   content.textContent = '';
   if (Code.checkAllGeneratorFunctionsDefined(generator)) {
     var code = generator.workspaceToCode(Code.workspace);
@@ -472,6 +471,22 @@ Code.init = function() {
   Code.bindClick('saveButton', saveXml);
   Code.bindClick('loadButton', loadXml);
 
+  Code.bindClick('forumButton',
+    function () {window.open("http://bipes.net.br/wp/",'_blank')}
+  )
+
+  Code.bindClick('editAsFileButton',
+    function () {
+      editor.getDoc().setValue(document.getElementById ('content_python').innerText);
+
+      let date = new Date();
+      let file_name = "BIPES_" + + new Date() + ".py"; // "+ +" triggers unix timestamp
+      document.getElementById('content_file_name').value = file_name;
+
+      Code.tabClick ('files');
+    }
+  )
+
 
   // Disable the link button if page isn't backed by App Engine storage.
   var linkButton = document.getElementById('linkButton');
@@ -481,7 +496,7 @@ Code.init = function() {
     BlocklyStorage['HASH_ERROR'] = MSG['hashError'];
     BlocklyStorage['XML_ERROR'] = MSG['xmlError'];
     Code.bindClick(linkButton,
-        function() {BlocklyStorage.link(Code.workspace);});
+        function () {BlocklyStorage.link(Code.workspace);});
   } else if (linkButton) {
     linkButton.className = 'disabled';
   }
@@ -714,6 +729,9 @@ Code.initLanguage = function() {
   document.getElementById('serialButton').title = MSG['serialTooltip'];
   document.getElementById('networkButton').title = MSG['networkTooltip'];
   document.getElementById('toolbarButton').title = MSG['toolbarTooltip'];
+  document.getElementById('forumButton').title = MSG['forumTooltip'];
+  document.getElementById('editAsFileButton').title = MSG['editAsFileTooltip'];
+  document.getElementById('editAsFileButton').innerText = MSG['editAsFileValue'];
 };
 
 /**
