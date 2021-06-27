@@ -412,8 +412,9 @@ Blockly.Blocks['pinout'] = {
       this.first_load = this.first_load - 1; // function is triggered twice on load due to setting values
     }
     this.setTooltip(device_ + " Pins");
-    if (device_ in pinout){
-      return pinout[device_];
+    let devices = BIPES ['workspace'].devices
+    if (device_ in  devices && 'pinout' in devices [device_]){
+      return devices [device_].pinout;
     }else{
       return [[MSG["notDefined"],"None"]];
     }
@@ -421,7 +422,6 @@ Blockly.Blocks['pinout'] = {
 
   },
   refresh: function() {
-    console.log(this);
     this.device_init = document.querySelector ('#device_selector').value
     this.update_list(false);
   },

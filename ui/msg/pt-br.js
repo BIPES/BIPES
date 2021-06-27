@@ -32,5 +32,8 @@ var MSG = {
   serialTooltip: "Conectar via serial/USB (Web Serial API, http).",
   toolbarTooltip: "Mostrar barra de ferramentas",
   wrongDevicePin: "Verifique os pinos, o aparelho alvo mudou!",
-  notDefined: "não definido"
+  notDefined: "não definido",
+  editAsFileValue: "Editar como arquivo",
+  editAsFileTooltip: "Editar código python e salvar para a memória do aparelho.",
+  forumTooltip: "Fórum de ajuda"
 };

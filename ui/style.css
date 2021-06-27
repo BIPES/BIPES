@@ -163,9 +163,6 @@ h1 {
 html[dir=rtl] td.tabmax {
   text-align: left;
 }
-#tab_code {
-  display: none;
-}
 
 table {
   border-collapse: collapse;
@@ -191,15 +188,66 @@ pre.content {
 #content_blocks {
   padding: 0;
 }
+#content_device, #content_code {
+  overflow-y: auto;
+}
+#content_device #device_img {
+  max-width: 75rem;
+  width: 100%;
+}
 .blocklySvg {
   border-top: none !important;
+}
+#content_code details {
+  overflow: hidden;
+  white-space: pre-line;
+  max-width: 75rem;
+  margin: 0 auto;
+  border: 1px solid #aaa;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  transition: .125s ease border;
+}
+#content_code summary {
+  -webkit-tap-highlight-color: transparent;
+  white-space: normal;
+  user-select: none;
+  cursor: pointer;
+  padding: .5rem .5rem .5rem 1rem;
+  border-bottom: 1px dashed #aaa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 2rem;
+}
+#content_code summary > span:before {
+  content: "\1433";
+  margin-right: .5rem;
+  transition: transform .25s ease;
+  display:inline-block;
+}
+#content_code details[open] summary > span:before {
+  transform: rotateZ(90deg);
+}
+#content_code button {
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  color: #327ae7;
+  border: 1px solid #327ae7;
+  border-radius: 1.5rem;
+  background-color: #fff;
+}
+#content_code pre {
+  margin: -2rem 0 -1.25rem 0;
+  padding: 0 .5rem .5rem .5rem;
+  overflow-x: auto;
 }
 #content_xml {
   resize: none;
   outline: none;
-  border: 1px solid #ccc;
+  border: none;
   font-family: monospace;
-  overflow: scroll;
+  width: 100%
 }
 
 /* Toolbar */
@@ -221,8 +269,8 @@ pre.content {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    height: 7em;
-    width: 18em;
+    height: 7rem;
+    width: 20.5rem;
     transition: .125s ease right, .125s ease top, .125s ease opacity;
     background: #fff;
     border-radius: 1em;
@@ -307,13 +355,13 @@ button.icon.medium:before  {
 #toolbarButton:before {
   background-position: calc(-2.5rem*11);
 }
+#forumButton:before {
+  background-position: calc(-2.5rem*15);
+}
 
 @media (max-width: 710px) {
   .tab_collapse {
     display: none;
-  }
-  #tab_code {
-    display: table-cell;
   }
 }
 
@@ -345,7 +393,7 @@ button.icon.medium:before  {
 }
 @media (max-width: 59.99em) {
   #device_selector {
-    width: 12.5rem;
+    width: 15rem;
   }
 }
 /* Run button */
@@ -380,7 +428,7 @@ button.icon.medium:before  {
 	padding: 1em;
 	margin: 0 .25rem 0 0;
 	box-sizing: border-box;
-	width: 18rem;
+	width: 20.5rem;
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -463,7 +511,7 @@ button.icon.medium:before  {
   position: fixed;
   overflow-y: auto;
   z-index: 998;
-  width: 17.5rem;
+  width: 20rem;
   padding: 0 .5em;
   top:3.5rem;
   bottom:0;

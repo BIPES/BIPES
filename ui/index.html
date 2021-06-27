@@ -147,70 +147,15 @@ function checkCookie() {
             <div class="tabs">
                 <div id="tab_blocks" class="tabon">...</div>
                 <div id="tab_console" class="taboff">Console</div>
-                <div id="tab_python" class="taboff">Python</div>
+                <div id="tab_code" class="taboff">Code</div>
                 <div id="tab_files" class="taboff">Files</div>
                 <div id="tab_programs" class="taboff">Shared</div>
                 <div id="tab_device" class="taboff">Device</div>
                 <div id="tab_iot" class="taboff">IOT</div>
                 <div id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</div>
-                <div id="tab_xml" class="taboff">XML</div>
             </div>
 
   <script>
-
-
-  var pinout = {
-    'ESP8266': [
-      ['D0', "16"],
-      ['D1', "5"],
-      ['D2', "4"],
-      ['D3', "0"],
-      ['D4/LED', "2"],
-      ['D5', "14"],
-      ['D6', "12"],
-      ['D7', "13"],
-      ['D8', "15"],
-      ['RX', "3"],
-      ['TX', "1"],
-      ['SD3', "10"],
-      ['SD2', "9"],
-      ['SD1', "8"],
-      ['CMD', "11"],
-      ['SD0', "7"],
-      ['CLK', "6"],
-     ],
-     'ESP32': [
-      ['VP', "36"],
-      ['VN', "39"],
-      ['D34', "34"],
-      ['D35', "35"],
-      ['D32', "32"],
-      ['D33', "33"],
-      ['D25', "25"],
-      ['D26', "26"],
-      ['D27', "27"],
-      ['D14', "14"],
-      ['D12', "12"],
-      ['D13', "13"],
-      ['D15', "15"],
-      ['D25', "2"],
-      ['D4', "4"],
-      ['RX2', "16"],
-      ['TX2', "17"],
-      ['D5', "5"],
-      ['D18', "18"],
-      ['D19', "19"],
-      ['D21', "21"],
-      ['RX0', "3"],
-      ['TX0', "1"],
-      ['D22', "22"],
-      ['D23', "23"]
-    ]
-  };
-
-
-
-
 
   function installLib() {
 	  alert('This will download and install the library. Your board must be connected to the Internet');
@@ -232,10 +177,11 @@ function checkCookie() {
     <div class="icon" id="deviceSelect">
         <select id="device_selector">
             <option value="ESP8266">ESP8266 (NodeMCU)</option>
-            <option value="ESP8266">Franzininho Wifi </option>
+            <option value="ESP32S2">Franzininho Wifi (ESP32-S2)</option>
             <option value="wemos_d1_mini">ESP8266 (Wemos D1 mini)</option>
             <option value="ESP32">ESP32 (DevKitV1)</option>
             <option value="ESP32-oled">ESP32 + Display + Battery</option>
+            <option value="ESP32-LoRa">ESP32 LoRa</option>
             <option value="M5STICK">m5stick (ESP32)</option>
             <option value="Nucleo">ST Nucleo (mBed)</option>
             <option value="BBC">BBC Microbit</option>
@@ -257,6 +203,8 @@ function checkCookie() {
             <button id="languageButton" class="notext icon" title="..."></button>
 
             <button id="notificationButton" class="notext icon" title="..."></button>
+
+            <button id="forumButton" class="notext icon" title="..."></button>
     </div>
 
       </td>
@@ -325,12 +273,21 @@ function checkCookie() {
 
 
 <!-- ################################################## -->
-
-  <pre id="content_python" class="content"></pre>
-
-<!-- ################################################## -->
-
-  <textarea id="content_xml" class="content" wrap="off" readonly></textarea>
+  <div id="content_code" class="content">
+    <details open>
+      <summary>
+        <span>Python</span>
+        <button id="editAsFileButton" title="..."></button>
+      </summary>
+      <pre id="content_python"></pre>
+    </details>
+    <details>
+      <summary>
+        <span>XML</span>
+      </summary>
+      <pre id="content_xml"></pre>
+    </details>
+  </div>
 
 <!-- ################################################## -->
 
@@ -350,7 +307,7 @@ function checkCookie() {
     <center>
       <label id="device_title"><b>ESP8266</b><br></label>
     <br>
-    <img id="device_img" src="devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg" width=300>
+    <img id="device_img" src="devinfo/Node-MCU-ESP-12E-Pin-Out-Diagram2.jpg">
     <br>
 
     <label id="device_desc">
@@ -3187,7 +3144,6 @@ BIPES ['workspace'] = new workspace ();
       term.open(document.getElementById("term"));
       show_https_warning();
 
-      BIPES ['workspace'].change ();
     };
     window.addEventListener('resize', function() {
         dom  = document.getElementById("termTR")
