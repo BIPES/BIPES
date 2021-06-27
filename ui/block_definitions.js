@@ -406,7 +406,7 @@ Blockly.Blocks['pinout'] = {
 
     if(this.first_load < 1 && load_) {
       device_ = device_init_;
-      this.setEnabled(230);
+      this.setColour(230);
       this.getField('DEVICE').doValueUpdate_(device_);
     } else {
       this.first_load = this.first_load - 1; // function is triggered twice on load due to setting values

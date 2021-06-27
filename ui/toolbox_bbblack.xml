@@ -1,4 +1,5 @@
-    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
+<document>
+   <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
@@ -282,4 +283,4 @@
       <field name="EXEC_PYTHON_OUTPUT">Execute Python custom with output</field>
     </block>
     </category>
- 
+ </document>

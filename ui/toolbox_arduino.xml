@@ -1,5 +1,6 @@
 
-    <category name="Logic">
+<document>
+   <category name="Logic">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
@@ -125,3 +126,4 @@
     <category name="Grove Motor">
       <block type="grove_motor_shield"></block>
     </category>
+</document>

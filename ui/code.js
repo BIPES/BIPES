@@ -430,11 +430,8 @@ Code.init = function() {
     }
   }
 
-  // Construct the toolbox XML, replacing translated variable names.
-  var toolboxText = document.getElementById('toolbox').outerHTML;
-  toolboxText = toolboxText.replace(/(^|[^%]){(\w+)}/g,
-      function(m, p1, p2) {return p1 + MSG[p2];});
-  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+  // Construct the toolbox XML with no blocks, will populate later.
+  let toolboxXml = Blockly.Xml.textToDom("<xml><category name='...'></category></xml>");
 
   Code.workspace = Blockly.inject('content_blocks',
       {grid:
@@ -468,8 +465,6 @@ Code.init = function() {
 
   Code.bindClick('runButton', runPython);
 
-  Code.bindClick('saveButton', saveXml);
-  Code.bindClick('loadButton', loadXml);
 
   Code.bindClick('forumButton',
     function () {window.open("http://bipes.net.br/wp/",'_blank')}
