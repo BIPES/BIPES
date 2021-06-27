@@ -15,6 +15,9 @@
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162001686-1"></script>
+
+
+
 <script>
 
 function setCookie(cname, cvalue, cpassword_value, exdays) {
@@ -3144,6 +3147,8 @@ BIPES ['workspace'] = new workspace ();
       term.open(document.getElementById("term"));
       show_https_warning();
 
+      loadPage(); //Load modal splash screen
+
     };
     window.addEventListener('resize', function() {
         dom  = document.getElementById("termTR")
@@ -3747,6 +3752,224 @@ function listFiles(evt) {
 }
 
 </script>
+
+
+<!--
+	Start of modal Splash Screen
+-->
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+display: none; /* Hidden by default */
+position: fixed; /* Stay in place */
+z-index: 1000000; /* Sit on top - amazing, but Blockly has z-index up to 100000*/
+padding-top: 100px; /* Location of the box */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+overflow: auto; /* Enable scroll if needed */
+background-color: rgb(0,0,0); /* Fallback color */
+background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+position: relative;
+background-color: #fefefe;
+margin: auto;
+padding: 0;
+border: 1px solid #188;
+width: 80%;
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+-webkit-animation-name: animatetop;
+-webkit-animation-duration: 0.4s;
+animation-name: animatetop;
+animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+	  from {top:-300px; opacity:0} 
+	    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+	  from {top:-300px; opacity:0}
+	    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.closeM {
+color: white;
+float: right;
+font-size: 28px;
+font-weight: bold;
+}
+
+.closeM:hover,
+.closeM:focus {
+color: #000;
+text-decoration: none;
+cursor: pointer;
+}
+
+.modal-header {
+padding: 2px 16px;
+background-color: #4d4dff;
+color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+padding: 2px 16px;
+background-color: #4d4dff;
+color: white;
+}
+</style>
+
+
+<!-- Trigger/Open The Modal 
+	For testing only
+
+<body onload="loadPage()">
+<button id="myBtn">Open Modal SplashScreen</button>
+
+BIPES
+-->
+
+		<!-- The Modal -->
+		<div id="myModal" class="modal">
+
+			  <!-- Modal content -->
+			    <div class="modal-content">
+				        <div class="modal-header">
+						      <span class="closeM">&times;</span>
+						            <h2>Welcome do BIPES!</h2>
+							        </div>
+								    <div class="modal-body">
+
+									    <p><b>BIPES: Block based Integrated Platform for Embedded Systems</b> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython or Python. You can connect, program, debug a monitor several types of boards using network or USB. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266 and Raspberry Pi Pico.</p>
+									    <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://bipes.net.br/wp/forums/>discussion forum</a>. Feel free to use it! Also, if we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p>
+									    <p>Thank you from the BIPES Team!</p>
+									    <p><b>News:</b>
+									    <br>
+									    jun-26-2021: BIPES Forum lauched <br> 
+									    jun-25-2021: Added this splash screen <br> 
+									    jun-16-2021: New User Interface! </p>
+									    <br>
+											    </div>
+											        <div class="modal-footer">
+													      
+													<br>
+													<center>
+														<input type="checkbox" name="checkfield" id="g01-01"  onchange="doalert(this)"/>
+														Do not show this screen again
+														<br>
+														<br>
+														<button onclick="closeModal()">Close</button>
+
+													<br>
+													<br>
+													          </div>
+														    </div>
+
+		</div>
+
+<script>
+		// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+//var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("closeM")[0];
+
+// When the user clicks the button, open the modal 
+//btn.onclick = function() {
+//	  modal.style.display = "block";
+//}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+	  modal.style.display = "none";
+}
+
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+	  if (event.target == modal) {
+		      modal.style.display = "none";
+		    }
+}
+
+function closeModal() {
+	  modal.style.display = "none";
+}
+
+function loadPage() {
+	var x = getCookieModal('BIPES_Splash');
+	if (x) {
+		console.log('Not showing splash');
+	} else {
+		console.log('Showing splash');
+		modal.style.display = "block";
+	}
+}
+
+function doalert(checkboxElem) {
+
+	if (checkboxElem.checked) {
+		setCookieModal('BIPES_Splash','BIPES_SplashC',1);
+		console.log('Modal Cookie Set');
+	} else {
+		eraseCookieModal('BIPES_Splash');
+		console.log('Modal Cookie deleted');
+	}
+}
+
+
+function setCookieModal(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookieModal(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function eraseCookieModal(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+</script>
+
+
+
+<!--
+	End of modal Splash Screen
+-->
+
+
+
+
 </html>
 
 
