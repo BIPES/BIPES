@@ -221,10 +221,11 @@ workspace.prototype.loadXML = function () {
 	  reader.readAsText(file,'UTF-8');
 
 	  reader.onload = readerEvent => {
+	      BIPES ['notify'].send (MSG['blocksLoadedFromFile'] + ' ' + file.name);
+	      
 	      let content = readerEvent.target.result;
 	      let xml = Blockly.Xml.textToDom(content);
 	      Blockly.Xml.domToWorkspace(xml, Code.workspace);
-	      BIPES ['notify'].send (MSG['blocksLoadedFromFile'] + ' ' + file.name);
 	  }
 
   });
