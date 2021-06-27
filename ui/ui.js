@@ -16,10 +16,10 @@ function clearAllTimeouts () {
 }
 
 function unix2date (timestamp) {
-  var date = new Date(timestamp);
-  var hours = date.getHours();
-  var minutes = "0" + date.getMinutes();
-  var seconds = "0" + date.getSeconds();
+  let date = new Date(timestamp);
+  let hours = date.getHours();
+  let minutes = "0" + date.getMinutes();
+  let seconds = "0" + date.getSeconds();
   return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 }
 
@@ -115,6 +115,8 @@ async function xhrGET (filename, responsetype, onsuccess, onfail) {
     if (this.status == 200) {
       if (responsetype == 'text' || responsetype == '')
         onsuccess (this.responseText);
+      else if (responsetype == 'document')
+        onsuccess (this.responseXML);
       else
         onsuccess (this.response);
     } else if (onfail != undefined)
@@ -150,12 +152,12 @@ responsive.prototype.hidePanels = function (ev) {
 
 
 function workspace () {
+    this.defaultToolbox = 'toolbox.xml';
     this.selector = get('#device_selector');
     this.content = get('#content_device');
     this.device_title = getIn(this.content, '#device_title'),
     this.device_img = getIn(this.content, '#device_img'),
     this.device_desc = getIn(this.content, '#device_desc');
-    this.toolbox = get('#toolbox');
     this.devices = [];
     xhrGET("devinfo/devinfo.json", 'json', (response) => {
       this.devices = response.devices;
@@ -164,6 +166,10 @@ function workspace () {
 
     this.selector.onchange = () => {this.change ()};
 
+    this.saveButton = get('#saveButton');
+    this.loadButton = get('#loadButton');
+    this.saveButton.onclick = () => {this.saveXML ()};
+    this.loadButton.onclick = () => {this.loadXML ()};
 }
 
 workspace.prototype.change = function () {
@@ -174,6 +180,17 @@ workspace.prototype.change = function () {
     this.device_img.src = selected.img,
     this.device_desc.innerHTML = selected.description;
 
+    if (!!selected.toolbox) { // checks if toolbox is set
+       xhrGET(selected.toolbox, 'document', (XML_) => {
+        Code.reloadToolbox(XML_);
+      });
+    } else {
+        xhrGET(this.defaultToolbox, 'document', (XML_) => {
+          Code.reloadToolbox(XML_);
+        });
+        BIPES ['notify'].send(MSG['noToolbox']);
+    }
+
     /* refreshes block pinout with device change */
     let blocks = Code.workspace.getBlocksByType('pinout');
      Code.workspace.getBlocksByType('pinout').forEach ((block, id) => {
@@ -181,12 +198,56 @@ workspace.prototype.change = function () {
      });
     if (blocks.length != 0) BIPES ['notify'].send (MSG['wrongDevicePin']);
 
-    if (!!selected.toolbox) { // checks if toolbox is set
-       xhrGET(selected.toolbox, 'document', (response) => {
-        this.toolbox.innerHTML = response;
-      });
-    } else
-        BIPES ['notify'].send(MSG['noToolbox']);
   } else
     BIPES ['notify'].send(MSG['invalidDevice']);
 }
+
+workspace.prototype.saveXML = function () {
+  let xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Code.workspace));
+	let data = "data:x-application/xml;charset=utf-8," + encodeURIComponent(xmlText);
+
+	let element = document.createElement('a');
+	element.setAttribute('href', data),
+	element.setAttribute('download', 'bipes_blocks.xml'),
+	element.style.display = 'none';
+	document.body.appendChild(element);
+	element.click ();
+	document.body.removeChild(element);
+}
+
+workspace.prototype.loadXML = function () {
+  this.promptFile().then(function(file) {
+	  let reader = new FileReader ();
+	  reader.readAsText(file,'UTF-8');
+
+	  reader.onload = readerEvent => {
+	      let content = readerEvent.target.result;
+	      let xml = Blockly.Xml.textToDom(content);
+	      Blockly.Xml.domToWorkspace(xml, Code.workspace);
+	      BIPES ['notify'].send (MSG['blocksLoadedFromFile'] + ' ' + file.name);
+	  }
+
+  });
+}
+
+workspace.prototype.promptFile = function (contentType, multiple) {
+  let input = document.createElement("input");
+  input.type = "file";
+
+  input.multiple = false;
+  input.accept = contentType;
+  return new Promise(function(resolve) {
+      document.activeElement.onfocus = function() {
+      document.activeElement.onfocus = null;
+      setTimeout(resolve, 100);
+    };
+    input.onchange = function() {
+      let files = Array.from(input.files);
+      if (multiple)
+        return resolve(files);
+      resolve(files[0]);
+    };
+    input.click();
+  });
+}
+

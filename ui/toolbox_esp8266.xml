@@ -1,3 +1,4 @@
+<document>
     <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -370,9 +371,6 @@
 
 
     </block>
-  </category>
-
-
   </category>
 
   <category name="Machine">
@@ -1550,9 +1548,6 @@ _
   </category>
 
 
-  </category>
-
-
 <category name="micropython">
 <category name="btree">
 <block type="btree_open">
@@ -2621,4 +2616,4 @@ _
 </block>
 </category>
 </category>
-
+</document>

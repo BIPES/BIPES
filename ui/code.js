@@ -329,32 +329,12 @@ Code.checkAllGeneratorFunctionsDefined = function(generator) {
   return valid;
 };
 
-/**
- * Rafael -test 
- *
- */
-
-Code.reloadToolbox = function() {
-  alert("reload toolbox");
-  // Construct the toolbox XML, replacing translated variable names.
-  var toolboxText = document.getElementById('toolbox').outerHTML;
-  toolboxText = toolboxText.replace(/(^|[^%]){(\w+)}/g,
+Code.reloadToolbox = function(XML_) {
+  let toolboxText = new XMLSerializer().serializeToString(XML_).replace(/(^|[^%]){(\w+)}/g,
       function(m, p1, p2) {return p1 + MSG[p2];});
-  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+  let toolboxXml = Blockly.Xml.textToDom(toolboxText);
 
-  Code.workspace = Blockly.inject('content_blocks',
-      {grid:
-          {spacing: 25,
-           length: 3,
-           colour: '#ccc',
-           snap: true},
-       media: 'media/',
-       rtl: rtl,
-       toolbox: toolboxXml,
-       zoom:
-           {controls: true,
-            wheel: true}
-      });
+   Code.workspace.updateToolbox(toolboxXml);
 }
 
 
@@ -430,11 +410,8 @@ Code.init = function() {
     }
   }
 
-  // Construct the toolbox XML, replacing translated variable names.
-  var toolboxText = document.getElementById('toolbox').outerHTML;
-  toolboxText = toolboxText.replace(/(^|[^%]){(\w+)}/g,
-      function(m, p1, p2) {return p1 + MSG[p2];});
-  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+  // Construct the toolbox XML with no blocks, will populate later.
+  let toolboxXml = Blockly.Xml.textToDom("<xml><category name='...'></category></xml>");
 
   Code.workspace = Blockly.inject('content_blocks',
       {grid:
@@ -468,8 +445,6 @@ Code.init = function() {
 
   Code.bindClick('runButton', runPython);
 
-  Code.bindClick('saveButton', saveXml);
-  Code.bindClick('loadButton', loadXml);
 
   Code.bindClick('forumButton',
     function () {window.open("http://bipes.net.br/wp/",'_blank')}
@@ -752,5 +727,3 @@ Code.discard = function() {
 document.write('<script src="msg/' + Code.LANG + '.js"></script>\n');
 // Load Blockly's language strings.
 document.write('<script src="b.msg/js/' + Code.LANG + '.js"></script>\n');
-
-window.addEventListener('load', Code.init);
