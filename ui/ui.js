@@ -129,14 +129,6 @@ function workspace () {
       description:"<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.",
       toolbox:'toolbox_esp8266.xml'},
 
-
-      {name:'ESP32S2',
-      title:'<b>ESP32 S2</b><br>',
-      img:'devinfo/ESP32-Pinout.jpg',
-      description:"",
-      toolbox:'toolbox_esp32.xml'},
-
-
       {name:'ESP32',
       title:'<b>ESP32</b><br>',
       img:'devinfo/ESP32-Pinout.jpg',
