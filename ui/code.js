@@ -727,5 +727,3 @@ Code.discard = function() {
 document.write('<script src="msg/' + Code.LANG + '.js"></script>\n');
 // Load Blockly's language strings.
 document.write('<script src="b.msg/js/' + Code.LANG + '.js"></script>\n');
-
-window.addEventListener('load', Code.init);
