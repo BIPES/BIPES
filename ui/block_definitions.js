@@ -118,9 +118,9 @@ Blockly.Blocks['ticks_diff'] = {
 };
 
 
-Blockly.Blocks['set_rtc'] = {
+Blockly.Blocks['esp8266_set_rtc'] = {
   init: function() {
-   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value"), "SET_RTC");
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP8266)"), "SET_RTC");
     this.appendValueInput("year")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -160,10 +160,65 @@ Blockly.Blocks['set_rtc'] = {
 };
 
 
-Blockly.Blocks['get_rtc'] = {
+
+Blockly.Blocks['esp32_set_rtc'] = {
+  init: function() {
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP32)"), "SET_RTC");
+    this.appendValueInput("year")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("year");
+
+    this.appendValueInput("month")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("month");
+
+    this.appendValueInput("day")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("day");
+
+    this.appendValueInput("hour")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("hour");
+
+    this.appendValueInput("minute")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("minute");
+
+    this.appendValueInput("second")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("second");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Set RTC value");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['esp8266_get_rtc'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Get RTC value"), "MSG_GET_RTC");
+        .appendField(new Blockly.FieldLabelSerializable("Get RTC value (ESP8266)"), "MSG_GET_RTC");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get RTC value");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['esp32_get_rtc'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Get RTC value (ESP32)"), "MSG_GET_RTC");
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Get RTC value");

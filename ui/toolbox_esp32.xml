@@ -348,8 +348,8 @@
     </block>
     <block type="ticks_ms"></block>
     <block type="ticks_diff"></block>
-    <block type="set_rtc"></block>
-    <block type="get_rtc"></block>
+    <block type="esp32_set_rtc"></block>
+    <block type="esp32_get_rtc"></block>
     <block type="timer"></block>
     <block type="stop_timer">
  <value name="timerNumber">
