@@ -35,6 +35,7 @@ var MSG = {
   notDefined: "not defined",
   editAsFileValue: "Edit as a file",
   editAsFileTooltip: "Edit python code and save to device's filesystem.",
-  forumTooltip: "Help forum",
-  blocksLoadedFromFile: "Blocks loaded from file"
+  forumTooltip: "Help forum.",
+  blocksLoadedFromFile: "Blocks loaded from file '%1'.",
+  deviceUnavailable: "Device '%1' unavailable."
 };

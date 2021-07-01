@@ -75,11 +75,14 @@ notify.prototype.send = function (message) {
 
   let panel_ = BIPES ['responsive'].panels [this.panel_];
   if (!panel_.show) {
-    if(last_message == message) {
+    if(last_message == message && this.container.id == 'show') {
         this.buffer_count = this.buffer_count + 1;
-        this.container.innerHTML = "(" + this.buffer_count + "x) " + message;
+        this.container.innerHTML = `(${this.buffer_count}x) ${message}`;
     } else {
-        this.container.innerHTML = message,
+        if (this.container.innerHTML == '')
+          this.container.innerHTML = message;
+        else
+          this.container.innerHTML = message + '<hr>' + this.container.innerHTML,
         this.buffer_count = 0;
     }
 
@@ -91,7 +94,7 @@ notify.prototype.send = function (message) {
       this.buffer_count = 0;
       this.timeOut2 = setTimeout( () => {
       this.container.innerHTML = '';}, 150);
-    }, 2500);
+    }, 3000);
   }
 }
 
@@ -198,12 +201,15 @@ workspace.prototype.change = function () {
      });
     if (blocks.length != 0) BIPES ['notify'].send (MSG['wrongDevicePin']);
 
+    Code.renderContent (); // renders selected tab
+
   } else
     BIPES ['notify'].send(MSG['invalidDevice']);
 }
 
 workspace.prototype.saveXML = function () {
   let xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Code.workspace));
+  xmlText = this.writeWorkspace (xmlText);
 	let data = "data:x-application/xml;charset=utf-8," + encodeURIComponent(xmlText);
 
 	let element = document.createElement('a');
@@ -215,15 +221,43 @@ workspace.prototype.saveXML = function () {
 	document.body.removeChild(element);
 }
 
+workspace.prototype.readWorkspace = function (xml) {
+  let regex_ = /(<workspace>.*<\/workspace>\n)/s;
+  if (regex_.test(xml)) {
+    let workspace_chunk = xml.match (regex_) [0];
+    xml = xml.replace (regex_,'');
+
+    let device = workspace_chunk.match(/<field name="DEVICE">(.+)<\/field>/);
+    let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+)<\/field>/);
+
+    return [device [1], xml, timestamp [1]];
+  } else {
+    return ['', xml, 0];
+  }
+}
+
+workspace.prototype.writeWorkspace = function (xml) {
+  let timestamp =  + new Date();
+  let device = this.selector.value;
+  xml = xml.replace(/(xmlns=")(?:.+?)(")/g, '$1https://bipes.net.br$2').replace(/\n/, `\n  <workspace>\n    <field name="DEVICE">${device}</field>\n    <field name="TIMESTAMP">${timestamp}</field>\n  </workspace>\n`);
+
+  return xml;
+}
+
 workspace.prototype.loadXML = function () {
-  this.promptFile().then(function(file) {
+  this.promptFile().then((file) => {
 	  let reader = new FileReader ();
 	  reader.readAsText(file,'UTF-8');
-
+    let self = this;
 	  reader.onload = readerEvent => {
-	      BIPES ['notify'].send (MSG['blocksLoadedFromFile'] + ' ' + file.name);
-	      
-	      let content = readerEvent.target.result;
+	      BIPES ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
+
+	      let [device, content, timestamp] = this.readWorkspace (readerEvent.target.result);
+        if (device in this.devices)
+          this.selector.value = device; //will also trigger workspace.change () as expected
+        else if (device != '')
+          BIPES ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
+
 	      let xml = Blockly.Xml.textToDom(content);
 	      Blockly.Xml.domToWorkspace(xml, Code.workspace);
 	  }
@@ -251,4 +285,5 @@ workspace.prototype.promptFile = function (contentType, multiple) {
     input.click();
   });
 }
+
 

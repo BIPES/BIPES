@@ -253,7 +253,7 @@ Code.renderContent = function() {
     var xmlTextarea = document.getElementById('content_xml');
     var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    xmlTextarea.innerText = xmlText;
+    xmlTextarea.innerText = BIPES ['workspace'].writeWorkspace(xmlText);
     Code.attemptCodeGeneration(Blockly.Python, 'py', 'content_python');
   } else if (content.id == 'content_files') {
     var nArea = document.getElementById('content_files');
@@ -454,7 +454,6 @@ Code.init = function() {
     function () {
       editor.getDoc().setValue(document.getElementById ('content_python').innerText);
 
-      let date = new Date();
       let file_name = "BIPES_" + + new Date() + ".py"; // "+ +" triggers unix timestamp
       document.getElementById('content_file_name').value = file_name;
 

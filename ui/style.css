@@ -481,6 +481,11 @@ button.icon.medium:before  {
 	opacity: 1;
 	right: .5em;
 }
+.notify hr {
+  border: none;
+  height: 1px;
+  background-color: #fff;
+}
 .notify-panel > span, .notify {
 	border-radius: .25rem;
 }

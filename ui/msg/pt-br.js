@@ -36,5 +36,6 @@ var MSG = {
   editAsFileValue: "Editar como arquivo",
   editAsFileTooltip: "Editar código python e salvar para a memória do aparelho.",
   forumTooltip: "Fórum de ajuda",
-  blocksLoadedFromFile: "Blocos carregados do arquivo"
+  blocksLoadedFromFile: "Blocos carregados do arquivo '%1'.",
+  deviceUnavailable: "Aparelho '%1' indisponível."
 };
