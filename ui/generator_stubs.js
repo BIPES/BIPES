@@ -3986,21 +3986,58 @@ Blockly.Python['ticks_diff'] = function(block) {
 
 };
 
-Blockly.Python['get_rtc'] = function(block) {
+
+Blockly.Python['esp8266_get_rtc'] = function(block) {
   Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
   Blockly.Python.definitions_['import_rtc_def'] = 'rtc = RTC()';
 
-  var code = 'rtc.datetime()\n';
+  var code = 'rtc.datetime()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['set_rtc'] = function(block) {
+
+Blockly.Python['esp32_get_rtc'] = function(block) {
+  Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
+  Blockly.Python.definitions_['import_rtc_def'] = 'rtc = RTC()';
+
+  var code = 'rtc.now()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['esp32_set_rtc'] = function(block) {
   //var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
 
   Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
   Blockly.Python.definitions_['import_rtc_def'] = 'rtc = RTC()';
+  
+  var y = Blockly.Python.valueToCode(block, 'year', Blockly.Python.ORDER_ATOMIC);
+  var m = Blockly.Python.valueToCode(block, 'month', Blockly.Python.ORDER_ATOMIC);
+  var d = Blockly.Python.valueToCode(block, 'day', Blockly.Python.ORDER_ATOMIC);
+  var h = Blockly.Python.valueToCode(block, 'hour', Blockly.Python.ORDER_ATOMIC);
+  var min = Blockly.Python.valueToCode(block, 'minute', Blockly.Python.ORDER_ATOMIC);
+  var s = Blockly.Python.valueToCode(block, 'second', Blockly.Python.ORDER_ATOMIC);
 
-  var code = '\n';
+  var code = 'rtc.init((' + y + ',' + m + ',' + d + ',0,' + h + ',' + min + ',' + s + ',0))\n';
+  return code;
+};
+
+
+
+Blockly.Python['esp8266_set_rtc'] = function(block) {
+  //var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
+  Blockly.Python.definitions_['import_rtc_def'] = 'rtc = RTC()';
+  
+  var y = Blockly.Python.valueToCode(block, 'year', Blockly.Python.ORDER_ATOMIC);
+  var m = Blockly.Python.valueToCode(block, 'month', Blockly.Python.ORDER_ATOMIC);
+  var d = Blockly.Python.valueToCode(block, 'day', Blockly.Python.ORDER_ATOMIC);
+  var h = Blockly.Python.valueToCode(block, 'hour', Blockly.Python.ORDER_ATOMIC);
+  var min = Blockly.Python.valueToCode(block, 'minute', Blockly.Python.ORDER_ATOMIC);
+  var s = Blockly.Python.valueToCode(block, 'second', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'rtc.datetime((' + y + ',' + m + ',' + d + ',0,' + h + ',' + min + ',' + s + ',0))\n';
   return code;
 };
 
