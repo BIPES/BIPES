@@ -169,13 +169,13 @@ BlocklyStorage.monitorChanges_ = function(workspace) {
  * @private
  */
 BlocklyStorage.loadXml_ = function(xml, workspace) {
+  xml = BIPES ['workspace'].readWorkspace (xml, false);
   try {
     xml = Blockly.Xml.textToDom(xml);
   } catch (e) {
     BlocklyStorage.alert(BlocklyStorage.XML_ERROR + '\nXML: ' + xml);
     return;
   }
-  xml = BIPES ['workspace'].readWorkspace (xml, false);
   // Clear the workspace to avoid merge.
   workspace.clear();
   Blockly.Xml.domToWorkspace(xml, workspace);
