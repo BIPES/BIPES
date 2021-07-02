@@ -57,7 +57,7 @@ function notify () {
   this.timeOut2;
 }
 notify.prototype.send = function (message) {
-  console.log (message);
+  console.log (`Notification: ${message}`);
   this.messages.push({timestamp: +new Date, message: message});
   let last_message;
   let this_message = this.messages [this.messages.length - 1];
@@ -209,7 +209,7 @@ workspace.prototype.change = function () {
 
 workspace.prototype.saveXML = function () {
   let xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Code.workspace));
-  xmlText = this.writeWorkspace (xmlText);
+  xmlText = this.writeWorkspace (xmlText, true);
 	let data = "data:x-application/xml;charset=utf-8," + encodeURIComponent(xmlText);
 
 	let element = document.createElement('a');
@@ -221,26 +221,35 @@ workspace.prototype.saveXML = function () {
 	document.body.removeChild(element);
 }
 
-workspace.prototype.readWorkspace = function (xml) {
-  let regex_ = /(<workspace>.*<\/workspace>\n)/s;
+workspace.prototype.readWorkspace = function (xml, prettyText) {
+  let regex_;
+  if (prettyText)
+    regex_ = /(<workspace>.*<\/workspace>\n)/s;
+  else
+    regex_ = /(<workspace>.*<\/workspace>)/;
   if (regex_.test(xml)) {
     let workspace_chunk = xml.match (regex_) [0];
     xml = xml.replace (regex_,'');
 
-    let device = workspace_chunk.match(/<field name="DEVICE">(.+)<\/field>/);
-    let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+)<\/field>/);
+    let device = workspace_chunk.match(/<field name="DEVICE">(.+?)<\/field>/) [1];
+    let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+?)<\/field>/) [1];
 
-    return [device [1], xml, timestamp [1]];
-  } else {
-    return ['', xml, 0];
+    if (device in this.devices)
+      this.selector.value = device; //will also trigger workspace.change () as expected
+    else if (device != '')
+      BIPES ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
   }
+  return xml;
 }
 
-workspace.prototype.writeWorkspace = function (xml) {
+workspace.prototype.writeWorkspace = function (xml, prettyText) {
   let timestamp =  + new Date();
   let device = this.selector.value;
-  xml = xml.replace(/(xmlns=")(?:.+?)(")/g, '$1https://bipes.net.br$2').replace(/\n/, `\n  <workspace>\n    <field name="DEVICE">${device}</field>\n    <field name="TIMESTAMP">${timestamp}</field>\n  </workspace>\n`);
-
+  xml = xml.replace(/(xmlns=")(?:.+?)(")/g, '$1https://bipes.net.br$2')
+  if (prettyText)
+    xml = xml.replace(/(<xml xmlns=".+?">\n)/, `$1  <workspace>\n    <field name="DEVICE">${device}</field>\n    <field name="TIMESTAMP">${timestamp}</field>\n  </workspace>\n`);
+  else
+    xml = xml.replace(/(<xml xmlns=".+?">)/, `$1<workspace><field name="DEVICE">${device}</field><field name="TIMESTAMP">${timestamp}</field></workspace>`);
   return xml;
 }
 
@@ -252,11 +261,7 @@ workspace.prototype.loadXML = function () {
 	  reader.onload = readerEvent => {
 	      BIPES ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
 
-	      let [device, content, timestamp] = this.readWorkspace (readerEvent.target.result);
-        if (device in this.devices)
-          this.selector.value = device; //will also trigger workspace.change () as expected
-        else if (device != '')
-          BIPES ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
+	      let content = this.readWorkspace (readerEvent.target.result, true);
 
 	      let xml = Blockly.Xml.textToDom(content);
 	      Blockly.Xml.domToWorkspace(xml, Code.workspace);
@@ -285,5 +290,4 @@ workspace.prototype.promptFile = function (contentType, multiple) {
     input.click();
   });
 }
-
 

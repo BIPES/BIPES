@@ -253,7 +253,7 @@ Code.renderContent = function() {
     var xmlTextarea = document.getElementById('content_xml');
     var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
-    xmlTextarea.innerText = BIPES ['workspace'].writeWorkspace(xmlText);
+    xmlTextarea.innerText = BIPES ['workspace'].writeWorkspace(xmlText, true);
     Code.attemptCodeGeneration(Blockly.Python, 'py', 'content_python');
   } else if (content.id == 'content_files') {
     var nArea = document.getElementById('content_files');
