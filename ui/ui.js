@@ -164,9 +164,9 @@ function workspace () {
     this.devices = [];
     xhrGET("devinfo/devinfo.json", 'json', (response) => {
       this.devices = response.devices;
-      this.change ();
+      (!/#(.)/.test(window.location.href)) // checks if there is a file to be loaded
+        this.change ();
     });
-
     this.selector.onchange = () => {this.change ()};
 
     this.saveButton = get('#saveButton');
@@ -235,7 +235,8 @@ workspace.prototype.readWorkspace = function (xml, prettyText) {
     let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+?)<\/field>/) [1];
 
     if (device in this.devices)
-      this.selector.value = device; //will also trigger workspace.change () as expected
+      this.selector.value = device,
+      this.change ();
     else if (device != '')
       BIPES ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
   }
