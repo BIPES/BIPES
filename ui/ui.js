@@ -164,7 +164,7 @@ function workspace () {
     this.devices = [];
     xhrGET("devinfo/devinfo.json", 'json', (response) => {
       this.devices = response.devices;
-      (!/#(.)/.test(window.location.href)) // checks if there is a file to be loaded
+      if (!/#(.)/.test(window.location.href)) // checks if there is a file to be loaded
         this.change ();
     });
     this.selector.onchange = () => {this.change ()};
