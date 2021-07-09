@@ -4000,7 +4000,7 @@ Blockly.Python['esp32_get_rtc'] = function(block) {
   Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
   Blockly.Python.definitions_['import_rtc_def'] = 'rtc = RTC()';
 
-  var code = 'rtc.now()';
+  var code = 'rtc.datetime()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -4018,7 +4018,7 @@ Blockly.Python['esp32_set_rtc'] = function(block) {
   var min = Blockly.Python.valueToCode(block, 'minute', Blockly.Python.ORDER_ATOMIC);
   var s = Blockly.Python.valueToCode(block, 'second', Blockly.Python.ORDER_ATOMIC);
 
-  var code = 'rtc.init((' + y + ',' + m + ',' + d + ',0,' + h + ',' + min + ',' + s + ',0))\n';
+  var code = 'rtc.datetime((' + y + ',' + m + ',' + d + ',0,' + h + ',' + min + ',' + s + ',0))\n';
   return code;
 };
 
