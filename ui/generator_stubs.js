@@ -126,6 +126,18 @@ Blockly.Python['play_mp3'] = function(block) {
 };
 
 
+Blockly.Python['esp32_adc'] = function(block) {
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+  var x = value_pin.replace('(','').replace(')','');
+
+  Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=machine.ADC(Pin(' + x + '))';
+
+  var code = 'adc' + x + '.read_u16()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
 
 Blockly.Python['adc'] = function(block) {
   Blockly.Python.definitions_['import_machine'] = 'import machine';
