@@ -125,17 +125,43 @@ Blockly.Python['play_mp3'] = function(block) {
   return code;
 };
 
-
 Blockly.Python['esp32_adc'] = function(block) {
   Blockly.Python.definitions_['import_machine'] = 'import machine';
+  Blockly.Python.definitions_['import_machine_adc'] = 'from  machine import ADC';
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var x = value_pin.replace('(','').replace(')','');
 
-  Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=machine.ADC(Pin(' + x + '))';
+  var dropdown_attenuation = block.getFieldValue('Attenuation');
+  var dropdown_width__ = block.getFieldValue('Width: ');
+
+  var atten = 'ADC.ATTN_0DB';
+  if (dropdown_attenuation==0)
+                  atten = 'ADC.ATTN_0DB';
+  if (dropdown_attenuation==1)
+                  atten = 'ADC.ATTN_2_5DB';
+  if (dropdown_attenuation==2)
+                  atten = 'ADC.ATTN_6DB';
+  if (dropdown_attenuation==3)
+                  atten = 'ADC.ATTN_11DB';
+
+  var w = 'ADC.WIDTH_10BIT';
+  if (dropdown_width__==0)
+        w = 'ADC.WIDTH_9BIT';
+  if (dropdown_width__==1)
+        w = 'ADC.WIDTH_10BIT';
+  if (dropdown_width__==2)
+        w = 'ADC.WIDTH_11BIT';
+  if (dropdown_width__==3)
+        w = 'ADC.WIDTH_12BIT';
+
+
+  Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=machine.ADC(Pin(' + x + '))\nadc' + x + '.atten(' + atten + ')\nadc' + x + '.width(' + w + ')\n';
 
   var code = 'adc' + x + '.read_u16()';
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+
 
 
 
