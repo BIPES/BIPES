@@ -19,6 +19,29 @@ Blockly.Blocks['pwm'] = {
  }
 };
 
+Blockly.Blocks['esp32_pwm'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("ESP32 PWM"), "MSG_GET_MS");
+    this.appendValueInput("pin")
+        .setCheck(null)
+	.appendField("Pin");
+    this.appendValueInput("frequency")
+        .setCheck("Number")
+	  .appendField("Frequency");
+    this.appendValueInput("duty")
+        .setCheck(null)
+	  .appendField("Duty");	
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("PWM for ESP32");
+ this.setHelpUrl("http://www.bipes.net.br");
+ }
+};
+
+
+
 
 Blockly.Blocks['deep_sleep8266'] = {
 	init: function() {
