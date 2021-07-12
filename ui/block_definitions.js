@@ -731,6 +731,11 @@ Blockly.Blocks['init_oled'] = {
         55,
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
+	
+    this.appendValueInput("i2c")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("I2C");
 
     this.appendValueInput("scl")
         .setCheck("Number")

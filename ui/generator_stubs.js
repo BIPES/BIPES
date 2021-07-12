@@ -126,8 +126,7 @@ Blockly.Python['play_mp3'] = function(block) {
 };
 
 Blockly.Python['esp32_adc'] = function(block) {
-  Blockly.Python.definitions_['import_machine'] = 'import machine';
-  Blockly.Python.definitions_['import_machine_adc'] = 'from  machine import ADC';
+  Blockly.Python.definitions_['import_machine_adc'] = 'from  machine import Pin,ADC';
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var x = value_pin.replace('(','').replace(')','');
 
@@ -155,7 +154,7 @@ Blockly.Python['esp32_adc'] = function(block) {
         w = 'ADC.WIDTH_12BIT';
 
 
-  Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=machine.ADC(Pin(' + x + '))\nadc' + x + '.atten(' + atten + ')\nadc' + x + '.width(' + w + ')\n';
+  Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=ADC(Pin(' + x + '))\nadc' + x + '.atten(' + atten + ')\nadc' + x + '.width(' + w + ')\n';
 
   var code = 'adc' + x + '.read_u16()';
   return [code, Blockly.Python.ORDER_NONE];
@@ -315,13 +314,14 @@ Blockly.Python['mpu6050_read_gyro_z'] = function(block) {
 Blockly.Python['init_oled'] = function(block) {
   var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
   var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+  var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
 
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
   Blockly.Python.definitions_['import_oled_a'] = 'from machine import I2C';
   Blockly.Python.definitions_['import_ssd'] = 'import ssd1306';
   Blockly.Python.definitions_['import_sleep'] = 'from time import sleep';
 
-  var code = 'i2c=I2C(-1, scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+  var code = 'i2c=I2C(' + i2c + ', scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
       code += 'oled_width = 128\n';
       code += 'oled_height = 64\n';
       code += 'oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2c)\n';
@@ -4238,7 +4238,7 @@ Blockly.Python['hcsr_init'] = function(block) {
 
   Blockly.Python.definitions_['import_hcr'] = 'from hcsr04 import HCSR04';
 
-  var code = 'ultraSoundSensor = HCSR04(trigger_pin=' + pTrig + ', echo_pin=' + pEcho + ', echo_timeout_us=' + pTime + ')';
+  var code = 'ultraSoundSensor = HCSR04(trigger_pin=' + pTrig + ', echo_pin=' + pEcho + ', echo_timeout_us=' + pTime + ')\n';
 
   return code;
 };
