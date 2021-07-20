@@ -9832,3 +9832,124 @@ Blockly.Blocks['python_try_catch'] = {
 };
 
 
+
+//neopixel
+Blockly.Blocks['neopixel_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init NeoPixel");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/neopixel.png",
+        55,
+        55,
+        "*"));
+
+    this.appendValueInput("pin")
+        .setCheck(null)
+	.appendField("Pin");
+
+    this.appendValueInput("number")
+        .setCheck("Number")
+	  .appendField("Number of LEDs");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip("Init NeoPixel on the specified pin");
+  }
+};
+
+
+Blockly.Blocks['neopixel_control'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabel("Control NeoPixel"), "MSG_NEOPIXEL");
+
+    this.appendValueInput("address")
+        .setCheck(null)
+	.appendField("LED");
+
+    this.appendValueInput("color")
+        .setCheck("Number")
+	  .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setColour(230);
+ this.setTooltip("Set NeoPixel");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['neopixel_write'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabel("Write NeoPixel"), "MSG_NEOPIXEL");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setColour(230);
+    this.setTooltip("Write NeoPixel");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['neopixel_color_numbers'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Red");
+    this.appendValueInput("red")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Green");
+    this.appendValueInput("green")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Blue");
+    this.appendValueInput("blue")
+        .setCheck(null);
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("NeoPixel LED URL");
+ this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
+  }
+};
+
+Blockly.Blocks['neopixel_color_colors'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "color");
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("NeoPixel LED Color");
+ this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
+  }
+};
+
+Blockly.Blocks['bipes_plot'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Plot (from serial port) on IOT tab graph");
+
+    this.appendValueInput("values")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("data");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("BIPES Plot");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
