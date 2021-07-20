@@ -31,26 +31,26 @@ Blockly.Python['reset'] = function(block) {
 Blockly.Python["reset_cause_soft"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
 	var code = "machine.SOFT_RESET"; 
-	return [code, Blockly.JavaScript.ORDER_NONE];
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 
 Blockly.Python["reset_cause_hard"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
 	var code = "machine.HARD_RESET"; 
-	return [code, Blockly.JavaScript.ORDER_NONE];
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python["reset_cause_wdt"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
 	var code = "machine.WDT_RESET"; 
-	return [code, Blockly.JavaScript.ORDER_NONE];
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python["reset_cause_deep"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
 	var code = "machine.DEEPSLEEP_RESET"; 
-	return [code, Blockly.JavaScript.ORDER_NONE];
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['webrepl_start'] = function(block) {
