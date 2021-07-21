@@ -157,7 +157,7 @@ Blockly.Python['esp32_adc'] = function(block) {
 
   Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=ADC(Pin(' + x + '))\nadc' + x + '.atten(' + atten + ')\nadc' + x + '.width(' + w + ')\n';
 
-  var code = 'adc' + x + '.read_u16()';
+  var code = 'adc' + x + '.read()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -5023,7 +5023,7 @@ Blockly.Python['neopixel_color_numbers'] = function(block) {
   var value_green = Blockly.Python.valueToCode(block, 'green', Blockly.Python.ORDER_ATOMIC);
   var value_blue = Blockly.Python.valueToCode(block, 'blue', Blockly.Python.ORDER_ATOMIC);
 
-  var code = '(' + value_red + ',' + value_green + ',' + value_blue + ')';
+  var code = `(${value_red},${value_green},${value_blue})`;
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5047,7 +5047,7 @@ function hexToRgb(hex) {
 Blockly.Python['neopixel_color_colors'] = function(block) {
   var color = block.getFieldValue('color');
   var h = hexToRgb(color);
-  var code = '(' + h.r + ',' + h.g + ',' + h.b + ')';
+  var code = `(${h.r},${h.g},${h.b})`;
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -5057,19 +5057,19 @@ Blockly.Python['neopixel_init'] = function(block) {
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
   Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
 
-  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  var value_number = Blockly.Python.valueToCode(block, 'number', Blockly.Python.ORDER_ATOMIC);
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
+  var value_number = Blockly.Python.valueToCode(block, 'number', Blockly.Python.ORDER_NONE);
 
-  var code = 'np=neopixel.NeoPixel(Pin(' + value_pin + '),' + value_number + ')\n';
+  var code = `np=neopixel.NeoPixel(Pin(${value_pin}),${value_number})\n`;
 
   return code;
 };
 
 Blockly.Python['neopixel_control'] = function(block) {
-  var value_address = Blockly.Python.valueToCode(block, 'address', Blockly.Python.ORDER_ATOMIC);
-  var value_color = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_ATOMIC);
+  var value_address = Blockly.Python.valueToCode(block, 'address', Blockly.Python.ORDER_NONE);
+  var value_color = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_NONE);
 
-  var code = 'np[' + value_address + ']=' + value_color + '\n';
+  var code = `np[${value_address}]=${value_color}\n`;
 
   return code;
 };
