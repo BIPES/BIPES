@@ -140,6 +140,47 @@ Blockly.Blocks['ticks_diff'] = {
   }
 };
 
+Blockly.Blocks['esp32_set_rtc'] = {
+  init: function() {
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP32)"), "SET_RTC");
+    this.appendValueInput("year")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("year");
+
+    this.appendValueInput("month")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("month");
+
+    this.appendValueInput("day")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("day");
+
+    this.appendValueInput("hour")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("hour");
+
+    this.appendValueInput("minute")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("minute");
+
+    this.appendValueInput("second")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("second");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Set RTC value");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
 
 Blockly.Blocks['esp8266_set_rtc'] = {
   init: function() {
@@ -182,61 +223,6 @@ Blockly.Blocks['esp8266_set_rtc'] = {
   }
 };
 
-
-
-Blockly.Blocks['esp32_set_rtc'] = {
-  init: function() {
-   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP32)"), "SET_RTC");
-    this.appendValueInput("year")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("year");
-
-    this.appendValueInput("month")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("month");
-
-    this.appendValueInput("day")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("day");
-
-    this.appendValueInput("hour")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("hour");
-
-    this.appendValueInput("minute")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("minute");
-
-    this.appendValueInput("second")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("second");
-
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
- this.setTooltip("Set RTC value");
- this.setHelpUrl("bipes.net.br");
-  }
-};
-
-Blockly.Blocks['esp8266_get_rtc'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Get RTC value (ESP8266)"), "MSG_GET_RTC");
-    this.setOutput(true, null);
-    this.setColour(230);
- this.setTooltip("Get RTC value");
- this.setHelpUrl("http://www.bipes.net.br");
-  }
-};
-
-
 Blockly.Blocks['esp32_get_rtc'] = {
   init: function() {
     this.appendDummyInput()
@@ -248,6 +234,17 @@ Blockly.Blocks['esp32_get_rtc'] = {
   }
 };
 
+
+Blockly.Blocks['esp8266_get_rtc'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Get RTC value (ESP8266)"), "MSG_GET_RTC");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get RTC value");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
 Blockly.Blocks['pico_timer'] = {
   init: function() {
@@ -10073,6 +10070,35 @@ Blockly.Blocks['st7789_init'] = {
   }
 };
 
+Blockly.Blocks['st7789_fill'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Fill ST7789 display");
+
+    this.appendValueInput("r")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Red");
+    this.appendValueInput("g")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Green");
+    this.appendValueInput("b")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Blue");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Plot pixel to ST7789 display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
 Blockly.Blocks['st7789_pixel'] = {
   init: function() {
     this.appendDummyInput()
@@ -10086,7 +10112,7 @@ Blockly.Blocks['st7789_pixel'] = {
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Y position");
-    this.appendValueInput("c")
+    this.appendValueInput("color")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Color");
@@ -10123,7 +10149,7 @@ Blockly.Blocks['st7789_line'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Y1 position");
 
-    this.appendValueInput("c")
+    this.appendValueInput("color")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Color");

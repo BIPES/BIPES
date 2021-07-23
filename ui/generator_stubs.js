@@ -5154,9 +5154,18 @@ Blockly.Python['st7789_init'] = function(block) {
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   Blockly.Python.definitions_['import_st7789py'] = 'import st7789py';
 
-  var code  = 'spi = machine.SPI(1, baudrate=40000000, polarity=1)\n';
-      code += 'display7789 = st7789py.ST7789(spi, 240, 240, reset=machine.Pin(5, machine.Pin.OUT), dc=machine.Pin(4, machine.Pin.OUT))\n';
-      code += 'display.init()\n';
+  var code  = '# turn on backlight\nbl = machine.Pin(4, machine.Pin.OUT)\nbl.value(1)\n';
+      code += 'spi = machine.SPI(1, baudrate=20000000, polarity=1, phase=1, sck=machine.Pin(18), mosi=machine.Pin(19))\n';
+      code += 'display7789 = st7789py.ST7789(spi, 135, 240, reset=machine.Pin(23, machine.Pin.OUT), cs=machine.Pin(5, machine.Pin.OUT), dc=machine.Pin(16, machine.Pin.OUT))\n';
+      code += 'display7789.init()\n';
+  return code;
+};
+
+Blockly.Python['st7789_fill'] = function(block) {
+  var r = Blockly.Python.valueToCode(block, 'r', Blockly.Python.ORDER_ATOMIC);
+  var g = Blockly.Python.valueToCode(block, 'g', Blockly.Python.ORDER_ATOMIC);
+  var b = Blockly.Python.valueToCode(block, 'b', Blockly.Python.ORDER_ATOMIC);
+  var code = 'display7789.fill(st7789py.color565(' + r + ', ' + g + ', ' + b + '))\n';
   return code;
 };
 
@@ -5174,7 +5183,7 @@ Blockly.Python['st7789_line'] = function(block) {
   var y0 = Blockly.Python.valueToCode(block, 'y0', Blockly.Python.ORDER_ATOMIC);
   var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
   var c = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_ATOMIC);
-  var code = 'display7789.line(' + x0 + ',' + y0 + ',' + ',' + x1 + ',' + y1 + ',' + c + ')\n';
+  var code = 'display7789.line(' + x0 + ',' + y0 + ',' + x1 + ',' + y1 + ',' + c + ')\n';
   return code;
 };
 
