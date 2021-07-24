@@ -28,8 +28,8 @@ var MSG = {
   invalidDevice: "Aparelho inválido.",
   languageTooltip: "Mudar idioma.",
   noToolbox: "O aparelho não possui toolbox definida.",
-  networkTooltip: "Conectar via rede (WebREPL, https).",
-  serialTooltip: "Conectar via serial/USB (Web Serial API, http).",
+  networkTooltip: "Conectar via rede (WebREPL, http).",
+  serialTooltip: "Conectar via serial/USB ou Bluetooth (Web Serial API, https).",
   toolbarTooltip: "Mostrar barra de ferramentas",
   wrongDevicePin: "Verifique os pinos, o aparelho alvo mudou!",
   notDefined: "não definido",
@@ -37,5 +37,7 @@ var MSG = {
   editAsFileTooltip: "Editar código python e salvar para a memória do aparelho.",
   forumTooltip: "Fórum de ajuda",
   blocksLoadedFromFile: "Blocos carregados do arquivo '%1'.",
-  deviceUnavailable: "Aparelho '%1' indisponível."
+  deviceUnavailable: "Aparelho '%1' indisponível.",
+  programStarted: "Programa BIPES começou",
+  programEnded: "Programa BIPES terminou"
 };

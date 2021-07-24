@@ -50,15 +50,17 @@ function language (button_, panel_) {
 function notify () {
   this.panel_ = '.notify-panel'
 	this.container = get ('.notify');
+	this.container.innerHTML = '';
 	this.panel = get (this.panel_);
   this.messages = [];
+  this.log = [];
   this.buffer_count = 0;
   this.timeOut;
   this.timeOut2;
 }
 notify.prototype.send = function (message) {
   console.log (`Notification: ${message}`);
-  this.messages.push({timestamp: +new Date, message: message});
+  this.messages.push ({timestamp: +new Date, message: message});
   let last_message;
   let this_message = this.messages [this.messages.length - 1];
   if(!!this.messages [this.messages.length - 2]) last_message = this.messages [this.messages.length - 2].message;
@@ -66,8 +68,10 @@ notify.prototype.send = function (message) {
   closeButton_.classList.add("icon");
   closeButton_.id="trashIcon";
   this_message.div = document.createElement ('span');
-  this_message.div.title = unix2date(this_message.timestamp) + ": " + message;
-  this_message.div.appendChild(document.createTextNode(message));
+  let time_ =  unix2date(this_message.timestamp);
+  let message_ = `[${time_}] ${message}`;
+  this_message.div.title = message_;
+  this_message.div.appendChild(document.createTextNode(message_));
   this_message.div.appendChild(closeButton_);
   // remove notification on click
   this_message.div.onclick = (ev) => {try {this.panel.removeChild(ev.target.parentNode)}catch(e){};};
@@ -77,12 +81,12 @@ notify.prototype.send = function (message) {
   if (!panel_.show) {
     if(last_message == message && this.container.id == 'show') {
         this.buffer_count = this.buffer_count + 1;
-        this.container.innerHTML = `(${this.buffer_count}x) ${message}`;
+        this.container.innerHTML = `(${this.buffer_count}x) ${message_}`;
     } else {
         if (this.container.innerHTML == '')
-          this.container.innerHTML = message;
+          this.container.innerHTML = message_;
         else
-          this.container.innerHTML = message + '<hr>' + this.container.innerHTML,
+          this.container.innerHTML = `${message_}<hr>${this.container.innerHTML}`;
         this.buffer_count = 0;
     }
 
@@ -97,7 +101,9 @@ notify.prototype.send = function (message) {
     }, 3000);
   }
 }
-
+notify.prototype.log = function (message) {
+  this.log.push ({timestamp: +new Date, message: message});
+}
 
 function responsive () {
   this.body = get ('body');
@@ -207,6 +213,14 @@ workspace.prototype.change = function () {
     BIPES ['notify'].send(MSG['invalidDevice']);
 }
 
+workspace.prototype.changeTo = function (device) {
+    if (device in this.devices)
+      this.selector.value = device,
+      this.change ();
+    else if (device != '')
+      BIPES ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
+}
+
 workspace.prototype.saveXML = function () {
   let xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Code.workspace));
   xmlText = this.writeWorkspace (xmlText, true);
@@ -234,11 +248,7 @@ workspace.prototype.readWorkspace = function (xml, prettyText) {
     let device = workspace_chunk.match(/<field name="DEVICE">(.+?)<\/field>/) [1];
     let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+?)<\/field>/) [1];
 
-    if (device in this.devices)
-      this.selector.value = device,
-      this.change ();
-    else if (device != '')
-      BIPES ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
+    this.changeTo (device);
   }
   return xml;
 }
