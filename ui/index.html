@@ -680,7 +680,7 @@ function decode_resp(data) {
     }
 }
 
-function put_file() {
+async function put_file() {
     var dest_fname = put_file_name;
     var dest_fsize = put_file_data.length;
 
@@ -806,13 +806,20 @@ document.getElementById('put-file-select').addEventListener('click', function(){
 document.getElementById('put-file-select').addEventListener('change', handle_put_file_select, false);
 document.getElementById('put-file-button').disabled = true;
 
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
+    //New async sleep function, callend with async await(), which allows UI updates
+    const asleep = (milliseconds) => {
+	return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
+
+    //Original sleep function, which blocks UI and all the tab while sleeps
+    function sleep(milliseconds) {
+      const date = Date.now();
+      let currentDate = null;
+      do {
+        currentDate = Date.now();
+      }
+      while (currentDate - date < milliseconds);
+    }
 
 
 function stopPython(evt) {
@@ -832,10 +839,15 @@ function runPythonCode(pCodeIn) {
 
         console.log(code);
         ws.send('\x05');
-	sleep(10);
-        textArray.forEach(function(line, index, array) {
-           ws.send(line+'\r');
-	   sleep(100);
+	sleep(20);
+        textArray.forEach(async function(line, index, array) {
+           //ws.send(line+'\r');
+		for (var ai = 0; ai < line.length; ai++) {
+		  ws.send(line.charAt(ai));
+	          sleep(5);
+		}
+           ws.send('\r');
+	   //sleep(100);
         });
         ws.send('\x04');
   
@@ -865,9 +877,16 @@ function runPython(evt) {
   console.log(code);
   ws.send('\x05');
   sleep(50);
-  textArray.forEach(function(line, index, array) {
-	  ws.send(line+'\r');
-	  sleep(100);
+  textArray.forEach(async function(line, index, array) {
+//	  ws.send(line+'\r');
+//	  await asleep(100);
+
+		for (var ai = 0; ai < line.length; ai++) {
+		  ws.send(line.charAt(ai));
+	          sleep(5);
+		}
+           ws.send('\r');
+
   });
   ws.send('\x04');
   
@@ -1024,18 +1043,18 @@ function updateTable(evt) {
   dom.innerHTML = fileTable;
 }
 
-function listFiles(evt) {
+async function listFiles(evt) {
   if (!connected) {
     alert('Must be connected to list files');
     return;
   }
   //alert('See file list in console tab'); 
   received_string="";
-        ws.send('import os\r');
-  sleep(25);
-        ws.send('os.listdir()\r');
+  ws.send('import os\r');
+  await asleep(25);
+  ws.send('os.listdir()\r');
 
-  setTimeout(updateTable, 250);
+  setTimeout(updateTable, 550);
   
 }
 

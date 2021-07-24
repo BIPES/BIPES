@@ -581,6 +581,96 @@
 
   </category>
 
+    <category name="ST7789 Display">
+      <label text="ST7789 Display"></label>
+      <label text="Library: https://github.com/devbis/st7789py_mpy"></label>
+      <button text="Install st7789py library" callbackKey="installPyLib"></button>
+
+      <block type="st7789_init">
+        <value name="i2c">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="scl">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <value name="sda">
+          <shadow type="math_number">
+            <field name="NUM">4</field>
+          </shadow>
+        </value>
+    </block>
+
+    <block type="st7789_fill">
+      <value name="r">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="g">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="b">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+
+
+
+    <block type="st7789_pixel">
+      <value name="x">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="y">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="color">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="st7789_line">
+      <value name="x0">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="x1">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="y0">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="y1">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="color">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    </category>
+
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
       <button text="Install SSD1306 library" callbackKey="installPyLib"></button>
@@ -1613,6 +1703,12 @@ _
       <block type="easymqtt_disconnect">
         <field name="BLOCK_EASYMQTT_DISCONNECT">EasyMQTT Stop</field>
       </block>
+    </category>
+
+  <category name="Bluetooth REPL">
+      <label text="Web Bluetooth REPL"></label>
+      <block type="bluetooth_repl_setup"></block>
+      <block type="bluetooth_repl_start"></block>
     </category>
 
   <category name="WebREPL">

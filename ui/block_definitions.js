@@ -10,7 +10,7 @@ Blockly.Blocks['pwm'] = {
 	  .appendField("Frequency");
     this.appendValueInput("duty")
         .setCheck(null)
-	  .appendField("Duty");	
+	  .appendField("Duty");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -31,7 +31,7 @@ Blockly.Blocks['esp32_pwm'] = {
 	  .appendField("Frequency");
     this.appendValueInput("duty")
         .setCheck(null)
-	  .appendField("Duty");	
+	  .appendField("Duty");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -140,50 +140,6 @@ Blockly.Blocks['ticks_diff'] = {
   }
 };
 
-
-Blockly.Blocks['esp8266_set_rtc'] = {
-  init: function() {
-   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP8266)"), "SET_RTC");
-    this.appendValueInput("year")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("year");
-
-    this.appendValueInput("month")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("month");
-
-    this.appendValueInput("day")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("day");
-
-    this.appendValueInput("hour")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("hour");
-
-    this.appendValueInput("minute")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("minute");
-
-    this.appendValueInput("second")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("second");
-
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
- this.setTooltip("Set RTC value");
- this.setHelpUrl("bipes.net.br");
-  }
-};
-
-
-
 Blockly.Blocks['esp32_set_rtc'] = {
   init: function() {
    this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP32)"), "SET_RTC");
@@ -226,17 +182,46 @@ Blockly.Blocks['esp32_set_rtc'] = {
 };
 
 
-Blockly.Blocks['esp8266_get_rtc'] = {
+Blockly.Blocks['esp8266_set_rtc'] = {
   init: function() {
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Get RTC value (ESP8266)"), "MSG_GET_RTC");
-    this.setOutput(true, null);
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP8266)"), "SET_RTC");
+    this.appendValueInput("year")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("year");
+
+    this.appendValueInput("month")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("month");
+
+    this.appendValueInput("day")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("day");
+
+    this.appendValueInput("hour")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("hour");
+
+    this.appendValueInput("minute")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("minute");
+
+    this.appendValueInput("second")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("second");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Get RTC value");
- this.setHelpUrl("http://www.bipes.net.br");
+ this.setTooltip("Set RTC value");
+ this.setHelpUrl("bipes.net.br");
   }
 };
-
 
 Blockly.Blocks['esp32_get_rtc'] = {
   init: function() {
@@ -248,6 +233,52 @@ Blockly.Blocks['esp32_get_rtc'] = {
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+
+
+Blockly.Blocks['esp8266_get_rtc'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Get RTC value (ESP8266)"), "MSG_GET_RTC");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get RTC value");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['pico_timer'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("RPI Pico Timer ")
+        .appendField(" Interval (ms): ")
+        .appendField(new Blockly.FieldTextInput("1000"), "interval");
+    this.appendStatementInput("statements")
+        .setCheck("image");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['thread'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Thread # ")
+        .appendField(new Blockly.FieldTextInput("0"), "timerNumber")
+        .appendField(" Interval (ms): ")
+        .appendField(new Blockly.FieldTextInput("1000"), "interval");
+    this.appendStatementInput("statements")
+        .setCheck("image");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
 
 
 Blockly.Blocks['timer'] = {
@@ -423,6 +454,20 @@ Blockly.Blocks['adc'] = {
   }
 };
 
+/*
+Blockly.Blocks['esp32_adc'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .appendField("ESP32 Analog (ADC) Input");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Read ESP32 ADC input of specified pin");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+*/
+
 Blockly.Blocks['esp32_adc'] = {
   init: function() {
     this.appendDummyInput()
@@ -447,7 +492,17 @@ Blockly.Blocks['esp32_adc'] = {
 
 
 
-
+Blockly.Blocks['adc_pico'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .appendField("Read RPI Pico ADC Input");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Read ADC input of specified pin from Raspberry Pi Pico");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
 
 Blockly.Blocks['set_freq'] = {
@@ -475,7 +530,7 @@ Blockly.Blocks['get_freq'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Get CPU Clock Frequency");
-		
+
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Get current CPU Clock Frequency");
@@ -523,7 +578,7 @@ Blockly.Blocks['pinout'] = {
     }else{
       return [[MSG["notDefined"],"None"]];
     }
-    
+
 
   },
   refresh: function() {
@@ -550,7 +605,7 @@ Blockly.Blocks['pinout'] = {
   },
 };
 
-//OneWire and DS1820 
+//OneWire and DS1820
 //
 
 Blockly.Blocks['onewire_ds18x20_init'] = {
@@ -731,7 +786,7 @@ Blockly.Blocks['init_oled'] = {
         55,
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
-	
+
     this.appendValueInput("i2c")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -1052,7 +1107,7 @@ Blockly.Blocks['tm1640_brig'] = {
 
 Blockly.Blocks['tm1640_custom'] = {
     init: function () {
-	
+
         this.appendDummyInput()
                 .appendField("Custom Data Matrix layout");
         this.appendDummyInput()
@@ -4500,9 +4555,9 @@ Blockly.Blocks["machine_unique_id"] = {
     this.appendDummyInput()
         .appendField(" unique_id");
     this.setColour(0);
-    
+
     this.setOutput(true, null);
-   
+
  this.setTooltip(".. function:: unique_id() Returns a byte string with a unique identifier of a board/SoC. It will vary from a board/SoC instance to another, if underlying hardware allows. Length ");
  this.setHelpUrl("https://docs.micropython.org/en/latest/library/machine.html");
   }
@@ -8889,7 +8944,7 @@ Blockly.Blocks['net_wiznet5k_init'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Init WizNet5000");
-	  
+
     this.appendDummyInput()
         .appendField("Ethernet Controller");
 
@@ -8920,7 +8975,7 @@ Blockly.Blocks['net_wiznet5k_isconnected'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Check if Ethernet is Connected");
-	  
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -8933,7 +8988,7 @@ Blockly.Blocks['net_wiznet5k_regs'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Dump Ethernet Registers");
-	  
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -8945,7 +9000,7 @@ Blockly.Blocks['net_wiznet5k_ifconfig'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Configure WizNet5000");
-	  
+
     this.appendDummyInput()
         .appendField("Ethernet Controller");
 
@@ -8982,7 +9037,7 @@ Blockly.Blocks['net_socket_connect'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("TCP/IP Socket Connect");
-	  
+
     this.appendValueInput("host")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9004,7 +9059,7 @@ Blockly.Blocks['net_socket_receive'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Socket Receive");
-	  
+
     this.appendValueInput("bytes")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9020,7 +9075,7 @@ Blockly.Blocks['net_socket_send'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Socket Send");
-	  
+
     this.appendValueInput("bytes")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9038,7 +9093,7 @@ Blockly.Blocks['net_socket_close'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Socket Close");
-	  
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -9050,7 +9105,7 @@ Blockly.Blocks['net_http_server_start'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Start HTTP Web Server");
-	  
+
     this.appendValueInput("port")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9068,7 +9123,7 @@ Blockly.Blocks['net_http_server_accept'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Wait for HTTP Client");
-	  
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -9081,7 +9136,7 @@ Blockly.Blocks['net_http_server_requested_page'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Requested Web Page");
-	  
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -9093,7 +9148,7 @@ Blockly.Blocks['net_http_server_send_response'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Sent HTTP Response to Client");
-	  
+
     this.appendValueInput("html")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9111,7 +9166,7 @@ Blockly.Blocks['net_http_server_close'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Close HTTP Web Server");
-	  
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -9123,12 +9178,12 @@ Blockly.Blocks['gsm_modem_init'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Init SIM800/900 GSM MODEM");
-	  
+
     this.appendValueInput("tx")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("TX Pin:");
- 
+
     this.appendValueInput("rx")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9150,12 +9205,12 @@ Blockly.Blocks['gsm_modem_send_sms'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Send SMS Message");
-	  
+
     this.appendValueInput("dst")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Destination:");
- 
+
     this.appendValueInput("msg")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9173,12 +9228,12 @@ Blockly.Blocks['gsm_modem_send_at'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Send AT Command");
-	  
+
     this.appendValueInput("cmd")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Command:");
- 
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -9190,12 +9245,12 @@ Blockly.Blocks['gsm_modem_http_get'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("GSM: Send HTTP GET Request");
-	  
+
     this.appendValueInput("cmd")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Request:");
- 
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
@@ -9207,12 +9262,12 @@ Blockly.Blocks['gsm_modem_response'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Get GSM Modem Response");
- 
+
     this.appendValueInput("timeout")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Timeout:");
-	  
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -9225,7 +9280,7 @@ Blockly.Blocks['uart_init'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Init UART Serial Port");
- 
+
     this.appendValueInput("port")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9250,7 +9305,7 @@ Blockly.Blocks['uart_init'] = {
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Parity:");
-	  
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
 
@@ -9263,12 +9318,12 @@ Blockly.Blocks['uart_write'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Send data to UART");
- 
+
     this.appendValueInput("buf")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Data:");
-	  
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
 
@@ -9281,12 +9336,12 @@ Blockly.Blocks['uart_read'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Read data from UART");
- 
+
     this.appendValueInput("s")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Bytes to read:");
-	  
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -9297,7 +9352,7 @@ Blockly.Blocks['uart_read_all'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Read all data from UART");
- 
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -9308,7 +9363,7 @@ Blockly.Blocks['uart_readline'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Read one line from UART");
- 
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -9319,12 +9374,12 @@ Blockly.Blocks['uart_read_into'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Read from UART into a Buffer");
- 
+
     this.appendValueInput("b")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Destination Buffer:");
-	  
+
     this.setOutput(true);
     this.setTooltip('');
   }
@@ -9367,7 +9422,7 @@ Blockly.Blocks['max30100_read'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Update MAX30100 Reading");
- 
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
 
@@ -9381,7 +9436,7 @@ Blockly.Blocks['max30100_red'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Get MAX30100 Red Value");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9393,7 +9448,7 @@ Blockly.Blocks['max30100_ir'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Get MAX30100 IR Value");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9443,7 +9498,7 @@ Blockly.Blocks['gps_update'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Update GPS Readings");
- 
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
 
@@ -9456,7 +9511,7 @@ Blockly.Blocks['gps_get_lat'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("GPS Latitude");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9468,7 +9523,7 @@ Blockly.Blocks['gps_get_long'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("GPS Longitude");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9480,7 +9535,7 @@ Blockly.Blocks['gps_get_height'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("GPS Altitude");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9492,7 +9547,7 @@ Blockly.Blocks['gps_get_speed'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("GPS Speed");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9504,7 +9559,7 @@ Blockly.Blocks['gps_get_datetime'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("GPS Date and Time");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9562,7 +9617,7 @@ Blockly.Blocks['encoder_read'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Read Encoder Value");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9618,7 +9673,7 @@ Blockly.Blocks['stepper_step'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Stepper Step");
- 
+
     this.appendValueInput("steps")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9676,7 +9731,7 @@ Blockly.Blocks['dc_motor_power'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Set DC Motor Power");
- 
+
     this.appendValueInput("power")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -9699,7 +9754,7 @@ this.appendValueInput("dir")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Direction");
- 
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
 
@@ -9712,7 +9767,7 @@ Blockly.Blocks['dc_motor_stop'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Stop DC Motor");
- 
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
 
@@ -9802,7 +9857,7 @@ Blockly.Blocks['esp32_can_recv'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Receive CAN Frame");
- 
+
     this.setOutput(true);
 
     this.setTooltip('');
@@ -9814,7 +9869,7 @@ Blockly.Blocks['python_try_catch'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Try/Catch");
- 
+
 
     this.appendStatementInput('try')
         .appendField('try');
@@ -9953,3 +10008,159 @@ Blockly.Blocks['bipes_plot'] = {
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+
+//REPL over Web Bluetooth
+Blockly.Blocks['bluetooth_repl_start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Start Web Bluetooth REPL");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Start REPL over Web Bluetooth");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['bluetooth_repl_setup'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Setup Web Bluetooth REPL");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Setup Web Bluetooth REPL");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+//ST7789 display
+Blockly.Blocks['st7789_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init ST7789 Display");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/oled.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("i2c")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("I2C");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['st7789_fill'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Fill ST7789 display");
+
+    this.appendValueInput("r")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Red");
+    this.appendValueInput("g")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Green");
+    this.appendValueInput("b")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Blue");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Plot pixel to ST7789 display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
+Blockly.Blocks['st7789_pixel'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Draw pixel on ST7789 display");
+
+    this.appendValueInput("x")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X position");
+    this.appendValueInput("y")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Y position");
+    this.appendValueInput("color")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Color");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Plot pixel to ST7789 display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['st7789_line'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Draw line on ST7789 display");
+
+    this.appendValueInput("x0")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X0 position");
+    this.appendValueInput("y0")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Y0 position");
+
+    this.appendValueInput("x1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X1 position");
+    this.appendValueInput("y1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Y1 position");
+
+    this.appendValueInput("color")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Color");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Draw line on ST7789 display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
