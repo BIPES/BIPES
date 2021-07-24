@@ -9954,8 +9954,17 @@ Blockly.Blocks['neopixel_write'] = {
   }
 };
 
+function componentToHex(c) {
+  var hex =  parseInt(c).toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function RGB2HEX(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
 
 Blockly.Blocks['neopixel_color_numbers'] = {
+  r:0,g:0,b:0,
   init: function() {
     this.appendDummyInput()
         .appendField("Red");
@@ -9972,8 +9981,31 @@ Blockly.Blocks['neopixel_color_numbers'] = {
     this.setInputsInline(true);
     this.setOutput(true, null);
     this.setColour(230);
- this.setTooltip("NeoPixel LED URL");
- this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
+    this.setTooltip("NeoPixel LED RGB URL");
+    this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
+  },
+  onchange: function (ev) {
+    let red, green, blue;
+    try {
+      red = Blockly.Python.valueToCode(this, 'red', Blockly.Python.ORDER_ATOMIC);
+      green = Blockly.Python.valueToCode(this, 'green', Blockly.Python.ORDER_ATOMIC);
+      blue = Blockly.Python.valueToCode(this, 'blue', Blockly.Python.ORDER_ATOMIC);
+    } catch (e) {
+      red = 89;
+      green = 102;
+      blue = 166;
+    }
+    if ((this.r != red || this.g != green || this.b != blue)) {
+      if (red <= 255 && red >= 0 && green >= 0 && green <= 255 && blue >= 0 && blue <= 255) {
+        let hex_ = RGB2HEX (red, green, blue);
+        this.setColour(hex_);
+      } else {
+        this.setColour("#FF0000");
+      }
+        this.r = red;
+        this.g = green;
+        this.b = blue;
+    }
   }
 };
 
@@ -10021,7 +10053,7 @@ Blockly.Blocks['HSL_to_RGB'] = {
     this.setInputsInline(true);
     this.setOutput(true, null);
     this.setColour(230);
-    this.setTooltip("HUE to RGB color, Hue from 0 to 360, Saturation and Lightness from 0% to 100%.");
+    this.setTooltip("HUE to RGB color, Hue from 0º to 360º, Saturation and Lightness from 0% to 100%.");
     this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
   },
   onchange: function (ev) {
@@ -10031,20 +10063,20 @@ Blockly.Blocks['HSL_to_RGB'] = {
         saturation = Blockly.Python.valueToCode(this, 'saturation', Blockly.Python.ORDER_ATOMIC);
         lightness = Blockly.Python.valueToCode(this, 'lightness', Blockly.Python.ORDER_ATOMIC);
       } catch (e) {
-        hue = 204;
-        saturation = 70.8;
-        lightness = 52.9;
+        hue = 230;
+        saturation = 30;
+        lightness = 50;
       }
       if ((this.h != hue || this.s != saturation || this.l != lightness)) {
         if (hue <= 360 && hue >= 0 && saturation >= 0 && saturation <= 100 && lightness >= 0 && lightness <= 100) {
-          this.h = hue;
-          this.s = saturation;
-          this.l = lightness;
           let hex_ = HUE2HEX (hue, saturation, lightness);
           this.setColour(hex_);
         } else {
           this.setColour("#FF0000");
         }
+          this.h = hue;
+          this.s = saturation;
+          this.l = lightness;
       }
   }
 };
