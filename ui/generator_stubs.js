@@ -5096,6 +5096,20 @@ Blockly.Python['neopixel_color_colors'] = function(block) {
 };
 
 
+Blockly.Python['HSL_to_RGB'] = function(block) {
+  var value_red = Blockly.Python.valueToCode(block, 'hue', Blockly.Python.ORDER_ATOMIC);
+  var value_green = Blockly.Python.valueToCode(block, 'saturation', Blockly.Python.ORDER_ATOMIC);
+  var value_blue = Blockly.Python.valueToCode(block, 'lightness', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['HSL_to_RGB'] = 'def HSL_to_RGB(h, s, l):\n	h, s, l = h/360, s/100, l/100\n	def hue2rgb (p, q, t):\n		if(t < 0.): t += 1\n		if(t > 1.): t -= 1\n		if(t < 1/6): return p + (q - p) * 6 * t\n		if(t < 1/2): return q\n		if(t < 2/3): return p + (q - p) * (2/3 - t) * 6\n		return p\n	q = l * (1 + s) if l < 0.5 else l + s - l * s\n	p = 2 * l - q\n	r, g, b = hue2rgb(p, q, h + 1/3), hue2rgb(p, q, h), hue2rgb(p, q, h - 1/3)\n	return (int(r * 255), int(g * 255), int(b * 255))\n';
+
+  var code = `HSL_to_RGB(${value_red},${value_green},${value_blue})`;
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
 
 Blockly.Python['neopixel_init'] = function(block) {
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';

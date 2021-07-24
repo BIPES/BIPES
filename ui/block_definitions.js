@@ -9990,6 +9990,66 @@ Blockly.Blocks['neopixel_color_colors'] = {
   }
 };
 
+
+function HUE2HEX (h,s,l) {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+Blockly.Blocks['HSL_to_RGB'] = {
+  h:0,s:0,l:0,
+  init: function  () {
+    this.appendDummyInput()
+        .appendField("Hue");
+    this.appendValueInput("hue")
+        .setCheck('Number');
+    this.appendDummyInput()
+        .appendField("Saturation");
+    this.appendValueInput("saturation")
+        .setCheck('Number');
+    this.appendDummyInput()
+        .appendField("Lightness");
+    this.appendValueInput("lightness")
+        .setCheck('Number');
+
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("HUE to RGB color, Hue from 0 to 360, Saturation and Lightness from 0% to 100%.");
+    this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
+  },
+  onchange: function (ev) {
+      let hue, saturation, lightness;
+      try {
+        hue = Blockly.Python.valueToCode(this, 'hue', Blockly.Python.ORDER_ATOMIC);
+        saturation = Blockly.Python.valueToCode(this, 'saturation', Blockly.Python.ORDER_ATOMIC);
+        lightness = Blockly.Python.valueToCode(this, 'lightness', Blockly.Python.ORDER_ATOMIC);
+      } catch (e) {
+        hue = 204;
+        saturation = 70.8;
+        lightness = 52.9;
+      }
+      if ((this.h != hue || this.s != saturation || this.l != lightness)) {
+        if (hue <= 360 && hue >= 0 && saturation >= 0 && saturation <= 100 && lightness >= 0 && lightness <= 100) {
+          this.h = hue;
+          this.s = saturation;
+          this.l = lightness;
+          let hex_ = HUE2HEX (hue, saturation, lightness);
+          this.setColour(hex_);
+        } else {
+          this.setColour("#FF0000");
+        }
+      }
+  }
+};
+
+
 Blockly.Blocks['bipes_plot'] = {
   init: function() {
     this.appendDummyInput()
