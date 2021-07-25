@@ -103,7 +103,7 @@
 			"title":"<b>Raspberry Pi Pico</b><br>",
 			"img":"devinfo/RPI_Pico.svg",
 			"description":"",
-			"toolbox":"",
+			"toolbox":"toolbox_rpi_pico.xml",
 			"pinout": [
 				["LED / GPIO25", "25"],
 		    ["Pin 1 / GPIO0", "0"],

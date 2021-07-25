@@ -266,8 +266,8 @@ Blockly.Blocks['thread'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Thread # ")
-        .appendField(new Blockly.FieldTextInput("0"), "timerNumber")
+        .appendField("Thread #")
+        .appendField(new Blockly.FieldNumber(2, 0, 9, 1), "timerNumber")
         .appendField(" Interval (ms): ")
         .appendField(new Blockly.FieldTextInput("1000"), "interval");
     this.appendStatementInput("statements")
@@ -285,8 +285,8 @@ Blockly.Blocks['timer'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Timer # ")
-        .appendField(new Blockly.FieldTextInput("0"), "timerNumber")
+        .appendField("Timer #")
+        .appendField(new Blockly.FieldNumber(2, 0, 9, 1), "timerNumber")
         .appendField(" Interval (ms): ")
         .appendField(new Blockly.FieldTextInput("1000"), "interval");
     this.appendStatementInput("statements")
@@ -1811,7 +1811,141 @@ Blockly.Blocks['project_metadata'] = {
   }
 };
 
+Blockly.Blocks['control_pid.__init__'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Init PID Controller #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("tunings Kp")
+        .appendField(new Blockly.FieldNumber(1), "Kp")
+        .appendField("Ki")
+        .appendField(new Blockly.FieldNumber(0), "Ki")
+        .appendField("Ki")
+        .appendField(new Blockly.FieldNumber(0), "Kd");
+    this.appendDummyInput()
+        .appendField("update every")
+        .appendField(new Blockly.FieldNumber(2, 0, Infinity, 1), "SAMPLETIME")
+        .appendField(new Blockly.FieldDropdown([["seconds","s"], ["miliseconds","ms"], ["microseconds","us"], ["nanoseconds","ns"], ["cpu ticks","cpu"]]), "SCALE");
+    this.appendValueInput("SETPOINT")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("setpoint");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Init PID controler");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+  }
+};
+Blockly.Blocks['control_pid.compute'] = {
+  init: function() {
+    this.appendValueInput("INPUT")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("compute PID #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+        .appendField("with");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Returns PID control action computed with current system value.");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+  }
+};
+Blockly.Blocks['control_pid.tunings'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("PID #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+        .appendField("tunings");
+    this.appendValueInput("KP")
+        .setCheck(null)
+        .appendField("Kp");
+    this.appendValueInput("KI")
+        .setCheck(null)
+        .appendField("Ki");
+    this.appendValueInput("KD")
+        .setCheck(null)
+        .appendField("Kd");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Set PID controller tunings");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+  }
+};
+Blockly.Blocks['control_pid.setpoint'] = {
+  init: function() {
+    this.appendValueInput("SETPOINT")
+        .appendField("PID #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+        .appendField("setpoint");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Set PID controller setpoint");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+  }
+};
+Blockly.Blocks['control_pid.auto_mode'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("PID #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+        .appendField("enable")
+        .appendField(new Blockly.FieldCheckbox(true), "ENABLE");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Enable or disable PID controller");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+  }
+};
+Blockly.Blocks['control_pid.output_limits'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("PID #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+        .appendField("output limits");
+    this.appendDummyInput()
+        .appendField("from")
+        .appendField(new Blockly.FieldNumber(0), "LOWER")
+        .appendField("to")
+        .appendField(new Blockly.FieldNumber(100), "UPPER");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Set PID controller lower and upper bonds");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+  }
+};
 
+Blockly.Blocks['simulate_water_boiler'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Water Boiler #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9), "ID");
+    this.appendDummyInput()
+        .appendField("Dissipation rate (ºC/ms)")
+        .appendField(new Blockly.FieldNumber(0.02, 0), "DISSIPATION");
+    this.appendValueInput("POWER")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("power input");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour('#666666');
+    this.setTooltip("Simulate Water Boiler temperature with power input, returns water temperature. Runs at precision of milliseconds.");
+    this.setHelpUrl("https://github.com/JorgeGMarques/micropython-simple-pid/blob/master/examples/water_boiler/water_boiler.py");
+  }
+};
 
 Blockly.Blocks["btree_open"] = {
   init: function() {

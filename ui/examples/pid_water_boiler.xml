@@ -1,0 +1,86 @@
+<xml xmlns="https://bipes.net.br">
+  <workspace>
+    <field name="DEVICE">ESP32</field>
+    <field name="TIMESTAMP">1627241841079</field>
+  </workspace>
+  <variables>
+    <variable id="T[i,)^.PHS9}dZ0:[M4%">water_temp</variable>
+    <variable id="`wdYp{@_aJC8J4h_pl7:">power</variable>
+  </variables>
+  <block type="variables_set" id=".{t`RtqqHOB4Rbog27oZ" x="113" y="313">
+    <field name="VAR" id="T[i,)^.PHS9}dZ0:[M4%">water_temp</field>
+    <value name="VALUE">
+      <block type="math_number" id="_)VAY#?}JVu*EWt`-^AM">
+        <field name="NUM">20</field>
+      </block>
+    </value>
+    <next>
+      <block type="control_pid.__init__" id=":UN6]a#1K;JGs/wfcPeP">
+        <field name="ID">0</field>
+        <field name="Kp">0.5</field>
+        <field name="Ki">0.001</field>
+        <field name="Kd">0</field>
+        <field name="SAMPLETIME">1000</field>
+        <field name="SCALE">ms</field>
+        <value name="SETPOINT">
+          <shadow type="math_number" id="nuh)I6*d*Y[Dz2sgvk86">
+            <field name="NUM">30</field>
+          </shadow>
+        </value>
+        <next>
+          <block type="control_pid.output_limits" id="_$9*amP+Btpq]6cN`D}d">
+            <field name="ID">0</field>
+            <field name="LOWER">0</field>
+            <field name="UPPER">100</field>
+            <next>
+              <block type="timer" id="0a_*dx#O)KR|SK)rFrB%">
+                <field name="timerNumber">0</field>
+                <field name="interval">500</field>
+                <statement name="statements">
+                  <block type="variables_set" id="xv07rVfB5_leClab*UX_">
+                    <field name="VAR" id="`wdYp{@_aJC8J4h_pl7:">power</field>
+                    <value name="VALUE">
+                      <block type="control_pid.compute" id="1jZf.%_k8O*CPsc^PhK/">
+                        <field name="ID">0</field>
+                        <value name="INPUT">
+                          <block type="variables_get" id="6*XU3t)@Gf/L?)?J:.~_">
+                            <field name="VAR" id="T[i,)^.PHS9}dZ0:[M4%">water_temp</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <next>
+                      <block type="variables_set" id=",=iSET+U,y5H[qEh}*|P">
+                        <field name="VAR" id="T[i,)^.PHS9}dZ0:[M4%">water_temp</field>
+                        <value name="VALUE">
+                          <block type="simulate_water_boiler" id="9a*PS6yF%.Hq?K,0W^67">
+                            <field name="ID">0</field>
+                            <field name="DISSIPATION">0.02</field>
+                            <value name="POWER">
+                              <block type="variables_get" id="Z0Z*59jKfr~e(?BzK!6w">
+                                <field name="VAR" id="`wdYp{@_aJC8J4h_pl7:">power</field>
+                              </block>
+                            </value>
+                          </block>
+                        </value>
+                        <next>
+                          <block type="exec_python" id="61nGxLKZ1(E,9P_DwM8q">
+                            <value name="command">
+                              <shadow type="text" id="t3`{l`g$otocx|Np5oph">
+                                <field name="TEXT">print(pid0._last_time,",",water_temp,",",pid0.setpoint,",",power)</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

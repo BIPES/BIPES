@@ -1772,6 +1772,65 @@ _
 
   </category>
 
+<category name="Control">
+  <category name="PID">
+    <button text="Install control library" callbackKey="installPyLib"></button>
+    <label text="Proportional–integral–derivative Controller"></label>
+      <label text="Library: https://github.com/JorgeGMarques/micropython-simple-pid"></label>
+      <button text="Load example: water_boiler_pid" callbackKey="loadExample"></button>
+
+    <block type="control_pid.__init__">
+      <value name="SETPOINT">
+        <shadow type="math_number">
+         <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="control_pid.compute"></block>
+
+    <block type="control_pid.tunings">
+      <value name="KP">
+        <shadow type="math_number">
+         <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="KI">
+        <shadow type="math_number">
+         <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="KD">
+        <shadow type="math_number">
+         <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <!--
+    <block type="control-pid-components"></block>
+    -->
+    <block type="control_pid.setpoint">
+      <value name="SETPOINT">
+        <shadow type="math_number">
+         <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="control_pid.auto_mode"></block>
+    <block type="control_pid.output_limits"></block>
+    <!--
+    <block type="control-pid-reset"></block>
+    -->
+  </category>
+
+  <category name="Simulate">
+    <button text="Install control library" callbackKey="installPyLib"></button>
+    <label text="No breadboard or sensors? Just simulate it!"></label>
+    <button text="Load example: water_boiler_pid" callbackKey="loadExample"></button>
+    <block type="simulate_water_boiler">
+    </block>
+  </category>
+</category>
+
 
 <category name="micropython">
 <category name="btree">

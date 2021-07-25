@@ -4116,21 +4116,37 @@ Blockly.Python['thread'] = function(block) {
   return code;
 };
 
-
 Blockly.Python['timer'] = function(block) {
 
   var interval = block.getFieldValue('interval');
   var timerNumber = block.getFieldValue('timerNumber');
   var statements_name = Blockly.Python.statementToCode(block, 'statements');
   
+  // Fix for global variables inside callback
+  // Piece of code from generators/python/procedures.js
+  // Define a procedure with a return value.
+  // First, add a 'global' statement for every variable that is not shadowed by
+  // a local parameter.
+  var globals = [];
+  var workspace = block.workspace;
+  var variables = Blockly.Variables.allUsedVarModels(workspace) || [];
+  for (var i = 0, variable; (variable = variables[i]); i++) {
+    var varName = variable.name;
+    if (block.getVars().indexOf(varName) == -1) {
+      globals.push(Blockly.Python.variableDB_.getName(varName,
+          Blockly.VARIABLE_CATEGORY_NAME));
+    }
+  }
+  globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') + '\n' : '';
+
   Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
-  Blockly.Python.definitions_['import_timer_start' + timerNumber] = 'tim' + timerNumber + '=Timer(' + timerNumber + ')'; //-1)';
+  Blockly.Python.definitions_[`import_timer_start${timerNumber}`] = `tim${timerNumber} = Timer(${timerNumber})`;
 
-  Blockly.Python.definitions_['import_timer_callback' + timerNumber] = '\n#Timer Function Callback\ndef timerFunc' + timerNumber + '(t):\n' + statements_name + '\n\n';
+  Blockly.Python.definitions_[`import_timer_callback${timerNumber}`] = `\n#Timer Function Callback\ndef timerFunc${timerNumber}(t):\n${globals}${statements_name}\n\n`;
 
-  var code = 'tim' + timerNumber + '.init(period=' + interval + ', mode=Timer.PERIODIC, callback=timerFunc' + timerNumber + ')\n';
+  var code = `tim${timerNumber}.init(period=${interval}, mode=Timer.PERIODIC, callback=timerFunc${timerNumber})\n`;
              
-  return code;
+  return code
 };
 
 Blockly.Python['pico_timer'] = function(block) {
@@ -5097,17 +5113,16 @@ Blockly.Python['neopixel_color_colors'] = function(block) {
 
 
 Blockly.Python['HSL_to_RGB'] = function(block) {
-  var value_red = Blockly.Python.valueToCode(block, 'hue', Blockly.Python.ORDER_ATOMIC);
-  var value_green = Blockly.Python.valueToCode(block, 'saturation', Blockly.Python.ORDER_ATOMIC);
-  var value_blue = Blockly.Python.valueToCode(block, 'lightness', Blockly.Python.ORDER_ATOMIC);
+  var value_hue = Blockly.Python.valueToCode(block, 'hue', Blockly.Python.ORDER_ATOMIC);
+  var value_saturation = Blockly.Python.valueToCode(block, 'saturation', Blockly.Python.ORDER_ATOMIC);
+  var value_brightness = Blockly.Python.valueToCode(block, 'lightness', Blockly.Python.ORDER_ATOMIC);
 
   Blockly.Python.definitions_['HSL_to_RGB'] = 'def HSL_to_RGB(h, s, l):\n	h, s, l = h/360, s/100, l/100\n	def hue2rgb (p, q, t):\n		if(t < 0.): t += 1\n		if(t > 1.): t -= 1\n		if(t < 1/6): return p + (q - p) * 6 * t\n		if(t < 1/2): return q\n		if(t < 2/3): return p + (q - p) * (2/3 - t) * 6\n		return p\n	q = l * (1 + s) if l < 0.5 else l + s - l * s\n	p = 2 * l - q\n	r, g, b = hue2rgb(p, q, h + 1/3), hue2rgb(p, q, h), hue2rgb(p, q, h - 1/3)\n	return (int(r * 255), int(g * 255), int(b * 255))\n';
 
-  var code = `HSL_to_RGB(${value_red},${value_green},${value_blue})`;
+  var code = `HSL_to_RGB(${value_hue},${value_saturation},${value_brightness})`;
 
   return [code, Blockly.Python.ORDER_NONE];
 };
-
 
 
 
@@ -5201,6 +5216,77 @@ Blockly.Python['st7789_line'] = function(block) {
   return code;
 };
 
+
+Blockly.Python['control_pid.__init__'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var number_kp = block.getFieldValue('Kp');
+  var number_ki = block.getFieldValue('Ki');
+  var number_kd = block.getFieldValue('Kd');
+  var number_sample_time = block.getFieldValue('SAMPLETIME');
+  var dropdown_scale = block.getFieldValue('SCALE');
+  var value_setpoint = Blockly.Python.valueToCode(block, 'SETPOINT', Blockly.Python.ORDER_NONE);
+
+  Blockly.Python.definitions_['import_pid'] = 'from control import PID';
+
+  let code = `pid${number_id} = PID(${number_kp}, ${number_ki}, ${number_kd}, setpoint=${value_setpoint}, scale='${dropdown_scale}'`;
+  code = number_sample_time != 0 ? `${code}, sample_time=${number_sample_time})\n` : `${code})\n`;
+  return code;
+};
+
+Blockly.Python['control_pid.compute'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var value_input = Blockly.Python.valueToCode(block, 'INPUT', Blockly.Python.ORDER_NONE);
+
+  return [`pid${number_id}(${value_input})`, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['control_pid.tunings'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var value_kp = Blockly.Python.valueToCode(block, 'KP', Blockly.Python.ORDER_NONE);
+  var value_ki = Blockly.Python.valueToCode(block, 'KI', Blockly.Python.ORDER_NONE);
+  var value_kd = Blockly.Python.valueToCode(block, 'KD', Blockly.Python.ORDER_NONE);
+  var code = `pid${number_id}.tunings = (${value_kp}, ${value_ki}, ${value_kd})\n`;
+  return code;
+};
+
+Blockly.Python['control_pid.setpoint'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var number_setpoint = block.getFieldValue('SETPOINT');
+
+  var code = `pid${number_id}.setpoint = ${number_setpoint}\n`;
+  return code;
+};
+
+Blockly.Python['control_pid.output_limits'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var number_lower = block.getFieldValue('LOWER');
+  var number_upper = block.getFieldValue('UPPER');
+
+  var code = `pid${number_id}.output_limits = (${number_lower}, ${number_upper})\n`;
+  return code;
+};
+
+Blockly.Python['control_pid.auto_mode'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var checkbox_enable = block.getFieldValue('ENABLE') == 'TRUE' ? 'True' : 'False';
+  var code =  `pid${number_id}.auto_mode = ${checkbox_enable}\n`;
+  return code;
+};
+
+Blockly.Python['simulate_water_boiler'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var number_dissipation = block.getFieldValue('DISSIPATION');
+  var value_power = Blockly.Python.valueToCode(block, 'POWER', Blockly.Python.ORDER_NONE);
+
+	Blockly.Python.definitions_['import_utime'] = 'import utime';
+  Blockly.Python.definitions_['simulate_water_boiler_class'] = `import utime\n\nclass WaterBoiler:\n    """\n    Simple simulation of a water boiler which can heat up water\n    and where the heat dissipates slowly over time\n    """\n\n    def __init__(self, dissipation=0.2):\n        self.water_temp = 20\n        self.dissipation = dissipation\n        self._last_time = utime.ticks_ms()\n\n    def update(self, boiler_power):\n    	now = utime.ticks_ms()\n    	dt = utime.ticks_diff(now,self._last_time) if (utime.ticks_diff(now,self._last_time)) else 1e-16\n        if boiler_power > 0:\n        	# Boiler can only produce heat, not cold\n        	self.water_temp += 1 * boiler_power * dt / 1000\n\n        # Some heat dissipation\n        self.water_temp -= self.dissipation * dt\n        \n        self._last_time = now\n        return self.water_temp`;
+  Blockly.Python.definitions_[`simulate_water_boiler_obj${number_id}`] = `water_boiler${number_id} = WaterBoiler(${number_dissipation})`;
+
+
+  var code = `water_boiler${number_id}.update(${value_power})`;
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
 
 //Other st7789 functions
 /*
