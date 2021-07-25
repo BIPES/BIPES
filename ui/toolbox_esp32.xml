@@ -1777,7 +1777,7 @@ _
     <button text="Install control library" callbackKey="installPyLib"></button>
     <label text="Proportional–integral–derivative Controller"></label>
       <label text="Library: https://github.com/JorgeGMarques/micropython-simple-pid"></label>
-      <button text="Load example: water_boiler_pid" callbackKey="loadExample"></button>
+      <button text="Load example: pid_water_boiler" callbackKey="loadExample"></button>
 
     <block type="control_pid.__init__">
       <value name="SETPOINT">
@@ -1825,7 +1825,7 @@ _
   <category name="Simulate">
     <button text="Install control library" callbackKey="installPyLib"></button>
     <label text="No breadboard or sensors? Just simulate it!"></label>
-    <button text="Load example: water_boiler_pid" callbackKey="loadExample"></button>
+    <button text="Load example: pid_water_boiler" callbackKey="loadExample"></button>
     <block type="simulate_water_boiler">
     </block>
   </category>
