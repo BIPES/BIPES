@@ -10389,4 +10389,59 @@ Blockly.Blocks['st7789_line'] = {
   }
 };
 
+Blockly.Blocks['esp32_cam_init'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("ESP32-CAM Init");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Init ESP32-CAM camera");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['esp32_cam_capture'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("ESP32-CAM capture photo");
+    this.setOutput(true, null);
+    this.setColour(0);
+ this.setTooltip("Take photo with ESP32-CAM camera");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['esp32_cam_red_led'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Control ESP32-CAM red LED");
+    this.appendValueInput("value")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("to");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Control ESP32-CAM Red LED");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['esp32_cam_white_led'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Control ESP32-CAM flashlight");
+    this.appendValueInput("value")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("to");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Control ESP32-CAM White LED (flashlight)");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
 

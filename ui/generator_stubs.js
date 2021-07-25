@@ -5301,19 +5301,21 @@ Blockly.Python["esp32_cam_capture"] = function(block) {
 };
 
 Blockly.Python["esp32_cam_red_led"] = function(block) {
+	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 	Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    Pin(pin, Pin.OUT).on()\n  else:\n    Pin(pin, Pin.OUT).off()';
 
 	var code = 'gpio_set(33' + ', ' + value_value + ')\n';
-	return [code, Blockly.Python.ORDER_NONE];
+	return code;
 };
 
 Blockly.Python["esp32_cam_white_led"] = function(block) {
+	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 	Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    Pin(pin, Pin.OUT).on()\n  else:\n    Pin(pin, Pin.OUT).off()';
 
 	var code = 'gpio_set(4' + ', ' + value_value + ')\n';
-	return [code, Blockly.Python.ORDER_NONE];
+	return code;
 };
 
 
