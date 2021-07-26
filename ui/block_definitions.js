@@ -1822,7 +1822,7 @@ Blockly.Blocks['control_pid.__init__'] = {
         .appendField(new Blockly.FieldNumber(1), "Kp")
         .appendField("Ki")
         .appendField(new Blockly.FieldNumber(0), "Ki")
-        .appendField("Ki")
+        .appendField("Kd")
         .appendField(new Blockly.FieldNumber(0), "Kd");
     this.appendDummyInput()
         .appendField("update every")

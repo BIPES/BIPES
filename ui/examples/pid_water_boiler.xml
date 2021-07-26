@@ -17,10 +17,10 @@
     <next>
       <block type="control_pid.__init__" id=":UN6]a#1K;JGs/wfcPeP">
         <field name="ID">0</field>
-        <field name="Kp">0.5</field>
-        <field name="Ki">0.001</field>
-        <field name="Kd">0</field>
-        <field name="SAMPLETIME">1000</field>
+        <field name="Kp">2</field>
+        <field name="Ki">0.05</field>
+        <field name="Kd">0.05</field>
+        <field name="SAMPLETIME">500</field>
         <field name="SCALE">ms</field>
         <value name="SETPOINT">
           <shadow type="math_number" id="nuh)I6*d*Y[Dz2sgvk86">
@@ -35,7 +35,7 @@
             <next>
               <block type="timer" id="0a_*dx#O)KR|SK)rFrB%">
                 <field name="timerNumber">0</field>
-                <field name="interval">500</field>
+                <field name="interval">250</field>
                 <statement name="statements">
                   <block type="variables_set" id="xv07rVfB5_leClab*UX_">
                     <field name="VAR" id="`wdYp{@_aJC8J4h_pl7:">power</field>
