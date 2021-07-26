@@ -1107,12 +1107,20 @@
       <block type="encoder_reset"></block>
       <block type="encoder_read"></block>
   </category>
+
+  <category name="Camera (ESP32CAM)">
+      <label text="OV2640 Camera on ESP32-CAM Board"></label>
+        <button text="Load example: esp32cam" callbackKey="loadExample"></button>
+      <label text="More info: https://rafaelaroca.wordpress.com/2021/07/15/esp32-camera-micropython-and-no-esptool/"></label>
+
+      <block type="esp32_cam_init"> </block>
+      <block type="esp32_cam_capture"> </block>
+      <block type="esp32_cam_red_led"> </block>
+      <block type="esp32_cam_white_led"> </block>
+  </category>
   </category>
 
-
   <category name="Actuators">
-
-
     <category name="Relay">
       <label text="Relay"></label>
       <block type="relay_switch">

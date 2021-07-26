@@ -5288,6 +5288,37 @@ Blockly.Python['simulate_water_boiler'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python["esp32_cam_init"] = function(block) {
+	Blockly.Python.definitions_['import_camera'] = 'import camera';
+	var code = "camera.init()\n"; 
+	return code;
+};
+
+Blockly.Python["esp32_cam_capture"] = function(block) {
+	Blockly.Python.definitions_['import_camera'] = 'import camera';
+	var code = "camera.capture()"; 
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python["esp32_cam_red_led"] = function(block) {
+	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    Pin(pin, Pin.OUT).on()\n  else:\n    Pin(pin, Pin.OUT).off()';
+
+	var code = 'gpio_set(33' + ', ' + value_value + ')\n';
+	return code;
+};
+
+Blockly.Python["esp32_cam_white_led"] = function(block) {
+	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    Pin(pin, Pin.OUT).on()\n  else:\n    Pin(pin, Pin.OUT).off()';
+
+	var code = 'gpio_set(4' + ', ' + value_value + ')\n';
+	return code;
+};
+
+
 //Other st7789 functions
 /*
 def set_window(self, x0, y0, x1, y1):
