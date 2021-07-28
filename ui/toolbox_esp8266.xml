@@ -1,5 +1,5 @@
 <document>
-    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
+  <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
@@ -288,7 +288,18 @@
 
      </category>
 
+     <category name="BIPES">
+    <block type="bipes_plot">
+      <field name="NAME">Plot</field>
+      <value name="values">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+    </block>
 
+
+     </category>
     <sep></sep>
     <!--
     <category name="Python" colour="%{BKY_LOGIC_HUE}">
@@ -460,7 +471,113 @@
   </category>
 
 
-  <category name="Displays">
+<category name="Displays">
+
+<category name="NeoPixel LED Strip">
+      <label text="NeoPixel RGB LED Strip"></label>
+
+        <button text="Documentation and how to connect: neopixel" callbackKey="loadDoc"></button>
+
+      <block type="neopixel_init">
+       <value name="pin">
+          <shadow type="pinout">
+            <field name="Pin"></field>
+          </shadow>
+       </value>
+
+       <value name="number">
+        <shadow type="math_number">
+          <field name="NUM">8</field>
+        </shadow>
+       </value>
+      </block>
+
+      <block type="neopixel_color_numbers">
+       <value name="red">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+       </value>
+       <value name="green">
+        <shadow type="math_number">
+          <field name="NUM">152</field>
+        </shadow>
+       </value>
+       <value name="blue">
+        <shadow type="math_number">
+          <field name="NUM">220</field>
+        </shadow>
+       </value>
+      </block>
+
+      <block type="neopixel_color_colors"></block>
+
+      <block type="HSL_to_RGB">
+        <value name="hue">
+        <shadow type="math_number">
+          <field name="NUM">204</field>
+        </shadow>
+        </value>
+        <value name="saturation">
+        <shadow type="math_number">
+          <field name="NUM">70.8</field>
+        </shadow>
+        </value>
+        <value name="lightness">
+        <shadow type="math_number">
+          <field name="NUM">52.9</field>
+        </shadow>
+        </value>
+      </block>
+
+      <block type="neopixel_control">
+       <value name="address">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+       </value>
+
+       <value name="color">
+        <shadow type="neopixel_color_colors">
+          <field name="PIN"></field>
+        </shadow>
+       </value>
+      </block>
+
+      <block type="neopixel_control">
+       <value name="address">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+       </value>
+
+       <value name="color">
+        <block type="neopixel_color_numbers">
+         <value name="red">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+         <value name="green">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+         <value name="blue">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+        </block>
+       </value>
+      </block>
+
+      <block type="neopixel_write"></block>
+      
+
+</category>
+
+
 
   <category name="Character display">
       <label text="PCF8574 Display controller"></label>
@@ -527,6 +644,25 @@
         </value>
     </block>
 
+    <block type="st7789_fill">
+      <value name="r">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="g">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="b">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+
+
     <block type="st7789_pixel">
       <value name="x">
         <shadow type="math_number">
@@ -578,24 +714,22 @@
       <label text="SSD1306 OLED I2C Display"></label>
       <button text="Install SSD1306 library" callbackKey="installPyLib"></button>
 
-
-
-    <block type="init_oled">
-
- <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">5</field>
-        </shadow>
-      </value>
-
- <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">4</field>
-        </shadow>
-      </value>
-
-
-    
+      <block type="init_oled">
+        <value name="i2c">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="scl">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <value name="sda">
+          <shadow type="math_number">
+            <field name="NUM">4</field>
+          </shadow>
+        </value>
     </block>
     <block type="write_oled">
 
@@ -983,9 +1117,8 @@
   </category>
 
 
-  <category name="Actuators">
 
-
+  <category name="Outputs / Actuators">
     <category name="Relay">
       <label text="Relay"></label>
       <block type="relay_switch">
@@ -1090,6 +1223,96 @@
 _
     <block type="dc_motor_stop">
     </block>
+  </category>
+
+  <category name="Sounds">
+        <label text="Sounds and RTTTL:"></label>
+        <label text="Ring Tone Text Transfer Language (RTTTL) "></label>
+        <label text="Library: "></label>
+        <button text="Install rtttl library" callbackKey="installPyLib"></button>
+        <button text="Load example: songs" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: sound" callbackKey="loadDoc"></button>
+
+    <block type="tone"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+     <value name="frequency">
+        <shadow type="math_number">
+          <field name="NUM">1200</field>
+        </shadow>
+      </value>
+     <value name="duration">
+        <shadow type="math_number">
+          <field name="NUM">-1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="note"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+      <value name="note">
+        <shadow type="text">
+          <field name="TEXT">B1</field>
+        </shadow>
+      </value>
+     <value name="duration">
+        <shadow type="math_number">
+          <field name="NUM">-1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="rtttl_play"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+      <value name="song">
+        <shadow type="text">
+          <field name="TEXT">Super Mario - Main Theme</field>
+        </shadow>
+      </value>
+    </block>
+
+    <label text="Songs:"></label>
+    <button text="Install songs library" callbackKey="installPyLib"></button>
+
+    <block type="text"> <field name="TEXT">Super Mario - Main Theme</field> </block>
+    <block type="text"> <field name="TEXT">Super Mario - Title Music</field> </block>
+    <block type="text"> <field name="TEXT">SMBtheme</field> </block>
+    <block type="text"> <field name="TEXT">SMBwater</field> </block>
+    <block type="text"> <field name="TEXT">SMBunderground</field> </block>
+    <block type="text"> <field name="TEXT">Picaxe</field> </block>
+    <block type="text"> <field name="TEXT">Simpsons</field> </block>
+    <block type="text"> <field name="TEXT">Indiana</field> </block>
+    <block type="text"> <field name="TEXT">TakeOnMe</field> </block>
+    <block type="text"> <field name="TEXT">Entertainer</field> </block>
+    <block type="text"> <field name="TEXT">Muppets</field> </block>
+    <block type="text"> <field name="TEXT">Xfiles</field> </block>
+    <block type="text"> <field name="TEXT">Looney</field> </block>
+    <block type="text"> <field name="TEXT">20thCenFox</field> </block>
+    <block type="text"> <field name="TEXT">Bond</field> </block>
+    <block type="text"> <field name="TEXT">MASH</field> </block>
+    <block type="text"> <field name="TEXT">StarWars</field> </block>
+    <block type="text"> <field name="TEXT">GoodBad</field> </block>
+    <block type="text"> <field name="TEXT">TopGun</field> </block>
+    <block type="text"> <field name="TEXT">A-Team</field> </block>
+    <block type="text"> <field name="TEXT">Flintstones</field> </block>
+    <block type="text"> <field name="TEXT">Jeopardy</field> </block>
+    <block type="text"> <field name="TEXT">Gadget</field> </block>
+    <block type="text"> <field name="TEXT">Smurfs</field> </block>
+    <block type="text"> <field name="TEXT">MahnaMahna</field> </block>
+    <block type="text"> <field name="TEXT">LeisureSuit</field> </block>
+    <block type="text"> <field name="TEXT">MissionImp</field> </block>
+
   </category>
 
   </category>
@@ -1616,6 +1839,65 @@ _
       <block type="webrepl_start"></block>
     </category>
   </category>
+
+<category name="Control">
+  <category name="PID">
+    <button text="Install control library" callbackKey="installPyLib"></button>
+    <label text="Proportional–integral–derivative Controller"></label>
+      <label text="Library: https://github.com/JorgeGMarques/micropython-simple-pid"></label>
+      <button text="Load example: pid_water_boiler" callbackKey="loadExample"></button>
+
+    <block type="control_pid.__init__">
+      <value name="SETPOINT">
+        <shadow type="math_number">
+         <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="control_pid.compute"></block>
+
+    <block type="control_pid.tunings">
+      <value name="KP">
+        <shadow type="math_number">
+         <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="KI">
+        <shadow type="math_number">
+         <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="KD">
+        <shadow type="math_number">
+         <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+    <!--
+    <block type="control-pid-components"></block>
+    -->
+    <block type="control_pid.setpoint">
+      <value name="SETPOINT">
+        <shadow type="math_number">
+         <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="control_pid.auto_mode"></block>
+    <block type="control_pid.output_limits"></block>
+    <!--
+    <block type="control-pid-reset"></block>
+    -->
+  </category>
+
+  <category name="Simulate">
+    <button text="Install control library" callbackKey="installPyLib"></button>
+    <label text="No breadboard or sensors? Just simulate it!"></label>
+    <button text="Load example: pid_water_boiler" callbackKey="loadExample"></button>
+    <block type="simulate_water_boiler">
+    </block>
+  </category>
+</category>
 
 
 <category name="micropython">

@@ -300,7 +300,6 @@
 
 
      </category>
-
     <sep></sep>
     <!--
     <category name="Python" colour="%{BKY_LOGIC_HUE}">
@@ -655,7 +654,6 @@
     </block>
 
 
-
     <block type="st7789_pixel">
       <value name="x">
         <shadow type="math_number">
@@ -883,7 +881,7 @@
 
   <category name="Sensors">
     <category name="DHT11/22 Sensor">
-      <label text="DHT11/11 Temperature and Humidity Sensor"></label>
+      <label text="DHT11/22 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
         <value name="pin">
@@ -1120,7 +1118,7 @@
   </category>
   </category>
 
-  <category name="Actuators">
+  <category name="Outputs / Actuators">
     <category name="Relay">
       <label text="Relay"></label>
       <block type="relay_switch">
@@ -1225,6 +1223,96 @@
 _
     <block type="dc_motor_stop">
     </block>
+  </category>
+
+  <category name="Sounds">
+        <label text="Sounds and RTTTL:"></label>
+        <label text="Ring Tone Text Transfer Language (RTTTL) "></label>
+        <label text="Library: "></label>
+        <button text="Install rtttl library" callbackKey="installPyLib"></button>
+        <button text="Load example: songs" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: sound" callbackKey="loadDoc"></button>
+
+    <block type="tone"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+     <value name="frequency">
+        <shadow type="math_number">
+          <field name="NUM">1200</field>
+        </shadow>
+      </value>
+     <value name="duration">
+        <shadow type="math_number">
+          <field name="NUM">-1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="note"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+      <value name="note">
+        <shadow type="text">
+          <field name="TEXT">B1</field>
+        </shadow>
+      </value>
+     <value name="duration">
+        <shadow type="math_number">
+          <field name="NUM">-1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="rtttl_play"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+      <value name="song">
+        <shadow type="text">
+          <field name="TEXT">Super Mario - Main Theme</field>
+        </shadow>
+      </value>
+    </block>
+
+    <label text="Songs:"></label>
+    <button text="Install songs library" callbackKey="installPyLib"></button>
+
+    <block type="text"> <field name="TEXT">Super Mario - Main Theme</field> </block>
+    <block type="text"> <field name="TEXT">Super Mario - Title Music</field> </block>
+    <block type="text"> <field name="TEXT">SMBtheme</field> </block>
+    <block type="text"> <field name="TEXT">SMBwater</field> </block>
+    <block type="text"> <field name="TEXT">SMBunderground</field> </block>
+    <block type="text"> <field name="TEXT">Picaxe</field> </block>
+    <block type="text"> <field name="TEXT">Simpsons</field> </block>
+    <block type="text"> <field name="TEXT">Indiana</field> </block>
+    <block type="text"> <field name="TEXT">TakeOnMe</field> </block>
+    <block type="text"> <field name="TEXT">Entertainer</field> </block>
+    <block type="text"> <field name="TEXT">Muppets</field> </block>
+    <block type="text"> <field name="TEXT">Xfiles</field> </block>
+    <block type="text"> <field name="TEXT">Looney</field> </block>
+    <block type="text"> <field name="TEXT">20thCenFox</field> </block>
+    <block type="text"> <field name="TEXT">Bond</field> </block>
+    <block type="text"> <field name="TEXT">MASH</field> </block>
+    <block type="text"> <field name="TEXT">StarWars</field> </block>
+    <block type="text"> <field name="TEXT">GoodBad</field> </block>
+    <block type="text"> <field name="TEXT">TopGun</field> </block>
+    <block type="text"> <field name="TEXT">A-Team</field> </block>
+    <block type="text"> <field name="TEXT">Flintstones</field> </block>
+    <block type="text"> <field name="TEXT">Jeopardy</field> </block>
+    <block type="text"> <field name="TEXT">Gadget</field> </block>
+    <block type="text"> <field name="TEXT">Smurfs</field> </block>
+    <block type="text"> <field name="TEXT">MahnaMahna</field> </block>
+    <block type="text"> <field name="TEXT">LeisureSuit</field> </block>
+    <block type="text"> <field name="TEXT">MissionImp</field> </block>
+
   </category>
 
   </category>

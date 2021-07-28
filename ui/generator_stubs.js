@@ -5279,7 +5279,7 @@ Blockly.Python['simulate_water_boiler'] = function(block) {
   var value_power = Blockly.Python.valueToCode(block, 'POWER', Blockly.Python.ORDER_NONE);
 
 	Blockly.Python.definitions_['import_utime'] = 'import utime';
-  Blockly.Python.definitions_['simulate_water_boiler_class'] = `import utime\n\nclass WaterBoiler:\n    """\n    Simple simulation of a water boiler which can heat up water\n    and where the heat dissipates slowly over time\n    """\n\n    def __init__(self, dissipation=0.2):\n        self.water_temp = 20\n        self.dissipation = dissipation\n        self._last_time = utime.ticks_ms()\n\n    def update(self, boiler_power):\n    	now = utime.ticks_ms()\n    	dt = utime.ticks_diff(now,self._last_time) if (utime.ticks_diff(now,self._last_time)) else 1e-16\n        if boiler_power > 0:\n        	# Boiler can only produce heat, not cold\n        	self.water_temp += 1 * boiler_power * dt / 1000\n\n        # Some heat dissipation\n        self.water_temp -= self.dissipation * dt\n        \n        self._last_time = now\n        return self.water_temp`;
+  Blockly.Python.definitions_['simulate_water_boiler_class'] = `class WaterBoiler:\n    """\n    Simple simulation of a water boiler which can heat up water\n    and where the heat dissipates slowly over time\n    """\n\n    def __init__(self, dissipation=0.2):\n        self.water_temp = 20\n        self.dissipation = dissipation\n        self._last_time = utime.ticks_ms()\n\n    def update(self, boiler_power):\n    	now = utime.ticks_ms()\n    	dt = utime.ticks_diff(now,self._last_time) if (utime.ticks_diff(now,self._last_time)) else 1e-16\n        if boiler_power > 0:\n        	# Boiler can only produce heat, not cold\n        	self.water_temp += 1 * boiler_power * dt / 1000\n\n        # Some heat dissipation\n        self.water_temp -= self.dissipation * dt\n        \n        self._last_time = now\n        return self.water_temp`;
   Blockly.Python.definitions_[`simulate_water_boiler_obj${number_id}`] = `water_boiler${number_id} = WaterBoiler(${number_dissipation})`;
 
 
@@ -5317,6 +5317,52 @@ Blockly.Python["esp32_cam_white_led"] = function(block) {
 	var code = 'gpio_set(4' + ', ' + value_value + ')\n';
 	return code;
 };
+
+Blockly.Python["rtttl_play"] = function(block) {
+	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var song = Blockly.Python.valueToCode(block, 'song', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_rtttl'] = 'import rtttl, songs';
+
+	var code = 'play = rtttl.play(Pin(' + pin + ', Pin.OUT), songs.find(' + song + ')) \n';
+	return code;
+};
+
+Blockly.Python['tone'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_frequency = Blockly.Python.valueToCode(block, 'frequency', Blockly.Python.ORDER_ATOMIC);
+	var d = Blockly.Python.valueToCode(block, 'duration', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+  	
+	var x = value_pin.replace('(','').replace(')','');
+
+	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ', duty=512)\n';
+
+	return code;
+  };
+
+
+Blockly.Python['note'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_frequency = Blockly.Python.valueToCode(block, 'note', Blockly.Python.ORDER_ATOMIC);
+	var d = Blockly.Python.valueToCode(block, 'duration', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+  	
+	var x = value_pin.replace('(','').replace(')','');
+
+	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ', duty=512)\n';
+
+	return code;
+  };
+
+
+
+
+
 
 
 //Other st7789 functions
