@@ -1407,43 +1407,54 @@ _
  
  
   <category name="Files">
-      <label text="Read and write files"></label>
-<block type="file_open_write"> 
+  <label text="Read and write files"></label>
 
-  <value name="filename">
+  <block type="file_open"> 
+    <value name="file_name">
         <shadow type="text">
           <field name="TEXT">file.txt</field>
         </shadow>
-      </value>
+    </value>
+  </block>
 
-</block>
-<block type="file_open_read"> 
-
-  <value name="filename">
+  <block type="file_open_write"> 
+    <value name="filename">
         <shadow type="text">
           <field name="TEXT">file.txt</field>
         </shadow>
-      </value>
+    </value>
+  </block>
 
-
-</block>
+  <block type="file_open_read"> 
+    <value name="filename">
+        <shadow type="text">
+          <field name="TEXT">file.txt</field>
+        </shadow>
+    </value>
+  </block>
 <block type="file_write"> 
-
-
   <value name="data">
         <shadow type="text">
-          <field name="TEXT">File contents</field>
+          <field name="TEXT">contents</field>
         </shadow>
       </value>
-
-
-  <value name="filename">
-        <shadow type="text">
-          <field name="TEXT">file.txt</field>
-        </shadow>
-      </value>
-
 </block>
+<block type="file_write_line"> 
+  <value name="data">
+        <shadow type="text">
+          <field name="TEXT">Line contents</field>
+        </shadow>
+      </value>
+</block>
+<block type="file_write_byte"> 
+        <value name="data">
+          <shadow type="math_number">
+            <field name="NUM">80</field>
+          </shadow>
+        </value>
+</block>
+
+
 <block type="file_read"> 
 
   <value name="filename">

@@ -4248,6 +4248,22 @@ Blockly.Python['randomforestclassifier'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
   };
   
+Blockly.Python['file_open'] = function(block) {
+  var value_file_name = Blockly.Python.valueToCode(block, 'file_name', Blockly.Python.ORDER_ATOMIC);
+  var mode = block.getFieldValue('dropdown_mode');
+  var binary = block.getFieldValue('checkbox_binary') == 'TRUE';
+
+  var modeB = '';
+  if (binary)
+    modeB='b'+mode;
+  else
+    modeB=mode;
+
+  var code = 'open(' + value_file_name + ', \'' + modeB + '\')\n';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
 Blockly.Python['file_open_write'] = function(block) {
   var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
   var code = 'f = open(' + pIn + ', \'a+\')\n';
@@ -4262,21 +4278,64 @@ Blockly.Python['file_open_read'] = function(block) {
   return code;
 };
 
-
 Blockly.Python['file_close'] = function(block) {
+  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+ 
+  var code = variable_filename + '.close()\n';
+  return code;
+};
+
+
+Blockly.Python['file_close_old'] = function(block) {
   var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
   var code = 'f.close()\n';
   return code;
 };
 
-
 Blockly.Python['file_read'] = function(block) {
-  var code = 'f.read()';
+  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+ 
+  var code = variable_filename + '.read()\n';
+
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
+Blockly.Python['file_read_old'] = function(block) {
+  var code = 'f.read()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
 Blockly.Python['file_write'] = function(block) {
+  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+ 
+  var code = variable_filename + '.write(' + value_data + ')\n';
+
+  return code;
+};
+
+Blockly.Python['file_write_line'] = function(block) {
+  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+ 
+  var code = variable_filename + '.write(' + value_data + ')\n';
+      code += variable_filename + ".write('\\n')\n";
+
+  return code;
+};
+
+Blockly.Python['file_write_byte'] = function(block) {
+  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+ 
+  var code = variable_filename + '.write(struct.pack(\"B\",' + value_data + '))\n';
+
+  return code;
+};
+
+
+Blockly.Python['file_write_old'] = function(block) {
   var pIn = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
   var code = 'f.write(' + pIn + ')\n';
   code += "f.write('\\n')\n";

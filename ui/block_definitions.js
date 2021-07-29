@@ -1232,8 +1232,20 @@ Blockly.Blocks['file_open_read'] = {
   }
 };
 
-
 Blockly.Blocks['file_close'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Close File")
+        .appendField(new Blockly.FieldVariable("file"), "filename");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Close a file");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['file_close_old'] = {
   init: function() {
    this.appendDummyInput()
         .appendField("Close file");
@@ -1252,8 +1264,60 @@ Blockly.Blocks['file_close'] = {
   }
 };
 
-
 Blockly.Blocks['file_write'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Write to file")
+        .appendField(new Blockly.FieldVariable("file"), "filename");
+    this.appendValueInput("data")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Data:");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Write to a file");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['file_write_line'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Write line to file")
+        .appendField(new Blockly.FieldVariable("file"), "filename");
+    this.appendValueInput("data")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Line:");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Write line to a file");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['file_write_byte'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Write single byte to file")
+        .appendField(new Blockly.FieldVariable("file"), "filename");
+    this.appendValueInput("data")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Byte:");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Write byte to a file");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+
+
+Blockly.Blocks['file_write_old'] = {
   init: function() {
    this.appendDummyInput()
         .appendField("Write text to file");
@@ -1278,8 +1342,43 @@ Blockly.Blocks['file_write'] = {
   }
 };
 
+Blockly.Blocks['file_open'] = {
+  init: function() {
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("Open File");
+    this.appendValueInput("file_name")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("File name:");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Mode")
+        .appendField(new Blockly.FieldDropdown([["Append","a"], ["Read","r"], ["Overwrite","w"], ["Read and Write","w+"]]), "dropdown_mode");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Open in binary mode")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "checkbox_binary");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Open File");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
 
 Blockly.Blocks['file_read'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read data from the file")
+        .appendField(new Blockly.FieldVariable("file"), "filename");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Read data from a file");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['file_read_old'] = {
   init: function() {
    this.appendDummyInput()
         .appendField("Read text from the file");
