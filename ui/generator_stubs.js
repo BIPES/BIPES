@@ -5335,10 +5335,17 @@ Blockly.Python['tone'] = function(block) {
 
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+  	Blockly.Python.definitions_['import_time'] = 'import time';
   	
 	var x = value_pin.replace('(','').replace(')','');
 
-	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ', duty=512)\n';
+	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ' duty=512)\n';
+	
+	var d1=parseFloat(d);
+	if (d1==0)
+		code += '';
+	else
+		code += 'time.sleep(' + d + ')\npwm' + x + '.deinit()\n';
 
 	return code;
   };
@@ -5354,14 +5361,22 @@ Blockly.Python['note'] = function(block) {
   	
 	var x = value_pin.replace('(','').replace(')','');
 
-	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ', duty=512)\n';
+	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ' duty=512)\n';
+	var d1=parseFloat(d);
+	if (d1==0)
+		code += '';
+	else
+		code += 'time.sleep(' + d + ')\npwm' + x + '.deinit()\n';
 
 	return code;
   };
 
 
-
-
+Blockly.Python['tone_type'] = function(block) {
+  var dropdown_tone = block.getFieldValue('tone');
+  var code = dropdown_tone;
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
 
 
 
@@ -5377,3 +5392,4 @@ def fill_rect(self, x, y, width, height, color):
 def fill(self, color):
 def line(self, x0, y0, x1, y1, color):
 */
+

@@ -1258,8 +1258,8 @@ _
         </shadow>
       </value>
       <value name="note">
-        <shadow type="text">
-          <field name="TEXT">B1</field>
+        <shadow type="tone_type">
+          <field name="note"></field>
         </shadow>
       </value>
      <value name="duration">
@@ -1268,6 +1268,8 @@ _
         </shadow>
       </value>
     </block>
+
+    <block type="tone_type"> </block>
 
     <block type="rtttl_play"> 
       <value name="pin">
