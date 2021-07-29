@@ -5398,7 +5398,7 @@ Blockly.Python['tone'] = function(block) {
   	
 	var x = value_pin.replace('(','').replace(')','');
 
-	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ' duty=512)\n';
+	var code = 'pwm' + x + ' = PWM(Pin(' + x + '), freq=' + value_frequency + ', ' + ' duty=512)\n';
 	
 	var d1=parseFloat(d);
 	if (d1==0)
@@ -5420,7 +5420,7 @@ Blockly.Python['note'] = function(block) {
   	
 	var x = value_pin.replace('(','').replace(')','');
 
-	var code = 'pwm' + x + ' = PWM(' + x + ', freq=' + value_frequency + ', ' + ' duty=512)\n';
+	var code = 'pwm' + x + ' = PWM(Pin(' + x + '), freq=' + value_frequency + ', ' + ' duty=512)\n';
 	var d1=parseFloat(d);
 	if (d1==0)
 		code += '';
