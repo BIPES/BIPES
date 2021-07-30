@@ -69,7 +69,7 @@ Blockly.Blocks['deep_sleep'] = {
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
-
+/*LEGACY_BLOCKS_START:Old timings blocks*/
 Blockly.Blocks['delay'] = {
   init: function() {
     this.appendValueInput("time")
@@ -139,6 +139,90 @@ Blockly.Blocks['ticks_diff'] = {
  this.setHelpUrl("bipes.net.br");
   }
 };
+
+/*LEGACY_BLOCKS_END: Old timings blocks*/
+Blockly.Blocks['utime.delay'] = {
+  init: function() {
+    this.appendValueInput("TIME")
+        .setCheck(null)
+        .appendField("delay");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["seconds","sleep"], ["milliseconds","sleep_ms"], ["microseconds","sleep_us"]]), "SCALE");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Delay for given number, should be positive or 0.");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.sleep");
+
+  }
+};
+
+Blockly.Blocks['utime.vars'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get")
+        .appendField(new Blockly.FieldDropdown([["seconds","time"], ["milliseconds","ticks_ms"], ["microseconds","ticks_us"], ["nanoseconds","time_ns"], ["cpu ticks","ticks_cpu"]]), "VARS")
+        .appendField("counter");
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("Returns a counter in the defined scale, only integer values.");
+   this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_ms");
+  }
+};
+
+Blockly.Blocks['utime.ticks_add'] = {
+  init: function() {
+    this.appendValueInput("TIME1")
+        .setCheck(null)
+        .appendField("sum time");
+    this.appendValueInput("TIME2")
+        .setCheck(null)
+        .appendField("by");
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("Offset ticks value by a given number, which can be either positive or negative. Must be same scale in milliseconds, microseconds or cpu ticks.");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_add");
+  }
+};
+Blockly.Blocks['utime.ticks_diff'] = {
+  init: function() {
+    this.appendValueInput("TIME1")
+        .setCheck(null)
+        .appendField("time difference from");
+    this.appendValueInput("TIME2")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("by");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("Measure ticks difference between values Must be same scale in milliseconds, microseconds or cpu ticks.");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_diff");
+  }
+};
+Blockly.Blocks['utime.deadline'] = {
+  init: function() {
+    this.appendValueInput("TIME")
+        .setCheck(null)
+        .appendField("until deadline #")
+        .appendField(new Blockly.FieldNumber(Math.floor(Math.random() * 10), 0, 9, 1), "ID")
+        .appendField("of");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["seconds","time"], ["milliseconds","ticks_ms"], ["microseconds","ticks_us"], ["nanoseconds","time_ns"], ["cpu ticks","ticks_cpu"]]), "SCALE");
+    this.appendStatementInput("DO")
+        .setCheck(null)
+        .appendField("do");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(135);
+    this.setTooltip("Creates a loop with deadline.");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_add");
+  }
+};
+
 
 Blockly.Blocks['esp32_set_rtc'] = {
   init: function() {
@@ -287,13 +371,16 @@ Blockly.Blocks['timer'] = {
     this.appendDummyInput()
         .appendField("Timer #")
         .appendField(new Blockly.FieldNumber(2, 0, 9, 1), "timerNumber")
-        .appendField(" Interval (ms): ")
-        .appendField(new Blockly.FieldTextInput("1000"), "interval");
+        .appendField("do")
+        .appendField(new Blockly.FieldDropdown([["every","PERIODIC"], ["once in","ONE_SHOT"]]), "MODE")
+        .appendField(new Blockly.FieldNumber(1000, 0, Infinity, 1), "interval")
+        .appendField("ms");
     this.appendStatementInput("statements")
         .setCheck("image");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip('Set a Timer to execute periodically or one after a time given in milliseconds.');
+    this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#timers")
   }
 };
 
@@ -1891,19 +1978,19 @@ Blockly.Blocks['var_to_float'] = {
 Blockly.Blocks['project_metadata'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Project INFO"), "NAME");
+        .appendField(new Blockly.FieldLabel("Project INFO"), "NAME");
     this.appendValueInput("project_author")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Author"), "project_author");
+        .appendField(new Blockly.FieldLabel("Author"), "project_author");
     this.appendValueInput("project_iot_id")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("IOT ID"), "project_iot_id");
+        .appendField(new Blockly.FieldLabel("IOT ID"), "project_iot_id");
     this.appendValueInput("project_description")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Description"), "project_description");
+        .appendField(new Blockly.FieldLabel("Description"), "project_description");
     this.setColour(230);
  this.setTooltip("Information about the project");
  this.setHelpUrl("http://www.bipes.net.br");
@@ -1951,7 +2038,7 @@ Blockly.Blocks['control_pid.compute'] = {
     this.setOutput(true, null);
     this.setColour('#7b49ad');
     this.setTooltip("Returns PID control action computed with current system value.");
-    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/en/latest/#the-basics");
   }
 };
 Blockly.Blocks['control_pid.tunings'] = {
@@ -1975,7 +2062,7 @@ Blockly.Blocks['control_pid.tunings'] = {
     this.setNextStatement(true, null);
     this.setColour('#7b49ad');
     this.setTooltip("Set PID controller tunings");
-    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/en/latest/#the-basics");
   }
 };
 Blockly.Blocks['control_pid.setpoint'] = {
@@ -1988,7 +2075,7 @@ Blockly.Blocks['control_pid.setpoint'] = {
     this.setNextStatement(true, null);
     this.setColour('#7b49ad');
     this.setTooltip("Set PID controller setpoint");
-    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/en/latest/#the-basics");
   }
 };
 Blockly.Blocks['control_pid.auto_mode'] = {
@@ -2003,7 +2090,7 @@ Blockly.Blocks['control_pid.auto_mode'] = {
     this.setNextStatement(true, null);
     this.setColour('#7b49ad');
     this.setTooltip("Enable or disable PID controller");
-    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/en/latest/#the-basics");
   }
 };
 Blockly.Blocks['control_pid.output_limits'] = {
@@ -2022,6 +2109,20 @@ Blockly.Blocks['control_pid.output_limits'] = {
     this.setNextStatement(true, null);
     this.setColour('#7b49ad');
     this.setTooltip("Set PID controller lower and upper bonds");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/en/latest/#auto-mode");
+  }
+};
+Blockly.Blocks['control_pid.vars'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get PID #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+        .appendField(".")
+        .appendField(new Blockly.FieldDropdown([["Kp gain","Kp"], ["Ki gain","Ki"], ["Kd gain","Kd"], ["tunings (Kp, Ki, Kd)","tunings"], ["last time","_last_time"], ["setpoint","setpoint"], ["output limits (lower, upper)","output_limits"], ["auto mode","auto_mode"], ["power components","components"]]), "VARS");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Returns PID controller values, \"auto mode\" returns a boolean if the controller is on or off and \"power components\" Kp, Ki and Kd contribution to the output.");
     this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
   }
 };
