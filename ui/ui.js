@@ -7,13 +7,6 @@ function fx (e, vfx) {e.style.Transition = vfx; }
 
 $em = 16; // size of 1em
 
-/* clear all schedules timeouts */
-function clearAllTimeouts () {
-  let id = window.setTimeout(() => {}, 0);
-  while (id--) {
-    window.clearTimeout(id);
-  }
-}
 
 function unix2date (timestamp) {
   let date = new Date(timestamp);
@@ -92,7 +85,7 @@ notify.prototype.send = function (message) {
 
     this.container.id = 'show';
 
-    clearAllTimeouts();
+    window.clearTimeout(this.timeOut);
     this.timeOut = setTimeout( () => {
       this.container.id = '';
       this.buffer_count = 0;
@@ -159,6 +152,30 @@ responsive.prototype.hidePanels = function (ev) {
   }
 }
 
+function progress () {
+	this.dom = get ('.progress-bar');
+	this.div = document.createElement ('div');
+	this.dom.appendChild (this.div);
+	this.len;
+
+	this.load = function (loaded, total) {
+		var percent = (loaded * 100 / total);
+		this.div.style.width = percent + '%';
+	}
+	this.remain = function (len_) {
+		var percent = ((this.len - len_) * 100 / this.len);
+		this.div.style.width = percent + '%';
+	}
+	this.start = (len_) => {
+	  this.len = len_;
+	  this.dom.id = 'on';
+	}
+	this.end = () => {
+	  this.dom.id = '';
+    this.div.style.width = '0%';
+	}
+}
+
 
 function workspace () {
     this.defaultToolbox = 'toolbox.xml';
@@ -175,10 +192,66 @@ function workspace () {
     });
     this.selector.onchange = () => {this.change ()};
 
+    this.websocket = {connected:false, reconnect:false, url:get('#url'), pass:get('#password')};
+    this.bluetooth = {connected:false};
+    this.webserial = {connected:false};
+    this.runButton = {
+        dom:get('#runButton'),
+        status:true
+      };
+    this.term = get('#term');
+    this.connectButton = get('#connectButton');
     this.saveButton = get('#saveButton');
     this.loadButton = get('#loadButton');
+    this.connectButton.onclick = () => {this.connectClick ()};
+    this.runButton.dom.onclick = () => {this.run ()};
     this.saveButton.onclick = () => {this.saveXML ()};
     this.loadButton.onclick = () => {this.loadXML ()};
+}
+
+workspace.prototype.run = function () {
+  if (this.runButton.status) {
+    if(this.websocket.connected) {
+        runPython();
+    } else {
+      this.buttonConnect ();
+      setTimeout(() => { if(this.websocket.connected) runPython();}, 2000);
+    }
+  } else {
+    this.websocket.reconnect = true;
+    buffer_.unshift('\r\x04');
+  }
+}
+
+workspace.prototype.buttonConnect = function () {
+  connect(this.websocket.url.value, this.websocket.pass.value);
+}
+
+workspace.prototype.websocketConnected = function () {
+  this.websocket.connected = true;
+  this.websocket.url.disabled = true;
+  this.connectButton.value = "Disconnect";
+}
+
+workspace.prototype.connectClick = function () {
+  if (this.websocket.connected) {
+    ws.close();
+  } else {
+    this.buttonConnect ();
+  }
+}
+
+workspace.prototype.runAbort = function () {
+  this.websocket.connected = false;
+  this.runButton.status = true;
+  this.runButton.dom.className = 'icon';
+  this.connectButton.className = 'icon';
+  this.term.className = '';
+  this.websocket.url.disabled = false;
+  this.connectButton.value = "Connect";
+  if (this.websocket.reconnect)
+    connect(document.getElementById('url').value, document.getElementById('password').value),
+    this.websocket.reconnect = false;
 }
 
 workspace.prototype.change = function () {

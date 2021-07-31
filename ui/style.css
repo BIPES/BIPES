@@ -23,7 +23,6 @@ html[dir="RTL"] .farSide {
 button.icon {
   border-radius: 2rem;
   border: 1px solid #fff;
-  font-size: large;
   background-color: #fff;
   color: #000;
   padding: .25rem;
@@ -79,7 +78,8 @@ h1 {
   height: 2rem;
   background-size: cover;
   background-image: url(icons.svg);
-  background-position: calc(-2rem*8); /* heigth * index in icons.svg */
+  background-size: auto 4rem;
+  background-position: left calc(-2rem*8) top; /* heigth * index in icons.svg */
 }
 
 .top-menu > .tabs {
@@ -229,13 +229,16 @@ pre.content {
 #content_code details[open] summary > span:before {
   transform: rotateZ(90deg);
 }
-#content_code button {
+#content_code button, #content_console #file-boxes button {
+  white-space: nowrap;
+  margin-left: .25rem;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
   color: #327ae7;
   border: 1px solid #327ae7;
   border-radius: 1.5rem;
   background-color: #fff;
+  font-size: 0.8rem;
 }
 #content_code pre {
   margin: -2rem 0 -1.25rem 0;
@@ -248,6 +251,61 @@ pre.content {
   border: none;
   font-family: monospace;
   width: 100%
+}
+#content_console {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#content_console #term{
+  margin: .75rem 0;
+  overflow: hidden;
+  border-radius: .5rem;
+  transition: box-shadow ease .125s;
+  box-shadow: 0 0.125rem .25rem rgba(0,0,0,.5);
+}
+#content_console #term.on{
+  box-shadow: -0.25rem 0rem .75rem #6aa8fb, .25rem .25rem .75rem #7b49ad;
+}
+#content_console button {
+  line-height: 1.5rem;
+  font-size: 0.8rem;
+}
+#content_console > div, #content_console > div > span {
+  display: inline-flex;
+  align-items: center;
+}
+#content_console > div > span {
+  padding-left: .5rem;
+  margin-right: .25rem;
+  border:1px solid #ccc;
+  border-radius: 2rem;
+  color: #666;
+}
+#content_console input {
+  margin-left: .25rem;
+  border: none;
+  padding: 0;
+  height: 2rem;
+  font-size: 1rem;
+}
+#content_console input:focus {
+  outline:0 !important;
+}
+#content_console #url {
+  border-right: 1px solid #ccc;
+  margin-right: .25rem;
+  max-width: 15em;
+}
+#content_console #url:disabled {
+  background-color: #fff;
+}
+#content_console #password {
+  max-width: 10em;
+}
+#content_console #file-boxes {
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 /* Toolbar */
@@ -317,48 +375,73 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before, .notify-panel > sp
   background-image: url(icons.svg);
   width: 1.5rem;
   height: 1.5rem;
+  background-size: auto 3rem;
 }
 button.icon.medium:before  {
   width: 2.5rem;
   height: 2.5rem;
+  background-size: auto 5rem;
 }
 #linkButton:before {
-  background-position: calc(-1.5rem*0); /* icon size * index on icons.svg*/
+  background-position: left calc(-1.5rem*0) top; /* icon size * index on icons.svg*/
 }
 #saveButton:before {
-  background-position: calc(-1.5rem*1);
+  background-position: left calc(-1.5rem*1) top;
 }
 #loadButton:before {
-  background-position: calc(-1.5rem*2);
+  background-position: left calc(-1.5rem*2) top;
 }
 #trashButton:before, #trashIcon:before {
-  background-position: calc(-1.5rem*3);
+  background-position: left calc(-1.5rem*3) top;
 }
 #notificationButton:before {
-  background-position: calc(-1.5rem*4);
+  background-position: left calc(-1.5rem*4) top;
 }
 #deviceSelect:before {
-  background-position: calc(-1.5rem*7);
+  background-position: left calc(-1.5rem*7) top;
 }
 #runButton:before {
-  background-position: calc(-1.5rem*5);
+  transition: background ease .125s;
+  background-position: left calc(-1.5rem*5) top;
+}
+#runButton.on:before {
+  background-position: left calc(-1.5rem*5) bottom;
 }
 #languageButton:before {
-  background-position: calc(-1.5rem*6);
+  background-position: left calc(-1.5rem*6) top;
 }
 #serialButton:before {
-  background-position: calc(-1.5rem*9);
+  background-position: left calc(-1.5rem*9) top;
 }
 #networkButton:before {
-  background-position: calc(-1.5rem*10);
+  background-position: left calc(-1.5rem*10) top;
 }
 #toolbarButton:before {
-  background-position: calc(-2.5rem*11);
+  background-position: left calc(-2.5rem*11) top;
 }
 #forumButton:before {
-  background-position: calc(-2.5rem*15);
+  background-position: left calc(-1.5rem*12) top;
 }
-
+#connectButton {
+  border-color: #aaa;
+  margin: -1px;
+}
+#connectButton:before {
+  background-position: left calc(-1.5rem*13) top;
+}
+#connectButton.on:before {
+  background-position: left calc(-1.5rem*13) bottom;
+}
+#scanButton {
+  display: inline-flex;
+}
+#scanButton:before {
+  background-position: left calc(-1.5rem*14) top;
+}
+@keyframes spin { 100% { transform:rotate(360deg); } }
+#scanButton:hover:before {
+  animation:spin 1s linear infinite;
+}
 @media (max-width: 710px) {
   .tab_collapse {
     display: none;
@@ -385,6 +468,8 @@ button.icon.medium:before  {
   line-height: inherit;
   height: 2rem;
   color: #327ae7;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 #device_selector:focus {
   /* removes black border on focus with mouse, replaces with a more coherent one */
@@ -520,7 +605,7 @@ button.icon.medium:before  {
   padding: 0 .5em;
   top:3.5rem;
   bottom:0;
-  right:-17.5em;
+  right:-21em;
   background: #eee;
   border-left: solid 1px #ccc;
 	display: flex;
@@ -536,4 +621,38 @@ button.icon.medium:before  {
 .notify-panel#show {
 	opacity: 1;
 	right: 0;
+}
+/* Progress Bar */
+.progress-bar {
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 0;
+  transition: .125s ease height;
+  top: 3.375rem;
+}
+.progress-bar#on {
+	height: .25em;
+}
+.progress-bar div {
+	content: '';
+	position: absolute;
+	height: 100%;
+	background: #3298dc;
+}
+.progress-bar div{
+	width: 0%;
+	transition: .125s linear width;
+}
+@-webkit-keyframes progress {
+	0% {
+		left: 100%;
+		transform: translateX(0);
+	}
+	100% {
+		left: 0;
+		transform: translateX(-100%);
+	}
 }

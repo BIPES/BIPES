@@ -443,7 +443,7 @@ Code.init = function() {
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
 
-  Code.bindClick('runButton', runPython);
+  //Code.bindClick('runButton', runPython);
 
 
   Code.bindClick('forumButton',

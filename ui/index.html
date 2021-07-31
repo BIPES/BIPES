@@ -221,14 +221,15 @@ function checkCookie() {
   <div id="content_console" class="content">
     <tr height="25%" id="termTR">
      <td>
-        <form>
-        Address: <input type="text" name="webrepl_url" id="url" value="ws://192.168.0.35:8266/" />
-        Password: <input type="text" name="webrepl_pass" id="password" value="bipes" />
-        <input type="submit" id="button" value="Connect" onclick="button_click(); return false;" />
+        <div>
+          <span>
+            Address: <input type="text" name="webrepl_url" id="url" value="ws://192.168.0.35:8266/" />
+            Password: <input type="text" name="webrepl_pass" id="password" value="bipes" />
+            <button class="icon" id="connectButton" title="Connect/Disconnect"></button>
+          </span>
+        <button class="icon" value="Scan boards" id="scanButton" onclick="window.open('ports.html','popup','width=600,height=600'); return false;" target="popup">Scan devices</button>
 
-	<input type="button" value="Scan boards" onclick="window.open('ports.html','popup','width=600,height=600'); return false;" target="popup"></input>
-
-        </form>
+        </div>
         
         
         <div style="display:inline-block; vertical-align:top; ">
@@ -242,18 +243,18 @@ function checkCookie() {
 -->
      </td>
      <td>
-        <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
+        <div id="file-boxes" >
 
-            <input type="button" value="Run block based program" onclick="runPython(); return false;" />
+            <button onclick="runPython(); return false;">Run block based program</button>
       <br>
       <br>
-            <input type="button" value="Stop running program" onclick="stopPython(); return false;" />
+            <button onclick="stopPython(); return false;">Stop running program</button>
       <br>
       <br>
-      <input type="button" value="Run edited Python File" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
+      <button  onclick="files_run(document.getElementById('content_file_name').value); return false;">Run edited Python File</button>
       <br>
       <br>
-      <input type="button" value="Clear terminal output" onclick="term.write('\x1bc');  " />
+      <button onclick="term.write('\x1bc');  ">Clear terminal output</button>
 
       <!--
             <div class="file-box">
@@ -445,6 +446,7 @@ Device file manager
 <!-- ################################################## -->
 
 
+<div class='progress-bar'></div>
 <div class="notify"></div>
 <div class="notify-panel"></div>
 <div class="language-panel">
@@ -482,6 +484,7 @@ var BIPES = {};
 // Setup UI using global BIPES variable (see ui.js)
 BIPES ['responsive'] = new responsive ();
 BIPES ['notify'] = new notify ();
+BIPES ['progress'] = new progress ();
 BIPES ['language'] = new language ('#languageButton','.language-panel');
 BIPES ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
 BIPES ['toolbar'] = new panel ('#toolbarButton','.toolbar');
@@ -526,29 +529,15 @@ function show_https_warning() {
     }
 }
 
-function button_click() {
-    if (connected) {
-        ws.close();
-    } else {
-        setCookie("last_ip", document.getElementById('url').value, document.getElementById('password').value, 365);
-        //setCookie("last_pass", document.getElementById('pasword').value, 365);
-        document.getElementById('url').disabled = true;
-        document.getElementById('button').value = "Disconnect";
-        connected = true;
-        connect(document.getElementById('url').value, document.getElementById('password').value);
-    }
-}
-
-function prepare_for_connect() {
-    document.getElementById('url').disabled = false;
-    document.getElementById('button').value = "Connect";
-}
 
 function update_file_status(s) {
     document.getElementById('file-status').innerHTML = s;
 }
 
+var buffer_watcher;
+var buffer_ = [];
 function connect(url, password) {
+
     ws = new WebSocket(url);
     ws.binaryType = 'arraybuffer';
     ws.onopen = function() {
@@ -569,12 +558,13 @@ function connect(url, password) {
         term.write('\x1b[31mWelcome to BIPES Project using MicroPython!\x1b[m\r\n');
 
         term.write('\x1b[31mSending password...\x1b[m\r\n');
-  ws.send(password + '\n\n');
+        ws.send(password + '\n\n');
 
+        BIPES ['workspace'].websocketConnected ();
         ws.onmessage = function(event) {
             if (event.data instanceof ArrayBuffer) {
                 var data = new Uint8Array(event.data);
-        console.log('binary state = ' + binary_state);
+                console.log('binary state = ' + binary_state);
                 switch (binary_state) {
                     case 11:
                         // first response for put
@@ -598,9 +588,9 @@ function connect(url, password) {
 
                     case 21:
                         // first response for get
-      console.log('get 1');
+                        console.log('get 1');
                         if (decode_resp(data) == 0) {
-          console.log('get 2');
+                            console.log('get 2');
                             binary_state = 22;
                             var rec = new Uint8Array(1);
                             rec[0] = 0;
@@ -654,20 +644,48 @@ function connect(url, password) {
                 }
             }
             term.write(event.data);
+            if (event.data.includes(">>> ")) {
+              BIPES ['workspace'].runButton.status = true;
+              BIPES ['workspace'].runButton.dom.className = 'icon';
+            } else if (event.data.includes("Access denied")) {
+              //WebSocket might close before receiving this message, so won't trigger.
+              BIPES ['notify'].send("Wrong board password.");
+            } else if (BIPES ['workspace'].runButton.status == true){
+              BIPES ['workspace'].runButton.status = false;
+              BIPES ['workspace'].runButton.dom.className = 'icon on';
+              BIPES ['workspace'].connectButton.className = 'icon on';
+              BIPES ['workspace'].term.className = 'on';
+            }
             
+
+
+
       //byte by byte...
       //alert(event.data);
       received_string = received_string.concat(event.data);
         };
+
+        buffer_watcher = setInterval(function() {
+          if (ws.bufferedAmount == 0){
+            if (buffer_.length > 0) {
+               BIPES ['progress'].remain(buffer_.length);
+               ws.send (buffer_[0]);
+               buffer_.shift();
+            } else {
+               BIPES ['progress'].end()
+            }
+          }
+        }, 50);
     };
 
     ws.onclose = function() {
-        connected = false;
         if (term) {
             term.write('\x1b[31mDisconnected\x1b[m\r\n');
         }
+        buffer_ = [];
+        BIPES ['workspace'].runAbort();
         term.off('data');
-        prepare_for_connect();
+        clearInterval(buffer_watcher);
     }
 }
 
@@ -827,36 +845,8 @@ function stopPython(evt) {
         ws.send('\x03');
 }
 
-function runPythonCode(pCodeIn) {
-
-	if (!connected) {
-		BIPES ['notify'].send('Must be connected to run code');
-		return;
-	}
-
-        var code = pCodeIn;
-        var textArray = code.split(/\r\n|\r|\n/);
-
-        console.log(code);
-        ws.send('\x05');
-	sleep(20);
-        textArray.forEach(async function(line, index, array) {
-           //ws.send(line+'\r');
-		for (var ai = 0; ai < line.length; ai++) {
-		  ws.send(line.charAt(ai));
-	          sleep(5);
-		}
-           ws.send('\r');
-	   //sleep(100);
-        });
-        ws.send('\x04');
-  
-}
-
-
 function runPython(evt) {
-
-  var devSel = document.getElementById("device_selector").value;
+  var devSel = BIPES ['workspace'].selector.value;
   
   if (devSel == "UNO") {
     alert("Generating code for Arduino Uno");
@@ -865,31 +855,16 @@ function runPython(evt) {
     return;
   }
 
-  if (!connected) {
-    BIPES ['notify'].send('Must be connected to run code');
-    return;
-  }
-
   var code = Blockly.Python.workspaceToCode(Code.workspace);
-  var textArray = code.split(/\r\n|\r|\n/);
 
-  Code.tabClick('console');
-  console.log(code);
-  ws.send('\x05');
-  sleep(50);
-  textArray.forEach(async function(line, index, array) {
-//	  ws.send(line+'\r');
-//	  await asleep(100);
+  if (code) {
+    var textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,10}/g);
 
-		for (var ai = 0; ai < line.length; ai++) {
-		  ws.send(line.charAt(ai));
-	          sleep(5);
-		}
-           ws.send('\r');
-
-  });
-  ws.send('\x04');
-  
+    buffer_.push('\x05');
+    buffer_ = buffer_.concat(textArray);
+    buffer_.push('\x04');
+    BIPES ['progress'].start(buffer_.length);
+  }
 }
 
 function files_run(file) {
