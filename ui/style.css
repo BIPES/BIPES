@@ -77,7 +77,7 @@ h1 {
   width: 2rem;
   height: 2rem;
   background-size: cover;
-  background-image: url(icons.svg);
+  background-image: url(media/icons.svg);
   background-size: auto 4rem;
   background-position: left calc(-2rem*8) top; /* heigth * index in icons.svg */
 }
@@ -372,7 +372,7 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before, .notify-panel > sp
   content:"";
   display:block;
   background-size: cover;
-  background-image: url(icons.svg);
+  background-image: url(media/icons.svg);
   width: 1.5rem;
   height: 1.5rem;
   background-size: auto 3rem;

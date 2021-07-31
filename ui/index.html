@@ -93,21 +93,21 @@ function checkCookie() {
   }
 </style>
   <link rel="stylesheet" href="style.css">
-  <script src="storage.js"></script>
-  <script src="blockly_compressed.js"></script>
-  <script src="blocks_compressed.js"></script>
-  <script src="javascript_compressed.js"></script>
-  <script src="python_compressed.js"></script>
+  <script src="core/storage.js"></script>
+  <script src="core/blockly_compressed.js"></script>
+  <script src="core/blocks_compressed.js"></script>
+  <script src="core/javascript_compressed.js"></script>
+  <script src="core/python_compressed.js"></script>
   <script src="code.js"></script>
-  <script src="ui.js"></script>
+  <script src="core/ui.js"></script>
 
   <!-- Custom Blocks for BIPES Project --> 
-  <script src="block_definitions.js"></script> <!-- Rafael 24/03/2020 -->
-  <script src="generator_stubs.js"></script> <!-- Rafael 24/03/2020 -->
+  <script src="core/block_definitions.js"></script> <!-- Rafael 24/03/2020 -->
+  <script src="core/generator_stubs.js"></script> <!-- Rafael 24/03/2020 -->
 
   <!-- WebREPL part -->
-  <script src="term.js"></script>
-  <script src="FileSaver.js"></script>
+  <script src="core/term.js"></script>
+  <script src="core/FileSaver.js"></script>
 
   <!-- Progressive Web Application setup -->
   <script type="module">
@@ -340,9 +340,9 @@ function checkCookie() {
   <input type="button" value="Run" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
   <input type="button" value="Stop" onclick="stopPython(); return false;" />
 
-  <link rel="stylesheet" href="codemirror/codemirror.css">
-<script src="codemirror/codemirror.js"></script>
-<script src="codemirror/mode/python/python.js"></script>
+  <link rel="stylesheet" href="core/codemirror/codemirror.css">
+<script src="core/codemirror/codemirror.js"></script>
+<script src="core/codemirror/mode/python/python.js"></script>
 <script>
   var editor = CodeMirror.fromTextArea(content_file_code, {
     lineNumbers: true,

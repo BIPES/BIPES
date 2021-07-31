@@ -178,7 +178,7 @@ function progress () {
 
 
 function workspace () {
-    this.defaultToolbox = 'toolbox.xml';
+    this.defaultToolbox = 'default.xml';
     this.selector = get('#device_selector');
     this.content = get('#content_device');
     this.device_title = getIn(this.content, '#device_title'),
@@ -263,11 +263,11 @@ workspace.prototype.change = function () {
     this.device_desc.innerHTML = selected.description;
 
     if (!!selected.toolbox) { // checks if toolbox is set
-       xhrGET(selected.toolbox, 'document', (XML_) => {
+       xhrGET(`toolbox/${selected.toolbox}`, 'document', (XML_) => {
         Code.reloadToolbox(XML_);
       });
     } else {
-        xhrGET(this.defaultToolbox, 'document', (XML_) => {
+        xhrGET(`toolbox/${this.defaultToolbox}`, 'document', (XML_) => {
           Code.reloadToolbox(XML_);
         });
         BIPES ['notify'].send(MSG['noToolbox']);
