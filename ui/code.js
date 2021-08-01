@@ -443,7 +443,7 @@ Code.init = function() {
   Code.bindClick('trashButton',
       function() {Code.discard(); Code.renderContent();});
 
-  //Code.bindClick('runButton', runPython);
+  //Code.bindClick('runButton', Tool.runPython);
 
 
   Code.bindClick('forumButton',
@@ -524,7 +524,7 @@ def bipesInstall(url, lib):
     installCmd = installCmd + "bipesInstall('http://bipes.net.br/beta2/ui/pylibs/' + lib, lib)";
 	    
 
-     runPythonCode(installCmd);
+     Tool.runPython(installCmd);
 
      var copyCmd = `
 f=open("tmplib.py", "r")
@@ -544,7 +544,7 @@ print('Install done.')
 
 `;
  
-     runPythonCode(copyCmd);
+     Tool.runPython(copyCmd);
 
 	    /*
 		console.debug(arr[i]);

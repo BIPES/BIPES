@@ -99,6 +99,8 @@ function checkCookie() {
   <script src="core/javascript_compressed.js"></script>
   <script src="core/python_compressed.js"></script>
   <script src="code.js"></script>
+  <script src="core/channel.js"></script>
+  <script src="core/utils.js"></script>
   <script src="core/ui.js"></script>
 
   <!-- Custom Blocks for BIPES Project --> 
@@ -245,13 +247,13 @@ function checkCookie() {
      <td>
         <div id="file-boxes" >
 
-            <button onclick="runPython(); return false;">Run block based program</button>
+            <button onclick="Tool.runPython(); return false;">Run block based program</button>
       <br>
       <br>
-            <button onclick="stopPython(); return false;">Stop running program</button>
+            <button onclick="Tool.stopPython(); return false;">Stop running program</button>
       <br>
       <br>
-      <button  onclick="files_run(document.getElementById('content_file_name').value); return false;">Run edited Python File</button>
+      <button  onclick="Files.run(BIPES ['workspace'].content_file_name.value); return false;">Run edited Python File</button>
       <br>
       <br>
       <button onclick="term.write('\x1bc');  ">Clear terminal output</button>
@@ -261,7 +263,7 @@ function checkCookie() {
                 <strong>Send a file</strong>
                 <input type="file" id="put-file-select" />
                 <div id="put-file-list"></div>
-                <input type="button" value="Send to device" id="put-file-button" onclick="put_file(); return false;" />
+                <input type="button" value="Send to device" id="put-file-button" onclick="Files.put_file(); return false;" />
             </div>
           <div class="file-box">
             <strong>Get a file</strong>
@@ -336,9 +338,9 @@ function checkCookie() {
   <br>
   Save as:
   <input type=text id=content_file_name>
-  <input type="button" value="Save" onclick="files_save_as(); return false;" />
-  <input type="button" value="Run" onclick="files_run(document.getElementById('content_file_name').value); return false;" />
-  <input type="button" value="Stop" onclick="stopPython(); return false;" />
+  <input type="button" value="Save" onclick="Files.files_save_as(); return false;" />
+  <input type="button" value="Run" onclick="Files.run(BIPES ['workspace'].content_file_name.value); return false;" />
+  <input type="button" value="Stop" onclick="Tool.stopPython(); return false;" />
 
   <link rel="stylesheet" href="core/codemirror/codemirror.css">
 <script src="core/codemirror/codemirror.js"></script>
@@ -396,10 +398,10 @@ Device file manager
 <br>
   <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
 
-            <input type="button" value="Run Blocks" onclick="runPython(); return false;" />
-            <input type="button" value="List Files" onclick="listFiles(); return false;" />
+            <input type="button" value="Run Blocks" onclick="Tool.runPython(); return false;" />
+            <input type="button" value="List Files" onclick="Files.listFiles(); return false;" />
       <br>
-            <input type="button" value="Blocks to editable Python (here)" onclick="blocksToPython(); return false;" />
+            <input type="button" value="Blocks to editable Python (here)" onclick="Tool.blocksToPython(); return false;" />
 
       <!--
             <input type="button" value="Test" onclick="updateTable(); return false;" />
@@ -408,7 +410,7 @@ Device file manager
                 <strong>Send a file</strong>
                 <input type="file" id="put-file-select" />
                 <div id="put-file-list"></div>
-                <input type="button" value="Send to device" id="put-file-button" onclick="put_file(); return false;" />
+                <input type="button" value="Send to device" id="put-file-button" onclick="Files.put_file(); return false;" />
             </div>
         <div class="file-box" id="file-status"><span style="color:#707070">(file operation status)</span></div>
     </div>
@@ -455,18 +457,8 @@ Device file manager
 </body>
 
 <script>
-;
 
 var term;
-var ws;
-var connected = false;
-var binary_state = 0;
-var put_file_name = null;
-var put_file_data = null;
-var get_file_name = null;
-var get_file_data = null;
-var received_string = "";
-var viewOnly = false;
 
 function calculate_size(win) {
 //    var cols = Math.max(80, Math.min(150, (win.innerWidth - 280) / 7)) | 0;
@@ -489,549 +481,44 @@ BIPES ['language'] = new language ('#languageButton','.language-panel');
 BIPES ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
 BIPES ['toolbar'] = new panel ('#toolbarButton','.toolbar');
 BIPES ['workspace'] = new workspace ();
-
-(function() {
-    window.onload = function() {
-      checkCookie()
-      dom  = document.getElementById("termTR")
-      var size = calculate_size(dom /* self */);
-      term = new Terminal({
-        cols: size[0],
-        rows: size[1],
-        useStyle: true,
-        screenKeys: true,
-        cursorBlink: false
-      });
-      term.open(document.getElementById("term"));
-      show_https_warning();
-
-      loadPage(); //Load modal splash screen
-
-    };
-    window.addEventListener('resize', function() {
-        dom  = document.getElementById("termTR")
-        var size = calculate_size(dom);
-      //  term.resize(size[0], size[1]);
-    });
-}).call(this);
-
-function show_https_warning() {
-    if (window.location.protocol == 'https:') {
-        var warningDiv = document.createElement('div');
-        warningDiv.style.cssText = 'background:#f99;padding:5px;margin-bottom:10px;line-height:1.5em;text-align:center';
-        warningDiv.innerHTML = [
-            'At this time, the WebREPL client cannot be accessed over HTTPS connections.',
-            'Use a HTTP connection, eg. <a href="http://micropython.org/webrepl/">http://micropython.org/webrepl/</a>.',
-            'Alternatively, download the files from <a href="https://github.com/micropython/webrepl">GitHub</a> and run them locally.'
-        ].join('<br>');
-        document.body.insertBefore(warningDiv, document.body.childNodes[0]);
-        term.resize(term.cols, term.rows - 7);
-    }
-}
-
-
-function update_file_status(s) {
-    document.getElementById('file-status').innerHTML = s;
-}
-
-var buffer_watcher;
-var buffer_ = [];
-function connect(url, password) {
-
-    ws = new WebSocket(url);
-    ws.binaryType = 'arraybuffer';
-    ws.onopen = function() {
-        term.removeAllListeners('data');
-        term.on('data', function(data) {
-            // Pasted data from clipboard will likely contain
-            // LF as EOL chars.
-            data = data.replace(/\n/g, "\r");
-            ws.send(data);
-        });
-
-        term.on('title', function(title) {
-            document.title = title;
-        });
-
-        term.focus();
-        term.element.focus();
-        term.write('\x1b[31mWelcome to BIPES Project using MicroPython!\x1b[m\r\n');
-
-        term.write('\x1b[31mSending password...\x1b[m\r\n');
-        ws.send(password + '\n\n');
-
-        BIPES ['workspace'].websocketConnected ();
-        ws.onmessage = function(event) {
-            if (event.data instanceof ArrayBuffer) {
-                var data = new Uint8Array(event.data);
-                console.log('binary state = ' + binary_state);
-                switch (binary_state) {
-                    case 11:
-                        // first response for put
-                        if (decode_resp(data) == 0) {
-                            // send file data in chunks
-                            for (var offset = 0; offset < put_file_data.length; offset += 1024) {
-                                ws.send(put_file_data.slice(offset, offset + 1024));
-                            }
-                            binary_state = 12;
-                        }
-                        break;
-                    case 12:
-                        // final response for put
-                        if (decode_resp(data) == 0) {
-                            update_file_status('Sent ' + put_file_name + ', ' + put_file_data.length + ' bytes');
-                        } else {
-                            update_file_status('Failed sending ' + put_file_name);
-                        }
-                        binary_state = 0;
-                        break;
-
-                    case 21:
-                        // first response for get
-                        console.log('get 1');
-                        if (decode_resp(data) == 0) {
-                            console.log('get 2');
-                            binary_state = 22;
-                            var rec = new Uint8Array(1);
-                            rec[0] = 0;
-                            ws.send(rec);
-                        }
-                        break;
-                    case 22: {
-                        // file data
-                        var sz = data[0] | (data[1] << 8);
-                        if (data.length == 2 + sz) {
-                            // we assume that the data comes in single chunks
-                            if (sz == 0) {
-                                // end of file
-                                binary_state = 23;
-                            } else {
-                                // accumulate incoming data to get_file_data
-                                var new_buf = new Uint8Array(get_file_data.length + sz);
-                                new_buf.set(get_file_data);
-                                new_buf.set(data.slice(2), get_file_data.length);
-                                get_file_data = new_buf;
-                                update_file_status('Getting ' + get_file_name + ', ' + get_file_data.length + ' bytes');
-
-                                var rec = new Uint8Array(1);
-                                rec[0] = 0;
-                                ws.send(rec);
-                            }
-                        } else {
-                            binary_state = 0;
-                        }
-                        break;
-                    }
-                    case 23:
-                        // final response
-                        if (decode_resp(data) == 0) {
-                            update_file_status('Got ' + get_file_name + ', ' + get_file_data.length + ' bytes');
-                            if (!viewOnly)
-        saveAs(new Blob([get_file_data], {type: "application/octet-stream"}), get_file_name);
-          else
-        //updateSourceCode([get_file_data]);
-        updateSourceCode(new Blob([get_file_data], {type: "text/plain"}), get_file_name);
-                        } else {
-                            update_file_status('Failed getting ' + get_file_name);
-                        }
-                        binary_state = 0;
-                        break;
-                    case 31:
-                        // first (and last) response for GET_VER
-                        console.log('GET_VER', data);
-                        binary_state = 0;
-                        break;
-                }
-            }
-            term.write(event.data);
-            if (event.data.includes(">>> ")) {
-              BIPES ['workspace'].runButton.status = true;
-              BIPES ['workspace'].runButton.dom.className = 'icon';
-            } else if (event.data.includes("Access denied")) {
-              //WebSocket might close before receiving this message, so won't trigger.
-              BIPES ['notify'].send("Wrong board password.");
-            } else if (BIPES ['workspace'].runButton.status == true){
-              BIPES ['workspace'].runButton.status = false;
-              BIPES ['workspace'].runButton.dom.className = 'icon on';
-              BIPES ['workspace'].connectButton.className = 'icon on';
-              BIPES ['workspace'].term.className = 'on';
-            }
-            
-
-
-
-      //byte by byte...
-      //alert(event.data);
-      received_string = received_string.concat(event.data);
-        };
-
-        buffer_watcher = setInterval(function() {
-          if (ws.bufferedAmount == 0){
-            if (buffer_.length > 0) {
-               BIPES ['progress'].remain(buffer_.length);
-               ws.send (buffer_[0]);
-               buffer_.shift();
-            } else {
-               BIPES ['progress'].end()
-            }
-          }
-        }, 50);
-    };
-
-    ws.onclose = function() {
-        if (term) {
-            term.write('\x1b[31mDisconnected\x1b[m\r\n');
-        }
-        buffer_ = [];
-        BIPES ['workspace'].runAbort();
-        term.off('data');
-        clearInterval(buffer_watcher);
-    }
-}
-
-function decode_resp(data) {
-    if (data[0] == 'W'.charCodeAt(0) && data[1] == 'B'.charCodeAt(0)) {
-        var code = data[2] | (data[3] << 8);
-        return code;
-    } else {
-        return -1;
-    }
-}
-
-async function put_file() {
-    var dest_fname = put_file_name;
-    var dest_fsize = put_file_data.length;
-
-    //console.log(put_file_name);
-    //console.log(put_file_data);
-
-    // WEBREPL_FILE = "<2sBBQLH64s"
-    var rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
-    rec[0] = 'W'.charCodeAt(0);
-    rec[1] = 'A'.charCodeAt(0);
-    rec[2] = 1; // put
-    rec[3] = 0;
-    rec[4] = 0; rec[5] = 0; rec[6] = 0; rec[7] = 0; rec[8] = 0; rec[9] = 0; rec[10] = 0; rec[11] = 0;
-    rec[12] = dest_fsize & 0xff; rec[13] = (dest_fsize >> 8) & 0xff; rec[14] = (dest_fsize >> 16) & 0xff; rec[15] = (dest_fsize >> 24) & 0xff;
-    rec[16] = dest_fname.length & 0xff; rec[17] = (dest_fname.length >> 8) & 0xff;
-    for (var i = 0; i < 64; ++i) {
-        if (i < dest_fname.length) {
-            rec[18 + i] = dest_fname.charCodeAt(i);
-        } else {
-            rec[18 + i] = 0;
-        }
-    }
-
-    // initiate put
-    binary_state = 11;
-    update_file_status('Sending ' + put_file_name + '...');
-    ws.send(rec);
-}
-
-
-function get_file2(src_fname) {
-
-    // WEBREPL_FILE = "<2sBBQLH64s"
-    var rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
-    rec[0] = 'W'.charCodeAt(0);
-    rec[1] = 'A'.charCodeAt(0);
-    rec[2] = 2; // get
-    rec[3] = 0;
-    rec[4] = 0; rec[5] = 0; rec[6] = 0; rec[7] = 0; rec[8] = 0; rec[9] = 0; rec[10] = 0; rec[11] = 0;
-    rec[12] = 0; rec[13] = 0; rec[14] = 0; rec[15] = 0;
-    rec[16] = src_fname.length & 0xff; rec[17] = (src_fname.length >> 8) & 0xff;
-    for (var i = 0; i < 64; ++i) {
-        if (i < src_fname.length) {
-            rec[18 + i] = src_fname.charCodeAt(i);
-        } else {
-            rec[18 + i] = 0;
-        }
-    }
-
-    // initiate get
-    binary_state = 21;
-    get_file_name = src_fname;
-    get_file_data = new Uint8Array(0);
-    update_file_status('Getting ' + get_file_name + '...');
-    ws.send(rec);
-}
-
-
-
-
-function get_file() {
-    var src_fname = document.getElementById('get_filename').value;
-
-    // WEBREPL_FILE = "<2sBBQLH64s"
-    var rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
-    rec[0] = 'W'.charCodeAt(0);
-    rec[1] = 'A'.charCodeAt(0);
-    rec[2] = 2; // get
-    rec[3] = 0;
-    rec[4] = 0; rec[5] = 0; rec[6] = 0; rec[7] = 0; rec[8] = 0; rec[9] = 0; rec[10] = 0; rec[11] = 0;
-    rec[12] = 0; rec[13] = 0; rec[14] = 0; rec[15] = 0;
-    rec[16] = src_fname.length & 0xff; rec[17] = (src_fname.length >> 8) & 0xff;
-    for (var i = 0; i < 64; ++i) {
-        if (i < src_fname.length) {
-            rec[18 + i] = src_fname.charCodeAt(i);
-        } else {
-            rec[18 + i] = 0;
-        }
-    }
-
-    // initiate get
-    binary_state = 21;
-    get_file_name = src_fname;
-    get_file_data = new Uint8Array(0);
-    update_file_status('Getting ' + get_file_name + '...');
-    ws.send(rec);
-}
-
-function get_ver() {
-    // WEBREPL_REQ_S = "<2sBBQLH64s"
-    var rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
-    rec[0] = 'W'.charCodeAt(0);
-    rec[1] = 'A'.charCodeAt(0);
-    rec[2] = 3; // GET_VER
-    // rest of "rec" is zero
-
-    // initiate GET_VER
-    binary_state = 31;
-    ws.send(rec);
-}
-
-function handle_put_file_select(evt) {
-    // The event holds a FileList object which is a list of File objects,
-    // but we only support single file selection at the moment.
-    var files = evt.target.files;
-
-    // Get the file info and load its data.
-    var f = files[0];
-    put_file_name = f.name;
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        put_file_data = new Uint8Array(e.target.result);
-        document.getElementById('put-file-list').innerHTML = '' + escape(put_file_name) + ' - ' + put_file_data.length + ' bytes'; // TODO: espace() is depecated, use encodeURIComponent() instead.
-        document.getElementById('put-file-button').disabled = false;
-    };
-    reader.readAsArrayBuffer(f);
-}
-
-document.getElementById('put-file-select').addEventListener('click', function(){
-    this.value = null;
-}, false);
-
-document.getElementById('put-file-select').addEventListener('change', handle_put_file_select, false);
-document.getElementById('put-file-button').disabled = true;
-
-    //New async sleep function, callend with async await(), which allows UI updates
-    const asleep = (milliseconds) => {
-	return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
-
-    //Original sleep function, which blocks UI and all the tab while sleeps
-    function sleep(milliseconds) {
-      const date = Date.now();
-      let currentDate = null;
-      do {
-        currentDate = Date.now();
-      }
-      while (currentDate - date < milliseconds);
-    }
-
-
-function stopPython(evt) {
-  //Send Ctrl+C to stop program
-        ws.send('\x03');
-}
-
-function runPython(evt) {
-  var devSel = BIPES ['workspace'].selector.value;
-  
-  if (devSel == "UNO") {
-    alert("Generating code for Arduino Uno");
-    var code = Blockly.Arduino.workspaceToCode(Code.workspace);
-
-    return;
-  }
-
-  var code = Blockly.Python.workspaceToCode(Code.workspace);
-
-  if (code) {
-    var textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,10}/g);
-
-    buffer_.push('\x05');
-    buffer_ = buffer_.concat(textArray);
-    buffer_.push('\x04');
-    BIPES ['progress'].start(buffer_.length);
-  }
-}
-
-function files_run(file) {
-
-        update_file_status('Executing  ' + file);
-
-  //Filename without .py
-  fileS = file.split('.')[0];
-
-  //import only works once
-  //In case module already loaded, unloaded it
-  //to allow it to work all the time
-  //ws.send('import sys \r');
-  //ws.send('sys.modules.pop(\'' + fileS + '\')\r');
-  //ws.send('import ' + fileS + '\r');
-
-  //Another way of executing a script
-  ws.send('exec(open(\'./' + file + '\').read(),globals())' + '\r');
-
-
-
-}             
-
-
-
-function files_delete(file) {
-
-  msg = "Are you sure you want to delete " + file + "?";
-
-  if (confirm(msg)) {
-    txt = "Will delete file " + file;
-    ws.send('os.remove(\'' + file + '\')\r');
-    setTimeout(updateTable, 350);
-    update_file_status('Deleted  ' + file);
-  } else {
-    txt = "Delete aborted";
-    update_file_status('Delete aborted for ' + file);
-  }
-
-}             
-
-
-function blocksToPython() {
-        var code = Blockly.Python.workspaceToCode(Code.workspace);
-  editor.getDoc().setValue(code);
-}
-
-function files_save_as() {
-  var file = document.getElementById('content_file_name');
-
-  //For standard textarea
-  //var Textarea = document.getElementById('content_file_code');
-  //var codeStr = Textarea.value;
-
-  //For codemirror
-  var codeStr = editor.getDoc().getValue("\n")
-
-  var bufCode = new Uint8Array(codeStr.length);
-  for (var i=0, strLen=codeStr.length; i < strLen; i++) {
-    bufCode[i] = codeStr.charCodeAt(i);
-  }
-
-        put_file_name = file.value;
-        put_file_data = bufCode;
-        //put_file_data = new Uint8Array(e.target.result);
-        //put_file_data = Textarea.value;
-
-  put_file();
-}
-
-function updateSourceCode(code, file_name) {
-
-  //const blb    = new Blob(["Lorem ipsum sit"], {type: "text/plain"});
-  blb = code;
-  const reader = new FileReader();
-  text="";
-
-  // This fires after the blob has been read/loaded.
-  reader.addEventListener('loadend', (e) => {
-    text = e.srcElement.result;
-    console.log(text);
-
-    //Works for standard <inpyt type=textarea...
-    var Textarea = document.getElementById('content_file_code');
-    //Works for standard textarea. Commented for codemirror usage
-    //Textarea.value = text;
-
-    //For codemirror
-    //var editor = CodeMirror.fromTextArea(Textarea);
-    editor.getDoc().setValue(text);
-
-    var TextareaF = document.getElementById('content_file_name');
-    TextareaF.value = file_name;
-
+BIPES ['workspace'].channelCheck ();
+
+// global WebSocket, WebSerial and Bluetooth variable
+var Channel = {};
+Channel ['websocket'] = new websocket ();
+
+var Files = new files ();
+
+
+window.onload = function() {
+  checkCookie()
+  dom  = document.getElementById("termTR")
+  var size = calculate_size(dom /* self */);
+  term = new Terminal({
+    cols: size[0],
+    rows: size[1],
+    useStyle: true,
+    screenKeys: true,
+    cursorBlink: false
   });
+  term.open(document.getElementById("term"));
+  //show_https_warning();
 
-  // Start reading the blob as text.
-  reader.readAsText(blb);
+  loadPage(); //Load modal splash screen
+
+};
+
+window.addEventListener('resize', function() {
+    dom  = document.getElementById("termTR")
+    var size = calculate_size(dom);
+  //  term.resize(size[0], size[1]);
+});
 
 
-}
 
-function files_view(file) {
-  str = "Loading " + file;
-  //alert(str);
-  viewOnly=true;
-  get_file2(file);
-  update_file_status('Downloading ' + file);
-  str = "Loaded " + file;
-}   
 
-function files_download(file) {
-  str = "Download " + file;
-  viewOnly=false;
-  //alert(str);
-  get_file2(file);
-  update_file_status('Downloading ' + file);
-}             
 
-function updateTable(evt) {
 
-  filesA = received_string.split('[')[1];
-  filesB = filesA.split(']')[0];
-  filesC = filesB.split('"'[0]);
-  filesD = eval("[" + filesC + "]");
-
-  fileTable = "Device File List: <br> <br> <table border=2> ";
-  fileTable += "<tr><td><center>File</center></td><td><center>Actions</center></td><td>Run at boot?</td></tr>";
-
-  //Build table with files on device and actions
-  for(var i=0, len=filesD.length; i < len; i++){
-
-    //File name
-    file = filesD[i];
-    fileTable += "<tr><td>" + file + "</td><td>";
-
-    //Action buttons
-    fileTable += '<input type=button value=Run onclick="files_run(\'' + file + '\'); return false;" />';
-    fileTable += '<input type=button value=Open onclick="files_view(\'' + file + '\'); return false;" />';
-    fileTable += '<input type=button value=Download onclick="files_download(\'' + file + '\'); return false;" />';
-    fileTable += '<input type=button value=Delete onclick="files_delete(\'' + file + '\'); return false;" />';
-
-    if ((file == "boot.py") || (file == "main.py"))
-	    fileTable += "</td><td><center>Yes</center></td></tr>";
-    else
-	    fileTable += "</td><td><center>No</center></td></tr>";
-  }
-
-  fileTable += "</table>";
-  dom  = document.getElementById("fileList");
-  dom.innerHTML = fileTable;
-}
-
-async function listFiles(evt) {
-  if (!connected) {
-    alert('Must be connected to list files');
-    return;
-  }
-  //alert('See file list in console tab'); 
-  received_string="";
-  ws.send('import os\r');
-  await asleep(25);
-  ws.send('os.listdir()\r');
-
-  setTimeout(updateTable, 550);
-  
-}
 
 </script>
 

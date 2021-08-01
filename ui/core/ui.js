@@ -1,3 +1,4 @@
+'use strict';
 //Code that exclusively handles the ui.
 function get (e) {return document.querySelector (e); }
 function getIn (a, b) {return a.querySelector (b); }
@@ -5,16 +6,7 @@ function getAll (e, f) {return get (e).querySelectorAll (f); }
 function style (e) {return get (e).style; }
 function fx (e, vfx) {e.style.Transition = vfx; }
 
-$em = 16; // size of 1em
-
-
-function unix2date (timestamp) {
-  let date = new Date(timestamp);
-  let hours = date.getHours();
-  let minutes = "0" + date.getMinutes();
-  let seconds = "0" + date.getSeconds();
-  return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-}
+var $em = 16; // size of 1em
 
 function panel (button_, panel_) {
   this.panel_ = panel_;
@@ -61,7 +53,7 @@ notify.prototype.send = function (message) {
   closeButton_.classList.add("icon");
   closeButton_.id="trashIcon";
   this_message.div = document.createElement ('span');
-  let time_ =  unix2date(this_message.timestamp);
+  let time_ =  Tool.unix2date(this_message.timestamp);
   let message_ = `[${time_}] ${message}`;
   this_message.div.title = message_;
   this_message.div.appendChild(document.createTextNode(message_));
@@ -199,7 +191,6 @@ function workspace () {
         dom:get('#runButton'),
         status:true
       };
-    this.term = get('#term');
     this.connectButton = get('#connectButton');
     this.saveButton = get('#saveButton');
     this.loadButton = get('#loadButton');
@@ -207,42 +198,51 @@ function workspace () {
     this.runButton.dom.onclick = () => {this.run ()};
     this.saveButton.onclick = () => {this.saveXML ()};
     this.loadButton.onclick = () => {this.loadXML ()};
+
+
+    this.term = get('#term');
+    this.file_status = get('#file-status');
+    this.put_file_list = get('#put-file-list');
+    this.put_file_button = get('#put-file-button');
+    this.put_file_select = get('#put-file-select');
+    this.file = get('#content_file_name');
+    this.content_file_name = get('#content_file_name');
+    this.put_file_select.onchange = () => {Files.handle_put_file_select ()};
+    this.put_file_button.disabled = true;
 }
 
 workspace.prototype.run = function () {
   if (this.runButton.status) {
-    if(this.websocket.connected) {
-        runPython();
+    if(Channel ['websocket'].connected) {
+        Tool.runPython();
     } else {
       this.buttonConnect ();
-      setTimeout(() => { if(this.websocket.connected) runPython();}, 2000);
+      setTimeout(() => { if(Channel ['websocket'].connected) Tool.runPython();}, 2000);
     }
   } else {
     this.websocket.reconnect = true;
-    buffer_.unshift('\r\x04');
+    Channel ['websocket'].buffer_.unshift('\r\x04');
   }
 }
 
 workspace.prototype.buttonConnect = function () {
-  connect(this.websocket.url.value, this.websocket.pass.value);
+  Channel ['websocket'].connect(this.websocket.url.value, this.websocket.pass.value);
 }
 
 workspace.prototype.websocketConnected = function () {
-  this.websocket.connected = true;
   this.websocket.url.disabled = true;
   this.connectButton.value = "Disconnect";
 }
 
 workspace.prototype.connectClick = function () {
-  if (this.websocket.connected) {
-    ws.close();
+  if (Channel ['websocket'].connected) {
+    Channel ['websocket'].ws.close();
   } else {
     this.buttonConnect ();
   }
 }
 
 workspace.prototype.runAbort = function () {
-  this.websocket.connected = false;
   this.runButton.status = true;
   this.runButton.dom.className = 'icon';
   this.connectButton.className = 'icon';
@@ -250,7 +250,7 @@ workspace.prototype.runAbort = function () {
   this.websocket.url.disabled = false;
   this.connectButton.value = "Connect";
   if (this.websocket.reconnect)
-    connect(document.getElementById('url').value, document.getElementById('password').value),
+    Channel ['websocket'].connect(this.websocket.url.value, this.websocket.pass.value);
     this.websocket.reconnect = false;
 }
 
@@ -375,3 +375,18 @@ workspace.prototype.promptFile = function (contentType, multiple) {
   });
 }
 
+workspace.prototype.channelCheck = function () {
+// function show_https_warning() {
+//     if (window.location.protocol == 'https:') {
+//         var warningDiv = document.createElement('div');
+//         warningDiv.style.cssText = 'background:#f99;padding:5px;margin-bottom:10px;line-height:1.5em;text-align:center';
+//         warningDiv.innerHTML = [
+//             'At this time, the WebREPL client cannot be accessed over HTTPS connections.',
+//             'Use a HTTP connection, eg. <a href="http://micropython.org/webrepl/">http://micropython.org/webrepl/</a>.',
+//             'Alternatively, download the files from <a href="https://github.com/micropython/webrepl">GitHub</a> and run them locally.'
+//         ].join('<br>');
+//         document.body.insertBefore(warningDiv, document.body.childNodes[0]);
+//         term.resize(term.cols, term.rows - 7);
+//     }
+// }
+}

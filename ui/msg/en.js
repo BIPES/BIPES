@@ -38,6 +38,5 @@ var MSG = {
   forumTooltip: "Help forum.",
   blocksLoadedFromFile: "Blocks loaded from file '%1'.",
   deviceUnavailable: "Device '%1' unavailable.",
-  programStarted: "BIPES Program started",
-  programEnded: "BIPES Program ended"
+  notConnected: "No connection to send data."
 };

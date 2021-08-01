@@ -37,7 +37,5 @@ var MSG = {
   editAsFileTooltip: "Editar código python e salvar para a memória do aparelho.",
   forumTooltip: "Fórum de ajuda",
   blocksLoadedFromFile: "Blocos carregados do arquivo '%1'.",
-  deviceUnavailable: "Aparelho '%1' indisponível.",
-  programStarted: "Programa BIPES começou",
-  programEnded: "Programa BIPES terminou"
+  deviceUnavailable: "Aparelho '%1' indisponível."
 };
