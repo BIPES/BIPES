@@ -10419,10 +10419,17 @@ Blockly.Blocks['HSL_to_RGB'] = {
 Blockly.Blocks['bipes_plot'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Plot (from serial port) on IOT tab graph");
+        .appendField("Show data on IOT tab (freeboard)");
+    this.appendDummyInput()
+        .appendField("(ideal for USB port or bluetooth)");
+
+    this.appendValueInput("id")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ID");
 
     this.appendValueInput("values")
-        .setCheck("String")
+        .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("data");
 
