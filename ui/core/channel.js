@@ -2,8 +2,8 @@
 
 class mux {
   constructor () {
-    this.available = ['webserial','websocket','webbluetooth']
-    this.ifunavailable = {webbluetooth: ['https://127.0.0.1/beta2/ui', 'the HTTPS version']}
+    this.available = ['webserial','websocket','']
+    this.ifunavailable = {webbluetooth: ['https://bipes.net.br/beta2/ui', 'beta2serial']}
     this.currentChannel = 'webserial';
   }
 
@@ -82,6 +82,7 @@ class mux {
     */} else
       BIPES ['notify'].send(MSG['notConnected']);
   }
+
   static bufferUnshift (code) {
     if (Channel ['websocket'].connected) {
       Channel ['websocket'].buffer_.unshift(code);
@@ -89,6 +90,18 @@ class mux {
       Channel ['webserial'].buffer_.unshift(code);
     /*} else if (Channel ['webbluetooth'].connected) {
       Channel ['webbluetooth'].buffer_.unshift(code);
+    */} else
+      BIPES ['notify'].send(MSG['notConnected']);
+  }
+
+  static clearBuffer () {
+    if (Channel ['websocket'].connected) {
+      Channel ['websocket'].buffer_ = [];
+    }  else if (Channel ['webserial'].connected) {
+      Channel ['webserial'].buffer_ = [];
+      Channel ['webserial'].completeBufferCallback = [];
+    /*} else if (Channel ['webbluetooth'].connected) {
+      Channel ['webbluetooth'].buffer_ = [];
     */} else
       BIPES ['notify'].send(MSG['notConnected']);
   }
@@ -306,10 +319,10 @@ class webserial {
                   if (Channel ['webserial'].completeBufferCallback.length > 0) {
                     try {
                       Channel ['webserial'].completeBufferCallback [0] ();
-                      Channel ['webserial'].completeBufferCallback.shift ();
                     } catch (e) {
                       BIPES ['notify'].log(e);
                     }
+                    Channel ['webserial'].completeBufferCallback.shift ();
                   }
                 } else if (BIPES ['workspace'].runButton.status == true) {
                   BIPES ['workspace'].receiving ();
