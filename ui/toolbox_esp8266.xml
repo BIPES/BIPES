@@ -266,7 +266,8 @@
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
 
     <sep></sep>
-     <category name="Info">
+
+   <category name="BIPES">
     <block type="project_metadata">
       <field name="NAME">Project INFO</field>
       <value name="project_author">
@@ -286,20 +287,10 @@
       </value>
     </block>
 
-     </category>
-
-     <category name="BIPES">
     <block type="bipes_plot">
-      <field name="NAME">Plot</field>
-      <value name="values">
-        <shadow type="text">
-          <field name="TEXT"></field>
-        </shadow>
-      </value>
     </block>
+   </category>
 
-
-     </category>
     <sep></sep>
     <!--
     <category name="Python" colour="%{BKY_LOGIC_HUE}">
@@ -402,6 +393,9 @@
     
       <category name="In/Out Pins">
       <label text="In/Out Pins"></label>
+
+    <block type="pinout"></block>
+
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
@@ -422,46 +416,51 @@
         </shadow>
       </value>
     </block>
-    <block type="pinout"></block>
 
     <block type="adc">
- <value name="pin">
+     <value name="pin">
         <shadow type="math_number">
           <field name="NUM">0</field>
         </shadow>
       </value>
-    </block>
+     </block>
 
 
     <block type="pwm">
-
-  <value name="pin">
+      <value name="pin">
         <shadow type="pinout">
           <field name="PIN"></field>
         </shadow>
       </value>
-
-
- <value name="frequency">
+      <value name="frequency">
         <shadow type="math_number">
           <field name="NUM">1000</field>
         </shadow>
       </value>
-
- <value name="duty">
+      <value name="duty">
         <shadow type="math_number">
           <field name="NUM">50</field>
         </shadow>
       </value>
+    </block>
 
-    
-    
-    
+    <block type="gpio_interrupt">
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="gpio_interrupt_off">
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
     </block>
   </category>
-
-
-  </category>
+</category>
 
 
 <category name="Displays">

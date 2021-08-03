@@ -198,6 +198,40 @@ Blockly.Python['gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['gpio_interrupt'] = function(block) {
+  var dropdown_trigger = block.getFieldValue('trigger');
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+  var statements_code = Blockly.Python.statementToCode(block, 'code');
+  var value_pin = value_pin.replace('(','').replace(')','');
+
+  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+
+  if (dropdown_trigger == 'BOTH')
+	dropdown_trigger = 'IRQ_RISING | Pin.IRQ_FALLING';
+
+  var code='';
+  if (value_pin) {
+	code = '\n#BIPES Interrupt handler\ndef callback' + value_pin + '(pPin):\n' + statements_code + '#End of BIPES Interrupt handler\n\n';
+	code += 'p' + value_pin + ' = Pin(' + value_pin + ', Pin.IN)\n';
+	code += 'p' + value_pin + '.irq(trigger=Pin.' + dropdown_trigger + ', handler=callback' + value_pin + ')\n';
+  }
+
+  return code;
+};
+
+Blockly.Python['gpio_interrupt_off'] = function(block) {
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+
+  var value_pin = value_pin.replace('(','').replace(')','');
+  var code='';
+
+  if (value_pin)
+	  code = 'p' + value_pin + '.irq(trigger=0, handler=callback' + value_pin + ')\n';
+
+  return code;
+};
+
+
 /// Pinout
 Blockly.Python['pinout'] = function(block) {
   var pin = block.getFieldValue('PIN');
