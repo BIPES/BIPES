@@ -11,6 +11,10 @@ body {
   font-family: BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+label {
+  user-select: none;
+}
+
 .farSide {
   text-align: right;
 }
@@ -22,8 +26,8 @@ html[dir="RTL"] .farSide {
 /* Buttons */
 button.icon {
   border-radius: 2rem;
-  border: 1px solid #fff;
-  background-color: #fff;
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #000;
   padding: .25rem;
   transition: border-color ease .125s;
@@ -89,15 +93,15 @@ h1 {
   overflow-x: auto;
   padding: .5rem 0;
 }
-.top-menu #serial_network {
+.top-menu #channel_connect {
   display: flex;
   border-radius: 2rem;
   border: 1px solid #888;
   margin-right: .25rem;
   box-sizing: border-box;
-  background-color: #f5f5f5;
+  overflow: hidden;
 }
-.top-menu #serial_network > a {
+.top-menu #channel_connect > a {
   -webkit-tap-highlight-color: transparent;
   display: inline-block;
   border-radius: 2rem;
@@ -107,14 +111,159 @@ h1 {
   margin: -1px;
   opacity: 0.6;
 }
-.top-menu #serial_network > a.selected {
+.top-menu #channel_connect > a.selected {
   opacity: 1;
   border: 1px solid #777;
   transition: box-shadow ease .125s;
   background-color: #fff;
 }
-.top-menu #serial_network:hover  > a.selected{
+.top-menu #channel_connect:hover  > a.selected{
   box-shadow: -1px 0 3px  #aaa;
+}
+
+/* Channel Connect Panel */
+.channel-panel {
+  box-sizing: border-box;
+  z-index: 999;
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 20.5rem;
+  transition: .125s ease top, .125s ease opacity, .125s ease transform;
+  background: #fff;
+  border-radius: 1.5em;
+  padding: 0.25rem;
+  top:  -15rem;
+  right: 22rem;
+  margin-right: 0;
+  border: 1px solid #aaa;
+  box-shadow: 0em 0em 0.5em rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: scale(0.5);
+}
+.channel-panel#show{
+  top: .25rem;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.channel-panel > div > span {
+  width: 100%;
+  border-radius: 2rem;
+  color: #666;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 0.5rem 0.5rem 0.125rem 0.5rem;
+}
+.channel-panel input {
+  border: none;
+  padding: 0;
+  height: 2rem;
+  font-size: 1rem;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 100%;
+}
+.channel-panel input:focus {
+  outline:0 !important;
+}
+.channel-panel #url, .channel-panel #password {
+  border-bottom: 1px solid #ccc;
+}
+.channel-panel #url {
+  margin-bottom: 1rem;
+}
+.channel-panel #url:disabled {
+  background-color: #fff;
+}
+
+#bluetoothButton, #serialButton, #networkButton, #scanButton{
+  display: inline-flex;
+  align-items: center;
+}
+.channel-panel .icon:before{
+  margin-right: .25rem;
+}
+.channel-panel > div {
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 1.25rem;
+  text-align: end;
+  width: 100%;
+}
+
+.checkswitch {
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+input.checkswitch[type="checkbox"] {
+    display: none;
+}
+.checkswitch input:checked ~ span {
+    background: #3298dc;
+}
+.checkswitch span {
+    width: 2.5em;
+    height: 1.5em;
+    background: grey;
+    display: inline-block;
+    border-radius: 1.5em;
+    position: relative;
+    line-height: 1.5rem;
+}
+.checkswitch span::after {
+    content: "";
+    position: absolute;
+    top: 0.074em;
+    left: 0.075em;
+    width: 1.35em;
+    height: 1.35em;
+    background: rgb(255, 255, 255);
+    border-radius: 1.35em;
+    transition: left 0.25s ease-out 0s, transform 0.25s ease-out 0s;
+    box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px;
+}
+.checkswitch input:checked ~ span::after {
+    left: -0.27em;
+    transform: translateX(100%);
+}
+
+#scanButton {
+  line-height:1.25rem;
+  font-size: 0.8rem;
+  margin: 0.125rem;
+  padding-right: 0.5rem;
+}
+#bluetoothButton, #serialButton, #networkButton {
+  font-weight: bold;
+  line-height:1.75rem;
+  font-size: 1rem;
+  width: 100%;
+}
+.channel-panel > div:first-of-type {
+  margin: 0.25rem 0;
+}
+#connectButton {
+  border: none;
+  background: none;
+}
+#channelButton {
+  border-color: #aaa;
+  margin: -1px;
+}
+#networkButton, #serialButton {
+  margin-top: -1px;
+}
+
+@keyframes spin { 100% { transform:rotate(360deg); } }
+#scanButton:hover:before {
+  animation:spin 1s linear infinite;
 }
 
 /* Tabs */
@@ -275,34 +424,6 @@ pre.content {
   display: inline-flex;
   align-items: center;
 }
-#content_console > div > span {
-  padding-left: .5rem;
-  margin-right: .25rem;
-  border:1px solid #ccc;
-  border-radius: 2rem;
-  color: #666;
-}
-#content_console input {
-  margin-left: .25rem;
-  border: none;
-  padding: 0;
-  height: 2rem;
-  font-size: 1rem;
-}
-#content_console input:focus {
-  outline:0 !important;
-}
-#content_console #url {
-  border-right: 1px solid #ccc;
-  margin-right: .25rem;
-  max-width: 15em;
-}
-#content_console #url:disabled {
-  background-color: #fff;
-}
-#content_console #password {
-  max-width: 10em;
-}
 #content_console #file-boxes {
   flex-wrap: wrap;
   justify-content: center;
@@ -336,7 +457,7 @@ pre.content {
     right: -20rem;
     margin-right: 0;
     border: 1px solid #aaa;
-    box-shadow: 0em 0em 0.5em #aaa;
+    box-shadow: 0em 0em 0.5em rgba(0,0,0,0.5);
     opacity: 0;
   }
   .top-menu > .toolbar#show {
@@ -344,7 +465,7 @@ pre.content {
     right: .25rem;
     opacity: 1;
   }
-  .toolbar > #serial_network {
+  .toolbar > #channel_connect {
     order:1;
     margin-right: 0;
     margin-left: .125rem;
@@ -410,10 +531,10 @@ button.icon.medium:before  {
 #languageButton:before {
   background-position: left calc(-1.5rem*6) top;
 }
-#serialButton:before {
+#serialButton:before, #channelButton.webserial:before {
   background-position: left calc(-1.5rem*9) top;
 }
-#networkButton:before {
+#networkButton:before, #channelButton.websocket:before {
   background-position: left calc(-1.5rem*10) top;
 }
 #toolbarButton:before {
@@ -422,9 +543,8 @@ button.icon.medium:before  {
 #forumButton:before {
   background-position: left calc(-1.5rem*12) top;
 }
-#connectButton {
-  border-color: #aaa;
-  margin: -1px;
+#bluetoothButton:before, #channelButton.webbluetooth:before {
+  background-position: left calc(-1.5rem*15) top;
 }
 #connectButton:before {
   background-position: left calc(-1.5rem*13) top;
@@ -432,16 +552,10 @@ button.icon.medium:before  {
 #connectButton.on:before {
   background-position: left calc(-1.5rem*13) bottom;
 }
-#scanButton {
-  display: inline-flex;
-}
 #scanButton:before {
   background-position: left calc(-1.5rem*14) top;
 }
-@keyframes spin { 100% { transform:rotate(360deg); } }
-#scanButton:hover:before {
-  animation:spin 1s linear infinite;
-}
+
 @media (max-width: 710px) {
   .tab_collapse {
     display: none;
@@ -519,7 +633,7 @@ button.icon.medium:before  {
   align-items: center;
   justify-content: space-between;
   height: 6rem;
-  box-shadow: 0em 0em 0.5em #aaa;
+  box-shadow: 0em 0em 0.5em rgba(0,0,0,0.5);
 }
 .language-panel#show {
 	opacity: 1;
@@ -624,7 +738,7 @@ button.icon.medium:before  {
 }
 /* Progress Bar */
 .progress-bar {
-  z-index: 999;
+  z-index: 500;
   position: fixed;
   left: 0;
   right: 0;

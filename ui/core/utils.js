@@ -5,29 +5,6 @@ class Tool {
 
   }
 
-  static bufferPush (code, callback) {
-    let textArray;
-    if (typeof code == 'object')
-      textArray = code;
-    else if (typeof code == 'string')
-      textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,10}/g);
-
-    if (Channel ['websocket'].connected) {
-      Channel ['websocket'].buffer_ = Channel ['websocket'].buffer_.concat(textArray);
-      if (callback != undefined)
-        Channel ['websocket'].completeBufferCallback.push(callback);
-    /*}  else if (Channel ['webserial'].connected) {
-      Channel ['webserial'].buffer_ = Channel ['webserial'].buffer_.concat(textArray);
-      if (callback != undefined)
-        Channel ['webserial'].completeBufferCallback.push(callback);
-    } else if (Channel ['webbluetooth'].connected) {
-      Channel ['webbluetooth'].buffer_ = Channel ['webbluetooth'].buffer_.concat(textArray);
-      if (callback != undefined)
-        Channel ['webbluetooth'].completeBufferCallback.push(callback);
-    */} else
-      BIPES ['notify'].send(MSG['notConnected']);
-  }
-
   static runPython (code_) {
     // if (this.selector.value == "UNO") {
     //   alert("Generating code for Arduino Uno");
@@ -38,7 +15,7 @@ class Tool {
     let code = code_ == undefined ? Blockly.Python.workspaceToCode(Code.workspace) : code_;
 
     if (code) {
-      this.bufferPush (`\x05${code}\x04`);
+      mux.bufferPush (`\x05${code}\x04`);
       BIPES ['progress'].start(Channel.websocket.buffer_.length);
     }
   }
@@ -46,7 +23,7 @@ class Tool {
 
   static stopPython () {
     //Send Ctrl+C to stop program
-    this.bufferPush ('\x03');
+    mux.bufferPush ('\x03');
   }
 
 
@@ -144,7 +121,7 @@ class files {
     this.binary_state = 11;
     files.update_file_status ('Sending ' + this.put_file_name + '...');
     console.log(rec);
-    Tool.bufferPush (rec);
+    mux.bufferPush (rec);
   }
 
   get_ver () {
@@ -157,7 +134,7 @@ class files {
 
     // initiate GET_VER
     this.binary_state = 31;
-    Tool.bufferPush(rec);
+    mux.bufferPush(rec);
   }
 
   handle_put_file_select() {
@@ -193,7 +170,7 @@ class files {
     this.put_file ();
   }
   listFiles () {
-    Tool.bufferPush ('import os; os.listdir()\r', files.updateTable.bind(this)); //Using ; to trigger only one ">>>"
+    mux.bufferPush ('import os; os.listdir()\r', files.updateTable.bind(this)); //Using ; to trigger only one ">>>"
   }
   run (file) {
     files.update_file_status('Executing  ' + file);
@@ -202,18 +179,18 @@ class files {
     //In case module already loaded, unloaded it
     //to allow it to work all the time
     //fileS = file.split('.')[0];
-    //Tool.bufferPush('import sys \r');
-    //Tool.bufferPush('sys.modules.pop(\'' + fileS + '\')\r');
-    //Tool.bufferPush('import ' + fileS + '\r');
+    //mux.bufferPush('import sys \r');
+    //mux.bufferPush('sys.modules.pop(\'' + fileS + '\')\r');
+    //mux.bufferPush('import ' + fileS + '\r');
     //Filename without .py
-    Tool.bufferPush (`exec(open(\'./${file}\').read(),globals())\r`);
+    mux.bufferPush (`exec(open(\'./${file}\').read(),globals())\r`);
   }
   delete (file) {
     let msg = "Are you sure you want to delete " + file + "?";
 
     if (confirm(msg)) {
       let txt = "Will delete file " + file;
-      Tool.bufferPush(`os.remove(\'${file}\')\r`, this.listFiles.bind(this));
+      mux.bufferPush(`os.remove(\'${file}\')\r`, this.listFiles.bind(this));
       files.update_file_status('Deleted  ' + file);
     } else {
       let txt = "Delete aborted";
@@ -231,28 +208,36 @@ class files {
     this.get_file(file);
   }
   get_file (src_fname) {
-    let rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
-    rec[0] = 'W'.charCodeAt(0);
-    rec[1] = 'A'.charCodeAt(0);
-    rec[2] = 2; // get
-    rec[3] = 0;
-    rec[4] = 0; rec[5] = 0; rec[6] = 0; rec[7] = 0; rec[8] = 0; rec[9] = 0; rec[10] = 0; rec[11] = 0;
-    rec[12] = 0; rec[13] = 0; rec[14] = 0; rec[15] = 0;
-    rec[16] = src_fname.length & 0xff; rec[17] = (src_fname.length >> 8) & 0xff;
-    for (let i = 0; i < 64; ++i) {
-        if (i < src_fname.length) {
-            rec[18 + i] = src_fname.charCodeAt(i);
-        } else {
-            rec[18 + i] = 0;
+    switch (Channel ['mux'].currentChannel) {
+      case 'websocket':
+        let rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
+        rec[0] = 'W'.charCodeAt(0);
+        rec[1] = 'A'.charCodeAt(0);
+        rec[2] = 2; // get
+        rec[3] = 0;
+        rec[4] = 0; rec[5] = 0; rec[6] = 0; rec[7] = 0; rec[8] = 0; rec[9] = 0; rec[10] = 0; rec[11] = 0;
+        rec[12] = 0; rec[13] = 0; rec[14] = 0; rec[15] = 0;
+        rec[16] = src_fname.length & 0xff; rec[17] = (src_fname.length >> 8) & 0xff;
+        for (let i = 0; i < 64; ++i) {
+            if (i < src_fname.length) {
+                rec[18 + i] = src_fname.charCodeAt(i);
+            } else {
+                rec[18 + i] = 0;
+            }
         }
-    }
 
-    // initiate get
-    this.binary_state = 21;
-    this.get_file_name = src_fname;
-    this.get_file_data = new Uint8Array(0);
-    files.update_file_status('Getting ' + this.get_file_name + '...');
-    Tool.bufferPush (rec);
+        // initiate get
+        this.binary_state = 21;
+        this.get_file_name = src_fname;
+        this.get_file_data = new Uint8Array(0);
+        files.update_file_status('Getting ' + this.get_file_name + '...');
+        mux.bufferPush (rec);
+      break;
+      case 'webserial':
+      case 'webbluetooth':
+
+      break;
+    }
   }
 
   static updateTable () {

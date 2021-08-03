@@ -17,11 +17,12 @@ function panel (button_, panel_) {
 panel.prototype.showPanel = function () {
   let panel_ = BIPES ['responsive'].panels [this.panel_];
   if(!panel_.show) {
-    this.panel.id = 'show';
+    this.panel.id = "show";
     if(panel_.from == 'notify-panel')
       BIPES ['notify'].container.id = '';
- } else
+ } else {
     this.panel.id = '';
+  }
   panel_.show = !panel_.show;
 }
 
@@ -30,6 +31,23 @@ language.prototype = Object.create (panel.prototype);
 function language (button_, panel_) {
 	panel.call (this, button_, panel_);
   this.panel.appendChild(document.createTextNode(MSG['languageTooltip']));
+}
+
+channelPanel.prototype = Object.create (panel.prototype);
+function channelPanel (button_, panel_) {
+	panel.call (this, button_, panel_);
+  this.bluetooth = get ('#bluetoothButton');
+  this.serial = get ('#serialButton');
+  this.network = get ('#networkButton');
+  this.hidePanel = (target_) => {
+    this.panel.id = '';
+    this.button.className = `icon ${target_}`;
+    BIPES ['responsive'].panels [this.panel_].show = false;
+    BIPES ['workspace'].websocket.reconnect = false;
+  };
+  this.bluetooth.onclick = () => {this.hidePanel ('webbluetooth'); Channel ['mux'].switch('webbluetooth');};
+  this.serial.onclick = () => {this.hidePanel ('webserial'); Channel ['mux'].switch('webserial');};
+  this.network.onclick = () => {this.hidePanel ('websocket'); Channel['mux'].switch('websocket');};
 }
 
 function notify () {
@@ -92,9 +110,10 @@ notify.prototype.log = function (message) {
 
 function responsive () {
   this.body = get ('body');
-	this.panels = {'.toolbar':{from:'toolbar',x:$em*18.5, y:$em*7.5, show:false},
-	               '.notify-panel':{from:'notify-panel',x:$em*18.5, y:0, show:false},
-	               '.language-panel':{from:'language',x:$em*18.5, y:$em*13, show:false}};
+	this.panels = {'.toolbar':{from:'toolbar',x:$em*18.5, x2:0, y:$em*7.5, show:false},
+	               '.notify-panel':{from:'notify-panel',x:$em*18.5, x2:0, y:0, show:false},
+	               '.language-panel':{from:'language',x:$em*18.5, x2:0, y:$em*13, show:false},
+	               '.channel-panel':{from:'channel-panel',x:$em*42.5, x2:$em*22, y:$em*19, show:false}};
   this.binded = false;
 
   this.body.onclick = (ev) => {this.hidePanels (ev)};
@@ -123,12 +142,15 @@ async function xhrGET (filename, responsetype, onsuccess, onfail) {
 responsive.prototype.hidePanels = function (ev) {
   if (ev.x !== 0 && ev.y !== 0) {
     let minx = 0;
+    let minx2 = Infinity;
     let miny = 0;
     for (const prop in this.panels) {
       let item = this.panels[prop];
       if (item.show === true) {
         if (item.x > minx)
           minx = item.x;
+        if (item.x2 < minx2)
+          minx2 = item.x2;
         if (item.y > miny)
           miny = item.y;
         if (item.y === 0)
@@ -136,7 +158,7 @@ responsive.prototype.hidePanels = function (ev) {
       }
     };
     for (const prop in this.panels) {
-      if (((window.innerWidth - minx) > (ev.x) || miny < (ev.y)) && this.panels[prop].show === true) {
+      if (((((window.innerWidth - minx) > (ev.x)) || ((minx2) > (window.innerWidth - ev.x))) || miny < (ev.y)) && this.panels[prop].show === true) {
         BIPES [this.panels[prop].from].panel.id='';
         this.panels[prop].show = false;
       }
@@ -199,7 +221,7 @@ function workspace () {
     this.saveButton.onclick = () => {this.saveXML ()};
     this.loadButton.onclick = () => {this.loadXML ()};
 
-
+    this.resetBoard = get('#resetBoard');
     this.term = get('#term');
     this.file_status = get('#file-status');
     this.put_file_list = get('#put-file-list');
@@ -213,33 +235,39 @@ function workspace () {
 
 workspace.prototype.run = function () {
   if (this.runButton.status) {
-    if(Channel ['websocket'].connected) {
+    if(mux.connected ()) {
         Tool.runPython();
     } else {
       this.buttonConnect ();
-      setTimeout(() => { if(Channel ['websocket'].connected) Tool.runPython();}, 2000);
+      setTimeout(() => { mux.connected (); Tool.runPython();}, 2000);
     }
   } else {
     this.websocket.reconnect = true;
-    Channel ['websocket'].buffer_.unshift('\r\x04');
+    mux.bufferUnshift ('\r\x04');
   }
 }
 
 workspace.prototype.buttonConnect = function () {
-  Channel ['websocket'].connect(this.websocket.url.value, this.websocket.pass.value);
+  Channel ['mux'].connect ();
 }
 
 workspace.prototype.websocketConnected = function () {
   this.websocket.url.disabled = true;
-  this.connectButton.value = "Disconnect";
 }
 
 workspace.prototype.connectClick = function () {
-  if (Channel ['websocket'].connected) {
-    Channel ['websocket'].ws.close();
+  if (mux.connected ()) {
+    mux.disconnect ();
   } else {
     this.buttonConnect ();
   }
+}
+
+workspace.prototype.receiving = function () {
+  this.runButton.status = false;
+  this.runButton.dom.className = 'icon on';
+  this.connectButton.className = 'icon on';
+  this.term.className = 'on';
 }
 
 workspace.prototype.runAbort = function () {

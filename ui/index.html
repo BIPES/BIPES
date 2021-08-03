@@ -176,8 +176,9 @@ function checkCookie() {
   </script>
   <button id="toolbarButton" class="notext icon medium" title="..."></button>
   <div class="toolbar">
-    <div id="serial_network">
-      <a class="icon" id="serialButton" href="https://bipes.net.br/beta2serial/ui" title="..."></a><a class="icon selected" id="networkButton" href="http://bipes.net.br/beta2/ui" title="..."></a>
+    <div id="channel_connect">
+      <button class="icon webserial" id="channelButton" title="Choose connection channel"></button>
+      <button class="icon" id="connectButton" title="Connect/Disconnect"></button>
     </div>
     <div class="icon" id="deviceSelect">
         <select id="device_selector">
@@ -219,21 +220,30 @@ function checkCookie() {
       </td>
     </tr>
   </table>
+  <div class='channel-panel'>
+    <button class='icon' id="bluetoothButton">Bluetooth</button>
+    <div>
+      <button class='icon' id="serialButton">Serial</button>
+      <label for="resetBoard" class="checkswitch">
+        Reset on connect
+        <input type="checkbox" id="resetBoard" class="checkswitch" value="off">
+        <span></span>
+      </label>
+    </div>
+    <div>
+      <button class='icon' id="networkButton">Network</button>
+      <span>
+      Address: <input type="text" name="webrepl_url" id="url" value="ws://192.168.0.35:8266/" />
+      Password: <input type="password" name="webrepl_pass" id="password" value="bipes" />
+      </span>
+      <button class="icon" value="Scan boards" id="scanButton" onclick="window.open('ports.html','popup','width=600,height=600'); return false;" target="popup">Scan devices</button>
+    </div>
+  </div>
+
   <div id="content_blocks" class="content"></div>
   <div id="content_console" class="content">
     <tr height="25%" id="termTR">
      <td>
-        <div>
-          <span>
-            Address: <input type="text" name="webrepl_url" id="url" value="ws://192.168.0.35:8266/" />
-            Password: <input type="text" name="webrepl_pass" id="password" value="bipes" />
-            <button class="icon" id="connectButton" title="Connect/Disconnect"></button>
-          </span>
-        <button class="icon" value="Scan boards" id="scanButton" onclick="window.open('ports.html','popup','width=600,height=600'); return false;" target="popup">Scan devices</button>
-
-        </div>
-        
-        
         <div style="display:inline-block; vertical-align:top; ">
     <div id="term">
             </div>
@@ -479,6 +489,7 @@ BIPES ['notify'] = new notify ();
 BIPES ['progress'] = new progress ();
 BIPES ['language'] = new language ('#languageButton','.language-panel');
 BIPES ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
+BIPES ['channel-panel'] = new channelPanel ('#channelButton','.channel-panel');
 BIPES ['toolbar'] = new panel ('#toolbarButton','.toolbar');
 BIPES ['workspace'] = new workspace ();
 BIPES ['workspace'].channelCheck ();
@@ -486,6 +497,8 @@ BIPES ['workspace'].channelCheck ();
 // global WebSocket, WebSerial and Bluetooth variable
 var Channel = {};
 Channel ['websocket'] = new websocket ();
+Channel ['webserial'] = new webserial ();
+Channel ['mux'] = new mux ();
 
 var Files = new files ();
 
