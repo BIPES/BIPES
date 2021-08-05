@@ -659,7 +659,7 @@ Blockly.Blocks['pinout'] = {
       this.first_load = this.first_load - 1; // function is triggered twice on load due to setting values
     }
     this.setTooltip(device_ + " Pins");
-    let devices = BIPES ['workspace'].devices
+    let devices = UI ['workspace'].devices
     if (device_ in  devices && 'pinout' in devices [device_]){
       return devices [device_].pinout;
     }else{

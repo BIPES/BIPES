@@ -26,15 +26,15 @@
      units="px"
      width="384px"
      height="24px"
-     inkscape:zoom="4"
-     inkscape:cx="184.75"
-     inkscape:cy="47.375"
+     inkscape:zoom="16"
+     inkscape:cx="130.375"
+     inkscape:cy="24.09375"
      inkscape:window-width="2560"
      inkscape:window-height="1014"
      inkscape:window-x="0"
      inkscape:window-y="29"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g977"
      showguides="false">
     <inkscape:grid
        type="xygrid"
@@ -600,6 +600,18 @@
            style="fill:#327ae7;fill-opacity:1"
            transform="rotate(180,238.37501,16.625)" />
       </g>
+    </g>
+    <g
+       style="fill:#000000"
+       id="g977"
+       transform="matrix(0.26458333,0,0,0.26458333,48.815625,14.419792)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path965" />
+      <path
+         d="M 12,2 C 6.47,2 2,6.47 2,12 2,17.53 6.47,22 12,22 17.53,22 22,17.53 22,12 22,6.47 17.53,2 12,2 Z M 17,15.59 15.59,17 12,13.41 8.41,17 7,15.59 10.59,12 7,8.41 8.41,7 12,10.59 15.59,7 17,8.41 13.41,12 Z"
+         id="path967-3" />
     </g>
   </g>
 </svg>

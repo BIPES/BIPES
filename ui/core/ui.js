@@ -15,11 +15,11 @@ function panel (button_, panel_) {
   this.button.onclick = () => {this.showPanel ()};
 }
 panel.prototype.showPanel = function () {
-  let panel_ = BIPES ['responsive'].panels [this.panel_];
+  let panel_ = UI ['responsive'].panels [this.panel_];
   if(!panel_.show) {
     this.panel.id = "show";
     if(panel_.from == 'notify-panel')
-      BIPES ['notify'].container.id = '';
+      UI ['notify'].container.id = '';
  } else {
     this.panel.id = '';
   }
@@ -42,8 +42,7 @@ function channelPanel (button_, panel_) {
   this.hidePanel = (target_) => {
     this.panel.id = '';
     this.button.className = `icon ${target_}`;
-    BIPES ['responsive'].panels [this.panel_].show = false;
-    BIPES ['workspace'].websocket.reconnect = false;
+    UI ['responsive'].panels [this.panel_].show = false;
   };
   this.bluetooth.onclick = () => {this.hidePanel ('webbluetooth'); Channel ['mux'].switch('webbluetooth');};
   this.serial.onclick = () => {this.hidePanel ('webserial'); Channel ['mux'].switch('webserial');};
@@ -80,7 +79,7 @@ notify.prototype.send = function (message) {
   this_message.div.onclick = (ev) => {try {this.panel.removeChild(ev.target.parentNode)}catch(e){};};
   this.panel.appendChild(this_message.div);
 
-  let panel_ = BIPES ['responsive'].panels [this.panel_];
+  let panel_ = UI ['responsive'].panels [this.panel_];
   if (!panel_.show) {
     if(last_message == message && this.container.id == 'show') {
         this.buffer_count = this.buffer_count + 1;
@@ -109,35 +108,43 @@ notify.prototype.log = function (message) {
 }
 
 function responsive () {
+  this.mobile = true;
   this.body = get ('body');
 	this.panels = {'.toolbar':{from:'toolbar',x:$em*18.5, x2:0, y:$em*7.5, show:false},
 	               '.notify-panel':{from:'notify-panel',x:$em*18.5, x2:0, y:0, show:false},
 	               '.language-panel':{from:'language',x:$em*18.5, x2:0, y:$em*13, show:false},
-	               '.channel-panel':{from:'channel-panel',x:$em*42.5, x2:$em*22, y:$em*19, show:false}};
+	               '.channel-panel':{from:'channel-panel',x:$em*42.5, x2:$em*22, y:$em*25.5, show:false}};
   this.binded = false;
 
   this.body.onclick = (ev) => {this.hidePanels (ev)};
+  window.onresize = () => {
+    this.mobile = window.innerWidth < 60*$em ? true : false;
+  };
 }
 
 async function xhrGET (filename, responsetype, onsuccess, onfail) {
   let xmlHTTP = new XMLHttpRequest ();
 
-	xmlHTTP.open ('GET', `${filename}?ver=2.21-07-30`);
-  xmlHTTP.responseType = responsetype;
-  xmlHTTP.onload = function () {
-    if (this.status == 200) {
-      if (responsetype == 'text' || responsetype == '')
-        onsuccess (this.responseText);
-      else if (responsetype == 'document')
-        onsuccess (this.responseXML);
+  if (!Channel ['mux'].isLocalFile) {
+    xmlHTTP.open ('GET', `${filename}`);
+    xmlHTTP.responseType = responsetype;
+    xmlHTTP.onload = function () {
+      if (this.status == 200) {
+        if (responsetype == 'text' || responsetype == '')
+          onsuccess (this.responseText);
+        else if (responsetype == 'document')
+          onsuccess (this.responseXML);
+        else
+          onsuccess (this.response);
+      } else if (onfail != undefined)
+        onfail ();
       else
-        onsuccess (this.response);
-    } else if (onfail != undefined)
-      onfail ();
-    else
-      BIPES ['notify'].send(MSG['ErrorGET']);
-    }
-	  xmlHTTP.send();
+        UI ['notify'].send(MSG['ErrorGET']);
+      }
+  xmlHTTP.send();
+	} else {
+	  alert("Please run at a server or use the live version at bipes.net.br/beta2/ui. We can't load some files locally.")
+	}
 }
 responsive.prototype.hidePanels = function (ev) {
   if (ev.x !== 0 && ev.y !== 0) {
@@ -146,11 +153,13 @@ responsive.prototype.hidePanels = function (ev) {
     let miny = 0;
     for (const prop in this.panels) {
       let item = this.panels[prop];
+      let x = this.mobile ? item.x-item.x2 : item.x;
+      let x2 = this.mobile ? 0 : item.x2;
       if (item.show === true) {
-        if (item.x > minx)
-          minx = item.x;
-        if (item.x2 < minx2)
-          minx2 = item.x2;
+        if (x > minx)
+          minx = x;
+        if (x2 < minx2)
+          minx2 = x2;
         if (item.y > miny)
           miny = item.y;
         if (item.y === 0)
@@ -159,7 +168,7 @@ responsive.prototype.hidePanels = function (ev) {
     };
     for (const prop in this.panels) {
       if (((((window.innerWidth - minx) > (ev.x)) || ((minx2) > (window.innerWidth - ev.x))) || miny < (ev.y)) && this.panels[prop].show === true) {
-        BIPES [this.panels[prop].from].panel.id='';
+        UI [this.panels[prop].from].panel.id='';
         this.panels[prop].show = false;
       }
     };
@@ -242,8 +251,7 @@ workspace.prototype.run = function () {
       setTimeout(() => { mux.connected (); Tool.runPython();}, 2000);
     }
   } else {
-    this.websocket.reconnect = true;
-    mux.bufferUnshift ('\r\x04');
+    Tool.stopPython();
   }
 }
 
@@ -277,9 +285,6 @@ workspace.prototype.runAbort = function () {
   this.term.className = '';
   this.websocket.url.disabled = false;
   this.connectButton.value = "Connect";
-  if (this.websocket.reconnect)
-    Channel ['websocket'].connect(this.websocket.url.value, this.websocket.pass.value);
-    this.websocket.reconnect = false;
 }
 
 workspace.prototype.change = function () {
@@ -298,7 +303,7 @@ workspace.prototype.change = function () {
         xhrGET(`toolbox/${this.defaultToolbox}`, 'document', (XML_) => {
           Code.reloadToolbox(XML_);
         });
-        BIPES ['notify'].send(MSG['noToolbox']);
+        UI ['notify'].send(MSG['noToolbox']);
     }
 
     /* refreshes block pinout with device change */
@@ -306,12 +311,14 @@ workspace.prototype.change = function () {
      Code.workspace.getBlocksByType('pinout').forEach ((block, id) => {
        block.refresh ();
      });
-    if (blocks.length != 0) BIPES ['notify'].send (MSG['wrongDevicePin']);
+    if (blocks.length != 0) UI ['notify'].send (MSG['wrongDevicePin']);
 
     Code.renderContent (); // renders selected tab
 
+    Channel ['webserial'].packetSize = parseInt(selected.serial_packet_size);
+
   } else
-    BIPES ['notify'].send(MSG['invalidDevice']);
+    UI ['notify'].send(MSG['invalidDevice']);
 }
 
 workspace.prototype.changeTo = function (device) {
@@ -319,7 +326,7 @@ workspace.prototype.changeTo = function (device) {
       this.selector.value = device,
       this.change ();
     else if (device != '')
-      BIPES ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
+      UI ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
 }
 
 workspace.prototype.saveXML = function () {
@@ -371,7 +378,7 @@ workspace.prototype.loadXML = function () {
 	  reader.readAsText(file,'UTF-8');
     let self = this;
 	  reader.onload = readerEvent => {
-	      BIPES ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
+	      UI ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
 
 	      let content = this.readWorkspace (readerEvent.target.result, true);
 
@@ -403,18 +410,3 @@ workspace.prototype.promptFile = function (contentType, multiple) {
   });
 }
 
-workspace.prototype.channelCheck = function () {
-// function show_https_warning() {
-//     if (window.location.protocol == 'https:') {
-//         var warningDiv = document.createElement('div');
-//         warningDiv.style.cssText = 'background:#f99;padding:5px;margin-bottom:10px;line-height:1.5em;text-align:center';
-//         warningDiv.innerHTML = [
-//             'At this time, the WebREPL client cannot be accessed over HTTPS connections.',
-//             'Use a HTTP connection, eg. <a href="http://micropython.org/webrepl/">http://micropython.org/webrepl/</a>.',
-//             'Alternatively, download the files from <a href="https://github.com/micropython/webrepl">GitHub</a> and run them locally.'
-//         ].join('<br>');
-//         document.body.insertBefore(warningDiv, document.body.childNodes[0]);
-//         term.resize(term.cols, term.rows - 7);
-//     }
-// }
-}

@@ -23,7 +23,8 @@
 		    ["CMD / GPIO11", "11"],
 		    ["SD0 / GPIO07", "7"],
 		    ["CLK / GPIO06", "6"]
-			]
+			],
+			"serial_packet_size":"1000"
 		},
 		"ESP32S2": {
 			"title":"<b>ESP32 S2</b><br>",
@@ -57,7 +58,8 @@
 		    ["IO23", "23"],
 		    ["IO24", "23"],
 		    ["IO25", "23"]
-			]
+			],
+			"serial_packet_size":"1000"
 		},
 		"ESP32": {
 			"title":"<b>ESP32</b><br>",
@@ -65,39 +67,40 @@
 			"description":"",
 			"toolbox":"esp32.xml",
 			"pinout": [
-		    ["VP / ADC1_0 / GPIO36", "36"],
-		    ["VN / ADC1_3 / GPIO39", "39"],
-		    ["D34 / ADC1_6 / GPIO34", "34"],
-		    ["D35 / ADC1_7 / GPIO35", "35"],
-		    ["D32 / ADC1_4 / GPIO32", "32"],
-		    ["D33 / ADC1_5 / GPIO33", "33"],
-		    ["D25 / DAC 1 / ADC2_8 / GPIO25", "25"],
-		    ["D26 / DAC 2 / ADC2_9 / GPIO26", "26"],
-		    ["D27 / ADC2_7 / GPIO27", "27"],
-		    ["D14 / ADC2_6 / GPIO14", "14"],
-		    ["D12 / ADC2_5 / GPIO12", "12"],
-		    ["D13 / ADC2_4 / GPIO13", "13"],
-		    ["RXD 1 / GPIO09", "9"],
-		    ["TXD 1 / GPIO10", "10"],
-		    ["RTS 1 / GPIO11", "11"],
-		    ["D23 / MOSI / GPIO23", "23"],
-		    ["D22 / SCL / GPIO22 / RTS 0", "22"],
-		    ["TXD0 / GPIO01", "1"],
-		    ["RXD0 / GPIO03", "3"],
-		    ["D21 / SDA / GPIO21", "21"],
-		    ["D19 / MISO / GPIO19", "19"],
-		    ["D18 / SCK / GPIO18", "18"],
-		    ["CS / GPIO05", "5"],
-		    ["TXD2 / GPIO17", "17"],
-		    ["RXD2 / GPIO16", "16"],
-		    ["D4 / ADC2_0 / GPIO04", "4"],
-		    ["ADC2_1 / GPIO0", "0"],
-		    ["D2 / CS / ADC2_2 / GPIO2", "2"],
-		    ["D15 / ADC2_3 / GPIO15", "15"],
-		    ["CTS2 / SPI_D / GPIO08", "8"],
-		    ["RTS2 / SPI_Q / GPIO07", "7"],
-		    ["CTS1 / SPI_CLK / GPIO06", "6"]
-			]
+				["D2 / CS / ADC2_2 / GPIO2", "2"],
+				["D4 / ADC2_0 / GPIO04", "4"],
+				["D12 / ADC2_5 / GPIO12", "12"],
+				["D13 / ADC2_4 / GPIO13", "13"],
+				["D14 / ADC2_6 / GPIO14", "14"],
+				["D15 / ADC2_3 / GPIO15", "15"],
+				["D18 / SCK / GPIO18", "18"],
+				["D19 / MISO / GPIO19", "19"],
+				["D21 / SDA / GPIO21", "21"],
+				["D22 / SCL / GPIO22 / RTS 0", "22"],
+				["D23 / MOSI / GPIO23", "23"],
+				["D25 / DAC 1 / ADC2_8 / GPIO25", "25"],
+				["D26 / DAC 2 / ADC2_9 / GPIO26", "26"],
+				["D27 / ADC2_7 / GPIO27", "27"],
+				["D32 / ADC1_4 / GPIO32", "32"],
+				["D33 / ADC1_5 / GPIO33", "33"],
+				["D34 / ADC1_6 / GPIO34", "34"],
+				["D35 / ADC1_7 / GPIO35", "35"],
+				["VP / ADC1_0 / GPIO36", "36"],
+				["VN / ADC1_3 / GPIO39", "39"],
+				["CS / GPIO05", "5"],
+				["TXD0 / GPIO01", "1"],
+				["RXD0 / GPIO03", "3"],
+				["RXD 1 / GPIO09", "9"],
+				["TXD 1 / GPIO10", "10"],
+				["RTS 1 / GPIO11", "11"],
+				["TXD2 / GPIO17", "17"],
+				["RXD2 / GPIO16", "16"],
+				["ADC2_1 / GPIO0", "0"],
+				["CTS2 / SPI_D / GPIO08", "8"],
+				["RTS2 / SPI_Q / GPIO07", "7"],
+				["CTS1 / SPI_CLK / GPIO06", "6"]
+			],
+			"serial_packet_size":"1000"
 		},
 		"RPI_Pico": {
 			"title":"<b>Raspberry Pi Pico</b><br>",
@@ -133,7 +136,8 @@
 		    ["Pin 27 / ADC1 / GPIO27", "27"],
 		    ["Pin 28 / ADC2 / GPIO28", "28"],
 		    ["Internal Temp Sensor / ADC3", "4"]
-			]
+			],
+			"serial_packet_size":"1000"
 		},
 		"wemos_d1_mini": {
 			"title":"<b>ESP8266 - Wemos D1 Mini</b><br>",
@@ -152,7 +156,8 @@
 				["D1 / SCL / GPIO05", "5"],
 				["RX / GPIO03", "3"],
 				["TX / GPIO01", "1"]
-			]
+			],
+			"serial_packet_size":"100"
 		},
 		"ESP32-oled": {
 			"title":"<b>ESP32 board with OLED LCD and Battery</b><br>",
@@ -191,7 +196,8 @@
 				["TX / GPIO01", "1"],
 				["P22 / GPIO22", "22"],
 				["P23 / VSPI_MOSI / GPIO23", "23"]
-			]
+			],
+			"serial_packet_size":"1000"
 		},
 		"ESP32-LoRa": {
 			"title":"<b>ESP32 board with OLED LCD and LoRa</b><br>",
@@ -218,55 +224,57 @@
 				["38 / GPIO38", "38"],
 				["37 / GPIO37", "37"],
 				["36 / GPIO36", "36"]
-			]
+			],
+			"serial_packet_size":"1000"
 		},
 		"M5STICK": {
 			"title":"<b>M5Stick ESP32</b><br>",
 			"img":"devinfo/media/m5stickc.png",
 			"description":"M5STICK-C is based on ESP32 processor. More info at:",
-			"toolbox":"esp32.xml"
+			"toolbox":"esp32.xml",
+			"serial_packet_size":"100"
 		},
 		"Nucleo": {
 			"title":"<b>mBed: NUCLEO-F446RE</b><br>",
 			"img":"devinfo/media/NUCLEO-F446RE.png",
 			"description":"",
-			"toolbox":""
+			"toolbox":"stm32.xml",
+			"serial_packet_size":"100"
 		},
 		"RPI4": {
 			"title":"<b>Raspberry Pi 4 </b><br>",
 			"img":"devinfo/media/rpi4.png",
 			"description":"Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv",
-			"toolbox":"linux.xml"
+			"toolbox":"linux.xml",
+			"serial_packet_size":"1000"
 		},
 		"EV3": {
 			"title":"<b>Lego EV3 </b><br>",
 			"img":"",
 			"description":"Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!",
-			"toolbox":""
+			"toolbox":"",
+			"serial_packet_size":"100"
 		},
 		"BBBlack": {
 			"title":"<b>Beagle Bone Black</b><br>",
 			"img":"devinfo/media/cape-headers.png",
 			"description":"",
-			"toolbox":"bbblack.xml"
+			"toolbox":"bbblack.xml",
+			"serial_packet_size":"100"
 		},
 		"BBC": {
 			"title":"<b>BBC MicroBit</b><br>",
 			"img":"devinfo/media/microbit.png",
 			"description":"Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>",
-			"toolbox":"esp32.xml"
-		},
-		"RPI": {
-			"title":"",
-			"img":"",
-			"description":"",
-			"toolbox":""
+			"toolbox":"esp32.xml",
+			"serial_packet_size":"100"
 		},
 		"UNO": {
 			"title":"<b>Arduino UNO. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
 			"img":"https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png",
 			"description":"",
-			"toolbox":"arduino.xml"
+			"toolbox":"arduino.xml",
+			"serial_packet_size":"100"
 		}
 	}
 }

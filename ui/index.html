@@ -98,7 +98,7 @@ function checkCookie() {
   <script src="core/blocks_compressed.js"></script>
   <script src="core/javascript_compressed.js"></script>
   <script src="core/python_compressed.js"></script>
-  <script src="code.js"></script>
+  <script src="core/code.js"></script>
   <script src="core/channel.js"></script>
   <script src="core/utils.js"></script>
   <script src="core/ui.js"></script>
@@ -182,16 +182,17 @@ function checkCookie() {
     </div>
     <div class="icon" id="deviceSelect">
         <select id="device_selector">
-            <option value="ESP8266">ESP8266 (NodeMCU)</option>
-            <option value="ESP32S2">Franzininho Wifi (ESP32-S2)</option>
-            <option value="wemos_d1_mini">ESP8266 (Wemos D1 mini)</option>
-            <option value="ESP32">ESP32 (DevKitV1)</option>
-            <option value="ESP32-oled">ESP32 + Display + Battery</option>
-            <option value="ESP32-LoRa">ESP32 LoRa</option>
+            <option value="ESP8266">ESP8266</option>
+            <option value="ESP32S2">Franzininho Wifi</option>
+            <option value="wemos_d1_mini">Wemos D1 mini</option>
+            <option value="ESP32">ESP32</option>
             <option value="M5STICK">m5stick (ESP32)</option>
             <option value="Nucleo">ST Nucleo (mBed)</option>
+            <option value="BBBlack">Beagle Bone Black</option>
             <option value="BBC">BBC Microbit</option>
             <option value="RPI4">Raspberry Pi (any Linux)</option>
+            <option value="RPI_Pico">Raspberry Pi Pico</option>
+            <option value="UNO">Arduino UNO</option>
             <option value="EV3">Lego EV3</option>
         </select>
 
@@ -261,9 +262,10 @@ function checkCookie() {
       <br>
       <br>
             <button onclick="Tool.stopPython(); return false;">Stop running program</button>
+            <button onclick="Tool.softReset(); return false;">Soft reset device</button>
       <br>
       <br>
-      <button  onclick="Files.run(BIPES ['workspace'].content_file_name.value); return false;">Run edited Python File</button>
+      <button  onclick="Files.run(UI ['workspace'].content_file_name.value); return false;">Run edited Python File</button>
       <br>
       <br>
       <button onclick="term.write('\x1bc');  ">Clear terminal output</button>
@@ -349,7 +351,7 @@ function checkCookie() {
   Save as:
   <input type=text id=content_file_name>
   <input type="button" value="Save" onclick="Files.files_save_as(); return false;" />
-  <input type="button" value="Run" onclick="Files.run(BIPES ['workspace'].content_file_name.value); return false;" />
+  <input type="button" value="Run" onclick="Files.run(UI ['workspace'].content_file_name.value); return false;" />
   <input type="button" value="Stop" onclick="Tool.stopPython(); return false;" />
 
   <link rel="stylesheet" href="core/codemirror/codemirror.css">
@@ -466,6 +468,8 @@ Device file manager
 </div>
 </body>
 
+<a id='test' SRC = "toolbox/esp32.xml"></a>
+
 <script>
 
 var term;
@@ -481,24 +485,25 @@ function calculate_size(win) {
 // Init blockly
 Code.init ();
 
-// global BIPES ui variable
-var BIPES = {};
-// Setup UI using global BIPES variable (see ui.js)
-BIPES ['responsive'] = new responsive ();
-BIPES ['notify'] = new notify ();
-BIPES ['progress'] = new progress ();
-BIPES ['language'] = new language ('#languageButton','.language-panel');
-BIPES ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
-BIPES ['channel-panel'] = new channelPanel ('#channelButton','.channel-panel');
-BIPES ['toolbar'] = new panel ('#toolbarButton','.toolbar');
-BIPES ['workspace'] = new workspace ();
-BIPES ['workspace'].channelCheck ();
-
 // global WebSocket, WebSerial and Bluetooth variable
 var Channel = {};
 Channel ['websocket'] = new websocket ();
 Channel ['webserial'] = new webserial ();
 Channel ['mux'] = new mux ();
+
+
+// global User Interface variable
+var UI = {};
+// Setup UI using global User Interface variable (see ui.js)
+UI ['responsive'] = new responsive ();
+UI ['notify'] = new notify ();
+UI ['progress'] = new progress ();
+UI ['language'] = new language ('#languageButton','.language-panel');
+UI ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
+UI ['channel-panel'] = new channelPanel ('#channelButton','.channel-panel');
+UI ['toolbar'] = new panel ('#toolbarButton','.toolbar');
+UI ['workspace'] = new workspace ();
+
 
 var Files = new files ();
 

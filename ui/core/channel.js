@@ -2,9 +2,30 @@
 
 class mux {
   constructor () {
-    this.available = ['webserial','websocket','']
-    this.ifunavailable = {webbluetooth: ['https://bipes.net.br/beta2/ui', 'beta2serial']}
-    this.currentChannel = 'webserial';
+    this.isLocalFile = false;
+    if(!window.location.origin.includes('/127.0.0.1') || window.location.protocol == 'file:') {
+      switch (window.location.protocol) {
+        case 'file:':
+          this.available = ['webserial', 'websocket', 'webbluetooth'];
+          this.currentChannel = 'webserial';
+          this.isLocalFile = true;
+        case 'https:':
+          this.available = ['webserial', 'webbluetooth'];
+          this.currentChannel = 'webserial';
+        case 'http:':
+          this.available = ['websocket'];
+          this.currentChannel = 'websocket';
+      }
+    } else {
+      this.available = ['webserial', 'websocket', 'webbluetooth'];
+      this.currentChannel = 'webserial';
+    }
+
+    this.ifunavailable = {
+      webserial: ['https://bipes.net.br/beta2/ui', 'the HTTPS version'],
+      websocket: ['http:///bipes.net.br/beta2/ui', 'the HTTP version'],
+      webbluetooth: ['https://bipes.net.br/beta2serial/ui', 'beta2serial']
+    }
   }
 
   switch (channel_) {
@@ -18,7 +39,7 @@ class mux {
         if (confirm(msg)) {
           window.location.replace(this.ifunavailable [channel_] [0]);
         } else {
-          BIPES ['channel-panel'].button.className = `icon ${this.currentChannel}`
+          UI ['channel-panel'].button.className = `icon ${this.currentChannel}`
         }
     } else {
       alert(`The channel ${channel_} is not yet available in this version.`);
@@ -28,7 +49,7 @@ class mux {
   connect () {
     switch (this.currentChannel) {
       case 'websocket':
-        Channel ['websocket'].connect(BIPES ['workspace'].websocket.url.value, BIPES ['workspace'].websocket.pass.value);
+        Channel ['websocket'].connect(UI ['workspace'].websocket.url.value, UI ['workspace'].websocket.pass.value);
       break;
       case 'webserial':
         Channel ['webserial'].connect();
@@ -63,6 +84,7 @@ class mux {
       if (Channel ['websocket'].connected) {
         textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,10}/g);
       } else if (Channel ['webserial'].connected) {
+        var pattern_ = new RegExp(`(.|[\r]){1,${Channel ['webserial'].packetSize}}`, 'g')
         textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,1000}/g);
       }
     }
@@ -80,7 +102,7 @@ class mux {
       if (callback != undefined)
         Channel ['webbluetooth'].completeBufferCallback.push(callback);
     */} else
-      BIPES ['notify'].send(MSG['notConnected']);
+      UI ['notify'].send(MSG['notConnected']);
   }
 
   static bufferUnshift (code) {
@@ -91,7 +113,7 @@ class mux {
     /*} else if (Channel ['webbluetooth'].connected) {
       Channel ['webbluetooth'].buffer_.unshift(code);
     */} else
-      BIPES ['notify'].send(MSG['notConnected']);
+      UI ['notify'].send(MSG['notConnected']);
   }
 
   static clearBuffer () {
@@ -103,7 +125,7 @@ class mux {
     /*} else if (Channel ['webbluetooth'].connected) {
       Channel ['webbluetooth'].buffer_ = [];
     */} else
-      BIPES ['notify'].send(MSG['notConnected']);
+      UI ['notify'].send(MSG['notConnected']);
   }
 }
 
@@ -119,16 +141,16 @@ class websocket {
   watch () {
     if (this.ws.bufferedAmount == 0) {
       if (this.buffer_.length > 0) {
-        BIPES ['progress'].remain(this.buffer_.length);
+        UI ['progress'].remain(this.buffer_.length);
         try {
           if (['Uint8Array', 'String', 'Number'].includes(this.buffer_[0].constructor.name))
           this.ws.send (this.buffer_[0]);
           this.buffer_.shift();
         } catch (e) {
-          BIPES ['notify'].log(e);
+          UI ['notify'].log(e);
         }
       } else {
-        BIPES ['progress'].end();
+        UI ['progress'].end();
       }
     }
   }
@@ -153,7 +175,7 @@ class websocket {
       this.ws.send(pass + '\n\n'); //this.buffer_.push(pass);
 
       this.connected = true;
-      BIPES ['workspace'].websocketConnected ();
+      UI ['workspace'].websocketConnected ();
 
       this.ws.onmessage = (event) => {
         if (event.data instanceof ArrayBuffer) {
@@ -240,21 +262,21 @@ class websocket {
         term.write(event.data);
         if (typeof event.data == 'string') {
           if (event.data.includes(">>> ")) {
-            BIPES ['workspace'].runButton.status = true;
-            BIPES ['workspace'].runButton.dom.className = 'icon';
+            UI ['workspace'].runButton.status = true;
+            UI ['workspace'].runButton.dom.className = 'icon';
             if (this.completeBufferCallback.length > 0) {
               try {
                 this.completeBufferCallback [0] ();
                 this.completeBufferCallback.shift ();
               } catch (e) {
-                BIPES ['notify'].log(e);
+                UI ['notify'].log(e);
               }
             }
           } else if (event.data.includes("Access denied")) {
             //WebSocket might close before receiving this message, so won't trigger.
-            BIPES ['notify'].send("Wrong board password.");
-          } else if (BIPES ['workspace'].runButton.status == true) {
-            BIPES ['workspace'].receiving ();
+            UI ['notify'].send("Wrong board password.");
+          } else if (UI ['workspace'].runButton.status == true) {
+            UI ['workspace'].receiving ();
           }
         }
         Files.received_string = Files.received_string.concat(event.data);
@@ -267,7 +289,7 @@ class websocket {
         term.write('\x1b[31mDisconnected\x1b[m\r\n');
       this.buffer_ = [];
       this.connected = false;
-      BIPES ['workspace'].runAbort();
+      UI ['workspace'].runAbort();
       term.off('data');
       clearInterval(this.watcher);
     }
@@ -286,19 +308,20 @@ class webserial {
     this.encoder = new TextEncoder();
     this.appendStream = undefined;
     this.shouldListen = true;
+    this.packetSize = 100;
   }
 
   watch () {
     if (this.port && this.port.writable && this.port.writable.locked == false) {
       if (this.buffer_.length > 0) {
-        BIPES ['progress'].remain(this.buffer_.length);
+        UI ['progress'].remain(this.buffer_.length);
         try {
 		      this.serialWrite(this.buffer_ [0]);
         } catch (e) {
-          BIPES ['notify'].log(e);
+          UI ['notify'].log(e);
         }
       } else {
-        BIPES ['progress'].end();
+        UI ['progress'].end();
       }
     }
   }
@@ -314,18 +337,18 @@ class webserial {
                 //data comes in chunks, keep last 4 chars to check MicroPython REPL string
                 Channel ['webserial'].last4chars = Channel ['webserial'].last4chars.concat(chunk.substr(-4,4)).substr(-4,4)
                 if (Channel ['webserial'].last4chars.includes(">>> ")) {
-                  BIPES ['workspace'].runButton.status = true;
-                  BIPES ['workspace'].runButton.dom.className = 'icon';
+                  UI ['workspace'].runButton.status = true;
+                  UI ['workspace'].runButton.dom.className = 'icon';
                   if (Channel ['webserial'].completeBufferCallback.length > 0) {
                     try {
                       Channel ['webserial'].completeBufferCallback [0] ();
                     } catch (e) {
-                      BIPES ['notify'].log(e);
+                      UI ['notify'].log(e);
                     }
                     Channel ['webserial'].completeBufferCallback.shift ();
                   }
-                } else if (BIPES ['workspace'].runButton.status == true) {
-                  BIPES ['workspace'].receiving ();
+                } else if (UI ['workspace'].runButton.status == true) {
+                  UI ['workspace'].receiving ();
                 }
                 Files.received_string = Files.received_string.concat(chunk);
               }
@@ -348,11 +371,11 @@ class webserial {
           this.resetBoard ();
           this.shouldListen = true;
         }
-        BIPES ['notify'].log(e);
+        UI ['notify'].log(e);
       });
 
     }).catch((e) => {
-        BIPES ['notify'].log(e);
+        UI ['notify'].log(e);
     });
   }
   connect_ () {
@@ -361,8 +384,8 @@ class webserial {
     });
     term.write('\x1b[31mConnected using Web Serial API !\x1b[m\r\n');
     this.connected=true;
-    if (BIPES ['workspace'].runButton.status == true)
-        BIPES ['workspace'].receiving ();
+    if (UI ['workspace'].runButton.status == true)
+        UI ['workspace'].receiving ();
 
     this.watcher = setInterval(this.watch.bind(this), 50);
   }
@@ -372,7 +395,7 @@ class webserial {
       this.port.close().then(() => {
           this.port = undefined;
         }).catch((e) => {
-          BIPES ['notify'].log(e);
+          UI ['notify'].log(e);
           writer.abort();
           this.port = undefined;
           this.shouldListen = false;
@@ -384,14 +407,14 @@ class webserial {
         this.connected = false;
         clearInterval(this.watcher);
         term.off('data');
-        BIPES ['workspace'].runAbort();
+        UI ['workspace'].runAbort();
     })
 
   }
 
   resetBoard () {
     setTimeout(() => {
-      if (BIPES ['workspace'].resetBoard.checked) {
+      if (UI ['workspace'].resetBoard.checked) {
         term.write('\x1b[31mResetting the board...\x1b[m\r\n');
         this.serialWrite ('\x04');
       } else

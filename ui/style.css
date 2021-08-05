@@ -196,6 +196,7 @@ h1 {
 }
 
 .checkswitch {
+  -webkit-tap-highlight-color: transparent;
     display: flex;
     justify-content: space-between;
     line-height: 1.5rem;
@@ -203,6 +204,7 @@ h1 {
     padding: 0.5rem;
 }
 input.checkswitch[type="checkbox"] {
+  -webkit-tap-highlight-color: transparent;
     display: none;
 }
 .checkswitch input:checked ~ span {
@@ -480,6 +482,15 @@ pre.content {
   }
   #toolbarButton:hover {
     box-shadow: 0em 0em 0.25em #aaa;
+  }
+  .channel-panel {
+    right: -16rem;
+    top: 3.5rem;
+
+  }
+  .channel-panel#show {
+    right: .25rem;
+    top: 3.5rem;
   }
 }
 

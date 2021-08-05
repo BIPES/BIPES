@@ -16,15 +16,21 @@ class Tool {
 
     if (code) {
       mux.bufferPush (`\x05${code}\x04`);
-      BIPES ['progress'].start(Channel.websocket.buffer_.length);
+      UI ['progress'].start(Channel.websocket.buffer_.length);
     }
   }
 
 
   static stopPython () {
     //Send Ctrl+C to stop program
-    mux.bufferPush ('\x03');
+    mux.bufferPush ('\x03\x03');
   }
+  static softReset () {
+    mux.bufferPush ('\x04');
+    if (Channel ['websocket'].connected)
+      setTimeout(() => {Channel ['websocket'].connect(UI ['workspace'].websocket.url.value, UI ['workspace'].websocket.pass.value)}, 1000);
+  }
+
 
   static asleep (milliseconds) {
     //Avoid at all cost using this
@@ -51,7 +57,7 @@ class Tool {
       //var editor = CodeMirror.fromTextArea(Textarea);
       editor.getDoc().setValue(text);
 
-      BIPES ['workspace'].content_file_name.value = file_name;
+      UI ['workspace'].content_file_name.value = file_name;
     });
 
     // Start reading the blob as text.
@@ -96,7 +102,7 @@ class files {
 
 
   static update_file_status (s) {
-    BIPES ['workspace'].file_status.innerHTML = s;
+    UI ['workspace'].file_status.innerHTML = s;
   }
 
 
@@ -140,7 +146,7 @@ class files {
         mux.bufferPush ("import struct\r");
         mux.bufferPush (`f=open('${this.put_file_name}', 'wb')\r`);
 
-        BIPES ['progress'].start(this.put_file_data.length);
+        UI ['progress'].start(this.put_file_data.length);
         this.put_file_data.forEach((char, index) => {
             mux.bufferPush (`f.write(struct.pack(\"B\",${char}))\r`, () => {files.update_file_status(`Sent ${index + 1}/${Files.put_file_data.length} bytes`)});
         });
@@ -169,15 +175,15 @@ class files {
 
     // The event holds a FileList object which is a list of File objects,
     // but we only support single file selection at the moment.
-    let file_ = BIPES ['workspace'].put_file_select.files;
+    let file_ = UI ['workspace'].put_file_select.files;
     // Get the file info and load its data.
     let f = file_[0];
     this.put_file_name = f.name;
     var reader = new FileReader();
     reader.onload = (e) => {
         this.put_file_data = new Uint8Array(e.target.result);
-        BIPES ['workspace'].put_file_list.innerHTML = '' + encodeURIComponent(this.put_file_name) + ' - ' + this.put_file_data.length + ' bytes';
-        BIPES ['workspace'].put_file_button.disabled = false;
+        UI ['workspace'].put_file_list.innerHTML = '' + encodeURIComponent(this.put_file_name) + ' - ' + this.put_file_data.length + ' bytes';
+        UI ['workspace'].put_file_button.disabled = false;
     };
     reader.readAsArrayBuffer(f);
   }
@@ -192,7 +198,7 @@ class files {
     bufCode[i] = codeStr.charCodeAt(i);
     }
 
-    this.put_file_name = BIPES ['workspace'].file.value;
+    this.put_file_name = UI ['workspace'].file.value;
     this.put_file_data = bufCode;
 
     this.put_file ();
@@ -284,7 +290,7 @@ class files {
             } else {
               Files.watcher_calledCount += 1;
               if (Files.watcher_calledCount >= 10) {
-                BIPES ['notify'].send(MSG['ErrorGET']);
+                UI ['notify'].send(MSG['ErrorGET']);
                 clearInterval (Files.watcher);
                 Files.watcher = undefined;
               }
