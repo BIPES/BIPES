@@ -26,9 +26,11 @@ class Tool {
     mux.bufferPush ('\x03\x03');
   }
   static softReset () {
-    mux.bufferPush ('\x04');
     if (Channel ['websocket'].connected)
       setTimeout(() => {Channel ['websocket'].connect(UI ['workspace'].websocket.url.value, UI ['workspace'].websocket.pass.value)}, 1000);
+    else if (Channel ['webbluetooth'].connected)
+      setTimeout(() => {Channel ['webbluetooth'].connect()}, 1000);
+    mux.bufferPush ('\x04');
   }
 
 

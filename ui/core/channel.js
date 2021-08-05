@@ -55,7 +55,7 @@ class mux {
         Channel ['webserial'].connect();
       break;
       case 'webbluetooth':
-        ;
+        Channel ['webbluetooth'].connect();
       break;
     }
   }
@@ -63,14 +63,14 @@ class mux {
   static disconnect () {
     if (Channel ['websocket'].connected) {
       Channel ['websocket'].ws.close();
-    }  else if (Channel ['webserial'].connected) {
+    } else if (Channel ['webserial'].connected) {
       Channel ['webserial'].disconnect();
-    /*} else if (Channel ['webbluetooth'].connected) {
-      Channel ['bluetooth'].ws.close();
-    */}
+    } else if (Channel ['webbluetooth'].connected) {
+      Channel ['webbluetooth'].disconnect();
+    }
   }
   static connected () {
-    if (Channel ['websocket'].connected || Channel ['webserial'].connected /* || Channel ['webbluetooth'].connected*/)
+    if (Channel ['websocket'].connected || Channel ['webserial'].connected || Channel ['webbluetooth'].connected)
       return true;
     else
       return false;
@@ -86,6 +86,9 @@ class mux {
       } else if (Channel ['webserial'].connected) {
         var pattern_ = new RegExp(`(.|[\r]){1,${Channel ['webserial'].packetSize}}`, 'g')
         textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,1000}/g);
+      } else if (Channel ['webbluetooth'].connected) {
+        var pattern_ = new RegExp(`(.|[\r]){1,`, 'g')
+        textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,5}/g);
       }
     }
 
@@ -97,11 +100,11 @@ class mux {
       Channel ['webserial'].buffer_ = Channel ['webserial'].buffer_.concat(textArray);
       if (callback != undefined)
         Channel ['webserial'].completeBufferCallback.push(callback);
-    /*} else if (Channel ['webbluetooth'].connected) {
+    } else if (Channel ['webbluetooth'].connected) {
       Channel ['webbluetooth'].buffer_ = Channel ['webbluetooth'].buffer_.concat(textArray);
       if (callback != undefined)
         Channel ['webbluetooth'].completeBufferCallback.push(callback);
-    */} else
+    } else
       UI ['notify'].send(MSG['notConnected']);
   }
 
@@ -110,9 +113,9 @@ class mux {
       Channel ['websocket'].buffer_.unshift(code);
     }  else if (Channel ['webserial'].connected) {
       Channel ['webserial'].buffer_.unshift(code);
-    /*} else if (Channel ['webbluetooth'].connected) {
+    } else if (Channel ['webbluetooth'].connected) {
       Channel ['webbluetooth'].buffer_.unshift(code);
-    */} else
+    } else
       UI ['notify'].send(MSG['notConnected']);
   }
 
@@ -122,9 +125,9 @@ class mux {
     }  else if (Channel ['webserial'].connected) {
       Channel ['webserial'].buffer_ = [];
       Channel ['webserial'].completeBufferCallback = [];
-    /*} else if (Channel ['webbluetooth'].connected) {
+    } else if (Channel ['webbluetooth'].connected) {
       Channel ['webbluetooth'].buffer_ = [];
-    */} else
+    } else
       UI ['notify'].send(MSG['notConnected']);
   }
 }
@@ -440,5 +443,192 @@ class webserial {
 	  }
 	}
 }
+
+class webbluetooth {
+  constructor () {
+    this.device = undefined;
+    this.nusService = undefined;
+    this.txCharacteristic = undefined;
+    this.rxCharacteristic = undefined;
+    this.sending = false;
+    this.watcher;
+    this.buffer_ = [];
+    this.connected = false;
+    this.completeBufferCallback = [];
+    this.last4chars = '';
+  }
+
+  static get ServiceUUID () {return '6e400001-b5a3-f393-e0a9-e50e24dcca9e';}
+  static get RXUUID  () {return '6e400002-b5a3-f393-e0a9-e50e24dcca9e';}
+  static get TXUUID  () {return '6e400003-b5a3-f393-e0a9-e50e24dcca9e';}
+
+  watch () {
+    if(this.device && this.device.gatt.connected) {
+      if (this.buffer_.length >= 1 && !this.sending) {
+        UI ['progress'].remain(this.buffer_.length);
+        try {
+          this.sendNextChunk(this.buffer_[0]);
+        } catch (e) {
+          UI ['notify'].log(e);
+        }
+      } else {
+        UI ['progress'].end();
+      }
+    }
+  }
+
+  sendNextChunk (operation) {
+    return new Promise((resolve, reject) => {
+      this.sending = true;
+      let size = new ArrayBuffer(operation.length);
+      const value = new Uint8Array(size);
+      value.set(operation.split('').map(l => l.charCodeAt(0)), 0);
+      this.rxCharacteristic.writeValue(value).then(() => {
+        this.buffer_.shift();
+        if (this.buffer_.length > 0)
+          this.sendNextChunk (this.buffer_[0]);
+        else
+          this.sending = false;
+      }).catch(e => {
+        UI ['notify'].log (e);
+        return Promise.resolve()
+        .then(() => this.delayPromise(500))
+        // Retry once
+        .then(() => this.rxCharacteristic.writeValue(value)).catch((e) => {
+        this.buffer_ = [];
+        UI ['notify'].log (e);
+        if (e == "NetworkError: Failed to execute 'writeValue' on 'BluetoothRemoteGATTCharacteristic': GATT Server is disconnected. Cannot perform GATT operations. (Re)connect first with `device.gatt.connect`.")
+        UI ['notify'].send ("Lost Bluetooth connection.");
+        });
+      });
+    });
+  }
+
+  delayPromise(delay) {
+    return new Promise(resolve => {
+        setTimeout(resolve, delay);
+    });
+}
+
+
+  connect () {
+    if (navigator.bluetooth) {
+      navigator.bluetooth.requestDevice({
+        //filters: [{services: []}]
+        optionalServices: [webbluetooth.ServiceUUID],
+        acceptAllDevices: true
+      })
+      .then(device => {
+        this.device = device; //check
+        UI ['notify'].log('Found ' + device.name);
+        UI ['notify'].log('Connecting to GATT Server...');
+        this.device.addEventListener('gattserverdisconnected', this.disconnect.bind(this));
+        return device.gatt.connect();
+      })
+      .then(server => {
+        UI ['notify'].log('Locate NUS service');
+        return server.getPrimaryService(webbluetooth.ServiceUUID);
+      }).then(service => {
+        this.nusService = service;
+        UI ['notify'].log('Found NUS service: ' + service.uuid);
+      })
+      .then(() => {
+        UI ['notify'].log('Locate RX characteristic');
+        return this.nusService.getCharacteristic(webbluetooth.RXUUID);
+      })
+      .then(characteristic => {
+        this.rxCharacteristic = characteristic;
+        UI ['notify'].log('Found RX characteristic');
+      })
+      .then(() => {
+        UI ['notify'].log('Locate TX characteristic');
+        return this.nusService.getCharacteristic(webbluetooth.TXUUID);
+      })
+      .then(characteristic => {
+        this.txCharacteristic = characteristic;
+        UI ['notify'].log('Found TX characteristic');
+      })
+      .then(() => {
+        UI ['notify'].log('Enable notifications');
+        return this.txCharacteristic.startNotifications();
+      })
+      .then(() => {
+        UI ['notify'].log('Notifications started');
+        this.txCharacteristic.addEventListener('characteristicvaluechanged', this.handleNotifications.bind(this));
+        term.on('data', (data) => {
+          mux.bufferPush (data)
+          this.watch ();
+        });
+        term.write('\x1b[31mConnected using Web Bluetooth API !\x1b[m\r\n');
+        this.connected = true;
+        mux.bufferPush ('\r');
+        if (UI ['workspace'].runButton.status == true)
+          UI ['workspace'].receiving ();
+        this.watcher = setInterval(this.watch.bind(this), 50);
+      }).catch(error => {
+        UI ['notify'].log(error);
+        term.write('' + error);
+        if(this.device && this.device.gatt.connected)
+          this.device.gatt.disconnect();
+      });
+    } else {
+      term.write('WebBluetooth API is not available on your browser.\r\nPlease make sure the Web Bluetooth flag is enabled.');
+    }
+
+  }
+  disconnect () {
+    if (!this.device) {
+      UI ['notify'].log('No Bluetooth Device connected...');
+    } else {
+      UI ['notify'].log('Disconnecting from Bluetooth Device...');
+      if (this.device.gatt.connected) {
+        this.device.gatt.disconnect();
+      } else
+        UI ['notify'].log('> Bluetooth Device is already disconnected');
+    }
+    term.off('data');
+    this.device = undefined;
+    this.nusService = undefined;
+    this.txCharacteristic = undefined;
+    this.rxCharacteristic = undefined;
+    this.connected = false;
+
+    clearInterval(this.watcher);
+    term.off('data');
+    UI ['workspace'].runAbort();
+  }
+
+  handleNotifications(event) {
+    let value = event.target.value;
+    // Convert raw data bytes to character values and use these to
+    // construct a string.
+    let chunk = "";
+    for (let i = 0; i < value.byteLength; i++) {
+      chunk += String.fromCharCode(value.getUint8(i));
+    }
+    term.write(chunk);
+
+    //data comes in chunks, keep last 4 chars to check MicroPython REPL string
+    this.last4chars = this.last4chars.concat(chunk.substr(-4,4)).substr(-4,4)
+    if (this.last4chars.includes(">>> ")) {
+      UI ['workspace'].runButton.status = true;
+      UI ['workspace'].runButton.dom.className = 'icon';
+      if (this.completeBufferCallback.length > 0) {
+        try {
+          this.completeBufferCallback [0] ();
+        } catch (e) {
+          UI ['notify'].log(e);
+        }
+        this.completeBufferCallback.shift ();
+      }
+    } else if (UI ['workspace'].runButton.status == true) {
+      UI ['workspace'].receiving ();
+    }
+    Files.received_string = Files.received_string.concat(chunk);
+    //Tool.bipesVerify(chunk);
+  }
+}
+
+
 
 
