@@ -19,10 +19,10 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - name: Remove existing toolboxT.xml file
-        run: echo > toolboxT.xml
+        run: echo > ${{ github.workspace }}/ui/toolboxT.xml
       - name: Create unified toolbox file toolboxT.xml
         run: |
-          for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; N=`echo $i | awk -F'_' '{ print $6 }' | awk -F'_' '{ print $1 }'`; echo $N >> toolboxT.xml; cat $i |grep -v "<document>" >> toolboxT.xml; done          
+          for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; N=`echo $i | awk -F'_' '{ print $6 }' | awk -F'.' '{ print $1 }'`; echo "<XML ID=toolbox_${N}>" >> ${{ github.workspace }}/ui/toolboxT.xml; cat $i |grep -v "<document>" >> ${{ github.workspace }}/ui/toolboxT.xml; echo "</XML>" >> ${{ github.workspace }}/ui/toolboxT.xml; done          
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Temporary TEST - Create/update text file
         run: date > test.txt
