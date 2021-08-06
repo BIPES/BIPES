@@ -4,7 +4,7 @@ name: BIPES OFFLINE Package Generator
 
 on: [push]
 jobs:
-  Test:
+  BIPES_OFFLINE:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -17,18 +17,7 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      - name: List files in the repository - UI DIR
+        run: |
+          ls ${{ github.workspace }}/ui          
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  BIPES_OFFLINE:
-    runs-on: ubuntu-latest
-    steps:
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - name: List files in the repository BB
-        run: |
-          ls ${{ github.workspace }}          
-#      - name: TEST
-#        run: |
-#          ls ${{ github.workspace }}/ui              
-#      - name: Create BIPES Offline package
-#        run: chmod +x "${GITHUB_WORKSPACE}/bipes_offline.sh" && ${GITHUB_WORKSPACE}/bipes_offline.sh
