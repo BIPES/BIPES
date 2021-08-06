@@ -185,7 +185,7 @@
 
     function clearEasyMQTTSession(){
       if (confirm("Are you sure you want to clear all data in this topic?\nThis action can not be reverted") == true){
-        $.get( "http://bipes.net.br/easymqtt/clearsession.php", 
+        $.get( `https://bipes.net.br/easymqtt/clearsession.php`,
           {"session": easyMQTT_session_chart}, 
           function( data ) {
             if (data.success){
@@ -207,7 +207,7 @@
         alert("Invalid input");
         return;
       }
-      $.get( "http://bipes.net.br/easymqtt/publish.php", 
+      $.get( `${window.location.protocol}//bipes.net.br/easymqtt/publish.php`,
         {"session": easyMQTT_session_chart,
          "topic": topic,
          "value": value
@@ -279,7 +279,7 @@
     }
 
     function updateEasyMQTTTopic(topic,since=0){
-      $.get( "http://bipes.net.br/easymqtt/gettopic.php", 
+      $.get( `${window.location.protocol}//bipes.net.br/easymqtt/gettopic.php`,
         {"session": easyMQTT_session_chart, "topic": topic, "since": since}, 
         function( data ) {
           if (data.success){
@@ -307,7 +307,7 @@
     }
     function updateEasyMQTTJson(){
       //$(".highcharts-navigator").removeAttr("visibility"); //needed only if not used as an iframe in the main page
-      $.get( "http://bipes.net.br/easymqtt/getsession.php", 
+      $.get( `${window.location.protocol}//bipes.net.br/easymqtt/getsession.php`,
       {"session": easyMQTT_session_chart}, 
       function( data ) {
         if (data.success){
