@@ -21,4 +21,4 @@ jobs:
   Generate_ToolBox:
     runs-on: ubuntu-latest
     steps:
-      - run: for i in `ls ${{ github.workspace }}/ui/tool*xml`; do echo $i; done
+      - run: cd ui; for i in `ls tool*xml`; do echo $i; done
