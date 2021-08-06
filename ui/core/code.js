@@ -447,7 +447,7 @@ Code.init = function() {
 
 
   Code.bindClick('forumButton',
-    function () {window.open("http://bipes.net.br/wp/",'_blank')}
+    function () {window.open("https://bipes.net.br/wp/forums/",'_blank')}
   )
 
   Code.bindClick('editAsFileButton',
