@@ -28,4 +28,4 @@ jobs:
         run: |
           ls ${{ github.workspace }}/ui              
       - name: Create BIPES Offline package
-      - run: chmod +x "${GITHUB_WORKSPACE}/bipes_offline.sh" && ${GITHUB_WORKSPACE}/bipes_offline.sh
+        run: chmod +x "${GITHUB_WORKSPACE}/bipes_offline.sh" && ${GITHUB_WORKSPACE}/bipes_offline.sh
