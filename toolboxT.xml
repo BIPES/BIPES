@@ -1,5 +1,5 @@
 
-testing/ui/toolbox.xml
+
     <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -2640,7 +2640,7 @@ _
 </category>
 
 </document>
-testing/ui/toolbox
+arduino.xml
 
    <category name="Logic">
       <block type="controls_if"></block>
@@ -2769,7 +2769,7 @@ testing/ui/toolbox
       <block type="grove_motor_shield"></block>
     </category>
 </document>
-testing/ui/toolbox
+bbblack.xml
    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -3055,7 +3055,7 @@ testing/ui/toolbox
     </block>
     </category>
  </document>
-testing/ui/toolbox
+esp32.xml
   <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -6073,7 +6073,7 @@ _
 </category>
 </category>
 </document>
-testing/ui/toolbox
+esp8266.xml
   <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -9046,7 +9046,7 @@ _
 </category>
 </category>
 </document>
-testing/ui/toolbox
+linux.xml
    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
