@@ -7,8 +7,8 @@ jobs:
   BIPES_OFFLINE:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      #- run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+#      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -21,3 +21,13 @@ jobs:
         run: |
           for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; N=`echo $i | awk -F'_' '{ print $5 }' | awk -F'_' '{ print $1 }'`; echo $N >> toolbox.xml; cat $i |grep -v "<document>" >> toolbox.xml; done          
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Create/update text file
+        run: date > test.txt
+      - name: Commit and Push
+        run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        # use account 'github-actions[bot]' to set the git config
+        git add -A
+        git commit -m "BIPES OFFLINE Package generated automatically"
+        git push        
