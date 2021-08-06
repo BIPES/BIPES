@@ -44,6 +44,8 @@ function channelPanel (button_, panel_) {
     this.button.className = `icon ${target_}`;
     UI ['responsive'].panels [this.panel_].show = false;
   };
+
+  this.button.className = `icon ${Channel ['mux'].currentChannel}`;
   this.bluetooth.onclick = () => {this.hidePanel ('webbluetooth'); Channel ['mux'].switch('webbluetooth');};
   this.serial.onclick = () => {this.hidePanel ('webserial'); Channel ['mux'].switch('webserial');};
   this.network.onclick = () => {this.hidePanel ('websocket'); Channel['mux'].switch('websocket');};

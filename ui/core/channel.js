@@ -9,12 +9,15 @@ class mux {
           this.available = ['webserial', 'websocket', 'webbluetooth'];
           this.currentChannel = 'webserial';
           this.isLocalFile = true;
+        break;
         case 'https:':
           this.available = ['webserial', 'webbluetooth'];
           this.currentChannel = 'webserial';
+        break;
         case 'http:':
           this.available = ['websocket'];
           this.currentChannel = 'websocket';
+        break;
       }
     } else {
       this.available = ['webserial', 'websocket', 'webbluetooth'];
