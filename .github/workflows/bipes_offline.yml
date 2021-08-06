@@ -21,4 +21,4 @@ jobs:
   Generate_ToolBox:
     runs-on: ubuntu-latest
     steps:
-      - run: cd ui; for i in `ls tool*xml`; do echo $i; done
+      - run: pwd; ls; for i in `ls tool*xml`; do echo $i; done
