@@ -1841,9 +1841,23 @@ _
     </category>
 
   <category name="Bluetooth REPL">
+    <label text="Bluetooth REPL"></label>
+    <label text="This block allows terminal/console access using bluetooth."></label>
+    <label text="Library: https://github.com/micropython/micropython/tree/master/examples/bluetooth"></label>
+    <label text="You need to install 3 files to use:"></label>
+    <button text="Install ble_advertising.py library" callbackKey="installPyLib"></button>
+    <button text="Install ble_uart_peripheral.py library" callbackKey="installPyLib"></button>
+    <button text="Install ble_uart_repl.py library" callbackKey="installPyLib"></button>
+
       <label text="Web Bluetooth REPL"></label>
       <block type="bluetooth_repl_setup"></block>
       <block type="bluetooth_repl_start"></block>
+    <label text="Usage:"></label>
+    <label text="1. Install the 3 files above"></label>
+    <label text="2. Start Web Bluetooth REPL"></label>
+    <label text="3. Pair the mpy-repl device with your device /"></label>
+    <label text="4. Go to https://bipes.net.br/beta2serial/ui/"></label>
+    <label text="5. Console and Connect (Web Bluetooth)"></label>
     </category>
 
   <category name="WebREPL">

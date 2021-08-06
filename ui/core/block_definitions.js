@@ -639,6 +639,45 @@ Blockly.Blocks['gpio_get'] = {
   }
 };
 
+Blockly.Blocks['gpio_interrupt'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("External event (Interrupt on Input Pin)");
+    this.appendDummyInput()
+        .appendField("Trigger:")
+        .appendField(new Blockly.FieldDropdown([["IRQ_FALLING","IRQ_FALLING"], ["IRQ_RISING","IRQ_RISING"], ["IRQ_FALLING and IRQ_RISING","BOTH"]]), "trigger");
+    this.appendValueInput("pin")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pin");
+    this.appendStatementInput("code")
+        .setCheck(null)
+        .appendField("do");
+    this.setColour(230);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+ this.setTooltip("Trigger interrupt when pin state changes");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['gpio_interrupt_off'] = {
+  init: function() {
+
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Disable interrupt on pin");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Disable interrupt on a given pin");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+
 /// Pinout
 Blockly.Blocks['pinout'] = {
   update_list: function(load_) {
@@ -10419,10 +10458,17 @@ Blockly.Blocks['HSL_to_RGB'] = {
 Blockly.Blocks['bipes_plot'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Plot (from serial port) on IOT tab graph");
+        .appendField("Show data on IOT tab (freeboard)");
+    this.appendDummyInput()
+        .appendField("(ideal for USB port or bluetooth)");
+
+    this.appendValueInput("id")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ID");
 
     this.appendValueInput("values")
-        .setCheck("String")
+        .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("data");
 

@@ -1,0 +1,3 @@
+[submodule "ui/freeboard"]
+	path = ui/freeboard
+	url = https://github.com/rafaelaroca/freeboard
