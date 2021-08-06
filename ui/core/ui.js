@@ -108,7 +108,7 @@ notify.prototype.log = function (message) {
 }
 
 function responsive () {
-  this.mobile = true;
+  this.mobile = window.innerWidth < 60*$em ? true : false;
   this.body = get ('body');
 	this.panels = {'.toolbar':{from:'toolbar',x:$em*18.5, x2:0, y:$em*7.5, show:false},
 	               '.notify-panel':{from:'notify-panel',x:$em*18.5, x2:0, y:0, show:false},

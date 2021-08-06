@@ -469,14 +469,11 @@ class webbluetooth {
   watch () {
     if(this.device && this.device.gatt.connected) {
       if (this.buffer_.length >= 1 && !this.sending) {
-        UI ['progress'].remain(this.buffer_.length);
         try {
           this.sendNextChunk(this.buffer_[0]);
         } catch (e) {
           UI ['notify'].log(e);
         }
-      } else {
-        UI ['progress'].end();
       }
     }
   }
@@ -489,10 +486,13 @@ class webbluetooth {
       value.set(operation.split('').map(l => l.charCodeAt(0)), 0);
       this.rxCharacteristic.writeValue(value).then(() => {
         this.buffer_.shift();
-        if (this.buffer_.length > 0)
+        if (this.buffer_.length > 0) {
           this.sendNextChunk (this.buffer_[0]);
-        else
+          UI ['progress'].remain(this.buffer_.length);
+        } else {
           this.sending = false;
+          UI ['progress'].end()
+        }
       }).catch(e => {
         UI ['notify'].log (e);
         return Promise.resolve()
