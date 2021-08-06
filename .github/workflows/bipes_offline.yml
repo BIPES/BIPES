@@ -21,6 +21,4 @@ jobs:
   BIPES_OFFLINE:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-      chmod +x "${GITHUB_WORKSPACE}/bipes_offline.sh"
-      "${GITHUB_WORKSPACE}/bipes_offline.sh"
+      - run: chmod +x "${GITHUB_WORKSPACE}/bipes_offline.sh" && ${GITHUB_WORKSPACE}/bipes_offline.sh
