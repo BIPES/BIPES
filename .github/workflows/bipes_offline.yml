@@ -4,7 +4,7 @@ name: BIPES OFFLINE Package Generator
 
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Test:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -18,3 +18,11 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+  Generate_ToolBox:
+    runs-on: ubuntu-latest
+    steps:
+      - run: >-
+  for i in ui/toolbox*xml;
+  do
+   echo "File: ${i} \n";   
+  done
