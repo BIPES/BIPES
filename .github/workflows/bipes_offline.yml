@@ -19,5 +19,5 @@ jobs:
           ls ${{ github.workspace }}
       - name: List files in the repository - UI DIR
         run: |
-          ls ${{ github.workspace }}/ui          
+          for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; done          
       - run: echo "🍏 This job's status is ${{ job.status }}."
