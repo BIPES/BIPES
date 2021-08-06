@@ -18,16 +18,22 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - name: List files in the repository - UI DIR
+      - name: Remove existing toolboxT.xml file
+        run: echo > toolboxT.xml
+      - name: Create unified toolbox file toolboxT.xml
         run: |
           for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; N=`echo $i | awk -F'_' '{ print $5 }' | awk -F'_' '{ print $1 }'`; echo $N >> toolboxT.xml; cat $i |grep -v "<document>" >> toolboxT.xml; done          
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Create/update text file
+      - name: Temporary TEST - Create/update text file
         run: date > test.txt
+      - name: Create ZIP file with BIPES OFFLINE Release
+        run: zip -r bipes_offline.zip *
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add test.txt
+          git add toolboxT.xml
+          git add bipes_offline.zip
           git commit -m "BIPES OFFLINE Package generated automatically"
           git push        
