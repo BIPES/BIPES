@@ -21,4 +21,4 @@ jobs:
   Generate_ToolBox:
     runs-on: ubuntu-latest
     steps:
-      - run: for i in ui/toolbox*xml; do echo "File: ${i} \n"; done
+      - run: for i in 'ui/toolbox*xml'; do echo $i; done
