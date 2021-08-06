@@ -24,7 +24,7 @@ class mux {
     this.ifunavailable = {
       webserial: ['https://bipes.net.br/beta2/ui', 'the HTTPS version'],
       websocket: ['http:///bipes.net.br/beta2/ui', 'the HTTP version'],
-      webbluetooth: ['https://bipes.net.br/beta2serial/ui', 'beta2serial']
+      webbluetooth: ['https://bipes.net.br/beta2/ui', 'the HTTPS version']
     }
   }
 
@@ -159,6 +159,7 @@ class websocket {
   }
 
   connect (url, pass) {
+    UI ['workspace'].connecting ();
     this.ws = new WebSocket(url);
     this.ws.binaryType = 'arraybuffer';
     this.ws.onopen = () => {
@@ -267,6 +268,7 @@ class websocket {
           if (event.data.includes(">>> ")) {
             UI ['workspace'].runButton.status = true;
             UI ['workspace'].runButton.dom.className = 'icon';
+            UI ['workspace'].toolbarButton.className = 'icon medium';
             if (this.completeBufferCallback.length > 0) {
               try {
                 this.completeBufferCallback [0] ();
@@ -331,6 +333,7 @@ class webserial {
 
   connect () {
     navigator.serial.requestPort ().then((port) => {
+      UI ['workspace'].connecting ();
       this.port = port;
       this.port.open({baudRate: 115200}).then(() => {
         const appendStream = new WritableStream({
@@ -342,6 +345,7 @@ class webserial {
                 if (Channel ['webserial'].last4chars.includes(">>> ")) {
                   UI ['workspace'].runButton.status = true;
                   UI ['workspace'].runButton.dom.className = 'icon';
+                  UI ['workspace'].toolbarButton.className = 'icon medium';
                   if (Channel ['webserial'].completeBufferCallback.length > 0) {
                     try {
                       Channel ['webserial'].completeBufferCallback [0] ();
@@ -519,6 +523,7 @@ class webbluetooth {
         acceptAllDevices: true
       })
       .then(device => {
+        UI ['workspace'].connecting ();
         this.device = device; //check
         UI ['notify'].log('Found ' + device.name);
         UI ['notify'].log('Connecting to GATT Server...');
@@ -613,6 +618,7 @@ class webbluetooth {
     if (this.last4chars.includes(">>> ")) {
       UI ['workspace'].runButton.status = true;
       UI ['workspace'].runButton.dom.className = 'icon';
+      UI ['workspace'].toolbarButton.className = 'icon medium';
       if (this.completeBufferCallback.length > 0) {
         try {
           this.completeBufferCallback [0] ();

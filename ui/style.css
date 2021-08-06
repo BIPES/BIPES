@@ -258,6 +258,15 @@ input.checkswitch[type="checkbox"] {
 #channelButton {
   border-color: #aaa;
   margin: -1px;
+  background: #fff;
+}
+#channel_connect.wait, #toolbarButton.wait {
+  animation: blinking 1s infinite;
+}
+@keyframes blinking {
+		0%		{ background-color: #fff;}
+		50%	 { background-color: #6aa8fb;}
+		100%	 { background-color: #fff;}
 }
 #networkButton, #serialButton {
   margin-top: -1px;
@@ -550,6 +559,9 @@ button.icon.medium:before  {
 }
 #toolbarButton:before {
   background-position: left calc(-2.5rem*11) top;
+}
+#toolbarButton.on:before {
+  background-position: left calc(-2.5rem*11) bottom;
 }
 #forumButton:before {
   background-position: left calc(-1.5rem*12) top;

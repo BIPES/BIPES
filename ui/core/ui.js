@@ -204,6 +204,8 @@ function workspace () {
     this.defaultToolbox = 'default.xml';
     this.selector = get('#device_selector');
     this.content = get('#content_device');
+    this.toolbarButton = get('#toolbarButton');
+    this.channel_connect = get('#channel_connect');
     this.device_title = getIn(this.content, '#device_title'),
     this.device_img = getIn(this.content, '#device_img'),
     this.device_desc = getIn(this.content, '#device_desc');
@@ -255,6 +257,11 @@ workspace.prototype.run = function () {
   }
 }
 
+workspace.prototype.connecting = function () {
+  this.toolbarButton.className = 'icon medium wait';
+  this.channel_connect.className = 'wait';
+}
+
 workspace.prototype.buttonConnect = function () {
   Channel ['mux'].connect ();
 }
@@ -272,8 +279,10 @@ workspace.prototype.connectClick = function () {
 }
 
 workspace.prototype.receiving = function () {
+  this.channel_connect.className = '';
   this.runButton.status = false;
   this.runButton.dom.className = 'icon on';
+  this.toolbarButton.className = 'icon medium on';
   this.connectButton.className = 'icon on';
   this.term.className = 'on';
 }
@@ -281,6 +290,7 @@ workspace.prototype.receiving = function () {
 workspace.prototype.runAbort = function () {
   this.runButton.status = true;
   this.runButton.dom.className = 'icon';
+  this.toolbarButton.className = 'icon medium';
   this.connectButton.className = 'icon';
   this.term.className = '';
   this.websocket.url.disabled = false;
