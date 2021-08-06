@@ -1,4 +1,5 @@
 # Generates files and package for BIPES offline version
+# use account 'github-actions[bot]' to set the git config
 
 name: BIPES OFFLINE Package Generator
 
@@ -27,7 +28,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-  # use account 'github-actions[bot]' to set the git config
           git add test.txt
           git commit -m "BIPES OFFLINE Package generated automatically"
           git push        
