@@ -23,4 +23,5 @@ jobs:
     steps:
       - run: echo "PWD = `pwd`"
       - run: echo "Files = `ls`"
+      - run: ls ${{ github.workspace }}
       - run: for i in `ls ui/tool*xml`; do echo $i; done
