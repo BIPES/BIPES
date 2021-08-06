@@ -21,4 +21,11 @@ jobs:
   BIPES_OFFLINE:
     runs-on: ubuntu-latest
     steps:
+      - name: Create single file with all toolboxes
+        run: |
+          ls ${{ github.workspace }}    
+      - name: TEST
+        run: |
+          ls ${{ github.workspace }}/ui              
+      - name: Create BIPES Offline package
       - run: chmod +x "${GITHUB_WORKSPACE}/bipes_offline.sh" && ${GITHUB_WORKSPACE}/bipes_offline.sh
