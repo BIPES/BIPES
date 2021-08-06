@@ -18,10 +18,9 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  Generate_ToolBox:
+  BIPES_OFFLINE:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "PWD = `pwd`"
-      - run: echo "Files = `ls`"
-      - run: ls ${{ github.workspace }}
-      - run: for i in `ls ui/tool*xml`; do echo $i; done
+      - run: |
+      chmod +x "${GITHUB_WORKSPACE}/bipes_offline.sh"
+      "${GITHUB_WORKSPACE}/bipes_offline.sh"
