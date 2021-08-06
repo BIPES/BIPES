@@ -19,5 +19,5 @@ jobs:
           ls ${{ github.workspace }}
       - name: List files in the repository - UI DIR
         run: |
-          for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; N=`echo $i | awk -F'_' '{ print $5 }' | awk -F'_' '{ print $1 }'`; echo $N >> toolbox.xml; cat $i |grep -v "<document>" >> toolbox.xml done          
+          for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; N=`echo $i | awk -F'_' '{ print $5 }' | awk -F'_' '{ print $1 }'`; echo $N >> toolbox.xml; cat $i |grep -v "<document>" >> toolbox.xml; done          
       - run: echo "🍏 This job's status is ${{ job.status }}."
