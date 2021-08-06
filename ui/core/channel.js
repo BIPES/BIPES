@@ -88,7 +88,7 @@ class mux {
         textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,10}/g);
       } else if (Channel ['webserial'].connected) {
         var pattern_ = new RegExp(`(.|[\r]){1,${Channel ['webserial'].packetSize}}`, 'g')
-        textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,1000}/g);
+        textArray = code.replace(/\r\n|\n/gm, '\r').match(pattern_);
       } else if (Channel ['webbluetooth'].connected) {
         var pattern_ = new RegExp(`(.|[\r]){1,`, 'g')
         textArray = code.replace(/\r\n|\n/gm, '\r').match(/(.|[\r]){1,5}/g);
