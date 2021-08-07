@@ -328,6 +328,7 @@ workspace.prototype.change = function () {
     Code.renderContent (); // renders selected tab
 
     Channel ['webserial'].packetSize = parseInt(selected.serial_packet_size);
+    Channel ['webserial'].speed = parseInt(selected.speed);
 
   } else
     UI ['notify'].send(MSG['invalidDevice']);

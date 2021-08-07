@@ -2,6 +2,8 @@
 	"devices": {
 		"ESP8266" : {
 			"title":"<b>ESP8266</b><br>",
+			"speed":"115200",
+			"boardID":"ESP module with ESP8266", 
 			"img":"devinfo/media/Node-MCU-ESP.jpg",
 			"description":"<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.",
 			"toolbox":"esp8266.xml",
@@ -28,6 +30,8 @@
 		},
 		"ESP32S2": {
 			"title":"<b>ESP32 S2</b><br>",
+			"speed":"115200",
+			"boardID":"ESP32-S2", 
 			"img":"devinfo/media/ESP32-Pinout.jpg",
 			"description":"",
 			"toolbox":"esp32.xml",
@@ -63,6 +67,8 @@
 		},
 		"ESP32": {
 			"title":"<b>ESP32</b><br>",
+			"speed":"115200",
+			"boardID":"ESP32", 
 			"img":"devinfo/media/ESP32-Pinout.jpg",
 			"description":"",
 			"toolbox":"esp32.xml",
@@ -104,6 +110,8 @@
 		},
 		"RPI_Pico": {
 			"title":"<b>Raspberry Pi Pico</b><br>",
+			"speed":"115200",
+			"boardID":"Raspberry Pi Pico with RP2040", 
 			"img":"devinfo/media/RPI_Pico.svg",
 			"description":"",
 			"toolbox":"rpi_pico.xml",
@@ -141,6 +149,8 @@
 		},
 		"wemos_d1_mini": {
 			"title":"<b>ESP8266 - Wemos D1 Mini</b><br>",
+			"speed":"115200",
+			"boardID":"ESP module with ESP8266", 
 			"img":"devinfo/media/Wemos-D1-Mini.png",
 			"description":"<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/",
 			"toolbox":"esp8266.xml",
@@ -161,6 +171,8 @@
 		},
 		"ESP32-oled": {
 			"title":"<b>ESP32 board with OLED LCD and Battery</b><br>",
+			"speed":"115200",
+			"boardID":"ESP32", 
 			"img":"devinfo/media/esp32-oled.png",
 			"description":"Yet another ESP32 board",
 			"toolbox":"esp32.xml",
@@ -201,6 +213,8 @@
 		},
 		"ESP32-LoRa": {
 			"title":"<b>ESP32 board with OLED LCD and LoRa</b><br>",
+			"speed":"115200",
+			"boardID":"ESP32", 
 			"img":"devinfo/media/ESP32-LoRa.jpg",
 			"description":"Yet another ESP32 board",
 			"toolbox":"esp32.xml",
@@ -229,6 +243,8 @@
 		},
 		"M5STICK": {
 			"title":"<b>M5Stick ESP32</b><br>",
+			"speed":"115200",
+			"boardID":"ESP32", 
 			"img":"devinfo/media/m5stickc.png",
 			"description":"M5STICK-C is based on ESP32 processor. More info at:",
 			"toolbox":"esp32.xml",
@@ -236,6 +252,8 @@
 		},
 		"Nucleo": {
 			"title":"<b>mBed: NUCLEO-F446RE</b><br>",
+			"speed":"115200",
+			"boardID":"NUCLEO-F446RE with STM32F4x", 
 			"img":"devinfo/media/NUCLEO-F446RE.png",
 			"description":"",
 			"toolbox":"stm32.xml",
@@ -243,6 +261,8 @@
 		},
 		"RPI4": {
 			"title":"<b>Raspberry Pi 4 </b><br>",
+			"speed":"115200",
+			"boardID":"Linux", 
 			"img":"devinfo/media/rpi4.png",
 			"description":"Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv",
 			"toolbox":"linux.xml",
@@ -250,6 +270,8 @@
 		},
 		"EV3": {
 			"title":"<b>Lego EV3 </b><br>",
+			"speed":"115200",
+			"boardID":"ev3", 
 			"img":"",
 			"description":"Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!",
 			"toolbox":"",
@@ -257,6 +279,8 @@
 		},
 		"BBBlack": {
 			"title":"<b>Beagle Bone Black</b><br>",
+			"speed":"115200",
+			"boardID":"Linux",
 			"img":"devinfo/media/cape-headers.png",
 			"description":"",
 			"toolbox":"bbblack.xml",
@@ -264,6 +288,8 @@
 		},
 		"BBC": {
 			"title":"<b>BBC MicroBit</b><br>",
+			"speed":"115200",
+			"boardID":"micro:bit with nRF51822", 
 			"img":"devinfo/media/microbit.png",
 			"description":"Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>",
 			"toolbox":"esp32.xml",
@@ -271,10 +297,12 @@
 		},
 		"UNO": {
 			"title":"<b>Arduino UNO. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
+			"speed":"38400",
+			"boardID":"Snek",
 			"img":"https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png",
 			"description":"",
 			"toolbox":"arduino.xml",
-			"serial_packet_size":"100"
+			"serial_packet_size":"10"
 		}
 	}
 }
