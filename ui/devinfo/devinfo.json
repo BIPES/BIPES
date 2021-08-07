@@ -296,12 +296,35 @@
 			"serial_packet_size":"100"
 		},
 		"UNO": {
-			"title":"<b>Arduino UNO. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
+			"title":"<b>Arduino UNO and Arduino MEGA. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
 			"speed":"38400",
 			"boardID":"Snek",
 			"img":"https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png",
 			"description":"",
 			"toolbox":"arduino.xml",
+			"pinout": [
+				["0 / RX", "D0"],
+				["1 / TX", "D1"],
+				["D2", "D2"],
+				["D3", "D3"],
+				["D4", "D4"],
+				["D5", "D5"],
+				["D6", "D6"],
+				["D7", "D7"],
+				["D8", "D8"],
+				["D9", "D9"],
+				["D10", "D10"],
+				["D11", "D11"],
+				["D12", "D12"],
+				["LED / D13", "D13"],
+				["A0", "A0"],
+				["A1", "A1"],
+				["A2", "A2"],
+				["A3", "A3"],
+				["A4", "A4"],
+				["A5", "A5"]
+			],
+
 			"serial_packet_size":"10"
 		}
 	}
