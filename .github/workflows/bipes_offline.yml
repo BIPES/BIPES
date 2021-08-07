@@ -19,21 +19,21 @@ jobs:
       - name: Remove existing offline version file
         run: echo > ${{ github.workspace }}/ui/index_offline.html
       - name: Generating offline version
-      	run: |
+        run: |
           cat ${{ github.workspace }}/ui/index.html >> ${{ github.workspace }}/ui/index_offline.html
-          for i in ${{ github.workspace }}/ui/toolbox/*.xml
+          for i in ui/toolbox/*.xml
           do
-		echo "Including file $i";
-		echo -n "<document style='display: none' id='"OFFLINE_ >> ${{ github.workspace }}/ui/index_offline.html
-		echo -n $i | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ${{ github.workspace }}/ui/index_offline.html
-		echo  "'>" >> ${{ github.workspace }}/ui/index_offline.html
-		cat $i | grep -v "<document>" >> ${{ github.workspace }}/ui/index_offline.html
-          done
-          echo "<script>" >> ${{ github.workspace }}/ui/index_offline.html
-          echo "OFFLINE_devinfo_devinfo_json = \`" >> ${{ github.workspace }}/ui/index_offline.html
-          cat ${{ github.workspace }}/ui/devinfo/devinfo.json >> ${{ github.workspace }}/ui/index_offline.html
-          echo "\`;" >> ${{ github.workspace }}/ui/index_offline.html
-          echo "</script>" >> ${{ github.workspace }}/ui/index_offline.html
+            echo "Including file $i";
+            echo -n "<document style='display: none' id='"OFFLINE_ >> ${{ github.workspace }}/ui/index_offline.html
+            echo -n $i | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ${{ github.workspace }}/ui/index_offline.html
+            echo  "'>" >> ${{ github.workspace }}/ui/index_offline.html
+            cat $i | grep -v "<document>" >> ${{ github.workspace }}/ui/index_offline.html
+            done
+            echo "<script>" >> ${{ github.workspace }}/ui/index_offline.html
+            echo "OFFLINE_devinfo_devinfo_json = \`" >> ${{ github.workspace }}/ui/index_offline.html
+            cat ${{ github.workspace }}/ui/devinfo/devinfo.json >> ${{ github.workspace }}/ui/index_offline.html
+            echo "\`;" >> ${{ github.workspace }}/ui/index_offline.html
+            echo "</script>" >> ${{ github.workspace }}/ui/index_offline.html
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Commit and Push
         run: |
@@ -41,6 +41,4 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ${{ github.workspace }}/ui/index_offline.html
           git commit -m "BIPES OFFLINE generated automatically"
-          git push        
-
-
+          git push
