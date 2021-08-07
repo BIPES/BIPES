@@ -145,8 +145,25 @@ async function xhrGET (filename, responsetype, onsuccess, onfail) {
       }
   xmlHTTP.send();
 	} else {
-	  alert("Please run at a server or use the live version at bipes.net.br/beta2/ui. We can't load some files locally.")
-	}
+      filename = filename.replace(/[\/\.]/g, '_')
+	    let regex_xml = /_(.*)_xml/;
+	    let regex_json = /_(.*)_json/;
+      if (regex_json.test (filename)) {
+	        window.addEventListener('load', () => {
+            onsuccess(JSON.parse (eval(`OFFLINE_${filename}`)));
+        }, false);
+      } else if (regex_xml.test (filename)) {
+        var xml_ = get(`#OFFLINE_${filename}`);
+        if (xml_ == undefined) {
+          xml_ = get(`#OFFLINE_toolbox_default_xml`);
+          UI ['notify'].send(MSG['noToolbox']);
+        }
+        onsuccess(xml_);
+	    } else
+	      alert(`Could no find ${filename} locally, please run at a server or use the live version at bipes.net.br/beta2/ui.`);
+
+
+  }
 }
 responsive.prototype.hidePanels = function (ev) {
   if (ev.x !== 0 && ev.y !== 0) {
@@ -203,6 +220,11 @@ function progress () {
 
 
 function workspace () {
+    if (window.location.pathname.includes ('index.html') && window.location.protocol == 'file:') {
+      alert('You will now be redirected to the offline version.');
+      window.location.replace("index_offline.html");
+    }
+
     this.defaultToolbox = 'default.xml';
     this.selector = get('#device_selector');
     this.content = get('#content_device');

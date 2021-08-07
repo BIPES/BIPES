@@ -3,25 +3,34 @@
 ![BIPES](bipes.png)
 
 
-More information at the project website:
+BIPES allows anyone to quickly and reliably design, program, build, deploy and test embedded systems and IOT devices and applications. It is fully based on a web environment, so absolutely no software install is needed on the client / developer machine. 
 
-https://bipes.net.br/
+More information at the project website: https://bipes.net.br/ .
 
-Use it online:
+## Demo
+Try it now at: http://www.bipes.net.br/beta2/ui/ .
 
-http://www.bipes.net.br/beta2/ui/
+## Usage
+
+To build/update the offline version with latest, run:
+```
+make offine
+```
+This version does to require a server since it has all core files concatanated at `ui/index_offline.html`, just open this file in a browser. It will also create a `bipes_offline.zip`.
 
 
+BIPES integrates WebREPL and Blockly. considere cloning these submodules into the same folder to update these core files:
+```
+make git-clone
+```
+Copy files from cloned repositories by
+```
+make copy
+```
+That's it.
 
-# More information
-
-Integrates WebREPL and Blockly. Must clone these submodules into the same folder before using the project:
-
-git clone https://github.com/google/blockly.git
-
-git clone https://github.com/micropython/webrepl.git
-
-Some functions of ui/index.html were based on Blopy project (https://github.com/mnoriaki/Blopy), by Noriaki Mitsunaga
+## More informaton
+Some functions of `ui/index.html` were based on Blopy project (https://github.com/mnoriaki/Blopy), by Noriaki Mitsunaga
  (https://github.com/mnoriaki).
  
  OpenCV blocks were automatically generated using berak's OpenCV to Blockly generator (https://github.com/berak/blockly-cv2/tree/master/gen).

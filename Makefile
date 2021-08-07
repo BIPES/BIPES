@@ -1,4 +1,4 @@
-DIR=ui
+DIR=ui/core
 FILES_BLOCKLY1=blockly_compressed.js blocks_compressed.js javascript_compressed.js python_compressed.js media
 FILES_WEBREPL=FileSaver.js term.js
 
@@ -15,4 +15,24 @@ copy:
 copy-bipes-blocks:
 	cp bipes_blocks/block_definitions.js ui/
 	echo "Please, add <>"
+
+
+offline:
+	echo "Generating offline version"
+	echo > ui/index_offline.html
+	cat ui/index.html >> ui/index_offline.html
+	for i in ui/toolbox/*.xml ; do \
+		echo "Including file $$i" ; \
+		echo -n "<document style='display: none' id='"OFFLINE_ >> ui/index_offline.html ; \
+		echo -n $$i | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html ; \
+		echo  "'>" >> ui/index_offline.html ;\
+		cat $$i | grep -v "<document>" >> ui/index_offline.html ; \
+	done
+	echo "<script>" >> ui/index_offline.html
+	echo "OFFLINE_devinfo_devinfo_json = \`" >> ui/index_offline.html
+	cat ui/devinfo/devinfo.json >> ui/index_offline.html
+	echo "\`;" >> ui/index_offline.html
+	echo "</script>" >> ui/index_offline.html
+	zip -r bipes_offline.zip *
+
 
