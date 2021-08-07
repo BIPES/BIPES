@@ -317,6 +317,7 @@ class webserial {
     this.appendStream = undefined;
     this.shouldListen = true;
     this.packetSize = 100;
+    this.speed = 115200;
   }
 
   watch () {
@@ -338,7 +339,7 @@ class webserial {
     navigator.serial.requestPort ().then((port) => {
       UI ['workspace'].connecting ();
       this.port = port;
-      this.port.open({baudRate: 115200}).then(() => {
+      this.port.open({baudRate: [this.speed] }).then(() => {
         const appendStream = new WritableStream({
           write(chunk) {
             if(Channel ['webserial'].shouldListen) {
