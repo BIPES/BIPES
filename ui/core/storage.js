@@ -67,7 +67,7 @@ BlocklyStorage.link = function(opt_workspace) {
     }
   }
   var data = Blockly.Xml.domToText(xml);
-  data = BIPES ['workspace'].writeWorkspace (data, false);
+  data = UI ['workspace'].writeWorkspace (data, false);
   BlocklyStorage.makeRequest_('/storage', 'xml', data, workspace);
 };
 
@@ -169,7 +169,7 @@ BlocklyStorage.monitorChanges_ = function(workspace) {
  * @private
  */
 BlocklyStorage.loadXml_ = function(xml, workspace) {
-  xml = BIPES ['workspace'].readWorkspace (xml, false);
+  xml = UI ['workspace'].readWorkspace (xml, false);
   try {
     xml = Blockly.Xml.textToDom(xml);
   } catch (e) {

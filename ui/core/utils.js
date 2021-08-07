@@ -15,6 +15,8 @@ class Tool {
     let code = code_ == undefined ? Blockly.Python.workspaceToCode(Code.workspace) : code_;
 
     if (code) {
+      code+='\r\r';//Snek workaround
+
       mux.bufferPush (`\x05${code}\x04`);
       UI ['progress'].start(Channel.websocket.buffer_.length);
     }
