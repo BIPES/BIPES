@@ -8,8 +8,6 @@ jobs:
   BIPES_OFFLINE:
     runs-on: ubuntu-latest
     steps:
-      #- run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-#      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -18,22 +16,31 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - name: Remove existing toolboxT.xml file
-        run: echo > ${{ github.workspace }}/ui/toolboxT.xml
-      - name: Create unified toolbox file toolboxT.xml
-        run: |
-          for i in ${{ github.workspace }}/ui/toolbox*xml; do echo "Including file $i"; N=`echo $i | awk -F'_' '{ print $6 }' | awk -F'.' '{ print $1 }'`; echo "<XML ID=toolbox_${N}>" >> ${{ github.workspace }}/ui/toolboxT.xml; cat $i |grep -v "<document>" >> ${{ github.workspace }}/ui/toolboxT.xml; echo "</XML>" >> ${{ github.workspace }}/ui/toolboxT.xml; done          
+      - name: Remove existing offline version file
+        run: echo > ${{ github.workspace }}/ui/index_offline.html
+      - name: Generating offline version
+      	run: |
+          cat ${{ github.workspace }}/ui/index.html >> ${{ github.workspace }}/ui/index_offline.html
+          for i in ${{ github.workspace }}/ui/toolbox/*.xml
+          do
+		echo "Including file $i";
+		echo -n "<document style='display: none' id='"OFFLINE_ >> ${{ github.workspace }}/ui/index_offline.html
+		echo -n $i | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ${{ github.workspace }}/ui/index_offline.html
+		echo  "'>" >> ${{ github.workspace }}/ui/index_offline.html
+		cat $i | grep -v "<document>" >> ${{ github.workspace }}/ui/index_offline.html
+          done
+          echo "<script>" >> ${{ github.workspace }}/ui/index_offline.html
+          echo "OFFLINE_devinfo_devinfo_json = \`" >> ${{ github.workspace }}/ui/index_offline.html
+          cat ${{ github.workspace }}/ui/devinfo/devinfo.json >> ${{ github.workspace }}/ui/index_offline.html
+          echo "\`;" >> ${{ github.workspace }}/ui/index_offline.html
+          echo "</script>" >> ${{ github.workspace }}/ui/index_offline.html
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Temporary TEST - Create/update text file
-        run: date > test.txt
-      - name: Create ZIP file with BIPES OFFLINE Release
-        run: zip -r bipes_offline.zip *
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add test.txt
-          git add ui/toolboxT.xml
-          git add bipes_offline.zip
-          git commit -m "BIPES OFFLINE Package generated automatically"
+          git add ${{ github.workspace }}/ui/index_offline.html
+          git commit -m "BIPES OFFLINE generated automatically"
           git push        
+
+
