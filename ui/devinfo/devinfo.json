@@ -5,7 +5,7 @@
 			"speed":"115200",
 			"boardID":"ESP module with ESP8266", 
 			"img":"devinfo/media/Node-MCU-ESP.jpg",
-			"description":"<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.",
+			"description":"<BR><BR><input type='button' onclick='loadDoc();' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.",
 			"toolbox":"esp8266.xml",
 			"pinout": [
 		    ["D0 / GPIO16", "16"],
@@ -152,7 +152,7 @@
 			"speed":"115200",
 			"boardID":"ESP module with ESP8266", 
 			"img":"devinfo/media/Wemos-D1-Mini.png",
-			"description":"<BR><BR><input type='button' onclick='loadDoc(\"\");' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/",
+			"description":"<BR><BR><input type='button' onclick='loadDoc();' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/",
 			"toolbox":"esp8266.xml",
 			"pinout": [
 				["D0 / GPIO16", "16"],
