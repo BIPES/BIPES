@@ -14,7 +14,7 @@ Try it now at: http://www.bipes.net.br/beta2/ui/ .
 
 To build/update the offline version with latest, run:
 ```
-make offine
+make offline
 ```
 This version does to require a server since it has all core files concatanated at `ui/index_offline.html`, just open this file in a browser. It will also create a `bipes_offline.zip`.
 
