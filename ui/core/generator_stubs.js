@@ -5292,8 +5292,7 @@ Blockly.Python['bipes_plot'] = function(block) {
    var x = Blockly.Python.valueToCode(block, 'values', Blockly.Python.ORDER_NONE) || '\'\'';
    var id = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_NONE) || '\'\'';
 
-  var code = 'print(\'BIPES-DATA:\',';
-      code+= id + ',\',\',' + x + ')\n';
+  var code = `print('BIPES-DATA:',${id},',',${x})\n`;
 
   return code;
 };

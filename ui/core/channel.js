@@ -268,6 +268,7 @@ class websocket {
         }
         term.write(event.data);
         if (typeof event.data == 'string') {
+          Tool.bipesVerify ();
           if (event.data.includes(">>> ")) {
             UI ['workspace'].runButton.status = true;
             UI ['workspace'].runButton.dom.className = 'icon';
@@ -344,6 +345,7 @@ class webserial {
           write(chunk) {
             if(Channel ['webserial'].shouldListen) {
               if (typeof chunk == 'string') {
+                Tool.bipesVerify ();
                 //data comes in chunks, keep last 4 chars to check MicroPython REPL string
                 Channel ['webserial'].last4chars = Channel ['webserial'].last4chars.concat(chunk.substr(-4,4)).substr(-4,4)
                 if (Channel ['webserial'].last4chars.includes(">>> ")) {
@@ -616,7 +618,7 @@ class webbluetooth {
       chunk += String.fromCharCode(value.getUint8(i));
     }
     term.write(chunk);
-
+    Tool.bipesVerify ();
     //data comes in chunks, keep last 4 chars to check MicroPython REPL string
     this.last4chars = this.last4chars.concat(chunk.substr(-4,4)).substr(-4,4)
     if (this.last4chars.includes(">>> ")) {
@@ -635,7 +637,6 @@ class webbluetooth {
       UI ['workspace'].receiving ();
     }
     Files.received_string = Files.received_string.concat(chunk);
-    //Tool.bipesVerify(chunk);
   }
 }
 

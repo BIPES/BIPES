@@ -89,6 +89,45 @@ class Tool {
     let seconds = "0" + date.getSeconds();
     return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
   }
+
+  static bipesVerify () {
+    let re = /\r\nBIPES-DATA:(.*)\r\n/;
+    let match_;
+    if (re.test(Files.received_string)) {
+      match_ = Files.received_string.match(re);
+      if (match_.length == 2) {
+        match_ = match_ [1].split(',');
+        match_ [0] = parseInt(match_ [0]);
+        match_ [1] = parseFloat(match_ [1]);
+        if (typeof match_ [0] == 'number' && typeof match_ [1] == 'number') {
+          let q = new Queue(match_ [0]);
+          q.enqueue(match_ [1]);
+          if (UI ['workspace'].EasyMQTT_bridge.checked)
+            this.EasyMQTTBridge(match_ [0], match_ [1])
+        }
+      }
+    }
+    Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
+  }
+
+  static EasyMQTTBridge (id_, value_) {
+	  var easyMQTTsession = window.localStorage['bridgeSession'];
+	  if (easyMQTTsession) {
+		  xhrGET(`https://bipes.net.br/easymqtt/publish.php?session=${easyMQTTsession}&topic=Topic${id_}&value=${value_}`,'',(ev)=>{
+		    UI ['notify'].log(ev);
+		  });
+		}
+  }
+
+  static clearQueue () {
+    for (var i=0; i<20; i++) {
+      var t = localStorage.getItem("queue" + i);
+      if (t) {
+        window.localStorage.removeItem('queue' + i);
+        UI ['notify'].log(`Cleaned queue ${i}`);
+      }
+    }
+  }
 }
 
 class files {
@@ -308,7 +347,6 @@ class files {
       let re = /sys\.stdout\.write\(result\)\r\n...         \r\n...         \r\n... \r\n(.*)>>> /s;
       let get_file_data_;
       if (re.test(Files.received_string)) {
-        console.log(Files.received_string.match(re))
         get_file_data_ = Files.received_string.match(re);
         if (get_file_data_.length == 2)
           Files.get_file_data = get_file_data_ [1]
@@ -319,6 +357,7 @@ class files {
           saveAs(new Blob([Files.get_file_data], {type: "application/octet-stream"}), Files.get_file_name);
         else
           Tool.updateSourceCode(new Blob([Files.get_file_data], {type: "text/plain"}), Files.get_file_name);
+        Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
         return true
       } else {
         return false;
@@ -326,7 +365,8 @@ class files {
   }
 
   static updateTable () {
-    if (/\[(.+)?\]/g.test(this.received_string)) {
+    let re = /\[(.+)?\]/g;
+    if (re.test(this.received_string)) {
       let match_ = this.received_string.match((/\[(.+)?\]/g));
       let treat_ = match_ [match_.length - 1].replace(/[\[\]]/g, '');
       let split_ = treat_.split('"'[0]);
@@ -359,6 +399,7 @@ class files {
       fileTable += "</table>";
       let dom  = get("#fileList");
       dom.innerHTML = fileTable;
+      Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
     }
   }
 }
