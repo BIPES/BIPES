@@ -348,8 +348,9 @@ pre.content {
 #content_blocks {
   padding: 0;
 }
-#content_device, #content_code {
+#content_device, #content_code, #content_console, #content_files {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 #content_device #device_img {
   max-width: 75rem;
@@ -577,6 +578,9 @@ button.icon.medium:before  {
 }
 #scanButton:before {
   background-position: left calc(-1.5rem*14) top;
+}
+#settingsGeneric:before {
+  background-position: left calc(-1.5rem*16) top;
 }
 
 @media (max-width: 710px) {

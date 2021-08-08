@@ -1,0 +1,32 @@
+<html>
+	<body onload="action2()">
+
+		<h1>EasyMQTT Bridge</h1>
+		<p>If your board is not connected to the Internet, but your computer is, and you are connected to the board (Network, Serial or Bluetooth), you can use this bridge to send data to BIPES EasyMQTT Cloud. The bridge works by receiving data on the terminal (Network, Serial or Bluetooth) and using your web browser to send the received data to EasyMQTT server on the cloud.</p>
+		<p>For that, you have to set a session and topics</p>
+
+
+		EasyMQTT Session: <input type="number" id="header" name="header" value="sessionName">
+<p><button onclick="action()" type="button">Save</button>
+<button onclick="action2()" type="button">Restore</button></p>
+<p><button onclick="action3()" type="button">View this EasyMQTT Session</button></p>
+
+<script>
+    function action() {
+        localStorage.setItem('bridgeSession', document.getElementById('header').value);
+    }
+
+    function action2() {
+        document.getElementById('header').value = localStorage.getItem('bridgeSession');
+    }
+
+    function action3() {
+        var session=localStorage.getItem('bridgeSession');
+	window.open("http://bipes.net.br/easymqtt/?session=" + session);
+    }
+
+</script>
+
+
+	</body>
+</html>

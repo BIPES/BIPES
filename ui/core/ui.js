@@ -160,7 +160,7 @@ async function xhrGET (filename, responsetype, onsuccess, onfail) {
         }
         onsuccess(xml_);
 	    } else
-	      alert(`Could no find ${filename} locally, please run at a server or use the live version at bipes.net.br/beta2/ui.`);
+	      alert(`Could not find ${filename} locally, please run at a server or use the live version at bipes.net.br/beta2/ui.`);
 
 
   }
@@ -257,6 +257,7 @@ function workspace () {
     this.loadButton.onclick = () => {this.loadXML ()};
 
     this.resetBoard = get('#resetBoard');
+    this.EasyMQTT_bridge = get('#EasyMQTT_bridge');
     this.term = get('#term');
     this.file_status = get('#file-status');
     this.put_file_list = get('#put-file-list');
@@ -312,6 +313,7 @@ workspace.prototype.receiving = function () {
 }
 
 workspace.prototype.runAbort = function () {
+  this.channel_connect.className = '';
   this.runButton.status = true;
   this.runButton.dom.className = 'icon';
   this.toolbarButton.className = 'icon medium';
