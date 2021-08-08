@@ -120,6 +120,7 @@ function responsive () {
 
   this.body.onclick = (ev) => {this.hidePanels (ev)};
   window.onresize = () => {
+    term.resize ();
     this.mobile = window.innerWidth < 60*$em ? true : false;
   };
 }
@@ -446,4 +447,3 @@ workspace.prototype.promptFile = function (contentType, multiple) {
     input.click();
   });
 }
-

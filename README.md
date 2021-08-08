@@ -34,3 +34,5 @@ Some functions of `ui/index.html` were based on Blopy project (https://github.co
  (https://github.com/mnoriaki).
  
  OpenCV blocks were automatically generated using berak's OpenCV to Blockly generator (https://github.com/berak/blockly-cv2/tree/master/gen).
+ 
+We also use `xterm.js` (https://github.com/xtermjs/xterm.js/) and `codemirror.js` (https://github.com/codemirror/codemirror)

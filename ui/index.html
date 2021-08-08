@@ -58,41 +58,8 @@ function checkCookie() {
 
   gtag('config', 'UA-162001686-1');
 </script>
-
-
-  <style>
-  html {
-    background: #555;
-  }
-
-  h1 {
-    margin-bottom: 20px;
-    font: 20px/1.5 sans-serif;
-  }
-
-/*
-  .terminal {
-    float: left;
-    border: #000 solid 5px;
-    font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
-    font-size: 11px;
-    color: #f0f0f0;
-    background: #000;
-  }
-
-  .terminal-cursor {
-    color: #000;
-    background: #f0f0f0;
-  }
-*/
-
-  .file-box {
-    margin: 4px;
-    padding: 4px;
-    background: #888;
-  }
-</style>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="core/libs.css">
   <script src="core/storage.js"></script>
   <script src="core/blockly_compressed.js"></script>
   <script src="core/blocks_compressed.js"></script>
@@ -109,7 +76,7 @@ function checkCookie() {
   <script src="core/generator_stubs.js"></script> <!-- Rafael 24/03/2020 -->
 
   <!-- WebREPL part -->
-  <script src="core/term.js"></script>
+  <script src="core/xterm.js?ver=4.13.0"></script>
   <script src="core/FileSaver.js"></script>
 
   <!-- Progressive Web Application setup -->
@@ -244,10 +211,11 @@ document.body.appendChild(el);
 
   <div id="content_blocks" class="content"></div>
   <div id="content_console" class="content">
+       <span class="icon" id="tipsGeneric"><tt>Ctrl+Insert</tt> to copy and <tt>Shift+Insert</tt> to paste</span>
     <tr height="25%" id="termTR">
      <td>
         <div style="display:inline-block; vertical-align:top; ">
-    <div id="term">
+    <div id="term" class="xterm">
             </div>
         </div>
 <!--        
@@ -289,7 +257,7 @@ document.body.appendChild(el);
     <label for="EasyMQTT_bridge" class="checkswitch">
         Bridge data to EasyMQTT
         <input type="checkbox" id="EasyMQTT_bridge" class="checkswitch" value="off">
-        <button id="settingsGeneric" class="notext icon" title="Configure EasyMQTT bridge" style="margin-top: -.25rem;" onclick="window.open('easymqtt_bridge.html','popup','width=600,height=600'); return false;" target="popup"></button>
+        <button id="settingsGeneric" class="notext icon" title="Configure EasyMQTT bridge" style="height: 1.5rem; padding: 0 0.25rem;" onclick="window.open('easymqtt_bridge.html','popup','width=600,height=600'); return false;" target="popup"></button>
         <span></span>
       </label>
     </td>
@@ -479,30 +447,22 @@ Device file manager
 
 <script>
 
-var term;
-
-function calculate_size(win) {
-  var cols = Math.max(50, Math.min(200, (window.innerWidth - 0.5*$em) / 7)) | 0;
-  var rows = Math.max(15, Math.min(40, (window.innerHeight - 20*$em) / 12)) | 0;
-  //var cols = 120;
-  //var rows = 25;
-    return [cols, rows];
-}
-
 // Init blockly
 Code.init ();
 
-// global WebSocket, WebSerial and Bluetooth variable
+/* global WebSocket, WebSerial and Bluetooth variable and functions (see core/channel.js) */
 var Channel = {};
 Channel ['websocket'] = new websocket ();
 Channel ['webserial'] = new webserial ();
 Channel ['webbluetooth'] = new webbluetooth ();
 Channel ['mux'] = new mux ();
 
+//global terminal variable
+var terminal = new Terminal ();
+term.init('#term') //init expanded class;
 
-// global User Interface variable
+// global User Interface variable and functions (see core/ui.js) */
 var UI = {};
-// Setup UI using global User Interface variable (see ui.js)
 UI ['responsive'] = new responsive ();
 UI ['notify'] = new notify ();
 UI ['progress'] = new progress ();
@@ -513,35 +473,16 @@ UI ['toolbar'] = new panel ('#toolbarButton','.toolbar');
 UI ['workspace'] = new workspace ();
 
 
-var Files = new files ();
 
+/* global Utilities variable and functions (see core/utils.js) */
+var Files = new files ();
 //Make sure we wont use data from last session (BIPES serial to freeboard bridge)
 Tool.clearQueue ();
 
 window.onload = function() {
   checkCookie()
-  dom  = document.getElementById("termTR")
-  var size = calculate_size(dom /* self */);
-  term = new Terminal({
-    cols: size[0],
-    rows: size[1],
-    useStyle: true,
-    screenKeys: true,
-    cursorBlink: false
-  });
-  term.open(document.getElementById("term"));
-  //show_https_warning();
-
   loadPage(); //Load modal splash screen
-
 };
-
-window.addEventListener('resize', function() {
-    dom  = document.getElementById("termTR")
-    var size = calculate_size(dom);
-    term.resize(size[0], size[1]);
-});
-
 
 
 
@@ -650,7 +591,6 @@ BIPES
 							        </div>
 								    <div class="modal-body">
 
-									    <p><b>BIPES: Block based Integrated Platform for Embedded Systems</b> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython or Python. You can connect, program, debug a monitor several types of boards using network or USB. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.</p>
 									    <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://bipes.net.br/wp/forums/>discussion forum</a>. Feel free to use it! Also, if we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p>
 									    <p>Thank you from the BIPES Team!</p>
 									    <p><b>News:</b>

@@ -7,12 +7,21 @@ body {
   font-family: sans-serif;
   margin: 0;
   overflow: hidden;
-
+  overscroll-behavior: none; /*disable pull to refresh */
   font-family: BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 label {
   user-select: none;
+}
+
+tt {
+  font-size: 0.9em;
+  padding: 0.25rem 0.5rem;
+  background: #eaeaea;
+  margin: 0 0.25em;
+  border-radius: 1rem;
+  font-weight: bold;
 }
 
 .farSide {
@@ -31,6 +40,8 @@ button.icon {
   color: #000;
   padding: .25rem;
   transition: border-color ease .125s;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 button.icon:hover {
   border: 1px solid #aaa;
@@ -424,6 +435,19 @@ pre.content {
   border-radius: .5rem;
   transition: box-shadow ease .125s;
   box-shadow: 0 0.125rem .25rem rgba(0,0,0,.5);
+  overscroll-behavior: none; /*disable chrome pull to refresh */
+}
+#tipsGeneric {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #aaa;
+  padding: .5rem;
+  border-radius: 2rem;
+  opacity: 0.8;
+  margin: .5rem 0;
+}
+#tipsGeneric:before {
+  margin-right: .25rem;
 }
 #content_console #term.on{
   box-shadow: -0.25rem 0rem .75rem #6aa8fb, .25rem .25rem .75rem #7b49ad;
@@ -506,13 +530,9 @@ pre.content {
 
 /* Sprited icons. */
 
-button.icon {
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-}
-button.icon:before, #deviceSelect.icon:before, a.icon:before, .notify-panel > span > span.icon:before {
+button.icon:before, #deviceSelect.icon:before, a.icon:before, span.icon:before {
   content:"";
-  display:block;
+  display:inline-block;
   background-size: cover;
   background-image: url(media/icons.svg);
   width: 1.5rem;
@@ -581,6 +601,9 @@ button.icon.medium:before  {
 }
 #settingsGeneric:before {
   background-position: left calc(-1.5rem*16) top;
+}
+#tipsGeneric:before {
+  background-position: left calc(-1.5rem*17) top;
 }
 
 @media (max-width: 710px) {
@@ -797,3 +820,13 @@ button.icon.medium:before  {
 		transform: translateX(-100%);
 	}
 }
+
+/* Files */
+
+.file-box {
+  margin: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+}
+

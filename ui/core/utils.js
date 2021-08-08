@@ -29,7 +29,7 @@ class Tool {
   }
   static softReset () {
     if (Channel ['websocket'].connected)
-      setTimeout(() => {Channel ['websocket'].connect(UI ['workspace'].websocket.url.value, UI ['workspace'].websocket.pass.value)}, 1000);
+      setTimeout(() => {Channel ['websocket'].connect(UI ['workspace'].websocket.url.value, UI ['workspace'].websocket.pass.value)}, 2000);
     else if (Channel ['webbluetooth'].connected)
       setTimeout(() => {Channel ['webbluetooth'].connect()}, 1000);
     mux.bufferPush ('\x04');
@@ -404,3 +404,43 @@ class files {
   }
 }
 
+class term {
+  constructor () {
+  }
+  static init (dom) {
+    terminal.open(get(dom));
+    terminal.setOption('fontSize',12);
+    this.resize();
+    terminal.onData((data) => {
+      switch (Channel ['mux'].currentChannel) {
+        case 'websocket':
+          data = data.replace(/\n/g, "\r");
+          Channel ['websocket'].ws.send(data);
+        break;
+        case 'webserial':
+          Channel ['webserial'].serialWrite(data);
+        break;
+        case 'webbluetooth':
+          mux.bufferPush (data);
+          Channel ['webbluetooth'].watch ();
+        break;
+      }
+    });
+  }
+  static on () {
+    terminal.setOption('disableStdin', false);
+    terminal.focus();
+  }
+  static off () {
+    terminal.setOption('disableStdin', true);
+    terminal.blur();
+  }
+  static write (data) {
+    terminal.write(data);
+  }
+  static resize () {
+    let cols = Math.max(50, Math.min(200, (window.innerWidth - 2*$em) / 7)) | 0;
+    let rows = Math.max(15, Math.min(40, (window.innerHeight - 20*$em) / 12)) | 0;
+    terminal.resize(cols, rows);
+  }
+}

@@ -166,16 +166,7 @@ class websocket {
     this.ws = new WebSocket(url);
     this.ws.binaryType = 'arraybuffer';
     this.ws.onopen = () => {
-      term.removeAllListeners('data');
-      term.on('data', (data) => {
-        // Pasted data from clipboard will likely contain
-        // LF as EOL chars.
-        data = data.replace(/\n/g, "\r");
-        this.ws.send(data);
-      });
-
-      term.on('title', (title) => {document.title = title;})
-      term.element.focus();
+      term.on();
       term.write('\x1b[31mWelcome to BIPES Project using MicroPython!\x1b[m\r\n');
 
       term.write('\x1b[31mSending password...\x1b[m\r\n');
@@ -296,10 +287,10 @@ class websocket {
     this.ws.onclose = () => {
       if (term)
         term.write('\x1b[31mDisconnected\x1b[m\r\n');
+      term.off();
       this.buffer_ = [];
       this.connected = false;
       UI ['workspace'].runAbort();
-      term.off('data');
       clearInterval(this.watcher);
     }
   }
@@ -392,9 +383,7 @@ class webserial {
     });
   }
   connect_ () {
-    term.on('data', (data) => {
-      this.serialWrite(data);
-    });
+    term.on();
     term.write('\x1b[31mConnected using Web Serial API !\x1b[m\r\n');
     this.connected=true;
     if (UI ['workspace'].runButton.status == true)
@@ -419,7 +408,7 @@ class webserial {
         this.last4chars = '';
         this.connected = false;
         clearInterval(this.watcher);
-        term.off('data');
+        term.off();
         UI ['workspace'].runAbort();
     })
 
@@ -566,10 +555,8 @@ class webbluetooth {
       .then(() => {
         UI ['notify'].log('Notifications started');
         this.txCharacteristic.addEventListener('characteristicvaluechanged', this.handleNotifications.bind(this));
-        term.on('data', (data) => {
-          mux.bufferPush (data)
-          this.watch ();
-        });
+        term.open(document.getElementById("term"));
+        term.on();
         term.write('\x1b[31mConnected using Web Bluetooth API !\x1b[m\r\n');
         this.connected = true;
         mux.bufferPush ('\r');
@@ -597,7 +584,7 @@ class webbluetooth {
       } else
         UI ['notify'].log('> Bluetooth Device is already disconnected');
     }
-    term.off('data');
+    term.off();
     this.device = undefined;
     this.nusService = undefined;
     this.txCharacteristic = undefined;
@@ -605,7 +592,6 @@ class webbluetooth {
     this.connected = false;
 
     clearInterval(this.watcher);
-    term.off('data');
     UI ['workspace'].runAbort();
   }
 
