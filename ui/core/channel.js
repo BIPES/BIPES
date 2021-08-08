@@ -555,7 +555,6 @@ class webbluetooth {
       .then(() => {
         UI ['notify'].log('Notifications started');
         this.txCharacteristic.addEventListener('characteristicvaluechanged', this.handleNotifications.bind(this));
-        term.open(document.getElementById("term"));
         term.on();
         term.write('\x1b[31mConnected using Web Bluetooth API !\x1b[m\r\n');
         this.connected = true;

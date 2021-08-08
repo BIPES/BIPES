@@ -439,7 +439,7 @@ class term {
     terminal.write(data);
   }
   static resize () {
-    let cols = Math.max(50, Math.min(200, (window.innerWidth - 2*$em) / 7)) | 0;
+    let cols = Math.max(50, Math.min(200, (window.innerWidth - 4*$em) / 7)) | 0;
     let rows = Math.max(15, Math.min(40, (window.innerHeight - 20*$em) / 12)) | 0;
     terminal.resize(cols, rows);
   }
