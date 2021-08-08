@@ -430,6 +430,8 @@ pre.content {
   align-items: center;
 }
 #content_console #term{
+  padding: 0.5em;
+  background: #000;
   margin: .75rem 0;
   overflow: hidden;
   border-radius: .5rem;
@@ -532,13 +534,19 @@ pre.content {
 
 button.icon:before, #deviceSelect.icon:before, a.icon:before, span.icon:before {
   content:"";
-  display:inline-block;
   background-size: cover;
   background-image: url(media/icons.svg);
   width: 1.5rem;
   height: 1.5rem;
   background-size: auto 3rem;
 }
+button.icon:before {
+  display:block;
+}
+span.icon:before {
+  display:inline-block;
+}
+
 button.icon.medium:before  {
   width: 2.5rem;
   height: 2.5rem;
@@ -652,6 +660,7 @@ button.icon.medium:before  {
   margin: -1px;
   opacity: 1;
   padding: 0.25rem .4rem;
+  background: #fff;
   transition: box-shadow ease .125s;
 }
 #runButton:hover {
