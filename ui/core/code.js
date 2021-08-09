@@ -422,6 +422,7 @@ Code.init = function() {
        media: 'media/',
        rtl: rtl,
        toolbox: toolboxXml,
+       oneBasedIndex: false,
        zoom:
            {controls: true,
             wheel: true}
