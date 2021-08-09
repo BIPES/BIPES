@@ -565,6 +565,7 @@ class webbluetooth {
       }).catch(error => {
         UI ['notify'].log(error);
         term.write('' + error);
+        UI ['workspace'].runAbort();
         if(this.device && this.device.gatt.connected)
           this.device.gatt.disconnect();
       });

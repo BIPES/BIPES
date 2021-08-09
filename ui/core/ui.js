@@ -411,19 +411,22 @@ workspace.prototype.writeWorkspace = function (xml, prettyText) {
 }
 
 workspace.prototype.loadXML = function () {
-  this.promptFile().then((file) => {
-	  let reader = new FileReader ();
-	  reader.readAsText(file,'UTF-8');
-    let self = this;
-	  reader.onload = readerEvent => {
-	      UI ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
+  this.promptFile('.xml', false).then((file) => {
+    if(typeof file == 'object' && /.xml$/.test(file.name) && file.type == 'text/xml'){
+      let reader = new FileReader ();
+      reader.readAsText(file,'UTF-8');
+      let self = this;
+      reader.onload = readerEvent => {
+        UI ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
 
-	      let content = this.readWorkspace (readerEvent.target.result, true);
+        let content = this.readWorkspace (readerEvent.target.result, true);
 
-	      let xml = Blockly.Xml.textToDom(content);
-	      Blockly.Xml.domToWorkspace(xml, Code.workspace);
-	  }
-
+        let xml = Blockly.Xml.textToDom(content);
+        Blockly.Xml.domToWorkspace(xml, Code.workspace);
+	    }
+    } else {
+      UI ['notify'].send ('No valid file selected to load.');
+    }
   });
 }
 
@@ -431,12 +434,12 @@ workspace.prototype.promptFile = function (contentType, multiple) {
   let input = document.createElement("input");
   input.type = "file";
 
-  input.multiple = false;
+  input.multiple = multiple;
   input.accept = contentType;
   return new Promise(function(resolve) {
       document.activeElement.onfocus = function() {
       document.activeElement.onfocus = null;
-      setTimeout(resolve, 100);
+      setTimeout(resolve, 200);
     };
     input.onchange = function() {
       let files = Array.from(input.files);
