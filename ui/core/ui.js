@@ -429,9 +429,11 @@ workspace.prototype.loadXML = function () {
             UI ['notify'].send (`Unique variable is already in use, could not load ${file.name}.`, 'error');
           else
             UI ['notify'].send (`Failed to parse data, could not load ${file.name}.`, 'error');
+          this.loadButton.value = ''
           return;
         }
         UI ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
+        this.loadButton.value = ''
       }
     } else {
       UI ['notify'].send ('No valid file selected to load.');
