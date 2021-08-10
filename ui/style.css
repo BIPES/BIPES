@@ -33,7 +33,7 @@ html[dir="RTL"] .farSide {
 }
 
 /* Buttons */
-button.icon {
+button.icon, label.button.icon {
   border-radius: 2rem;
   border: 1px solid transparent;
   background-color: transparent;
@@ -43,11 +43,11 @@ button.icon {
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
-button.icon:hover {
+button.icon:hover, label.button.icon:hover {
   border: 1px solid #aaa;
 }
 
-button.icon:active {
+button.icon:active, label.button.icon:active {
   border-color: #000;
 }
 button.disabled:hover {
@@ -130,6 +130,9 @@ h1 {
 }
 .top-menu #channel_connect:hover  > a.selected{
   box-shadow: -1px 0 3px  #aaa;
+}
+#loadXML {
+  display: none;
 }
 
 /* Channel Connect Panel */
@@ -532,7 +535,7 @@ pre.content {
 
 /* Sprited icons. */
 
-button.icon:before, #deviceSelect.icon:before, a.icon:before, span.icon:before {
+button.icon:before, #deviceSelect.icon:before, a.icon:before, span.icon:before, label.icon:before {
   content:"";
   background-size: cover;
   background-image: url(media/icons.svg);
@@ -540,7 +543,7 @@ button.icon:before, #deviceSelect.icon:before, a.icon:before, span.icon:before {
   height: 1.5rem;
   background-size: auto 3rem;
 }
-button.icon:before {
+button.icon:before, label.icon:before {
   display:block;
 }
 span.icon:before {

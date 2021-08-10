@@ -62,7 +62,7 @@ function checkCookie() {
 
   gtag('config', 'UA-162001686-1');
 </script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?ver=0.2.1.892356">
   <link rel="stylesheet" href="core/libs.css">
   <script src="core/storage.js"></script>
   <script src="core/blockly_compressed.js"></script>
@@ -70,9 +70,9 @@ function checkCookie() {
   <script src="core/javascript_compressed.js"></script>
   <script src="core/python_compressed.js"></script>
   <script src="core/code.js"></script>
-  <script src="core/channel.js"></script>
+  <script src="core/channel.js?ver=0.2.1.892356"></script>
   <script src="core/utils.js"></script>
-  <script src="core/ui.js"></script>
+  <script src="core/ui.js?ver=0.2.1.892356"></script>
   <script src="core/queue.js"></script>
 
   <!-- Custom Blocks for BIPES Project --> 
@@ -175,7 +175,8 @@ document.body.appendChild(el);
 
             <button id="saveButton" class="notext icon" title="..."></button>
 
-            <button id="loadButton" class="notext icon" title="..."></button>
+            <label id="loadButton" for="loadXML"  class="notext button icon" title="..."></label>
+            <input name="XML" id="loadXML" type="file" accept=".xml" required="">
 
             <button id="trashButton" class="notext icon" title="..."></button>
 

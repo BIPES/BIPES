@@ -39,5 +39,6 @@ var MSG = {
   blocksLoadedFromFile: "Blocks loaded from file '%1'.",
   deviceUnavailable: "Device '%1' unavailable.",
   notConnected: "No connection to send data.",
-  serialFroozen: "Serial connection is unresponsive."
+  serialFroozen: "Serial connection is unresponsive.",
+  notAvailableFlag: "$1 is not available on your browser.\r\nPlease make sure the $1 flag is enabled."
 };

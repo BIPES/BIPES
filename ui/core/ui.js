@@ -62,7 +62,7 @@ function notify () {
   this.timeOut;
   this.timeOut2;
 }
-notify.prototype.send = function (message) {
+notify.prototype.send = function (message, type) {
   console.log (`Notification: ${message}`);
   this.messages.push ({timestamp: +new Date, message: message});
   let last_message;
@@ -251,11 +251,11 @@ function workspace () {
       };
     this.connectButton = get('#connectButton');
     this.saveButton = get('#saveButton');
-    this.loadButton = get('#loadButton');
+    this.loadButton = get('#loadXML');
     this.connectButton.onclick = () => {this.connectClick ()};
     this.runButton.dom.onclick = () => {this.run ()};
     this.saveButton.onclick = () => {this.saveXML ()};
-    this.loadButton.onclick = () => {this.loadXML ()};
+	  this.loadButton.addEventListener ('change', () => {this.loadXML ()});
 
     this.resetBoard = get('#resetBoard');
     this.EasyMQTT_bridge = get('#EasyMQTT_bridge');
@@ -411,23 +411,32 @@ workspace.prototype.writeWorkspace = function (xml, prettyText) {
 }
 
 workspace.prototype.loadXML = function () {
-  this.promptFile('.xml', false).then((file) => {
-    if(typeof file == 'object' && /.xml$/.test(file.name) && file.type == 'text/xml'){
+  if  (this.loadButton.files [0] != undefined) {
+    let file = this.loadButton.files [0]
+    if(/.xml$/.test(file.name) && file.type == 'text/xml'){
       let reader = new FileReader ();
       reader.readAsText(file,'UTF-8');
       let self = this;
       reader.onload = readerEvent => {
-        UI ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
-
         let content = this.readWorkspace (readerEvent.target.result, true);
-
-        let xml = Blockly.Xml.textToDom(content);
-        Blockly.Xml.domToWorkspace(xml, Code.workspace);
-	    }
+        try {
+          let xml = Blockly.Xml.textToDom(content);
+          Blockly.Xml.domToWorkspace(xml, Code.workspace);
+        }
+        catch (e) {
+          UI ['notify'].log(e)
+          if (/Error: Variable id, (.*) is already in use\.$/.test(e))
+            UI ['notify'].send (`Unique variable is already in use, could not load ${file.name}.`, 'error');
+          else
+            UI ['notify'].send (`Failed to parse data, could not load ${file.name}.`, 'error');
+          return;
+        }
+        UI ['notify'].send (MSG['blocksLoadedFromFile'].replace('%1', file.name));
+      }
     } else {
       UI ['notify'].send ('No valid file selected to load.');
     }
-  });
+  }
 }
 
 workspace.prototype.promptFile = function (contentType, multiple) {

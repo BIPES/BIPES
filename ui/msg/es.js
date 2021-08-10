@@ -37,5 +37,7 @@ var MSG = {
   editAsFileTooltip: "Edite el código python y guárdelo en el dispositivo.",
   forumTooltip: "Foro de ayuda",
   blocksLoadedFromFile: "Bloques cargados desde el archivo '%1'.",
-  deviceUnavailable: "Dispositivo '%1' no disponible."
+  deviceUnavailable: "Dispositivo '%1' no disponible.",
+  notAvailableFlag: "$1 no está disponible en su navegador.\r\nAsegúrese de que la 'flag' $1 esté habilitada."
 };
+

@@ -328,6 +328,11 @@ class webserial {
   }
 
   connect () {
+    if (typeof navigator.serial == "undefined") {
+      UI ['notify'].send(MSG['notAvailableFlag'].replaceAll('$1', 'WebSerial API'));
+      term.write(MSG['notAvailableFlag'].replaceAll('$1', 'WebSerial API'));
+      return;
+    }
     navigator.serial.requestPort ().then((port) => {
       UI ['workspace'].connecting ();
       this.port = port;
@@ -511,7 +516,11 @@ class webbluetooth {
 
 
   connect () {
-    if (navigator.bluetooth) {
+    if (typeof navigator.bluetooth == "undefined") {
+      UI ['notify'].send(MSG['notAvailableFlag'].replaceAll('$1', 'WebBluetooth API'));
+      term.write(MSG['notAvailableFlag'].replaceAll('$1', 'WebBluetooth API'));
+      return;
+    }
       navigator.bluetooth.requestDevice({
         //filters: [{services: []}]
         optionalServices: [webbluetooth.ServiceUUID],
@@ -569,10 +578,6 @@ class webbluetooth {
         if(this.device && this.device.gatt.connected)
           this.device.gatt.disconnect();
       });
-    } else {
-      term.write('WebBluetooth API is not available on your browser.\r\nPlease make sure the Web Bluetooth flag is enabled.');
-    }
-
   }
   disconnect () {
     if (!this.device) {
