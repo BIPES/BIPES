@@ -62,7 +62,7 @@ function notify () {
   this.timeOut;
   this.timeOut2;
 }
-notify.prototype.send = function (message, type) {
+notify.prototype.send = function (message) {
   console.log (`Notification: ${message}`);
   this.messages.push ({timestamp: +new Date, message: message});
   let last_message;
@@ -426,9 +426,9 @@ workspace.prototype.loadXML = function () {
         catch (e) {
           UI ['notify'].log(e)
           if (/Error: Variable id, (.*) is already in use\.$/.test(e))
-            UI ['notify'].send (`Unique variable is already in use, could not load ${file.name}.`, 'error');
+            UI ['notify'].send (`Unique variable is already in use, could not load ${file.name}.`);
           else
-            UI ['notify'].send (`Failed to parse data, could not load ${file.name}.`, 'error');
+            UI ['notify'].send (`Failed to parse data, could not load ${file.name}.`);
           this.loadButton.value = ''
           return;
         }

@@ -1860,6 +1860,7 @@ _
       </value>
     </block>
     <block type="control_pid.compute"></block>
+    <block type="control_pid.compute_not_realtime"></block>
 
     <block type="control_pid.tunings">
       <value name="KP">
@@ -1896,8 +1897,15 @@ _
   <category name="Simulate">
     <button text="Install control library" callbackKey="installPyLib"></button>
     <label text="No breadboard or sensors? Just simulate it!"></label>
+    <label text="Realtime simulation:"></label>
     <button text="Load example: pid_water_boiler" callbackKey="loadExample"></button>
     <block type="simulate_water_boiler">
+    </block>
+    <label text="Non realtime simulation:"></label>
+    <button text="Load example: pid_dc_motor" callbackKey="loadExample"></button>
+    <block type="simulate_dcmotor.sim">
+    </block>
+    <block type="simulate_dcmotor.vars">
     </block>
   </category>
 </category>

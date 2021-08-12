@@ -1,0 +1,277 @@
+<xml xmlns="https://bipes.net.br">
+  <workspace>
+    <field name="DEVICE">ESP8266</field>
+    <field name="TIMESTAMP">1628804656222</field>
+  </workspace>
+  <variables>
+    <variable id="U,qftF08HV+TBmLY%[4I">timestep</variable>
+    <variable id="`wdYp{@_aJC8J4h_pl7:">voltage</variable>
+    <variable id="T[i,)^.PHS9}dZ0:[M4%">omega</variable>
+    <variable id="CAk|oNfO^ofQVz.](5C%">last_time</variable>
+  </variables>
+  <block type="variables_set" id="8mktSL-[b;yh29CWQa](" x="263" y="363">
+    <field name="VAR" id="U,qftF08HV+TBmLY%[4I">timestep</field>
+    <value name="VALUE">
+      <block type="math_number" id=":KP8!XWusZA`P=8?rw45">
+        <field name="NUM">1e-7</field>
+      </block>
+    </value>
+    <next>
+      <block type="variables_set" id="i4#eA!o6k7`tNQ.;D}rW">
+        <field name="VAR" id="`wdYp{@_aJC8J4h_pl7:">voltage</field>
+        <value name="VALUE">
+          <block type="math_number" id="6M5d?hdW;Fm}:;z-HcMg">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <next>
+          <block type="variables_set" id=".{t`RtqqHOB4Rbog27oZ">
+            <field name="VAR" id="T[i,)^.PHS9}dZ0:[M4%">omega</field>
+            <value name="VALUE">
+              <block type="math_number" id="_)VAY#?}JVu*EWt`-^AM">
+                <field name="NUM">0</field>
+              </block>
+            </value>
+            <next>
+              <block type="variables_set" id="svl]XEtNWNHdkO6`5z%7">
+                <field name="VAR" id="CAk|oNfO^ofQVz.](5C%">last_time</field>
+                <value name="VALUE">
+                  <block type="math_number" id="p=YV,sefa4OG}BV%$IKB">
+                    <field name="NUM">0</field>
+                  </block>
+                </value>
+                <next>
+                  <block type="control_pid.__init__" id=":UN6]a#1K;JGs/wfcPeP">
+                    <field name="ID">0</field>
+                    <field name="Kp">33</field>
+                    <field name="Ki">113675</field>
+                    <field name="Kd">0.002322</field>
+                    <field name="SAMPLETIME">0</field>
+                    <field name="SCALE">s</field>
+                    <comment pinned="false" h="80" w="160">Interval set to 0 for non real time PID computation.</comment>
+                    <value name="SETPOINT">
+                      <shadow type="math_number" id="nuh)I6*d*Y[Dz2sgvk86">
+                        <field name="NUM">30</field>
+                      </shadow>
+                    </value>
+                    <next>
+                      <block type="control_pid.output_limits" id="`N6iFIgxg0E|2OHTYCiM" disabled="true">
+                        <field name="ID">0</field>
+                        <field name="LOWER">0</field>
+                        <field name="UPPER">30</field>
+                        <comment pinned="false" h="80" w="160">Min: 0 Volts 
+Max: 30 Volts
+Enable to see the difference when considering real  life limits!
+                        </comment>
+                        <next>
+                          <block type="controls_whileUntil" id="axvo7Gq{hkhVFR+l[Y$-">
+                            <field name="MODE">WHILE</field>
+                            <comment pinned="false" h="80" w="160">Compute until 0.001 seconds (not realtime).</comment>
+                            <value name="BOOL">
+                              <block type="logic_compare" id="WGV~.9^0#)=ie!syw/2{">
+                                <field name="OP">LT</field>
+                                <value name="A">
+                                  <block type="simulate_dcmotor.vars" id="8q-p-8[zT!kQmdQh-!BL">
+                                    <field name="ID">0</field>
+                                    <field name="VARS">_last_time</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="math_number" id="(g#Qy~HV+2[|@^|!y_x7">
+                                    <field name="NUM">0.001</field>
+                                  </block>
+                                </value>
+                              </block>
+                            </value>
+                            <statement name="DO">
+                              <block type="variables_set" id=",=iSET+U,y5H[qEh}*|P">
+                                <field name="VAR" id="T[i,)^.PHS9}dZ0:[M4%">omega</field>
+                                <value name="VALUE">
+                                  <block type="simulate_dcmotor.sim" id="!|0@EW(N5(`2VlW2q)Ei">
+                                    <field name="ID">0</field>
+                                    <field name="RA">0.52</field>
+                                    <field name="LA">0.000036</field>
+                                    <field name="B">0.00001</field>
+                                    <field name="J">0.000012</field>
+                                    <field name="KBEMF">0.0137</field>
+                                    <field name="STATIC_FRICTION">0.01</field>
+                                    <value name="POWER">
+                                      <block type="variables_get" id="Z0Z*59jKfr~e(?BzK!6w">
+                                        <field name="VAR" id="`wdYp{@_aJC8J4h_pl7:">voltage</field>
+                                      </block>
+                                    </value>
+                                    <value name="DT">
+                                      <block type="variables_get" id="[iuf?_C|83f~gkQCN;NU">
+                                        <field name="VAR" id="U,qftF08HV+TBmLY%[4I">timestep</field>
+                                      </block>
+                                    </value>
+                                    <value name="LOAD">
+                                      <block type="math_number" id=")6Na-bzDl^umd{5DAG$`">
+                                        <field name="NUM">0.3</field>
+                                      </block>
+                                    </value>
+                                  </block>
+                                </value>
+                                <next>
+                                  <block type="variables_set" id="xv07rVfB5_leClab*UX_">
+                                    <field name="VAR" id="`wdYp{@_aJC8J4h_pl7:">voltage</field>
+                                    <value name="VALUE">
+                                      <block type="control_pid.compute_not_realtime" id="bqu,E;FrXm/*kM4P.}Bn">
+                                        <field name="ID">0</field>
+                                        <value name="INPUT">
+                                          <block type="variables_get" id="6*XU3t)@Gf/L?)?J:.~_">
+                                            <field name="VAR" id="T[i,)^.PHS9}dZ0:[M4%">omega</field>
+                                          </block>
+                                        </value>
+                                        <value name="DT">
+                                          <block type="variables_get" id="yWduOP|V_8!VgYS%RRVZ">
+                                            <field name="VAR" id="U,qftF08HV+TBmLY%[4I">timestep</field>
+                                          </block>
+                                        </value>
+                                      </block>
+                                    </value>
+                                    <next>
+                                      <block type="controls_if" id="dD|!g@lmD74B%YG9th+W">
+                                        <value name="IF0">
+                                          <block type="logic_compare" id=".p3(hYaCT(E74}o}kh)A">
+                                            <field name="OP">GT</field>
+                                            <comment pinned="false" h="80" w="160">Print every 50 time steps.</comment>
+                                            <value name="A">
+                                              <block type="math_arithmetic" id="Cl1k^p;Z}Ck@wOv;-bb]">
+                                                <field name="OP">MINUS</field>
+                                                <value name="A">
+                                                  <shadow xmlns="https://bipes.net.br" type="math_number" id="(D:T9dnz13S2PA($s8,i">
+                                                    <field name="NUM">1</field>
+                                                  </shadow>
+                                                  <block type="simulate_dcmotor.vars" id="h:b.?|cwQ2B0-BPir%J1">
+                                                    <field name="ID">0</field>
+                                                    <field name="VARS">_last_time</field>
+                                                  </block>
+                                                </value>
+                                                <value name="B">
+                                                  <shadow xmlns="https://bipes.net.br" type="math_number" id="3P_T?3v5kr#c7YiAN_)A">
+                                                    <field name="NUM">1</field>
+                                                  </shadow>
+                                                  <block type="variables_get" id="n^@QlZf6_.4!v6yyUxmL">
+                                                    <field name="VAR" id="CAk|oNfO^ofQVz.](5C%">last_time</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <value name="B">
+                                              <block type="math_arithmetic" id="2*qj34LL!ZO~wDt!1^P4">
+                                                <field name="OP">MULTIPLY</field>
+                                                <value name="A">
+                                                  <shadow type="math_number" id="IAk/lURt4^Spj.6BJ?}q">
+                                                    <field name="NUM">50</field>
+                                                  </shadow>
+                                                </value>
+                                                <value name="B">
+                                                  <shadow xmlns="https://bipes.net.br" type="math_number" id="/duw(9dxW7:geh;)-9,d">
+                                                    <field name="NUM">1</field>
+                                                  </shadow>
+                                                  <block type="variables_get" id="Aw^g:3_=^vgVorvsU#zK">
+                                                    <field name="VAR" id="U,qftF08HV+TBmLY%[4I">timestep</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                          </block>
+                                        </value>
+                                        <statement name="DO0">
+                                          <block type="text_print" id="PDH7{F{c?2dX;qkq]6_-">
+                                            <value name="TEXT">
+                                              <shadow xmlns="https://bipes.net.br" type="text" id=")ut5d;+%lYA[0|`grA{`">
+                                                <field name="TEXT">abc</field>
+                                              </shadow>
+                                              <block type="text_join" id="#hKF{^Xk8h9d)oy:WX,s">
+                                                <mutation items="7"></mutation>
+                                                <value name="ADD0">
+                                                  <block type="simulate_dcmotor.vars" id="c`W,8a]?X5lxe``Kj$nh">
+                                                    <field name="ID">0</field>
+                                                    <field name="VARS">_last_time</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD1">
+                                                  <block type="text" id="Bm*`pE7sviqm-zTVAIEr">
+                                                    <field name="TEXT">,</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD2">
+                                                  <block type="control_pid.vars" id="ad?||Ly6da+%?y~H4Jq%">
+                                                    <field name="ID">0</field>
+                                                    <field name="VARS">setpoint</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD3">
+                                                  <block type="text" id="nm8ZCa-yq9`*,T$lhSK*">
+                                                    <field name="TEXT">,</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD4">
+                                                  <block type="variables_get" id="0MntVm)(cQhInqN*hyV~">
+                                                    <field name="VAR" id="`wdYp{@_aJC8J4h_pl7:">voltage</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD5">
+                                                  <block type="text" id="pl6`{4`y25{+6A}IrBf-">
+                                                    <field name="TEXT">,</field>
+                                                  </block>
+                                                </value>
+                                                <value name="ADD6">
+                                                  <block type="variables_get" id="v*FQ_E+@{VR9^4qh%J6d">
+                                                    <field name="VAR" id="T[i,)^.PHS9}dZ0:[M4%">omega</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </value>
+                                            <next>
+                                              <block type="variables_set" id="ia+LFRfv-{a`).%as2sD">
+                                                <field name="VAR" id="CAk|oNfO^ofQVz.](5C%">last_time</field>
+                                                <value name="VALUE">
+                                                  <block type="simulate_dcmotor.vars" id="q|]=/EDyMGT#j/EH/:a+">
+                                                    <field name="ID">0</field>
+                                                    <field name="VARS">_last_time</field>
+                                                  </block>
+                                                </value>
+                                              </block>
+                                            </next>
+                                          </block>
+                                        </statement>
+                                      </block>
+                                    </next>
+                                  </block>
+                                </next>
+                              </block>
+                            </statement>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+  <block type="project_metadata" id="AI0`V_aj75b%+p|oA[U!" x="1088" y="413">
+    <value name="project_author">
+      <shadow type="text" id="nTs_nET9@`Bh:h@umHc?">
+        <field name="TEXT">Jorge Marques</field>
+      </shadow>
+    </value>
+    <value name="project_iot_id">
+      <shadow type="math_number" id="0xMJyJN19t25`du7$ea=">
+        <field name="NUM">0</field>
+      </shadow>
+    </value>
+    <value name="project_description">
+      <shadow type="text" id="Z7[u4vG51QFX[MY]xJDB">
+        <field name="TEXT">Non real time simulation of DC Motor with PID controller.</field>
+      </shadow>
+    </value>
+  </block>
+</xml>

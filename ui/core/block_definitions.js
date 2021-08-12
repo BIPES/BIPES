@@ -2061,7 +2061,7 @@ Blockly.Blocks['control_pid.__init__'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour('#7b49ad');
-    this.setTooltip("Init PID controler");
+    this.setTooltip("Init PID controler, set 'update every' to zero for non realtime simulation or with non fixed intervals");
     this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
   }
 };
@@ -2077,6 +2077,24 @@ Blockly.Blocks['control_pid.compute'] = {
     this.setOutput(true, null);
     this.setColour('#7b49ad');
     this.setTooltip("Returns PID control action computed with current system value.");
+    this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/en/latest/#the-basics");
+  }
+};
+Blockly.Blocks['control_pid.compute_not_realtime'] = {
+  init: function() {
+    this.appendValueInput("INPUT")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("compute PID #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "ID")
+        .appendField("with");
+    this.appendValueInput("DT")
+    .setAlign(Blockly.ALIGN_RIGHT)
+    .appendField("timestep (s)");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour('#7b49ad');
+    this.setTooltip("Returns PID control action computed with current system value and timestep (not realtime).");
     this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/en/latest/#the-basics");
   }
 };
@@ -2172,7 +2190,7 @@ Blockly.Blocks['simulate_water_boiler'] = {
         .appendField("Water Boiler #")
         .appendField(new Blockly.FieldNumber(0, 0, 9), "ID");
     this.appendDummyInput()
-        .appendField("Dissipation rate (ºC/ms)")
+        .appendField("Dissipation rate (ΔºC/ms)")
         .appendField(new Blockly.FieldNumber(0.02, 0), "DISSIPATION");
     this.appendValueInput("POWER")
         .setCheck(null)
@@ -2181,7 +2199,63 @@ Blockly.Blocks['simulate_water_boiler'] = {
     this.setInputsInline(false);
     this.setOutput(true, null);
     this.setColour('#666666');
-    this.setTooltip("Simulate Water Boiler temperature with power input, returns water temperature. Runs at precision of milliseconds.");
+    this.setTooltip("Simulate Water Boiler temperature with power input, returns water temperature. Runs at precision of milliseconds. Uses 20ºC as room temperature.");
+    this.setHelpUrl("https://github.com/JorgeGMarques/micropython-simple-pid/blob/master/examples/water_boiler/water_boiler_pid.py");
+  }
+};
+
+
+Blockly.Blocks['simulate_dcmotor.sim'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("DC Motor#")
+        .appendField(new Blockly.FieldNumber(0, 0, 9), "ID");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("Ra(Ω)")
+        .appendField(new Blockly.FieldNumber(0.52, 0), "RA")
+        .appendField("La(H)")
+        .appendField(new Blockly.FieldNumber(0.000036, 0), "LA")
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("B(Nm)")
+        .appendField(new Blockly.FieldNumber(0.00001, 0), "B")
+        .appendField("J(kgm²)")
+        .appendField(new Blockly.FieldNumber(0.000012, 0), "J");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_CENTRE)
+        .appendField("Kbemf")
+        .appendField(new Blockly.FieldNumber(0.0137, 0), "KBEMF")
+        .appendField("Static Friction (Nm)")
+        .appendField(new Blockly.FieldNumber(0.01, 0), "STATIC_FRICTION");
+    this.appendValueInput("POWER")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("voltage (V)");
+    this.appendValueInput("DT")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("timestep (s)");
+    this.appendValueInput("LOAD")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("load (Nm)");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour('#666666');
+    this.setTooltip("Simulate a DC Motor voltage as input at non realtime, returns speed in RPM.");
+    this.setHelpUrl("https://github.com/JorgeGMarques/micropython-simple-pid/blob/master/examples/dc_motor/dc_motor_pid.py");
+  }
+};
+
+Blockly.Blocks['simulate_dcmotor.vars'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("DC Motor #")
+        .appendField(new Blockly.FieldNumber(0, 0, 9), "ID")
+        .appendField(".")
+        .appendField(new Blockly.FieldDropdown([["Va(V)","va"], ["Ia(A)","ia"], ["omega(RPM)","omega"], ["theta(kgm²)","theta"], ["static friction (Nm)","STATIC_FRICTION"], ["Bemf(V)","bemf"], ["torque (Nm)","Te"], ["Load torque (Nm)","Tl"], ["last time","_last_time"]]), "VARS");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour('#666666');
+    this.setTooltip("Returns a internal variables of the DC Motor simulation.");
     this.setHelpUrl("https://github.com/JorgeGMarques/micropython-simple-pid/blob/master/examples/water_boiler/water_boiler.py");
   }
 };
