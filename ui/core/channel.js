@@ -173,7 +173,7 @@ class websocket {
       this.ws.send(pass + '\n\n'); //this.buffer_.push(pass);
 
       this.connected = true;
-      UI ['workspace'].websocketConnected ();
+      UI ['workspace'].websocket.url.disabled = true;
 
       this.ws.onmessage = (event) => {
         if (event.data instanceof ArrayBuffer) {
@@ -243,8 +243,7 @@ class websocket {
                 if (!Files.viewOnly)
                   saveAs(new Blob([Files.get_file_data], {type: "application/octet-stream"}), Files.get_file_name);
                 else
-                //Tool.updateSourceCode([Files.get_file_data]);
-                Tool.updateSourceCode(new Blob([Files.get_file_data], {type: "text/plain"}), Files.get_file_name);
+                  Tool.updateSourceCode(new Blob([Files.get_file_data], {type: "text/plain"}), Files.get_file_name);
               } else {
                 files.update_file_status('Failed getting ' + Files.get_file_name);
               }

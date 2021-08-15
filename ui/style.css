@@ -56,9 +56,16 @@ button.disabled:hover {
 button.disabled {
   display: none;
 }
-/* button.notext { */
-/*   font-size: 10%; */
-/* } */
+button.icon.text, label.icon.text {
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: .25em .5em
+}
+button.icon.text::before, label.icon.text::before {
+  margin-right:.25rem;
+}
 
 h1 {
   font-weight: normal;
@@ -131,7 +138,7 @@ h1 {
 .top-menu #channel_connect:hover  > a.selected{
   box-shadow: -1px 0 3px  #aaa;
 }
-#loadXML {
+#loadXML, #put-file-select {
   display: none;
 }
 
@@ -172,7 +179,7 @@ h1 {
   text-align: left;
   padding: 0.5rem 0.5rem 0.125rem 0.5rem;
 }
-.channel-panel input {
+.channel-panel input, #file_save_as input {
   border: none;
   padding: 0;
   height: 2rem;
@@ -351,7 +358,6 @@ td {
 .content {
   visibility: hidden;
   margin: 0;
-  padding: 1ex;
   position: absolute;
   direction: ltr;
 }
@@ -359,10 +365,14 @@ pre.content {
   border: 1px solid #ccc;
   overflow: scroll;
 }
-#content_blocks {
+{
   padding: 0;
 }
-#content_device, #content_code, #content_console, #content_files {
+#content_blocks, #content_device, #content_code, #content_console, #content_files, #content_device, #content_programs, #content_mqtt, #content_iot {
+  width: 100vw;
+  height: calc(100vh - 3.5rem);
+}
+#content_device, #content_code, #content_console {
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -470,6 +480,107 @@ pre.content {
   justify-content: center;
 }
 
+/* Files */
+#content_files {
+  display: grid;
+  grid-template-columns: 18rem calc(100vw - 18rem);
+}
+#file-boxes #file-header, #file-boxes #file-status  {
+  padding: 0 .25em 0 .5em;
+  text-align: center;
+}
+#file-boxes #file-header  {
+  display: flex;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+#file-boxes #file-header > span {
+  flex-grow: 2;
+}
+#file_save_as {
+  height: 2.5rem;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  padding: 0 .5rem 0 1.85rem
+}
+#file_save_as input {
+  font-weight: bold;
+  outline: none;
+  border-left: 1px solid #ccc;
+  padding-left: .5rem;
+}
+#file-boxes #file-status {
+  height: 1.5rem;
+  line-height: 1.5rem;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  color:#666;
+  font-size: 0.85rem;
+  overflow: hidden;
+  font-weight: bold;
+  background: #f7f7f7;
+}
+
+#filesPanel {
+  display: block;
+  height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding: 0.25rem 0.5rem;
+  border-right: 1px solid #ccc;
+}
+#filesPanel h2 {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  height: 2.5rem;
+}
+#fileList > div, #fileTemplate > div {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+  border-radius: .25rem;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  min-height: 2rem;
+}
+#fileList > div > div:last-child {
+  flex-shrink: 0;
+}
+#fileList .runText {
+  width: 100%;
+}
+#fileTemplate > div {
+  align-items: center;
+  word-break: break-word;
+}
+#fileList > div > div {
+  display: inline-flex;
+  align-items: center;
+  word-break: break-word;
+}
+#fileList .runText > span {
+  font-size: 0.9rem;
+  border: 1px solid #7b49ad;
+  border-radius: .75rem;
+  padding: .175rem .25rem;
+  color: #7b49ad;
+  margin-left: .25rem;
+}
+#fileList #runIcon {
+  filter: brightness(0)
+}
+
 /* Toolbar */
 @media (min-width: 60em) {
   .top-menu > .toolbar {
@@ -558,7 +669,7 @@ button.icon.medium:before  {
 #linkButton:before {
   background-position: left calc(-1.5rem*0) top; /* icon size * index on icons.svg*/
 }
-#saveButton:before {
+#saveButton:before, #downloadIcon:before  {
   background-position: left calc(-1.5rem*1) top;
 }
 #loadButton:before {
@@ -573,7 +684,7 @@ button.icon.medium:before  {
 #deviceSelect:before {
   background-position: left calc(-1.5rem*7) top;
 }
-#runButton:before {
+#runButton:before, #runIcon:before {
   transition: background ease .125s;
   background-position: left calc(-1.5rem*5) top;
 }
@@ -616,6 +727,13 @@ button.icon.medium:before  {
 #tipsGeneric:before {
   background-position: left calc(-1.5rem*17) top;
 }
+#refreshFilesList:before {
+  background-position: left calc(-1.5rem*18) top;
+}
+#putFileButton:before, #editor2DeviceButton:before {
+  background-position: left calc(-1.5rem*19) top;
+}
+
 
 @media (max-width: 710px) {
   .tab_collapse {
@@ -832,13 +950,3 @@ button.icon.medium:before  {
 		transform: translateX(-100%);
 	}
 }
-
-/* Files */
-
-.file-box {
-  margin: 0.25rem;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 1rem;
-}
-

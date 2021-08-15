@@ -59,7 +59,7 @@ class Tool {
       console.log(text);
       //For codemirror
       //var editor = CodeMirror.fromTextArea(Textarea);
-      editor.getDoc().setValue(text);
+      Files.editor.getDoc().setValue(text);
 
       UI ['workspace'].content_file_name.value = file_name;
     });
@@ -69,7 +69,7 @@ class Tool {
   }
   static blocksToPython() {
     let code = Blockly.Python.workspaceToCode(Code.workspace);
-    editor.getDoc().setValue(code);
+    Files.editor.getDoc().setValue(code);
   }
   static decode_resp (data) {
     if (data[0] == 'W'.charCodeAt(0) && data[1] == 'B'.charCodeAt(0)) {
@@ -128,10 +128,27 @@ class Tool {
       }
     }
   }
+
+  static getText(pName){
+    var request = new XMLHttpRequest();
+        request.open('GET', '/beta2/ui/pylibs/' + pName, true);
+        request.send(null);
+        request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+          var type = request.getResponseHeader('Content-Type');
+          if (typeof request.response == 'string') {
+            var Textarea = document.getElementById('content_file_code');
+            Files.editor.getDoc().setValue(request.responseText);
+            var TextareaF = document.getElementById('content_file_name');
+            TextareaF.value = pName;
+        }
+      }
+    }
+  }
 }
 
 class files {
-  constructor () {
+  constructor (fileList) {
     this.watcher;
     this.watcher_calledCount = 0;
     this.put_file_name = null;
@@ -141,6 +158,11 @@ class files {
     this.binary_state = 0;
     this.received_string = "";
     this.viewOnly = false;
+    this.editor = CodeMirror.fromTextArea(content_file_code, {
+      lineNumbers: true,
+      mode: "python"
+    });
+    this.fileList = get(fileList);
   }
 
 
@@ -148,10 +170,11 @@ class files {
     UI ['workspace'].file_status.innerHTML = s;
   }
 
+  resize () {
+    this.editor.setSize(window.innerWidth - (18*$em),window.innerHeight - (6*$em))
+  }
 
   put_file () {
-
-
     switch (Channel ['mux'].currentChannel) {
       case 'websocket':
         var dest_fname = this.put_file_name;
@@ -225,8 +248,7 @@ class files {
     var reader = new FileReader();
     reader.onload = (e) => {
         this.put_file_data = new Uint8Array(e.target.result);
-        UI ['workspace'].put_file_list.innerHTML = '' + encodeURIComponent(this.put_file_name) + ' - ' + this.put_file_data.length + ' bytes';
-        UI ['workspace'].put_file_button.disabled = false;
+        this.put_file ();
     };
     reader.readAsArrayBuffer(f);
   }
@@ -234,7 +256,7 @@ class files {
   files_save_as () {
 
     //For codemirror
-    var codeStr = editor.getDoc().getValue("\n");
+    var codeStr = Files.editor.getDoc().getValue("\n");
 
     var bufCode = new Uint8Array(codeStr.length);
     for (var i=0, strLen=codeStr.length; i < strLen; i++) {
@@ -370,39 +392,79 @@ class files {
       let match_ = this.received_string.match((/\[(.+)?\]/g));
       let treat_ = match_ [match_.length - 1].replace(/[\[\]]/g, '');
       let split_ = treat_.split('"'[0]);
-      let file_ = eval("[" + split_ + "]");
+      let files_ = eval("[" + split_ + "]");
+
+      UI ['notify'].send("File list updated at " + Tool.unix2date() + ".");
 
 
-      let fileTable = "Device File List at " + Tool.unix2date() + ": <br> <br> <table border=2> ";
-      fileTable += "<tr><td><center>File</center></td><td><center>Actions</center></td><td>Run at boot?</td></tr>";
-      let file;
+      this.fileList.innerHTML = '';
 
-      //Build table with files on device and actions
-      for(var i=0, len=file_.length; i < len; i++) {
+      files_.forEach (file => {
+        let wrapper2_ = new DOM ('div');
+        let openButton_ = new DOM ('div', {innerText:file, className: 'runText'});
+        if (!(/\./.test(file))) {
+          openButton_.flag('Is directory');
+          wrapper2_.appendChilds([openButton_])
+          wrapper2_.dom_.style.cursor = 'default';
+        } else {
+          openButton_.dom_.title = `Open file ${file}`;
+          openButton_.onclick (()=>{Files.files_view(file)});
+          if(file == 'boot.py' || file == 'main.py')
+            openButton_.flag('Run at boot');
+          let deleteButton_ = new DOM ('span', {className:'icon', id:'trashIcon', title:`Delete file ${file}`});
+              deleteButton_.onclick (()=>{Files.delete(file)});
+          let runButton_ = new DOM ('span', {className:'icon', id:'runIcon', title:`Run file ${file}`});
+              runButton_.onclick (()=>{Files.run(file)});
+          let downloadButton_ = new DOM ('span', {className:'icon', id:'downloadIcon', title:`Download file ${file}`});
+              downloadButton_.onclick (()=>{Files.files_download(file)});
 
-        //File name
-        file = file_[i];
-        fileTable += "<tr><td>" + file + "</td><td>";
+          let wrapper_ = new DOM ('div');
+              wrapper_.appendChilds([runButton_, downloadButton_, deleteButton_]);
+          wrapper2_.appendChilds([openButton_, wrapper_]);
+        }
 
-        //Action buttons
-        fileTable += '<input type=button value=Run onclick="Files.run(\'' + file + '\'); return false;" />';
-        fileTable += '<input type=button value=Open onclick="Files.files_view(\'' + file + '\'); return false;" />';
-        fileTable += '<input type=button value=Download onclick="Files.files_download(\'' + file + '\'); return false;" />';
-        fileTable += '<input type=button value=Delete onclick="Files.delete(\'' + file + '\'); return false;" />';
+        this.fileList.appendChild(wrapper2_.dom_)
+      })
 
-        if ((file == "boot.py") || (file == "main.py"))
-          fileTable += "</td><td><center>Yes</center></td></tr>";
-        else
-          fileTable += "</td><td><center>No</center></td></tr>";
-      }
-
-      fileTable += "</table>";
-      let dom  = get("#fileList");
-      dom.innerHTML = fileTable;
       Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
     }
   }
 }
+
+class DOM {
+  constructor (DOM_, tags_) {
+    this.dom_ ;
+    switch (DOM_) {
+      case 'span':
+      case 'div':
+        this.dom_ = document.createElement (DOM_);
+        if (typeof tags_ == 'object') for (const tag_ in tags_) {
+          if (['innerText', 'className', 'id', 'title'].includes(tag_))
+          this.dom_ [tag_] = tags_ [tag_]
+        }
+      break;
+    }
+  }
+  onclick (ev) {
+    this.dom_.onclick = ev;
+  }
+  appendChilds (DOMS_) {
+    DOMS_.forEach ((item) => {
+      if (/HTML(.*)Element/.test(item.constructor.name))
+        this.dom_.appendChild(item)
+      else if (item.constructor.name == 'DOM' && (/HTML(.*)Element/.test(item.dom_)))
+        this.dom_.appendChild(item.dom_);
+    })
+  }
+  flag (str) {
+    this.dom_.innerHTML = `${this.dom_.innerHTML} <span>${str}</span>`;
+  }
+}
+
+
+//   this_message.div.onclick = (ev) => {try {this.panel.removeChild(ev.target.parentNode)}catch(e){};};
+
+
 
 class term {
   constructor () {

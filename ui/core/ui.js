@@ -120,6 +120,7 @@ function responsive () {
 
   this.body.onclick = (ev) => {this.hidePanels (ev)};
   window.onresize = () => {
+    Files.resize ();
     term.resize ();
     this.mobile = window.innerWidth < 60*$em ? true : false;
   };
@@ -220,6 +221,12 @@ function progress () {
 }
 
 
+/**
+ * The 'workspace' object is the user interface integration of the Blockly workspace,
+ * therefore, will handle XML loading and generation, the target device and its specification and
+ * the styling for connection status with the devices.
+ * 'this.devices' gets 'devinfo/devinfo.json' data as a object.
+ */
 function workspace () {
     if (window.location.pathname.includes ('index.html') && window.location.protocol == 'file:') {
       alert('You will now be redirected to the offline version.');
@@ -242,9 +249,7 @@ function workspace () {
     });
     this.selector.onchange = () => {this.change ()};
 
-    this.websocket = {connected:false, reconnect:false, url:get('#url'), pass:get('#password')};
-    this.bluetooth = {connected:false};
-    this.webserial = {connected:false};
+    this.websocket = {url:get('#url'), pass:get('#password')};
     this.runButton = {
         dom:get('#runButton'),
         status:true
@@ -261,49 +266,51 @@ function workspace () {
     this.EasyMQTT_bridge = get('#EasyMQTT_bridge');
     this.term = get('#term');
     this.file_status = get('#file-status');
-    this.put_file_list = get('#put-file-list');
-    this.put_file_button = get('#put-file-button');
     this.put_file_select = get('#put-file-select');
     this.file = get('#content_file_name');
     this.content_file_name = get('#content_file_name');
     this.put_file_select.onchange = () => {Files.handle_put_file_select ()};
-    this.put_file_button.disabled = true;
 }
 
+/**
+ * Run program from Blockly workspace or stop current running program, called when clicking
+ * '#runButton'. If not connection, will try to connect then run.
+ */
 workspace.prototype.run = function () {
   if (this.runButton.status) {
     if(mux.connected ()) {
         Tool.runPython();
     } else {
-      this.buttonConnect ();
-      setTimeout(() => { mux.connected (); Tool.runPython();}, 2000);
+      Channel ['mux'].connect ();
+      setTimeout(() => { if (mux.connected ()) Tool.runPython();}, 2000);
     }
   } else {
     Tool.stopPython();
   }
 }
 
+/**
+ * Styling for when the platform is trying to connect to a device.
+ */
 workspace.prototype.connecting = function () {
   this.toolbarButton.className = 'icon medium wait';
   this.channel_connect.className = 'wait';
 }
 
-workspace.prototype.buttonConnect = function () {
-  Channel ['mux'].connect ();
-}
-
-workspace.prototype.websocketConnected = function () {
-  this.websocket.url.disabled = true;
-}
-
+/**
+ * Switch for '#connectButton' to connect or disconnect on click.
+ */
 workspace.prototype.connectClick = function () {
   if (mux.connected ()) {
     mux.disconnect ();
   } else {
-    this.buttonConnect ();
+    Channel ['mux'].connect ();
   }
 }
 
+/**
+ * Switch on styling for connected to device.
+ */
 workspace.prototype.receiving = function () {
   this.channel_connect.className = '';
   this.runButton.status = false;
@@ -313,6 +320,9 @@ workspace.prototype.receiving = function () {
   this.term.className = 'on';
 }
 
+/**
+ * Switch off styling for connected to device.
+ */
 workspace.prototype.runAbort = function () {
   this.channel_connect.className = '';
   this.runButton.status = true;
@@ -324,6 +334,11 @@ workspace.prototype.runAbort = function () {
   this.connectButton.value = "Connect";
 }
 
+/**
+ * Switch the workspace to '#device_selector' selected value, if available in 'this.devices'.
+ * Will update the dropdown in the 'pinout' block, change the toolbox and set 'Channel.webserial.packetSize'
+ * and 'Channel.webserial.speed' with 'this.devices' target device info.
+ */
 workspace.prototype.change = function () {
 
   if (this.selector.value in this.devices) {
@@ -359,6 +374,10 @@ workspace.prototype.change = function () {
     UI ['notify'].send(MSG['invalidDevice']);
 }
 
+/**
+ * Change the device in the dropdown '#device_selector' and call 'this.change()'
+ * @param {string} device - device that will the '#device_selector' be changed to, if available in 'this.devices'
+ */
 workspace.prototype.changeTo = function (device) {
     if (device in this.devices)
       this.selector.value = device,
@@ -367,6 +386,9 @@ workspace.prototype.changeTo = function (device) {
       UI ['notify'].send (MSG['deviceUnavailable'].replace ('%1', device));
 }
 
+/**
+ * Generate XML through Blockly and download it.
+ */
 workspace.prototype.saveXML = function () {
   let xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Code.workspace));
   xmlText = this.writeWorkspace (xmlText, true);
@@ -381,6 +403,12 @@ workspace.prototype.saveXML = function () {
 	document.body.removeChild(element);
 }
 
+/**
+ * Read device, timestamp and origin from BIPES generated XML.
+ * if '</workspace>' not available, will set to the first device in 'this.devices'
+ * @param {string} xml - BIPES generated XML.
+ * @param {boolean} prettyText - If the XML contains indentation and line breaks (human readable).
+ */
 workspace.prototype.readWorkspace = function (xml, prettyText) {
   let regex_;
   if (prettyText)
@@ -395,10 +423,17 @@ workspace.prototype.readWorkspace = function (xml, prettyText) {
     let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+?)<\/field>/) [1];
 
     this.changeTo (device);
+  } else {
+    this.changeTo (Object.keys(this.devices) [0]);
   }
   return xml;
 }
 
+/**
+ * Write device, timestamp and origin to Blockly generated XML.
+ * @param {string} xml - Blockly generated XML.
+ * @param {boolean} prettyText - If the XML contains indentation and line breaks (human readable).
+ */
 workspace.prototype.writeWorkspace = function (xml, prettyText) {
   let timestamp =  + new Date();
   let device = this.selector.value;
@@ -410,6 +445,11 @@ workspace.prototype.writeWorkspace = function (xml, prettyText) {
   return xml;
 }
 
+/**
+ * Load XML, called after clicking the button 'loadButton'.
+ * Will check if there is a file, if can be parsed as XML and if contains unique variables already
+ * in the Blockly workspace.
+ */
 workspace.prototype.loadXML = function () {
   if  (this.loadButton.files [0] != undefined) {
     let file = this.loadButton.files [0]
@@ -439,25 +479,4 @@ workspace.prototype.loadXML = function () {
       UI ['notify'].send ('No valid file selected to load.');
     }
   }
-}
-
-workspace.prototype.promptFile = function (contentType, multiple) {
-  let input = document.createElement("input");
-  input.type = "file";
-
-  input.multiple = multiple;
-  input.accept = contentType;
-  return new Promise(function(resolve) {
-      document.activeElement.onfocus = function() {
-      document.activeElement.onfocus = null;
-      setTimeout(resolve, 200);
-    };
-    input.onchange = function() {
-      let files = Array.from(input.files);
-      if (multiple)
-        return resolve(files);
-      resolve(files[0]);
-    };
-    input.click();
-  });
 }
