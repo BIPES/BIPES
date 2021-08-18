@@ -2037,6 +2037,8 @@ Blockly.Blocks['project_metadata'] = {
 };
 
 Blockly.Blocks['control_pid.__init__'] = {
+  // warning_ should be the size of itens inside Tool.trueOrWarning
+  warning_: new Array(2).fill(true),
   init: function() {
     this.appendDummyInput()
         .appendField("Init PID Controller #")
@@ -2063,8 +2065,15 @@ Blockly.Blocks['control_pid.__init__'] = {
     this.setColour('#7b49ad');
     this.setTooltip("Init PID controler, set 'update every' to zero for non realtime simulation or with non fixed intervals");
     this.setHelpUrl("https://micropython-simple-pid.readthedocs.io/");
+  },
+  check (gains, sampletime) {
+    Tool.warningIfTrue (this, [
+      [() => !gains.every(e => e * gains[0] >= 0), 'All gains in the PID should have the same sign.'],
+      [() => sampletime == 'None', 'Non fixed timestep PID enabled.']
+    ]);
   }
 };
+
 Blockly.Blocks['control_pid.compute'] = {
   init: function() {
     this.appendValueInput("INPUT")
@@ -10406,12 +10415,7 @@ function componentToHex(c) {
   return hex.length == 1 ? "0" + hex : hex;
 }
 
-function RGB2HEX(r, g, b) {
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
-
 Blockly.Blocks['neopixel_color_numbers'] = {
-  r:0,g:0,b:0,
   init: function() {
     this.appendDummyInput()
         .appendField("Red");
@@ -10431,28 +10435,14 @@ Blockly.Blocks['neopixel_color_numbers'] = {
     this.setTooltip("NeoPixel LED RGB URL");
     this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
   },
-  onchange: function (ev) {
-    let red, green, blue;
-    try {
-      red = Blockly.Python.valueToCode(this, 'red', Blockly.Python.ORDER_ATOMIC);
-      green = Blockly.Python.valueToCode(this, 'green', Blockly.Python.ORDER_ATOMIC);
-      blue = Blockly.Python.valueToCode(this, 'blue', Blockly.Python.ORDER_ATOMIC);
-    } catch (e) {
-      red = 89;
-      green = 102;
-      blue = 166;
-    }
-    if ((this.r != red || this.g != green || this.b != blue)) {
-      if (red <= 255 && red >= 0 && green >= 0 && green <= 255 && blue >= 0 && blue <= 255) {
-        let hex_ = RGB2HEX (red, green, blue);
-        this.setColour(hex_);
-      } else {
-        this.setColour("#FF0000");
-      }
-        this.r = red;
-        this.g = green;
-        this.b = blue;
-    }
+  styleBlock: function(colours) {
+    colours = colours.map(x => parseInt(x))
+    colours = colours.includes(NaN) ? [89,102,166] : colours
+    if(colours.every((e) => {return e <= 255}) && colours.every((e) => {return e >= 0})) {
+      let hex_ = Tool.RGB2HEX (colours [0], colours [1], colours [2]);
+      this.setColour(hex_);
+    } else
+      this.setColour("#FF0000");
   }
 };
 
@@ -10469,20 +10459,7 @@ Blockly.Blocks['neopixel_color_colors'] = {
   }
 };
 
-
-function HUE2HEX (h,s,l) {
-  l /= 100;
-  const a = s * Math.min(l, 1 - l) / 100;
-  const f = n => {
-    const k = (n + h / 30) % 12;
-    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-    return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
-  };
-  return `#${f(0)}${f(8)}${f(4)}`;
-}
-
 Blockly.Blocks['HSL_to_RGB'] = {
-  h:0,s:0,l:0,
   init: function  () {
     this.appendDummyInput()
         .appendField("Hue");
@@ -10503,28 +10480,15 @@ Blockly.Blocks['HSL_to_RGB'] = {
     this.setTooltip("HUE to RGB color, Hue from 0º to 360º, Saturation and Lightness from 0% to 100%.");
     this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
   },
-  onchange: function (ev) {
-      let hue, saturation, lightness;
-      try {
-        hue = Blockly.Python.valueToCode(this, 'hue', Blockly.Python.ORDER_ATOMIC);
-        saturation = Blockly.Python.valueToCode(this, 'saturation', Blockly.Python.ORDER_ATOMIC);
-        lightness = Blockly.Python.valueToCode(this, 'lightness', Blockly.Python.ORDER_ATOMIC);
-      } catch (e) {
-        hue = 230;
-        saturation = 30;
-        lightness = 50;
-      }
-      if ((this.h != hue || this.s != saturation || this.l != lightness)) {
-        if (hue <= 360 && hue >= 0 && saturation >= 0 && saturation <= 100 && lightness >= 0 && lightness <= 100) {
-          let hex_ = HUE2HEX (hue, saturation, lightness);
-          this.setColour(hex_);
-        } else {
-          this.setColour("#FF0000");
-        }
-          this.h = hue;
-          this.s = saturation;
-          this.l = lightness;
-      }
+
+  styleBlock: function(colours) {
+    colours = colours.map(x => parseFloat(x))
+    colours = colours.includes(NaN) ? [230,30,50] : colours
+    if (colours[0] <= 360 && colours[0] >= 0 && colours[1] >= 0 && colours[1] <= 100 && colours[2] >= 0 && colours[2] <= 100) {
+      let hex_ = Tool.HUE2HEX (colours [0], colours [1], colours [2]);
+      this.setColour(hex_);
+    } else
+      this.setColour("#FF0000");
   }
 };
 

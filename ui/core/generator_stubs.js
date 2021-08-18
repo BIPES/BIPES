@@ -5220,30 +5220,18 @@ Blockly.Python['neopixel_color_numbers'] = function(block) {
   var value_green = Blockly.Python.valueToCode(block, 'green', Blockly.Python.ORDER_ATOMIC);
   var value_blue = Blockly.Python.valueToCode(block, 'blue', Blockly.Python.ORDER_ATOMIC);
 
+  // Style block with compiled values, see block_definitions.js
+  this.styleBlock([value_red, value_green, value_blue])
+
   var code = `(${value_red},${value_green},${value_blue})`;
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
-function hexToRgb(hex) {
-  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-    return r + r + g + g + b + b;
-  });
-
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
-}
-
 Blockly.Python['neopixel_color_colors'] = function(block) {
   var color = block.getFieldValue('color');
-  var h = hexToRgb(color);
+  var h = Tool.HEX2RGB(color);
   var code = `(${h.r},${h.g},${h.b})`;
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5255,6 +5243,8 @@ Blockly.Python['HSL_to_RGB'] = function(block) {
   var value_brightness = Blockly.Python.valueToCode(block, 'lightness', Blockly.Python.ORDER_ATOMIC);
 
   Blockly.Python.definitions_['HSL_to_RGB'] = 'def HSL_to_RGB(h, s, l):\n	h, s, l = h/360, s/100, l/100\n	def hue2rgb (p, q, t):\n		if(t < 0.): t += 1\n		if(t > 1.): t -= 1\n		if(t < 1/6): return p + (q - p) * 6 * t\n		if(t < 1/2): return q\n		if(t < 2/3): return p + (q - p) * (2/3 - t) * 6\n		return p\n	q = l * (1 + s) if l < 0.5 else l + s - l * s\n	p = 2 * l - q\n	r, g, b = hue2rgb(p, q, h + 1/3), hue2rgb(p, q, h), hue2rgb(p, q, h - 1/3)\n	return (int(r * 255), int(g * 255), int(b * 255))\n';
+
+  this.styleBlock([value_hue, value_saturation, value_brightness])
 
   var code = `HSL_to_RGB(${value_hue},${value_saturation},${value_brightness})`;
 
@@ -5363,6 +5353,8 @@ Blockly.Python['control_pid.__init__'] = function(block) {
   number_sample_time = parseInt(number_sample_time) == 0 ? 'None': number_sample_time;
   var dropdown_scale = block.getFieldValue('SCALE');
   var value_setpoint = Blockly.Python.valueToCode(block, 'SETPOINT', Blockly.Python.ORDER_NONE);
+
+  this.check([number_kp,number_ki,number_kd], number_sample_time);
 
   Blockly.Python.definitions_['import_pid'] = 'from control import PID';
 

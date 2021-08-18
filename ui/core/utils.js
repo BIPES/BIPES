@@ -56,9 +56,6 @@ class Tool {
     // This fires after the blob has been read/loaded.
     reader.addEventListener('loadend', (e) => {
       let text = e.srcElement.result;
-      console.log(text);
-      //For codemirror
-      //var editor = CodeMirror.fromTextArea(Textarea);
       Files.editor.getDoc().setValue(text);
 
       UI ['workspace'].content_file_name.value = file_name;
@@ -129,7 +126,7 @@ class Tool {
     }
   }
 
-  static getText(pName){
+  static getText (pName) {
     var request = new XMLHttpRequest();
         request.open('GET', '/beta2/ui/pylibs/' + pName, true);
         request.send(null);
@@ -139,11 +136,65 @@ class Tool {
           if (typeof request.response == 'string') {
             var Textarea = document.getElementById('content_file_code');
             Files.editor.getDoc().setValue(request.responseText);
+            Files.file_save_as.className = 'py';
             var TextareaF = document.getElementById('content_file_name');
             TextareaF.value = pName;
         }
       }
     }
+  }
+
+  static makeAName (code, ext) {
+    let desc = code.match(/#Description: '(.*)'/)
+    let imp = [...code.matchAll(/import (.*)/g)]
+    return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.${ext}` : `my_BIPES_project.${ext}`;
+  }
+
+  static RGB2HEX(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
+
+  static HEX2RGB(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
+  static HUE2HEX (h,s,l) {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  /**
+   * Trow a notification is the criteria is met
+   * @param {object} self - A object that contains a warning_ array to keep track if the notification was already trown.
+   * @param {array} criteria - A array composed by subarrays of [() => criteria, string if criteria is met]
+   */
+  static warningIfTrue (self, criteria) {
+    criteria.forEach ((item, index) => {
+      if (item [0] ()) {
+        if (self.warning_ [index]) {
+          UI ['notify'].send(item [1]);
+          self.warning_ [index] = false;
+        }
+      } else
+        self.warning_ [index] = true;
+    })
   }
 }
 
@@ -159,17 +210,19 @@ class files {
     this.received_string = "";
     this.viewOnly = false;
     this.editor = CodeMirror.fromTextArea(content_file_code, {
-      lineNumbers: true,
-      mode: "python"
+      mode: "python",
+      lineNumbers: true
     });
-    this.fileList = get(fileList);
+    this.fileList = get('#fileList');
+    this.file_save_as = get('#file_save_as');
+    this.blocks2Code = {Python: get('#blocks2codePython'), XML: get('#blocks2codeXML')}
+    this.blocks2Code.Python.onclick = () => {this.internalPython ()};
+    this.blocks2Code.XML.onclick = () => {this.internalXML ()};
   }
-
 
   static update_file_status (s) {
     UI ['workspace'].file_status.innerHTML = s;
   }
-
   resize () {
     this.editor.setSize(window.innerWidth - (18*$em),window.innerHeight - (6*$em))
   }
@@ -205,17 +258,17 @@ class files {
 
         files.update_file_status(`Sending raw (USB) ${this.put_file_name}...`);
 
+        let decoderUint8 =  new TextDecoder().decode(this.put_file_data).replaceAll(/(\r\n|\r|\n)/g, '\\r').replaceAll(/'/g, "\\'").replaceAll(/"/g, '\\"').replaceAll(/\t/g, '    ');
+        UI ['progress'].start(parseInt(decoderUint8.length/Channel ['webserial'].packetSize) + 1);
+
         //ctrl-C twice: interrupt any running program
         mux.clearBuffer ();
         mux.bufferUnshift ('\r\x03\x03');
 
         mux.bufferPush ("import struct\r");
-        mux.bufferPush (`f=open('${this.put_file_name}', 'wb')\r`);
+        mux.bufferPush (`f=open('${this.put_file_name}', 'w')\r`);
 
-        UI ['progress'].start(this.put_file_data.length);
-        this.put_file_data.forEach((char, index) => {
-            mux.bufferPush (`f.write(struct.pack(\"B\",${char}))\r`, () => {files.update_file_status(`Sent ${index + 1}/${Files.put_file_data.length} bytes`)});
-        });
+        mux.bufferPush (`f.write('${decoderUint8}')\r`, () => {files.update_file_status(`Sent ${Files.put_file_data.length} bytes`)});
 
         mux.bufferPush ("f.close()\r");
         mux.bufferPush ('\r\r\r');
@@ -307,6 +360,7 @@ class files {
     this.get_file(file);
   }
   get_file (src_fname) {
+    this.file_save_as.className = 'py';
     switch (Channel ['mux'].currentChannel) {
       case 'websocket':
         let rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
@@ -403,14 +457,14 @@ class files {
         let wrapper2_ = new DOM ('div');
         let openButton_ = new DOM ('div', {innerText:file, className: 'runText'});
         if (!(/\./.test(file))) {
-          openButton_.flag('Is directory');
+          openButton_.flag('is directory');
           wrapper2_.appendChilds([openButton_])
           wrapper2_.dom_.style.cursor = 'default';
         } else {
           openButton_.dom_.title = `Open file ${file}`;
           openButton_.onclick (()=>{Files.files_view(file)});
           if(file == 'boot.py' || file == 'main.py')
-            openButton_.flag('Run at boot');
+            openButton_.flag('run at boot');
           let deleteButton_ = new DOM ('span', {className:'icon', id:'trashIcon', title:`Delete file ${file}`});
               deleteButton_.onclick (()=>{Files.delete(file)});
           let runButton_ = new DOM ('span', {className:'icon', id:'runIcon', title:`Run file ${file}`});
@@ -428,6 +482,38 @@ class files {
 
       Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
     }
+  }
+
+  editedXML2Workspace () {
+    var result = window.confirm('Changes will be applied directly to the workspace and might break everything, continue?');
+    if (result === true) {
+      let content = UI ['workspace'].readWorkspace (this.editor.getDoc().getValue("\n"), true);
+      let xmlDom = '';
+      try {
+        xmlDom = Blockly.Xml.textToDom(content);
+      } catch (e) {
+        var q =
+            window.confirm(MSG['badXml'].replace('%1', e));
+        if (!q) {
+          //Leave the user on the XML tab.
+          return;
+        }
+      }
+      if (xmlDom) {
+        Code.workspace.clear();
+        Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
+  	    Code.renderContent();
+      }
+    }
+  }
+  internalPython () {
+    this.file_save_as.className = 'bipes-py';
+    let code = Code.generateCode();
+    Tool.updateSourceCode(new Blob([code], {type: "text/plain"}), Tool.makeAName(code, 'py'));
+  }
+  internalXML () {
+    this.file_save_as.className = 'bipes-xml';
+    Tool.updateSourceCode(new Blob([Code.generateXML()], {type: "text/plain"}), 'BIPES_Workspace.xml');
   }
 }
 

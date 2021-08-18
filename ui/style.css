@@ -61,7 +61,8 @@ button.icon.text, label.icon.text {
   align-items: center;
   font-weight: bold;
   font-size: 1rem;
-  padding: .25em .5em
+  padding: .25em .5em;
+  white-space: nowrap;
 }
 button.icon.text::before, label.icon.text::before {
   margin-right:.25rem;
@@ -355,8 +356,13 @@ td {
   padding: 0;
   vertical-align: top;
 }
-.content {
+#content_blocks.off {
   visibility: hidden;
+}
+.content.off:not(#content_blocks){
+  display: none !important;
+}
+.content{
   margin: 0;
   position: absolute;
   direction: ltr;
@@ -383,38 +389,7 @@ pre.content {
 .blocklySvg {
   border-top: none !important;
 }
-#content_code details {
-  overflow: hidden;
-  white-space: pre-line;
-  max-width: 75rem;
-  margin: 0 auto;
-  border: 1px solid #aaa;
-  border-radius: 1rem;
-  margin-bottom: 1rem;
-  transition: .125s ease border;
-}
-#content_code summary {
-  -webkit-tap-highlight-color: transparent;
-  white-space: normal;
-  user-select: none;
-  cursor: pointer;
-  padding: .5rem .5rem .5rem 1rem;
-  border-bottom: 1px dashed #aaa;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 2rem;
-}
-#content_code summary > span:before {
-  content: "\1433";
-  margin-right: .5rem;
-  transition: transform .25s ease;
-  display:inline-block;
-}
-#content_code details[open] summary > span:before {
-  transform: rotateZ(90deg);
-}
-#content_code button, #content_console #file-boxes button {
+#content_console #file-boxes button {
   white-space: nowrap;
   margin-left: .25rem;
   cursor: pointer;
@@ -425,11 +400,7 @@ pre.content {
   background-color: #fff;
   font-size: 0.8rem;
 }
-#content_code pre {
-  margin: -2rem 0 -1.25rem 0;
-  padding: 0 .5rem .5rem .5rem;
-  overflow-x: auto;
-}
+
 #content_xml {
   resize: none;
   outline: none;
@@ -475,9 +446,10 @@ pre.content {
   display: inline-flex;
   align-items: center;
 }
-#content_console #file-boxes {
+#file-boxes {
   flex-wrap: wrap;
   justify-content: center;
+  user-select: none;
 }
 
 /* Files */
@@ -510,6 +482,15 @@ pre.content {
   align-items: center;
   padding: 0 .5rem 0 1.85rem
 }
+#file_save_as.py #updateXMLButton, #file_save_as.py #generated2DeviceButton {
+  display:none;
+}
+#file_save_as.bipes-xml #editor2DeviceButton, #file_save_as.bipes-xml #generated2DeviceButton {
+  display:none;
+}
+#file_save_as.bipes-py #editor2DeviceButton, #file_save_as.bipes-py #updateXMLButton {
+  display:none;
+}
 #file_save_as input {
   font-weight: bold;
   outline: none;
@@ -539,11 +520,10 @@ pre.content {
   font-size: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin: 0;
   height: 2.5rem;
 }
-#fileList > div, #fileTemplate > div {
+#fileList > div, #fileTemplate > div, #blocks2Code > div {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
@@ -553,6 +533,7 @@ pre.content {
   border: 1px solid #ccc;
   cursor: pointer;
   min-height: 2rem;
+  font-size: 0.9rem;
 }
 #fileList > div > div:last-child {
   flex-shrink: 0;
@@ -560,7 +541,7 @@ pre.content {
 #fileList .runText {
   width: 100%;
 }
-#fileTemplate > div {
+#fileTemplate > div, #blocks2Code > div  {
   align-items: center;
   word-break: break-word;
 }
@@ -569,16 +550,42 @@ pre.content {
   align-items: center;
   word-break: break-word;
 }
-#fileList .runText > span {
-  font-size: 0.9rem;
+#fileList .runText > span, #blocks2Code > div > span {
+  font-size: 0.8rem;
   border: 1px solid #7b49ad;
   border-radius: .75rem;
   padding: .175rem .25rem;
   color: #7b49ad;
   margin-left: .25rem;
+  font-weight: bold;
+  word-break: keep-all;
 }
 #fileList #runIcon {
   filter: brightness(0)
+}
+#filesPanel details {
+  overflow: hidden;
+  transition: .125s ease border;
+}
+#filesPanel summary {
+  -webkit-tap-highlight-color: transparent;
+  white-space: normal;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#filesPanel summary > h2:before {
+  content: "\1433";
+  margin-right: .5rem;
+  transition: transform .25s ease;
+  display:inline-block;
+  font-weight: normal;
+  font-size: 0.8rem;
+  line-height: 1rem;
+}
+#filesPanel details[open] summary > h2:before {
+  transform: rotateZ(90deg);
 }
 
 /* Toolbar */
@@ -730,8 +737,11 @@ button.icon.medium:before  {
 #refreshFilesList:before {
   background-position: left calc(-1.5rem*18) top;
 }
-#putFileButton:before, #editor2DeviceButton:before {
+#putFileButton:before, #editor2DeviceButton:before, #generated2DeviceButton:before{
   background-position: left calc(-1.5rem*19) top;
+}
+#updateXMLButton:before {
+  background-position: left calc(-1.5rem*20) bottom;
 }
 
 

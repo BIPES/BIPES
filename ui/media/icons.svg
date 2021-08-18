@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="480"
+   width="528"
    height="48"
-   viewBox="0 0 127 12.7"
+   viewBox="0 0 139.7 12.7"
    version="1.1"
    id="svg5"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
@@ -26,15 +26,15 @@
      units="px"
      width="432px"
      height="24px"
-     inkscape:zoom="1.9999999"
-     inkscape:cx="272.50001"
-     inkscape:cy="7.2500003"
+     inkscape:zoom="15.999999"
+     inkscape:cx="25.562501"
+     inkscape:cy="17.156251"
      inkscape:window-width="2560"
      inkscape:window-height="1014"
      inkscape:window-x="0"
      inkscape:window-y="29"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g1035"
      showguides="false">
     <inkscape:grid
        type="xygrid"
@@ -202,7 +202,7 @@
     <g
        style="fill:#000000"
        id="g561"
-       transform="matrix(-0.26458333,0,0,0.26458333,6.3499999,0)">
+       transform="matrix(-0.26458333,0,0,0.26458333,139.7,0)">
       <path
          d="M 0,0 H 24 V 24 H 0 Z"
          fill="none"
@@ -811,6 +811,51 @@
          d="M 0,0 H 24 V 24 H 0 Z"
          fill="none"
          id="path11246-2" />
+    </g>
+    <g
+       style="fill:#000000"
+       id="g1021"
+       transform="matrix(0.26458333,0,0,0.26458333,127,0)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path1009" />
+      <path
+         d="M 1,21 H 23 L 12,2 Z m 12,-3 h -2 v -2 h 2 z m 0,-4 h -2 v -4 h 2 z"
+         id="path1011" />
+    </g>
+    <g
+       style="fill:#000000"
+       id="g1035"
+       transform="scale(0.26458333)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path1023" />
+      <path
+         d="m 16.8,15.256 c -0.608,0 -1.152,0.24 -1.568,0.616 L 9.528,12.552 C 9.568,12.368 9.6,12.184 9.6,11.992 9.6,11.8 9.568,11.616 9.528,11.432 l 5.64,-3.288 c 0.432,0.4 1,0.648 1.632,0.648 1.328,0 2.4,-1.072 2.4,-2.4 0,-1.328 -1.072,-2.4 -2.4,-2.4 -1.328,0 -2.4,1.072 -2.4,2.4 0,0.192 0.032,0.376 0.072,0.56 L 8.832,10.24 C 8.4,9.84 7.832,9.592 7.2,9.592 c -1.328,0 -2.4,1.072 -2.4,2.4 0,1.328 1.072,2.4 2.4,2.4 0.632,0 1.2,-0.248 1.632,-0.648 l 5.696,3.328 c -0.04,0.168 -0.064,0.344 -0.064,0.52 0,1.288 1.048,2.336 2.336,2.336 1.288,0 2.336,-1.048 2.336,-2.336 0,-1.288 -1.048,-2.336 -2.336,-2.336 z"
+         id="path1025"
+         style="stroke-width:0.8" />
+    </g>
+    <g
+       id="g1452">
+      <g
+         style="fill:#000000"
+         id="g1240"
+         transform="matrix(0.26458333,0,0,0.26458333,127,6.3498333)">
+        <path
+           d="M 12,5.99 19.53,19 H 4.47 L 12,5.99 M 12,2 1,21 h 22 z m 1,14 h -2 v 2 h 2 z m 0,-6 h -2 v 4 h 2 z"
+           id="path1231" />
+      </g>
+      <g
+         style="fill:#000000"
+         id="g1021-3"
+         transform="matrix(0.26458333,0,0,0.26458333,127,6.3500001)">
+        <path
+           d="M 0,0 H 24 V 24 H 0 Z"
+           fill="none"
+           id="path1009-6" />
+      </g>
     </g>
   </g>
 </svg>
