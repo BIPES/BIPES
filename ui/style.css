@@ -356,10 +356,10 @@ td {
   padding: 0;
   vertical-align: top;
 }
-#content_blocks.off {
+#content_blocks.off, #content_iot.off {
   visibility: hidden;
 }
-.content.off:not(#content_blocks){
+.content.off:not(#content_blocks):not(#content_iot){
   display: none !important;
 }
 .content{
