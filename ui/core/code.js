@@ -424,7 +424,7 @@ Code.init = function() {
 
 
   Code.bindClick('forumButton',
-    function () {window.open("https://bipes.net.br/wp/forums/",'_blank')}
+    function () {window.open("https://github.com/BIPES/BIPES/discussions",'_blank')}
   )
 
 

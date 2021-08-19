@@ -196,25 +196,44 @@ responsive.prototype.hidePanels = function (ev) {
   }
 }
 
-function progress () {
-	this.dom = get ('.progress-bar');
-	this.div = document.createElement ('div');
-	this.dom.appendChild (this.div);
-	this.len;
+/** Show a progress bar under the .top-menu */
+class progress {
+  constructor () {
+	  this.dom = get ('.progress-bar');
+	  this.div = document.createElement ('div');
+	  this.dom.appendChild (this.div);
+	  this.len;
+	}
 
-	this.load = function (loaded, total) {
+	  /**
+   * Sets the progress bar width by the loaded and total to load, e.g. loaded=256, total=1024 equals 75%.
+   * @param {number} loaded - How much has been loaded
+   * @param {number} total - Total to load
+   */
+	load (loaded, total) {
 		var percent = (loaded * 100 / total);
 		this.div.style.width = percent + '%';
 	}
-	this.remain = function (len_) {
+	  /**
+   * Sets the progress bar width by the remaning value to load, e.g. 256 from 1024 equals 75%.
+   * @param {number} len_ - How much more to load
+   */
+	remain (len_) {
 		var percent = ((this.len - len_) * 100 / this.len);
 		this.div.style.width = percent + '%';
 	}
-	this.start = (len_) => {
+	  /**
+   * Unhide this.dom and sets the (estimated) loading lenght
+   * @param {number} len_ - The (estimated) loading lenght
+   */
+	start (len_) {
 	  this.len = len_;
 	  this.dom.id = 'on';
 	}
-	this.end = () => {
+	  /**
+   * Hides this.dom and reset the style
+   */
+	end () {
 	  this.dom.id = '';
     this.div.style.width = '0%';
 	}
