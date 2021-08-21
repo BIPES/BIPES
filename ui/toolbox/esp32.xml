@@ -1850,14 +1850,26 @@ _
     <button text="Install ble_uart_repl library" callbackKey="installPyLib"></button>
 
       <label text="Web Bluetooth REPL"></label>
-      <block type="bluetooth_repl_setup"></block>
-      <block type="bluetooth_repl_start"></block>
+      <block type="bluetooth_repl_setup">
+      <value name="name">
+          <shadow type="text">
+            <field name="TEXT">BIPES-BLE</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="bluetooth_repl_start">
+      <value name="name">
+          <shadow type="text">
+            <field name="TEXT">BIPES-BLE</field>
+          </shadow>
+        </value>
+      </block>
     <label text="Usage:"></label>
     <label text="1. Install the 3 files above"></label>
     <label text="2. Start Web Bluetooth REPL"></label>
-    <label text="3. Pair the mpy-repl device with your device /"></label>
-    <label text="4. Go to https://bipes.net.br/beta2serial/ui/"></label>
-    <label text="5. Console and Connect (Web Bluetooth)"></label>
+    <label text="3. Pair the ESP32 with your device /"></label>
+    <label text="4. Go to https://bipes.net.br/beta2/ui/"></label>
+    <label text="5. Select the bluetooth option and Connect (Web Bluetooth)"></label>
     </category>
 
   <category name="WebREPL">

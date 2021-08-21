@@ -10524,6 +10524,12 @@ Blockly.Blocks['bluetooth_repl_start'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Start Web Bluetooth REPL");
+
+    this.appendValueInput("name")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Bluetooth name:");
+
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(0);
@@ -10536,6 +10542,13 @@ Blockly.Blocks['bluetooth_repl_setup'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Setup Web Bluetooth REPL");
+
+    this.appendValueInput("name")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Bluetooth name:");
+
+
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(0);
