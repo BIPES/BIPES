@@ -1845,9 +1845,9 @@ _
     <label text="This block allows terminal/console access using bluetooth."></label>
     <label text="Library: https://github.com/micropython/micropython/tree/master/examples/bluetooth"></label>
     <label text="You need to install 3 files to use:"></label>
-    <button text="Install ble_advertising.py library" callbackKey="installPyLib"></button>
-    <button text="Install ble_uart_peripheral.py library" callbackKey="installPyLib"></button>
-    <button text="Install ble_uart_repl.py library" callbackKey="installPyLib"></button>
+    <button text="Install ble_advertising library" callbackKey="installPyLib"></button>
+    <button text="Install ble_uart_peripheral library" callbackKey="installPyLib"></button>
+    <button text="Install ble_uart_repl library" callbackKey="installPyLib"></button>
 
       <label text="Web Bluetooth REPL"></label>
       <block type="bluetooth_repl_setup"></block>
