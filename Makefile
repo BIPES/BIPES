@@ -33,6 +33,6 @@ offline:
 	cat ui/devinfo/devinfo.json >> ui/index_offline.html
 	echo "\`;" >> ui/index_offline.html
 	echo "</script>" >> ui/index_offline.html
-	zip -r bipes_offline.zip *
+	$zip -r bipes_offline.zip *
 
 
