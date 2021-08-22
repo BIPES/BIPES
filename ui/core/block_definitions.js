@@ -959,6 +959,18 @@ Blockly.Blocks['clear_oled'] = {
   }
 };
 
+Blockly.Blocks['show_oled'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Update OLED Display ");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Update OLED Disiplay");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['write_oled'] = {
   init: function() {
     this.appendDummyInput()
