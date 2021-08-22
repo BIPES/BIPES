@@ -419,9 +419,9 @@ Blockly.JavaScript['tank_move'] = function(block) {
   var value_move = Blockly.JavaScript.valueToCode(block, 'Move', Blockly.JavaScript.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
   var code = 'tank1.move(' + value_move + ', 1)\n';	
-  if (dropdown_option === 'Prime') {
+  if (dropdown_option === 'TankPrime') {
   	code = 'tank1.move(' + value_move + ', 2)\n';
-  } else if (dropdown_option === 'Jump') {
+  } else if (dropdown_option === 'TankJump') {
   	code = 'tank1.move(' + value_move + ', 0)\n';
   }
   return code;
