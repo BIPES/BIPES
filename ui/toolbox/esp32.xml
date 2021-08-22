@@ -698,9 +698,8 @@
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
       <button text="Install ssd1306 library" callbackKey="installPyLib"></button>
-      <button text="Install gfx library" callbackKey="installPyLib"></button>
-      <button text="Install tank library" callbackKey="installPyLib"></button>
 
+	    
       <block type="init_oled">
         <value name="i2c">
           <shadow type="math_number">
@@ -746,35 +745,24 @@
     <block type="fill_oled"></block>
 
       <block type="init_tank">
-        <value name="Xpos">
+        <value name="tankXpos">
           <shadow type="math_number">
             <field name="NUM">64</field>
           </shadow>
         </value>
-        <value name="Ypos">
+        <value name="tankYpos">
           <shadow type="math_number">
             <field name="NUM">32</field>
           </shadow>
         </value>
-        <value name="Angle">
+        <value name="tankAngle">
           <shadow type="math_number">
             <field name="NUM">90</field>
           </shadow>
         </value>
     </block>
 	    
-      <block type="move_tank">
-        <value name="type">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-	<value name="distance">
-          <shadow type="math_number">
-            <field name="NUM">20</field>
-          </shadow>
-        </value>
-    </block>
+
 
       <block type="turn_tank">
         <value name="turn">
