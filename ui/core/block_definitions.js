@@ -998,6 +998,59 @@ Blockly.Blocks['write_oled'] = {
   }
 };
 
+Blockly.Blocks['tank_init'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Tank Init");
+    this.appendValueInput("Move")
+        .setCheck("Number")
+        .appendField("X position");
+    this.appendValueInput("Move")
+        .setCheck("Number")
+        .appendField("Y position");
+    this.appendValueInput("Move")
+        .setCheck("Number")
+        .appendField("Rotation");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("Tank Init creates a positional 'cursor' object to help you track motion at a desired length and angle.");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['tank_move'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Tank to")
+        .appendField(new Blockly.FieldDropdown([["Move","TankMove"], ["Prime","TankPrime"], ["Jump","TankJump"]]), "option");
+    this.appendValueInput("Move")
+        .setCheck("Number")
+        .appendField("distance of");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("Move, Prime, or Jump the Tank a 'pixel' distance");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['tank_turn'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Tank to Turn");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldAngle(90), "Tank_Angle");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("Rotate the Tank a specific amount in degrees ");
+ this.setHelpUrl("");
+  }
+};
 
 Blockly.Blocks['init_servo'] = {
   init: function() {
