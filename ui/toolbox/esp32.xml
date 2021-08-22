@@ -764,7 +764,7 @@
 	    
 
 
-      <block type="turn_tank">
+      <block type="tank_turn">
         <value name="turn">
           <shadow type="math_number">
             <field name="NUM">0</field>
