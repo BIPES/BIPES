@@ -1,0 +1,45 @@
+.sidebar-brand {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.125;
+  color: #3298dc;
+}
+.sidebar-brand::before {
+  content: "";
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  background-size: cover;
+  background-image: url(http://bipes.net.br/beta2/ui/media/icons.svg);
+  background-size: auto 4rem;
+  background-position: left calc(-2rem*8) top;
+}
+
+.sidebar-brand::after {
+  content: "BIPES:Dev";
+  display: inline-block;
+  width: 5rem;
+  height: 2rem;
+  white-space: nowrap;
+  margin-left: .25rem;
+}
+
+.sidebar-brand-text {
+  display: none;
+}
+iframe {
+    width: calc(50.625rem - 1rem);
+    height: calc(28.47rem - 0.5625rem);
+    margin-left: -1rem;
+}
+@media (max-width:50.625rem) {
+  iframe {
+      width: calc(100vw - 1rem);
+      height: calc(56.25vw - 1rem);
+      margin-left: -1rem;
+  }
+}

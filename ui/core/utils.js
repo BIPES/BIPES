@@ -1,10 +1,17 @@
 'use strict';
 
+/**
+ * All generic utilities are concetrated here.
+ * Should not be inited, since all functions are static.
+ */
 class Tool {
   constructor () {
 
   }
-
+  /**(DEPRECATED)
+  * Alias for :js:func:`mux.bufferPush`.
+  * @param {string} code_ - Code to be sent.
+  */
   static runPython (code_) {
     // if (this.selector.value == "UNO") {
     //   alert("Generating code for Arduino Uno");
@@ -22,7 +29,8 @@ class Tool {
     }
   }
 
-
+  /**Send ``\x03\x03`` to stop running a program, see a `ASCII table
+  * <https://www.ascii-code.com/>`_ to know more.*/
   static stopPython () {
     //Send Ctrl+C to stop program
     mux.bufferPush ('\x03\x03');
@@ -35,14 +43,17 @@ class Tool {
     mux.bufferPush ('\x04');
   }
 
-
+  /**(DEPRECATED)
+  * New async sleep function, callend with async await(), which allows UI updates
+  */
   static asleep (milliseconds) {
-    //Avoid at all cost using this
-    //New async sleep function, callend with async await(), which allows UI updates
 	  return new Promise(resolve => setTimeout(resolve, milliseconds));
   }
+
+  /**(DEPRECATED)
+  * Delay Javascript code execution.
+  */
   static sleep (milliseconds) {
-    //Avoid at all cost using this
     const date = Date.now();
     let currentDate = null;
     do {
@@ -50,6 +61,12 @@ class Tool {
     }
     while (currentDate - date < milliseconds);
   }
+
+  /**
+  * Add a file to the file editor
+  * @param {string} code - Code.
+  * @param {string} file_name - File name for the code.
+  */
   static updateSourceCode (code, file_name) {
     const reader = new FileReader();
 
@@ -64,10 +81,17 @@ class Tool {
     // Start reading the blob as text.
     reader.readAsText(code);
   }
+  /**(DEPRECATED)
+  *Generate code from blocks, appends to the file editor.
+  */
   static blocksToPython() {
     let code = Blockly.Python.workspaceToCode(Code.workspace);
     Files.editor.getDoc().setValue(code);
   }
+  /**Decode data to fetch status code.
+  * @param {char} data - Response data.
+  * @returns {number} Status code
+  */
   static decode_resp (data) {
     if (data[0] == 'W'.charCodeAt(0) && data[1] == 'B'.charCodeAt(0)) {
       let code = data[2] | (data[3] << 8);
@@ -75,6 +99,10 @@ class Tool {
     } else
       return -1;
   }
+  /**Make a date with a unix time, if not passed, will make one.
+  * @param {number} [timestamp] - `Unix time <https://en.wikipedia.org/wiki/Unix_time>`_.
+  * @returns {string} Formatted time, e.g. 08:02:01.
+  */
   static unix2date (timestamp) {
     let date;
     if (timestamp == undefined)
@@ -86,7 +114,7 @@ class Tool {
     let seconds = "0" + date.getSeconds();
     return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
   }
-
+  /**Checks the income data for useful chuncks, like ``BIPES-DATA:`` for plotting*/
   static bipesVerify () {
     let re = /\r\nBIPES-DATA:(.*)\r\n/;
     let match_;
@@ -106,7 +134,10 @@ class Tool {
     }
     Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
   }
-
+  /**Bridge incoming data to MQTT.
+  * @param {number} id_ - ID for the MQTT message.
+  * @param {number} value_ - Value for the MQTT message.
+  */
   static EasyMQTTBridge (id_, value_) {
 	  var easyMQTTsession = window.localStorage['bridgeSession'];
 	  if (easyMQTTsession) {
@@ -115,7 +146,7 @@ class Tool {
 		  });
 		}
   }
-
+  /**Clear 'core/queue.js queue*/
   static clearQueue () {
     for (var i=0; i<20; i++) {
       var t = localStorage.getItem("queue" + i);
@@ -125,7 +156,9 @@ class Tool {
       }
     }
   }
-
+  /**Get code for a  MicroPython library, must be available at `ui/pylibs`.
+  * @param {string} pName - File name for a MicroPython library.
+  */
   static getText (pName) {
     var request = new XMLHttpRequest();
         request.open('GET', '/beta2/ui/pylibs/' + pName, true);
@@ -143,17 +176,28 @@ class Tool {
       }
     }
   }
-
+  /**Makes a name for a Blockly project.
+  * @param {string} code - Blockly generated code.
+  * @param {string} ext - File extension.
+  */
   static makeAName (code, ext) {
     let desc = code.match(/#Description: '(.*)'/)
     let imp = [...code.matchAll(/import (.*)/g)]
     return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.${ext}` : `my_BIPES_project.${ext}`;
   }
-
+  /**Converts RGB to HEX
+  * @param {number} r - Red color, from 0 to 255.
+  * @param {number} g - Green color, from 0 to 255.
+  * @param {number} b - Blue color, from 0 to 255.
+  * @returns {string} HEX code for the RGB color.
+  */
   static RGB2HEX(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
   }
-
+  /**Converts HEX to RGB
+  * @param {string} hex - HEX code
+  * @returns {(Object|null)} RGB code for the RGB color.
+  */
   static HEX2RGB(hex) {
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -168,7 +212,12 @@ class Tool {
       b: parseInt(result[3], 16)
     } : null;
   }
-
+  /**Converts HUE to HEX
+  * @param {number} h - Hue, from 0 to 360.
+  * @param {number} s - Saturation, from 0 to 100.
+  * @param {number} l - Lightness, from 0 to 100.
+  * @returns {string} HEX code for the HUE color.
+  */
   static HUE2HEX (h,s,l) {
     l /= 100;
     const a = s * Math.min(l, 1 - l) / 100;
@@ -181,9 +230,11 @@ class Tool {
   }
 
   /**
-   * Trow a notification is the criteria is met
-   * @param {object} self - A object that contains a warning_ array to keep track if the notification was already trown.
-   * @param {array} criteria - A array composed by subarrays of [() => criteria, string if criteria is met]
+   * throw a notification is the criteria is met.
+   * @param {object} self - A object that contains a ``warning_`` array to keep track if the notification was already thrown.
+   * @param {array} criteria - A array composed by subarrays.
+   * @param {function} criteria.func - Function with the criteria.
+   * @param {string} criteria.str - Message to show as notification if the criteira is met.
    */
   static warningIfTrue (self, criteria) {
     criteria.forEach ((item, index) => {
@@ -197,7 +248,9 @@ class Tool {
     })
   }
 }
-
+/**
+ * Handle the Files tab.
+ */
 class files {
   constructor (fileList) {
     this.watcher;
@@ -209,6 +262,7 @@ class files {
     this.binary_state = 0;
     this.received_string = "";
     this.viewOnly = false;
+    /**Object that contains a ``codemirror`` editor*/
     this.editor = CodeMirror.fromTextArea(content_file_code, {
       mode: "python",
       lineNumbers: true
@@ -219,14 +273,22 @@ class files {
     this.blocks2Code.Python.onclick = () => {this.internalPython ()};
     this.blocks2Code.XML.onclick = () => {this.internalXML ()};
   }
-
+  /**
+   * Display text inside DOM `#file-status` as a operation progress
+   * @param {string} s - The notification to be shown.
+   */
   static update_file_status (s) {
     UI ['workspace'].file_status.innerHTML = s;
   }
+  /**
+   * Resize the ``codemirror`` editor, triggered by ``window.onresize`` event.
+   */
   resize () {
     this.editor.setSize(window.innerWidth - (18*$em),window.innerHeight - (6*$em))
   }
-
+  /**
+   * Upload file to device.
+   */
   put_file () {
     switch (Channel ['mux'].currentChannel) {
       case 'websocket':
@@ -276,7 +338,9 @@ class files {
       break;
     }
   }
-
+  /**
+   * Get version.
+   */
   get_ver () {
     // WEBREPL_REQ_S = "<2sBBQLH64s"
     var rec = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64);
@@ -289,7 +353,9 @@ class files {
     this.binary_state = 31;
     mux.bufferPush(rec);
   }
-
+  /**
+   * Get file from DOM `#putFileButton` and calls :js:func:`Files.put_file` to upload
+   */
   handle_put_file_select() {
 
     // The event holds a FileList object which is a list of File objects,
@@ -305,7 +371,9 @@ class files {
     };
     reader.readAsArrayBuffer(f);
   }
-
+  /**
+   * Get file from ``codemirror``editor and calls :js:func:`Files.put_file` to upload.
+   */
   files_save_as () {
 
     //For codemirror
@@ -321,9 +389,16 @@ class files {
 
     this.put_file ();
   }
+  /**
+   * List files from device, on success, calls :js:func:`files.updateTable` to display it.
+   */
   listFiles () {
     mux.bufferPush ('import os; os.listdir()\r', files.updateTable.bind(this)); //Using ; to trigger only one ">>>"
   }
+   /**
+   * Execute a program.
+   * @param {string} file - File name of the script to be executed.
+   */
   run (file) {
     files.update_file_status('Executing  ' + file);
 
@@ -337,6 +412,10 @@ class files {
     //Filename without .py
     mux.bufferPush (`exec(open(\'./${file}\').read(),globals())\r`);
   }
+  /**
+   * Delete a file.
+   * @param {string} file - File name of the file to be deleted.
+   */
   delete (file) {
     let msg = "Are you sure you want to delete " + file + "?";
 
@@ -349,16 +428,27 @@ class files {
       files.update_file_status('Delete aborted for ' + file);
     }
   }
+  /**
+   * Request a file to show in the ``codemirror`` editor.
+   * @param {string} file - File name of the file to be viewed.
+   */
   files_view (file) {
     this.viewOnly=true;
     this.get_file(file);
     files.update_file_status('Downloading ' + file);
   }
+  /**
+   * Request a file to download.
+   * @param {string} file - File name of the file to be downloaded.
+   */
   files_download (file) {
-
     this.viewOnly=false;
     this.get_file(file);
   }
+  /**
+   * Get file from device
+   * @param {string} src_fname - File name of the file to be fetched.
+   */
   get_file (src_fname) {
     this.file_save_as.className = 'py';
     switch (Channel ['mux'].currentChannel) {
@@ -419,6 +509,9 @@ class files {
       break;
     }
   }
+  /**
+   * Subfuction to get file from device with webserial or webbluetooth.
+   */
   get_file_webserial_ () {
       let re = /sys\.stdout\.write\(result\)\r\n...         \r\n...         \r\n... \r\n(.*)>>> /s;
       let get_file_data_;
@@ -439,7 +532,9 @@ class files {
         return false;
       }
   }
-
+  /**
+   * Display fetched from device file list in DOM `#fileList`.
+   */
   static updateTable () {
     let re = /\[(.+)?\]/g;
     if (re.test(this.received_string)) {
@@ -483,7 +578,9 @@ class files {
       Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
     }
   }
-
+  /**
+   * Push edited XML to the workspace.
+   */
   editedXML2Workspace () {
     var result = window.confirm('Changes will be applied directly to the workspace and might break everything, continue?');
     if (result === true) {
@@ -506,17 +603,24 @@ class files {
       }
     }
   }
+  /**
+   * "Open" MicroPython code generated from Blockly in the ``codemirror``editor.
+   */
   internalPython () {
     this.file_save_as.className = 'bipes-py';
     let code = Code.generateCode();
     Tool.updateSourceCode(new Blob([code], {type: "text/plain"}), Tool.makeAName(code, 'py'));
   }
+  /**
+   * "Open" XML code generated from Blockly and BIPES in the ``codemirror``editor.
+   */
   internalXML () {
     this.file_save_as.className = 'bipes-xml';
     Tool.updateSourceCode(new Blob([Code.generateXML()], {type: "text/plain"}), 'BIPES_Workspace.xml');
   }
 }
 
+/** Make DOM Node element*/
 class DOM {
   constructor (DOM_, tags_) {
     this.dom_ ;
@@ -531,9 +635,17 @@ class DOM {
       break;
     }
   }
+  /**
+  * Append a ``onlick`` event.
+  * @param {function} ev - Function to be executed on click.
+  */
   onclick (ev) {
     this.dom_.onclick = ev;
   }
+  /**
+  * Appends others :js:func:`DOM`.
+  * @param {Object[]} DOMS_ - Array of :js:func:`DOM` or/and direct DOM Nodes.
+  */
   appendChilds (DOMS_) {
     DOMS_.forEach ((item) => {
       if (/HTML(.*)Element/.test(item.constructor.name))
@@ -542,16 +654,16 @@ class DOM {
         this.dom_.appendChild(item.dom_);
     })
   }
+  /**
+  * Adds a label to the :js:func:`DOM`.
+  * @param {string} str - Message inside the label.
+  */
   flag (str) {
     this.dom_.innerHTML = `${this.dom_.innerHTML} <span>${str}</span>`;
   }
 }
 
-
-//   this_message.div.onclick = (ev) => {try {this.panel.removeChild(ev.target.parentNode)}catch(e){};};
-
-
-
+/** Handle ``xterm.js`` terminal*/
 class term {
   constructor () {
   }
@@ -575,17 +687,23 @@ class term {
       }
     });
   }
+  /** Enable the terminal. */
   static on () {
     terminal.setOption('disableStdin', false);
     terminal.focus();
   }
+  /** Disable the terminal. */
   static off () {
     terminal.setOption('disableStdin', true);
     terminal.blur();
   }
+  /** Write data in the terminal. */
   static write (data) {
     terminal.write(data);
   }
+  /**
+   * Resize the ``xterm.js`` terminal, triggered by ``window.onresize`` event.
+   */
   static resize () {
     let cols = Math.max(50, Math.min(200, (window.innerWidth - 4*$em) / 7)) | 0;
     let rows = Math.max(15, Math.min(40, (window.innerHeight - 20*$em) / 12)) | 0;

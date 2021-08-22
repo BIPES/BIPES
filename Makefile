@@ -35,4 +35,5 @@ offline:
 	echo "</script>" >> ui/index_offline.html
 	zip -r bipes_offline.zip *
 
-
+ doc:
+	cd docs && make html

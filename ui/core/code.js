@@ -129,7 +129,7 @@ Code.changeLanguage = function() {
       window.location.host + window.location.pathname + search;
 };
 
-/**
+/**(DEPRECATED)
  * Bind a function to a button's click event.
  * On touch enabled browsers, ontouchend is treated as equivalent to onclick.
  * @param {!Element|string} el Button element or ID thereof.

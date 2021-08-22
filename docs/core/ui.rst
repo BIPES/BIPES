@@ -1,7 +1,7 @@
 User Interface
 =================================
 
-This page describes everthing about the `core/ui.js` file, which provides a functions
+This page describes everthing about the `core/ui.js` file, which provides functions
 and classes for basic stuff related to the overall user interface.
 
 The aliases

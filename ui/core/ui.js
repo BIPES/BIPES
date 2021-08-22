@@ -407,7 +407,7 @@ workspace.prototype.runAbort = function () {
 /**
  * Switch the workspace to DOM `#device_selector` selected value if available in :js:attr:`workspace#devices`.
  * Will update the dropdown in the :js:attr:`Blockly.Blocks['pinout']` block, change the toolbox and set :js:attr:`webserial#packetSize`
- * and :js:func:`webserial#speed` with the target device info.
+ * and :js:attr:`webserial#speed` with the target device info.
  */
 workspace.prototype.change = function () {
 

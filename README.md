@@ -16,7 +16,7 @@ To build/update the offline version with latest, run:
 ```
 make offline
 ```
-This version does to require a server since it has all core files concatanated at `ui/index_offline.html`, just open this file in a browser. It will also create a `bipes_offline.zip`.
+This version does not require a server since it has all core files concatanated at `ui/index_offline.html`, just open this file in a browser. It will also create a `bipes_offline.zip`.
 
 
 BIPES integrates WebREPL and Blockly. considere cloning these submodules into the same folder to update these core files:
@@ -28,6 +28,12 @@ Copy files from cloned repositories by
 make copy
 ```
 That's it.
+
+To build the documentation version with latest, run:
+```
+make doc
+```
+This requires `sphinx`, `sphinx-js`and `furo` (all via ``pip instal``).
 
 ## More informaton
 Some functions of `ui/index.html` were based on Blopy project (https://github.com/mnoriaki/Blopy), by Noriaki Mitsunaga

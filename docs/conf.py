@@ -46,7 +46,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'press'
+html_theme = 'furo'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -58,3 +58,12 @@ html_static_path = ['_static']
 js_source_path = '../ui/core'
 # Sets JavaScript as the primary language
 primary_domain = 'js'
+
+# The suffix of source filenames.
+source_suffix = '.rst'
+
+# Custom CSS for logo
+html_css_files = ["custom.css"]
+
+# Include favicon
+html_favicon = "../ui/media/icon/favicon-32x32.png"
