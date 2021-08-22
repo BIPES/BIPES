@@ -414,9 +414,9 @@ Blockly.Python['init_tank'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['tank_move'] = function(block) {
+Blockly.Python['tank_move'] = function(block) {
   var dropdown_option = block.getFieldValue('option');
-  var value_move = Blockly.JavaScript.valueToCode(block, 'Move', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_move = Blockly.Python.valueToCode(block, 'Move', Blockly.Python.ORDER_ATOMIC);
   // TODO: Assemble JavaScript into code variable.
   var code = 'tank1.move(' + value_move + ', 1)\n';	
   if (dropdown_option === 'TankPrime') {
@@ -427,7 +427,7 @@ Blockly.JavaScript['tank_move'] = function(block) {
   return code;
 };
 
-Blockly.JavaScript['tank_turn'] = function(block) {
+Blockly.Python['tank_turn'] = function(block) {
   var angle_tank_angle = block.getFieldValue('Tank_Angle');
   // TODO: Assemble JavaScript into code variable.
   var code = 'tank1.turn(' + angle_tank_angle + ')\n';

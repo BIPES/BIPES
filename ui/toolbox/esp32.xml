@@ -762,6 +762,8 @@
         </value>
     </block>
 	    
+      <block type="tank_move"></block>
+
 
 
       <block type="tank_turn">

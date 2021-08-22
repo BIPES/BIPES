@@ -1002,13 +1002,13 @@ Blockly.Blocks['init_tank'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Tank Init");
-    this.appendValueInput("Move")
+    this.appendValueInput("Xpos")
         .setCheck("Number")
         .appendField("X position");
-    this.appendValueInput("Move")
+    this.appendValueInput("Ypos")
         .setCheck("Number")
         .appendField("Y position");
-    this.appendValueInput("Move")
+    this.appendValueInput("Angle")
         .setCheck("Number")
         .appendField("Rotation");
     this.setInputsInline(true);
