@@ -388,6 +388,11 @@ Blockly.Python['fill_oled'] = function(block) {
   return code;
 };
 
+Blockly.Python['show_oled'] = function(block) {
+  var code = 'oled.show()\n';
+  return code;
+};
+
 Blockly.Python['write_oled'] = function(block) {
   var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
   var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
@@ -397,6 +402,37 @@ Blockly.Python['write_oled'] = function(block) {
   return code;
 };
 
+Blockly.Python['init_tank'] = function(block) {
+  var Xpos = Blockly.Python.valueToCode(block, 'Xpos', Blockly.Python.ORDER_ATOMIC);
+  var Ypos = Blockly.Python.valueToCode(block, 'Ypos', Blockly.Python.ORDER_ATOMIC);
+  var Angle = Blockly.Python.valueToCode(block, 'Angle', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_tank'] = 'import tank';
+	
+  var code = 'tank1 = tank.Tank(' + Xpos + ',' + Ypos + ',' + Angle + ', oled, oled_width, oled_height, i2c)   # uses 3 variables; X position, Y position, Start Angle\n';
+
+  return code;
+};
+
+Blockly.JavaScript['tank_move'] = function(block) {
+  var dropdown_option = block.getFieldValue('option');
+  var value_move = Blockly.JavaScript.valueToCode(block, 'Move', Blockly.JavaScript.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'tank1.move(' + value_move + ', 1)\n';	
+  if (dropdown_option === 'Prime') {
+  	code = 'tank1.move(' + value_move + ', 2)\n';
+  } else if (dropdown_option === 'Jump') {
+  	code = 'tank1.move(' + value_move + ', 0)\n';
+  }
+  return code;
+};
+
+Blockly.JavaScript['tank_turn'] = function(block) {
+  var angle_tank_angle = block.getFieldValue('Tank_Angle');
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'tank1.turn(' + angle_tank_angle + ')\n';
+  return code;
+};
 
 Blockly.Python['init_servo'] = function(block) {
   var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
