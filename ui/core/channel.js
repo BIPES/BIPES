@@ -1,6 +1,10 @@
 'use strict';
 
+/*Handles the protocol's switch between webbluetooth, webserial and websocket*/
 class mux {
+  /**
+   * Init the mux class as Channel.mux, will check if it has been loaded as HTTPS, HTTP or locally ("file:") to handle browser policies for the protocols.
+   */
   constructor () {
     this.isLocalFile = false;
     if(!window.location.origin.includes('/127.0.0.1') || window.location.protocol == 'file:') {
@@ -30,7 +34,10 @@ class mux {
       webbluetooth: ['https://bipes.net.br/beta2/ui', 'the HTTPS version']
     }
   }
-
+	/**
+   * Switch the target protocol if available, see mux.constructor
+   * @param {string} channel_ - the protocol to be switched to
+   */
   switch (channel_) {
     if (this.available.includes(channel_)) {
       this.currentChannel = channel_;
@@ -49,6 +56,9 @@ class mux {
     }
   }
 
+	/**
+   * Connect using the target protocol, call as Channel.mux.connect()
+   */
   connect () {
     switch (this.currentChannel) {
       case 'websocket':
@@ -62,7 +72,9 @@ class mux {
       break;
     }
   }
-
+	/**
+   *  Disconnect using the target protocol, call as mux.disconnect()
+   */
   static disconnect () {
     if (Channel ['websocket'].connected) {
       Channel ['websocket'].ws.close();
@@ -72,13 +84,23 @@ class mux {
       Channel ['webbluetooth'].disconnect();
     }
   }
+  /**
+   * Return if a device is connected via any protocol, call as mux.connected()
+   * @returns {boolean} True if a device is connected via any protocol
+   */
   static connected () {
     if (Channel ['websocket'].connected || Channel ['webserial'].connected || Channel ['webbluetooth'].connected)
       return true;
     else
       return false;
   }
-
+	/**
+   * Send data to the buffer of the target protocol, to be sent to the device with the target protocol.
+   * A callback function can be passed and will be called after the MicroPython REPL ">>> " charset is detected.
+   * This means understanding how your code executes is crucial. Call as mux.bufferPush()
+   * @param {string} code - the code to be sent to the device with the target protocol
+   * @param {function} callback - the callback function to be called when the  code has been executed.
+   */
   static bufferPush (code, callback) {
     let textArray;
     if (typeof code == 'object')
@@ -111,6 +133,10 @@ class mux {
       UI ['notify'].send(MSG['notConnected']);
   }
 
+	/**
+   * Send data to the first position of the buffer of the target protocol, to be sent to the device with the target protocol. This means will it'll be executed as soon as possible, is useful for reset commands.
+   * @param {string} code - the code to be sent immediatally to the device with the target protocol
+   */
   static bufferUnshift (code) {
     if (Channel ['websocket'].connected) {
       Channel ['websocket'].buffer_.unshift(code);
@@ -122,6 +148,9 @@ class mux {
       UI ['notify'].send(MSG['notConnected']);
   }
 
+	/**
+   * Clears the buffer of the connected protocol, code won't be sent.
+   */
   static clearBuffer () {
     if (Channel ['websocket'].connected) {
       Channel ['websocket'].buffer_ = [];
@@ -135,15 +164,23 @@ class mux {
   }
 }
 
+/*Handles the websocket protocol*/
 class websocket {
+	/**
+   * Init the websocket, stored as Channel.websocket
+   */
   constructor () {
     this.ws;
     this.watcher;
+    /**Store the code to be sent to the device*/
     this.buffer_ = [];
     this.connected = false;
     this.completeBufferCallback = [];
   }
 
+	/**
+   * Runs every 50ms to check if there is code to be sent in the :js:attr:`websocket#buffer_` (appended with :js:func:`mux.bufferPush()`)
+   */
   watch () {
     if (this.ws.bufferedAmount == 0) {
       if (this.buffer_.length > 0) {
@@ -161,6 +198,11 @@ class websocket {
     }
   }
 
+	/**
+   * Connect using websocket protocol.
+   * @param {string} url - url/IP of the device
+   * @param {string} pass - password to connect to the device
+   */
   connect (url, pass) {
     UI ['workspace'].connecting ();
     this.ws = new WebSocket(url);
@@ -295,11 +337,16 @@ class websocket {
   }
 }
 
+/*Handles the websocket protocol*/
 class webserial {
+	/**
+   * Init the webserial, stored as Channel.websocket
+   */
   constructor () {
     this.port;
     this.watcher;
     this.watcherConnected_;
+    /**Store the code to be sent to the device*/
     this.buffer_ = [];
     this.connected = false;
     this.completeBufferCallback = [];
@@ -311,6 +358,9 @@ class webserial {
     this.speed = 115200;
   }
 
+	/**
+   * Runs every 50ms to check if there is code to be sent in the :js:attr:`webserial#buffer_` (appended with :js:func:`mux.bufferPush()`)
+   */
   watch () {
     if (this.port && this.port.writable && this.port.writable.locked == false) {
       if (this.buffer_.length > 0) {
@@ -326,6 +376,9 @@ class webserial {
     }
   }
 
+	/**
+   * Connect using webserial protocol, will ask user permission for the serial port.
+   */
   connect () {
     if (typeof navigator.serial == "undefined") {
       UI ['notify'].send(MSG['notAvailableFlag'].replaceAll('$1', 'WebSerial API'));
@@ -386,6 +439,9 @@ class webserial {
         UI ['notify'].log(e);
     });
   }
+  /**
+   * User interface styling for when connected via webserial protocol.
+   */
   connect_ () {
     term.on();
     term.write('\x1b[31mConnected using Web Serial API !\x1b[m\r\n');
@@ -395,6 +451,9 @@ class webserial {
 
     this.watcher = setInterval(this.watch.bind(this), 50);
   }
+  /**
+   * Disconnect device connected with webserial protocol.
+   */
   disconnect () {
     const writer = this.port.writable.getWriter();
     writer.close().then(() => {
@@ -417,7 +476,10 @@ class webserial {
     })
 
   }
-
+  /**
+   * Reset board on connect with webserial protocol,
+   * action enabled by a checkbox on the user interface.
+   */
   resetBoard () {
     setTimeout(() => {
       if (UI ['workspace'].resetBoard.checked) {
@@ -428,7 +490,10 @@ class webserial {
     },50);
   }
 
-
+	/**
+   * Directly send code via webserial, normally called by this.watch()
+   * @param {(Uint8Array|string|number)} data - code to be sent via webserial
+   */
   serialWrite (data) {
     let dataArrayBuffer = undefined;
     switch (data.constructor.name) {
@@ -447,7 +512,11 @@ class webserial {
 	}
 }
 
+/*Handles the webbluetooth protocol*/
 class webbluetooth {
+	/**
+   * Init the webbluetooth, stored as Channel.websocket
+   */
   constructor () {
     this.device = undefined;
     this.nusService = undefined;
@@ -455,6 +524,7 @@ class webbluetooth {
     this.rxCharacteristic = undefined;
     this.sending = false;
     this.watcher;
+    /**Store the code to be sent to the device*/
     this.buffer_ = [];
     this.connected = false;
     this.completeBufferCallback = [];
@@ -465,6 +535,9 @@ class webbluetooth {
   static get RXUUID  () {return '6e400002-b5a3-f393-e0a9-e50e24dcca9e';}
   static get TXUUID  () {return '6e400003-b5a3-f393-e0a9-e50e24dcca9e';}
 
+	/**
+   * Runs every 50ms to check if there is code to be sent in the :js:attr:`webbluetooth#buffer_` (appended with :js:func:`mux.bufferPush()`)
+   */
   watch () {
     if(this.device && this.device.gatt.connected) {
       if (this.buffer_.length >= 1 && !this.sending) {
@@ -477,6 +550,11 @@ class webbluetooth {
     }
   }
 
+	/**
+   * Directly send code via webbluetooth, normally called by this.watch()
+   * uses a promise to handshake sent chunks, will retry in 500ms if a chunk fails
+   * @param {string} operation - code to be sent via webbluetooth
+   */
   sendNextChunk (operation) {
     return new Promise((resolve, reject) => {
       this.sending = true;
@@ -511,9 +589,11 @@ class webbluetooth {
     return new Promise(resolve => {
         setTimeout(resolve, delay);
     });
-}
+  }
 
-
+	/**
+   * Connect using webbluetooth protocol, will ask user permission for the bluetooth device.
+   */
   connect () {
     if (typeof navigator.bluetooth == "undefined") {
       UI ['notify'].send(MSG['notAvailableFlag'].replaceAll('$1', 'WebBluetooth API'));
@@ -578,6 +658,9 @@ class webbluetooth {
           this.device.gatt.disconnect();
       });
   }
+  /**
+   * Disconnect device connected with webbluetooth protocol.
+   */
   disconnect () {
     if (!this.device) {
       UI ['notify'].log('No Bluetooth Device connected...');
@@ -599,6 +682,10 @@ class webbluetooth {
     UI ['workspace'].runAbort();
   }
 
+	/**
+   * Handles data received via webbluetooth
+   * @param {string} event - data received via webbluetooth
+   */
   handleNotifications(event) {
     let value = event.target.value;
     // Convert raw data bytes to character values and use these to
