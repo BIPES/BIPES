@@ -4710,10 +4710,48 @@ _
 
     
     </block>
+    <block type="show_oled"></block>
     <block type="clear_oled"></block>
     <block type="fill_oled"></block>
 
+      <block type="init_tank">
+        <value name="Xpos">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="Ypos">
+          <shadow type="math_number">
+            <field name="NUM">32</field>
+          </shadow>
+        </value>
+        <value name="Angle">
+          <shadow type="math_number">
+            <field name="NUM">90</field>
+          </shadow>
+        </value>
+    </block>
+	    
+      <block type="move_tank">
+        <value name="type">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+	<value name="distance">
+          <shadow type="math_number">
+            <field name="NUM">20</field>
+          </shadow>
+        </value>
+    </block>
 
+      <block type="turn_tank">
+        <value name="turn">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+    </block>
 
 
 
