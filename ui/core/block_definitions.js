@@ -998,7 +998,7 @@ Blockly.Blocks['write_oled'] = {
   }
 };
 
-Blockly.Blocks['tank_init'] = {
+Blockly.Blocks['init_tank'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Tank Init");
