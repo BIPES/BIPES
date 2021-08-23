@@ -29,11 +29,11 @@ make copy
 ```
 That's it.
 
-To build the documentation version with latest, run:
+To build the documentation, run:
 ```
+pip install sphinx sphinx-js furo
 make doc
 ```
-This requires `sphinx`, `sphinx-js`and `furo` (all via ``pip instal``).
 
 ## More informaton
 Some functions of `ui/index.html` were based on Blopy project (https://github.com/mnoriaki/Blopy), by Noriaki Mitsunaga
