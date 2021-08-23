@@ -14,6 +14,7 @@ BIPES Developer Center
    get-started/development
    get-started/create-block
    get-started/pylibs
+   get-started/roadmap
 
 
 .. toctree::
