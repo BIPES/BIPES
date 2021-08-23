@@ -34,6 +34,8 @@ After the ESP board is running MicroPython, you have to enable WebREPL server, s
 Follow the instructions to enable WebREPL, and set a password. Next access `BIPES <http://bipes.net.br/beta2/ui>`_.
 Then connect to the network created by MicroPython, which is something similar to MicroPython-*. Go to BIPES Console, and on the host, type ``ws://192.168.4.1:8266/``. Click Connect, and you should get MicroPython shell over wifi! By the way, the wifi password is micropythoN, and the console password is the one you typed minutes ago. From now on, you can build your program and run it using blocks!
 
+Note, that connecting directly to the board running MicroPython will disconnect you from other Wifi Access Point, limiting your Internet Access. However, you can configure your board to connect directly to an Access Point. Use these commands for that:
+
 .. code-block:: python
 
 	import network
@@ -97,7 +99,16 @@ After copying the firmware, your MBed Serial port should have a working MicroPyt
 
 After accessing the shell, try to press ENTER sometimes to see the Python prompt ``>>>``. If you see it, you have MicrPython running on your MBed device. Play with it! 😉
 
-You can check your MicroPython / board version with the command machine.reset()
+You can check your MicroPython / board version with the command ``machine.reset()``.
+
+.. code-block:: python
+
+	>>> machine.reset()
+	MicroPython v1.9.4-691-g4f25a8b-dirty on 2018-12-02; NUCLEO-F446RE with STM32F4x
+	Type "help()" for more information.
+	>>>
+
+Next, lets use `SerialWebSocketServer <https://github.com/rafaelaroca/SerialWebSocketServer>`_ bridge to give WebSocket access to the MBed board! Open a terminal, with mBed connected to USB and run the commands:
 
 .. code-block:: bash
 
@@ -126,10 +137,19 @@ Installation is really simple – simply download the firmware and copy to the M
 
 Useful documentation: `microbit-micropython.readthedocs.io/introduction <https://microbit-micropython.readthedocs.io/en/latest/tutorials/introduction.html>`_
 
+Direct access to the USB port
+-----------------------------------------------------------
+
+A recent feature of Google Chrome (`rafaelaroca.wordpress.com/access-serial-devices-directly-from-the-browser <https://rafaelaroca.wordpress.com/2020/06/21/access-serial-devices-directly-from-the-browser/>`_) allows direct access from the browser to the USB port. This (experimental) feature allows BIPES to directly communicate with BBC MicroBit, ESP32 ou ESP8266, mBed or any other device using the USB/Serial port!
+
+This feature is already available on vanilla/standard Google Chrome, but Experimental Web Platform Features must be enabled in ``chrome://flags (#enable-experimental-web-platform-features)``.
+
+After enabling this featuer, and having the board with MicroPython firmware installed, simply access `BIPES <http://bipes.net.br/beta2/ui/>`_ and play with it! 
+
 Blocks
 -----------------------------------------------------------
 
-Current blocks documentation: `here <https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub#h.owhbali4ayaj>`_.
+`Current blocks documentation here <https://docs.google.com/document/d/e/2PACX-1vSk-9T56hP9K9EOhkF5SoNzsYl4TzDk-GEDnMssaFP_m-LEfI6IU-uRkkLP_HoONK0QmMrZVo_f27Fw/pub#h.owhbali4ayaj>`_.
 
 The basic infrastructure of BIPES is ready for the development of several programs for several target hardwares! We are doing many efforts to include practical blocks to be used by the community. While some blocks area not ready, keep in mind that we have a roadmap for developing blocks for several functions of each board, and advanced functionalities, such as OpenCV support for Linux devices, among other functions. Note that even if a block does not exist, you can invoke the desired Python command to do actions, such as in the examples above.
 
