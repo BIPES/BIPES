@@ -959,6 +959,18 @@ Blockly.Blocks['clear_oled'] = {
   }
 };
 
+Blockly.Blocks['show_oled'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Update OLED Display ");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Update OLED Disiplay");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['write_oled'] = {
   init: function() {
     this.appendDummyInput()
@@ -986,6 +998,59 @@ Blockly.Blocks['write_oled'] = {
   }
 };
 
+Blockly.Blocks['init_tank'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Tank Init");
+    this.appendValueInput("Xpos")
+        .setCheck("Number")
+        .appendField("X position");
+    this.appendValueInput("Ypos")
+        .setCheck("Number")
+        .appendField("Y position");
+    this.appendValueInput("Angle")
+        .setCheck("Number")
+        .appendField("Rotation");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("Tank Init creates a positional 'cursor' object to help you track motion at a desired length and angle.");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['tank_move'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Tank to")
+        .appendField(new Blockly.FieldDropdown([["Move","TankMove"], ["Prime","TankPrime"], ["Jump","TankJump"]]), "option");
+    this.appendValueInput("Move")
+        .setCheck("Number")
+        .appendField("distance of");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("Move, Prime, or Jump the Tank a 'pixel' distance");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['tank_turn'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Tank to Turn");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldAngle(90), "Tank_Angle");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+ this.setTooltip("Rotate the Tank a specific amount in degrees ");
+ this.setHelpUrl("");
+  }
+};
 
 Blockly.Blocks['init_servo'] = {
   init: function() {
