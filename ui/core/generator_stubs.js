@@ -694,7 +694,7 @@ Blockly.Python['easymqtt_disconnect'] = function(block) {
 
 ///EasyMQTT Subscribe
 Blockly.Python['easymqtt_subscribe'] = function(block) {
-  var var_name = Blockly.Python.variableDB_.getName(
+  var var_name = Blockly.Python.nameDB_.getName(
       block.getFieldValue('EASYMQTT_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
   // Fix for global variables inside callback
   // Piece of code from generators/python/procedures.js
@@ -708,14 +708,14 @@ Blockly.Python['easymqtt_subscribe'] = function(block) {
   for (var i = 0, variable; variable = variables[i]; i++) {
     varName = variable.name;
     if (block.getVars().indexOf(varName) == -1 && varName != var_name) {
-      globals.push(Blockly.Python.variableDB_.getName(varName,
+      globals.push(Blockly.Python.nameDB_.getName(varName,
           Blockly.VARIABLE_CATEGORY_NAME));
     }
   }
   // Add developer variables.
   var devVarList = Blockly.Variables.allDeveloperVariables(workspace);
   for (var i = 0; i < devVarList.length; i++) {
-    globals.push(Blockly.Python.variableDB_.getName(devVarList[i],
+    globals.push(Blockly.Python.nameDB_.getName(devVarList[i],
         Blockly.Names.DEVELOPER_VARIABLE_TYPE));
   }
   globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') + '\n' : '';
@@ -805,8 +805,8 @@ Blockly.Python['mqtt_publish_payload'] = function(block) {
 
 /// Set Callback to MQTT Messages
 Blockly.Python['mqtt_set_callback'] = function(block) {
-	var data_var_name = Blockly.Python.variableDB_.getName(block.getFieldValue('MQTT_DATA_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
-	var topic_var_name = Blockly.Python.variableDB_.getName(block.getFieldValue('MQTT_TOPIC_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
+	var data_var_name = Blockly.Python.nameDB_.getName(block.getFieldValue('MQTT_DATA_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
+	var topic_var_name = Blockly.Python.nameDB_.getName(block.getFieldValue('MQTT_TOPIC_VAR'), Blockly.VARIABLE_CATEGORY_NAME);
 	// Fix for global variables inside callback
 	// Piece of code from generators/python/procedures.js
 	// Add a 'global' statement for every variable that is not shadowed by a local parameter.
@@ -817,14 +817,14 @@ Blockly.Python['mqtt_set_callback'] = function(block) {
 	for (var i = 0, variable; variable = variables[i]; i++) {
 		varName = variable.name;
 		if (block.getVars().indexOf(varName) == -1 && varName != data_var_name && varName != topic_var_name) {
-		globals.push(Blockly.Python.variableDB_.getName(varName,
+		globals.push(Blockly.Python.nameDB_.getName(varName,
 			Blockly.VARIABLE_CATEGORY_NAME));
 		}
 	}
 	// Add developer variables.
 	var devVarList = Blockly.Variables.allDeveloperVariables(workspace);
 	for (var i = 0; i < devVarList.length; i++) {
-		globals.push(Blockly.Python.variableDB_.getName(devVarList[i],
+		globals.push(Blockly.Python.nameDB_.getName(devVarList[i],
 			Blockly.Names.DEVELOPER_VARIABLE_TYPE));
 	}
 	globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') : '';
@@ -4247,7 +4247,7 @@ Blockly.Python['timer'] = function(block) {
   for (var i = 0, variable; (variable = variables[i]); i++) {
     var varName = variable.name;
     if (block.getVars().indexOf(varName) == -1) {
-      globals.push(Blockly.Python.variableDB_.getName(varName,
+      globals.push(Blockly.Python.nameDB_.getName(varName,
           Blockly.VARIABLE_CATEGORY_NAME));
     }
   }
@@ -4393,7 +4393,7 @@ Blockly.Python['file_open_read'] = function(block) {
 };
 
 Blockly.Python['file_close'] = function(block) {
-  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
  
   var code = variable_filename + '.close()\n';
   return code;
@@ -4407,7 +4407,7 @@ Blockly.Python['file_close_old'] = function(block) {
 };
 
 Blockly.Python['file_read'] = function(block) {
-  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
  
   var code = variable_filename + '.read()\n';
 
@@ -4421,7 +4421,7 @@ Blockly.Python['file_read_old'] = function(block) {
 };
 
 Blockly.Python['file_write'] = function(block) {
-  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
   var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
  
   var code = variable_filename + '.write(' + value_data + ')\n';
@@ -4430,7 +4430,7 @@ Blockly.Python['file_write'] = function(block) {
 };
 
 Blockly.Python['file_write_line'] = function(block) {
-  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
   var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
  
   var code = variable_filename + '.write(' + value_data + ')\n';
@@ -4440,7 +4440,7 @@ Blockly.Python['file_write_line'] = function(block) {
 };
 
 Blockly.Python['file_write_byte'] = function(block) {
-  var variable_filename = Blockly.Python.variableDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
   var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
  
   var code = variable_filename + '.write(struct.pack(\"B\",' + value_data + '))\n';
