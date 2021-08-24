@@ -697,7 +697,7 @@
 
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
-      <button text="Install SSD1306 library" callbackKey="installPyLib"></button>
+      <button text="Install ssd1306 library" callbackKey="installPyLib"></button>
 
 	    
       <block type="init_oled">
