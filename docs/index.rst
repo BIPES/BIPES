@@ -27,7 +27,7 @@ BIPES Developer Center
    core/code
 
 Welcome to BIPES Developer Center, here is all information about the BIPES code base,
-alongside with tutorial to get started!
+alongside with tutorials to get started!
 
 
 What is BIPES?
