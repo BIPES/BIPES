@@ -184,8 +184,8 @@ document.body.appendChild(el);
     <div>
       <button class='icon' id="networkButton">Network</button>
       <span>
-      Address: <input type="text" name="webrepl_url" id="url" value="ws://192.168.0.35:8266/" />
-      Password: <input type="password" name="webrepl_pass" id="password" value="bipes" />
+      Address: <input type="text" name="webrepl_url" id="url" value="ws://192.168.4.1:8266/" />
+      Password: <input type="password" name="webrepl_pass" id="password" value="PETE" />
       </span>
       <button class="icon" value="Scan boards" id="scanButton" onclick="window.open('ports.html','popup','width=600,height=600'); return false;" target="popup">Scan devices</button>
     </div>
@@ -203,6 +203,8 @@ document.body.appendChild(el);
      </td>
      <td>
         <div id="file-boxes" >
+          Nome do Wifi: <input type="text" name="nome_wifi" id="nomeWifi">
+          Senha do Wifi:<input type="password" name="senha_wifi" id="senhaWifi">
 
             <button onclick="Tool.runPython(); return false;">Run block based program</button>
       <br>

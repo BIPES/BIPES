@@ -215,6 +215,15 @@ class websocket {
       this.ws.send(pass + '\n\n'); //this.buffer_.push(pass);
 
       this.connected = true;
+
+      this.ws.send('import network\r');
+      this.ws.send('import time\r');
+      this.ws.send('sta_if = network.WLAN(network.STA_IF); sta_if.active(True)\r');
+      this.ws.send('sta_if.connect("'+document.getElementById('nomeWifi').value+'", "'+document.getElementById('senhaWifi').value+'")\r');
+      this.ws.send('time.sleep_ms(850)\r');
+      this.ws.send('sta_if.ifconfig()\r');
+
+
       UI ['workspace'].websocket.url.disabled = true;
 
       this.ws.onmessage = (event) => {
