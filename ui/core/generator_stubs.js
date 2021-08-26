@@ -5724,3 +5724,37 @@ Blockly.Python['snek_gpio_get'] = function(block) {
 };
 
 
+Blockly.Python['google_spreadsheet'] = function(block) {
+  Blockly.Python.definitions_['import_prequests'] = 'import prequests';
+  Blockly.Python.definitions_['import_ujson'] = 'import ujson';
+
+  var number_sheet_num = block.getFieldValue('sheet_num');
+  var value_deploy_code = Blockly.Python.valueToCode(block, 'deploy_code', Blockly.Python.ORDER_ATOMIC);
+  var cells_blocks = block.getInputTargetBlock('cells_values');
+
+  // TODO: Assemble Python into code variable.
+  Blockly.Python.definitions_['post_data'] = 'def post_data(row_data, deployment_code):\n  request_data = ujson.dumps({"parameters": row_data})\n  r = prequests.post("https://script.google.com/macros/s/" + deployment_code + "/exec", headers = {"content-type": "application/json"}, data = request_data)\n  r.close()';
+  Blockly.Python.definitions_['deployment_code' + number_sheet_num] = 'deployment_code' + number_sheet_num + '= ' + value_deploy_code;
+  Blockly.Python.definitions_['row_data_' + number_sheet_num] = 'row_data' + number_sheet_num +' = {}';
+
+  if(cells_blocks)
+  var num_cell = 0;
+  var row_data_def = '';
+    do{
+      var cell_value = Blockly.Python.blockToCode(cells_blocks, 'Cell');
+      row_data_def += ' row_data' + number_sheet_num +'["var' + num_cell+ '"] = ' + cell_value+'\n';
+      num_cell ++;
+    }while (cells_blocks = cells_blocks.getNextBlock());
+
+    Blockly.Python.definitions_['row_data_cell'+ number_sheet_num] = 'def update_row_data'+ number_sheet_num+'():\n' + row_data_def;
+  
+  var code = 'update_row_data'+ number_sheet_num+'()\npost_data(row_data' + number_sheet_num+',deployment_code' + number_sheet_num+')\n';
+  return code;
+};
+
+Blockly.Python['cell_value'] = function(block) {
+  var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+  // TODO: Assemble Python into code variable.
+  var code = value_value;
+  return code;
+};

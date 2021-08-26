@@ -11000,3 +11000,38 @@ Blockly.Blocks['snek_setpower'] = {
  }
 };
 
+Blockly.Blocks['google_spreadsheet'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Send data to a Google spreadsheet")
+        .appendField("#")
+        .appendField(new Blockly.FieldNumber(1, 1, 9, 1), "sheet_num");
+    this.appendValueInput("deploy_code")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Deployment Code");
+    this.appendStatementInput("cells_values")
+        .setCheck(null)
+        .appendField("Cells");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(120);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['cell_value'] = {
+  init: function() {
+    this.appendValueInput("value")
+        .setCheck(null)
+        .appendField("Cell");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};

@@ -1928,6 +1928,35 @@ _
 
     </category>
 
+    <category name="Google Sheets">
+      <label text="Send files to a Google Spreadsheet"></label>
+      <label text="Library: https://gist.github.com/SpotlightKid/8637c685626b334e5c0ec341dd269c44"></label>
+        <button text="install prequests library" callbackKey="installPyLib"></button>
+      <block type="google_spreadsheet">
+    <field name="sheet_num">1</field>
+    <value name="deploy_code">
+      <shadow type="text">
+        <field name="TEXT">Deploy code</field>
+      </shadow>
+    </value>
+    <statement name="cells_values">
+      <block type="cell_value">
+        <value name="value">
+          <shadow type="text">
+            <field name="TEXT">Content</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+      <block type="cell_value">
+        <value name="value">
+          <shadow type="text">
+            <field name="TEXT">content</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
 
   </category>
 
