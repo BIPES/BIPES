@@ -19,7 +19,7 @@ make offline
 This version does not require a server since it has all core files concatanated at `ui/index_offline.html`, just open this file in a browser. It will also create a `bipes_offline.zip`.
 
 
-BIPES integrates WebREPL and Blockly. considere cloning these submodules into the same folder to update these core files:
+BIPES integrates WebREPL and Blockly. Consider cloning these submodules into the same folder to update these core files:
 ```
 make git-clone
 ```
@@ -41,4 +41,4 @@ Some functions of `ui/index.html` were based on Blopy project (https://github.co
  
  OpenCV blocks were automatically generated using berak's OpenCV to Blockly generator (https://github.com/berak/blockly-cv2/tree/master/gen).
  
-We also use `xterm.js` (https://github.com/xtermjs/xterm.js/) and `codemirror.js` (https://github.com/codemirror/codemirror)
+We also use `xterm.js` (https://github.com/xtermjs/xterm.js/) and `codemirror.js` (https://github.com/codemirror/codemirror).
