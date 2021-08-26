@@ -30,7 +30,7 @@ class mux {
 
     this.ifunavailable = {
       webserial: ['https://bipes.net.br/beta2/ui', 'the HTTPS version'],
-      websocket: ['http:///bipes.net.br/beta2/ui', 'the HTTP version'],
+      websocket: ['http://iot-pete.ddns.net/ui', 'the HTTP version'],
       webbluetooth: ['https://bipes.net.br/beta2/ui', 'the HTTPS version']
     }
   }
