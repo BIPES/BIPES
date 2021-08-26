@@ -32,7 +32,7 @@ to `ui/msg <https://github.com/BIPES/BIPES/tree/master/ui/msg>`_.
 How to translate 
 -------------------------------------------------------
 
-In the codebase, BIPES uses the global``MSG`` JavaScript variable (available in every file) to store all strings of the user's preferred language, 
+In the codebase, BIPES uses the global ``MSG`` JavaScript variable (available in every file) to store all strings of the user's preferred language, 
 so you have to just pass the string key as in this example:
 
 .. code-block:: javascript
