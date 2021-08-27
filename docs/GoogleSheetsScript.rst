@@ -1,5 +1,5 @@
 Creating a Google Sheets script
-========
+====================================
 
 1. Create a new google spreadsheet and name it as you want
 2. Select the menu item Tools > Script editor.
