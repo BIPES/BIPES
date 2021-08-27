@@ -941,6 +941,7 @@
           </shadow>
         </value>
       </block>
+<!--Parar Anemômetro-->
       <block type="anemo_stop">
         <value name="Função">
           <shadow type="text">
