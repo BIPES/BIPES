@@ -5723,4 +5723,47 @@ Blockly.Python['snek_gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+// Gerando os códigos dos Blocos do Pluviômetro
+// Iniciar Pluviômetro
+Blockly.Python['pluvio_init'] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	
+	var value_handler = Blockly.Python.valueToCode(block, 'Função', Blockly.Python.ORDER_ATOMIC);
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
 
+  
+	var code = 'pluviometro=machine.Pin('+value_pin+',machine.Pin.IN,machine.Pin.PULL_UP) \npluviometro.irq(trigger=machine.Pin.IRQ_FALLING,handler='+ value_handler.replace('\'','').replace('\'','') +')\n';
+  
+	return code;
+};
+// Parar Pluviômetro
+Blockly.Python['pluvio_stop'] = function(block){
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+
+	var value_handler = Blockly.Python.valueToCode(block, 'Função', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'pluviometro.irq(trigger=0,handler='+value_handler.replace('\'','').replace('\'','')+')\n';
+	return code;
+};
+//Gerando os códigos dos Blocos do Anemômetro
+// Iniciar Anemômetro
+Blockly.Python['anemo_init'] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	
+	var value_handler = Blockly.Python.valueToCode(block, 'Função', Blockly.Python.ORDER_ATOMIC);
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+
+  
+	var code = 'anemometro=machine.Pin('+value_pin+',machine.Pin.IN,machine.Pin.PULL_UP) \nanenometro.irq(trigger=machine.Pin.IRQ_FALLING,handler='+ value_handler.replace('\'','').replace('\'','') +')\n';
+  
+	return code;
+};
+// Parar Anemômetro
+Blockly.Python['anemo_stop'] = function(block){
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+
+	var value_handler = Blockly.Python.valueToCode(block, 'Função', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'anemometro.irq(trigger=0,handler='+value_handler.replace('\'','').replace('\'','')+')\n';
+	return code;
+};
