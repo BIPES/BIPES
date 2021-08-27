@@ -11076,4 +11076,32 @@ Blockly.Blocks['anemo_stop'] = {
     this.setNextStatement(true, null);
     this.setColour(255,0,0);
   }
-}
+};
+//Blocos de Interrupção
+// Iniciar interrupção
+Blockly.Blocks['inter_init'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/600px-Python-logo-notext.svg.png",
+        55,
+        55,
+        "*"))
+        .appendField("Iniciar Interrupção");
+    this.appendValueInput("Nome")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Nome");
+    this.appendValueInput("Função")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Função");
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("pin"), "INTERRUPT_PIN");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(240);
+  }
+};

@@ -5767,3 +5767,15 @@ Blockly.Python['anemo_stop'] = function(block){
 	var code = 'anemometro.irq(trigger=0,handler='+value_handler.replace('\'','').replace('\'','')+')\n';
 	return code;
 };
+// Gerando código dos blocos de interrupção
+// Iniciar Interrupção
+Blockly.Python['inter_init'] = function(block){
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+
+	var value_nome = Blockly.Python.valueToCode(block, 'Nome', Blockly.Python.ORDER_ATOMIC);
+	var value_handler = Blockly.Python.valueToCode(block, 'Função', Blockly.Python.ORDER_ATOMIC);
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+
+	var code = ''+value_nome.replace('\'','').replace('\'','')+'=machine.Pin('+value_pin+', machine.Pin.IN, machiine.Pin.PULL_UP) \n'+value_nome.replace('\'','').replace('\'','')+'.irq(trigger=machine.Pin.IRQ_FALLING, handelr='+ value_handler.replace('\'','').replace('\'','')+')';
+	return code;
+};

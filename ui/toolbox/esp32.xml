@@ -314,8 +314,6 @@
           <field name="TEXT"></field>
         </shadow>
       </value>
-
-    
     </block>
 
     <block type="exec_python_output">
@@ -325,7 +323,25 @@
           <field name="TEXT"></field>
         </shadow>
       </value>
-
+    </block>
+<!--Adicionando os Blocos de Interrupção-->
+<!--Iniciar Imterrupção-->
+    <block type="inter_init">
+      <value name="Nome">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="Função">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
     </block>
   </category>
 
