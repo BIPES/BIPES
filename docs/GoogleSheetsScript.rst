@@ -2,7 +2,7 @@ Creating a Google Sheets script
 ====================================
 
 1. Create a new google spreadsheet and name it as you want
-2. Select the menu item Tools > Script editor.
+2. Select the menu item **Tools > Script** editor.
 3. Delete any code in your script editor, and paste the code below:
 
 .. code-block:: javascript
@@ -18,8 +18,8 @@ Creating a Google Sheets script
     try {
       var dateTime = new Date();
       // ss must be the URL of the Google Sheets starting from https thru /edit 
-      var ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/"spreadsheet_id"/edit");
-      var dataLoggerSheet = ss.getSheetByName("Sheet1"); //spreadsheet page name(it's not the file name)
+      var ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/$SPREADSHEET_ID/edit");
+      var dataLoggerSheet = ss.getSheetByName("$PAGE_NAME"); //spreadsheet page name(it's not the file name)
    
       // Get last edited row from DataLogger sheet
       var row = dataLoggerSheet.getLastRow() + 1;
@@ -45,16 +45,17 @@ Creating a Google Sheets script
     Logger.log("--- save_data end---"); 
   }
 
-4. Replace in the code your spreadsheet_ID and spreadsheet page name, as the exemple
+4. Replace in the code the spreadsheet ID ``$SPREADSHEET_ID`` and spreadsheet page name ``$PAGE_NAME``, as the exemple
 
 .. code-block:: javascript
 
  var ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/14C9TgdYTxNokt1g_KyBBtMaq0gtRmuUHhoTJYjPiICM/edit");
  var dataLoggerSheet = ss.getSheetByName("Sheet1");
   
-* Sheet1 is the default page name if you haven't changed it
+Google sheets default page name for english is ``Sheet1``, so if you have not changed it, ``$PAGE_NAME`` is probably ``Sheet1``.
+
 5. Save the project
-6. Click on Deploy > New Deployment
-7. Select type > Web app
+6. Click on **Deploy > New Deployment**
+7. Select **type > Web app**
 8. Type a description for your deployment, in the option  **Who has access** select **anyone** and click on **Deploy**
 9. Copy the **deployment id**
