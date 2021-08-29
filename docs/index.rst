@@ -17,6 +17,12 @@ BIPES Developer Center
    get-started/pylibs
    get-started/roadmap
 
+.. toctree::
+   :hidden:
+   :caption: Block tutorials
+
+   block-tutorials/google-sheets-script
+
 
 .. toctree::
    :hidden:
