@@ -10631,32 +10631,117 @@ Blockly.Blocks['st7789_init'] = {
 
  this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
-        "media/oled.png",
+        "media/st7789.png",
         55,
         55,
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
 
-    this.appendValueInput("i2c")
+    this.appendValueInput("spi")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("I2C");
+        .appendField("SPI");
 
-    this.appendValueInput("scl")
+    this.appendValueInput("bl")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SCL");
+        .appendField("Backlight");
 
-    this.appendValueInput("sda")
+    this.appendValueInput("sck")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SDA");
+        .appendField("SCK");
+
+    this.appendValueInput("mosi")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("MOSI");
+
+    this.appendValueInput("reset")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Reset");
+
+    this.appendValueInput("dc")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("DC");
+
+    this.appendValueInput("cs")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("CS");
+
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
   }
 };
+
+Blockly.Blocks['st7789_bl_power'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("ST7789 backlight intensity");
+
+    this.appendValueInput("val")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Value");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Set ST7789 backlight intensity");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['st7789_color_numbers'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("ST7789 Color: Red");
+    this.appendValueInput("red")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Green");
+    this.appendValueInput("green")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Blue");
+    this.appendValueInput("blue")
+        .setCheck(null);
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("ST7789 Color");
+    this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
+  },
+  styleBlock: function(colours) {
+    colours = colours.map(x => parseInt(x))
+    colours = colours.includes(NaN) ? [89,102,166] : colours
+    if(colours.every((e) => {return e <= 255}) && colours.every((e) => {return e >= 0})) {
+      let hex_ = Tool.RGB2HEX (colours [0], colours [1], colours [2]);
+      this.setColour(hex_);
+    } else
+      this.setColour("#FF0000");
+  }
+};
+
+Blockly.Blocks['st7789_color_colors'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("ST7789 Color")
+        .appendField(new Blockly.FieldColour("#ff0000"), "color");
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("ST7789 Color");
+ this.setHelpUrl("https://bipes.net.br/wp/?page_id=177");
+  }
+};
+
 
 Blockly.Blocks['st7789_fill'] = {
   init: function() {

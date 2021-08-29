@@ -5392,18 +5392,54 @@ Blockly.Python['bluetooth_repl_setup'] = function(block) {
 
 //ST7789 display
 Blockly.Python['st7789_init'] = function(block) {
-  var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-  var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
-  var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
+  var bl = Blockly.Python.valueToCode(block, 'bl', Blockly.Python.ORDER_ATOMIC);
+  var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);
+  var mosi = Blockly.Python.valueToCode(block, 'mosi', Blockly.Python.ORDER_ATOMIC);
+  var reset = Blockly.Python.valueToCode(block, 'reset', Blockly.Python.ORDER_ATOMIC);
+  var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
+  var dc = Blockly.Python.valueToCode(block, 'dc', Blockly.Python.ORDER_ATOMIC);
+  var spi = Blockly.Python.valueToCode(block, 'spi', Blockly.Python.ORDER_ATOMIC);
 
   Blockly.Python.definitions_['import_machine'] = 'import machine';
   Blockly.Python.definitions_['import_st7789py'] = 'import st7789py';
 
-  var code  = '# turn on backlight\nbl = machine.Pin(4, machine.Pin.OUT)\nbl.value(1)\n';
-      code += 'spi = machine.SPI(1, baudrate=20000000, polarity=1, phase=1, sck=machine.Pin(18), mosi=machine.Pin(19))\n';
-      code += 'display7789 = st7789py.ST7789(spi, 135, 240, reset=machine.Pin(23, machine.Pin.OUT), cs=machine.Pin(5, machine.Pin.OUT), dc=machine.Pin(16, machine.Pin.OUT))\n';
+  Blockly.Python.definitions_['import_st7789bl1'] = 'st7789_bl = machine.Pin(' + bl + ', machine.Pin.OUT)';
+  Blockly.Python.definitions_['import_st7789bl2'] = 'st7789_blp=machine.PWM(st7789_bl)';
+
+  var code = 'st7789_blp.duty(100)\n';
+
+      code += 'spi = machine.SPI(' + spi + ', baudrate=20000000, polarity=1, phase=1, sck=machine.Pin(' + sck + '), mosi=machine.Pin(' + mosi + '))\n';
+      code += 'display7789 = st7789py.ST7789(spi, 135, 240, reset=machine.Pin(' + reset + ', machine.Pin.OUT), cs=machine.Pin(' + cs + ', machine.Pin.OUT), dc=machine.Pin(' + dc + ', machine.Pin.OUT))\n';
       code += 'display7789.init()\n';
   return code;
+};
+
+Blockly.Python['st7789_bl_power'] = function(block) {
+  var v = Blockly.Python.valueToCode(block, 'val', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'st7789_blp.duty(' + v + ')\n';
+  return code;
+};
+
+Blockly.Python['st7789_color_numbers'] = function(block) {
+  var value_red = Blockly.Python.valueToCode(block, 'red', Blockly.Python.ORDER_ATOMIC);
+  var value_green = Blockly.Python.valueToCode(block, 'green', Blockly.Python.ORDER_ATOMIC);
+  var value_blue = Blockly.Python.valueToCode(block, 'blue', Blockly.Python.ORDER_ATOMIC);
+
+  // Style block with compiled values, see block_definitions.js
+  this.styleBlock([value_red, value_green, value_blue])
+
+  var code = `(${value_red},${value_green},${value_blue})`;
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['st7789_color_colors'] = function(block) {
+  var color = block.getFieldValue('color');
+  var h = Tool.HEX2RGB(color);
+  var code = `(${h.r},${h.g},${h.b})`;
+  return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['st7789_fill'] = function(block) {
@@ -5418,7 +5454,7 @@ Blockly.Python['st7789_pixel'] = function(block) {
   var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
   var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
   var c = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_ATOMIC);
-  var code = 'display7789.pixel(' + x + ', ' + y + ', ' + c + ')\n';
+  var code = 'display7789.pixel(' + x + ', ' + y + ', st7789py.color565' + c + ')\n';
   return code;
 };
 
@@ -5428,7 +5464,7 @@ Blockly.Python['st7789_line'] = function(block) {
   var y0 = Blockly.Python.valueToCode(block, 'y0', Blockly.Python.ORDER_ATOMIC);
   var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
   var c = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_ATOMIC);
-  var code = 'display7789.line(' + x0 + ',' + y0 + ',' + x1 + ',' + y1 + ',' + c + ')\n';
+  var code = 'display7789.line(' + x0 + ',' + y0 + ',' + x1 + ',' + y1 + ', st7789py.color565' + c + ')\n';
   return code;
 };
 

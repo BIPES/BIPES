@@ -612,40 +612,94 @@
       <button text="Install st7789py library" callbackKey="installPyLib"></button>
 
       <block type="st7789_init">
-        <value name="i2c">
+        <value name="spi">
           <shadow type="math_number">
             <field name="NUM">1</field>
           </shadow>
         </value>
-        <value name="scl">
-          <shadow type="math_number">
-            <field name="NUM">5</field>
-          </shadow>
-        </value>
-        <value name="sda">
-          <shadow type="math_number">
-            <field name="NUM">4</field>
-          </shadow>
-        </value>
-    </block>
 
-    <block type="st7789_fill">
-      <value name="r">
+        <value name="bl">
+          <shadow type="pinout">
+            <field name="bl"></field>
+          </shadow>
+        </value>
+
+        <value name="sck">
+          <shadow type="pinout">
+            <field name="sck"></field>
+          </shadow>
+        </value>
+
+        <value name="mosi">
+          <shadow type="pinout">
+            <field name="mosi"></field>
+          </shadow>
+        </value>
+
+        <value name="reset">
+          <shadow type="pinout">
+            <field name="reset"></field>
+          </shadow>
+        </value>
+
+        <value name="cs">
+          <shadow type="pinout">
+            <field name="cs"></field>
+          </shadow>
+        </value>
+
+        <value name="dc">
+          <shadow type="pinout">
+            <field name="dc"></field>
+          </shadow>
+        </value>
+       </block>
+
+       <block type="st7789_bl_power">
+        <value name="val">
+         <shadow type="math_number">
+          <field name="NUM">50</field>
+         </shadow>
+        </value>
+      </block>
+
+      <block type="st7789_color_numbers">
+       <value name="red">
         <shadow type="math_number">
-          <field name="NUM">40</field>
+          <field name="NUM">50</field>
         </shadow>
-      </value>
-      <value name="g">
+       </value>
+       <value name="green">
         <shadow type="math_number">
-          <field name="NUM">40</field>
+          <field name="NUM">152</field>
         </shadow>
-      </value>
-      <value name="b">
+       </value>
+       <value name="blue">
         <shadow type="math_number">
+          <field name="NUM">220</field>
+        </shadow>
+       </value>
+      </block>
+
+      <block type="st7789_color_colors"></block>
+ 
+       <block type="st7789_fill">
+        <value name="r">
+         <shadow type="math_number">
+          <field name="NUM">40</field>
+         </shadow>
+        </value>
+        <value name="g">
+         <shadow type="math_number">
+          <field name="NUM">40</field>
+         </shadow>
+        </value>
+        <value name="b">
+         <shadow type="math_number">
           <field name="NUM">1</field>
-        </shadow>
-      </value>
-    </block>
+         </shadow>
+        </value>
+      </block>
 
 
     <block type="st7789_pixel">
