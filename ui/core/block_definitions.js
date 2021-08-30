@@ -11242,3 +11242,109 @@ Blockly.Blocks['cell_value'] = {
  this.setHelpUrl("");
   }
 };
+// Blocos do Pluviômetro
+// Iniciar Pluviômetro
+Blockly.Blocks['pluvio_init']={
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+                     "media/pluivio.gif",
+                     70,
+                     70,
+                     "*"))
+        .appendField("Iniciar Pluiômetro");
+        this.appendValueInput("Função")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Função");
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("pin"), "PLUVIO_PIN");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(100);
+}
+};
+// Parar Pluviômetro
+Blockly.Blocks['pluvio_stop'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Parar Plviômetro"), "STOP_PLUVIO");
+    this.appendValueInput("Função")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Função");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(100);
+  }
+};
+//Blocos Anemômetro
+// Iniciar Anemômetro
+Blockly.Blocks['anemo_init'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+                     "media/aneno.gif",
+                     55,
+                     55,
+                     "*"))
+        .appendField("Iniciar Anenômetro");
+
+    this.appendValueInput("Função")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Função");
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("pin"), "ANENO_PIN_MSG");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(255,0,0);
+  }
+};
+
+//Parar Anemômetro
+Blockly.Blocks['anemo_stop'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Parar Anenômetro"), "STOP_ANENO");
+    this.appendValueInput("Função")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Função");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(255,0,0);
+  }
+};
+//Blocos de Interrupção
+// Iniciar interrupção
+Blockly.Blocks['inter_init'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/600px-Python-logo-notext.svg.png",
+        55,
+        55,
+        "*"))
+        .appendField("Iniciar Interrupção");
+    this.appendValueInput("Nome")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Nome");
+    this.appendValueInput("Função")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Função");
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("pin"), "INTERRUPT_PIN");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(240);
+  }
+};
