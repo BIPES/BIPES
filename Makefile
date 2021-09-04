@@ -16,6 +16,10 @@ copy-bipes-blocks:
 	cp bipes_blocks/block_definitions.js ui/
 	echo "Please, add <>"
 
+submodules:
+	git submodule init 'ui/freeboard'
+	git submodule update 'ui/freeboard'
+
 
 offline:
 	echo "Generating offline version"

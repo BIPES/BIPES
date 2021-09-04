@@ -26,7 +26,7 @@
 		    ["SD0 / GPIO07", "7"],
 		    ["CLK / GPIO06", "6"]
 			],
-			"serial_packet_size":"1000"
+			"serial_packet_size":"500"
 		},
 		"ESP32S2": {
 			"title":"<b>ESP32 S2</b><br>",
@@ -63,7 +63,7 @@
 		    ["IO24", "23"],
 		    ["IO25", "23"]
 			],
-			"serial_packet_size":"1000"
+			"serial_packet_size":"500"
 		},
 		"ESP32": {
 			"title":"<b>ESP32</b><br>",
@@ -106,7 +106,7 @@
 				["RTS2 / SPI_Q / GPIO07", "7"],
 				["CTS1 / SPI_CLK / GPIO06", "6"]
 			],
-			"serial_packet_size":"1000"
+			"serial_packet_size":"500"
 		},
 		"RPI_Pico": {
 			"title":"<b>Raspberry Pi Pico</b><br>",
@@ -145,7 +145,7 @@
 		    ["Pin 28 / ADC2 / GPIO28", "28"],
 		    ["Internal Temp Sensor / ADC3", "4"]
 			],
-			"serial_packet_size":"1000"
+			"serial_packet_size":"500"
 		},
 		"wemos_d1_mini": {
 			"title":"<b>ESP8266 - Wemos D1 Mini</b><br>",
@@ -209,7 +209,7 @@
 				["P22 / GPIO22", "22"],
 				["P23 / VSPI_MOSI / GPIO23", "23"]
 			],
-			"serial_packet_size":"1000"
+			"serial_packet_size":"500"
 		},
 		"ESP32-LoRa": {
 			"title":"<b>ESP32 board with OLED LCD and LoRa</b><br>",
@@ -239,7 +239,7 @@
 				["37 / GPIO37", "37"],
 				["36 / GPIO36", "36"]
 			],
-			"serial_packet_size":"1000"
+			"serial_packet_size":"500"
 		},
 		"M5STICK": {
 			"title":"<b>M5Stick ESP32</b><br>",
@@ -266,7 +266,7 @@
 			"img":"devinfo/media/rpi4.png",
 			"description":"Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv",
 			"toolbox":"linux.xml",
-			"serial_packet_size":"1000"
+			"serial_packet_size":"500"
 		},
 		"EV3": {
 			"title":"<b>Lego EV3 </b><br>",

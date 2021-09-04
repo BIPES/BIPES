@@ -469,7 +469,7 @@ workspace.prototype.saveXML = function () {
 
 	let element = document.createElement('a');
 	element.setAttribute('href', data),
-	element.setAttribute('download', 'bipes_blocks.xml'),
+	element.setAttribute('download', 'bipes_workspace.xml'),
 	element.style.display = 'none';
 	document.body.appendChild(element);
 	element.click ();
@@ -499,7 +499,17 @@ workspace.prototype.readWorkspace = function (xml, prettyText) {
       this.loadFreeboard (freeboard);
     } catch (e) {UI ['notify'].log(e)}
 
-    this.changeTo (device);
+    if (this.devices.constructor.name == 'Object') {
+      this.changeTo (device);
+    } else {
+      /** wait to devices to load */
+      var interval_ = setInterval(() => {
+        if (this.devices.constructor.name == 'Object') {
+          this.changeTo (device);
+          clearInterval(interval_);
+        }
+      }, 500);
+    }
   } else {
     this.changeTo (Object.keys(this.devices) [0]);
   }
@@ -568,13 +578,21 @@ workspace.prototype.loadXML = function () {
  * @param {string} JSON_ - serialized freeboard JSON.
  */
 workspace.prototype.loadFreeboard = function (JSON_) {
-  console.log('hi');
   try {
     let freeboard = JSON.parse(JSON_)
     /** Test if iframe is a freeboard */
     if (/ui\/freeboard/.test(window.frames[1].location.pathname)) {
-     console.log(freeboard);
-      window.frames[1].freeboard.loadDashboard(freeboard);
+      if (typeof  window.frames[1].freeboard == 'object') {
+        window.frames[1].freeboard.loadDashboard(freeboard);
+      } else {
+        /** wait to freeboard iframe to load */
+        var interval = setInterval(() => {
+          if (typeof  window.frames[1].freeboard == 'object') {
+            window.frames[1].freeboard.loadDashboard(freeboard);
+            clearInterval(interval);
+          }
+        }, 500);
+      }
     } else
       UI ['notify'].log('iFrame is not a freeboard');
   } catch (e) {

@@ -12,6 +12,11 @@ Try it now at: http://www.bipes.net.br/beta2/ui/ .
 
 ## Usage
 
+To init submodules, like [BIPES/freeboard](https://github.com/BIPES/freeboard), run:
+```
+make submodules
+```
+
 To build/update the offline version with latest, run:
 ```
 make offline
