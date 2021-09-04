@@ -7,6 +7,7 @@
 /**
  * @fileoverview Loading and saving blocks with localStorage and cloud storage.
  * @author q.neutron@gmail.com (Quynh Neutron)
+ * @author gastmaier@gmail.com (Jorge Marques)
  */
 'use strict';
 
@@ -23,7 +24,9 @@ BlocklyStorage.backupBlocks_ = function(workspace) {
     var xml = Blockly.Xml.workspaceToDom(workspace);
     // Gets the current URL, not including the hash.
     var url = window.location.href.split('#')[0];
-    window.localStorage.setItem(url, Blockly.Xml.domToText(xml));
+    var data = Blockly.Xml.domToText(xml);
+    data = UI ['workspace'].writeWorkspace (data, false);
+    window.localStorage.setItem(url, data);
   }
 };
 
@@ -45,8 +48,9 @@ BlocklyStorage.restoreBlocks = function(opt_workspace) {
   var url = window.location.href.split('#')[0];
   if ('localStorage' in window && window.localStorage[url]) {
     var workspace = opt_workspace || Blockly.getMainWorkspace();
-    var xml = Blockly.Xml.textToDom(window.localStorage[url]);
-    Blockly.Xml.domToWorkspace(xml, workspace);
+
+    var xml = UI ['workspace'].readWorkspace (window.localStorage[url], false);
+    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
   }
 };
 
