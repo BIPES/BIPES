@@ -444,29 +444,29 @@
 
 
     <block type="pwm">
-
-  <value name="pin">
+     <value name="pin">
         <shadow type="pinout">
           <field name="PIN"></field>
         </shadow>
       </value>
-
-
- <value name="frequency">
+     <value name="frequency">
         <shadow type="math_number">
           <field name="NUM">1000</field>
         </shadow>
       </value>
-
- <value name="duty">
+     <value name="duty">
         <shadow type="math_number">
           <field name="NUM">50</field>
         </shadow>
       </value>
+    </block>
 
-
-
-
+    <block type="pwm.deinit">
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
     </block>
   </category>
 

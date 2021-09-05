@@ -433,7 +433,7 @@
       </value>
     </block>
 
-    <block type="esp32_pwm">
+    <block type="pwm">
      <value name="pin">
         <shadow type="pinout">
           <field name="PIN"></field>
@@ -450,6 +450,15 @@
         </shadow>
       </value>
     </block>
+
+    <block type="pwm.deinit">
+    <value name="pin">
+      <shadow type="pinout">
+        <field name="PIN"></field>
+      </shadow>
+    </value>
+  </block>
+
   </category>
 
 

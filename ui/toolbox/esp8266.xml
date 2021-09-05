@@ -444,6 +444,14 @@
       </value>
     </block>
 
+    <block type="pwm.deinit">
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
+    </block>
+
     <block type="gpio_interrupt">
       <value name="pin">
         <shadow type="pinout">

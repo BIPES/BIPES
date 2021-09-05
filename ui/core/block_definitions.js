@@ -19,6 +19,7 @@ Blockly.Blocks['pwm'] = {
  }
 };
 
+/*DEPRECATED_START*/
 Blockly.Blocks['esp32_pwm'] = {
   init: function(){
     this.appendDummyInput()
@@ -39,7 +40,20 @@ Blockly.Blocks['esp32_pwm'] = {
  this.setHelpUrl("http://www.bipes.net.br");
  }
 };
+/*DEPRECATED_END*/
 
+Blockly.Blocks['pwm.deinit'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck(null)
+        .appendField("PWM deinit");
+    this.setColour(230);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Deinit PWM");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#pwm-pulse-width-modulation");
+  }
+};
 
 
 

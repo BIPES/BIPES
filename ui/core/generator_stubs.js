@@ -4317,7 +4317,7 @@ Blockly.Python['pwm'] = function(block) {
 	return code;
   };
 
-
+/*DEPRECATED_START*/
 Blockly.Python['esp32_pwm'] = function(block) {
 	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
 	var value_frequency = Blockly.Python.valueToCode(block, 'frequency', Blockly.Python.ORDER_ATOMIC);
@@ -4333,6 +4333,13 @@ Blockly.Python['esp32_pwm'] = function(block) {
 
 	//var code = 'PWM(Pin(' + value_pin +'), freq=' + value_frequency + ', duty = ' + value_duty + ')\n';
 	return code;
+  };
+  /*DEPRECATED_END*/
+
+  Blockly.Python['pwm.deinit'] = function(block) {
+    var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+    var code = `pwm${value_pin}.deinit()\n`;
+    return code;
   };
 
 
