@@ -290,7 +290,9 @@ Code.reloadToolbox = function(XML_) {
       function(m, p1, p2) {return p1 + MSG[p2];});
   let toolboxXml = Blockly.Xml.textToDom(toolboxText);
 
-   Code.workspace.updateToolbox(toolboxXml);
+  Code.workspace.updateToolbox(toolboxXml);
+
+  Code.workspace.scrollCenter(); // centralize workspace
 }
 
 
