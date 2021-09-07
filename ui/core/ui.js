@@ -430,13 +430,14 @@ workspace.prototype.change = function () {
         });
         UI ['notify'].send(MSG['noToolbox']);
     }
-
-    /* refreshes block pinout with device change */
-    let blocks = Code.workspace.getBlocksByType('pinout');
-     Code.workspace.getBlocksByType('pinout').forEach ((block, id) => {
-       block.refresh ();
-     });
-    if (blocks.length != 0) UI ['notify'].send (MSG['wrongDevicePin']);
+    if (this.devices.constructor.name == 'Object') {
+      /* refreshes block pinout with device change */
+      let blocks = Code.workspace.getBlocksByType('pinout');
+       Code.workspace.getBlocksByType('pinout').forEach ((block, id) => {
+         block.refresh ();
+       });
+       if (blocks.length != 0) UI ['notify'].send (MSG['wrongDevicePin']);
+    }
 
     Code.renderContent (); // renders selected tab
 

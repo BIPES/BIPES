@@ -97,7 +97,17 @@ Code.loadBlocks = function(defaultXml) {
   } else if ('BlocklyStorage' in window) {
     // Restore saved blocks in a separate thread so that subsequent
     // initialization is not affected from a failed load.
-    window.setTimeout(BlocklyStorage.restoreBlocks, 0);
+    if (typeof UI != 'undefined' && UI ['workspace'].devices.constructor.name == 'Object') {
+      window.setTimeout(BlocklyStorage.restoreBlocks, 0);
+    } else {
+      // wait to devices to load
+      var interval_ = setInterval(() => {
+        if (typeof UI != 'undefined' && UI ['workspace'].devices.constructor.name == 'Object') {
+          window.setTimeout(BlocklyStorage.restoreBlocks, 0);
+          clearInterval(interval_);
+        }
+      }, 500);
+    }
   }
 };
 

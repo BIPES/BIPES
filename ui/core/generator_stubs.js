@@ -4301,46 +4301,51 @@ Blockly.Python['deep_sleep'] = function(block) {
 
 
 Blockly.Python['pwm'] = function(block) {
-	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
 	var value_frequency = Blockly.Python.valueToCode(block, 'frequency', Blockly.Python.ORDER_ATOMIC);
 	var value_duty = Blockly.Python.valueToCode(block, 'duty', Blockly.Python.ORDER_ATOMIC);
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
-  	
-	var x = value_pin.replace('(','').replace(')','');
 
-	Blockly.Python.definitions_['init_pwm' + x] = 'pwm' + x + " = PWM(Pin(" + x + "))";
-
-	var code = 'pwm' + x + '.freq(' + value_frequency + ')\npwm' + x + '.duty(' + value_duty + ')\n';
-
-	//var code = 'PWM(Pin(' + value_pin +'), freq=' + value_frequency + ', duty = ' + value_duty + ')\n';
+  this.check([value_frequency,value_duty], value_pin);
+  this.setID(value_pin)
+	var code = `pwm${value_pin} = PWM(Pin(${value_pin}))\npwm${value_pin}.freq(${value_frequency})\npwm${value_pin}.duty(${value_duty})\n`;
 	return code;
-  };
+};
 
-/*DEPRECATED_START*/
-Blockly.Python['esp32_pwm'] = function(block) {
-	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-	var value_frequency = Blockly.Python.valueToCode(block, 'frequency', Blockly.Python.ORDER_ATOMIC);
-	var value_duty = Blockly.Python.valueToCode(block, 'duty', Blockly.Python.ORDER_ATOMIC);
+Blockly.Python['pwm.init'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
-  	
-	var x = value_pin.replace('(','').replace(')','');
 
-	Blockly.Python.definitions_['init_pwm' + x] = 'pwm' + x + " = PWM(Pin(" + x + "))";
-
-	var code = 'pwm' + x + '.freq(' + value_frequency + ')\npwm' + x + '.duty(' + value_duty + ')\n';
-
-	//var code = 'PWM(Pin(' + value_pin +'), freq=' + value_frequency + ', duty = ' + value_duty + ')\n';
+  this.setID(value_pin)
+	var code = `pwm${value_pin} = PWM(Pin(${value_pin}))\n`;
 	return code;
-  };
-  /*DEPRECATED_END*/
+};
 
-  Blockly.Python['pwm.deinit'] = function(block) {
-    var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-    var code = `pwm${value_pin}.deinit()\n`;
-    return code;
-  };
+Blockly.Python['pwm.freq'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var value_frequency = Blockly.Python.valueToCode(block, 'frequency', Blockly.Python.ORDER_NONE);
+  var code = `pwm${number_id}.freq(${value_frequency})\n`;
+
+  this.check(value_frequency, number_id);
+  return code;
+};
+
+Blockly.Python['pwm.duty'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var value_duty = Blockly.Python.valueToCode(block, 'duty', Blockly.Python.ORDER_NONE);
+  var code = `pwm${number_id}.duty(${value_duty})\n`;
+
+  this.check(value_duty, number_id);
+  return code;
+};
+
+Blockly.Python['pwm.deinit'] = function(block) {
+  var number_id = block.getFieldValue('ID');
+  var code = `pwm${number_id}.deinit()\n`;
+  return code;
+};
 
 
 //Sckit-Learn Test
