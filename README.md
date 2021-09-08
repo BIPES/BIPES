@@ -40,7 +40,7 @@ pip install sphinx sphinx-js furo
 make doc
 ```
 
-## More informaton
+## More information
 Some functions of `ui/index.html` were based on Blopy project (https://github.com/mnoriaki/Blopy), by Noriaki Mitsunaga
  (https://github.com/mnoriaki).
  
