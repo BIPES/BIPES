@@ -527,13 +527,14 @@ workspace.prototype.writeWorkspace = function (xml, prettyText) {
   let device = this.selector.value;
 
   let freeboard = '';
-  /** Can't acess iFrame running locally due to cross-origin policy*/
-  if (!Channel ['mux'].isLocalFile) {
+  /** Can't acess iFrame running locally due to cross-origin policy in Chrome*/
+  try {
     freeboard = JSON.stringify(window.frames[1].freeboard.serialize());
     /** Check if freeboard is empty */
     if (freeboard == "{\"version\":1,\"allow_edit\":true,\"plugins\":[],\"panes\":[],\"datasources\":[{\"name\":\"vars\",\"type\":\"core_scratchpad_plugin\",\"settings\":{\"data\":\"={}\",\"persist\":\"off\",\"lock\":false}}],\"columns\":3}")
       freeboard='';
-  }
+  } catch (e) {}
+
   xml = xml.replace(/(xmlns=")(?:.+?)(")/g, '$1https://bipes.net.br$2')
   if (prettyText)
     xml = xml.replace(/(<xml xmlns=".+?">\n)/, `$1  <workspace>\n    <field name="DEVICE">${device}</field>\n    <field name="TIMESTAMP">${timestamp}</field>\n    <freeboard><![CDATA[${freeboard}]]></freeboard>\n  </workspace>\n`);
