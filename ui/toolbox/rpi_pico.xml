@@ -359,8 +359,8 @@
     </block>
     <block type="ticks_ms"></block>
     <block type="ticks_diff"></block>
-    <block type="set_rtc"></block>
-    <block type="get_rtc"></block>
+
+
     <block type="timer"></block>
     <block type="stop_timer">
  <value name="timerNumber">
@@ -440,7 +440,7 @@
     </block>
 
 
-    <block type="pwm">
+    <block type="pwm_pico">
       <value name="pin">
         <shadow type="pinout">
           <field name="PIN"></field>
@@ -466,7 +466,7 @@
       </value>
     </block>
 
-    <block type="pwm.duty">
+    <block type="pwm.duty_pico">
       <value name="duty">
         <shadow type="math_number">
           <field name="NUM">50</field>
