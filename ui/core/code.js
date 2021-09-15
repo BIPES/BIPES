@@ -82,34 +82,33 @@ Code.loadBlocks = function(defaultXml) {
     // Restarting Firefox fixes this, so it looks like a bug.
     var loadOnce = null;
   }
-  if ('BlocklyStorage' in window && window.location.hash.length > 1) {
-    BlocklyStorage.restoreBlocks (Blockly.getMainWorkspace(), true);
-    // An href with #key trigers an AJAX call to retrieve saved blocks.
-    BlocklyStorage.retrieveXml(window.location.hash.substring(1));
-  } else if (loadOnce) {
-    // Language switching stores the blocks during the reload.
-    delete window.sessionStorage.loadOnceBlocks;
-    var xml = Blockly.Xml.textToDom(loadOnce);
-    Blockly.Xml.domToWorkspace(xml, Code.workspace);
-  } else if (defaultXml) {
-    // Load the editor with default starting blocks.
-    var xml = Blockly.Xml.textToDom(defaultXml);
-    Blockly.Xml.domToWorkspace(xml, Code.workspace);
-  } else if ('BlocklyStorage' in window) {
-    // Restore saved blocks in a separate thread so that subsequent
-    // initialization is not affected from a failed load.
+  // wait to devices to load
+  var interval_ = setInterval(() => {
     if (typeof UI != 'undefined' && UI ['workspace'].devices.constructor.name == 'Object') {
-          window.setTimeout(BlocklyStorage.restoreBlocks, 0);
-    } else {
-      // wait to devices to load
-      var interval_ = setInterval(() => {
+      if ('BlocklyStorage' in window && window.location.hash.length > 1) {
+        BlocklyStorage.restoreBlocks ();
+        // An href with #key trigers an AJAX call to retrieve saved blocks.
+        BlocklyStorage.retrieveXml(window.location.hash.substring(1));
+      } else if (loadOnce) {
+        // Language switching stores the blocks during the reload.
+        delete window.sessionStorage.loadOnceBlocks;
+        var xml = Blockly.Xml.textToDom(loadOnce);
+        Blockly.Xml.domToWorkspace(xml, Code.workspace);
+      } else if (defaultXml) {
+        // Load the editor with default starting blocks.
+        var xml = Blockly.Xml.textToDom(defaultXml);
+        Blockly.Xml.domToWorkspace(xml, Code.workspace);
+      } else if ('BlocklyStorage' in window) {
+        // Restore saved blocks in a separate thread so that subsequent
+        // initialization is not affected from a failed load.
         if (typeof UI != 'undefined' && UI ['workspace'].devices.constructor.name == 'Object') {
-          window.setTimeout(BlocklyStorage.restoreBlocks, 0);
-          clearInterval(interval_);
+              window.setTimeout(() => {BlocklyStorage.restoreBlocks (); UI ['account'].openLastEdited()}, 0);
+        } else {
+              window.setTimeout(() => {BlocklyStorage.restoreBlocks (); UI ['account'].openLastEdited()}, 0);
         }
-      }, 500);
-    }
-  }
+      }
+      clearInterval(interval_);
+    }}, 500);
 };
 
 /**

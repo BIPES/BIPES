@@ -42,9 +42,8 @@ BlocklyStorage.backupOnUnload = function(opt_workspace) {
 /**
  * Restore code blocks from localStorage.
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
- * @param {boolean} dont_load_last don't load last opened project to workspace.
  */
-BlocklyStorage.restoreBlocks = function(opt_workspace, dont_load_last) {
+BlocklyStorage.restoreBlocks = function(opt_workspace) {
   if ('localStorage' in window) {
     var workspace = opt_workspace || Blockly.getMainWorkspace();
     /** Import legacy project*/
@@ -68,10 +67,6 @@ BlocklyStorage.restoreBlocks = function(opt_workspace, dont_load_last) {
       UI ['account'].importProject(localStorage[url]);
       localStorage.removeItem(url);
       UI ['notify'].send('Legacy project imported to your projects');
-    }
-    if (!dont_load_last) {
-      var xml = UI ['workspace'].readWorkspace (UI ['account'].currentProject.xml, false);
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
     }
   }
 };

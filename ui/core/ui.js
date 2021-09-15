@@ -73,12 +73,19 @@ account.prototype.restoreProjects = function (projects_) {
       delete this.projects[prop]
     }
   }
+}
 
-  this.currentProject.uid  = Object.keys(projects_).reduce((a, b) => (projects_[a] > projects_[b]) ? a : b);
+/**
+ * Open last edited project
+ */
+account.prototype.openLastEdited = function () {
+  this.currentProject.uid  = Object.keys(this.projects).reduce((a, b) => (this.projects[a] > this.projects[b]) ? a : b);
   this.currentProject.xml = localStorage[this.currentProject.uid];
 
   getIn(this.projectList, `#${this.currentProject.uid}`).className = 'current';
 
+  var xml = UI ['workspace'].readWorkspace (this.currentProject.xml, false);
+  Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), Blockly.getMainWorkspace());
 }
 
 /**
