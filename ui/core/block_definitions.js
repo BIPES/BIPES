@@ -2157,8 +2157,8 @@ Blockly.Blocks['project_metadata'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabel("Description"), "project_description");
     this.setColour(230);
- this.setTooltip("Information about the project");
- this.setHelpUrl("http://www.bipes.net.br");
+    this.setTooltip("Information about the project");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 

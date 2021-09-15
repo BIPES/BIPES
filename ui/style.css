@@ -15,6 +15,10 @@ label {
   user-select: none;
 }
 
+input:focus, textarea:focus, select:focus, span:focus {
+  outline: none;
+}
+
 tt {
   font-size: 0.9em;
   padding: 0.25rem 0.5rem;
@@ -423,7 +427,7 @@ pre.content {
   box-shadow: 0 0.125rem .25rem rgba(0,0,0,.5);
   overscroll-behavior: none; /*disable chrome pull to refresh */
 }
-#tipsGeneric {
+#tipsGeneric, #languageIcon {
   display: inline-flex;
   align-items: center;
   border: 1px solid #aaa;
@@ -431,6 +435,9 @@ pre.content {
   border-radius: 2rem;
   opacity: 0.8;
   margin: .5rem 0;
+}
+#languageIcon {
+  border: none;
 }
 #tipsGeneric:before {
   margin-right: .25rem;
@@ -493,7 +500,6 @@ pre.content {
 }
 #file_save_as input {
   font-weight: bold;
-  outline: none;
   border-left: 1px solid #ccc;
   padding-left: .5rem;
 }
@@ -516,14 +522,14 @@ pre.content {
   padding: 0.25rem 0.5rem;
   border-right: 1px solid #ccc;
 }
-#filesPanel h2 {
+#filesPanel h2, .account-panel h2 {
   font-size: 1rem;
   display: flex;
   align-items: center;
   margin: 0;
   height: 2.5rem;
 }
-#fileList > div, #fileTemplate > div, #blocks2Code > div {
+#fileList > div, #fileTemplate > div, #blocks2Code > div, #ProjectList > div{
   display: flex;
   align-items: stretch;
   justify-content: space-between;
@@ -535,17 +541,19 @@ pre.content {
   min-height: 2rem;
   font-size: 0.9rem;
 }
-#fileList > div > div:last-child {
+#fileList > div > div:last-child, #ProjectList > div > div:last-child{
   flex-shrink: 0;
 }
-#fileList .runText {
+#fileList .runText, #ProjectList .runText {
   width: 100%;
+  font-family: monospace;
 }
 #fileTemplate > div, #blocks2Code > div  {
   align-items: center;
   word-break: break-word;
+  font-family: monospace;
 }
-#fileList > div > div {
+#fileList > div > div, #ProjectList > div > div {
   display: inline-flex;
   align-items: center;
   word-break: break-word;
@@ -559,15 +567,16 @@ pre.content {
   margin-left: .25rem;
   font-weight: bold;
   word-break: keep-all;
+  font-family: sans-serif;
 }
 #fileList #runIcon {
   filter: brightness(0)
 }
-#filesPanel details {
+#filesPanel details, .account-panel summary {
   overflow: hidden;
   transition: .125s ease border;
 }
-#filesPanel summary {
+#filesPanel summary, .account-panel summary {
   -webkit-tap-highlight-color: transparent;
   white-space: normal;
   cursor: pointer;
@@ -575,7 +584,7 @@ pre.content {
   justify-content: space-between;
   align-items: center;
 }
-#filesPanel summary > h2:before {
+#filesPanel summary > h2:before, .account-panel summary > h2:before {
   content: "\1433";
   margin-right: .5rem;
   transition: transform .25s ease;
@@ -584,8 +593,20 @@ pre.content {
   font-size: 0.8rem;
   line-height: 1rem;
 }
-#filesPanel details[open] summary > h2:before {
+#filesPanel details[open] summary > h2:before, .account-panel details[open] summary > h2:before {
   transform: rotateZ(90deg);
+}
+#ProjectList  > div {
+  transition: box-shadow ease .125s, background-color linear .125s, border-color linear .125s, color linear .125s;
+}
+#ProjectList > .current {
+    box-shadow: 0 0.125em 0.25em rgba(0,0,0,0.2);
+    background: #3298dc;
+    color: #fff;
+    border-color: #3298dc;
+}
+#ProjectList .current span {
+  filter: invert(1);
 }
 
 /* Toolbar */
@@ -698,7 +719,7 @@ button.icon.medium:before  {
 #runButton.on:before {
   background-position: left calc(-1.5rem*5) bottom;
 }
-#languageButton:before {
+#languageIcon:before {
   background-position: left calc(-1.5rem*6) top;
 }
 #serialButton:before, #channelButton.webserial:before {
@@ -743,6 +764,12 @@ button.icon.medium:before  {
 #updateXMLButton:before {
   background-position: left calc(-1.5rem*20) bottom;
 }
+#accountButton:before {
+  background-position: left calc(-1.5rem*22) top;
+}
+#newProjectButton:before {
+  background-position: left calc(-1.5rem*23) top;
+}
 
 
 @media (max-width: 710px) {
@@ -775,8 +802,6 @@ button.icon.medium:before  {
   font-weight: bold;
 }
 #device_selector:focus {
-  /* removes black border on focus with mouse, replaces with a more coherent one */
-  outline: none;
   color: #000;
 }
 @media (max-width: 59.99em) {
@@ -805,53 +830,28 @@ button.icon.medium:before  {
   text-decoration: none;
 }
 
-/* Language panel */
-.language-panel {
-  position: fixed;
-  z-index: 998;
-  right: 0;
-  top:-7rem;
-	border-radius: 1rem;
-  border: 1px solid #aaa;
-  background: #fff;
-	padding: 1em;
-	margin: 0 .25rem 0 0;
-	box-sizing: border-box;
-	width: 20.5rem;
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  justify-content: space-between;
-  height: 6rem;
-  box-shadow: 0em 0em 0.5em rgba(0,0,0,0.5);
-}
-.language-panel#show {
-	opacity: 1;
-  top: 3.75rem;
-}
-@media (max-width: 59.99em) {
-  .language-panel {
-	  padding-top: 1.5rem;
-  }
-  .language-panel#show {
-    top: 6rem;
-  }
-}
-
 #languageMenu {
-  border: 1px solid #aaa;
-  max-width: 15rem;
+  border: none;
   height: 2rem;
+  width:100%;
   border-radius: 1rem;
   background: #fff;
   padding: .25em;
 }
-.language-panel, .notify-panel, .notify {
+.account-panel, .notify-panel, .notify {
+  user-select: none;
 	transition: top ease .5s, right ease .5s, opacity ease .125s, background linear .5s, margin-right ease .125s;
   transition-delay: 0s, 0s, .1s, 0s, 0s;
   color: #222;
 	opacity: 0;
   background: #fff;
+}
+@media (min-width: 60em) {
+  .account-panel, .notify-panel {
+    border-radius: 1rem;
+    margin: 0.5em;
+    border: 1px solid #aaa !important;
+  }
 }
 
 /* Notifications */
@@ -864,7 +864,6 @@ button.icon.medium:before  {
   box-shadow: 0 .125em .5em rgba(0,0,0,.6);
   background: #3298dc;
   color:#fff;
-  user-select: none;
 }
 .notify#show {
 	opacity: 1;
@@ -901,7 +900,7 @@ button.icon.medium:before  {
 .notify-panel > span > span:hover  {
   opacity: 1;
 }
-.notify-panel {
+.notify-panel, .account-panel{
   position: fixed;
   overflow-y: auto;
   z-index: 998;
@@ -909,20 +908,26 @@ button.icon.medium:before  {
   padding: 0 .5em;
   top:3.5rem;
   bottom:0;
-  right:-21em;
-  background: #eee;
+  right:-22em;
+  background: #fefefe;
   border-left: solid 1px #ccc;
 	display: flex;
+  box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.5);
+}
+.account-panel {
+  flex-direction: column;
+  justify-content: space-between;
+}
+.notify-panel {
   flex-direction: column-reverse;
   justify-content: end;
-  box-shadow: 0 0.5em 0.5em #aaa;
 }
 @media (max-width: 59.99em) {
-  .notify-panel {
+  .notify-panel, .account-panel{
     padding-top: 4.5rem;
   }
 }
-.notify-panel#show {
+.notify-panel#show, .account-panel#show {
 	opacity: 1;
 	right: 0;
 }
@@ -959,4 +964,16 @@ button.icon.medium:before  {
 		left: 0;
 		transform: translateX(-100%);
 	}
+}
+
+#account_header {
+  font-size: 1.25rem;
+  margin: .5em 0;
+  display: block;
+}
+
+#account_user {
+    border-bottom: 1px dashed #666;
+    font-weight: bold;
+    padding-bottom: .125rem;
 }

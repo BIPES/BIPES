@@ -664,7 +664,7 @@ Code.initLanguage = function() {
   document.getElementById('saveButton').title = MSG['saveTooltip'];
   document.getElementById('loadButton').title = MSG['loadTooltip'];
   document.getElementById('notificationButton').title = MSG['notificationTooltip'];
-  document.getElementById('languageButton').title = MSG['languageTooltip'];
+  document.getElementById('languageIcon').title = MSG['languageTooltip'];
   document.getElementById('toolbarButton').title = MSG['toolbarTooltip'];
   document.getElementById('forumButton').title = MSG['forumTooltip'];
 };

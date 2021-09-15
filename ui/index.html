@@ -62,24 +62,24 @@ function checkCookie() {
 
   gtag('config', 'UA-162001686-1');
 </script>
-  <link rel="stylesheet" href="style.css?ver=0.2.1.8151338">
+  <link rel="stylesheet" href="style.css?ver=0.2.2.9142018">
   <link rel="stylesheet" href="core/libs.css">
   <script src="core/storage.js"></script>
   <script src="core/blockly_compressed.js?ver=0.2.1.8260042"></script>
   <script src="core/blocks_compressed.js?ver=0.2.1.8260042"></script>
   <script src="core/javascript_compressed.js?ver=0.2.1.8260042"></script>
   <script src="core/python_compressed.js?ver=0.2.1.8260042"></script>
-  <script src="core/code.js?ver=0.2.1.8151338"></script>
+  <script src="core/code.js?ver=0.2.2.9142018"></script>
   <script src="core/channel.js?ver=0.2.1.8151338"></script>
-  <script src="core/utils.js"></script>
-  <script src="core/ui.js?ver=0.2.1.8260042"></script>
+  <script src="core/utils.js?ver=0.2.2.9142018"></script>
+  <script src="core/ui.js?ver=0.2.2.9142018"></script>
   <script src="core/queue.js"></script>
   <script src="core/FileSaver.js"></script>
 
 
   <!-- Custom Blocks for BIPES Project --> 
-  <script src="core/block_definitions.js"></script> <!-- Rafael 24/03/2020 -->
-  <script src="core/generator_stubs.js"></script> <!-- Rafael 24/03/2020 -->
+  <script src="core/block_definitions.js?ver=0.2.2.9142018"></script> <!-- Rafael 24/03/2020 -->
+  <script src="core/generator_stubs.js?ver=0.2.2.9142018"></script> <!-- Rafael 24/03/2020 -->
 
   <!-- xterm part -->
   <script src="core/xterm.js?ver=4.13.0"></script>
@@ -164,11 +164,11 @@ document.body.appendChild(el);
 
         <button id="trashButton" class="notext icon" title="..."></button>
 
-        <button id="languageButton" class="notext icon" title="..."></button>
-
         <button id="notificationButton" class="notext icon" title="..."></button>
 
         <button id="forumButton" class="notext icon" title="..."></button>
+
+        <button id="accountButton" class="notext icon" title="..."></button>
       </div>
     </div>
 
@@ -313,7 +313,7 @@ document.body.appendChild(el);
   <summary><h2>Templates</h2></summary>
   <span id='fileTemplate'>
     <div onclick="Tool.getText('main.py');">main.py</div>
-    <div onclick="Tool.getText('SSD1306.py');">SSD1306.py</div>
+    <div onclick="Tool.getText('ssd1306.py');">ssd1306.py</div>
   </span>
   </details>
   </div>
@@ -351,9 +351,26 @@ document.body.appendChild(el);
 <div class='progress-bar'></div>
 <div class="notify"></div>
 <div class="notify-panel"></div>
-<div class="language-panel">
-<select id="languageMenu"></select>
-</body>
+<div class="account-panel">
+  <span>
+    <span id="account_header">Hello, <span id="account_user" role="textbox" contenteditable>User</span>!</span>
+    <details open>
+    <summary>
+    <h2>Projects</h2>
+    <button value="New Project" id="newProjectButton" class="notext button icon" title="Create new project" onclick="/*UI ['workspace'].newProject();*/" /></button>
+    </summary>
+    <span id='ProjectList'></span>
+    </details>
+  </span>
+  <details open>
+  <summary>
+  <h2>Settings</h2>
+  </summary>
+  <span class="icon" id="languageIcon">
+  <select id="languageMenu"></select>
+  </span>
+  </details>
+</div>
 
 <script>
 
@@ -380,7 +397,7 @@ var UI = {};
 UI ['responsive'] = new responsive ();
 UI ['notify'] = new notify ();
 UI ['progress'] = new progress ();
-UI ['language'] = new language ('#languageButton','.language-panel');
+UI ['account'] = new account ('#accountButton','.account-panel');
 UI ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
 UI ['channel-panel'] = new channelPanel ('#channelButton','.channel-panel');
 UI ['toolbar'] = new panel ('#toolbarButton','.toolbar');

@@ -183,7 +183,11 @@ class Tool {
   static makeAName (code, ext) {
     let desc = code.match(/#Description: '(.*)'/)
     let imp = [...code.matchAll(/import (.*)/g)]
-    return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.${ext}` : `my_BIPES_project.${ext}`;
+    if (ext == '') {
+      return desc ? `${desc [1].slice()}${ext}` : 'My Unnamed Project';
+    } else {
+      return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.${ext}` : `my_BIPES_project.${ext}`;
+    }
   }
   /**Converts RGB to HEX
   * @param {number} r - Red color, from 0 to 255.
@@ -246,6 +250,16 @@ class Tool {
       } else
         self.warning_ [index] = true;
     })
+  }
+
+  /** Return a random UID*/
+  static uid () {
+    return (+new Date).toString(36) + Math.random().toString(36).substr(2);
+  }
+  /** Return a empty XML with only project description set, used for new projects*/
+  static emptyXML () {
+    let account_user = localStorage ['account_user'];
+    return `<xml xmlns="https://bipes.net.br"><block type="project_metadata" id="" x="-212" y="-612"><value name="project_author"><shadow type="text" id=""><field name="TEXT">${account_user}</field></shadow></value><value name="project_iot_id"><shadow type="math_number" id=""><field name="NUM">0</field></shadow></value><value name="project_description"><shadow type="text" id=""><field name="TEXT">My project</field></shadow></value></block></xml>`
   }
 }
 /**

@@ -16,19 +16,24 @@ var BlocklyStorage = {};
 
 /**
  * Backup code blocks to localStorage.
- * @param {!Blockly.WorkspaceSvg} workspace Workspace.
+ * @param {!Blockly.WorkspaceSvg} opt_workspace Workspace.
  * @private
  */
-BlocklyStorage.backupBlocks_ = function(workspace) {
+BlocklyStorage.backupBlocks_ = function(opt_workspace) {
   if ('localStorage' in window) {
+    var workspace =  opt_workspace || Blockly.getMainWorkspace();
+
     var xml = Blockly.Xml.workspaceToDom(workspace);
-    // Gets the current URL, not including the hash.
-    var url = window.location.href.split('#')[0];
     var data = Blockly.Xml.domToText(xml);
     data = UI ['workspace'].writeWorkspace (data, false);
-    window.localStorage.setItem(url, data);
+    localStorage.setItem(UI ['account'].currentProject.uid, data)
+    localStorage.setItem('bipes_projects', JSON.stringify(UI ['account'].projects))
   }
 };
+
+
+
+
 
 /**
  * Bind the localStorage backup function to the unload event.
@@ -45,14 +50,39 @@ BlocklyStorage.backupOnUnload = function(opt_workspace) {
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
  */
 BlocklyStorage.restoreBlocks = function(opt_workspace) {
-  var url = window.location.href.split('#')[0];
-  if ('localStorage' in window && window.localStorage[url]) {
+  if ('localStorage' in window) {
     var workspace = opt_workspace || Blockly.getMainWorkspace();
+    /** Import legacy project*/
+    if (localStorage['bipes_projects'] && localStorage['bipes_projects'] != '[]') {
+      try {
+        let projects = JSON.parse(localStorage['bipes_projects'])
+        UI ['account'].restoreProjects (projects);
+      } catch (e) {
+        UI ['notify'].log(e)
+      }
+    } else {
+      let uid = Tool.uid ();
+      localStorage.setItem (uid, Tool.emptyXML ())
+      let emptyProject = `{"${uid}":"${+new Date}"}`;
+      localStorage.setItem('bipes_projects', emptyProject)
+      UI ['account'].restoreProjects (JSON.parse(emptyProject));
+    }
 
-    var xml = UI ['workspace'].readWorkspace (window.localStorage[url], false);
+    var xml = UI ['workspace'].readWorkspace (UI ['account'].currentProject.xml, false);
     Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+
+    /** Restore legacy project, to be removed*/
+    let url =  window.location.href.split('#')[0];
+    if(localStorage[url]) {
+      UI ['account'].importProject(localStorage[url]);
+      localStorage.removeItem(url);
+      UI ['notify'].send('Legacy project imported to your projects');
+    }
+
   }
 };
+
+
 
 /**
  * Save blocks to database and return a link containing key to XML.
@@ -136,7 +166,8 @@ BlocklyStorage.handleRequest_ = function() {
           BlocklyStorage.alert(BlocklyStorage.HASH_ERROR.replace('%1',
               window.location.hash));
         } else {
-          BlocklyStorage.loadXml_(data, BlocklyStorage.httpRequest_.workspace);
+          UI ['account'].importProject (data);
+          UI ['notify'].send ('Project imported from link!');
         }
       }
       BlocklyStorage.monitorChanges_(BlocklyStorage.httpRequest_.workspace);
