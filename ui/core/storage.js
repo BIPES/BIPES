@@ -30,11 +30,6 @@ BlocklyStorage.backupBlocks_ = function(opt_workspace) {
     localStorage.setItem('bipes_projects', JSON.stringify(UI ['account'].projects))
   }
 };
-
-
-
-
-
 /**
  * Bind the localStorage backup function to the unload event.
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
@@ -44,12 +39,12 @@ BlocklyStorage.backupOnUnload = function(opt_workspace) {
   window.addEventListener('unload',
       function() {BlocklyStorage.backupBlocks_(workspace);}, false);
 };
-
 /**
  * Restore code blocks from localStorage.
  * @param {Blockly.WorkspaceSvg=} opt_workspace Workspace.
+ * @param {boolean} dont_load_last don't load last opened project to workspace.
  */
-BlocklyStorage.restoreBlocks = function(opt_workspace) {
+BlocklyStorage.restoreBlocks = function(opt_workspace, dont_load_last) {
   if ('localStorage' in window) {
     var workspace = opt_workspace || Blockly.getMainWorkspace();
     /** Import legacy project*/
@@ -67,10 +62,6 @@ BlocklyStorage.restoreBlocks = function(opt_workspace) {
       localStorage.setItem('bipes_projects', emptyProject)
       UI ['account'].restoreProjects (JSON.parse(emptyProject));
     }
-
-    var xml = UI ['workspace'].readWorkspace (UI ['account'].currentProject.xml, false);
-    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
-
     /** Restore legacy project, to be removed*/
     let url =  window.location.href.split('#')[0];
     if(localStorage[url]) {
@@ -78,7 +69,10 @@ BlocklyStorage.restoreBlocks = function(opt_workspace) {
       localStorage.removeItem(url);
       UI ['notify'].send('Legacy project imported to your projects');
     }
-
+    if (!dont_load_last) {
+      var xml = UI ['workspace'].readWorkspace (UI ['account'].currentProject.xml, false);
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml), workspace);
+    }
   }
 };
 

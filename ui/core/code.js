@@ -83,6 +83,7 @@ Code.loadBlocks = function(defaultXml) {
     var loadOnce = null;
   }
   if ('BlocklyStorage' in window && window.location.hash.length > 1) {
+    BlocklyStorage.restoreBlocks (Blockly.getMainWorkspace(), true);
     // An href with #key trigers an AJAX call to retrieve saved blocks.
     BlocklyStorage.retrieveXml(window.location.hash.substring(1));
   } else if (loadOnce) {
@@ -98,7 +99,7 @@ Code.loadBlocks = function(defaultXml) {
     // Restore saved blocks in a separate thread so that subsequent
     // initialization is not affected from a failed load.
     if (typeof UI != 'undefined' && UI ['workspace'].devices.constructor.name == 'Object') {
-      window.setTimeout(BlocklyStorage.restoreBlocks, 0);
+          window.setTimeout(BlocklyStorage.restoreBlocks, 0);
     } else {
       // wait to devices to load
       var interval_ = setInterval(() => {
