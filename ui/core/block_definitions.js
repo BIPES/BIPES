@@ -30,6 +30,40 @@ Blockly.Blocks['pwm'] = {
   }
 };
 
+Blockly.Blocks['pwm_pico'] = {
+  warning_: new Array(2).fill(true),
+  init: function(){
+    this.appendDummyInput()
+        .appendField("RPi Pico PWM #")
+        .appendField(new Blockly.FieldNumber(0, 0, 50, 1), "ID");
+    this.appendValueInput("pin")
+        .setCheck(null)
+	      .appendField("Pin");
+    this.appendValueInput("frequency")
+        .setCheck("Number")
+	      .appendField("Frequency");
+    this.appendValueInput("duty")
+        .setCheck("Number")
+	      .appendField("Duty");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Init and set PWM with frequency (1Hz to 40MHz) and duty (0-1023)");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#pwm-pulse-width-modulation");
+ },
+  setID: function(id_) {
+    this.setFieldValue(id_, "ID")
+  },
+  check (values, id) {
+    Tool.warningIfTrue (this, [
+      [() => (!isNaN(parseFloat(values [0])) && parseFloat(values [0]) % 1 != 0), `PWM #${id} frequency: Cannot convert float to int directly.`],
+      [() => (!isNaN(parseFloat(values [1])) && parseFloat(values [1]) % 1 != 0), `PWM #${id} duty: Cannot convert float to int directly.`]
+    ]);
+  }
+};
+
+
+
 Blockly.Blocks['pwm.freq'] = {
   warning_: new Array(1).fill(true),
   init: function() {
@@ -51,6 +85,9 @@ Blockly.Blocks['pwm.freq'] = {
     ]);
   }
 };
+
+
+
 Blockly.Blocks['pwm.duty'] = {
   warning_: new Array(2).fill(true),
   init: function() {
@@ -72,6 +109,30 @@ Blockly.Blocks['pwm.duty'] = {
     ]);
   }
 };
+
+Blockly.Blocks['pwm.duty_pico'] = {
+  warning_: new Array(2).fill(true),
+  init: function() {
+    this.appendValueInput('duty')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("PWM #")
+        .appendField(new Blockly.FieldNumber(0, 0, 50, 1), "ID")
+        .appendField("duty");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Set PWM duty range of 0-1023");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#pwm-pulse-width-modulation");
+  },
+  check (value, id) {
+    Tool.warningIfTrue (this, [
+      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `PWM #${id} duty: Cannot convert float to int directly.`]
+    ]);
+  }
+};
+
+
 
 Blockly.Blocks['pwm.init'] = {
   init: function() {
