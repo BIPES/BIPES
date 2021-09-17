@@ -1013,7 +1013,56 @@
         <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
       </block>
     </category>
-
+<!--Adicionando os blocos do Anenmômetro-->
+    <category name="Anemômetro">
+    <label text="Anenômetro"></label>
+<!--Iniciar Anemômetro-->
+    <block type="anemo_init">
+        <value name="Função">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
+      </block>
+<!--Parar Anemômetro-->
+      <block type="anemo_stop">
+        <value name="Função">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+  </category>
+<!--Adicionando os blocos do Pluviômetro--> 
+  <category name="Pluviômetro">
+    <label text= "Pluviômetro"></label>
+<!--Iniciar Pluviômetro-->
+    <block type="pluvio_init">
+        <value name="Função">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="pin">
+          <shadow type="pinout">
+            <field name="PIN"></field>
+          </shadow>
+        </value>
+      </block>
+<!--Parar Pluviômetro-->
+      <block type="pluvio_stop">
+        <value name="Função">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+  </category>
 
   <category name="Ultrasound">
       <label text="HCSR04 ultrasound distance sensor"></label>
