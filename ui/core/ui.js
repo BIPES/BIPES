@@ -36,7 +36,6 @@ panel.prototype.showPanel = function () {
     this.onOpenPanel_ ();
 }
 
-
 account.prototype = Object.create (panel.prototype);
 /**
  * The account panel to manage projects and settings.
@@ -786,7 +785,7 @@ workspace.prototype.loadFreeboard = function (JSON_) {
   try {
     let freeboard = JSON.parse(JSON_)
     /** Test if iframe is a freeboard */
-    if (/ui\/freeboard/.test(window.frames[1].location.pathname)) {
+    if (/\/freeboard/.test(window.frames[1].location.pathname)) {
       if (typeof  window.frames[1].freeboard == 'object') {
         window.frames[1].freeboard.loadDashboard(freeboard);
       } else {

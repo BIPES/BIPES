@@ -31,8 +31,7 @@ After the ESP board is running MicroPython, you have to enable WebREPL server, s
 
 	import webrepl_setup
 
-Follow the instructions to enable WebREPL, and set a password. Next access `BIPES <http://bipes.net.br/beta2/ui>`_.
-Then connect to the network created by MicroPython, which is something similar to MicroPython-*. Go to BIPES Console, and on the host, type ``ws://192.168.4.1:8266/``. Click Connect, and you should get MicroPython shell over wifi! By the way, the wifi password is micropythoN, and the console password is the one you typed minutes ago. From now on, you can build your program and run it using blocks!
+Follow the instructions to enable WebREPL, and set a password. Next access `BIPES`_, then connect to the network created by MicroPython, which is something similar to MicroPython-\*. Go to BIPES Console, and on the host, type ``ws://192.168.4.1:8266/``. Click Connect, and you should get MicroPython shell over wifi! By the way, the wifi password is micropythoN, and the console password is the one you typed minutes ago. From now on, you can build your program and run it using blocks!
 
 Note, that connecting directly to the board running MicroPython will disconnect you from other Wifi Access Point, limiting your Internet Access. However, you can configure your board to connect directly to an Access Point. Use these commands for that:
 
@@ -116,7 +115,7 @@ Next, lets use `SerialWebSocketServer <https://github.com/rafaelaroca/SerialWebS
 	cd SerialWebSocketServer/
 	python serverSerial.py
 
-Ready! Now access `BIPES <http://bipes.net.br/beta2/ui/>`_, build your blocks. Go to Console, type the IP of the machine with MBed connected to the USB port ad running SerialWebSocketServer, and click Connect. Next you can click Run, and the program you run on MBed!
+Ready! Now access `BIPES`_, build your blocks. Go to Console, type the IP of the machine with MBed connected to the USB port ad running SerialWebSocketServer, and click Connect. Next you can click Run, and the program you run on MBed!
 
 The figures below show an example to Blink MBed LED!
 
@@ -133,7 +132,7 @@ Use with BBC MicroBit
 
 Install MicroPython firmware in MicroBit, as explained `here <https://github.com/mcauser/microbit-tm1637/tree/master/firmware>`_.
 
-Installation is really simple – simply download the firmware and copy to the MicroBit board drive. Then connect to the board using `BIPES <https://bipes.net.br/beta2/ui/>`_
+Installation is really simple – simply download the firmware and copy to the MicroBit board drive. Then connect to the board using `BIPES`_.
 
 Useful documentation: `microbit-micropython.readthedocs.io/introduction <https://microbit-micropython.readthedocs.io/en/latest/tutorials/introduction.html>`_
 
@@ -144,7 +143,7 @@ A recent feature of Google Chrome (`rafaelaroca.wordpress.com/access-serial-devi
 
 This feature is already available on vanilla/standard Google Chrome, but Experimental Web Platform Features must be enabled in ``chrome://flags (#enable-experimental-web-platform-features)``.
 
-After enabling this featuer, and having the board with MicroPython firmware installed, simply access `BIPES <http://bipes.net.br/beta2/ui/>`_ and play with it! 
+After enabling this feature, and having the board with MicroPython firmware installed, simply access `BIPES`_ and play with it!
 
 Blocks
 -----------------------------------------------------------
@@ -159,3 +158,7 @@ What about Arduino?
 -----------------------------------------------------------
 
 Most BIPES functions are based on Python and MicroPython auto-generated code and sent to the boards using WebSockets. Unfortunately, Arduino does not support Python or MicroPython, so we address Arduino and other boards with a different approach. For Arduino, the Blocks are converted to C code, using Arduino calls and the generated code is sent to a cloud compilation server. After being compiled, the binary code generated is downloaded automatically and flashed to the Arduino Flash memory. Note that this functionality is under development!
+
+
+.. _BIPES: https://bipes.net.br/ide
+

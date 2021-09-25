@@ -12,6 +12,7 @@ BIPES Developer Center
 
    get-started/tech-details
    get-started/development
+   get-started/forking
    get-started/create-block
    get-started/translating-documenting
    get-started/pylibs

@@ -77,14 +77,14 @@ A progress bar is shown in many operations inside BIPES and is handled with the
 The panels
 -----------------------------
 
-The language, notification and channel panels are all inherited from the ``panel`` class.
+The account, notification and channel panels are all inherited from the ``panel`` class.
 
 .. js:autoclass:: ui.panel
    :short-name:
    :members:
    :private-members:
 
-.. js:autoclass:: ui.language
+.. js:autoclass:: ui.account
    :short-name:
    :members:
    :private-members:
