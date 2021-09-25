@@ -632,6 +632,16 @@ class files {
     this.file_save_as.className = 'bipes-xml';
     Tool.updateSourceCode(new Blob([Code.generateXML()], {type: "text/plain"}), 'BIPES_Workspace.xml');
   }
+  /**
+   * Update the displayed name and automatic opened code when switching tabs or projects.
+   */
+  handleCurrentProject () {
+    this.blocks2Code.Python.innerHTML = Tool.makeAName(Code.generateCode(), 'py') + '<span>automatic</span>'
+    if (this.file_save_as.className == 'bipes-py')
+      this.internalPython ();
+    else if(Files.file_save_as.className == 'bipes-xml')
+      this.internalXML ();
+  }
 }
 
 /** Make DOM Node element*/

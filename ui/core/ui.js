@@ -132,6 +132,7 @@ account.prototype.openProject = function (uid) {
   this.projects[uid] = +new Date();
 
   BlocklyStorage.loadXml_ (xml, Blockly.getMainWorkspace());
+  Files.handleCurrentProject ();
 }
 /**
  * Delete project.

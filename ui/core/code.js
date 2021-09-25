@@ -221,11 +221,7 @@ Code.renderContent = function() {
       Files.editor.setValue('')
       Files.editor.init = true;
     }
-    Files.blocks2Code.Python.innerHTML = Tool.makeAName(Code.generateCode(), 'py') + '<span>automatic</span>'
-    if (Files.file_save_as.className == 'bipes-py')
-      Files.internalPython ();
-    else if(Files.file_save_as.className == 'bipes-xml')
-      Files.internalXML ();
+    Files.handleCurrentProject();
     var nArea = document.getElementById('content_files');
     nArea.focus();
   } else if (content.id == 'content_device') {
