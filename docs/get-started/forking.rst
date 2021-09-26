@@ -9,7 +9,7 @@ As BIPES is a fully open source project and it's understood that users and compa
 However, ``git`` has tools to easily work around these issues, but a prior basic understading of `git branches <https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell>`_ is desired.
 
 
-Forking BIPES
+Forking
 ----------------------------
 
 To solve the first issue, the first step is to fork into your GitHub account, then clone to your computer using your `ssh key connected to GitHub <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>`_ and in a terminal do:
@@ -43,7 +43,7 @@ After installing your preferred merge tool, do:
 The command will recursively open all files with merge conflicts, so that you can solve them and reach a conflict-free version. Also, it might complain that you have not configured it yet, but do not worry since it will automatically find and use a installed merge tool.
 
 
-Contributing to BIPES
+Contributing
 ----------------------------
 
 To solve the second issue, a new branch will be required, where only the desired commits will be included.

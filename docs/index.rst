@@ -31,6 +31,7 @@ BIPES Developer Center
 
    core/ui
    core/channel
+   core/storage
    core/utils
    core/code
 

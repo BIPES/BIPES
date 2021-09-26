@@ -11,7 +11,9 @@
  */
 'use strict';
 
-// Create a namespace.
+/**
+ * Create the storage namespace.
+ */
 var BlocklyStorage = {};
 
 /**
