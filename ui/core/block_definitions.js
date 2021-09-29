@@ -81,7 +81,7 @@ Blockly.Blocks['pwm.freq'] = {
   },
   check (value, id) {
     Tool.warningIfTrue (this, [
-      [() => (!isNaN(parseFloat(value)) && parseFloat(value44444444444444444444444444) % 1 != 0), `PWM #${id} frequency: Cannot convert float to int directly.`]
+      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `PWM #${id} frequency: Cannot convert float to int directly.`]
     ]);
   }
 };
