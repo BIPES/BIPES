@@ -45,7 +45,7 @@ With the use of `Web Serial API <https://developer.mozilla.org/en-US/docs/Web/AP
 WebBluetooth
 -----------------------------
 
-With the use of `Web Bluetooth API <https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API>`_ , data can be sent via a serial port, with the help of the ``webbluetooth`` class.
+With the use of `Web Bluetooth API <https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API>`_ , data can be sent via Bluetooth with the help of the ``webbluetooth`` class.
 
 .. js:autoclass:: channel.webbluetooth
    :short-name:
@@ -55,7 +55,7 @@ With the use of `Web Bluetooth API <https://developer.mozilla.org/en-US/docs/Web
 WebSockets
 -----------------------------
 
-With the use of `WebSocket API <https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API>`_ , data can be sent via a serial port, with the help of the ``websocket`` class.
+With the use of `WebSocket API <https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API>`_ , data can be sent via TCP/IP, with the help of the ``websocket`` class.
 
 .. js:autoclass:: channel.websocket
    :short-name:
