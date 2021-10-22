@@ -107,7 +107,6 @@ account.prototype.listProject = function (uid, timestamp) {
     let wrapper_ = new DOM ('div')
         .append([downloadButton_, deleteButton_])
     wrapper2_.append([openButton_, wrapper_])
-    console.log(wrapper2_)
     this.projectList.append(wrapper2_._dom)
 }
 /**
@@ -164,7 +163,7 @@ account.prototype.getProjectName_ = function (uid) {
     let project_description_chunk = xml.match (regex_) [0];
     project_name = project_description_chunk.match (/<field name="TEXT">(.*?)<\/field>/)[1].slice();
   } else {
-    project_name = "My Unnamed Project";
+    project_name = "My BIPES Project";
   }
   return project_name;
 }

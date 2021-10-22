@@ -1,5 +1,4 @@
 Blockly.Blocks['pwm'] = {
-  warning_: new Array(2).fill(true),
   init: function(){
     this.appendDummyInput()
         .appendField("PWM #")
@@ -24,14 +23,13 @@ Blockly.Blocks['pwm'] = {
   },
   check (values, id) {
     Tool.warningIfTrue (this, [
-      [() => (!isNaN(parseFloat(values [0])) && parseFloat(values [0]) % 1 != 0), `PWM #${id} frequency: Cannot convert float to int directly.`],
-      [() => (!isNaN(parseFloat(values [1])) && parseFloat(values [1]) % 1 != 0), `PWM #${id} duty: Cannot convert float to int directly.`]
+      [() => (!isNaN(parseFloat(values [0])) && parseFloat(values [0]) % 1 != 0), `Cannot convert float to int directly.`],
+      [() => (!isNaN(parseFloat(values [1])) && parseFloat(values [1]) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
   }
 };
 
 Blockly.Blocks['pwm_pico'] = {
-  warning_: new Array(2).fill(true),
   init: function(){
     this.appendDummyInput()
         .appendField("RPi Pico PWM #")
@@ -56,8 +54,8 @@ Blockly.Blocks['pwm_pico'] = {
   },
   check (values, id) {
     Tool.warningIfTrue (this, [
-      [() => (!isNaN(parseFloat(values [0])) && parseFloat(values [0]) % 1 != 0), `PWM #${id} frequency: Cannot convert float to int directly.`],
-      [() => (!isNaN(parseFloat(values [1])) && parseFloat(values [1]) % 1 != 0), `PWM #${id} duty: Cannot convert float to int directly.`]
+      [() => (!isNaN(parseFloat(values [0])) && parseFloat(values [0]) % 1 != 0), `Cannot convert float to int directly.`],
+      [() => (!isNaN(parseFloat(values [1])) && parseFloat(values [1]) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
   }
 };
@@ -65,7 +63,6 @@ Blockly.Blocks['pwm_pico'] = {
 
 
 Blockly.Blocks['pwm.freq'] = {
-  warning_: new Array(1).fill(true),
   init: function() {
     this.appendValueInput('frequency')
         .setCheck('Number')
@@ -81,7 +78,7 @@ Blockly.Blocks['pwm.freq'] = {
   },
   check (value, id) {
     Tool.warningIfTrue (this, [
-      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `PWM #${id} frequency: Cannot convert float to int directly.`]
+      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
   }
 };
@@ -89,7 +86,6 @@ Blockly.Blocks['pwm.freq'] = {
 
 
 Blockly.Blocks['pwm.duty'] = {
-  warning_: new Array(2).fill(true),
   init: function() {
     this.appendValueInput('duty')
         .setCheck('Number')
@@ -105,13 +101,12 @@ Blockly.Blocks['pwm.duty'] = {
   },
   check (value, id) {
     Tool.warningIfTrue (this, [
-      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `PWM #${id} duty: Cannot convert float to int directly.`]
+      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
   }
 };
 
 Blockly.Blocks['pwm.duty_pico'] = {
-  warning_: new Array(2).fill(true),
   init: function() {
     this.appendValueInput('duty')
         .setCheck('Number')
@@ -127,7 +122,7 @@ Blockly.Blocks['pwm.duty_pico'] = {
   },
   check (value, id) {
     Tool.warningIfTrue (this, [
-      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `PWM #${id} duty: Cannot convert float to int directly.`]
+      [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
   }
 };
@@ -2224,8 +2219,6 @@ Blockly.Blocks['project_metadata'] = {
 };
 
 Blockly.Blocks['control_pid.__init__'] = {
-  // warning_ should be the size of itens inside Tool.trueOrWarning
-  warning_: new Array(2).fill(true),
   init: function() {
     this.appendDummyInput()
         .appendField("Init PID Controller #")

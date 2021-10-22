@@ -183,10 +183,12 @@ class Tool {
   static makeAName (code, ext) {
     let desc = code.match(/#Description: '(.*)'/)
     let imp = [...code.matchAll(/import (.*)/g)]
+
     if (ext == '') {
-      return desc ? `${desc [1].slice()}${ext}` : 'My Unnamed Project';
+      return desc ? `${desc [1].slice()}${ext}` : 'My BIPES Project';
     } else {
-      return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.${ext}` : `my_BIPES_project.${ext}`;
+      desc [1] = desc [1].toLowerCase()
+      return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.bipes.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.bipes.${ext}` : `my_project.bipes.${ext}`;
     }
   }
   /**Converts RGB to HEX
@@ -241,15 +243,18 @@ class Tool {
    * @param {string} criteria.str - Message to show as notification if the criteira is met.
    */
   static warningIfTrue (self, criteria) {
+    // Don't check state if:
+    //   * It's at the start of a drag.
+    //   * It's not a move event.
+    if (!self.workspace.isDragging || self.workspace.isDragging())
+      return
+
+    let warnings = [];
     criteria.forEach ((item, index) => {
-      if (item [0] ()) {
-        if (self.warning_ [index]) {
-          UI ['notify'].send(item [1]);
-          self.warning_ [index] = false;
-        }
-      } else
-        self.warning_ [index] = true;
+      if (item [0] ())
+        warnings.push(item [1])
     })
+    self.setWarningText(warnings.length > 0 ? warnings.join("\n") : null)
   }
 
   /** Return a random UID*/
