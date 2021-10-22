@@ -32,22 +32,31 @@ The ``term`` class makes working with the terminal easier.
 DOM Node
 -----------------------------
 
-To make creation of `DOM <https://developer.mozilla.org/en-US/docs/Web/API/Node>`_ elements easier, the class ``DOM`` provides some useful
-syntax to creating `Node <https://developer.mozilla.org/en-US/docs/Web/API/Node>`_ a appending DOM elements.
+To make creation of `DOM <https://developer.mozilla.org/en-US/docs/Web/API/Node>`_ elements easier, the class ``DOM`` provides some a fluent interface to
+create `Node <https://developer.mozilla.org/en-US/docs/Web/API/Node>`_ elements.
 
 For example to create a `div` with two buttons (`#trashIcon` and `#runIcon`) with on click event, just do:
 
 .. code-block:: javascript
 
-	let deleteButton_ = new DOM ('span', {className:'icon', id:'trashIcon'});
-	deleteButton_.onclick (()=>{delete(file)});
-	let runButton_ = new DOM ('span', {className:'icon', id:'runIcon'});
-	runButton_.onclick (()=>{run(file)});
+	let deleteButton_ = new DOM ('span', {
+			className:'icon',
+			id:'trashIcon'
+		})
+		.onclick (this,delete,[file])
+	let runButton_ = new DOM ('span', {
+			className:'icon',
+			id:'runIcon'
+		})
+		.onclick (this,run,[file])
 
 	let wrapper_ = new DOM ('div');
-	wrapper_.appendChilds([runButton_, deleteButton_]);
+		.append([runButton_, deleteButton_]);
 
-.. js:autoclass:: utils.term
+Note that the function ``DOM.onclick`` binds the first argument as the ``this`` keyword of the function (second argument) to be called.
+The third argument is a list of the arguments that will be applied to the function.
+
+.. js:autoclass:: utils.DOM
    :short-name:
    :members:
    :private-members:

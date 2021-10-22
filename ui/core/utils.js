@@ -648,6 +648,7 @@ class files {
       this.internalXML ();
   }
 }
+/** Make DOM Node element*/
 class DOM {
   constructor (dom, tags){
     this._dom ;
@@ -674,7 +675,7 @@ class DOM {
 	  return this;
   }
   /**
-  * Append a ``onlick`` event.
+  * Append a ``onclick`` event.
   * @param {Object[]} self - Object to bind to the call.
   * @param {function} ev - Function to call on click.
   * @param {Object[]} args - Arguments to pass to the function.
