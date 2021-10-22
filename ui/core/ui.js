@@ -96,21 +96,19 @@ account.prototype.listProject = function (uid, timestamp) {
     let project_name = this.getProjectName_ (uid);
     timestamp = Tool.unix2date(timestamp);
     let short_project_name = project_name.length > 30 ? `${project_name.substring(0,27)}...` : project_name;
-    let wrapper2_ = new DOM ('div');
-        wrapper2_.dom_.id = uid;
-    let openButton_ = new DOM ('div', {innerText:short_project_name, className: 'runText'});
-        openButton_.dom_.title = `Open project ${project_name}, created at ${timestamp}`;
-        openButton_.onclick (()=>{this.openProject(uid)});
-    let deleteButton_ = new DOM ('span', {className:'icon', id:'trashIcon', title:`Delete project ${project_name}`});
-        deleteButton_.onclick (()=>{this.deleteProject(uid)});
-    let downloadButton_ = new DOM ('span', {className:'icon', id:'downloadIcon', title:`Download project ${project_name}`});
-        downloadButton_.onclick (()=>{UI ['workspace'].saveXML (uid)});
+    let wrapper2_ = new DOM ('div', {'id':uid});
+    let openButton_ = new DOM ('div', {innerText:short_project_name, className: 'runText', title:`Open project ${project_name}, created at ${timestamp}`})
+        .onclick (this, this.openProject, [uid])
+    let deleteButton_ = new DOM ('span', {className:'icon', id:'trashIcon', title:`Delete project ${project_name}`})
+        .onclick (this, this.deleteProject, [uid])
+    let downloadButton_ = new DOM ('span', {className:'icon', id:'downloadIcon', title:`Download project ${project_name}`})
+        .onclick (this, UI ['workspace'].saveXML, [uid])
 
-    let wrapper_ = new DOM ('div');
-        wrapper_.appendChilds([downloadButton_, deleteButton_]);
-    wrapper2_.appendChilds([openButton_, wrapper_]);
-
-    this.projectList.appendChild(wrapper2_.dom_);
+    let wrapper_ = new DOM ('div')
+        .append([downloadButton_, deleteButton_])
+    wrapper2_.append([openButton_, wrapper_])
+    console.log(wrapper2_)
+    this.projectList.append(wrapper2_._dom)
 }
 /**
  * Open project.
@@ -222,7 +220,6 @@ account.prototype.importProject = function (xml) {
  * @param {string} str_ - Project name to be displayed in the account panle.
  */
 account.prototype.setCurrentProjectName_ = function (str_) {
-  console.log(str_.length)
   let short_project_name = str_.length > 30 ? `${str_.substring(0,27)}...` : str_;
 
   let a_ = getIn(this.projectList, `#${this.currentProject.uid}`);
@@ -667,7 +664,7 @@ workspace.prototype.saveXML = function (uid) {
   let data = "data:x-application/xml;charset=utf-8," + encodeURIComponent(xmlText);
 	let element = document.createElement('a');
 	element.setAttribute('href', data),
-	element.setAttribute('download', 'bipes_workspace.xml'),
+	element.setAttribute('download', 'workspace.bipes.xml'),
 	element.style.display = 'none';
 	document.body.appendChild(element);
 	element.click ();

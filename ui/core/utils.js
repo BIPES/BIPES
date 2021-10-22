@@ -567,26 +567,26 @@ class files {
         let openButton_ = new DOM ('div', {innerText:file, className: 'runText'});
         if (!(/\./.test(file))) {
           openButton_.flag('is directory');
-          wrapper2_.appendChilds([openButton_])
-          wrapper2_.dom_.style.cursor = 'default';
+          wrapper2_.append(openButton_)
+          wrapper2_._dom.style.cursor = 'default';
         } else {
-          openButton_.dom_.title = `Open file ${file}`;
-          openButton_.onclick (()=>{Files.files_view(file)});
+          openButton_._dom.title = `Open file ${file}`;
+          openButton_.onclick (this, Files.files_view, [file]);
           if(file == 'boot.py' || file == 'main.py')
             openButton_.flag('run at boot');
-          let deleteButton_ = new DOM ('span', {className:'icon', id:'trashIcon', title:`Delete file ${file}`});
-              deleteButton_.onclick (()=>{Files.delete(file)});
-          let runButton_ = new DOM ('span', {className:'icon', id:'runIcon', title:`Run file ${file}`});
-              runButton_.onclick (()=>{Files.run(file)});
-          let downloadButton_ = new DOM ('span', {className:'icon', id:'downloadIcon', title:`Download file ${file}`});
-              downloadButton_.onclick (()=>{Files.files_download(file)});
+          let deleteButton_ = new DOM ('span', {className:'icon', id:'trashIcon', title:`Delete file ${file}`})
+            .onclick (this, Files.delete, [file]);
+          let runButton_ = new DOM ('span', {className:'icon', id:'runIcon', title:`Run file ${file}`})
+            .onclick (this, Files.run, [file]);
+          let downloadButton_ = new DOM ('span', {className:'icon', id:'downloadIcon', title:`Download file ${file}`})
+            .onclick (this, Files.files_download, [file]);
 
-          let wrapper_ = new DOM ('div');
-              wrapper_.appendChilds([runButton_, downloadButton_, deleteButton_]);
-          wrapper2_.appendChilds([openButton_, wrapper_]);
+          let wrapper_ = new DOM ('div')
+            .append([runButton_, downloadButton_, deleteButton_]);
+          wrapper2_.append([openButton_, wrapper_]);
         }
 
-        this.fileList.appendChild(wrapper2_.dom_)
+        this.fileList.appendChild(wrapper2_._dom)
       })
 
       Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
@@ -630,7 +630,7 @@ class files {
    */
   internalXML () {
     this.file_save_as.className = 'bipes-xml';
-    Tool.updateSourceCode(new Blob([Code.generateXML()], {type: "text/plain"}), 'BIPES_Workspace.xml');
+    Tool.updateSourceCode(new Blob([Code.generateXML()], {type: "text/plain"}), 'workspace.bipes.xml');
   }
   /**
    * Update the displayed name and automatic opened code when switching tabs or projects.
@@ -643,47 +643,69 @@ class files {
       this.internalXML ();
   }
 }
-
-/** Make DOM Node element*/
 class DOM {
-  constructor (DOM_, tags_) {
-    this.dom_ ;
-    switch (DOM_) {
+  constructor (dom, tags){
+    this._dom ;
+    switch (dom) {
+	  case 'button':
+	  case 'h2':
+	  case 'h3':
       case 'span':
       case 'div':
-        this.dom_ = document.createElement (DOM_);
-        if (typeof tags_ == 'object') for (const tag_ in tags_) {
-          if (['innerText', 'className', 'id', 'title'].includes(tag_))
-          this.dom_ [tag_] = tags_ [tag_]
+        this._dom = document.createElement (dom);
+        if (typeof tags == 'object') for (const tag in tags) {
+          if (['innerText', 'className', 'id', 'title', 'innerText'].includes(tag))
+            this._dom [tag] = tags [tag]
         }
-      break;
+        break;
+	  case 'video':
+        this._dom = document.createElement (dom);
+        if (typeof tags == 'object') for (const tag in tags) {
+          if (['preload', 'controls', 'autoplay'].includes(tag))
+            this._dom [tag] = tags [tag]
+        }
+        break;
     }
+	  return this;
   }
   /**
   * Append a ``onlick`` event.
-  * @param {function} ev - Function to be executed on click.
+  * @param {Object[]} self - Object to bind to the call.
+  * @param {function} ev - Function to call on click.
+  * @param {Object[]} args - Arguments to pass to the function.
   */
-  onclick (ev) {
-    this.dom_.onclick = ev;
+  onclick (self, ev, args){
+    this._dom.onclick = () => {
+			if (typeof args == 'undefined')
+				ev.bind(self)()
+			else if (args.constructor == Array)
+				ev.apply(self, args)
+		};
+	  return this
   }
   /**
   * Appends others :js:func:`DOM`.
-  * @param {Object[]} DOMS_ - Array of :js:func:`DOM` or/and direct DOM Nodes.
+  * @param {Object[]} DOMS - Array of :js:func:`DOM` or/and direct DOM Nodes.
   */
-  appendChilds (DOMS_) {
-    DOMS_.forEach ((item) => {
-      if (/HTML(.*)Element/.test(item.constructor.name))
-        this.dom_.appendChild(item)
-      else if (item.constructor.name == 'DOM' && (/HTML(.*)Element/.test(item.dom_)))
-        this.dom_.appendChild(item.dom_);
-    })
+  append (DOMS){
+	  if (DOMS.constructor != Array)
+	    DOMS = [DOMS]
+
+	    DOMS.forEach ((item) => {
+	      if (/HTML(.*)Element/.test(item.constructor.name))
+		      this._dom.appendChild(item)
+	      else if (item.constructor.name == 'DOM' && (/HTML(.*)Element/.test(item._dom)))
+		      this._dom.appendChild(item._dom)
+	    })
+
+	    return this
   }
   /**
   * Adds a label to the :js:func:`DOM`.
   * @param {string} str - Message inside the label.
   */
   flag (str) {
-    this.dom_.innerHTML = `${this.dom_.innerHTML} <span>${str}</span>`;
+    this._dom.innerHTML = `${this._dom.innerHTML} <span>${str}</span>`;
   }
 }
 
