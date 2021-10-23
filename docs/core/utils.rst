@@ -50,7 +50,7 @@ For example to create a `div` with two buttons (`#trashIcon` and `#runIcon`) wit
 		})
 		.onclick (this,run,[file])
 
-	let wrapper_ = new DOM ('div');
+	let wrapper_ = new DOM ('div')
 		.append([runButton_, deleteButton_]);
 
 Note that the function ``DOM.onclick`` binds the first argument as the ``this`` keyword of the function (second argument) to be called.

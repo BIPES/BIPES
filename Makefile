@@ -19,6 +19,8 @@ copy-bipes-blocks:
 submodules:
 	git submodule init 'ui/freeboard'
 	git submodule update 'ui/freeboard'
+	git submodule init 'databoard'
+	git submodule update 'databoard'
 
 
 offline:
