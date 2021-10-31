@@ -156,7 +156,7 @@ h1 {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: 20.5rem;
+  width: 18.5rem;
   transition: .125s ease top, .125s ease opacity, .125s ease transform;
   background: #fff;
   border-radius: 1.5em;
@@ -629,7 +629,7 @@ pre.content {
     align-items: center;
     justify-content: center;
     height: 7rem;
-    width: 20.5rem;
+    width: 18.5rem;
     transition: .125s ease right, .125s ease top, .125s ease opacity;
     background: #fff;
     border-radius: 1em;
@@ -806,7 +806,7 @@ button.icon.medium:before  {
 }
 @media (max-width: 59.99em) {
   #device_selector {
-    width: 15rem;
+    width: 13rem;
   }
 }
 /* Run button */
@@ -904,7 +904,7 @@ button.icon.medium:before  {
   position: fixed;
   overflow-y: auto;
   z-index: 998;
-  width: 20rem;
+  width: 18rem;
   padding: 0 .5em;
   top:3.5rem;
   bottom:0;

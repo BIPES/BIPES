@@ -440,8 +440,8 @@ Code.init = function() {
 
   Code.tabClick(Code.selected);
 
-  Code.bindClick('trashButton',
-      function() {Code.discard(); Code.renderContent();});
+  //Code.bindClick('trashButton',
+  //    function() {Code.discard(); Code.renderContent();});
 
 
   Code.bindClick('forumButton',
@@ -669,7 +669,7 @@ Code.initLanguage = function() {
 
   document.getElementById('linkButton').title = MSG['linkTooltip'];
   document.getElementById('runButton').title = MSG['runTooltip'];
-  document.getElementById('trashButton').title = MSG['trashTooltip'];
+  //document.getElementById('trashButton').title = MSG['trashTooltip'];
   document.getElementById('saveButton').title = MSG['saveTooltip'];
   document.getElementById('loadButton').title = MSG['loadTooltip'];
   document.getElementById('notificationButton').title = MSG['notificationTooltip'];
