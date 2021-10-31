@@ -230,7 +230,7 @@ Code.renderContent = function() {
   } else if (content.id == 'content_databoard') {
     var nArea = document.getElementById('content_databoard');
     if (!window.frames[3].inited)
-      window.frames[3].initDataboard();
+      window.frames[3].initDataStorage();
     else
       window.frames[3].initGrid();
     nArea.focus();

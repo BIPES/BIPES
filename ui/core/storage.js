@@ -48,7 +48,7 @@ BlocklyStorage.backupOnUnload = function(opt_workspace) {
 BlocklyStorage.restoreBlocks = function(opt_workspace) {
   if ('localStorage' in window) {
     var workspace = opt_workspace || Blockly.getMainWorkspace();
-    /** Import legacy project*/
+    /** Import project list*/
     if (localStorage['bipes_projects'] && localStorage['bipes_projects'] != '[]') {
       try {
         let projects = JSON.parse(localStorage['bipes_projects'])
@@ -62,13 +62,6 @@ BlocklyStorage.restoreBlocks = function(opt_workspace) {
       let emptyProject = `{"${uid}":"${+new Date}"}`;
       localStorage.setItem('bipes_projects', emptyProject)
       UI ['account'].restoreProjects (JSON.parse(emptyProject));
-    }
-    /** Restore legacy project, to be removed*/
-    let url =  window.location.href.split('#')[0];
-    if(localStorage[url]) {
-      UI ['account'].importProject(localStorage[url]);
-      localStorage.removeItem(url);
-      UI ['notify'].send('Legacy project imported to your projects');
     }
   }
 };

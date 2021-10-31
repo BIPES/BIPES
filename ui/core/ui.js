@@ -686,24 +686,31 @@ workspace.prototype.readWorkspace = function (xml, prettyText) {
     let workspace_chunk = xml.match (regex_) [0];
     xml = xml.replace (regex_,'');
 
-    let device = workspace_chunk.match(/<field name="DEVICE">(.+?)<\/field>/) [1];
-    let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+?)<\/field>/) [1];
+    try {
+      let timestamp = workspace_chunk.match(/<field name="TIMESTAMP">(.+?)<\/field>/) [1];
+    } catch (e) {UI ['notify'].log(e)}
     try {
       let freeboard = workspace_chunk.match(/<freeboard><!\[CDATA\[(.+?)\]\]><\/freeboard>/) [1];
-      this.loadFreeboard (freeboard);
+      this.loadFreeboard(freeboard);
     } catch (e) {UI ['notify'].log(e)}
-
-    if (this.devices.constructor.name == 'Object') {
-      this.changeTo (device);
-    } else {
-      /** wait to devices to load */
-      var interval_ = setInterval(() => {
-        if (this.devices.constructor.name == 'Object') {
-          this.changeTo (device);
-          clearInterval(interval_);
-        }
-      }, 500);
-    }
+    try {
+      let databoard = workspace_chunk.match(/<databoard><!\[CDATA\[(.+?)\]\]><\/databoard>/) [1];
+      this.loadDataboard(databoard)
+    } catch (e) {UI ['notify'].log(e)}
+    try {
+      let device = workspace_chunk.match(/<field name="DEVICE">(.+?)<\/field>/) [1];
+      if (this.devices.constructor.name == 'Object') {
+        this.changeTo (device);
+      } else {
+        /** wait to devices to load */
+        var interval_ = setInterval(() => {
+          if (this.devices.constructor.name == 'Object') {
+            this.changeTo (device);
+            clearInterval(interval_);
+          }
+        }, 500);
+      }
+    } catch(e) {UI ['notify'].log(e)}
   } else {
     this.changeTo (Object.keys(this.devices) [0]);
   }
@@ -719,7 +726,8 @@ workspace.prototype.writeWorkspace = function (xml, prettyText) {
   let timestamp =  + new Date();
   let device = this.selector.value;
 
-  let freeboard = '';
+  let freeboard = '',
+    databoard = '';
   /** Can't acess iFrame running locally due to cross-origin policy in Chrome*/
   try {
     freeboard = JSON.stringify(window.frames[1].freeboard.serialize());
@@ -727,12 +735,15 @@ workspace.prototype.writeWorkspace = function (xml, prettyText) {
     if (freeboard == "{\"version\":1,\"allow_edit\":true,\"plugins\":[],\"panes\":[],\"datasources\":[{\"name\":\"vars\",\"type\":\"core_scratchpad_plugin\",\"settings\":{\"data\":\"={}\",\"persist\":\"off\",\"lock\":false}}],\"columns\":3}")
       freeboard='';
   } catch (e) {}
+  try {
+    databoard = window.frames[3].modules.Workspaces.compress();
+  } catch (e) {}
 
   xml = xml.replace(/(xmlns=")(?:.+?)(")/g, '$1https://bipes.net.br$2')
   if (prettyText)
-    xml = xml.replace(/(<xml xmlns=".+?">\n)/, `$1  <workspace>\n    <field name="DEVICE">${device}</field>\n    <field name="TIMESTAMP">${timestamp}</field>\n    <freeboard><![CDATA[${freeboard}]]></freeboard>\n  </workspace>\n`);
+    xml = xml.replace(/(<xml xmlns=".+?">\n)/, `$1  <workspace>\n    <field name="DEVICE">${device}</field>\n    <field name="TIMESTAMP">${timestamp}</field>\n    <freeboard><![CDATA[${freeboard}]]></freeboard>\n    <databoard><![CDATA[${databoard}]]></databoard> \n  </workspace>\n`);
   else
-    xml = xml.replace(/(<xml xmlns=".+?">)/, `$1<workspace><field name="DEVICE">${device}</field><field name="TIMESTAMP">${timestamp}</field><freeboard><![CDATA[${freeboard}]]></freeboard></workspace>`);
+    xml = xml.replace(/(<xml xmlns=".+?">)/, `$1<workspace><field name="DEVICE">${device}</field><field name="TIMESTAMP">${timestamp}</field><freeboard><![CDATA[${freeboard}]]></freeboard><databoard><![CDATA[${databoard}]]></databoard></workspace>`);
   return xml;
 }
 
@@ -799,6 +810,41 @@ workspace.prototype.loadFreeboard = function (JSON_) {
     UI ['notify'].log(e);
   }
 }
+
+/**
+ * Load databoard from JSON.
+ * @param {string} JSON_ - serialized databoard JSON.
+ */
+workspace.prototype.loadDataboard = function (JSON_) {
+  try {
+    let databoard = JSON.parse(JSON_)
+    /** Test if iframe is a freeboard */
+    if (/\/databoard/.test(window.frames[3].location.pathname)) {
+      if (typeof  window.frames[3].modules == 'object') {
+        window.frames[3].modules.Workspaces.deinit()
+        window.frames[3].modules.Workspaces.clearLocalStorage();
+        window.frames[3].modules.Workspaces.uncompress(databoard);
+        if (get('#tab_databoard').className=="tabon")
+          window.frames[3].modules.Workspaces.init()
+      } else {
+        /** wait to freeboard iframe to load */
+        var interval = setInterval(() => {
+          if (typeof  window.frames[1].freeboard == 'object') {
+            window.frames[3].modules.Workspaces.deinit()
+            window.frames[3].modules.Workspaces.clearLocalStorage();
+            window.frames[3].modules.Workspaces.uncompress(databoard);
+            clearInterval(interval);
+          }
+        }, 500);
+      }
+    } else
+      UI ['notify'].log('iFrame is not a freeboard');
+  } catch (e) {
+    UI ['notify'].log(e);
+  }
+}
+
+
 
 
 
