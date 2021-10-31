@@ -107,7 +107,7 @@ Blockly.Python['get_freq'] = function(block) {
 Blockly.Python['exec_python_output'] = function(block) {
   var value_name = Blockly.Python.valueToCode(block, 'command', Blockly.Python.ORDER_ATOMIC);
   var value_command = Blockly.Python.valueToCode(block, 'command', Blockly.Python.ORDER_ATOMIC);
-  var code = value_command.replace('\'','').replace('\'','') + '\n';
+  var code = value_command.replace('\'','').replace('\'','');
   return [code, Blockly.Python.ORDER_NONE];
 };
 
