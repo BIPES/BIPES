@@ -35,7 +35,8 @@ var MSG = {
   notDefined: "não definido",
   editAsFileValue: "Editar como arquivo",
   editAsFileTooltip: "Editar código python e salvar para a memória do aparelho.",
-  forumTooltip: "Fórum de ajuda",
+  forumTooltip: "Fórum de ajuda.",
+  accountTooltip: "Tus proyectos y escenarios.",
   blocksLoadedFromFile: "Blocos carregados do arquivo '%1'.",
   deviceUnavailable: "Aparelho '%1' indisponível.",
   notAvailableFlag: "$1 não está disponível nesse navegador.\r\nVerifique se a 'flag' $1 está ativa."

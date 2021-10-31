@@ -114,22 +114,28 @@ class Tool {
     let seconds = "0" + date.getSeconds();
     return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
   }
-  /**Checks the income data for useful chuncks, like ``BIPES-DATA:`` for plotting*/
+  /**Checks the income data for useful chuncks, like ``$BIPES-DATA:`` for plotting*/
   static bipesVerify () {
-    let re = /\r\nBIPES-DATA:(.*)\r\n/;
+    let re = /\r\n\$(.*):(.*)\r\n/;
     let match_;
     if (re.test(Files.received_string)) {
       match_ = Files.received_string.match(re);
-      if (match_.length == 2) {
-        match_ = match_ [1].split(',');
-        match_ [0] = parseInt(match_ [0]);
-        match_ [1] = parseFloat(match_ [1]);
-        if (typeof match_ [0] == 'number' && typeof match_ [1] == 'number') {
-          let q = new Queue(match_ [0]);
-          q.enqueue(match_ [1]);
+      if (match_.length == 3) {
+        let coordinates = match_ [2].split(',').map((item)=>item = parseFloat(item))
+        window.frames[3].modules.DataStorage.push(match_[1],coordinates)
+
+
+        /*STARTDEPRECATED*/
+        //Compatibilty layer with the old BIPES-DATA:INDEX,DATA
+        if (match_[1] == "BIPES-DATA") {
+          coordinates [0] = parseInt(coordinates [0])
+          coordinates [1] = parseFloat(coordinates [1])
+          let q = new Queue(coordinates [0]);
+          q.enqueue(coordinates[1]);
           if (UI ['workspace'].EasyMQTT_bridge.checked)
-            this.EasyMQTTBridge(match_ [0], match_ [1])
+            this.EasyMQTTBridge(coordinates [0], coordinates[1])
         }
+        /*ENDDEPRECATED*/
       }
     }
     Files.received_string = Files.received_string.replace(re, '\r\n') //purge received string out
@@ -187,6 +193,10 @@ class Tool {
     if (ext == '') {
       return desc ? `${desc [1].slice()}${ext}` : 'My BIPES Project';
     } else {
+      if (desc == null) {
+        desc = [];
+        desc [1] = 'code';
+      }
       desc [1] = desc [1].toLowerCase()
       return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.bipes.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.bipes.${ext}` : `my_project.bipes.${ext}`;
     }

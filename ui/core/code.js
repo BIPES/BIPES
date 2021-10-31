@@ -173,7 +173,7 @@ Code.LANG = Code.getLang();
  * @private
  */
 
-Code.TABS_ = ['blocks', 'console', 'files', 'iot', 'mqtt', 'device', 'programs'];
+Code.TABS_ = ['blocks', 'console', 'files', 'device', 'programs', 'databoard', 'mqtt', 'iot'];
 //Code.TABS_ = ['blocks', 'console', 'javascript', 'python', 'xml'];
 
 Code.selected = 'blocks';
@@ -227,11 +227,12 @@ Code.renderContent = function() {
   } else if (content.id == 'content_device') {
     var nArea = document.getElementById('content_device');
     nArea.focus();
-  } else if (content.id == 'content_iot') {
-    var nArea = document.getElementById('content_iot');
-    nArea.focus();
-  } else if (content.id == 'content_mqtt') {
-    var nArea = document.getElementById('content_mqtt');
+  } else if (content.id == 'content_databoard') {
+    var nArea = document.getElementById('content_databoard');
+    if (!window.frames[3].inited)
+      window.frames[3].initDataboard();
+    else
+      window.frames[3].initGrid();
     nArea.focus();
   } else if (content.id == 'content_programs') {
     var nArea = document.getElementById('content_programs');
@@ -239,7 +240,19 @@ Code.renderContent = function() {
   } else if (content.id == 'content_console') {
     var xmlTextarea = document.getElementById('content_console');
     xmlTextarea.focus();
+  /*STARTDEPRECATED*/
+  } else if (content.id == 'content_iot') {
+    var nArea = document.getElementById('content_iot');
+    nArea.focus();
+  } else if (content.id == 'content_mqtt') {
+    var nArea = document.getElementById('content_mqtt');
+    nArea.focus();
   }
+  /*ENDDEPRECATED*/
+
+  if(content.id != 'content_databoard')
+    if(window.frames[3].grid_inited)
+      window.frames[3].deinitGrid();
 
 
   // } else if (content.id == 'content_javascript') {
@@ -663,6 +676,7 @@ Code.initLanguage = function() {
   document.getElementById('languageIcon').title = MSG['languageTooltip'];
   document.getElementById('toolbarButton').title = MSG['toolbarTooltip'];
   document.getElementById('forumButton').title = MSG['forumTooltip'];
+  document.getElementById('accountButton').title = MSG['accountTooltip'];
 };
 
 /**

@@ -297,6 +297,13 @@
         </shadow>
       </value>
     </block>
+    <block type="localstorage_store">
+      <value name="ADD0">
+        <shadow type="utime.vars">
+          <field name="VARS">ticks_ms</field>
+        </shadow>
+      </value>
+    </block>
 
 
      </category>

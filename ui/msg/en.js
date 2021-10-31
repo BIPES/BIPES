@@ -36,6 +36,7 @@ var MSG = {
   editAsFileValue: "Edit as a file",
   editAsFileTooltip: "Edit python code and save to device's filesystem.",
   forumTooltip: "Help forum.",
+  accountTooltip: "Your projects and settings.",
   blocksLoadedFromFile: "Blocks loaded from file '%1'.",
   deviceUnavailable: "Device '%1' unavailable.",
   notConnected: "No connection to send data.",

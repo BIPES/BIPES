@@ -5410,8 +5410,18 @@ Blockly.Python['bipes_plot'] = function(block) {
   q.enqueue(id);
 */
 
-  var code = `print('BIPES-DATA:',${id},',',${x})\n`;
+  var code = `print('$BIPES-DATA:',${id},',',${x})\n`;
 
+  return code;
+};
+Blockly.Python['localstorage_store'] = function(block) {
+  var topic = block.getFieldValue('topic');
+  var elements = new Array(block.itemCount_);
+  for (var i = 0; i < block.itemCount_; i++) {
+    elements[i] = Blockly.Python.valueToCode(block, 'ADD' + i,
+        Blockly.Python.ORDER_NONE) || 'None';
+  }
+  var code = `print('$${topic}:',${elements.join(",',',")})\n`;
   return code;
 };
 

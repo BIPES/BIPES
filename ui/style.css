@@ -378,7 +378,7 @@ pre.content {
 {
   padding: 0;
 }
-#content_blocks, #content_device, #content_code, #content_console, #content_files, #content_device, #content_programs, #content_mqtt, #content_iot {
+#content_blocks, #content_device, #content_code, #content_console, #content_files, #content_device, #content_programs, #content_mqtt, #content_iot, #content_databoard {
   width: 100vw;
   height: calc(100vh - 3.5rem);
 }

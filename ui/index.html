@@ -130,6 +130,7 @@ document.body.appendChild(el);
         <div id="tab_device" class="taboff">Device</div>
         <div id="tab_iot" class="taboff">IOT</div>
         <div id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</div>
+        <div id="tab_databoard" class="taboff">Databoard (α)</div>
       </div>
       <button id="toolbarButton" class="notext icon medium" title="..."></button>
       <div class="toolbar">
@@ -343,6 +344,12 @@ document.body.appendChild(el);
 
 <div id="content_mqtt" class="content off" style="padding: 0;">
   <iframe id="easymqtt_iframe" src="../easymqtt/index.html" width="100%" height="100%" frameBorder="0"></iframe>
+</div>
+
+<!-- ################################################## -->
+
+<div id="content_databoard" class="content off" style="padding: 0;">
+  <iframe id="databoard_iframe" src="../databoard/index.html" width="100%" height="100%" frameBorder="0"></iframe>
 </div>
 
 <!-- ################################################## -->
