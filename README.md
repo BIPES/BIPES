@@ -12,7 +12,7 @@ Try it now at: [bipes.net.br/ide](https://bipes.net.br/ide).
 
 ## Usage
 
-To init submodules, like [BIPES/freeboard](https://github.com/BIPES/freeboard), run:
+To init submodules, like [BIPES/freeboard](https://github.com/BIPES/freeboard) and [BIPES/Databoard](https://github.com/BIPES/Databoard), run:
 ```
 make submodules
 ```
