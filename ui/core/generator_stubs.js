@@ -201,6 +201,23 @@ Blockly.Python['gpio_get'] = function(block) {
 };
 
 Blockly.Python['gpio_interrupt'] = function(block) {
+  // Fix for global variables inside callback
+  // Piece of code from generators/python/procedures.js
+  // Define a procedure with a return value.
+  // First, add a 'global' statement for every variable that is not shadowed by
+  // a local parameter.
+  var globals = [];
+  var workspace = block.workspace;
+  var variables = Blockly.Variables.allUsedVarModels(workspace) || [];
+  for (var i = 0, variable; (variable = variables[i]); i++) {
+    var varName = variable.name;
+    if (block.getVars().indexOf(varName) == -1) {
+      globals.push(Blockly.Python.nameDB_.getName(varName,
+          Blockly.VARIABLE_CATEGORY_NAME));
+    }
+  }
+  globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') + '\n' : '';
+
   var dropdown_trigger = block.getFieldValue('trigger');
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var statements_code = Blockly.Python.statementToCode(block, 'code');
@@ -213,9 +230,10 @@ Blockly.Python['gpio_interrupt'] = function(block) {
 
   var code='';
   if (value_pin) {
-	code = '\n#BIPES Interrupt handler\ndef callback' + value_pin + '(pPin):\n' + statements_code + '#End of BIPES Interrupt handler\n\n';
-	code += 'p' + value_pin + ' = Pin(' + value_pin + ', Pin.IN)\n';
-	code += 'p' + value_pin + '.irq(trigger=Pin.' + dropdown_trigger + ', handler=callback' + value_pin + ')\n';
+    Blockly.Python.definitions_[`gpio_interrupt${value_pin}`] = `\n#Interrupt handler\ndef callback${value_pin}(pPin):\n${globals}${statements_code}\n\n`;
+
+	  code = `p${value_pin} = Pin(${value_pin}, Pin.IN)\n`;
+	  code += `p${value_pin}.irq(trigger=Pin.${dropdown_trigger}, handler=callback${value_pin})\n`;
   }
 
   return code;
