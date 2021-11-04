@@ -229,9 +229,18 @@ Code.renderContent = function() {
     nArea.focus();
   } else if (content.id == 'content_databoard') {
     var nArea = document.getElementById('content_databoard');
-    if (!window.frames[3].inited)
-      window.frames[3].initDataStorage();
-    else
+    if (!window.frames[3].inited) {
+      if (typeof window.frames[3].modules == 'object' && window.frames[3].modules.Workspaces == 'object') {
+        window.frames[3].initDataStorage()
+      } else {
+        /** wait to databoad to load */
+        var interval = setInterval(() => {
+          if (typeof window.frames[3].modules.Workspaces == 'object') {
+            window.frames[3].initDataStorage()
+          }
+        }, 500);
+      }
+    } else
       window.frames[3].initGrid();
     nArea.focus();
   } else if (content.id == 'content_programs') {
