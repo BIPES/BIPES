@@ -235,8 +235,10 @@ Code.renderContent = function() {
       } else {
         /** wait to databoad to load */
         var interval = setInterval(() => {
-          if (typeof window.frames[3].modules.Workspaces == 'object') {
+          if (typeof window.frames[3].modules == 'object' && window.frames[3].modules.Workspaces == 'object') {
             window.frames[3].initDataStorage()
+            if (window.frames[3].inited)
+              clearInterval(interval);
           }
         }, 500);
       }
