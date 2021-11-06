@@ -230,12 +230,12 @@ Code.renderContent = function() {
   } else if (content.id == 'content_databoard') {
     var nArea = document.getElementById('content_databoard');
     if (!window.frames[3].inited) {
-      if (typeof window.frames[3].modules == 'object' && window.frames[3].modules.Workspaces == 'object') {
+      if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
         window.frames[3].initDataStorage()
       } else {
         /** wait to databoad to load */
         var interval = setInterval(() => {
-          if (typeof window.frames[3].modules == 'object' && window.frames[3].modules.Workspaces == 'object') {
+          if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
             window.frames[3].initDataStorage()
             if (window.frames[3].inited)
               clearInterval(interval);
