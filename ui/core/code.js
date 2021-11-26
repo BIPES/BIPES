@@ -174,103 +174,214 @@ Code.LANG = Code.getLang();
  */
 
 Code.TABS_ = ['blocks', 'console', 'files', 'device', 'programs', 'databoard', 'mqtt', 'iot'];
-//Code.TABS_ = ['blocks', 'console', 'javascript', 'python', 'xml'];
 
-Code.selected = 'blocks';
+Code.current = ["blocks", "",""]
 
 /**
- * Switch the visible pane when a tab is clicked.
- * @param {string} clickedName Name of tab clicked.
+ * Switch the visible pane when a tab is clicked, allows splitting screen.
+ * @param {string} navigation Name of tab clicked.
+ * @param {Number} _pos Position, 0 to full, 1 to full/left and 2 to right.
  */
-Code.tabClick = function(clickedName) {
+Code.handleLink = (_navigation, _pos) => {
+  let _pos0 = _pos == 2 ? 1 : 2
+  let crt = Code.current
 
-  Code.auto_mode = false;
-  // Deselect all tabs and hide all panes.
-  for (var i = 0; i < Code.TABS_.length; i++) if (Code.TABS_ [i] != clickedName){
-    var name = Code.TABS_[i];
-    document.getElementById('tab_' + name).className = 'taboff';
-    document.getElementById('content_' + name).className = 'content off';
+  let turnOff = (elem, pos) => {
+    let _tab  = get(`#content_${elem}`),
+        _nav  = get(`#tab_${elem}`)
+    Code.deinitContent(elem)
+	  _nav.classList.remove('on')
+	  // just to avoid animation glitch
+	  if (pos == 1)
+    	_tab.classList.add(`_pos1`)
+    if (pos == 2)
+    	_tab.classList.add(`_pos2`)
+  	_tab.classList.remove(`pos${pos}`)
+	  Animate.off(_tab)
   }
 
-  // Select the active tab.
-  Code.selected = clickedName;
-  document.getElementById('tab_' + clickedName).className = 'tabon';
-  // Show the selected pane.
-  document.getElementById('content_' + clickedName).className = 'content';
-  Code.renderContent();
-  if (clickedName == 'blocks') {
-    Code.workspace.setVisible(true);
-    Code.auto_mode = true;
-  } else {
+  let turnOn = (elem, pos) => {
+    let _tab  = get(`#content_${elem}`),
+        _nav  = get(`#tab_${elem}`)
+    Code.renderContent(elem)
+
+
+    _nav.classList.add('on')
+	  Animate.on(_tab)
+	  _tab.classList.remove("_pos1", "_pos2")
+	  if (pos != 0)
+  	  _tab.classList.add(`pos${pos}`)
+  }
+
+  // Interpreting link
+  if (_pos == 0){
+    turnOn(_navigation, 0)
+    Code.current = [_navigation, '', '']
+    return
+  }
+
+  // User switch opened section
+  if (crt[_pos0] == _navigation) {
+    let _tab  = get(`#content_${crt[_pos]}`),
+        _tab0 = get(`#content_${crt[_pos0]}`)
+
+ 	  _tab.classList.remove(`pos${_pos}`)
+ 	  _tab.classList.add(`pos${_pos0}`)
+ 	  _tab0.classList.remove(`pos${_pos0}`)
+ 	  _tab0.classList.add(`pos${_pos}`)
+ 	  Code.current = ['', crt[2], crt[1]]
+ 	  return
+  }
+
+  // User click in the same occupying the whole screen
+  if (crt [0] == _navigation && crt [1] == '' && crt [2] == '')
+    return
+
+  // User left click in a new section while another is occuppying the whole screen
+  if (_pos == 1 && crt[0] != ''){
+    turnOff(crt[0], 0)
+    crt[0] = _navigation
+    turnOn(crt[0], 0)
+    Code.resizeContent()
+    return
+  }
+
+  // Both have sections, user left click in one again -> occupy all screen
+  if (_pos == 1){
+    if (crt [_pos] == _navigation && crt[_pos0] != ''){
+      turnOff(crt[_pos0], _pos0)
+      let _tab  = get(`#content_${crt[_pos]}`)
+   	  _tab.classList.remove(`pos${_pos}`)
+      Code.current = [_navigation, '', '']
+      Code.resizeContent()
+      return
+    }
+  }
+
+  // Both have sections, user right click in one again -> deinit
+  if (_pos == 2){
+    if (crt [_pos] == _navigation && crt[_pos0] != ''){
+      turnOff(crt[_pos], _pos)
+      let _tab0  = get(`#content_${crt[_pos0]}`)
+   	  _tab0.classList.remove(`pos${_pos0}`)
+      Code.current = [crt[_pos0], '', '']
+      Code.resizeContent()
+      return
+    }
+  }
+
+  // User click in a new section to ocuppy
+  if (crt[_pos] != _navigation && crt[0] == ''){
+    if (crt[_pos] != '')
+      turnOff(crt[_pos], _pos)
+    turnOn(_navigation, _pos)
+    Code.current[_pos] = _navigation
+    Code.resizeContent()
+    return
+  }
+
+  // User right click in a new section while another is occupying everthing
+  if (_pos == 2 && crt[_pos] != _navigation && crt[0] != ''){
+    let _tab  = get(`#content_${crt[0]}`)
+ 	  _tab.classList.add(`pos1`)
+    turnOn(_navigation, 2)
+    Code.current = ['', crt[0], _navigation]
+    Code.resizeContent()
+    return
+  }
+}
+
+/**
+ * Handle the rendering of the tabs;
+ * @param {string} _navigation Name of tab.
+ */
+Code.renderContent = (_navigation) => {
+  let content = get(`#content_${_navigation}`)
+  switch (_navigation) {
+    case  "databoard":
+      if (!window.frames[3].inited) {
+        if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
+          window.frames[3].initDataStorage()
+        } else {
+          /** wait to databoad to load */
+          var interval = setInterval(() => {
+            if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
+              window.frames[3].initDataStorage()
+              if (window.frames[3].inited)
+                clearInterval(interval)
+            }
+          }, 500);
+        }
+      } else
+      window.frames[3].initGrid()
+      break
+    case "blocks":
+      Code.workspace.setVisible(true)
+      Code.auto_mode = true
+      Blockly.svgResize(Code.workspace)
+      break
+    case "files":
+      if (Files.editor.init == undefined) {
+        //horrible fix for line numbers not showing.
+        Files.editor.setValue(new Array(9).fill('\r\n').join(''))
+        Files.editor.setValue('')
+        Files.editor.init = true
+      }
+      Files.handleCurrentProject()
+      break
+    case "console":
+      term.resize()
+      break
+    case "device":
+    case "programs":
+    case "iot":
+    case "mqtt":
+      break
+  }
+  content.focus()
+};
+/**
+ * Handle the resizing of the tabs on split mode;
+ * @param {string} _navigation Name of tab.
+ */
+Code.resizeContent = (_navigation) => {
+  Code.current.forEach (key => {
+    switch (key) {
+      case "blocks":
+        setTimeout(()=>{Blockly.svgResize(Code.workspace)}, 250)
+        break
+      case "files":
+        Files.resize()
+        break
+      case "console":
+        term.resize()
+        break
+      case "databoard":
+      case "device":
+      case "programs":
+      case "iot":
+      case "mqtt":
+        break
+    }
+  })
+};
+
+/**
+ * Deinit a tab (if it supports).
+ * @param {string} _navigation Name of tab to deinit.
+ */
+Code.deinitContent = (_navigation) => {
+  switch (_navigation) {
+  case  "databoard":
+    if(window.frames[3].grid_inited)
+      window.frames[3].deinitGrid()
+    break
+  case "blocks":
     Code.workspace.setVisible(false);
     Code.auto_mode = false;
+    break
   }
-  Blockly.svgResize(Code.workspace);
-
-};
-
-/**
- * Populate the currently selected pane with content generated from the blocks.
- */
-Code.renderContent = function() {
-  var content = document.getElementById('content_' + Code.selected);
-  if (content.id == 'content_files') {
-    if (Files.editor.init == undefined) {
-      //horrible fix for line numbers not showing.
-      Files.editor.setValue(new Array(9).fill('\r\n').join(''))
-      Files.editor.setValue('')
-      Files.editor.init = true;
-    }
-    Files.handleCurrentProject();
-    var nArea = document.getElementById('content_files');
-    nArea.focus();
-  } else if (content.id == 'content_device') {
-    var nArea = document.getElementById('content_device');
-    nArea.focus();
-  } else if (content.id == 'content_databoard') {
-    var nArea = document.getElementById('content_databoard');
-    if (!window.frames[3].inited) {
-      if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
-        window.frames[3].initDataStorage()
-      } else {
-        /** wait to databoad to load */
-        var interval = setInterval(() => {
-          if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
-            window.frames[3].initDataStorage()
-            if (window.frames[3].inited)
-              clearInterval(interval);
-          }
-        }, 500);
-      }
-    } else
-      window.frames[3].initGrid();
-    nArea.focus();
-  } else if (content.id == 'content_programs') {
-    var nArea = document.getElementById('content_programs');
-    nArea.focus();
-  } else if (content.id == 'content_console') {
-    var xmlTextarea = document.getElementById('content_console');
-    xmlTextarea.focus();
-  /*STARTDEPRECATED*/
-  } else if (content.id == 'content_iot') {
-    var nArea = document.getElementById('content_iot');
-    nArea.focus();
-  } else if (content.id == 'content_mqtt') {
-    var nArea = document.getElementById('content_mqtt');
-    nArea.focus();
-  }
-  /*ENDDEPRECATED*/
-
-  if(content.id != 'content_databoard')
-    if(window.frames[3].grid_inited)
-      window.frames[3].deinitGrid();
-
-
-  // } else if (content.id == 'content_javascript') {
-  //   Code.generateCode(Blockly.JavaScript);
-  //   Code.toDOM(Code.javascriptCode, 'py', 'content_javascript');
-  // }
-};
+}
 
 /**
  * Attempt to generate the code and display it in the UI, pretty printed.
@@ -438,10 +549,6 @@ Code.init = function() {
             wheel: true}
       });
 
-  // Add to reserved word list: Local variables in execution environment (runJS)
-  // and the infinite loop detection function.
-  Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
-
   Code.loadBlocks('');
 
   if ('BlocklyStorage' in window) {
@@ -449,7 +556,7 @@ Code.init = function() {
     BlocklyStorage.backupOnUnload(Code.workspace);
   }
 
-  Code.tabClick(Code.selected);
+  Code.handleLink(Code.current[0], 0);
 
   //Code.bindClick('trashButton',
   //    function() {Code.discard(); Code.renderContent();});
@@ -474,14 +581,22 @@ Code.init = function() {
     linkButton.className = 'disabled';
   }
 
+  // Bind left click/tap and right click on tabs
   for (var i = 0; i < Code.TABS_.length; i++) {
-    var name = Code.TABS_[i];
-    Code.bindClick('tab_' + name,
-        function(name_) {return function() {Code.tabClick(name_);};}(name));
+    let name = Code.TABS_[i];
+    let tab = get(`#tab_${name}`)
+    tab.addEventListener("click", (ev) => {
+      ev.preventDefault()
+      Code.handleLink(name, 1)
+    })
+    tab.addEventListener("contextmenu", (ev) => {
+      ev.preventDefault()
+      Code.handleLink(name, 2)
+    })
   }
   Blockly.svgResize(Code.workspace);
 
-    Code.workspace.registerButtonCallback('installPyLib', function(button) {
+  Code.workspace.registerButtonCallback('installPyLib', function(button) {
 
 	var lib = button.text_.split(" ")[1];
 	console.log(button.text_);

@@ -194,7 +194,7 @@ document.body.appendChild(el);
   </div>
 
   <div id="content_blocks" class="content"></div>
-  <div id="content_console" class="content off">
+  <div id="content_console" class="content">
        <span class="icon" id="tipsGeneric"><tt>Ctrl+Insert</tt> to copy and <tt>Shift+Insert</tt> to paste</span>
     <tr height="25%" id="termTR">
      <td>
@@ -245,7 +245,7 @@ document.body.appendChild(el);
 
 <!-- ################################################## -->
 
-  <div id="content_programs" class="content off">
+  <div id="content_programs" class="content">
     <center>
 	    <!--
     <iframe src="https://bipes-271213.appspot.com/list" width="100%" height="500" frameBorder="0"></iframe>
@@ -257,7 +257,7 @@ document.body.appendChild(el);
 
 <!-- ################################################## -->
 
-  <div id="content_device" class="content off">
+  <div id="content_device" class="content">
     <center>
       <label id="device_title"><b>ESP8266</b><br></label>
     <br>
@@ -275,7 +275,7 @@ document.body.appendChild(el);
 
 <!-- ################################################## -->
 
-  <div id="content_files" class="content off">
+  <div id="content_files" class="content">
 
 
   <div id="file-boxes">
@@ -336,19 +336,19 @@ document.body.appendChild(el);
 
 <!-- ################################################## -->
 
-  <div id="content_iot" class="content off">
+  <div id="content_iot" class="content">
      <iframe id="content_iot" src="freeboard/index.html" width="100%" height="100%" frameBorder="0"></iframe>
   </div>
 
 <!-- ################################################## -->
 
-<div id="content_mqtt" class="content off" style="padding: 0;">
+<div id="content_mqtt" class="content" style="padding: 0;">
   <iframe id="easymqtt_iframe" src="../easymqtt/index.html" width="100%" height="100%" frameBorder="0"></iframe>
 </div>
 
 <!-- ################################################## -->
 
-<div id="content_databoard" class="content off" style="padding: 0;">
+<div id="content_databoard" class="content" style="padding: 0;">
   <iframe id="databoard_iframe" src="../databoard/index.html" width="100%" height="100%" frameBorder="0"></iframe>
 </div>
 
@@ -397,7 +397,6 @@ term.init('#term') //init expanded class;
 
 //global Utilities variable and functions (see core/utils.js)
 var Files = new files ('#fileList');
-Files.resize();
 
 // global User Interface variable and functions (see core/ui.js) */
 var UI = {};

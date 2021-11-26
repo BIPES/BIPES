@@ -394,6 +394,7 @@ class responsive {
     window.onresize = () => {
       Files.resize ();
       term.resize ();
+
       this.mobile = window.innerWidth < 60*$em ? true : false;
     };
   }
@@ -625,8 +626,6 @@ workspace.prototype.change = function () {
        if (blocks.length != 0) UI ['notify'].send (MSG['wrongDevicePin']);
     }
 
-    Code.renderContent (); // renders selected tab
-
     Channel ['webserial'].packetSize = parseInt(selected.serial_packet_size);
     Channel ['webserial'].speed = parseInt(selected.speed);
 
@@ -820,16 +819,16 @@ workspace.prototype.loadDataboard = function (JSON_) {
     let databoard = JSON.parse(JSON_)
     /** Test if iframe is a freeboard */
     if (/\/databoard/.test(window.frames[3].location.pathname)) {
-      if (typeof  window.frames[3].modules == 'object') {
+      if (typeof window.frames[3].modules == 'object') {
         window.frames[3].modules.Workspaces.deinit()
         window.frames[3].modules.Workspaces.clearLocalStorage();
         window.frames[3].modules.Workspaces.uncompress(databoard);
-        if (get('#tab_databoard').className=="tabon")
+        if (get('#tab_databoard').classList.contains("on"))
           window.frames[3].modules.Workspaces.init()
       } else {
-        /** wait to freeboard iframe to load */
+        /** wait to databoard iframe to load */
         var interval = setInterval(() => {
-          if (typeof  window.frames[1].freeboard == 'object') {
+          if (typeof window.frames[3].mopdules == 'object') {
             window.frames[3].modules.Workspaces.deinit()
             window.frames[3].modules.Workspaces.clearLocalStorage();
             window.frames[3].modules.Workspaces.uncompress(databoard);
@@ -838,7 +837,7 @@ workspace.prototype.loadDataboard = function (JSON_) {
         }, 500);
       }
     } else
-      UI ['notify'].log('iFrame is not a freeboard');
+      UI ['notify'].log('iFrame is not a Databoard');
   } catch (e) {
     UI ['notify'].log(e);
   }

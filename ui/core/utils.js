@@ -313,7 +313,12 @@ class files {
    * Resize the ``codemirror`` editor, triggered by ``window.onresize`` event.
    */
   resize () {
-    this.editor.setSize(window.innerWidth - (18*$em),window.innerHeight - (6*$em))
+    if (!Code.current.includes('files'))
+      return
+    if (Code.current[0] == 'files')
+      this.editor.setSize(window.innerWidth - (18*$em),window.innerHeight - (6*$em))
+    else
+      this.editor.setSize((window.innerWidth/2) - (18*$em),window.innerHeight - (6*$em))
   }
   /**
    * Upload file to device.
@@ -725,6 +730,24 @@ class DOM {
   }
 }
 
+
+/** Enables basic css3 animations in the DOM Node element*/
+class Animate {
+  constructor (){}
+  static off (dom, callback){
+    dom.classList.remove('on')
+    setTimeout(()=>{
+      dom.classList.remove('ani', 'on')
+      if (callback != undefined)
+        callback ()
+      }, 250)
+  }
+  static on (dom){
+    dom.classList.add('ani')
+    setTimeout(()=>{dom.classList.add('ani', 'on')}, 250)
+  }
+}
+
 /** Handle ``xterm.js`` terminal*/
 class term {
   constructor () {
@@ -767,8 +790,17 @@ class term {
    * Resize the ``xterm.js`` terminal, triggered by ``window.onresize`` event.
    */
   static resize () {
-    let cols = Math.max(50, Math.min(200, (window.innerWidth - 4*$em) / 7)) | 0;
-    let rows = Math.max(15, Math.min(40, (window.innerHeight - 20*$em) / 12)) | 0;
+    if(!Code.current.includes('console'))
+      return
+
+    let cols
+    if (Code.current[0] == 'console')
+      cols = Math.max(50, Math.min(200, (window.innerWidth - 4*$em) / 7)) | 0
+    else
+      cols = Math.max(50, Math.min(200, ((window.innerWidth)/2 - 4*$em) / 7)) | 0
+
+    let rows = Math.max(15, Math.min(40, (window.innerHeight - 20*$em) / 12)) | 0
+
     terminal.resize(cols, rows);
   }
 }
