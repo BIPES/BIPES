@@ -371,7 +371,6 @@ td {
 }
 .content#content_blocks {
   margin-top: -1px;
-	transition: .125s ease left, .125s ease opacity;
 }
 .content.ani#content_blocks, .content.ani#content_iot {
   visibility: visible;

@@ -296,6 +296,8 @@ Code.handleLink = (_navigation, _pos) => {
  * @param {string} _navigation Name of tab.
  */
 Code.renderContent = (_navigation) => {
+  if (typeof _navigation == 'undefined')
+    return
   let content = get(`#content_${_navigation}`)
   switch (_navigation) {
     case  "databoard":
@@ -452,11 +454,8 @@ function loadExampleFromURL(pName){
 		    //alert(request.responseText);
 
 		    var content = request.responseText;
-              	    console.log("Loading blocks from example URL...");
-                    console.log( content );
                     var xml = Blockly.Xml.textToDom(content);
                     Blockly.Xml.domToWorkspace(xml, Code.workspace);
-                    //alert("Example " + pName + " loaded");
 
                 return request.responseText;
             }
@@ -604,7 +603,7 @@ Code.init = function() {
         alert("This will automatic download and install the library on the connected board: " + lib + ". Internet is required for this operation. Install results will be shown on console tab.");
 
 
-	Code.tabClick('console');
+	UI ['notify'].send('Installing library, check console')
 
 	var installCmd = `
 def bipesInstall(url, lib):
