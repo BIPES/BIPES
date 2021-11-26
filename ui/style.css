@@ -372,8 +372,8 @@ td {
 .content#content_blocks {
   margin-top: -1px;
 }
-.content.ani#content_blocks, .content.ani#content_iot {
-  visibility: visible;
+.content.ani#content_blocks, .content.ani#content_iot, #content_iot.ani #content_iot {
+  visibility: visible !important;
 }
 .content.ani:not(#content_console):not(#content_files) {
   display: block !important;
