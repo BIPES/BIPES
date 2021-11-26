@@ -24,6 +24,9 @@ function panel (button_, panel_) {
  */
 panel.prototype.showPanel = function () {
   let panel_ = UI ['responsive'].panels [this.panel_];
+
+  UI ['responsive'].closeZone._dom.classList.add('on')
+
   if(!panel_.show) {
     this.panel.id = "show";
     if(panel_.from == 'notify-panel')
@@ -383,14 +386,19 @@ class responsive {
   constructor () {
     this.mobile = window.innerWidth < 60*$em ? true : false;
     this.body = get ('body');
+    this.closeZone = new DOM('div', {id:"closeZone"})
+      .onclick (this, this.hidePanels)
+
     /**The dead area for each panel in 'em', if the users taps out, the panel will close*/
 	  this.panels = {'.toolbar':{from:'toolbar',x:$em*22, x2:0, y:$em*7.5, show:false},
 	                 '.notify-panel':{from:'notify-panel',x:$em*22, x2:0, y:0, show:false},
 	                 '.account-panel':{from:'account',x:$em*22, x2:0, y:$em*0, show:false},
 	                 '.channel-panel':{from:'channel-panel',x:$em*42.5, x2:$em*22, y:$em*24.5, show:false}};
+
+    this.body.append(this.closeZone._dom)
+
     this.binded = false;
 
-    this.body.onclick = (ev) => {this.hidePanels (ev)};
     window.onresize = () => {
       Files.resize ();
       term.resize ();
@@ -403,32 +411,11 @@ class responsive {
  * Hide panels if the users taps outside the dead zone.
  */
 responsive.prototype.hidePanels = function (ev) {
-  if (ev.x !== 0 && ev.y !== 0) {
-    let minx = 0;
-    let minx2 = Infinity;
-    let miny = 0;
-    for (const prop in this.panels) {
-      let item = this.panels[prop];
-      let x = this.mobile ? item.x-item.x2 : item.x;
-      let x2 = this.mobile ? 0 : item.x2;
-      if (item.show === true) {
-        if (x > minx)
-          minx = x;
-        if (x2 < minx2)
-          minx2 = x2;
-        if (item.y > miny)
-          miny = item.y;
-        if (item.y === 0)
-          miny = window.innerHeight;
-      }
-    };
-    for (const prop in this.panels) {
-      if (((((window.innerWidth - minx) > (ev.x)) || ((minx2) > (window.innerWidth - ev.x))) || miny < (ev.y)) && this.panels[prop].show === true) {
-        UI [this.panels[prop].from].panel.id='';
-        this.panels[prop].show = false;
-      }
-    };
+  for (const prop in this.panels) {
+      UI [this.panels[prop].from].panel.id=''
+      this.panels[prop].show = false
   }
+  this.closeZone._dom.classList.remove('on')
 }
 
 /** Show a progress bar under the DOM `.top-menu`. */
