@@ -301,21 +301,24 @@ Code.renderContent = (_navigation) => {
   let content = get(`#content_${_navigation}`)
   switch (_navigation) {
     case  "databoard":
-      if (!window.frames[3].inited) {
-        if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
-          window.frames[3].initDataStorage()
-        } else {
-          /** wait to databoad to load */
-          var interval = setInterval(() => {
-            if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
-              window.frames[3].initDataStorage()
-              if (window.frames[3].inited)
-                clearInterval(interval)
-            }
-          }, 500);
-        }
-      } else
-      window.frames[3].initGrid()
+      // Wait 10ms because the canvas of chart.js cannot be inited while not displaying
+      setTimeout(() => {
+        if (!window.frames[3].inited) {
+          if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
+            window.frames[3].initDataStorage()
+          } else {
+            /** wait to databoad to load */
+            var interval = setInterval(() => {
+              if (typeof window.frames[3].modules == 'object' && typeof window.frames[3].modules.Workspaces == 'object') {
+                window.frames[3].initDataStorage()
+                if (window.frames[3].inited)
+                  clearInterval(interval)
+              }
+            }, 500)
+          }
+        } else
+        window.frames[3].initGrid()
+      }, 10)
       break
     case "blocks":
       Code.workspace.setVisible(true)
@@ -324,10 +327,13 @@ Code.renderContent = (_navigation) => {
       break
     case "files":
       if (Files.editor.init == undefined) {
-        //horrible fix for line numbers not showing.
+        // Horrible fix for line numbers not showing when initing
+        // with less than ten lines
         Files.editor.setValue(new Array(9).fill('\r\n').join(''))
-        Files.editor.setValue('')
-        Files.editor.init = true
+        setTimeout(() => {
+          Files.editor.setValue('')
+          Files.editor.init = true
+        }, 10)
       }
       Files.handleCurrentProject()
       break
