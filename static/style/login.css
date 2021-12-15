@@ -1,0 +1,142 @@
+*{
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+@font-face {
+    font-family: "OpenSans";
+    src: url("/static/media/OpenSans.ttf");
+}
+html {
+	height: 100%;
+  user-select: none;
+  -moz-user-select: none;
+}
+body, input{
+	color: #ddd;
+	background: #222;
+	margin: 0;
+	font: 1em 'Roboto', sans-serif;
+}
+input{
+     color: #ddd !important;
+}
+.login input:focus {
+	color: #ddd;
+	border-color: #fff !important;
+}
+.login {
+  background: #222;
+  border: 1px solid #333;
+  margin: calc(50vh - 18rem) auto 0 auto;
+	max-width: 20em;
+	padding: 1em 2em 2em 2em;
+	box-shadow: 0 2px 3px 2Spx rgba(0,0,0,.25);
+	border-radius: 3px;
+	text-align: center;
+}
+.login h1::before {
+     content: '';
+     display: block;
+     margin: 0 auto;
+     max-width: 18rem;
+     height: 8rem;
+     padding: 1em 0 .5em 0;
+     background: url('/static/media/logo-inline.svg') center no-repeat;
+     background-size: contain;
+}
+.login h1{
+	cursor: default;
+	font-weight: normal;
+}
+.login input {
+	width: 100%;
+	outline: none;
+	border: none;
+	margin: .75rem 0;
+	padding: .75em 0;
+	border-bottom: 1px solid #aaa;
+	transition: color ease .25s, border-color ease .25s;
+}
+.login input[type="submit"] {
+  -webkit-appearance: none;
+
+	cursor: pointer;
+	margin: 2rem 0 1rem 0;
+	background: #0075bb !important;
+	color: #fff;
+	border: none;
+	border-radius: .25rem;
+	transition: width ease .25s, border-radius ease .25s;
+	width: 90%;
+	box-shadow: 0 1px 1px 1px rgba(0,0,0,.2);
+}
+.login input[type="submit"]:hover {
+	color: #fff;
+	width: 95%;
+}
+.login input[type="submit"]:focus {
+	color: #fff;
+}
+.login_processing {
+	width: 2.5rem !important;
+	border-radius: 2rem !important;
+	color: #0075bb !important;
+}
+.login_processing:hover {
+	width: 2.75rem !important;
+}
+
+#login {
+     margin-bottom: 0;
+}
+#spinner {
+	position: absolute;
+	left: 50%;
+	margin-top: -2.25rem;
+	width: 0rem;
+	height: 0rem;
+	overflow: visible;
+	animation: sk-rotate 1.25s infinite linear;
+}
+.hide {
+	display: none;
+}
+.dot1, .dot2 {
+	width: .75em;
+	height: .75em;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	background-color: #fff;
+	border-radius: 100%;
+	animation: sk-bounce 1s infinite ease-in-out;
+}
+
+.dot2 {
+	top: auto;
+	bottom: 0;
+	animation-delay: -.5s;
+}
+
+@keyframes sk-rotate { 100% { transform: rotate(360deg); ) }}
+
+@keyframes sk-bounce {
+	0%, 100% {
+		transform: scale(0.0);
+	} 50% {
+		transform: scale(1.0);
+	}
+}
+
+@media only screen and (max-width: 28rem) {
+	.login {
+    box-shadow: none;
+    border: none !important;
+	}
+}
+
+footer {
+	margin: 1.25em 1em;
+	text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+}

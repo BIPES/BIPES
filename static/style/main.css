@@ -1,0 +1,782 @@
+preview
+*{
+    -webkit-tap-highlight-color: transparent;
+}
+@font-face {
+        font-family: "OpenSans";
+        src: url("/static/media/OpenSans.ttf");
+}
+
+body, input{
+  font: 1em 'OpenSans', sans-serif;
+  margin: 0;
+  overflow: hidden;
+  user-select: none;
+  box-sizing: border-box;
+  color: #fff;
+}
+body {
+  background: #222;
+}
+input, textarea, select, button {
+	color: #fff;
+	background: none;
+	font: 1em 'OpenSans', sans-serif;
+	outline: none;
+	border: none;
+}
+input, textarea, .content h2, .content p {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+input[type="submit"] {
+     -webkit-appearance: none;
+
+	width: auto;
+	cursor: pointer;
+	padding: 0.5em;
+	border-radius: 2rem;
+	display: inline-block;
+}
+label {
+	cursor: pointer;
+}
+input[type="checkbox"]{
+	display: none;
+	width: 1em;
+}
+textarea {
+	resize: vertical;
+}
+input[type="file"] {
+	display: none;
+}
+h1, h2, h3 {
+	margin: 0;
+	color: #fff;
+}
+h1 {
+    cursor: default;
+	font-size: 1.25em;
+}
+h2 {
+	font-size: 1.125em;
+}
+h3 {
+	font-size: 1em;
+}
+li {
+	line-height:1.25em;
+	padding: .25em 0;
+}
+pre {
+   font-family: "courier new", courier, monospace;
+   font-size: .95em;
+   -moz-tab-size: 3;
+   tab-size: 3;
+   white-space: pre-wrap;
+}
+a, span {
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+nav {
+	transition: .25s ease-out margin;
+	overflow-y: auto;
+	overflow-x: hidden;
+
+	position: absolute;
+	height:100vh;
+	width:3.5rem;
+
+	display: flex;
+	flex-flow: column;
+	justify-content: space-between;
+
+	z-index: 11;
+	transition: 0.25s ease width;
+
+	background: #333;
+	border-right: 1px solid #666;
+
+	font-weight: bold;
+}
+nav.on, nav div {
+	width: 13.5em;
+}
+nav.on a {
+  width: 13rem;
+}
+
+nav a:link, nav a:visited {
+	color: #fff;
+}
+nav a, nav span {
+	white-space: nowrap;
+	cursor: pointer;
+	transition: .125s ease border-color, .125s ease opacity, .125s ease background-color, .25s ease width;
+	display: flex;
+	align-items: center;
+	border: 1px solid transparent;
+	margin: .125em
+}
+nav a:hover {
+  border-color: #fff;
+}
+nav a:before, nav span:before, button.icon:before, .button.icon:before {
+	display: block;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: url('../media/icons.svg');
+	content: '';
+	margin: 0 auto;
+	flex-shrink: 0;
+}
+nav a::before, nav span::before {
+	margin: 1rem 1rem 1rem 0.75rem;
+}
+nav a.on {
+	background: #4499cc;
+	box-shadow: 0px .125em .25em rgba(0,0,0,0.8)
+}
+nav a, nav span {
+  justify-content: left;
+  border-radius: .5rem;
+  width: 3rem;
+  height: 3rem;
+  overflow: hidden;
+}
+
+/*Icons*/
+nav #menu::before {
+  transition: .125s ease background-position;
+	background-position: left calc(-1.5rem*0) top;
+}
+nav.on #menu::before {
+	background-position: left calc(-1.5rem*0) bottom;
+}
+nav #settings::before {
+	background-position: left calc(-1.5rem*3) top;
+}
+nav #dashboard::before {
+	background-position: left calc(-1.5rem*1) top;
+}
+nav #dashboard.on::before {
+	background-position: left calc(-1.5rem*1) bottom;
+}
+nav #dashboard_edit::before {
+	background-position: left calc(-1.5rem*2) top;
+}
+nav #notification::before {
+	background-position: left calc(-1.5rem*4) top;
+}
+nav #notification.on::before {
+	background-position: left calc(-1.5rem*4) bottom;
+}
+nav #logout::before {
+	background-position: left calc(-1.5rem*5) top;
+}
+button#add:before, .button#add:before, button#raise:before {
+	background-position: left calc(-1.5rem*6) top;
+}
+button#remove:before {
+	background-position: left calc(-1.5rem*7) top;
+}
+button#lower:before, button#discard:before {
+	background-position: left calc(-1.5rem*8) top;
+}
+.button#edit:before {
+	background-position: left calc(-1.5rem*9) top;
+}
+div#dashboard.on .button#edit:before {
+	background-position: left calc(-1.5rem*9) bottom;
+}
+button#streamButton:before {
+	background-position: left calc(-1.5rem*10) top;
+}
+nav #admin::before {
+	background-position: left calc(-1.5rem*11) top;
+}
+nav #admin.on::before {
+	background-position: left calc(-1.5rem*11) bottom;
+}
+nav #console::before {
+	background-position: left calc(-1.5rem*12) top;
+}
+nav #console.on::before {
+	background-position: left calc(-1.5rem*12) bottom;
+}
+nav #files::before {
+	background-position: left calc(-1.5rem*13) top;
+}
+nav #files.on::before {
+	background-position: left calc(-1.5rem*13) bottom;
+}
+nav #app-version {
+  text-align: center;
+  font-weight: normal;
+  color: #aaa;
+  font-size: 0.9rem;
+  width: 100%;
+  border-bottom: 1px solid #444;
+  border-top: 1px solid #444;
+  opacity: 0;
+  transition: .125s ease opacity;
+  transition-delay: .25s;
+}
+nav.on #app-version {
+  opacity: 1;
+}
+
+section {
+	position: absolute;
+	width: calc(100vw - 3.5rem);
+	height: 100vh;
+	margin-left: 3.5rem;
+	display: none;
+	left: -1em;
+	opacity: 0;
+}
+section.ani {
+  display: block;
+}
+section.ani.on {
+  left: 0;
+  opacity: 1;
+}
+@media screen and (orientation:landscape){
+  section {
+  	transition: .125s ease left, .125s ease opacity, .125s ease width;
+  }
+  section.pos1 {
+    width: calc(50vw - 1.85rem);
+  }
+  section._pos1 {
+    left: -1em !important;
+  }
+  section.pos2 {
+    width: calc(50vw - 1.85rem);
+    left: calc(50vw - 1.85rem) !important;
+    border-left: 1px solid #666;
+  }
+  section._pos2 {
+    left: calc(50vw - 0.85rem) !important;
+  }
+}
+@media screen and (orientation:portrait){
+  section {
+  	transition: .125s ease top, .125s ease opacity, .125s ease height;
+  }
+  section.pos1 {
+    height: 50vh;
+    top: 0vh;
+  }
+  section._pos1 {
+    top: -1em !important;
+  }
+  section.pos2 {
+    height: 50vh;
+    top: 50vh;
+    border-top: 1px solid #666;
+  }
+  section._pos2 {
+    top: calc(50vh - 0.85rem) !important;
+  }
+}
+.header {
+	display: flex;
+  justify-content: space-between;
+  align-items: center;
+	padding: .25rem .25rem .25rem .5rem;
+	font-weight: bold;
+  height: 3rem;
+	overflow: hidden;
+}
+button.icon, .button.icon {
+    cursor: pointer;
+}
+button.icon {
+    border-radius: 2rem;
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: #fff;
+    padding: .25rem;
+    transition: border-color ease .125s;
+    -webkit-tap-highlight-color: transparent;
+}
+button.icon:hover {
+	border: 1px solid #fff;
+}
+button.noicon {
+	border: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+section #dashboard {
+	display: flex;
+	height: 100%;
+}
+
+section #dashboard #grid {
+	transition: .25s ease width;
+	width: 100%
+}
+section #dashboard #workspaces {
+	transition: .25s ease width;
+	width: 4rem;
+}
+#grid {
+	grid-column: 1;
+	grid-row: 1;
+}
+#workspaces {
+	grid-column: 2;
+	grid-row: 1;
+
+	border-left: 1px solid #666;
+	background: #111;
+	color:#fff
+}
+#workspaces .wrapper{
+    height: 7em;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: end;
+}
+#workspaces #nav-workspaces {
+    overflow-y: auto;
+    display: block;
+    height: calc(100% - 7rem);
+}
+#workspaces span > div {
+	box-sizing: border-box;
+  height: 3rem;
+	margin: .25em .25em 0 .25em;
+	padding:.25em;
+	border: 1px solid #666;
+	border-radius: .25em;
+	display: flex;
+	align-items: center;
+}
+#workspaces #nav-workspaces > div {
+	overflow: hidden;
+	justify-content: space-between;
+	transition: .25s ease background-color;
+}
+#workspaces #nav-workspaces > div.on {
+	background: #4499cc;
+	border-color: #4499cc;
+}
+#workspaces h2 {
+  min-width: 3.5rem;
+}
+#workspaces span h3 {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  min-width: 3rem;
+}
+#workspaces #edit {
+  justify-content: center;
+}
+div#dashboard.on .button#edit {
+  background: #222;
+}
+div#dashboard.on #workspaces{
+	width: 8rem;
+}
+#grid #add {
+	z-index: 1;
+	display: block !important;
+  position: absolute;
+  border: 1px solid #666;
+  background: #222;
+  padding: 1em;
+	margin-bottom: 0;
+}
+@media screen and (orientation:landscape){
+  #grid #add {
+    bottom: -5em;
+    right: 8rem;
+  	transition: .25s ease box-shadow, .25s ease margin-bottom, .25s ease bottom;
+  }
+  section #dashboard.on #grid #add {
+      bottom: .5em;
+  }
+}
+@media screen and (orientation:portrait){
+  #grid #add {
+    right: -5em;
+    bottom: .5em;
+  	transition: .25s ease box-shadow, .25s ease margin-bottom, .25s ease right;
+  }
+  section #dashboard.on #grid #add {
+    right: 8em;
+  }
+}
+#grid #discard {
+  position: absolute;
+  border: 1px solid #000;
+  background: rgba(0,0,0,0.75);
+  padding: .5em;
+	margin: .5em;
+	transition: .125s ease border-color;
+	display: none
+}
+#grid #discard:after {
+  display: block;
+  color: #fff;
+  content: 'Remover';
+  padding: 0 0.25em;
+}
+#grid #discard:hover {
+	border-color: #fff;
+}
+section #dashboard.on #grid #discard {
+    display: flex;
+}
+#grid {
+	overflow: hidden;
+	display: flex;
+	background: #000;
+}
+#grid #add:hover {
+	margin-bottom: .25em;
+  box-shadow: 0 .25em .5em rgba(68, 153, 204, 1);
+}
+#grid > span {
+	display: grid;
+	gap: 1px;
+	height: 100%;
+	width: 100%;
+}
+#grid > span > div {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border: 1px solid #000;
+	display: flex;
+	justify-content: center;
+  align-items: center;
+}
+#grid span video {
+	max-width: 100%;
+  height: 100%;
+}
+#grid span img {
+	max-width: 100%;
+}
+#grid button {
+	background: transparent;
+	z-index: 1;
+}
+#grid #actions, #grid  > span {
+	transition: .25s ease width;
+}
+#grid #actions {
+	width: 0;
+	background: #111;
+	box-sizing: border-box;
+	color: #fff;
+}
+#grid #actions button.noicon{
+	margin: 0;
+	width: 100%;
+	padding: .5em 0;
+	background: transparent !important;
+	color: #fff
+}
+#grid #actions > span > div {
+	border: 1px solid #666;
+	background: #222;
+	border-radius: .5em;
+	margin: .125em 0 .125em 0;
+	width: 100%;
+}
+#grid #actions .button, #grid #actions .switch {
+    transition: box-shadow ease .125s, .125s ease background-color, margin ease .125s;
+}
+#actions .range button {
+	margin: 0.5em 0.25em 0 0.25em !important;
+}
+#actions .range button:hover {
+	box-shadow: 0 0 0.25em #666;
+}
+#actions .range button:active {
+	box-shadow: 0 0 0 #666;
+}
+#actions .input, #actions .dropdown {
+  text-align: center;
+}
+#actions .input input {
+  margin: 0 0 0.5em 0;
+}
+#actions .dropdown select {
+  padding: 0.5em 0;
+}
+#grid #actions .button:hover, #grid #actions .switch:hover {
+    margin: 0 0 0.25em 0;
+    box-shadow: 0 .125em .125em #666;
+}
+#grid #actions .switch.on {
+	background: #4499cc;
+}
+#grid #actions .switch.on button {
+	color: #fff
+}
+#grid #actions .range {
+    width: 100%;
+	display: block;
+	padding: .5em;
+	text-align: center;
+	box-sizing: border-box;
+}
+#grid #actions input {
+	border: none;
+  background: transparent;
+  width: 100%;
+	text-align: center;
+	border-bottom: 1px solid #666;
+}
+#grid #actions > span > div:active {
+    margin: .125em 0 .125em 0 !important;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0)  !important;
+}
+#grid #actions > span {
+	display: block;
+	width: 9rem;
+	padding: 0.5rem;
+	box-sizing:border-box;
+	display: flex;
+  flex-direction: column;
+  height: 100vh;
+	overflow-x: hidden;
+  overflow-y: auto;
+	scrollbar-width: none;
+
+  padding-bottom: 4.5em;
+}
+div#dashboard.on #grid.on > span {
+	width: calc(100% - 9em);
+}
+div#dashboard.on #grid.on #actions {
+	width: 9em;
+	border-left: 1px solid #666;
+}
+#grid > span > div {
+  transition: box-shadow ease .125s;
+  box-sizing: border-box;
+}
+#grid > span > div, #grid > span > span.filler {
+  background: url('../media/logo-background.svg');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+div#dashboard.on #grid > span > div {
+  cursor: pointer;
+}
+div#dashboard.on #grid > span > div.on {
+	box-shadow:  inset 0 0 1em rgba(68, 153, 204, 1);
+	border-color: #4499cc;
+	z-index: 10;
+}
+div#dashboard .button#add{
+  display: none;
+}
+div#dashboard.on .button#add{
+  display: flex;
+}
+#grid span.s1 {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+@media screen and (orientation:landscape) {
+  #grid span.s2 {
+	  grid-template-columns: 1fr 1fr;
+	  grid-template-rows: 1fr;
+  }
+  #grid span.s5, #grid span.s6 {
+	  grid-template-columns: 1fr 1fr 1fr;
+	  grid-template-rows: 1fr 1fr;
+  }
+}
+@media screen and (orientation:portrait) {
+  #grid span.s2 {
+	  grid-template-columns: 1fr;
+	  grid-template-rows: 1fr 1fr;
+  }
+  #grid span.s5, #grid span.s6 {
+	  grid-template-columns: 1fr 1fr;
+	  grid-template-rows: 1fr 1fr 1fr;
+  }
+}
+#grid span.s3, #grid span.s4 {
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+}
+
+#grid span.s7, #grid span.s8, #grid span.s9 {
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+}
+#boundingBox {
+  position: absolute;
+  box-sizing: border-box;
+  background: rgba(68, 153, 204, 0.25);
+  border: .125em dashed rgba(68, 153, 204, 1);
+  border-radius: .25em;
+  z-index: 999;
+  cursor: crosshair;
+}
+img.cross, video.cross {
+  cursor: crosshair;
+}
+
+.popup {
+  display: none;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0);
+  z-index:10;
+  transition: background-color ease .25s;
+  font-weight: bold;
+}
+.popup.on, .popup.ani{
+  display: block;
+}
+.popup.on{
+  background: rgba(0,0,0,.4);
+}
+.popup > div {
+  background: #111;
+  border: 1px solid #666;
+  box-shadow: 0 .25em .5em rgba(0,0,0,0.5);
+  border-radius: 1em;
+  margin-top: 100vh;
+  opacity: 0;
+  transition: margin-top ease .25s, opacity ease .25s;
+  box-sizing: border-box;
+}
+.popup.on > div {
+  opacity: 1;
+}
+.popup#addMenu.on > div {
+  margin-top: calc(100vh - 5.25em);
+}
+.popup#addMenu > div {
+  margin-right: 9.5em;
+  max-width: 8em;
+  padding: 0.5em;
+  display: flex;
+  justify-content: space-around;
+  margin-left: auto;
+}
+@media screen and (orientation:landscape) {
+  section#dashboard.pos1 .popup#addMenu > div {
+    margin-right: calc(50vw + 6.5em) !important;
+  }
+}
+.popup#addMenu button {
+  padding: .5em;
+  border-radius: 0.5em;
+}
+.popup#urlPopup.on > div {
+  margin-top: calc(50vh - 10em);
+}
+.popup#urlPopup > div {
+  margin: 100vh auto auto auto;
+  max-width: 30em;
+  padding: 1.5em;
+}
+.popup#urlPopup input {
+	border-bottom: 1px solid #666;
+	padding: 0.5em 0;
+	margin: 0.5em 0;
+}
+.popup h3 {
+  font-weight: normal;
+  color: #aaa;
+}
+
+/* notifications */
+a#notification:after {
+  content: '';
+  display: block;
+  width: .5em;
+  height: .5em;
+  position: absolute;
+  background: rgba(255,0,0,0);
+  margin: .75em 0 0 1.6em;
+  border-radius: 100%;
+}
+a#notification.new:after {
+  background: #4499cc;
+}
+#notify {
+  z-index: 12;
+	left: -18em;
+  top: 7.125em;
+	padding: 1em;
+	position: fixed;
+  box-shadow: 0 .125em .5em rgba(0,0,0,.6);
+  background: #4499cc;
+  color:#fff;
+  user-select: none;
+	transition: left ease .5s, opacity ease .5s;
+  border-radius: 0.25rem;
+  opacity: 0;
+}
+#notify.on {
+	opacity: 1;
+	left: 3.75em;
+}
+#notify hr {
+  border: none;
+  height: 1px;
+  background-color: #fff;
+}
+section#notification, section#admin {
+  overflow-y: auto;
+  background: #222;
+}
+section#notification > div, section#admin > div {
+  max-width: 50em;
+  margin: 0 auto;
+  padding: 0 1em 1em 1em;
+}
+section#notification > div > h2, section#admin > div > h2 {
+  position: sticky;
+  background: #222;
+  border-bottom: #666 1px solid;
+  width: 100%;
+  max-width: 50rem;
+  top: 0;
+  padding: 1em 0 .5em 0
+}
+section#notification .notification-cards, section#admin .admin-settings {
+  display: block;
+}
+.notification-cards > span {
+  display: flex;
+  justify-content: space-between;
+  padding: .5em;
+  border: #444 1px solid;
+  border-radius: .25em;
+  margin: .25em 0;
+  align-items: center;
+  user-select: text;
+}
+.notification-cards > span > span > div {
+  color: #aaa;
+  font-size: .9em;
+}
+.notification-cards h3 {
+  font-weight: normal;
+  word-break: break-word;
+}
