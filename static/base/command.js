@@ -1,5 +1,6 @@
 "use strict";
 
+import {Tool} from './tool.js'
 export {CommandBroker}
 
 /**
@@ -16,6 +17,8 @@ class CommandBroker {
     this.root = root
     this.map = {}
     this.event = window.addEventListener("storage", (ev) => {this.mux(ev)})
+
+    this.tabUID = Tool.UID()
   }
   /**
    * Add a LocalCommand, which callback when the event is dispatched.
@@ -41,7 +44,6 @@ class CommandBroker {
             self = self[item]
           })
         }
-
 
         args.shift()
         this.map[_key].callback.apply(self, args)
@@ -90,6 +92,7 @@ class CommandBroker {
     args.unshift(_self)
 
     // Dispatch command
+    localStorage.removeItem(_key)
     localStorage.setItem(_key, JSON.stringify(args))
   }
   mux (ev){

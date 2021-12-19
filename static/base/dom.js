@@ -14,6 +14,9 @@ class DOM {
     case 'div':
     case 'select':
     case 'option':
+    case 'summary':
+    case 'details':
+    case '':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
           if (['innerText', 'className', 'id', 'title', 'innerText', 'value'].includes(tag))
@@ -31,9 +34,11 @@ class DOM {
         }
         break
 	  case 'input':
+	  case 'label':
+	  case 'textarea':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
-          if (['value', 'className', 'id'].includes(tag))
+          if (['value', 'className', 'id', 'placeholder', 'htmlFor', 'type', 'autocomplete'].includes(tag))
            this._dom[tag] = tags[tag]
         }
         break
@@ -114,6 +119,22 @@ class DOM {
 		})
 	return this
 	}
+	/**
+  * Append a event listener.
+  * @param {string} event - Event listener name.
+  * @param {function} ev - Function to be executed on move.
+  */
+  onevent (event, self, ev, args){
+    this._dom.addEventListener(event, (e) => {
+			if (typeof args == 'undefined')
+				ev.apply(self, [e])
+			else if (args.constructor == Array) {
+			  args.push(e)
+				ev.apply(self, args)
+			}
+		})
+	return this
+	}
   /**
   * Appends others :js:func:`DOM`.
   * @param {Object[]} DOMS - Array of :js:func:`DOM` or/and direct DOM Nodes.
@@ -140,6 +161,7 @@ class DOM {
       this._dom.removeChild(child)
       child = this._dom.lastElementChild
     }
+    return this
   }
   /**
   * Get DOM Node element.
@@ -168,6 +190,39 @@ class DOM {
   */
   static UID (){
     return (+new Date).toString(36) + Math.random().toString(36).substr(2)
+  }
+  /**
+  * Prototype a DOM composed by details, sumamary and a h2 title with optional
+  * onclick event.
+  * @param {object} str[id, title, onclick] - id, title and onclick of the DOM element.
+  */
+  static prototypeDetails (str){
+    let summary = new DOM('summary', {innerText:str.innerText})
+    let details = new DOM('details', {id:str.id})
+      .append(summary)
+
+    if (str.onclick != undefined) {
+      str.onclick.args.push(details._dom)
+      summary.onclick(
+        str.onclick.self,
+        str.onclick.fun,
+        str.onclick.args
+      )
+    }
+    return details
+  }
+  /**
+  * Prototype a DOM composed by input(file type) and label.
+  * @param {object} str[id, className] - id and class of the DOM element.
+  */
+  static prototypeInputFile (str){
+    return new DOM('label', {
+      htmlFor:`${str.id}_input`,
+      id:str.id,
+      className:str.className})
+      .append(
+        new DOM('input', {id:`${str.id}_input`, type:'file'})
+      )
   }
 }
 

@@ -8,7 +8,6 @@ class Console {
 	constructor (){
 	  this.inited = false
 	  this.terminal = new Terminal ()
-	  this.targetDevice = 'mock'
 
 	  let $ = this._dom = {}
 	  $.terminalXterm = new DOM('div', {className:"xterm"})
@@ -33,7 +32,7 @@ class Console {
 	  this.terminal.open($.terminalXterm._dom)
 	  this.terminal.setOption('fontSize',14)
 	  this.terminal.onData((data) => {
-      command.dispatch(channel, 'push', [data, this.targetDevice])
+      command.dispatch(channel, 'push', [data, channel.targetDevice])
     });
 
 		DOM.get('section#console').append($.container._dom)
@@ -48,7 +47,7 @@ class Console {
       targetDevice:'',
       watcher:setInterval (() => {
         if (this.tabs.data != '')
-          command.dispatch(this, 'write', [this.tabs.data, this.targetDevice]),
+          command.dispatch(this, 'write', [this.tabs.data, channel.targetDevice]),
           this.tabs.data = ''
       }, 50)
     }
@@ -84,15 +83,15 @@ class Console {
     this.terminal.write(data);
 
     // Write to delayed dispatch
-    if (this.tabs.target != this.targetDevice)
+    if (this.tabs.target != channel.targetDevice)
       this.tabs.data = data,
-      this.tabs.target = this.targetDevice
+      this.tabs.target = channel.targetDevice
     else
       this.tabs.data += data
 
   }
   _write (data, target){
-    if(this.targetDevice != target)
+    if(channel.targetDevice != target)
       return
     this.terminal.write(data)
   }

@@ -84,7 +84,6 @@ a, span {
 }
 
 nav {
-	transition: .25s ease-out margin;
 	overflow-y: auto;
 	overflow-x: hidden;
 
@@ -126,7 +125,7 @@ nav a, nav span {
 nav a:hover {
   border-color: #fff;
 }
-nav a:before, nav span:before, button.icon:before, .button.icon:before {
+nav a:before, nav span:before, button.icon:before, .button.icon:before, label.icon:before {
 	display: block;
 	width: 1.5rem;
 	height: 1.5rem;
@@ -215,6 +214,9 @@ nav #files::before {
 nav #files.on::before {
 	background-position: left calc(-1.5rem*13) bottom;
 }
+button#upload::before, label#upload::before {
+	background-position: left calc(-1.5rem*15) top;
+}
 nav #app-version {
   text-align: center;
   font-weight: normal;
@@ -295,10 +297,10 @@ section.ani.on {
   height: 3rem;
 	overflow: hidden;
 }
-button.icon, .button.icon {
+button.icon {
     cursor: pointer;
 }
-button.icon {
+button.icon, label.icon {
     border-radius: 2rem;
     border: 1px solid transparent;
     background-color: transparent;
@@ -307,13 +309,21 @@ button.icon {
     transition: border-color ease .125s;
     -webkit-tap-highlight-color: transparent;
 }
-button.icon:hover {
+button.icon:hover, label.icon:hover {
 	border: 1px solid #fff;
 }
 button.noicon {
 	border: none;
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+button.icon.text, label.icon.text {
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.25em 0.5em;
+    white-space: nowrap;
 }
 section #dashboard {
 	display: flex;

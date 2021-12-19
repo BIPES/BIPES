@@ -2,6 +2,8 @@
 
 export {Channel}
 
+const BACKSPACE = '[K' // Micropython backspace character
+
 class Channel {
    /**
    * Create the Channel object with a root object.
@@ -13,7 +15,6 @@ class Channel {
 
     this.input = []  // Input to be sent to a device
     this.output = '' // Output from the last command run in the decide
-    this.ending = '' // Last 4 chars to match with MicroPython's ">>> " code
     this.watcher     // Store the interval to send data to a device
     this.callbacks = []
     this.webserial = new _WebSerial ()
@@ -25,7 +26,7 @@ class Channel {
       push: this.push
     })
   }
-  push (code, targetDevice){
+  push (code, targetDevice, callback, tabUID){
     if (this.current == undefined || this.targetDevice != targetDevice)
       return
 
@@ -35,6 +36,22 @@ class Channel {
       this.input.push(code)
     else if (typeof code == 'string')
       this.input.push(...code.replace(/\r\n|\n/gm, '\r').match(reg))
+
+    // Build callback function
+    if (callback != undefined && callback.constructor.name == 'Array') {
+      let self = this.root
+      for (let i = 0; i < callback.length-1; i++) {
+        self = self[callback[i]]
+      }
+      let fun = self[callback[callback.length-1]]
+      this.callbacks.push({
+        self:self,
+        fun:fun,
+        cmd:code.replace(/[\n\r]/g,'')
+      })
+      if (tabUID)
+        this.callbacks[this.callbacks.length - 1].uid = tabUID
+    }
   }
   switch (channel){
     this.diconnect()
@@ -51,6 +68,7 @@ class Channel {
       50);
     modules.console.on()
     modules.console.write(`\r\n\x1b[31mConnected with ${this.current.constructor.name}!\x1b[m\r\n`);
+    this.push('\r\n', this.targetDevice)
   }
   disconnect (){
     if (!this.current.disconnect())
@@ -59,7 +77,6 @@ class Channel {
     modules.console.write(`\r\n\x1b[31mDisconnected from ${this.current.constructor.name}!\x1b[m\r\n`);
     clearInterval(this.watcher);
 
-    this.ending = ''
     this.output = ''
     this.callbacks = []
     this.current = undefined
@@ -69,6 +86,41 @@ class Channel {
     if (navigator.serial == undefined)
       modules.notification.send("Don't support WebSerial")
   }
+  handleCallback (out){
+    // Remove backspaces and characters that antecends it
+    out = this.interpretBackspace(out)
+
+	  let call = this.callbacks[0]
+
+    if (out.substr(0, call.cmd.length) != call.cmd) {
+      console.error("Channel: callback's commands checkup failed")
+      return true
+    }
+    out = out.substr(call.cmd.length)
+    if (call.uid) {
+      call.fun.apply(
+       call.self, [out, call.cmd, call.uid]
+      )
+    } else {
+      call.fun.apply(
+        call.self, [out, call.cmd]
+      )
+    }
+	}
+	interpretBackspace (out){
+	  let _out = []
+	  // Simplify micropython's backspace
+    out = out.replaceAll(BACKSPACE, '\b')
+
+    for (let char of out) {
+      if (char == '\b') {
+        _out.pop()
+      } else
+        _out.push(char)
+    }
+
+    return _out.join('')
+	}
 }
 
 class _WebSerial {
@@ -94,21 +146,22 @@ class _WebSerial {
           write(chunk) {
             if (typeof chunk == 'string') {
               //data comes in chunks, keep last 4 chars to check MicroPython REPL string
-              channel.ending = channel.ending.concat(chunk.substr(-4,4)).substr(-4,4)
-              if (channel.ending == ">>> "){
+              channel.output += chunk
+              modules.console.write(chunk)
+              if (channel.output.substring(channel.output.length - 4) == ">>> "){
+                channel.output = channel.output.substring(0, channel.output.length - 4)
                 //After all code was executed
-                if (channel.callbacks.length > 0)
+                if (channel.callbacks.length > 0) {
                   try {
-                    channel.callbacks[0]()
+                    channel.handleCallback(channel.output)
                   } catch (e) {
                     console.error(e)
                   }
                   channel.callbacks.shift()
-                  channel.output = ''
-              } else
-                channel.output += chunk
+                }
+                channel.output = ''
+              }
             }
-            modules.console.write(chunk)
           }
         })
         this.port.readable
@@ -162,7 +215,7 @@ class _WebSerial {
    * Directly send code via webserial, normally called by this.watch()
    * @param {(Uint8Array|string|number)} data - code to be sent via webserial
    */
-  write (data) {
+  write (data){
     let dataArrayBuffer = undefined;
     switch (data.constructor.name) {
       case 'Uint8Array':

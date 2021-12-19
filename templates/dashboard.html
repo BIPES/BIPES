@@ -7,6 +7,9 @@
 {% for key, plugin in npm.items() %}
   {% if plugin.import %}
 	  <script type="text/javascript" src="{{ plugin.src }}"></script>
+    {% if plugin.css_src %}
+  	<link rel="stylesheet" href='{{ plugin.css_src }}' />
+    {% endif %}
   {% endif %}
 {% endfor %}
 {% for item in navigation %}
