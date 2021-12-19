@@ -2,17 +2,17 @@ section#files details {
   overflow: hidden;
   transition: .125s ease border;
 }
-section#files summary {
+section#files summary, section#files .listedFile {
   -webkit-tap-highlight-color: transparent;
   white-space: normal;
   cursor: pointer;
   display: flex;
   align-items: center;
 }
-section#files #projectTree > details > summary {
+section#files #fileOnTarget > summary {
   font-weight: bold;
 }
-section#files summary:before {
+section#files #fileOnTarget > summary:before {
   content: "\1433";
   margin-right: .5rem;
   transition: transform .25s ease;
@@ -21,7 +21,7 @@ section#files summary:before {
   font-size: 0.8rem;
   line-height: 1rem;
 }
-section#files details[open] > summary:before {
+section#files #fileOnTarget[open] > summary:before {
   transform: rotateZ(90deg);
 }
 section#files > div {
@@ -88,4 +88,26 @@ section#files .emptyDir {
   color: #aaa;
   font-style: italic;
   padding-left: 0.25em;
+}
+button#upload::before, label#upload::before {
+
+}
+section#files #fileOnTarget > span summary::before, section#files .listedFile:before {
+	display: block;
+	width: 1.25rem;
+	height: 1.25rem;
+	background: url('../media/icons.svg');
+	background-size: auto 2.5rem;
+	content: '';
+	margin: 0 .125rem 0 0;
+	flex-shrink: 0;
+}
+section#files #fileOnTarget > span summary::before {
+	background-position: left calc(-1.25rem*16) top;
+}
+section#files .listedFile:before {
+	background-position: left calc(-1.25rem*17) top;
+}
+section#files #fileOnTarget > span details[open] summary:before {
+	background-position: left calc(-1.25rem*16) bottom;
 }

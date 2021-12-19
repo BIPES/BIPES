@@ -33,8 +33,8 @@ class CommandBroker {
    for (let key in callbacks){
       let _key = `${self.constructor.name.toLowerCase()}_${key}`
       this.map[_key] = {}
-      this.map[_key].fun = () => {
-        let args = JSON.parse(localStorage[_key])
+      this.map[_key].fun = (key) => {
+        let args = JSON.parse(localStorage[key])
 
         let self = this.root
         if (args[0] == 'channel') {
@@ -47,7 +47,7 @@ class CommandBroker {
 
         args.shift()
         this.map[_key].callback.apply(self, args)
-        localStorage.removeItem(_key)
+        localStorage.removeItem(key)
       }
       this.map[_key].callback = callbacks[key]
       this.map[_key].skipMain = skipMain == true ? true : false
@@ -92,13 +92,13 @@ class CommandBroker {
     args.unshift(_self)
 
     // Dispatch command
-    localStorage.removeItem(_key)
-    localStorage.setItem(_key, JSON.stringify(args))
+    localStorage.setItem(`${Tool.SID()}_${_key}`, JSON.stringify(args))
   }
   mux (ev){
-    if (!this.map.hasOwnProperty(ev.key) || localStorage[ev.key] == undefined)
+    const key = ev.key.substring(7)
+    if (!this.map.hasOwnProperty(key) || localStorage[ev.key] == undefined)
       return
 
-    this.map[ev.key].fun()
+    this.map[key].fun(ev.key)
   }
 }

@@ -59,11 +59,15 @@ class Files {
     this.codemirror = CodeMirror.fromTextArea($.codemirror._dom, {
       mode: "python",
       lineNumbers: true,
-      theme: 'base16-dark'
+      theme: 'base16-dark',
+      indentUnit: 4,
+      tabSize: 4,
+      indentWithTabs: true
     });
 
     command.add(this, {
-      buildFileTree: this._buildFileTree
+      buildFileTree: this._buildFileTree,
+      editorSetValue: this._editorSetValue
     })
   }
   init (){
@@ -106,9 +110,7 @@ class Files {
   }
   listDir (path, dom, ev){
     ev.preventDefault()
-    console.log(dom)
     if (dom.id != "fileOnTarget"){
-      //dom.open = !dom.open
       if (dom.open) {
         dom.open = false
         return
@@ -121,7 +123,7 @@ class Files {
     path = (path == undefined) ? '/' : path
     //os.chdir('/')
     //os.getcwd()
-    let cmd = `import os; os.listdir('${path}')\r\n`
+    let cmd = `import os; os.listdir('${path}')\r`
     command.dispatch(channel, 'push', [
       cmd,
       channel.targetDevice,
@@ -204,14 +206,36 @@ class Files {
             _iterate (item.files, doms[doms.length - 1], path)
           }
           path.pop()
-        } else
+        } else {
+          let _path = path.length == 0 ? '' : `/${path.join('/')}`
+
           doms.push(item.dom = new DOM('div',{
               innerText:item.name,
               className:'listedFile'
             }).onclick(this, () => {
-              console.log(`${path.join('/')}/${item.name}`)
+              let cmd1 = `import uos, sys; uos.stat("${_path}/${item.name}")\r`,
+                  cmd2 = channel.pasteMode(
+                          `with open("${_path}/${item.name}", 'rb') as infile:` +
+                          `\n\twhile True:\n\t\tresult = infile.read(32)\n\t\t` +
+                          `if result == b'':\n\t\t\t` +
+                          `break\n\t\t` +
+                          `len = sys.stdout.write(result)\n`
+                  )
+
+              command.dispatch(channel, 'push', [
+                cmd1,
+                channel.targetDevice,
+                []
+              ])
+              command.dispatch(channel, 'push', [
+                cmd2,
+                channel.targetDevice,
+                ['files','_fetchFile'],
+                command.tabUID
+              ])
             })
           )
+        }
       })
 
       dom.append(doms)
@@ -224,5 +248,28 @@ class Files {
     _iterate(this.fileOnTarget[0].files, this._dom.fileOnTarget,path)
 
     this._dom.detailsFileOnTarget._dom.open = true
+  }
+  _fetchFile (str, cmd, tabUID){
+    // Get filename from cmd
+    let filename = cmd.match(/with open\("(.*)", 'rb'\) as infile:/)
+    if (filename != null)
+      filename = filename [1]
+    else {
+      console.error('Files: Could not fetch requested filename')
+      return
+    }
+
+    // Converts MicroPython output \r into unix new line \n and 4 spaces to \t
+    let script = str.substring(2).replaceAll(/\r/g,'\n').replaceAll(/    /g,'\t')
+
+
+    command.dispatch(this, 'editorSetValue', [filename, script, tabUID])
+  }
+  _editorSetValue (filename, script, tabUID) {
+    if (command.tabUID != tabUID)
+      return
+
+    this._dom.filename._dom.value = filename
+    this.codemirror.setValue(script)
   }
 }

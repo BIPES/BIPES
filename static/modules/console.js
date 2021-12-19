@@ -32,7 +32,11 @@ class Console {
 	  this.terminal.open($.terminalXterm._dom)
 	  this.terminal.setOption('fontSize',14)
 	  this.terminal.onData((data) => {
-      command.dispatch(channel, 'push', [data, channel.targetDevice])
+	    // If tab is master, write directly to reduce delay
+	    if (channel.current != undefined)
+        channel.rawPush(data)
+	    else
+        command.dispatch(channel, 'push', [data, channel.targetDevice])
     });
 
 		DOM.get('section#console').append($.container._dom)

@@ -2,7 +2,9 @@
 
 export {Channel}
 
-const BACKSPACE = '[K' // Micropython backspace character
+// Commom MicroPython outputs
+const BACKSPACE = '[K' // Bbackspace character
+const PASTEMODE = "paste mode; Ctrl-C to cancel, Ctrl-D to finish" // Paste mode output
 
 class Channel {
    /**
@@ -13,9 +15,10 @@ class Channel {
     this.root = root
     this.current
 
-    this.input = []  // Input to be sent to a device
-    this.output = '' // Output from the last command run in the decide
-    this.watcher     // Store the interval to send data to a device
+    this.input = []   // Input to be sent to a device
+    this.output = ''  // Output from the last command run in the decide
+    this.watcher      // Store the interval to send data to a device
+    this.lock = false // If the terminal is free to send new data
     this.callbacks = []
     this.webserial = new _WebSerial ()
     this.checkUp ()
@@ -26,32 +29,49 @@ class Channel {
       push: this.push
     })
   }
-  push (code, targetDevice, callback, tabUID){
+  push (cmd, targetDevice, callback, tabUID){
     if (this.current == undefined || this.targetDevice != targetDevice)
       return
 
+
+    cmd = cmd.replaceAll('\t',"    ")
+
     let reg = new RegExp(`(.|[\r]){1,${this.current.config.packetSize}}`, 'g')
 
-    if (typeof code == 'object')
-      this.input.push(code)
-    else if (typeof code == 'string')
-      this.input.push(...code.replace(/\r\n|\n/gm, '\r').match(reg))
-
+    if (typeof cmd == 'object')
+      this.input.push([cmd])
+    else if (typeof cmd == 'string') {
+      cmd = cmd.replaceAll(/\r\n|\n/gm, '\r')
+      this.input.push([...cmd.match(reg)])
+    }
+    console.log(this.input)
     // Build callback function
     if (callback != undefined && callback.constructor.name == 'Array') {
-      let self = this.root
-      for (let i = 0; i < callback.length-1; i++) {
-        self = self[callback[i]]
+      let self = this.root,
+          fun
+      if (callback.length == 0) {
+        // Filler/dummy callback
+        fun = () => {}
+      } else {
+        for (let i = 0; i < callback.length-1; i++) {
+          self = self[callback[i]]
       }
-      let fun = self[callback[callback.length-1]]
+        fun = self[callback[callback.length-1]]
+      }
       this.callbacks.push({
         self:self,
         fun:fun,
-        cmd:code.replace(/[\n\r]/g,'')
+        cmd:cmd
       })
       if (tabUID)
         this.callbacks[this.callbacks.length - 1].uid = tabUID
     }
+  }
+  rawPush (cmd){
+    if (this.current == undefined)
+      return
+
+    this.current.write(cmd);
   }
   switch (channel){
     this.diconnect()
@@ -89,23 +109,36 @@ class Channel {
   handleCallback (out){
     // Remove backspaces and characters that antecends it
     out = this.interpretBackspace(out)
-
 	  let call = this.callbacks[0]
 
-    if (out.substr(0, call.cmd.length) != call.cmd) {
+	  // Emulate command in paste mode
+	  if (call.cmd[0] == '\x05')
+	    call.cmd = this.emulatePasteMode(call.cmd)
+
+    if (out.substring(0, call.cmd.length) != call.cmd) {
       console.error("Channel: callback's commands checkup failed")
+      this.callbacks = []
+      this.output = ''
       return true
     }
     out = out.substr(call.cmd.length)
-    if (call.uid) {
-      call.fun.apply(
-       call.self, [out, call.cmd, call.uid]
-      )
-    } else {
-      call.fun.apply(
-        call.self, [out, call.cmd]
-      )
+    try {
+      if (call.uid) {
+        call.fun.apply(
+         call.self, [out, call.cmd, call.uid]
+        )
+      } else {
+        call.fun.apply(
+          call.self, [out, call.cmd]
+        )
+      }
+    } catch (e){
+      console.error(e)
     }
+    this.output = ''
+    this.lock = false
+
+    this.callbacks.shift()
 	}
 	interpretBackspace (out){
 	  let _out = []
@@ -120,6 +153,17 @@ class Channel {
     }
 
     return _out.join('')
+	}
+	emulatePasteMode (cmd) {
+	  // Remove paste mode chars
+	  cmd = cmd.substring(1,cmd.length -1)
+	  return `\r\n${PASTEMODE}\r\n=== ${cmd.replaceAll(/\r/g,'\r\n=== ')}`
+	}
+	/*
+	 * Return a command with paste mode enclosing
+	 */
+	pasteMode (cmd){
+	  return `\x05${cmd}\x04`
 	}
 }
 
@@ -151,15 +195,12 @@ class _WebSerial {
               if (channel.output.substring(channel.output.length - 4) == ">>> "){
                 channel.output = channel.output.substring(0, channel.output.length - 4)
                 //After all code was executed
-                if (channel.callbacks.length > 0) {
-                  try {
-                    channel.handleCallback(channel.output)
-                  } catch (e) {
-                    console.error(e)
-                  }
-                  channel.callbacks.shift()
+                if (channel.callbacks.length > 0)
+                  channel.handleCallback(channel.output)
+                else {
+                  channel.output = ''
+                  channel.lock = false
                 }
-                channel.output = ''
               }
             }
           }
@@ -201,10 +242,11 @@ class _WebSerial {
    * Runs every 50ms to check if there is code to be sent in the :js:attr:`channel#input` (appended with :js:func:`channel.push()`)
    */
   watch (){
-    if (this.port && this.port.writable && this.port.writable.locked == false) {
+    if (this.port && this.port.writable && this.port.writable.locked == false && channel.lock == false) {
       if (channel.input.length > 0) {
         try {
-		      this.write(channel.input [0]);
+          channel.lock = true
+		      this.write(channel.input [0])
         } catch (e) {
           console.error(e)
         }
@@ -215,21 +257,32 @@ class _WebSerial {
    * Directly send code via webserial, normally called by this.watch()
    * @param {(Uint8Array|string|number)} data - code to be sent via webserial
    */
-  write (data){
-    let dataArrayBuffer = undefined;
-    switch (data.constructor.name) {
-      case 'Uint8Array':
-        dataArrayBuffer = data;
-      break;
-      case 'String':
-      case 'Number':
-        dataArrayBuffer = this.encoder.encode(data);
-      break;
-    }
-    if (this.port && this.port.writable && dataArrayBuffer != undefined) {
-      const writer = this.port.writable.getWriter();
-      writer.write(dataArrayBuffer).then (() => {writer.releaseLock(); channel.input.shift ()});
+  async write (data){
+    if (data.constructor.name != 'Array')
+      data = [data]
+
+    let dataArrayBuffer = undefined
+    for (const pack of data){
+      switch (pack.constructor.name) {
+        case 'Uint8Array':
+          dataArrayBuffer = pack
+        break;
+        case 'String':
+        case 'Number':
+          dataArrayBuffer = this.encoder.encode(pack)
+        break;
+      }
+      if (this.port && this.port.writable && dataArrayBuffer != undefined) {
+        const writer = this.port.writable.getWriter()
+        // Execution is paused until writer wrote dataArrayBuffer
+        let response = await writer.write(dataArrayBuffer)
+        writer.releaseLock()
+	    }
 	  }
+	  // If no callback expected, release lock
+	  if (channel.callbacks.length == 0)
+	    channel.lock = false
+    channel.input.shift()
 	}
 }
 
