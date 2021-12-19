@@ -16,9 +16,22 @@ class CommandBroker {
   constructor (root) {
     this.root = root
     this.map = {}
-    this.event = window.addEventListener("storage", (ev) => {this.mux(ev)})
-
+    this.pipe = new BroadcastChannel('main')
+    this.pipe.onmessage = (ev) => {
+      this.mux(ev)
+    }
     this.tabUID = Tool.UID()
+    this.clients = []
+
+    this.add (this, {
+      clientsChanged: this.clientsChanged
+    }, true)
+
+    this._clientConnect ()
+    window.addEventListener("beforeunload", () => {
+      this._clientDisconnect()
+      pipe.close()
+    })
   }
   /**
    * Add a LocalCommand, which callback when the event is dispatched.
@@ -33,12 +46,13 @@ class CommandBroker {
    for (let key in callbacks){
       let _key = `${self.constructor.name.toLowerCase()}_${key}`
       this.map[_key] = {}
-      this.map[_key].fun = (key) => {
-        let args = JSON.parse(localStorage[key])
+      this.map[_key].fun = (key, args) => {
 
         let self = this.root
         if (args[0] == 'channel') {
           self = window.channel
+        } else if (args[0] == 'commandbroker') {
+          self = window.command
         } else {
           args[0].forEach((item) => {
             self = self[item]
@@ -92,13 +106,53 @@ class CommandBroker {
     args.unshift(_self)
 
     // Dispatch command
-    localStorage.setItem(`${Tool.SID()}_${_key}`, JSON.stringify(args))
+    this.pipe.postMessage(`["${Tool.SID()}_${_key}",${JSON.stringify(args)}]`)
   }
   mux (ev){
-    const key = ev.key.substring(7)
-    if (!this.map.hasOwnProperty(key) || localStorage[ev.key] == undefined)
+    let data = JSON.parse(ev.data)
+    let _key = data[0],
+        args = data[1]
+
+    const key = _key.substring(7)
+    if (!this.map.hasOwnProperty(key))
       return
 
-    this.map[key].fun(ev.key)
+    this.map[key].fun(_key, args)
+  }
+  _clientConnect (){
+    // Parse connected clients and include tab
+    if (localStorage['clients'] == undefined || localStorage['clients'] == '[]') {
+      this.clients = [this.tabUID]
+      localStorage.setItem('clients', JSON.stringify(this.clients))
+    } else {
+      this.clients = JSON.parse(localStorage['clients'])
+      this.clients.push(this.tabUID)
+      localStorage.setItem('clients', JSON.stringify(this.clients))
+
+      if (this.clients.length > 1)
+        this.dispatch(this, 'clientsChanged', [this.tabUID, true])
+    }
+  }
+  _clientDisconnect (){
+    this.clients.splice(
+      this.clients.indexOf(this.tabUID), 1
+    )
+    localStorage.setItem('clients', JSON.stringify(this.clients))
+
+    this.dispatch(this, 'clientsChanged', [this.tabUID, false])
+  }
+  /**
+   * If clients were removed or added.
+   * @param {string} uid - Uid of the tab.
+   * @param {bool} add - True to add and false to remove.
+   */
+  clientsChanged (uid, add){
+    if (add) {
+      this.clients.push(uid)
+    } else {
+      this.clients.splice(
+        this.clients.indexOf(uid), 1
+      )
+    }
   }
 }

@@ -53,7 +53,7 @@ class Console {
         if (this.tabs.data != '')
           command.dispatch(this, 'write', [this.tabs.data, channel.targetDevice]),
           this.tabs.data = ''
-      }, 50)
+      }, 25)
     }
 	}
   init (){
