@@ -2206,11 +2206,11 @@ Blockly.Blocks['var_to_float'] = {
 Blockly.Blocks['project_metadata'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabel("Project INFO"), "NAME");
+        .appendField(new Blockly.FieldLabel(MSG["project_info"]), "NAME");
     this.appendValueInput("project_author")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabel("Author"), "project_author");
+        .appendField(new Blockly.FieldLabel(MSG["project_info_author"]), "project_author");
     this.appendValueInput("project_iot_id")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -2218,7 +2218,7 @@ Blockly.Blocks['project_metadata'] = {
     this.appendValueInput("project_description")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabel("Description"), "project_description");
+        .appendField(new Blockly.FieldLabel(MSG["project_info_desc"]), "project_description");
     this.setColour(230);
     this.setTooltip("Information about the project");
     this.setHelpUrl("http://www.bipes.net.br");

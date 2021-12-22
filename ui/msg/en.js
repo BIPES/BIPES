@@ -84,7 +84,11 @@ var MSG = {
   try1: "try",
   exp1: "except",
   ntp_sync: "sync date and time with NTP",
-  timezone: "timezone"
+  timezone: "timezone",
+  project_info: "Project Info",
+  project_info_author: "Author",
+  project_info_desc: "Description"
+
 
 };
 

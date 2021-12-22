@@ -269,7 +269,6 @@
 
    <category name="BIPES">
     <block type="project_metadata">
-      <field name="NAME">Project INFO</field>
       <value name="project_author">
         <shadow type="text">
           <field name="TEXT"></field>

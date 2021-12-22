@@ -82,9 +82,10 @@ var MSG = {
   try1: "tente",
   exp1: "no erro",
   ntp_sync: "sincronizar data e hora com NTP",
-  timezone: "fuso horário"
-
-
+  timezone: "fuso horário",
+  project_info: "Dados do projeto",
+  project_info_author: "Autor",
+  project_info_desc: "Descrição"
 
 };
 
