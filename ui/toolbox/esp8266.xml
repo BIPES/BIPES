@@ -1634,9 +1634,8 @@ _
  
 
 
-  <category name="Network">
+  <category name="%{BKY_CAT_NET}">
     <block type="wifi_client_connect">
-      <field name="NAME">Connect to Wifi network</field>
       <value name="wifi_client_essid">
         <shadow type="text">
           <field name="TEXT"></field>
@@ -1662,7 +1661,6 @@ _
       </value>
     </block>
     <block type="wifi_client_scan_networks">
-      <field name="NET_SCAN_WIFI">Scan Wifi networks</field>
     </block>
     <block type="net_ifconfig">
       <field name="NET_IFCONFIG">Wifi current IP</field>

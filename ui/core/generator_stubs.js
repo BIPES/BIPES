@@ -515,8 +515,8 @@ Blockly.Python['wifi_client_connect'] = function(block) {
 
 Blockly.Python['wifi_client_scan_networks'] = function(block) {
   Blockly.Python.definitions_['import_network'] = 'import network';
-  var code = 'sta_if.scan()\n';
-  // TODO: Change ORDER_NONE to the correct strength.
+  Blockly.Python.definitions_['import_network_sta_init'] = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \n';
+  var code = 'sta_if.scan()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 

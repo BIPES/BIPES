@@ -1299,15 +1299,15 @@ Blockly.Blocks['net_ap_mode'] = {
 Blockly.Blocks['wifi_client_connect'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Connect to Wifi network"), "NAME");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["wifi_connect"]), "NAME");
     this.appendValueInput("wifi_client_essid")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Network name"), "WIFI_CLIENT_NET_NAME");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["wifi_name"]), "WIFI_CLIENT_NET_NAME");
     this.appendValueInput("wifi_client_key")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Network key"), "WIFI_CLIENT_NET_KEY");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["wifi_key"]), "WIFI_CLIENT_NET_KEY");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -1319,7 +1319,7 @@ Blockly.Blocks['wifi_client_connect'] = {
 Blockly.Blocks['wifi_client_scan_networks'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Scan Wifi networks"), "NET_SCAN_WIFI");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["wifi_scan"]), "NET_SCAN_WIFI");
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Scan wifi networks");
@@ -2035,9 +2035,9 @@ Blockly.Blocks['easymqtt_init'] = {
   },
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Start"), "BLOCK_EASYMQTT_INIT");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["easymqtt_start"]), "BLOCK_EASYMQTT_INIT");
     this.appendDummyInput()
-        .appendField("Session ID")
+        .appendField(MSG["session_id"])
         .appendField(new Blockly.FieldTextInput(this.generate_id()),
             'EASYMQTT_SESSION_ID');
     this.setPreviousStatement(true, null);
@@ -2052,15 +2052,15 @@ Blockly.Blocks['easymqtt_init'] = {
 Blockly.Blocks['easymqtt_publish_data'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Publish Data"), "BLOCK_EASYMQTT_PUBLISH");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["easymqtt_publish"]), "BLOCK_EASYMQTT_PUBLISH");
     this.appendValueInput("topic")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Topic"), "EASYMQTT_TOPIC");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["topic"]), "EASYMQTT_TOPIC");
     this.appendValueInput("data")
         .setAlign(Blockly.ALIGN_RIGHT)
         .setCheck("Number")
-        .appendField(new Blockly.FieldLabelSerializable("Data"), "EASYMQTT_PAYLOAD");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["data"]), "EASYMQTT_PAYLOAD");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -11450,3 +11450,6 @@ Blockly.Blocks['try_catch'] = {
  this.setHelpUrl("");
   }
 };
+
+
+

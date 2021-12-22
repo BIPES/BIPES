@@ -65,7 +65,15 @@ var MSG = {
   day: "day",
   hour: "hour",
   minute: "minute",
-  second: "second"
+  second: "second",
+  wifi_scan: "scan wifi networks",
+  wifi_connect: "connect to wifi network",
+  wifi_name: "network name",
+  wifi_key: "key/password",
+  easymqtt_start: "EasyMQTT Start",
+  easymqtt_publish: "EasyMQTT Publish Data",
+  topic: "topic",
+  session_id: "Session ID"
 
 };
 
@@ -77,3 +85,4 @@ Blockly.Msg['CAT_SENSORS'] = "Sensors";
 Blockly.Msg['CAT_OUTPUTS'] = "Outputs / Actuators";
 Blockly.Msg['CAT_COMM'] = "Communication";
 Blockly.Msg['CAT_FILES'] = "Files";
+Blockly.Msg['CAT_NET'] = "Network and Internet";
