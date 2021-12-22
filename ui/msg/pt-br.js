@@ -55,7 +55,16 @@ var MSG = {
   read_digital_pin: "ler entrada digital",
   read_analog_pin: "ler entrada analógica",
   show_iot: "mostrar na aba IoT ",
-  data: "valor"
+  data: "valor",
+  set_rtc: "ajustar data e hora",
+  get_rtc: "obter data e hora",
+  year: "ano",
+  month: "mês",
+  day: "dia",
+  hour: "hora",
+  minute: "minuto",
+  second: "segundo"
+
 };
 
 //Categorias da caixa de ferramentas

@@ -57,7 +57,15 @@ var MSG = {
   read_digital_pin: "read digital input",
   read_analog_pin: "read analog input",
   show_iot: "show on IoT tab",
-  data: "value"
+  data: "value",
+  set_rtc: "set date and time",
+  get_rtc: "get date and time",
+  year: "year",
+  month: "month",
+  day: "day",
+  hour: "hour",
+  minute: "minute",
+  second: "second"
 
 };
 
