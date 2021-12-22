@@ -44,7 +44,7 @@ var MSG = {
   deviceUnavailable: "Aparelho '%1' indisponível.",
   notAvailableFlag: "$1 não está disponível nesse navegador.\r\nVerifique se a 'flag' $1 está ativa",
 
-//Blocks
+//Blocos
   block_delay: "esperar",
   seconds: "segundos",
   milliseconds: "milisegundos",
@@ -53,3 +53,13 @@ var MSG = {
   setpin: "ajustar pino de saida",
   pin: "pino"
 };
+
+//Categorias da caixa de ferramentas
+Blockly.Msg['CAT_TIMING'] = "Temporização";
+Blockly.Msg['CAT_MACHINE'] = "Máquina";
+Blockly.Msg['CAT_DISPLAYS'] = "Displays";
+Blockly.Msg['CAT_SENSORS'] = "Sensores";
+Blockly.Msg['CAT_OUTPUTS'] = "Saidas e atuadores";
+Blockly.Msg['CAT_COMM'] = "Comunicação";
+Blockly.Msg['CAT_FILES'] = "Arquivos";
+

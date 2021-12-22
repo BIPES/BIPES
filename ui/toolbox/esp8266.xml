@@ -342,8 +342,8 @@
   </category>
 
 
-  <category name="Timing">
-    <label text="Timing"></label>
+  <category name="%{BKY_CAT_TIMING}">
+	  <label text="%{BKY_CAT_TIMING}"></label>
     <block type="utime.delay">
        <value name="TIME">
         <shadow type="math_number">
@@ -389,8 +389,8 @@
     </block>
   </category>
 
-  <category name="Machine">
-      <label text="Machine"></label>
+  <category name="%{BKY_CAT_MACHINE}">
+      <label text="%{BKY_CAT_MACHINE}"></label>
       <category name="CPU">
       <label text="ESP8266 CPU"></label>
 
@@ -510,7 +510,7 @@
 </category>
 
 
-<category name="Displays">
+<category name="%{BKY_CAT_DISPLAYS}">
 
 <category name="NeoPixel LED Strip">
       <label text="NeoPixel RGB LED Strip"></label>
@@ -927,7 +927,7 @@
 
   </category>
 
-  <category name="Sensors">
+  <category name="%{BKY_CAT_SENSORS}">
     <category name="DHT11/22 Sensor">
       <label text="DHT11/22 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
@@ -1206,7 +1206,7 @@
 
 
 
-  <category name="Outputs / Actuators">
+  <category name="%{BKY_CAT_OUTPUTS}">
     <category name="Relay">
       <label text="Relay"></label>
       <block type="relay_switch">
@@ -1408,8 +1408,8 @@ _
 
   </category>
 
-  <category name="Communication">
-      <label text="Communication"></label>
+  <category name="%{BKY_CAT_COMM}">
+      <label text="%{BKY_CAT_COMM}"></label>
       <category name="UART">
       <label text="UART Serial Port"></label>
 <block type="uart_init">
@@ -1495,7 +1495,7 @@ _
   </category>
  
  
-  <category name="Files">
+  <category name="%{BKY_CAT_FILES}">
   <label text="Read and write files"></label>
 
   <block type="file_open"> 
@@ -3076,3 +3076,7 @@ _
 </category>
 </category>
 </document>
+
+
+
+
