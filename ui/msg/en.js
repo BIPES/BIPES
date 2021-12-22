@@ -1,6 +1,9 @@
 var MSG = {
   title: "BIPES Beta",
   blocks: "Blocks",
+  files: "Files",
+  shared: "Shared",
+  device: "Device",
   linkTooltip: "Save and link to blocks.",
   runTooltip: "Run the program defined by the blocks in the workspace.",
   badCode: "Program error:\n%1",
