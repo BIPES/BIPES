@@ -1905,10 +1905,8 @@ _
     <category name="EasyMQTT">
       <label text="IoT: EasyMQTT"></label>
       <block type="easymqtt_init">
-        <field name="BLOCK_EASYMQTT_INIT">EasyMQTT Start</field>
       </block>
       <block type="easymqtt_publish_data">
-        <field name="BLOCK_EASYMQTT_PUBLISH">EasyMQTT Publish Data</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>

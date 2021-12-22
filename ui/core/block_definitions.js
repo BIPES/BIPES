@@ -1527,7 +1527,6 @@ Blockly.Blocks['file_open_write'] = {
   }
 };
 
-
 Blockly.Blocks['file_open_read'] = {
   init: function() {
    this.appendDummyInput()
@@ -1550,7 +1549,7 @@ Blockly.Blocks['file_open_read'] = {
 Blockly.Blocks['file_close'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Close File")
+        .appendField(MSG["file_close"])
         .appendField(new Blockly.FieldVariable("file"), "filename");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -1596,15 +1595,16 @@ Blockly.Blocks['file_write'] = {
   }
 };
 
+
 Blockly.Blocks['file_write_line'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Write line to file")
+        .appendField(MSG["file_write_line"])
         .appendField(new Blockly.FieldVariable("file"), "filename");
     this.appendValueInput("data")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Line:");
+        .appendField(MSG["line"]);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -1661,18 +1661,18 @@ Blockly.Blocks['file_open'] = {
   init: function() {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_CENTRE)
-        .appendField("Open File");
+        .appendField(MSG["file_open"]);
     this.appendValueInput("file_name")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("File name:");
+        .appendField(MSG["file_name"]);
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Mode")
+        .appendField(MSG["file_mode"])
         .appendField(new Blockly.FieldDropdown([["Append","a"], ["Read","r"], ["Overwrite","w"], ["Read and Write","w+"]]), "dropdown_mode");
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Open in binary mode")
+        .appendField(MSG["file_binary"])
         .appendField(new Blockly.FieldCheckbox("TRUE"), "checkbox_binary");
     this.setOutput(true, null);
     this.setColour(230);
@@ -9566,7 +9566,7 @@ Blockly.Blocks['net_ntp_sync'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Sync date and time");
+        .appendField(MSG["ntp_sync"]);
 
     this.appendDummyInput()
         .appendField("NTP: Network Time Protocol");
@@ -9574,7 +9574,7 @@ Blockly.Blocks['net_ntp_sync'] = {
     this.appendValueInput("tz")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Timezone:");
+        .appendField(MSG["timezone"]);
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -11439,10 +11439,10 @@ Blockly.Blocks['try_catch'] = {
   init: function() {
     this.appendStatementInput("main_code")
         .setCheck(null)
-        .appendField("Try");
+        .appendField(MSG["try1"]);
     this.appendStatementInput("catch_code")
         .setCheck(null)
-        .appendField("Except");
+        .appendField(MSG["exp1"]);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);

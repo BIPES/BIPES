@@ -71,7 +71,19 @@ var MSG = {
   easymqtt_start: "iniciar EasyMQTT",
   easymqtt_publish: "publicar dado com EasyMQTT",
   topic: "tópico",
-  session_id: "Sessão:"
+  session_id: "Sessão:",
+  file_open: "abrir arquivo",
+  file_name: "nome do arquivo",
+  file_mode: "modo",
+  file_binary: "modo binário",
+  file_close: "fechar arquivo",
+  file_write_line: "escrever linha no arquivo",
+  file_line: "linha",
+  try1: "tente",
+  exp1: "no erro",
+  ntp_sync: "sincronizar data e hora com NTP",
+  timezone: "fuso horário"
+
 
 
 };

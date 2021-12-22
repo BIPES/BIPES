@@ -73,7 +73,18 @@ var MSG = {
   easymqtt_start: "EasyMQTT Start",
   easymqtt_publish: "EasyMQTT Publish Data",
   topic: "topic",
-  session_id: "Session ID"
+  session_id: "session ID",
+  file_open: "open File",
+  file_name: "file name",
+  file_mode: "mode",
+  file_binary: "open in binary mode",
+  file_close: "close file",
+  file_write_line: "write line o file",
+  file_line: "line",
+  try1: "try",
+  exp1: "except",
+  ntp_sync: "sync date and time with NTP",
+  timezone: "timezone"
 
 };
 
