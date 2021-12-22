@@ -174,7 +174,7 @@ Blockly.Python['adc_pico'] = function(block) {
 
   Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=ADC(' + x + ')';
 
-  var code = 'adc' + x + '.read()';
+  var code = 'adc' + x + '.read_u16()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
@@ -5918,3 +5918,10 @@ Blockly.Python['inter_init'] = function(block){
 	return code;
 };
 
+Blockly.Python['try_catch'] = function(block) {
+  var statements_main_code = Blockly.Python.statementToCode(block, 'main_code');
+  var statements_catch_code = Blockly.Python.statementToCode(block, 'catch_code');
+  // TODO: Assemble Python into code variable.
+  var code = 'try:\n' + statements_main_code + '\nexcept:\n' + statements_catch_code;
+  return code;
+};

@@ -11423,3 +11423,20 @@ Blockly.Blocks['inter_init'] = {
     this.setColour(240);
   }
 };
+
+
+Blockly.Blocks['try_catch'] = {
+  init: function() {
+    this.appendStatementInput("main_code")
+        .setCheck(null)
+        .appendField("Try");
+    this.appendStatementInput("catch_code")
+        .setCheck(null)
+        .appendField("Except");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};

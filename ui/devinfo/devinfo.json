@@ -266,7 +266,7 @@
 			"img":"devinfo/media/rpi4.png",
 			"description":"Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv",
 			"toolbox":"linux.xml",
-			"serial_packet_size":"500"
+			"serial_packet_size":"10"
 		},
 		"EV3": {
 			"title":"<b>Lego EV3 </b><br>",
@@ -293,11 +293,43 @@
 			"img":"devinfo/media/microbit.png",
 			"description":"Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>",
 			"toolbox":"esp32.xml",
-			"serial_packet_size":"100"
+			"serial_packet_size":"1"
 		},
 		"UNO": {
 			"title":"<b>Arduino UNO and Arduino MEGA. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
 			"speed":"38400",
+			"boardID":"Snek",
+			"img":"https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png",
+			"description":"",
+			"toolbox":"arduino.xml",
+			"pinout": [
+				["0 / RX", "D0"],
+				["1 / TX", "D1"],
+				["D2", "D2"],
+				["D3", "D3"],
+				["D4", "D4"],
+				["D5", "D5"],
+				["D6", "D6"],
+				["D7", "D7"],
+				["D8", "D8"],
+				["D9", "D9"],
+				["D10", "D10"],
+				["D11", "D11"],
+				["D12", "D12"],
+				["LED / D13", "D13"],
+				["A0", "A0"],
+				["A1", "A1"],
+				["A2", "A2"],
+				["A3", "A3"],
+				["A4", "A4"],
+				["A5", "A5"]
+			],
+
+			"serial_packet_size":"10"
+		},
+		"UNO2": {
+			"title":"<b>Arduino UNO and Arduino MEGA. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
+			"speed":"115200",
 			"boardID":"Snek",
 			"img":"https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png",
 			"description":"",

@@ -150,7 +150,8 @@ document.body.appendChild(el);
           <option value="BBC">BBC Microbit</option>
           <option value="RPI4">Raspberry Pi (any Linux)</option>
           <option value="RPI_Pico">Raspberry Pi Pico</option>
-          <option value="UNO">Arduino UNO or MEGA (Snek)</option>
+          <option value="UNO">Arduino UNO or MEGA (Snek @ 38400)</option>
+          <option value="UNO2">Arduino UNO or MEGA (Snek @ 115200)</option>
           <option value="EV3">Lego EV3</option>
         </select>
         <button id="runButton" class="notext primary icon" title="..."></button>
@@ -514,6 +515,26 @@ color: white;
 BIPES
 -->
 </div>
+
+<script type="text/javascript">
+	//Auto detect user language
+	var userLang = navigator.language || navigator.userLanguage;
+	//alert ("The language is: " + userLang);
+
+	if (userLang.startsWith("pt-")) {
+		alert("pt");
+	//document.write("Bem vindo ao projeto BIPES");
+		  document.getElementById("modalTitle").innerHTML = "Bem vindo ao BIPES!";
+	} else {
+		  document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
+		alert("en");
+	//document.write("English");
+	}
+</script>
+
+</html>
+
+
 		<!-- The Modal -->
 		<div id="myModal" class="modal">
 
@@ -521,40 +542,15 @@ BIPES
 			    <div class="modal-content">
 				        <div class="modal-header">
 						      <span class="closeM">&times;</span>
-						            <h2>Welcome to BIPES!</h2>
+						      <h2>Welcome to BIPES - <span id="modalTitle"></h2>
 							        </div>
 								    <div class="modal-body">
 
 
 										    <p><b>BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.
 
-									    <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p>
+										    <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about BIPES</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p>
 									    <p>Thank you from the BIPES Team!</p>
-									    <p><b>News:</b>
-<br>
-aug-18-2021: New forum at <a href=https://github.com/BIPES/BIPES/discussions>github discussions</a> and repository moved to <a href=https://github.com/BIPES/BIPES>https://github.com/BIPES/BIPES</a>
-<br>
-aug-17-2021: Jorge made a great update to the file manager! Check it out on the files tab!
-<br>
-aug-07-2021: BIPES Offline available for <a href=https://github.com/rafaelaroca/BIPES_ui_testing/releases/download/v2.1/BIPES_offline.zip>download here</a>
-<br>
-aug-07-2021: Support for Arduino Uno and Mega using <a href=https://bipes.net.br/snek-web-uploader/>Snek Lang</a>
-<br>
-aug-06-2021: Major code refactoring by Jorge Marques 
-<br>
-jul-31-2021: IoT dashboard with EasyMQTT and Serial/USB/Bluetooth datasources
-<br>
-jul-31-2021: IoT dashboard tab with classic/forest freeboard options
-<br>
-jul-31-2021: Maps, charts and other widgets on the IoT tab/freeboard
-<br>
-jul-30-2021: REPL over Bluetooth (ESP32)
-<br>
-jul-29-2021: Blocks for music using RTTTL and ESP32 Cam
-<br>
-jul-09-2021: BIPES IoT dashboard with freeboard available on IOT Tab 
-<br>
-jul-05-2021: Board model is now stored and automatically set when programs are shared 
 <br>
 
 									    <br>

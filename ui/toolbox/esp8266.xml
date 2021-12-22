@@ -298,7 +298,10 @@
     -->
 
   <category name="Python">
+
       <label text="Python"></label>
+	  <block type="try_catch"></block>
+
     <block type="exec_python">
   <value name="command">
         <shadow type="text">
@@ -1315,6 +1318,7 @@ _
         <label text="Ring Tone Text Transfer Language (RTTTL) "></label>
         <label text="Library: "></label>
         <button text="Install rtttl library" callbackKey="installPyLib"></button>
+        <button text="Install songs library" callbackKey="installPyLib"></button>
         <button text="Load example: songs" callbackKey="loadExample"></button>
         <button text="Documentation and how to connect: sound" callbackKey="loadDoc"></button>
 
