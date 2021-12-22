@@ -55,7 +55,9 @@ var MSG = {
   setpin: "set output pin",
   pin: "pin",
   read_digital_pin: "read digital input",
-  read_analog_pin: "read analog input"
+  read_analog_pin: "read analog input",
+  show_iot: "show on IoT tab",
+  data: "value"
 
 };
 

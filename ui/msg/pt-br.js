@@ -53,7 +53,9 @@ var MSG = {
   setpin: "ajustar pino de saida",
   pin: "pino",
   read_digital_pin: "ler entrada digital",
-  read_analog_pin: "ler entrada analógica"
+  read_analog_pin: "ler entrada analógica",
+  show_iot: "mostrar na aba IoT ",
+  data: "valor"
 };
 
 //Categorias da caixa de ferramentas
