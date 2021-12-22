@@ -51,7 +51,9 @@ var MSG = {
   microseconds: "microsegundos",
   to: "para",
   setpin: "ajustar pino de saida",
-  pin: "pino"
+  pin: "pino",
+  read_digital_pin: "ler entrada digital",
+  read_analog_pin: "ler entrada analógica"
 };
 
 //Categorias da caixa de ferramentas

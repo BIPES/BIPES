@@ -53,7 +53,9 @@ var MSG = {
   microseconds: "microseconds",
   to: "to",
   setpin: "set output pin",
-  pin: "pin"
+  pin: "pin",
+  read_digital_pin: "read digital input",
+  read_analog_pin: "read analog input"
 
 };
 

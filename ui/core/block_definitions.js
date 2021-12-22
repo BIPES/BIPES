@@ -656,7 +656,8 @@ Blockly.Blocks['adc'] = {
   init: function() {
     this.appendValueInput("pin")
         .setCheck("Number")
-        .appendField("Read ADC Input");
+        //.appendField("Read ADC Input");
+        .appendField(MSG["read_analog_pin"]);
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Read ADC input of specified pin");
@@ -754,7 +755,8 @@ Blockly.Blocks['gpio_get'] = {
   init: function() {
     this.appendValueInput("pin")
         .setCheck("Number")
-        .appendField("Read digital pin");
+        //.appendField("Read digital pin");//original
+        .appendField(MSG["read_digital_pin"]);
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Read digital pin");
