@@ -42,5 +42,14 @@ var MSG = {
   accountTooltip: "Tus proyectos y escenarios.",
   blocksLoadedFromFile: "Blocos carregados do arquivo '%1'.",
   deviceUnavailable: "Aparelho '%1' indisponível.",
-  notAvailableFlag: "$1 não está disponível nesse navegador.\r\nVerifique se a 'flag' $1 está ativa."
+  notAvailableFlag: "$1 não está disponível nesse navegador.\r\nVerifique se a 'flag' $1 está ativa",
+
+//Blocks
+  block_delay: "esperar",
+  seconds: "segundos",
+  milliseconds: "milisegundos",
+  microseconds: "microsegundos",
+  to: "para",
+  setpin: "ajustar pino de saida",
+  pin: "pino"
 };

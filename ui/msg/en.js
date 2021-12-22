@@ -44,5 +44,15 @@ var MSG = {
   deviceUnavailable: "Device '%1' unavailable.",
   notConnected: "No connection to send data.",
   serialFroozen: "Serial connection is unresponsive.",
-  notAvailableFlag: "$1 is not available on your browser.\r\nPlease make sure the $1 flag is enabled."
+  notAvailableFlag: "$1 is not available on your browser.\r\nPlease make sure the $1 flag is enabled.",
+
+//Blocks
+  block_delay: "delay",
+  seconds: "seconds",
+  milliseconds: "milliseconds",
+  microseconds: "microseconds",
+  to: "to",
+  setpin: "set output pin",
+  pin: "pin"
+
 };

@@ -264,9 +264,11 @@ Blockly.Blocks['utime.delay'] = {
   init: function() {
     this.appendValueInput("TIME")
         .setCheck(null)
-        .appendField("delay");
+        .appendField(MSG["block_delay"]); //Ready for i18n (see dir msg/<lang>.js)
+        //.appendField("delay"); //Original, fixed in english
     this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown([["seconds","sleep"], ["milliseconds","sleep_ms"], ["microseconds","sleep_us"]]), "SCALE");
+        //.appendField(new Blockly.FieldDropdown([["seconds","sleep"], ["milliseconds","sleep_ms"], ["microseconds","sleep_us"]]), "SCALE"); //original
+        .appendField(new Blockly.FieldDropdown([[MSG["seconds"],"sleep"], [MSG["milliseconds"],"sleep_ms"], [MSG["microseconds"],"sleep_us"]]), "SCALE"); //i18n
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -609,11 +611,13 @@ Blockly.Blocks['gpio_set'] = {
     this.appendValueInput("pin")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("set pin");
+        //.appendField("set pin");
+        .appendField(MSG["setpin"]);//i18n
     this.appendValueInput("value")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("to");
+        //.appendField("to");
+        .appendField(MSG["to"]); //i18n
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -839,7 +843,8 @@ Blockly.Blocks['pinout'] = {
     this.device_init = document.querySelector ('#device_selector').value;
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabelSerializable(this.device_init), 'DEVICE') // will use device_init if new block or no device specification on XML.
-        .appendField('pin')
+        .appendField(MSG["pin"])
+        //.appendField('pin')
         .appendField(new Blockly.FieldDropdown(() => { return this.update_list(true);}), 'PIN');
     this.getField('DEVICE').setVisible(false);
     this.setOutput(true, null);
@@ -11225,11 +11230,13 @@ Blockly.Blocks['snek_gpio_set'] = {
     this.appendValueInput("pin")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("set pin");
+        //.appendField("set pin"); //original
+        .appendField(MSG["setpin"]);//i18n
     this.appendValueInput("value")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("to");
+        //.appendField("to"); original
+        .appendField(MSG["to"]); //i18n
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
