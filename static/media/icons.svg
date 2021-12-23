@@ -41,14 +41,14 @@
      width="432px"
      height="24px"
      inkscape:zoom="2.828427"
-     inkscape:cx="304.93981"
-     inkscape:cy="23.511302"
+     inkscape:cx="250.31581"
+     inkscape:cy="44.017399"
      inkscape:window-width="2560"
      inkscape:window-height="1014"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g6453"
+     inkscape:current-layer="g4712-6"
      showguides="false">
     <inkscape:grid
        type="xygrid"
@@ -1060,6 +1060,40 @@
          d="M 9.4,16.6 4.8,12 9.4,7.4 8,6 2,12 8,18 Z m 5.2,0 L 19.2,12 14.6,7.4 16,6 l 6,6 -6,6 z"
          id="path6443"
          style="fill:#ffffff;fill-opacity:1" />
+    </g>
+    <g
+       id="g1001-3"
+       transform="translate(82.549999)">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.297656;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 33.474171,1.7243699 2.901255,1.4506277 -2.901255,1.4506278 V 1.7243699"
+         id="path676-6" />
+      <path
+         d="m 31.750001,0 h 6.35 v 6.35 h -6.35 z"
+         fill="none"
+         id="path935-3-7"
+         style="fill:none;stroke-width:0.264583" />
+    </g>
+    <g
+       style="fill:#ffffff"
+       id="g947-5"
+       transform="matrix(0.26458333,0,0,0.26458333,114.3,6.35)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path935-35" />
+      <g
+         style="fill:#ffffff"
+         id="g4712-6">
+        <path
+           d="M 0,0 H 24 V 24 H 0 Z"
+           fill="none"
+           id="path4700-2" />
+        <path
+           d="M 6,6 H 18 V 18 H 6 Z"
+           id="path4702-9"
+           style="fill:#ffffff;fill-opacity:1" />
+      </g>
     </g>
   </g>
 </svg>

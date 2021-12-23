@@ -1,11 +1,15 @@
 "use strict";
 
-export {DOM, Animate}
+export {DOM, ContextMenu, Animate}
 
 /** Make DOM Node element*/
 class DOM {
   constructor (dom, tags){
-    this._dom ;
+    this._dom
+    if (typeof dom != 'string'){
+      this._dom = dom
+      return
+    }
     switch (dom) {
 	  case 'button':
 	  case 'h2':
@@ -19,7 +23,7 @@ class DOM {
     case '':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
-          if (['innerText', 'className', 'id', 'title', 'innerText', 'value'].includes(tag))
+          if (['innerText', 'className', 'id', 'title', 'innerText', 'value', 'tabIndex', 'role', 'ariaPressed'].includes(tag))
            this._dom[tag] = tags[tag]
           else
             this._dom.dataset[tag] = tags[tag]
@@ -33,12 +37,13 @@ class DOM {
            this._dom[tag] = tags[tag]
         }
         break
+    case 'form':
 	  case 'input':
 	  case 'label':
 	  case 'textarea':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
-          if (['value', 'className', 'id', 'placeholder', 'htmlFor', 'type', 'autocomplete'].includes(tag))
+          if (['value', 'className', 'id', 'placeholder', 'htmlFor', 'type', 'autocomplete', 'innerText', 'name', 'accept'].includes(tag))
            this._dom[tag] = tags[tag]
         }
         break
@@ -198,16 +203,19 @@ class DOM {
   */
   static prototypeDetails (str){
     let summary = new DOM('summary', {innerText:str.innerText})
-    let details = new DOM('details', {id:str.id})
+    let details = new DOM('details', {id:str.id, name:str.id})
       .append(summary)
 
-    if (str.onclick != undefined) {
-      str.onclick.args.push(details._dom)
-      summary.onclick(
-        str.onclick.self,
-        str.onclick.fun,
-        str.onclick.args
-      )
+    if (str.onevent != undefined) {
+      str.onevent.forEach(event => {
+        event.args.push(details._dom)
+        summary.onevent(
+          event.event,
+          event.self,
+          event.fun,
+          event.args
+        )
+      })
     }
     return details
   }
@@ -219,10 +227,38 @@ class DOM {
     return new DOM('label', {
       htmlFor:`${str.id}_input`,
       id:str.id,
-      className:str.className})
-      .append(
+      className:str.className,
+      innerText:str.innerText
+      }).append(
         new DOM('input', {id:`${str.id}_input`, type:'file'})
       )
+  }
+
+  static prototypeDownload (filename, file){
+    let data,
+        reg = /.*\.(py|xml|csv)$/
+    if (!reg.test(filename))
+      return
+
+    let format = filename.match(reg)[1]
+    filename = filename.substring(1).replaceAll('/','-')
+
+    switch (format) {
+      case 'xml':
+        data = "data:x-application/xml;charset=utf-8," + encodeURIComponent(file);
+        break
+      case 'py':
+        data = "data:text/python;charset=utf-8," + encodeURIComponent(file);
+        break
+    }
+    let element = document.createElement('a')
+    element.setAttribute('href', data)
+    element.setAttribute('download', filename)
+    element.style.display = 'none'
+
+    document.body.appendChild(element)
+    element.click ()
+    document.body.removeChild(element)
   }
 }
 
@@ -234,21 +270,106 @@ class Animate {
   * @param {Object} dom - DOM Node to add `ani` and `on` classes with 250ms delay.
   * @param {function} callback - Function to call after the animation finished.
   */
-  static off (dom, callback){
+  static off (dom, callback, duration){
     dom.classList.remove('on')
+    if (!duration)
+      duration = 250
     setTimeout(()=>{
       dom.classList.remove('ani', 'on')
       if (callback != undefined)
         callback ()
-      }, 250)
+      }, duration)
   }
   /**
   * Remove CSS classes with delay to a DOM Node
   * @param {Object} dom - DOM node to remove `ani` and `on` classes with 250ms delay.
   */
-  static on (dom){
+  static on (dom, duration){
     dom.classList.add('ani')
-    setTimeout(()=>{dom.classList.add('ani', 'on')}, 250)
+    if (!duration)
+      duration = 250
+    setTimeout(()=>{dom.classList.add('ani', 'on')}, duration)
   }
 }
 
+
+/* Create a context menu */
+class ContextMenu {
+  constructor (dom, ref){
+    this.ref = ref
+
+    let $ = this._dom = {}
+    $.contextMenu = dom
+    $.contextMenu._dom.id = 'contextMenu'
+    $.contextMenu._dom.classList.add('popup')
+
+    $.contextMenu.onclick(this, this.close)
+      .onevent('contextmenu', this, this.close)
+
+    $.wrapper = new DOM('div')
+    $.contextMenu.append($.wrapper)
+  }
+  close (ev) {
+    if (ev != undefined)
+      ev.preventDefault()
+    if (ev == undefined || ev.target.id == 'contextMenu') {
+      this._dom.wrapper._dom.style.height = '0px'
+      Animate.off(this._dom.contextMenu._dom, undefined, 125)
+      setTimeout(() => {this._dom.wrapper.removeChilds()}, 125)
+    }
+  }
+  open (actions, ev){
+    let $ = this._dom
+    let y = window.innerHeight < (ev.y + (actions.length*2)*16) ?
+            ev.y-(1+actions.length*2)*16 : ev.y-1*16
+    $.wrapper._dom.style.margin = `${y}px auto auto ${ev.x-1*16}px`
+    setTimeout(() =>{
+      $.wrapper._dom.style.height = `${(actions.length*2 + .25)*16}px`
+      },125)
+
+    $.wrapper.removeChilds()
+    let doms = []
+    actions.forEach (action => {
+      switch (action.id) {
+      case 'upload':
+        let dom = new DOM('input', {type:'file', accept:action.accept})
+        action.args.push(dom._dom)
+        dom.onevent('change', this.ref, action.fun, action.args)
+        doms.push(new DOM('button', {
+            className:'icon text',
+            id:action.id,
+            innerText:action.innerText,
+          }).onclick(this.ref, () => {
+            dom._dom.click()
+          }))
+        break
+      default:
+        doms.push(new DOM('button', {
+            className:'icon text',
+            id:action.id,
+            innerText:action.innerText,
+          }).onclick(this.ref, action.fun, action.args)
+        )
+      }
+    })
+    $.wrapper.append(doms)
+    setTimeout(() => {doms[0]._dom.focus()}, 125)
+    Animate.on($.contextMenu._dom, 125)
+  }
+  oninput (str, callback){
+    let $ = this._dom
+    $.wrapper.removeChilds()
+    $.wrapper._dom.style.height = `${4.75*16}px`
+
+    let input = new DOM('input', {placeholder:str.placeholder})
+    let form = new DOM('form')
+      .onevent('submit', this, callback, [input._dom])
+      .append(input)
+
+    $.wrapper.append([
+      new DOM('h3', {innerText: str.title}),
+      form
+    ])
+    input._dom.focus()
+  }
+}

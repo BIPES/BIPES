@@ -13,14 +13,32 @@ class Console {
 	  $.terminalXterm = new DOM('div', {className:"xterm"})
 	  $.quickActions = new DOM('div', {className:"quick-actions"})
 	    .append([
-	      new DOM('span', {innerText:"Reset device"})
-	        .onclick(this, this.write,["reset_device()\n\r"]),
+	      new DOM('span', {innerText:"Reset device", className:'master'})
+	        .onclick(command, command.dispatch, [
+	          channel,
+	          'push', [
+	              '\x04',
+	              channel.targetDevice, [], command.tabUID
+	            ]
+	        ]),
+	      new DOM('span', {innerText:"Stop program", className:'master'})
+	        .onclick(command, command.dispatch, [
+	          channel,
+	          'push', [
+	              '\x03',
+	              channel.targetDevice, [], command.tabUID
+	            ]
+	        ]),
 	      new DOM('span', {innerText:"Clear terminal"})
-	        .onclick(this, this.write,["clear_terminal()\n\r"]),
-	      new DOM('span', {innerText:"Clear terminal"})
-	        .onclick(this, this.write,["clear_terminal()\n\r"]),
-	      new DOM('span', {innerText:"Remove bindings"})
-	        .onclick(this, this.write,["remove_bindings()\n\r"])
+	        .onclick(this, ()=>{this.terminal.clear()}),
+	      new DOM('span', {innerText:"Stop timers", className:'master'})
+	        .onclick(command, command.dispatch, [
+	          channel,
+	          'push', [
+	              'from machine import Timer; [Timer(i).deinit() for i in range(0,16)]\r',
+	              channel.targetDevice, [], command.tabUID
+	            ]
+	        ]),
       ])
 
 	  $.container = new DOM('div', {className:"container"})
@@ -34,9 +52,9 @@ class Console {
 	  this.terminal.onData((data) => {
 	    // If tab is master, write directly to reduce delay
 	    if (channel.current != undefined)
-        channel.rawPush(data)
+        channel.rawPush(data, channel.targetDevice)
 	    else
-        command.dispatch(channel, 'push', [data, channel.targetDevice])
+        command.dispatch(channel, 'rawPush', [data, channel.targetDevice])
     });
 
 		DOM.get('section#console').append($.container._dom)

@@ -95,6 +95,11 @@ class CommandBroker {
     let _key = `${self[self.length-1].constructor.name.toLowerCase()}_${key}`,
         _self = []
 
+    if (!this.map.hasOwnProperty(_key)) {
+      console.error(`CommandBroker: ${_key} does not exist in the command map.`)
+      return
+    }
+
     if (this.map[_key].skipMain == false)
       this.map[_key].callback.apply(self[self.length-1], args)
 

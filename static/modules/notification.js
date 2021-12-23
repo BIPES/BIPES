@@ -11,7 +11,7 @@ class Notification {
 	  this.inited = false
 
 	  let $ = this._dom = {}
-	  $.h2 = new DOM('h2', {innerText:'Notificações'})
+	  $.h2 = new DOM('h2', {innerText:'Notifications'})
 	  $.wrapper = new DOM('span', {className: 'notification-cards'})
 	  $.container = new DOM('div')
 	    .append([$.h2, $.wrapper])

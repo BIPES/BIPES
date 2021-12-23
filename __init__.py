@@ -41,10 +41,10 @@ class Navigation:
         self.href = href
         self.css_src = css_src
 navigation = [
-    Navigation('Dashboard', 'Dashboard','dashboard'),
+    #Navigation('Dashboard', 'Dashboard','dashboard'),
     Navigation('Files','Files','files','files'),
     Navigation('Notification','Notifications','notification'),
-    Navigation('Admin','Settings','admin'),
+    #Navigation('Admin','Settings','admin'),
     Navigation('Console','Console','console','console')
     ];
 
@@ -58,17 +58,7 @@ def has_in (name, array, attr, return_attr=None):
                 return getattr(item, return_attr)
     return False
 
-# Login
-@app.route("/login")
-def login():
-    return render_template('login.html', app_name=app_name, app_version=app_version)
-
-# Logout
-@app.route("/logout")
-def logout():
-    return render_template('login.html', app_name=app_name, app_version=app_version)
-
-# Retorno do WebApp
+# Return "compiled" html file
 @app.route("/dashboard")
 def dashboard(name=None):
     name = name if has_in(name, navigation, 'href') else None

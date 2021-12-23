@@ -30,8 +30,8 @@
 {% endfor %}
 </div>
 <div>
-  <div id="app-version">Versão {{ app_version }}</div>
-	<a id="logout" href='/logout'>Sair</a>
+  <div id="app-version">Version {{ app_version }}</div>
+	<a id="logout" href='/logout'>Exit</a>
 </div>
 </nav>
 
@@ -56,16 +56,16 @@
 {% for item in navigation %}
     import { {{item.js_class}} } from './static/modules/{{item.href}}.js'
 {% endfor %}
-  // Init CommandBroker and StorageBroker with modules as root object
+  // Init CommandBroker, StorageBroker and Channel with modules as root object
   command = new CommandBroker(modules)
   storage = new StorageBroker(modules)
+  channel = new Channel(modules)
 
 {% for item in navigation %}
     modules.{{item.href}} = new {{item.js_class}}
 {% endfor %}
 
   navigation = new Navigation(modules)
-  channel = new Channel(modules)
 
   interpretLink(false)
 

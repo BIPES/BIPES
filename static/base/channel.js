@@ -19,6 +19,7 @@ class Channel {
     this.output = ''  // Output from the last command run in the decide
     this.watcher      // Store the interval to send data to a device
     this.lock = false // If the terminal is free to send new data
+    this.dirty = false// If the terminal has input (user raw input or timers)
     this.callbacks = []
     this.webserial = new _WebSerial ()
     this.checkUp ()
@@ -26,7 +27,8 @@ class Channel {
 
 		// Cross tabs event handler on muxing terminal
     command.add(this, {
-      push: this.push
+      push: this.push,
+      rawPush: this.rawPush
     })
   }
   push (cmd, targetDevice, callback, tabUID){
@@ -44,7 +46,6 @@ class Channel {
       cmd = cmd.replaceAll(/\r\n|\n/gm, '\r')
       this.input.push([...cmd.match(reg)])
     }
-    console.log(this.input)
     // Build callback function
     if (callback != undefined && callback.constructor.name == 'Array') {
       let self = this.root,
@@ -67,11 +68,12 @@ class Channel {
         this.callbacks[this.callbacks.length - 1].uid = tabUID
     }
   }
-  rawPush (cmd){
-    if (this.current == undefined)
+  rawPush (cmd, targetDevice){
+    if (!this.current || this.targetDevice != targetDevice)
       return
 
-    this.current.write(cmd);
+    this.dirty = true
+    this.current.write(cmd)
   }
   switch (channel){
     this.diconnect()
@@ -111,29 +113,32 @@ class Channel {
     out = this.interpretBackspace(out)
 	  let call = this.callbacks[0]
 
-	  // Emulate command in paste mode
-	  if (call.cmd[0] == '\x05')
-	    call.cmd = this.emulatePasteMode(call.cmd)
+	  if (!call.hasOwnProperty('skip') && !/^[\x00-\x7F]{1}$/.test(call.cmd)) {
+	    // Emulate command in paste mode
+	    if (call.cmd[0] == '\x05')
+	      call.cmd = this.emulatePasteMode(call.cmd)
 
-    if (out.substring(0, call.cmd.length) != call.cmd) {
-      console.error("Channel: callback's commands checkup failed")
-      this.callbacks = []
-      this.output = ''
-      return true
-    }
-    out = out.substr(call.cmd.length)
-    try {
-      if (call.uid) {
-        call.fun.apply(
-         call.self, [out, call.cmd, call.uid]
-        )
-      } else {
-        call.fun.apply(
-          call.self, [out, call.cmd]
-        )
+      if (out.substring(0, call.cmd.length) != call.cmd) {
+        console.error("Channel: callback's commands checkup failed")
+        this.callbacks = []
+        this.output = ''
+        this.lock = false
+        return true
       }
-    } catch (e){
-      console.error(e)
+      out = out.substr(call.cmd.length)
+      try {
+        if (call.uid) {
+          call.fun.apply(
+           call.self, [out, call.cmd, call.uid]
+          )
+        } else {
+          call.fun.apply(
+            call.self, [out, call.cmd]
+          )
+        }
+      } catch (e){
+        console.error(e)
+      }
     }
     this.output = ''
     this.lock = false
@@ -164,6 +169,16 @@ class Channel {
 	 */
 	pasteMode (cmd){
 	  return `\x05${cmd}\x04`
+	}
+
+	isDirty (){
+	  if (!this.dirty)
+	    return false
+
+    this.current.write('\x03')
+    this.dirty = false
+    this.callbacks.unshift({skip:true})
+    return true
 	}
 }
 
@@ -244,9 +259,12 @@ class _WebSerial {
   watch (){
     if (this.port && this.port.writable && this.port.writable.locked == false && channel.lock == false) {
       if (channel.input.length > 0) {
+        if (channel.isDirty())
+          return
         try {
           channel.lock = true
 		      this.write(channel.input [0])
+          channel.input.shift()
         } catch (e) {
           console.error(e)
         }
@@ -282,7 +300,6 @@ class _WebSerial {
 	  // If no callback expected, release lock
 	  if (channel.callbacks.length == 0)
 	    channel.lock = false
-    channel.input.shift()
 	}
 }
 

@@ -12,10 +12,10 @@ section#files summary, section#files .listedFile {
 section#files #fileOnTarget > summary {
   font-weight: bold;
 }
-section#files #fileOnTarget > summary:before {
+section#files #fileOnTarget > summary:before, section#files #hidePane:before {
   content: "\1433";
   margin-right: .5rem;
-  transition: transform .25s ease;
+  transition: transform .125s ease;
   display:inline-block;
   font-weight: normal;
   font-size: 0.8rem;
@@ -24,17 +24,47 @@ section#files #fileOnTarget > summary:before {
 section#files #fileOnTarget[open] > summary:before {
   transform: rotateZ(90deg);
 }
-section#files > div {
-  display: grid;
-  grid-template-columns: 15rem calc(100% - 15rem);
+section#files #hidePane {
+  padding: 1em 0.5em;
+  cursor: pointer;
+}
+section#files #hidePane:before {
+  transform: rotateZ(180deg);
+  margin: 0 .25em;
+}
+section#files.hidePane #hidePane:before {
+  transform: rotateZ(0deg);
+}
+section#files > .container {
+  display: flex;
   height: 100%;
   width: 100%;
 }
+section#files #pane, section#files #editor {
+  transition: .25s ease width;
+}
 section#files #pane {
+  overflow: hidden;
+  width: 15rem;
   border-right: 1px solid #666;
 }
+section#files.hidePane #pane {
+  width: 0rem;
+}
+section#files #editor {
+  background: #151515;
+  width: calc(100% - 15rem);
+  overflow: hidden;
+}
+section#files.hidePane #editor {
+  width: 100%;
+}
+@media screen and (orientation: portrait){
+  section#files.pos1 #pane, section#files.pos2 {
+    height: 50vh;
+  }
+}
 section#files #filename {
-  font-weight: bold;
   border-left: 1px solid #666;
   width: 100%;
   padding-left: 0.5rem;
@@ -46,10 +76,11 @@ section#files #editor #header {
   border-bottom: 1px solid #666;
   display: flex;
   align-items: center;
-  padding: 0 0.5rem 0 1.85rem;
+  padding: 0 0.5rem 0 0;
+  background: #111;
 }
 section#files #pane .header {
-  padding: 0 0.5rem 0 1.85rem !important;
+  padding: 0 0.5rem;
   display: flex;
   height: 3rem;
   align-items: center;
@@ -60,9 +91,17 @@ section#files #pane .header h2 {
   flex-grow: 2;
   text-align: center;
 }
+section#files #projectTree, section#file #pane .header {
+  width: 15rem;
+}
 section#files #projectTree {
   overflow-y: auto;
   height: calc(100vh - 3rem);
+}
+@media screen and (orientation: portrait){
+  section#files.pos1 #projectTree, section#files.pos2 #projectTree {
+    height: calc(50vh - 3rem);
+  }
 }
 section#files #projectTree > details {
   padding: 0.5rem 0.5rem 0.25rem 0.5rem;
@@ -70,11 +109,17 @@ section#files #projectTree > details {
 section#files #fileOnTarget details {
   padding-left: .25em;
 }
-section#files .listedFile, section#files #fileOnTarget details > summary {
+section#files .listedFile {
+  width: 100%;
+}
+section#files .listedFile, section#files #fileOnTarget summary {
   padding: .25em;
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: .125rem;
+}
+section#files #fileOnTarget summary:focus {
+  border: 1px solid #666;
 }
 section#files #fileOnTarget details > summary {
   margin-left: -.25em;
@@ -83,6 +128,10 @@ section#files #fileOnTarget details > summary {
 section#files .listedFile:hover, section#files #fileOnTarget details > summary:hover {
   border: 1px solid #666;
 }
+section#files .listedFile:focus,  section#files #fileOnTarget details > summary:focus {
+  border: 1px solid #fff;
+}
+
 
 section#files .emptyDir {
   color: #aaa;
@@ -108,6 +157,10 @@ section#files #fileOnTarget > span summary::before {
 section#files .listedFile:before {
 	background-position: left calc(-1.25rem*17) top;
 }
+section#files button#script:before {
+	background-position: left calc(-1.5rem*17) top;
+}
 section#files #fileOnTarget > span details[open] summary:before {
 	background-position: left calc(-1.25rem*16) bottom;
 }
+

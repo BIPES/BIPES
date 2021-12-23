@@ -18,7 +18,7 @@ body, input{
 body {
   background: #222;
 }
-input, textarea, select, button {
+input, textarea, select, button, summary {
 	color: #fff;
 	background: none;
 	font: 1em 'OpenSans', sans-serif;
@@ -51,7 +51,10 @@ textarea {
 	resize: vertical;
 }
 input[type="file"] {
-	display: none;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+	box-sizing: border-box;
 }
 h1, h2, h3 {
 	margin: 0;
@@ -120,7 +123,7 @@ nav a, nav span {
 	display: flex;
 	align-items: center;
 	border: 1px solid transparent;
-	margin: .125em
+	margin: .25rem
 }
 nav a:hover {
   border-color: #fff;
@@ -131,11 +134,11 @@ nav a:before, nav span:before, button.icon:before, .button.icon:before, label.ic
 	height: 1.5rem;
 	background: url('../media/icons.svg');
 	content: '';
-	margin: 0 auto;
+	margin: 0;
 	flex-shrink: 0;
 }
 nav a::before, nav span::before {
-	margin: 1rem 1rem 1rem 0.75rem;
+  margin: 0.75rem 0.75rem 0.75rem 0.71rem;
 }
 nav a.on {
 	background: #4499cc;
@@ -147,6 +150,7 @@ nav a, nav span {
   width: 3rem;
   height: 3rem;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /*Icons*/
@@ -216,6 +220,12 @@ nav #files.on::before {
 }
 button#upload::before, label#upload::before {
 	background-position: left calc(-1.5rem*15) top;
+}
+button#download:before {
+	background-position: left calc(-1.5rem*14) top;
+}
+button#run:before {
+	background-position: left calc(-1.5rem*18) top;
 }
 nav #app-version {
   text-align: center;
@@ -649,13 +659,15 @@ img.cross, video.cross {
 
 .popup {
   display: none;
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
   background: rgba(0,0,0,0);
-  z-index:10;
+  z-index:12;
   transition: background-color ease .25s;
   font-weight: bold;
+  top: 0;
+  left: 0;
 }
 .popup.on, .popup.ani{
   display: block;
@@ -709,10 +721,6 @@ img.cross, video.cross {
 	padding: 0.5em 0;
 	margin: 0.5em 0;
 }
-.popup h3 {
-  font-weight: normal;
-  color: #aaa;
-}
 
 /* notifications */
 a#notification:after {
@@ -731,7 +739,7 @@ a#notification.new:after {
 #notify {
   z-index: 12;
 	left: -18em;
-  top: 7.125em;
+  top: 9.875em;
 	padding: 1em;
 	position: fixed;
   box-shadow: 0 .125em .5em rgba(0,0,0,.6);
@@ -789,4 +797,40 @@ section#notification .notification-cards, section#admin .admin-settings {
 .notification-cards h3 {
   font-weight: normal;
   word-break: break-word;
+}
+#contextMenu > div {
+  display: inline-block;
+  border-radius: .25rem;
+  transition: .125s ease opacity, .25s ease height;
+  overflow: hidden;
+  height: 0px;
+  max-width: 12rem;
+}
+#contextMenu button, #contextMenu label {
+  font-size: 1em;
+  width: 100%;
+  border-radius: 0;
+  border: none;
+  font-weight: normal;
+  min-height: 2rem;
+  box-sizing: border-box;
+}
+#contextMenu button:before, #contextMenu label:before {
+  margin-right: .25rem;
+}
+#contextMenu button:hover, #contextMenu label:hover {
+  background: rgba(68,153,204,.5);
+}
+#contextMenu button:focus, #contextMenu label:focus-within {
+  background: rgba(68,153,204,.25);
+}
+#contextMenu h3 {
+  margin: .5rem .5rem .25rem .5rem;
+  font-size: 1rem;
+  font-weight: normal;
+}
+#contextMenu input {
+  border-top: #666 1px solid;
+  padding: 0.5rem;
+  background: #000;
 }
