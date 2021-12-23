@@ -38,6 +38,76 @@ var MSG = {
   forumTooltip: "Foro de ayuda",
   blocksLoadedFromFile: "Bloques cargados desde el archivo '%1'.",
   deviceUnavailable: "Dispositivo '%1' no disponible.",
-  notAvailableFlag: "$1 no está disponible en su navegador.\r\nAsegúrese de que la 'flag' $1 esté habilitada."
+  notAvailableFlag: "$1 no está disponible en su navegador.\r\nAsegúrese de que la 'flag' $1 esté habilitada.,
+
+//Blocks
+  block_delay: "delay",
+  seconds: "seconds",
+  milliseconds: "milliseconds",
+  microseconds: "microseconds",
+  to: "to",
+  setpin: "set output pin",
+  pin: "pin",
+  read_digital_pin: "read digital input",
+  read_analog_pin: "read analog input",
+  show_iot: "show on IoT tab",
+  data: "value",
+  set_rtc: "set date and time",
+  get_rtc: "get date and time",
+  year: "year",
+  month: "month",
+  day: "day",
+  hour: "hour",
+  minute: "minute",
+  second: "second",
+  wifi_scan: "scan wifi networks",
+  wifi_connect: "connect to wifi network",
+  wifi_name: "network name",
+  wifi_key: "key/password",
+  easymqtt_start: "EasyMQTT Start",
+  easymqtt_publish: "EasyMQTT Publish Data",
+  topic: "topic",
+  session_id: "session ID",
+  file_open: "open File",
+  file_name: "file name",
+  file_mode: "mode",
+  file_binary: "open in binary mode",
+  file_close: "close file",
+  file_write_line: "write line o file",
+  file_line: "line",
+  try1: "try",
+  exp1: "except",
+  ntp_sync: "sync date and time with NTP",
+  timezone: "timezone",
+  project_info: "Project Info",
+  project_info_author: "Author",
+  project_info_desc: "Description",
+  easymqtt_subscribe: "EasyMQTT subscribe to topic",
+  when: "when",
+  data_received: "is received",
+  easymqtt_receive: "EasyMQTT receive data",
+  relay: "relay",
+  on: "on",
+  off: "off",
+  relay_on: "relay on pin",
+  yes: "yes",
+  no: "no",
+  wait_for_data: "wait for data",
+  dht_start: "Start DHT Sensor",
+  dht_measure: "update DHT11/22 sensor reading",
+  dht_temp: "get DHT11/22 temperature",
+  dht_humi: "get DHT11/22 humidity"
+  
+
 };
 
+//Toolbox categories
+Blockly.Msg['CAT_TIMING'] = "Timing";
+Blockly.Msg['CAT_MACHINE'] = "Machine";
+Blockly.Msg['CAT_DISPLAYS'] = "Displays";
+Blockly.Msg['CAT_SENSORS'] = "Sensors";
+Blockly.Msg['CAT_OUTPUTS'] = "Outputs / Actuators";
+Blockly.Msg['CAT_COMM'] = "Communication";
+Blockly.Msg['CAT_FILES'] = "Files";
+Blockly.Msg['CAT_NET'] = "Network and Internet";
+Blockly.Msg['CAT_CONTROL'] = "Controle";

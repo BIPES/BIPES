@@ -266,7 +266,6 @@
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
 
     <sep></sep>
-
    <category name="BIPES">
     <block type="project_metadata">
       <value name="project_author">
@@ -287,9 +286,22 @@
     </block>
 
     <block type="bipes_plot">
+      <field name="NAME">Plot</field>
+      <value name="values">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
     </block>
-   </category>
+    <block type="localstorage_store">
+      <value name="ADD0">
+        <shadow type="utime.vars">
+          <field name="VARS">ticks_ms</field>
+        </shadow>
+      </value>
+    </block>
 
+   </category>
     <sep></sep>
     <!--
     <category name="Python" colour="%{BKY_LOGIC_HUE}">
@@ -299,7 +311,7 @@
   <category name="Python">
 
       <label text="Python"></label>
-	  <block type="try_catch"></block>
+<block type="try_catch"></block>
 
     <block type="exec_python">
   <value name="command">
@@ -337,7 +349,6 @@
         </shadow>
       </value>
     </block>
-
   </category>
 
 
@@ -413,9 +424,7 @@
     
       <category name="In/Out Pins">
       <label text="In/Out Pins"></label>
-
     <block type="pinout"></block>
-
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
@@ -443,8 +452,7 @@
           <field name="NUM">0</field>
         </shadow>
       </value>
-     </block>
-
+    </block>
 
     <block type="pwm">
       <value name="pin">
@@ -930,22 +938,15 @@
     <category name="DHT11/22 Sensor">
       <label text="DHT11/22 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
-        <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
         <value name="pin">
           <shadow type="pinout">
             <field name="PIN"></field>
           </shadow>
         </value>
       </block>
-      <block type="dht_measure">
-        <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
-      </block>
-      <block type="dht_read_temp">
-        <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
-      </block>
-      <block type="dht_read_humidity">
-        <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
-      </block>
+      <block type="dht_measure"> </block>
+      <block type="dht_read_temp"> </block>
+      <block type="dht_read_humidity"> </block>
     </category>
 <!--Adicionando os blocos do Anenmômetro-->
     <category name="Anemômetro">
@@ -1201,9 +1202,9 @@
       <block type="encoder_reset"></block>
       <block type="encoder_read"></block>
   </category>
+
+
   </category>
-
-
 
   <category name="%{BKY_CAT_OUTPUTS}">
     <category name="Relay">
@@ -1935,9 +1936,59 @@ _
       <block type="webrepl_setup"></block>
       <block type="webrepl_start"></block>
     </category>
+
+
+    <category name="CAN Bus">
+     <label text="Controller Area Network (CAN)"></label>
+     <label text="Requires specific firmware"></label>
+     <label text="Compatible with: https://github.com/micropython/micropython/issues/5087#issuecomment-538779410"></label>
+        <button text="Load example: esp32_can" callbackKey="loadExample"></button>
+        <button text="Documentation: esp32_can" callbackKey="loadDoc"></button>
+
+    <block type="esp32_can_init">
+    </block>
+
+    <block type="esp32_can_filter">
+    </block>
+    <block type="esp32_can_send">
+    </block>
+    <block type="esp32_can_recv">
+    </block>
+
+    </category>
+
+    <category name="Google Sheets">
+      <label text="Send files to a Google Spreadsheet"></label>
+      <label text="Library: https://gist.github.com/SpotlightKid/8637c685626b334e5c0ec341dd269c44"></label>
+        <button text="install prequests library" callbackKey="installPyLib"></button>
+      <block type="google_spreadsheet">
+    <field name="sheet_num">1</field>
+    <value name="deploy_code">
+      <shadow type="text">
+        <field name="TEXT">Deploy code</field>
+      </shadow>
+    </value>
+    <statement name="cells_values">
+      <block type="cell_value">
+        <value name="value">
+          <shadow type="text">
+            <field name="TEXT">Content</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+      <block type="cell_value">
+        <value name="value">
+          <shadow type="text">
+            <field name="TEXT">content</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
   </category>
 
-<category name="Control">
+<category name="%{BKY_CAT_CONTROL}">
   <category name="PID">
     <button text="Install control library" callbackKey="installPyLib"></button>
     <label text="Proportional–integral–derivative Controller"></label>
@@ -3071,7 +3122,3 @@ _
 </category>
 </category>
 </document>
-
-
-
-

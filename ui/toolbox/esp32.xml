@@ -266,9 +266,8 @@
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
 
     <sep></sep>
-     <category name="Info">
+   <category name="BIPES">
     <block type="project_metadata">
-      <field name="NAME">Project INFO</field>
       <value name="project_author">
         <shadow type="text">
           <field name="TEXT"></field>
@@ -286,9 +285,6 @@
       </value>
     </block>
 
-     </category>
-
-     <category name="BIPES">
     <block type="bipes_plot">
       <field name="NAME">Plot</field>
       <value name="values">
@@ -305,8 +301,7 @@
       </value>
     </block>
 
-
-     </category>
+   </category>
     <sep></sep>
     <!--
     <category name="Python" colour="%{BKY_LOGIC_HUE}">
@@ -316,7 +311,7 @@
   <category name="Python">
 
       <label text="Python"></label>
-      <block type="try_catch"></block>
+<block type="try_catch"></block>
 
     <block type="exec_python">
   <value name="command">
@@ -335,14 +330,30 @@
           <field name="TEXT"></field>
         </shadow>
       </value>
+    </block>
 
+  <block type="inter_init">
+      <value name="Nome">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="Função">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
     </block>
   </category>
 
 
-
-  <category name="Timing">
-    <label text="Timing"></label>
+  <category name="%{BKY_CAT_TIMING}">
+	  <label text="%{BKY_CAT_TIMING}"></label>
     <block type="utime.delay">
        <value name="TIME">
         <shadow type="math_number">
@@ -388,8 +399,8 @@
     </block>
   </category>
 
-  <category name="Machine">
-      <label text="Machine"></label>
+  <category name="%{BKY_CAT_MACHINE}">
+      <label text="%{BKY_CAT_MACHINE}"></label>
       <category name="CPU">
       <label text="ESP32 CPU"></label>
 
@@ -413,6 +424,7 @@
     
       <category name="In/Out Pins">
       <label text="In/Out Pins"></label>
+    <block type="pinout"></block>
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
@@ -436,7 +448,7 @@
     <block type="pinout"></block>
 
     <block type="esp32_adc">
-      <value name="pin">
+     <value name="pin">
         <shadow type="pinout">
           <field name="PIN"></field>
         </shadow>
@@ -496,12 +508,10 @@
     </block>
 
   </category>
+</category>
 
 
-  </category>
-
-
-<category name="Displays">
+<category name="%{BKY_CAT_DISPLAYS}">
 
 <category name="NeoPixel LED Strip">
       <label text="NeoPixel RGB LED Strip"></label>
@@ -1002,7 +1012,7 @@
 
   </category>
 
-  <category name="Sensors">
+  <category name="%{BKY_CAT_SENSORS}">
     <category name="DHT11/22 Sensor">
       <label text="DHT11/22 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
@@ -1290,7 +1300,7 @@
   </category>
   </category>
 
-  <category name="Outputs / Actuators">
+  <category name="%{BKY_CAT_OUTPUTS}">
     <category name="Relay">
       <label text="Relay"></label>
       <block type="relay_switch">
@@ -1492,8 +1502,8 @@ _
 
   </category>
 
-  <category name="Communication">
-      <label text="Communication"></label>
+  <category name="%{BKY_CAT_COMM}">
+      <label text="%{BKY_CAT_COMM}"></label>
       <category name="UART">
       <label text="UART Serial Port"></label>
 <block type="uart_init">
@@ -1579,7 +1589,7 @@ _
   </category>
  
  
-  <category name="Files">
+  <category name="%{BKY_CAT_FILES}">
   <label text="Read and write files"></label>
 
   <block type="file_open"> 
@@ -1718,9 +1728,8 @@ _
  
 
 
-  <category name="Network">
+  <category name="%{BKY_CAT_NET}">
     <block type="wifi_client_connect">
-      <field name="NAME">Connect to Wifi network</field>
       <value name="wifi_client_essid">
         <shadow type="text">
           <field name="TEXT"></field>
@@ -1746,7 +1755,6 @@ _
       </value>
     </block>
     <block type="wifi_client_scan_networks">
-      <field name="NET_SCAN_WIFI">Scan Wifi networks</field>
     </block>
     <block type="net_ifconfig">
       <field name="NET_IFCONFIG">Wifi current IP</field>
@@ -1991,10 +1999,8 @@ _
     <category name="EasyMQTT">
       <label text="IoT: EasyMQTT"></label>
       <block type="easymqtt_init">
-        <field name="BLOCK_EASYMQTT_INIT">EasyMQTT Start</field>
       </block>
       <block type="easymqtt_publish_data">
-        <field name="BLOCK_EASYMQTT_PUBLISH">EasyMQTT Publish Data</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2106,10 +2112,9 @@ _
         </value>
       </block>
     </category>
-
   </category>
 
-<category name="Control">
+<category name="%{BKY_CAT_CONTROL}">
   <category name="PID">
     <button text="Install control library" callbackKey="installPyLib"></button>
     <label text="Proportional–integral–derivative Controller"></label>
@@ -2173,7 +2178,6 @@ _
     </block>
   </category>
 </category>
-
 
 <category name="micropython">
 <category name="btree">

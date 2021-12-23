@@ -1786,17 +1786,17 @@ Blockly.Blocks['dht_init'] = {
                      55,
                      55,
                      "*"))
-        .appendField("Start DHT Sensor");
+        .appendField(MSG["dht_start"]);
     this.appendDummyInput()
-        .appendField('Type')
+        .appendField(MSG['type'])
         .appendField(new Blockly.FieldDropdown([
                      ['DHT11', 'DHT11'],
                      ['DHT22', 'DHT22']
         ]), 'DHT_TYPE');
-    this.appendValueInput("pin")
+    this.appendValueInput(MSG["pin"])
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("pin"), "DHT_PIN_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["pin"]), "DHT_PIN_MSG");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -1805,11 +1805,12 @@ Blockly.Blocks['dht_init'] = {
   }
 };
 
+
 /// Measure DHT11/22 Sensor
 Blockly.Blocks['dht_measure'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Measure DHT11/22 Sensor"), "MSG_MEASURE_DHT");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["dht_measure"]), "MSG_MEASURE_DHT");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -1822,7 +1823,7 @@ Blockly.Blocks['dht_measure'] = {
 Blockly.Blocks['dht_read_temp'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Temperature"), "MSG_READ_DHT_TEMP");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["dht_temp"]), "MSG_READ_DHT_TEMP");
     this.setOutput(true, null);
     this.setColour(230);
     this.setTooltip("Read DHT11/22 Temperature");
@@ -1834,7 +1835,7 @@ Blockly.Blocks['dht_read_temp'] = {
 Blockly.Blocks['dht_read_humidity'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Read DHT11/22 Humidity"), "MSG_READ_DHT_HUMI");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["dht_humi"]), "MSG_READ_DHT_HUMI");
     this.setOutput(true, null);
     this.setColour(230);
     this.setTooltip("Read DHT11/22 Humidity");
@@ -2075,16 +2076,16 @@ Blockly.Blocks['easymqtt_subscribe'] = {
     this.appendValueInput("topic")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Subscribe to Topic"), "EASYMQTT_TOPIC");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["easymqtt_subscribe"]), "EASYMQTT_TOPIC");
     this.appendDummyInput()
-        .appendField('when')
+        .appendField(MSG['when'])
         .appendField(new Blockly.FieldVariable(
           'data',
           null,
           ['Number'],
           'Number'
         ), 'EASYMQTT_VAR')
-        .appendField('is received');
+        .appendField(MSG["data_received"]);
     this.appendStatementInput('do')
         .appendField('do');
     this.setPreviousStatement(true, null);
@@ -2100,12 +2101,12 @@ Blockly.Blocks['easymqtt_subscribe'] = {
 Blockly.Blocks['easymqtt_receive_data'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("EasyMQTT Receive Data"), "BLOCK_EASYMQTT_RECEIVE");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["easymqtt_receive"]), "BLOCK_EASYMQTT_RECEIVE");
     this.appendDummyInput()
-        .appendField('wait for data')
+        .appendField(MSG['wait_for_data'])
         .appendField(new Blockly.FieldDropdown([
-            ['no', '0'],
-            ['yes', '1']
+            [MSG['no'], '0'],
+            [MSG['yes'], '1']
         ]), 'EASYMQTT_WAIT');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -2138,15 +2139,15 @@ Blockly.Blocks['relay_switch'] = {
                      55,
                      "*"))
         .setAlign(Blockly.ALIGN_CENTRE)
-        .appendField("Relay");
+        .appendField(MSG["relay"]);
     this.appendValueInput("pin")
         .setCheck("Number")
-        .appendField('Turn')
+        .appendField('')
         .appendField(new Blockly.FieldDropdown([
-                       ['off', '0'],
-                       ['on', '1']
+                       [MSG['off'], '0'],
+                       [MSG['on'], '1']
                      ]), 'RELAY_STATUS')
-        .appendField('relay on pin');
+        .appendField(MSG["relay_on"]);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -11450,6 +11451,8 @@ Blockly.Blocks['try_catch'] = {
  this.setHelpUrl("");
   }
 };
+
+
 
 
 

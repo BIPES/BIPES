@@ -85,7 +85,25 @@ var MSG = {
   timezone: "fuso horário",
   project_info: "Dados do projeto",
   project_info_author: "Autor",
-  project_info_desc: "Descrição"
+  project_info_desc: "Descrição",
+  easymqtt_subscribe: "incrição no tópico EasyMQTT",
+  easymqtt_receive: "receber dados EasyMQTT",
+  when: "quando",
+  data_received: "for recebido",
+  relay: "rele",
+  on: "ligar",
+  off: "desligar",
+  relay_on: "rele no pino",
+  yes: "sim",
+  no: "não",
+  wait_for_data: "esperar por dados",
+  dht_start: "Iniciar sensor DHT11/22",
+  dht_measure: "atualizar leitura do sensor DHT11/22",
+  dht_temp: "temperatura do DHT11/22",
+  dht_humi: "umidade do DHT11/22",
+  type: "modelo"
+
+
 
 };
 
@@ -98,4 +116,5 @@ Blockly.Msg['CAT_OUTPUTS'] = "Saidas e atuadores";
 Blockly.Msg['CAT_COMM'] = "Comunicação";
 Blockly.Msg['CAT_FILES'] = "Arquivos";
 Blockly.Msg['CAT_NET'] = "Rede e Internet";
+Blockly.Msg['CAT_CONTROL'] = "Controle";
 
