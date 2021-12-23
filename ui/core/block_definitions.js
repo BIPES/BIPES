@@ -1793,7 +1793,7 @@ Blockly.Blocks['dht_init'] = {
                      ['DHT11', 'DHT11'],
                      ['DHT22', 'DHT22']
         ]), 'DHT_TYPE');
-    this.appendValueInput(MSG["pin"])
+    this.appendValueInput("pin")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabelSerializable(MSG["pin"]), "DHT_PIN_MSG");
