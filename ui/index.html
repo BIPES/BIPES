@@ -415,8 +415,50 @@ UI ['workspace'] = new workspace ();
 Tool.clearQueue ();
 
 window.onload = function() {
-  checkCookie()
-  loadPage(); //Load modal splash screen
+	checkCookie()
+	loadPage(); //Load modal splash screen
+
+	//i18n
+	//Auto detect user language
+	var userLang = navigator.language || navigator.userLanguage;
+	//alert ("The language is: " + userLang);
+
+	if (MSG["splash_welcome"]) 
+		document.getElementById("modalTitle").innerHTML = MSG["splash_welcome"];
+	else
+		document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
+
+	if (MSG["splash_message"]) 
+		document.getElementById("modalMsg").innerHTML = MSG["splash_message"];
+	else
+		document.getElementById("modalMsg").innerHTML = "<p><b>**BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.  <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about BIPES</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p> <p>Thank you from the BIPES Team!</p>";
+
+	if (MSG["splash_footer"]) 
+		document.getElementById("modalFooter").innerHTML = MSG["splash_footer"];
+	else
+		document.getElementById("modalFooter").innerHTML = "Do not show this screen again";
+
+	if (MSG["splash_close"]) 
+		document.getElementById("modalClose").innerHTML = MSG["splash_close"];
+	else
+		document.getElementById("modalClose").innerHTML = "Close";
+
+
+
+	//if (userLang.startsWith("pt")) {
+	//	//alert("pt");
+	//	document.getElementById("modalTitle").innerHTML = MSG["splash_welcome"];
+	//} else {
+	//	//alert("en");
+	//	if (MSG["splash_welcome"]) {
+	//		document.getElementById("modalTitle").innerHTML = MSG["splash_welcome"];
+	//	}
+	//	else {
+	//		document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
+	//	}
+	//}
+
+
 };
 
 
@@ -516,23 +558,6 @@ BIPES
 -->
 </div>
 
-<script type="text/javascript">
-	//Auto detect user language
-	var userLang = navigator.language || navigator.userLanguage;
-	//alert ("The language is: " + userLang);
-
-	if (userLang.startsWith("pt-")) {
-		alert("pt");
-	//document.write("Bem vindo ao projeto BIPES");
-		  document.getElementById("modalTitle").innerHTML = "Bem vindo ao BIPES!";
-	} else {
-		  document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
-		alert("en");
-	//document.write("English");
-	}
-</script>
-
-</html>
 
 
 		<!-- The Modal -->
@@ -542,28 +567,22 @@ BIPES
 			    <div class="modal-content">
 				        <div class="modal-header">
 						      <span class="closeM">&times;</span>
-						      <h2>Welcome to BIPES!<span id="modalTitle"></h2>
+						      <h2><span id="modalTitle"></span></h2>
 							        </div>
 								    <div class="modal-body">
+									    <span id="modalMsg"></span>
 
 
-										    <p><b>BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.
-
-										    <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about BIPES</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p>
-									    <p>Thank you from the BIPES Team!</p>
-<br>
-
-									    <br>
 											    </div>
 											        <div class="modal-footer">
 													      
 													<br>
 													<center>
 														<input type="checkbox" name="checkfield" id="g01-01"  onchange="doalert(this)"/>
-														Do not show this screen again
+														<span id="modalFooter"></span>
 														<br>
 														<br>
-														<button onclick="closeModal()">Close</button>
+														<button onclick="closeModal()"><span id="modalClose"></span></button>
 
 													<br>
 													<br>
