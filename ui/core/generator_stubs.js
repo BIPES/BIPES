@@ -200,19 +200,30 @@ Blockly.Python['adc'] = function(block) {
 
 Blockly.Python['gpio_get'] = function(block) {
 	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_pullup = Blockly.Python.valueToCode(block, 'pullup', Blockly.Python.ORDER_ATOMIC);
 	var x = value_pin.replace('(','').replace(')','');
+
+	if (value_pullup == 'True') {
+		pTmp="gpio" + x + ".pull = Pull.UP\n";
+		pUpDown = ", Pin.PULL_UP";
+	}
+	else {
+		//value_pullup2="Pull.DOWN";
+		pTmp='';
+		pUpDown = '';
+	}
 
 	//For ESP32s2 with Circuit Python
 	if (UI ['workspace'].selector.value == "ESP32S2") {
 
 		Blockly.Python.definitions_['import_board'] = 'import board';
-		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction';
-		Blockly.Python.definitions_['gpio_set' + value_pin] = 'try:\n\tgpio' + x + '.deinit()\nexcept:\n\tpass\ngpio' + x + '=DigitalInOut(board.IO' + x + ')\n' + 'gpio' + x + '.direction = Direction.INPUT';
+		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction, Pull';
+		Blockly.Python.definitions_['gpio_set' + value_pin] = 'try:\n\tgpio' + x + '.deinit()\nexcept:\n\tpass\ngpio' + x + '=DigitalInOut(board.IO' + x + ')\n' + 'gpio' + x + '.direction = Direction.INPUT\n' + pTmp;
 		var code = 'gpio' + x + '.value';
         } else {
 		//Standard MicroPython pin digital pin reading
 		Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-		Blockly.Python.definitions_[`gpio_get_${x}`] = 'pIn' + x + '=Pin(' + x + ', Pin.IN)\n\n';
+		Blockly.Python.definitions_[`gpio_get_${x}`] = 'pIn' + x + '=Pin(' + x + ', Pin.IN' + pUpDown + ')\n\n';
 		var code = 'pIn' + x + '.value()';
 	}
 
@@ -4148,11 +4159,19 @@ Blockly.Python['ticks_diff'] = function(block) {
 };
 /*LEGACY_BLOCKS_END: Old timings blocks*/
 Blockly.Python['utime.vars'] = function(block) {
-  Blockly.Python.definitions_['import_utime'] = 'import utime';
-  var dropdown_vars = block.getFieldValue('VARS');
-  var code =  `utime.${dropdown_vars}()`;
-  return [code, Blockly.Python.ORDER_NONE];
+
+	//For Circuit Python
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		Blockly.Python.definitions_['import_time'] = 'import time';
+		var code = "time.monotonic()";
+	} else {
+		Blockly.Python.definitions_['import_utime'] = 'import utime';
+		var dropdown_vars = block.getFieldValue('VARS');
+		var code =  `utime.${dropdown_vars}()`;
+	}
+	return [code, Blockly.Python.ORDER_NONE];
 };
+
 Blockly.Python['delay'] = function(block) {
 //Blockly.Python['utime.delay'] = function(block) {
   Blockly.Python.definitions_['import_time'] = 'import time';

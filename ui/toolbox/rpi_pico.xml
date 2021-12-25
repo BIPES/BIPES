@@ -268,7 +268,6 @@
     <sep></sep>
    <category name="BIPES">
     <block type="project_metadata">
-      <field name="NAME">Project INFO</field>
       <value name="project_author">
         <shadow type="text">
           <field name="TEXT"></field>
@@ -285,16 +284,18 @@
         </shadow>
       </value>
     </block>
-     </category>
 
-    <category name="BIPES">
     <block type="bipes_plot">
+    </block>
+    <block type="localstorage_store">
+      <value name="ADD0">
+        <shadow type="utime.vars">
+          <field name="VARS">ticks_ms</field>
+        </shadow>
+      </value>
     </block>
 
    </category>
-
-
-
     <sep></sep>
     <!--
     <category name="Python" colour="%{BKY_LOGIC_HUE}">
@@ -303,13 +304,13 @@
 
   <category name="Python">
       <label text="Python"></label>
+<block type="try_catch"></block>
     <block type="exec_python">
   <value name="command">
         <shadow type="text">
           <field name="TEXT"></field>
         </shadow>
       </value>
-
 
     </block>
 
@@ -400,9 +401,9 @@
     <block type="reset_cause_wdt"></block>
     <block type="reset_cause_deep"></block>
       </category>
-
       <category name="In/Out Pins">
       <label text="In/Out Pins"></label>
+    <block type="pinout"></block>
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
@@ -422,8 +423,12 @@
           <field name="PIN"></field>
         </shadow>
       </value>
+      <value name="pullup">
+        <shadow type="logic_boolean">
+          <field name="BOOL"></field>
+        </shadow>
+      </value>
     </block>
-    <block type="pinout"></block>
 
     <block type="adc_pico">
  <value name="pin">

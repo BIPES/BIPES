@@ -125,7 +125,7 @@
         </value>
       </block>
       <block type="math_random_float"></block>
-      <block type="var_to_int">  
+      <block type="var_to_int">
         <field name="VAR">to int</field>
       </block>
     </category>
@@ -205,7 +205,7 @@
           </shadow>
         </value>
       </block>
-      <block type="text_to_str">  
+      <block type="text_to_str">
         <field name="VAR">to str</field>
       </block>
     </category>
@@ -303,10 +303,8 @@
     -->
 
   <category name="Python">
-
       <label text="Python"></label>
 <block type="try_catch"></block>
-
     <block type="exec_python">
   <value name="command">
         <shadow type="text">
@@ -314,7 +312,6 @@
         </shadow>
       </value>
 
-    
     </block>
 
     <block type="exec_python_output">
@@ -349,7 +346,7 @@
   <category name="%{BKY_CAT_TIMING}">
 	  <label text="%{BKY_CAT_TIMING}"></label>
     <block type="delay">
-       <value name="TIME">
+      <value name="TIME">
         <shadow type="math_number">
           <field name="NUM">1</field>
         </shadow>
@@ -415,7 +412,6 @@
     <block type="reset_cause_wdt"></block>
     <block type="reset_cause_deep"></block>
       </category>
-    
       <category name="In/Out Pins">
       <label text="In/Out Pins"></label>
     <block type="pinout"></block>
@@ -436,6 +432,11 @@
       <value name="pin">
         <shadow type="pinout">
           <field name="PIN"></field>
+        </shadow>
+      </value>
+      <value name="pullup">
+        <shadow type="logic_boolean">
+          <field name="BOOL"></field>
         </shadow>
       </value>
     </block>

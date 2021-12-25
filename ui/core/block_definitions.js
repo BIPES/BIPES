@@ -758,6 +758,11 @@ Blockly.Blocks['gpio_get'] = {
         .setCheck("Number")
         //.appendField("Read digital pin");//original
         .appendField(MSG["read_digital_pin"]);
+    this.appendValueInput("pullup")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pull-up");
+
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Read digital pin");
