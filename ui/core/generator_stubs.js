@@ -5425,7 +5425,7 @@ Blockly.Python['neopixel_control_CPY'] = function(block) {
 	Blockly.Python.definitions_['import_digitalio'] = 'import digitalio';
 	Blockly.Python.definitions_['import_neopixel_init'] = 'neopixel_pin = digitalio.DigitalInOut(board.NEOPIXEL)\nneopixel_pin.direction = digitalio.Direction.OUTPUT';
 
-  var code = 'pixel_off = bytearray(' + value_color + ')\nneopixel_write.neopixel_write(neopixel_pin, pixel_off)\n';
+  var code = 'pixel = bytearray(' + value_color + ')\nt=pixel[0]\npixel[0]=pixel[1]\npixel[1]=t\nneopixel_write.neopixel_write(neopixel_pin, pixel)\n';
 
   return code;
 
