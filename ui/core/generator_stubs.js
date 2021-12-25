@@ -5417,12 +5417,20 @@ Blockly.Python['neopixel_init'] = function(block) {
 };
 
 Blockly.Python['neopixel_control_CPY'] = function(block) {
-  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
-  var value_color = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_NONE);
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
+	var value_color = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_NONE);
 
-  var code = `np[${value_address}]=${value_color}\n`;
+	Blockly.Python.definitions_['import_board'] = 'import board';
+	Blockly.Python.definitions_['import_neopixel_write'] = 'import neopixel_write';
+	Blockly.Python.definitions_['import_digitalio'] = 'import digitalio';
+	Blockly.Python.definitions_['import_neopixel_init'] = 'neopixel_pin = digitalio.DigitalInOut(board.NEOPIXEL)\nneopixel_pin.direction = digitalio.Direction.OUTPUT';
+
+  var code = 'pixel_off = bytearray(' + value_color + ')\nneopixel_write.neopixel_write(neopixel_pin, pixel_off)\n';
 
   return code;
+
+
+
 };
 
 
