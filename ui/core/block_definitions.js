@@ -10562,6 +10562,28 @@ Blockly.Blocks['neopixel_init'] = {
 };
 
 
+Blockly.Blocks['neopixel_control_CPY'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabel("Control NeoPixel"), "MSG_NEOPIXEL");
+
+    this.appendValueInput("pin")
+        .setCheck(null)
+	.appendField("Pin");
+
+    this.appendValueInput("color")
+        .setCheck("Number")
+	  .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setColour(230);
+ this.setTooltip("Set NeoPixel");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+}
+
 Blockly.Blocks['neopixel_control'] = {
   init: function() {
     this.appendDummyInput()

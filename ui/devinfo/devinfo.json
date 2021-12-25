@@ -32,9 +32,9 @@
 			"title":"<b>ESP32 S2</b><br>",
 			"speed":"115200",
 			"boardID":"ESP32-S2", 
-			"img":"devinfo/media/ESP32-Pinout.jpg",
-			"description":"",
-			"toolbox":"esp32.xml",
+			"img":"devinfo/media/pinagem-franzininho-wifi-3ee791cdc4872c0837b81cd12994e047.png",
+			"description":"<BR><BR>Franzininho Wifi with CircuitPython. Image source and more details: https://docs.franzininho.com.br/docs/franzininho-wifi/franzininho-wifi/ ",
+			"toolbox":"esp32S2.xml",
 			"pinout": [
 		    ["IO0/Switch", "0"],
 		    ["IO1/AN1", "1"],

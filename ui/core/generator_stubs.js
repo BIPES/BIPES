@@ -69,14 +69,24 @@ Blockly.Python['webrepl_setup'] = function(block) {
 
 
 Blockly.Python['gpio_set'] = function(block) {
-  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-  // TODO: Assemble Python into code variable.
-  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    Pin(pin, Pin.OUT).on()\n  else:\n    Pin(pin, Pin.OUT).off()';
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
 
-  var code = 'gpio_set(' + value_pin + ', ' + value_value + ')\n';
-  return code;
+	 var value_pin2 = value_pin.replace('(','').replace(')','');
+	//For ESP32s2 with Circuit Python
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+
+		Blockly.Python.definitions_['import_board'] = 'import board';
+		Blockly.Python.definitions_['import_digitalio'] = 'from digitalio import DigitalInOut, Direction';
+		Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n\tp=DigitalInOut(pin)\n\tp.direction=Direction.OUTPUT\n\tif value >= 1:\n\t\tp.value=True\n\telse:\n\t\tp.value=False\n';
+		var code = 'gpio_set(board.IO' + value_pin2 + ', ' + value_value + ')\n';
+        } else {
+		Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+		Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    Pin(pin, Pin.OUT).on()\n  else:\n    Pin(pin, Pin.OUT).off()';
+
+		var code = 'gpio_set(' + value_pin + ', ' + value_value + ')\n';
+	}
+	return code;
 
 };
 
@@ -5405,6 +5415,16 @@ Blockly.Python['neopixel_init'] = function(block) {
 
   return code;
 };
+
+Blockly.Python['neopixel_control_CPY'] = function(block) {
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
+  var value_color = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_NONE);
+
+  var code = `np[${value_address}]=${value_color}\n`;
+
+  return code;
+};
+
 
 Blockly.Python['neopixel_control'] = function(block) {
   var value_address = Blockly.Python.valueToCode(block, 'address', Blockly.Python.ORDER_NONE);
