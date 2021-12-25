@@ -435,7 +435,7 @@ class files {
    * List files from device, on success, calls :js:func:`files.updateTable` to display it.
    */
   listFiles () {
-    mux.bufferPush ('import os; os.listdir()\r', files.updateTable.bind(this)); //Using ; to trigger only one ">>>"
+    mux.bufferPush ('import os; os.listdir(\'.\')\r', files.updateTable.bind(this)); //Using ; to trigger only one ">>>"
   }
    /**
    * Execute a program.
