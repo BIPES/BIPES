@@ -138,8 +138,6 @@ Blockly.Python['play_mp3'] = function(block) {
 };
 
 Blockly.Python['esp32_adc'] = function(block) {
-  Blockly.Python.definitions_['import_adc'] = 'from machine import ADC';
-  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var x = value_pin.replace('(','').replace(')','');
 
@@ -166,11 +164,22 @@ Blockly.Python['esp32_adc'] = function(block) {
   if (dropdown_width__==3)
         w = 'ADC.WIDTH_12BIT';
 
+	var x = value_pin.replace('(','').replace(')','');
+	//For Circuit Python
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		Blockly.Python.definitions_['import_board'] = 'import board';
+		Blockly.Python.definitions_['import_analogio'] = 'from analogio import AnalogIn';
+		Blockly.Python.definitions_['analogIn' + x] = 'try:\n\tanalogIn' + x + '.deinit()\nexcept:\n\tpass\nanalogIn' + x + '=AnalogIn(board.IO' + x + ')\n';
+		var code = 'analogIn' + x + '.value';
+	} else {
+		Blockly.Python.definitions_['import_adc'] = 'from machine import ADC';
+		Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 
-  Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=ADC(Pin(' + x + '))\nadc' + x + '.atten(' + atten + ')\nadc' + x + '.width(' + w + ')\n';
+		Blockly.Python.definitions_['init_adc' + x] = 'adc' + x + '=ADC(Pin(' + x + '))\nadc' + x + '.atten(' + atten + ')\nadc' + x + '.width(' + w + ')\n';
 
-  var code = 'adc' + x + '.read()';
-  return [code, Blockly.Python.ORDER_NONE];
+		var code = 'adc' + x + '.read()';
+	}
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 
