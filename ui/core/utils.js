@@ -362,6 +362,14 @@ class files {
         mux.bufferUnshift ('\r\x03\x03');
 
         mux.bufferPush ("import struct\r");
+
+	//Workaround for ESP32S2 using CircuitPython
+	//Needs to remount filesystem in write mode
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		mux.bufferPush ("import storage\r");
+		mux.bufferPush ("storage.remount(\"/\", False)\r");
+	} 
+
         mux.bufferPush (`f=open('${this.put_file_name}', 'w')\r`);
 
         mux.bufferPush (`f.write('${decoderUint8}')\r`, () => {files.update_file_status(`Sent ${Files.put_file_data.length} bytes`)});
@@ -523,7 +531,8 @@ class files {
         this.get_file_name = src_fname;
         this.received_string = "";
         this.watcher_calledCount = 0;
-        mux.bufferPush (`import uos, sys; uos.stat('${src_fname}')\r`);
+        mux.bufferPush (`import os, sys; os.stat('${src_fname}')\r`);
+        //mux.bufferPush (`import uos, sys; uos.stat('${src_fname}')\r`);
         mux.bufferPush (`with open('${src_fname}', 'rb') as infile:\rwhile True:\rresult = infile.read(32)\rif result == b'':\rbreak\r\blen = sys.stdout.write(result)\r`, () => {}); //Includes dummy callback due to '>>> '
         mux.bufferPush ("\r\r\r", () => {
           this.watcher = setInterval ( () => {
