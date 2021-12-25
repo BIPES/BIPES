@@ -420,14 +420,19 @@ window.onload = function() {
 
 	//i18n
 	//Auto detect user language (from the browser)
-	var userLang = navigator.language || navigator.userLanguage;
+	var userLang = navigator.language || navigator.userLanguage + " ";
 	//alert ("The language is: " + userLang);
 	var addMsg="";
 
 	//Also, detect language from the URL
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
-	const pLang = urlParams.get('lang')
+	pLang = urlParams.get('lang')
+
+	if (!userLang)
+		userLang='en';
+	if (!pLang)
+		pLang='en';
 
 	if ((userLang.startsWith("pt")) || (pLang.startsWith("pt"))) {	
 		addMsg="<p><a href=/beta2/ui/?lang=pt-br>Acessar o BIPES em Português</a>";
