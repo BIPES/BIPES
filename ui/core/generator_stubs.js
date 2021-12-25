@@ -77,9 +77,9 @@ Blockly.Python['gpio_set'] = function(block) {
 	if (UI ['workspace'].selector.value == "ESP32S2") {
 
 		Blockly.Python.definitions_['import_board'] = 'import board';
-		Blockly.Python.definitions_['import_digitalio'] = 'from digitalio import DigitalInOut, Direction';
-		Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n\tp=DigitalInOut(pin)\n\tp.direction=Direction.OUTPUT\n\tif value >= 1:\n\t\tp.value=True\n\telse:\n\t\tp.value=False\n';
-		var code = 'gpio_set(board.IO' + value_pin2 + ', ' + value_value + ')\n';
+		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction';
+		Blockly.Python.definitions_['gpio_set' + value_pin] = 'try:\n\tgpio' + value_pin2 + '.deinit()\nexcept:\n\tpass\ngpio' + value_pin2 + '=DigitalInOut(board.IO' + value_pin2 + ')\n' + 'gpio' + value_pin2 + '.direction = Direction.OUTPUT';
+		var code = 'gpio' + value_pin2 + '.value=' + value_value + '\n';
         } else {
 		Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 		Blockly.Python.definitions_['gpio_set'] = 'def gpio_set(pin,value):\n  if value >= 1:\n    Pin(pin, Pin.OUT).on()\n  else:\n    Pin(pin, Pin.OUT).off()';
@@ -199,13 +199,22 @@ Blockly.Python['adc'] = function(block) {
 };
 
 Blockly.Python['gpio_get'] = function(block) {
-  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  var x = value_pin.replace('(','').replace(')','');
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var x = value_pin.replace('(','').replace(')','');
 
-  Blockly.Python.definitions_[`gpio_get_${x}`] = 'pIn' + x + '=Pin(' + x + ', Pin.IN)\n\n';
+	//For ESP32s2 with Circuit Python
+	if (UI ['workspace'].selector.value == "ESP32S2") {
 
-  var code = 'pIn' + x + '.value()';
+		Blockly.Python.definitions_['import_board'] = 'import board';
+		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction';
+		Blockly.Python.definitions_['gpio_set' + value_pin] = 'try:\n\tgpio' + x + '.deinit()\nexcept:\n\tpass\ngpio' + x + '=DigitalInOut(board.IO' + x + ')\n' + 'gpio' + x + '.direction = Direction.INPUT';
+		var code = 'gpio' + x + '.value';
+        } else {
+		//Standard MicroPython pin digital pin reading
+		Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+		Blockly.Python.definitions_[`gpio_get_${x}`] = 'pIn' + x + '=Pin(' + x + ', Pin.IN)\n\n';
+		var code = 'pIn' + x + '.value()';
+	}
 
   return [code, Blockly.Python.ORDER_NONE];
 };
