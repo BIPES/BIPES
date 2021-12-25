@@ -141,7 +141,7 @@ document.body.appendChild(el);
       <div class="icon" id="deviceSelect">
         <select id="device_selector">
           <option value="ESP8266">ESP8266</option>
-          <option value="ESP32S2">Franzininho Wifi</option>
+          <option value="ESP32S2">Franzininho Wifi (ESP32S2+CircuitPython)</option>
           <option value="wemos_d1_mini">Wemos D1 mini</option>
           <option value="ESP32">ESP32</option>
           <option value="M5STICK">m5stick (ESP32)</option>
@@ -419,12 +419,19 @@ window.onload = function() {
 	loadPage(); //Load modal splash screen
 
 	//i18n
-	//Auto detect user language
+	//Auto detect user language (from the browser)
 	var userLang = navigator.language || navigator.userLanguage;
 	//alert ("The language is: " + userLang);
 	var addMsg="";
-	if (userLang.startsWith("pt")) {	
+
+	//Also, detect language from the URL
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const pLang = urlParams.get('lang')
+
+	if ((userLang.startsWith("pt")) || (pLang.startsWith("pt"))) {	
 		addMsg="<p><a href=/beta2/ui/?lang=pt-br>Acessar o BIPES em Português</a>";
+		addMsg+=" | <a href=/beta2/ui/?lang=en>Access BIPES in English</a>";
 	}
 
 	if (MSG["splash_welcome"]) 
