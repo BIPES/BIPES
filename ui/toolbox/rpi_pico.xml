@@ -1,5 +1,5 @@
 <document>
-    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
+  <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
@@ -266,7 +266,7 @@
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
 
     <sep></sep>
-     <category name="Info">
+   <category name="BIPES">
     <block type="project_metadata">
       <field name="NAME">Project INFO</field>
       <value name="project_author">
@@ -289,14 +289,9 @@
 
     <category name="BIPES">
     <block type="bipes_plot">
-      <field name="NAME">Plot</field>
-      <value name="values">
-        <shadow type="text">
-          <field name="TEXT"></field>
-        </shadow>
-      </value>
     </block>
-     </category>
+
+   </category>
 
 
 
@@ -330,11 +325,10 @@
   </category>
 
 
-
-  <category name="Timing">
-      <label text="Timing"></label>
+  <category name="%{BKY_CAT_TIMING}">
+	  <label text="%{BKY_CAT_TIMING}"></label>
     <block type="delay">
-      <value name="time">
+      <value name="TIME">
         <shadow type="math_number">
           <field name="NUM">1</field>
         </shadow>
@@ -384,8 +378,8 @@
     </block>
   </category>
 
-  <category name="Machine">
-      <label text="Machine"></label>
+  <category name="%{BKY_CAT_MACHINE}">
+      <label text="%{BKY_CAT_MACHINE}"></label>
       <category name="CPU">
       <label text="Raspberry Pi Pico CPU"></label>
 

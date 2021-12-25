@@ -189,7 +189,7 @@ Blockly.Blocks['deep_sleep'] = {
   }
 };
 /*LEGACY_BLOCKS_START:Old timings blocks*/
-Blockly.Blocks['delay'] = {
+Blockly.Blocks['delay_old'] = {
   init: function() {
     this.appendValueInput("time")
         .setCheck("Number")
@@ -260,7 +260,8 @@ Blockly.Blocks['ticks_diff'] = {
 };
 
 /*LEGACY_BLOCKS_END: Old timings blocks*/
-Blockly.Blocks['utime.delay'] = {
+//Blockly.Blocks['utime.delay'] = {
+Blockly.Blocks['delay'] = {
   init: function() {
     this.appendValueInput("TIME")
         .setCheck(null)
