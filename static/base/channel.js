@@ -106,7 +106,7 @@ class Channel {
   }
   checkUp (){
     if (navigator.serial == undefined)
-      modules.notification.send("Don't support WebSerial")
+      console.error("Don't support WebSerial")
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it

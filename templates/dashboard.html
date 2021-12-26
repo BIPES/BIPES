@@ -29,9 +29,8 @@
 	<a id="{{ item.href }}" href="/dashboard?{{ item.href }}">{{ item.caption }}</a>
 {% endfor %}
 </div>
-<div>
+<div id="extra">
   <div id="app-version">Version {{ app_version }}</div>
-	<a id="logout" href='/logout'>Exit</a>
 </div>
 </nav>
 
@@ -45,7 +44,8 @@
         navigation,
         storage,
         command,
-        channel
+        channel,
+        rosetta
 
 </script>
 <script type="module">
@@ -53,6 +53,8 @@
     import {CommandBroker} from './static/base/command.js'
     import {StorageBroker} from './static/base/storage.js'
     import {Channel} from './static/base/channel.js'
+    import {Rosetta} from './static/base/rosetta.js'
+
 {% for item in navigation %}
     import { {{item.js_class}} } from './static/modules/{{item.href}}.js'
 {% endfor %}
@@ -60,6 +62,7 @@
   command = new CommandBroker(modules)
   storage = new StorageBroker(modules)
   channel = new Channel(modules)
+  rosetta = Rosetta.set('MicroPython')
 
 {% for item in navigation %}
     modules.{{item.href}} = new {{item.js_class}}

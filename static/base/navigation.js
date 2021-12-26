@@ -111,7 +111,7 @@ function interpretLink (inited){
 	let	path = window.location.href.split('?')
   if (path [1] == undefined) {
     // default module
-	  handleLink.apply(modules.dashboard,[navigation, state])
+	  handleLink.apply(modules.files,[navigation, state])
 	  return
 	}
   handleLink.apply(modules[path[1]],[navigation, state])
@@ -123,7 +123,7 @@ function handleResize (){
 
   navigation.current.forEach ((item) => {
     if (item != '' && modules.hasOwnProperty(item) && typeof modules[item].resize == 'function')
-      modules[item].resize()
+      setTimeout(() => {modules[item].resize()}, 125)
   })
 }
 

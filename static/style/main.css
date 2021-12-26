@@ -81,7 +81,7 @@ pre {
    tab-size: 3;
    white-space: pre-wrap;
 }
-a, span {
+a, span, button {
 	text-decoration: none;
 	-webkit-tap-highlight-color: transparent;
 }
@@ -106,12 +106,7 @@ nav {
 
 	font-weight: bold;
 }
-nav.on, nav div {
-	width: 13.5em;
-}
-nav.on a {
-  width: 13rem;
-}
+
 
 nav a:link, nav a:visited {
 	color: #fff;
@@ -123,10 +118,7 @@ nav a, nav span {
 	display: flex;
 	align-items: center;
 	border: 1px solid transparent;
-	margin: .25rem
-}
-nav a:hover {
-  border-color: #fff;
+  margin: .25rem
 }
 nav a:before, nav span:before, button.icon:before, .button.icon:before, label.icon:before {
 	display: block;
@@ -141,16 +133,61 @@ nav a::before, nav span::before {
   margin: 0.75rem 0.75rem 0.75rem 0.71rem;
 }
 nav a.on {
-	background: #4499cc;
-	box-shadow: 0px .125em .25em rgba(0,0,0,0.8)
+    background: #4499cc;
+    box-shadow: 0px .125em .25em rgba(0,0,0,0.8);
+}
+@media only screen and (min-width: 40rem) {
+  nav a, nav span {
+    justify-content: left;
+    width: 3rem;
+  }
+  nav.on, nav div {
+	  width: 13.5em;
+  }
+  nav.on a {
+    width: 13rem;
+  }
+  nav a:hover {
+    border-color: #fff;
+  }
 }
 nav a, nav span {
-  justify-content: left;
   border-radius: .5rem;
-  width: 3rem;
   height: 3rem;
   overflow: hidden;
   box-sizing: border-box;
+}
+@media only screen and (max-width: 39.99rem) {
+  nav {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 3.5rem;
+    border-top: 1px solid #666;
+  }
+  nav span#menu {
+    display: none;
+  }
+  nav #panels {
+    display: flex;
+    justify-content: space-around;
+    width: 100vw;
+  }
+  nav #extra {
+    display: none;
+  }
+  nav a, nav span {
+    flex-direction: column;
+    font-size: .75rem;
+    font-weight: normal;
+    overflow: hidden;
+    height: 3rem;
+    width: 3rem;
+  }
+  nav a::before, nav span::before {
+    /*margin: 0.25rem 0.75rem 0.125rem 0.75rem;*/
+    margin: 0.75rem;
+  }
 }
 
 /*Icons*/
@@ -245,12 +282,23 @@ nav.on #app-version {
 
 section {
 	position: absolute;
-	width: calc(100vw - 3.5rem);
-	height: 100vh;
-	margin-left: 3.5rem;
 	display: none;
 	left: -1em;
 	opacity: 0;
+}
+@media only screen and (min-width: 40em) {
+  section{
+	  width: calc(100vw - 3.5rem);
+	  height: 100vh;
+	  margin-left: 3.5rem;
+	}
+}
+
+@media only screen and (max-width: 39.99rem) {
+  section {
+    width: 100vw;
+    height: calc(100vh - 3.5rem);
+  }
 }
 section.ani {
   display: block;

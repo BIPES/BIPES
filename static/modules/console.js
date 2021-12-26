@@ -10,6 +10,7 @@ class Console {
 	  this.terminal = new Terminal ()
 
 	  let $ = this._dom = {}
+	  $.section = new DOM(DOM.get('section#console'))
 	  $.terminalXterm = new DOM('div', {className:"xterm"})
 	  $.quickActions = new DOM('div', {className:"quick-actions"})
 	    .append([
@@ -125,20 +126,8 @@ class Console {
     if(!this.inited)
       return
 
-    let cols, rows
-    if (navigation.portrait) {
-      if (navigation.current[0] == 'console')
-        rows = (window.innerHeight - 2.5*16) / 18
-      else
-        rows = (window.innerHeight/2 - 2.5*16) / 18
-      cols = (window.innerWidth - 3.5*16) / 8.5
-    } else {
-      if (navigation.current[0] == 'console')
-        cols = (window.innerWidth - 3.5*16) / 8.5
-      else
-        cols = (window.innerWidth/2 - 3.5*16) / 8.5
-      rows = (window.innerHeight - 2.5*16) / 18
-    }
+    let cols = (this._dom.section._dom.offsetWidth - 5*8)/8,
+        rows = (this._dom.section._dom.offsetHeight - 3*16)/16.5
 
     this.terminal.resize(parseInt(cols), parseInt(rows))
   }

@@ -1,6 +1,7 @@
 "use strict";
 
 import {DOM, ContextMenu, Animate} from '../base/dom.js'
+import {Editor} from '../deps/editor.js'
 export {Files}
 
 class Files {
@@ -129,7 +130,7 @@ class Files {
       this.codemirror.setValue(new Array(9).fill('\r\n').join(''))
       setTimeout(() => {
         this.codemirror.setValue('')
-      }, 10)
+      }, 200)
       this.softInited = true
     }
 
@@ -148,24 +149,12 @@ class Files {
      if(!this.inited)
       return
 
-    let extra = 0
-    if (this._dom.section._dom.classList.contains('hidePane'))
-      extra = 16*15
-    let cols, rows
-    if (navigation.portrait) {
-      if (navigation.current[0] == 'files')
-        rows = (window.innerHeight - (3*16))
-      else
-        rows = (window.innerHeight/2 - (3*16))
-      cols = (window.innerWidth - (18.5*16) + extra)
-    } else {
-      if (navigation.current[0] == 'files')
-        cols = (window.innerWidth - (18.5*16) + extra)
-      else
-        cols = ((window.innerWidth)/2 - (17*16) + extra)
-      rows = (window.innerHeight - (3*16))
-    }
-    this.codemirror.setSize(cols, rows)
+    let width = this._dom.section._dom.offsetWidth,
+        height = this._dom.section._dom.offsetHeight - 3*16
+
+    if (!this._dom.section._dom.classList.contains('hidePane'))
+      width -= 16*15
+    this.codemirror.setSize(width, height)
   }
   listDir (path, tabUID, dom, ev){
     if (dom != undefined) {
@@ -182,7 +171,7 @@ class Files {
     }
 
     path = (path == undefined) ? '/' : path
-    let cmd = `import os; os.listdir('${path}')\r`
+    let cmd = rosetta.ls.cmd(path)
     command.dispatch(channel, 'push', [
       cmd,
       channel.targetDevice,
@@ -191,7 +180,7 @@ class Files {
     ])
   }
   _fetchRecursive (str, cmd, tabUID) {
-    let reg_cmd = /\import os; os.listdir\('(.*)'\)/
+    let reg_cmd = rosetta.ls.reg
     if (!reg_cmd.test(cmd)){
       console.error('Files: Incorrect command structure on _FetchRecursive')
       return true
@@ -345,13 +334,9 @@ class Files {
     this._dom.detailsFileOnTarget._dom.open = true
   }
   fetchFile (target, filename){
-    let cmd1 = `import uos, sys; uos.stat("${filename}")\r`,
+    let cmd1 = rosetta.preopen.cmd(filename),
         cmd2 = channel.pasteMode(
-                `with open("${filename}", 'rb') as infile:\n` +
-                `\twhile True:\n\t\tresult = infile.read(32)\n` +
-                `\t\tif result == b'':\n` +
-                `\t\t\tbreak\n` +
-                `\t\tlen = sys.stdout.write(result)\n`
+          rosetta.open.cmd(filename)
         )
 
     command.dispatch(channel, 'push', [
@@ -375,7 +360,7 @@ class Files {
   }
   _fetchFile (then, str, cmd, tabUID){
     // Get filename from cmd
-    let filename = cmd.match(/with open\("(.*)", 'rb'\) as infile:/)
+    let filename = cmd.match(rosetta.open.reg)
     if (filename != null)
       filename = filename [1]
     else {
@@ -426,9 +411,7 @@ class Files {
 
 
     let cmd = channel.pasteMode(
-      `f=open("${filename}",'w')\n` +
-      `f.write('${decoderUint8}')\n` +
-      `f.close()\n`
+      rosetta.write.cmd(filename, decoderUint8)
     )
 
     command.dispatch(channel, 'push', [
@@ -439,7 +422,7 @@ class Files {
     ])
   }
   _wroteToTarget (str, cmd, tabUID){
-    let reg = /=== f=open\("(.*)\/(?:.*)",'w'\)/
+    let reg = rosetta.write.reg
     if (!reg.test(cmd))
       return
 
@@ -471,7 +454,7 @@ class Files {
   removeFromTarget (filename){
     this.contextMenu.close()
 
-    let cmd = `import os; os.remove("${filename}")\r`
+    let cmd = rosetta.rm.cmd(filename)
 
     command.dispatch(channel, 'push', [
       cmd,
@@ -481,11 +464,11 @@ class Files {
     ])
   }
   _removedFromTarget (str, cmd, tabUID){
-    let reg = /os\.remove\("(.*)\/(.*)"\)/
+    let reg = rosetta.rm.reg;
     if (!reg.test(cmd))
       return
 
-    let reg_oserror = /OSError: ([0-9]{1,})/
+    let reg_oserror = rosetta.error.reg
     let path = cmd.match(reg)
 
     if (reg_oserror.test(str)) {
@@ -504,7 +487,7 @@ class Files {
   runOnTarget (filename){
     this.contextMenu.close()
 
-    let cmd = `exec(open("${filename}").read(),globals())\r`
+    let cmd = rosetta.exec.cmd(filename)
 
     command.dispatch(channel, 'push', [
       cmd,
@@ -514,7 +497,7 @@ class Files {
     ])
   }
   _ranOnTarget (str, cmd, tabUID){
-    let reg = /exec\(open\("(.*)"\).read\(\)\.globals\(\)\)/
+    let reg = rosetta.exec.reg
     if (!reg.test(cmd))
       return
 
@@ -538,7 +521,7 @@ class Files {
       if (folder == undefined || folder == '')
         return
 
-      let cmd = `import os; os.mkdir("${path}/${folder}")\r`
+      let cmd = rosetta.mkdir.cmd(path, folder)
 
       command.dispatch(channel, 'push', [
         cmd,
@@ -549,7 +532,7 @@ class Files {
     })
   }
   _addedFolderOnTarget (str, cmd, tabUID){
-    let reg = /import os; os\.mkdir\("(.*)\/(?:.*)"\)/
+    let reg = rosetta.mkdir.reg
     if (!reg.test(cmd))
       return
 

@@ -24,12 +24,7 @@ npm  = {
         },
     "codemirror":{
         'import':True,
-        'src':'./static/libs/codemirror/codemirror.js',
-        'css_src':'./static/libs/codemirror/codemirror.css'
-        },
-    "codemirror_mode_python":{
-        'import':True,
-        'src':'./static/libs/codemirror/mode/python/python.js',
+        'src':'./static/libs/codemirror.bundle.js'
         }
 }
 
@@ -43,7 +38,7 @@ class Navigation:
 navigation = [
     #Navigation('Dashboard', 'Dashboard','dashboard'),
     Navigation('Files','Files','files','files'),
-    Navigation('Notification','Notifications','notification'),
+    Navigation('Notification','Messages','notification'),
     #Navigation('Admin','Settings','admin'),
     Navigation('Console','Console','console','console')
     ];
@@ -66,3 +61,9 @@ def dashboard(name=None):
     return render_template('dashboard.html', app_name=app_name, app_version=app_version,
                            navigation=navigation, name=name, npm=npm)
 
+
+
+# Return "compiled" html file
+@app.route("/test")
+def test(name=None):
+    return render_template('test.html')
