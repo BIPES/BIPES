@@ -79,7 +79,7 @@ var MSG = {
   file_mode: "mode",
   file_binary: "open in binary mode",
   file_close: "close file",
-  file_write_line: "write line o file",
+  file_write_line: "write line to file",
   file_line: "line",
   try1: "try",
   exp1: "except",
