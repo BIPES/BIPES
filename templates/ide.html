@@ -26,7 +26,7 @@
 <div id="panels">
 	<span id="menu"></span>
 {% for item in navigation %}
-	<a id="{{ item.href }}" href="/dashboard?{{ item.href }}">{{ item.caption }}</a>
+	<a id="{{ item.href }}" href="/ide?{{ item.href }}">{{ item.caption }}</a>
 {% endfor %}
 </div>
 <div id="extra">
@@ -37,10 +37,9 @@
 {% for item in navigation %}
 <section id="{{ item.href }}"></section>
 {% endfor %}
- 
 
 <script>
-    var modules = {},
+    var page = {},
         navigation,
         storage,
         command,
@@ -56,19 +55,19 @@
     import {Rosetta} from './static/base/rosetta.js'
 
 {% for item in navigation %}
-    import { {{item.js_class}} } from './static/modules/{{item.href}}.js'
+    import { {{item.js_class}} } from './static/pages/{{item.href}}.js'
 {% endfor %}
-  // Init CommandBroker, StorageBroker and Channel with modules as root object
-  command = new CommandBroker(modules)
-  storage = new StorageBroker(modules)
-  channel = new Channel(modules)
+  // Init CommandBroker, StorageBroker and Channel with page as root object
+  command = new CommandBroker(page)
+  storage = new StorageBroker(page)
+  channel = new Channel(page)
   rosetta = Rosetta.set('MicroPython')
 
 {% for item in navigation %}
-    modules.{{item.href}} = new {{item.js_class}}
+    page.{{item.href}} = new {{item.js_class}}
 {% endfor %}
 
-  navigation = new Navigation(modules)
+  navigation = new Navigation(page)
 
   interpretLink(false)
 

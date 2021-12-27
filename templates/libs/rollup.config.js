@@ -1,12 +1,10 @@
 import {nodeResolve} from "@rollup/plugin-node-resolve"
 import {terser} from "rollup-plugin-terser"
 
-import pkg from '../../package.json'
-
 export default [{
   input: "./templates/libs/codemirror.js",
   output: {
-    file: `./static/libs/${pkg.codemirror}`,
+    file: `./static/libs/codemirror.umd.js`,
     format: "umd",
     name: 'CodeMirror'
   },

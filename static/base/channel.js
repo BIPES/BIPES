@@ -88,21 +88,21 @@ class Channel {
     this.watcher = setInterval(
       this.current.watch.bind(this.current),
       50);
-    modules.console.on()
-    modules.console.write(`\r\n\x1b[31mConnected with ${this.current.constructor.name}!\x1b[m\r\n`);
+    page.console.on()
+    page.console.write(`\r\n\x1b[31mConnected with ${this.current.constructor.name}!\x1b[m\r\n`);
     this.push('\r\n', this.targetDevice)
   }
   disconnect (){
     if (!this.current.disconnect())
       return
 
-    modules.console.write(`\r\n\x1b[31mDisconnected from ${this.current.constructor.name}!\x1b[m\r\n`);
+    page.console.write(`\r\n\x1b[31mDisconnected from ${this.current.constructor.name}!\x1b[m\r\n`);
     clearInterval(this.watcher);
 
     this.output = ''
     this.callbacks = []
     this.current = undefined
-    modules.console.term.off()
+    page.console.term.off()
   }
   checkUp (){
     if (navigator.serial == undefined)
@@ -206,7 +206,7 @@ class _WebSerial {
             if (typeof chunk == 'string') {
               //data comes in chunks, keep last 4 chars to check MicroPython REPL string
               channel.output += chunk
-              modules.console.write(chunk)
+              page.console.write(chunk)
               if (channel.output.substring(channel.output.length - 4) == ">>> "){
                 channel.output = channel.output.substring(0, channel.output.length - 4)
                 //After all code was executed

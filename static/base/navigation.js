@@ -9,27 +9,27 @@ function handleLink (_navigation, _pos, push){
   let _name = this.constructor.name.toLowerCase()
 
   let turnOff = (elem, pos) => {
-    modules[elem].deinit()
-	  modules[elem].nav.classList.remove('on')
+    page[elem].deinit()
+	  page[elem].nav.classList.remove('on')
 	  // just to avoid animation glitch
   if (pos == 1)
-    	modules[elem].section.classList.add(`_pos1`)
+    	page[elem].section.classList.add(`_pos1`)
     if (pos == 2)
-    	modules[elem].section.classList.add(`_pos2`)
-  	modules[elem].section.classList.remove(`pos${pos}`)
-	  Animate.off(modules[elem].section)
+    	page[elem].section.classList.add(`_pos2`)
+  	page[elem].section.classList.remove(`pos${pos}`)
+	  Animate.off(page[elem].section)
   }
 
   let turnOn = (elem, pos) => {
-    modules[elem].init()
-    modules[elem].nav.classList.add('on')
-	  Animate.on(modules[elem].section)
-	  modules[elem].section.classList.remove("_pos1", "_pos2")
+    page[elem].init()
+    page[elem].nav.classList.add('on')
+	  Animate.on(page[elem].section)
+	  page[elem].section.classList.remove("_pos1", "_pos2")
 	  if (pos != 0)
-  	  modules[elem].section.classList.add(`pos${pos}`)
+  	  page[elem].section.classList.add(`pos${pos}`)
 	  if (pos != 2 && push)
 	    window.history.pushState({}, '',
-	      `${window.location.origin}/dashboard?${elem}`)
+	      `${window.location.origin}/ide?${elem}`)
 
 	  handleResize()
   }
@@ -43,13 +43,13 @@ function handleLink (_navigation, _pos, push){
 
   // User switch opened section
   if (crt[_pos0] == _name) {
-    modules[crt[_pos]].section.classList.remove(`pos${_pos}`)
-    modules[crt[_pos]].section.classList.add(`pos${_pos0}`)
-    modules[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
-    modules[crt[_pos0]].section.classList.add(`pos${_pos}`)
+    page[crt[_pos]].section.classList.remove(`pos${_pos}`)
+    page[crt[_pos]].section.classList.add(`pos${_pos0}`)
+    page[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
+    page[crt[_pos0]].section.classList.add(`pos${_pos}`)
     _navigation.current = ['', crt[2], crt[1]]
     window.history.pushState({}, '',
-      `${window.location.origin}/dashboard?${_navigation.current[1]}`);
+      `${window.location.origin}/ide?${_navigation.current[1]}`);
  	  return
   }
 
@@ -69,7 +69,7 @@ function handleLink (_navigation, _pos, push){
   if (_pos == 1){
     if (crt [_pos] == _name && crt[_pos0] != ''){
       turnOff(crt[_pos0], _pos0)
-   	  modules[crt[_pos]].section.classList.remove(`pos${_pos}`)
+   	  page[crt[_pos]].section.classList.remove(`pos${_pos}`)
       _navigation.current = [_name, '', '']
       handleResize()
       return
@@ -80,7 +80,7 @@ function handleLink (_navigation, _pos, push){
   if (_pos == 2){
     if (crt [_pos] == _name && crt[_pos0] != ''){
       turnOff(crt[_pos], _pos)
-   	  modules[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
+   	  page[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
       _navigation.current = [crt[_pos0], '', '']
       handleResize()
       return
@@ -99,7 +99,7 @@ function handleLink (_navigation, _pos, push){
 
   // User right click in a new section while another is occupying everthing
   if (_pos == 2 && crt[_pos] != _name && crt[0] != ''){
- 	  modules[crt[0]].section.classList.add(`pos1`)
+ 	  page[crt[0]].section.classList.add(`pos1`)
     turnOn(_name, 2)
     _navigation.current = ['', crt[0], _name]
     handleResize()
@@ -111,10 +111,10 @@ function interpretLink (inited){
 	let	path = window.location.href.split('?')
   if (path [1] == undefined) {
     // default module
-	  handleLink.apply(modules.files,[navigation, state])
+	  handleLink.apply(page.files,[navigation, state])
 	  return
 	}
-  handleLink.apply(modules[path[1]],[navigation, state])
+  handleLink.apply(page[path[1]],[navigation, state])
   handleResize()
 }
 
@@ -122,13 +122,13 @@ function handleResize (){
   navigation.portrait = window.innerHeight > window.innerWidth ? true : false
 
   navigation.current.forEach ((item) => {
-    if (item != '' && modules.hasOwnProperty(item) && typeof modules[item].resize == 'function')
-      setTimeout(() => {modules[item].resize()}, 125)
+    if (item != '' && page.hasOwnProperty(item) && typeof page[item].resize == 'function')
+      setTimeout(() => {page[item].resize()}, 125)
   })
 }
 
 class Navigation {
-	constructor (_modules){
+	constructor (_page){
 	  this.current = ['','','']
 	  this.portrait = false
 
@@ -139,16 +139,16 @@ class Navigation {
 		$.menu.onclick = () => {
 			DOM.switchState (this._dom.nav)
 		};
-		for (let module in _modules) {
-		  _modules[module].nav = DOM.get(`a#${module}`, $.nav)
-		  _modules[module].section = DOM.get(`section#${module}`)
-		  _modules[module].nav.onclick = (ev) => {
+		for (let module in _page) {
+		  _page[module].nav = DOM.get(`a#${module}`, $.nav)
+		  _page[module].section = DOM.get(`section#${module}`)
+		  _page[module].nav.onclick = (ev) => {
 		    ev.preventDefault()
-		    handleLink.apply(_modules[module], [this, 1, true])
+		    handleLink.apply(_page[module], [this, 1, true])
 		  }
-		  _modules[module].nav.addEventListener('contextmenu', (ev) => {
+		  _page[module].nav.addEventListener('contextmenu', (ev) => {
 		    ev.preventDefault()
-		    handleLink.apply(_modules[module], [this, 2, true])
+		    handleLink.apply(_page[module], [this, 2, true])
 		  })
 		}
 		window.onpopstate = () => {interpretLink(true)}

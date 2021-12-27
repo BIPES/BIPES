@@ -88,7 +88,7 @@ class Notification {
 	}
 	_noNotification (){
     this._dom.wrapper.append(
-      new DOM('span', {innerText:'Não há notificações.'})
+      new DOM('span', {innerText:'There is no notifications.'})
     )
 	}
 	// Creates a DOM notificaton card

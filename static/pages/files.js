@@ -1,14 +1,12 @@
 "use strict";
 
 import {DOM, ContextMenu, Animate} from '../base/dom.js'
-import {Editor} from '../deps/editor.js'
 export {Files}
 
 class Files {
   constructor (){
     this.fileOnTarget = [{name:'', files:[]}] // Files stored on target device, default depth 1 (root)
     this.fileOnHost   = {} // Files stored on host device
-    this.softInit = false // Do only the first time the module is active (to solve libs with visibility issues)
 
     let $ = this._dom = {}
 
@@ -83,7 +81,7 @@ class Files {
       innerText:'Write'
     }).onclick(this, this._editorToTarget)
 
-    $.codemirror = new DOM('textarea', {id:'codemirror'})
+    $.codemirror = new DOM('div', {id:'codemirror'})
 
     $.editor = new DOM('div', {id:'editor'})
       .append([
@@ -93,7 +91,6 @@ class Files {
             title:'Hide/show project tree.'
           }).onclick(this, () => {
             DOM.switchState($.section._dom, 'hidePane')
-            this.resize()
           }),
           $.filename,
           $.saveToTarget
@@ -107,14 +104,7 @@ class Files {
     $.section.append([$.container._dom, $.contextMenu])
 
     // Codemirror
-    this.codemirror = CodeMirror.fromTextArea($.codemirror._dom, {
-      mode: "python",
-      lineNumbers: true,
-      theme: 'base16-dark',
-      indentUnit: 4,
-      tabSize: 4,
-      indentWithTabs: true
-    });
+    this.codemirror = CodeMirror($.codemirror._dom)
 
     command.add(this, {
       buildFileTree: this._buildFileTree,
@@ -126,35 +116,12 @@ class Files {
     if (this.inited)
       return
 
-    if (!this.softInited) {
-      this.codemirror.setValue(new Array(9).fill('\r\n').join(''))
-      setTimeout(() => {
-        this.codemirror.setValue('')
-      }, 200)
-      this.softInited = true
-    }
-
     this.inited = true
   }
   deinit (){
     if (!this.inited)
       return
     this.inited = false
-  }
-  /**
-   * Resize the ``xterm.js`` terminal, triggered by ``window.onresize`` event on
-   * on base/navigation.js.
-   */
-  resize (){
-     if(!this.inited)
-      return
-
-    let width = this._dom.section._dom.offsetWidth,
-        height = this._dom.section._dom.offsetHeight - 3*16
-
-    if (!this._dom.section._dom.classList.contains('hidePane'))
-      width -= 16*15
-    this.codemirror.setSize(width, height)
   }
   listDir (path, tabUID, dom, ev){
     if (dom != undefined) {
@@ -381,7 +348,9 @@ class Files {
       return
 
     this._dom.filename._dom.value = filename
-    this.codemirror.setValue(script)
+    this.codemirror.dispatch({
+      changes: {from:0, to:this.codemirror.state.doc.length, insert:script}
+    })
     document.title = `${filename} - BIPES`
   }
   _downloadValue (filename, script, tabUID) {
@@ -394,7 +363,7 @@ class Files {
    */
   _editorToTarget () {
     //For codemirror
-    let script = this.codemirror.getDoc().getValue("\n"),
+      let script = this.codemirror.state.doc.toString()
         filename = this._dom.filename._dom.value
     let uint8Array = new Uint8Array([...script].map(s => s.charCodeAt(0)))
 
@@ -475,10 +444,10 @@ class Files {
       let error = str.match(reg_oserror)[1]
       switch (error) {
         case '39':
-          modules.notification.send(`Folder ${path[1]}/${path[2]} not empty, can't be removed.`)
+          page.notification.send(`Folder ${path[1]}/${path[2]} not empty, can't be removed.`)
           break
         default:
-          modules.notification.send(`Could not remove folder ${path[1]}/${path[2]}.`)
+          page.notification.send(`Could not remove folder ${path[1]}/${path[2]}.`)
           break;
       }
     }
@@ -501,7 +470,7 @@ class Files {
     if (!reg.test(cmd))
       return
 
-    modules.notification.send(`Script ${cmd.match(reg)[1]} finished executing!`)
+    page.notification.send(`Script ${cmd.match(reg)[1]} finished executing!`)
   }
   downloadFromTarget (filename){
     this.contextMenu.close()

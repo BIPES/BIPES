@@ -1,5 +1,4 @@
 {
-	"codemirror": "codemirror.umd.js",
 	"files": [
 		"static/libs"
 	],
@@ -7,8 +6,11 @@
 		"@codemirror/basic-setup": "^0.19.1",
 		"@codemirror/lang-markdown": "^0.19.3",
 		"@codemirror/lang-python": "^0.19.2",
+		"@codemirror/theme-one-dark": "^0.19.1",
+		"@codemirror/view": "^0.19.37",
 		"@rollup/plugin-commonjs": "^21.0.1",
 		"@rollup/plugin-node-resolve": "^13.1.1",
+		"blockly": "^7.20211209.1",
 		"rollup": "^2.62.0",
 		"rollup-plugin-terser": "^7.0.2"
 	}
