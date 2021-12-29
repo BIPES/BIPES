@@ -22,8 +22,13 @@ var libToInstall = '';
  */
 Code.LANGUAGE_NAME = {
   'en': 'English',
+  'pt-br': 'Portugues',
   'es': 'Espanol',
-  'pt-br': 'Português Brasileiro'
+  'it': 'Italiano',
+  'fr': 'French',
+  'de': 'Deutsch',
+  'zh-hans': 'Chinese (simplified)',
+  'zh-hant': 'Chinese (tradicional)'
 };
 
 /**

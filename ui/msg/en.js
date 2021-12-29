@@ -1,5 +1,5 @@
 var MSG = {
-  title: "BIPES Beta",
+  title: "BIPES",
   blocks: "Blocks",
   files: "Files",
   shared: "Shared",
