@@ -525,12 +525,20 @@ Blockly.Python['net_post_request'] = function(block) {
 };
 
 Blockly.Python['net_ifconfig'] = function(block) {
-  Blockly.Python.definitions_['import_network'] = 'import network';
-  Blockly.Python.definitions_['import_network_a'] = 'sta_if = network.WLAN(network.STA_IF)';
-  Blockly.Python.definitions_['import_network_b'] = 'sta_if.active(True)';
 
-  var code = 'sta_if.ifconfig()';
-  return [code, Blockly.Python.ORDER_NONE];
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		var code = 'wifi.radio.ipv4_address';
+	} else {
+		Blockly.Python.definitions_['import_network'] = 'import network';
+		Blockly.Python.definitions_['import_network_a'] = 'sta_if = network.WLAN(network.STA_IF)';
+		Blockly.Python.definitions_['import_network_b'] = 'sta_if.active(True)';
+		var code = 'sta_if.ifconfig()';
+	}
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['net_ap_mode'] = function(block) {
@@ -544,19 +552,41 @@ Blockly.Python['net_ap_mode'] = function(block) {
 };
 
 Blockly.Python['wifi_client_connect'] = function(block) {
-  var value_wifi_client_essid = Blockly.Python.valueToCode(block, 'wifi_client_essid', Blockly.Python.ORDER_ATOMIC);
-  var value_wifi_client_key = Blockly.Python.valueToCode(block, 'wifi_client_key', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['import_network'] = 'import network';
-  Blockly.Python.definitions_['import_time'] = 'import time';
-  var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \nsta_if.scan() \nsta_if.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ') \nprint("Waiting for Wifi connection")\nwhile not sta_if.isconnected(): time.sleep(1)\nprint("Connected")\n';
-  return code;
+	var value_wifi_client_essid = Blockly.Python.valueToCode(block, 'wifi_client_essid', Blockly.Python.ORDER_ATOMIC);
+	var value_wifi_client_key = Blockly.Python.valueToCode(block, 'wifi_client_key', Blockly.Python.ORDER_ATOMIC);
+
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		var code = 'print("Connecting to ' + value_wifi_client_essid + '")\n';
+		code+=     'wifi.radio.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ')\n';
+		code+=	   'print("Connected")\n';
+		code+=	   'print("My IP address is", wifi.radio.ipv4_address)\n\n';
+	} else {
+		Blockly.Python.definitions_['import_network'] = 'import network';
+		Blockly.Python.definitions_['import_time'] = 'import time';
+		var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \nsta_if.scan() \nsta_if.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ') \nprint("Waiting for Wifi connection")\nwhile not sta_if.isconnected(): time.sleep(1)\nprint("Connected")\n';
+	}
+	return code;
 };
 
 Blockly.Python['wifi_client_scan_networks'] = function(block) {
-  Blockly.Python.definitions_['import_network'] = 'import network';
-  Blockly.Python.definitions_['import_network_sta_init'] = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \n';
-  var code = 'sta_if.scan()';
-  return [code, Blockly.Python.ORDER_NONE];
+
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		Blockly.Python.definitions_['import_scan_wifi'] = 'def scan_wifi():\n\tfor network in wifi.radio.start_scanning_networks():\n\t\tprint("\t%s\t\tRSSI: %d\tChannel: %d" % (str(network.ssid, "utf-8"), network.rssi, network.channel))\n\twifi.radio.stop_scanning_networks()\n';
+		var code = 'scan_wifi()';
+	} else {
+		Blockly.Python.definitions_['import_network'] = 'import network';
+		Blockly.Python.definitions_['import_network_sta_init'] = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \n';
+		var code = 'sta_if.scan()';
+	}
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 /// DHT11/22
