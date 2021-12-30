@@ -510,10 +510,21 @@ Blockly.Python['move_servo'] = function(block) {
 };
 
 Blockly.Python['net_get_request'] = function(block) {
-  var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['import_urequests'] = 'import urequests';
-  var code = 'urequests.get(' + value_url + ')\n';
-  return [code, Blockly.Python.ORDER_NONE];
+	var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
+
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		Blockly.Python.definitions_['import_http_get'] = 'def http_get(pHOST):\n\ttmp=pHOST.replace("http://", "")\n\tHOST=tmp.split("/", 1)[0]\n\tparams=tmp.split("/",1)[1]\n\tprint("Host: " + HOST)\n\tprint("Params = " + params)\n\tpool = socketpool.SocketPool(wifi.radio)\n\tserver_ipv4 = ipaddress.ip_address(pool.getaddrinfo(HOST, 80)[0][4][0])\n\tprint("Server ping", server_ipv4, wifi.radio.ping(server_ipv4), "ms")\n\tbuf = bytearray(500)\n\ts = pool.socket(pool.AF_INET, pool.SOCK_STREAM)\n\ts.settimeout(50)\n\tprint("Connecting")\n\ts.connect((HOST, 80))\n\tsize = s.send(bytes(\'GET /%s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n\' % (params, HOST), \'utf8\'))\n\tprint("Sent", size, "bytes")\n\tsize = s.recv_into(buf)\n\tprint(\'Received\', size, "bytes", buf[:size])\n\ts.close()\n\treturn buf[:size]\n';
+
+		var code = 'http_get(' + value_url + ')\n';
+	} else {
+		Blockly.Python.definitions_['import_urequests'] = 'import urequests';
+		var code = 'urequests.get(' + value_url + ')\n';
+	}
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['net_post_request'] = function(block) {
@@ -4940,15 +4951,30 @@ while True:
 */
 
 Blockly.Python['net_http_server_start'] = function(block) {
-  var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+	var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_socket'] = 'import socket';
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
 
-  var code = "http_addr = socket.getaddrinfo('0.0.0.0'," + port + ")[0][-1]\n";
-      code += 's = socket.socket()\n';
-      code += 's.bind(http_addr)\n';
-      code += 's.listen(1)\n';
-      code += "print('BIPES HTTP Server Listening on', http_addr)\n";
+		var code = "pool = socketpool.SocketPool(wifi.radio)\n";
+		code += "HOST = str(wifi.radio.ipv4_address)\n";
+		code += "s = pool.socket(pool.AF_INET, pool.SOCK_STREAM)\n";
+		code += "s.settimeout(10)\n";
+		code += "s.bind((HOST, 80))\n";
+		code += "s.listen(5)\n";
+		code += "print('BIPES HTTP Server Listening on', HOST)\n";
+	} else {
+		Blockly.Python.definitions_['import_socket'] = 'import socket';
+
+		var code = "http_addr = socket.getaddrinfo('0.0.0.0'," + port + ")[0][-1]\n";
+		code += 's = socket.socket()\n';
+		code += 's.bind(http_addr)\n';
+		code += 's.listen(1)\n';
+		code += "print('BIPES HTTP Server Listening on', http_addr)\n";
+	}
 
   return code;
 };
@@ -4956,18 +4982,39 @@ Blockly.Python['net_http_server_start'] = function(block) {
 
 Blockly.Python['net_http_server_accept'] = function(block) {
 
-  var code = "cl, http_addr = s.accept()\n";
-      code += "print('client connected from', http_addr)\n";
-      code += "cl_file = cl.makefile('rwb', 0)\n";
-      code += "while True:\n";
-      code += "    line = cl_file.readline()\n";
-      code += "    lineS = str(line, 'utf8')\n";
-      code += "    print(line)\n";
-      code += "    if lineS.startswith('GET /'):\n";
-      code += "        http_request_page = (lineS.split('/')[1]).split(' ')[0]\n";
-      code += "        print('Request page = ' + http_request_page)\n";
-      code += "    if not line or line == b'\\r\\n':\n";
-      code += "        break\n";
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		var code = "buf = bytearray(500)\n";
+		code += "while True:\n";
+		code += "\tconn, addr = s.accept()\n";
+		code += "\tconn.settimeout(50)\n";
+		code += "\tprint(\"Accepted from\", addr)\n";
+		code += "\tsize = conn.recv_into(buf, 500)\n";
+		code += "\tprint(\"Received\", buf[:size], size, \"bytes\")\n";
+		code += "\tlineS = str(buf[:size], 'utf8')\n";
+		code += "\tprint(lineS)\n";
+		code += "\tif lineS.startswith('GET /'):\n";
+		code += "\t\thttp_request_page = (lineS.split('/')[1]).split(' ')[0]\n";
+		code += "\t\tprint('Request page = ' + http_request_page)\n";
+
+		code += "\tif size >= 20:\n";
+		code += "\t\tbreak\n";
+
+		//code += "\tconn.send(buf[:size])\n";
+		//code += "\tprint("Sent", buf[:size], size, "bytes")\n";
+	} else {
+	  var code = "cl, http_addr = s.accept()\n";
+	      code += "print('client connected from', http_addr)\n";
+	      code += "cl_file = cl.makefile('rwb', 0)\n";
+	      code += "while True:\n";
+	      code += "    line = cl_file.readline()\n";
+	      code += "    lineS = str(line, 'utf8')\n";
+	      code += "    print(line)\n";
+	      code += "    if lineS.startswith('GET /'):\n";
+	      code += "        http_request_page = (lineS.split('/')[1]).split(' ')[0]\n";
+	      code += "        print('Request page = ' + http_request_page)\n";
+	      code += "    if not line or line == b'\\r\\n':\n";
+	      code += "        break\n";
+	}
 
   return code;
 };
@@ -4983,10 +5030,17 @@ Blockly.Python['net_http_server_requested_page'] = function(block) {
 Blockly.Python['net_http_server_send_response'] = function(block) {
   var html = Blockly.Python.valueToCode(block, 'html', Blockly.Python.ORDER_ATOMIC);
 
-  var code = 'response = ' + html + '\n';
-      code += "cl.send('HTTP/1.0 200 OK\\r\\nContent-type: text/html\\r\\n\\r\\n')\n";
-      code += 'cl.send(response)\n';
-      code += 'cl.close()\n';
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		var code = 'response = ' + html + '\n';
+		code += "conn.send('HTTP/1.0 200 OK\\r\\nContent-type: text/html\\r\\n\\r\\n')\n";
+		code += 'conn.send(response)\n';
+		code += 'conn.close()\n';
+	} else {
+		var code = 'response = ' + html + '\n';
+		code += "cl.send('HTTP/1.0 200 OK\\r\\nContent-type: text/html\\r\\n\\r\\n')\n";
+		code += 'cl.send(response)\n';
+		code += 'cl.close()\n';
+	}
 
   return code;
 };
