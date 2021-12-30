@@ -4962,7 +4962,8 @@ Blockly.Python['net_http_server_start'] = function(block) {
 		var code = "pool = socketpool.SocketPool(wifi.radio)\n";
 		code += "HOST = str(wifi.radio.ipv4_address)\n";
 		code += "s = pool.socket(pool.AF_INET, pool.SOCK_STREAM)\n";
-		code += "s.settimeout(10)\n";
+		//code += "s.settimeout(10)\n";
+		code += "s.settimeout(None)\n";
 		code += "s.bind((HOST, 80))\n";
 		code += "s.listen(5)\n";
 		code += "print('BIPES HTTP Server Listening on', HOST)\n";
@@ -4986,7 +4987,7 @@ Blockly.Python['net_http_server_accept'] = function(block) {
 		var code = "buf = bytearray(500)\n";
 		code += "while True:\n";
 		code += "\tconn, addr = s.accept()\n";
-		code += "\tconn.settimeout(50)\n";
+		//code += "\tconn.settimeout(50)\n";
 		code += "\tprint(\"Accepted from\", addr)\n";
 		code += "\tsize = conn.recv_into(buf, 500)\n";
 		code += "\tprint(\"Received\", buf[:size], size, \"bytes\")\n";
