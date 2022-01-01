@@ -6088,7 +6088,7 @@ Blockly.Python['http_get_status'] = function(block) {
 Blockly.Python['http_get_content'] = function(block) {
   var variable_request = Blockly.Python.nameDB_.getName(block.getFieldValue('request'), Blockly.VARIABLE_CATEGORY_NAME);
  
-  var code = variable_request + '.content';
+  var code = 'str(' + variable_request + '.content)';
 
   return [code, Blockly.Python.ORDER_NONE];
 };

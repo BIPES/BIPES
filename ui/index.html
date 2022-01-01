@@ -75,6 +75,7 @@ function checkCookie() {
   <script src="core/ui.js?ver=0.2.3.1125"></script>
   <script src="core/queue.js"></script>
   <script src="core/FileSaver.js"></script>
+  <script src="core/shortcut.js"></script>
 
 
   <!-- Custom Blocks for BIPES Project --> 
@@ -473,6 +474,25 @@ window.onload = function() {
 	//		document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
 	//	}
 	//}
+
+	//BIPES keyboad hotkeys
+	//Source: http://www.openjs.com/scripts/events/keyboard_shortcuts/
+	//Includes core/shortcut.js
+	shortcut.add("Ctrl+Shift+L",function() {
+		//alert("BIPES hotkey: screenshot!");
+		Tool.exportScreenshot();
+	});
+
+	shortcut.add("Ctrl+Shift+R",function() {
+		//alert("BIPES hotkey: Run program!");
+		Tool.runPython();
+	});
+
+	shortcut.add("Ctrl+Shift+S",function() {
+		//alert("BIPES hotkey: Stop program!");
+		Tool.stopPython();
+	});
+
 
 
 };
