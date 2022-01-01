@@ -6076,3 +6076,20 @@ Blockly.Python['try_catch'] = function(block) {
   var code = 'try:\n' + statements_main_code + '\nexcept:\n' + statements_catch_code;
   return code;
 };
+
+Blockly.Python['http_get_status'] = function(block) {
+  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+ 
+  var code = variable_filename + '.status_code';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['http_get_content'] = function(block) {
+  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+ 
+  var code = variable_filename + '.content';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+

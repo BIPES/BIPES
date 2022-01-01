@@ -1233,9 +1233,10 @@ Blockly.Blocks['move_servo'] = {
 
 Blockly.Blocks['net_get_request'] = {
   init: function() {
+
     this.appendValueInput("URL")
         .setCheck("String")
-        .appendField(new Blockly.FieldLabelSerializable("Make HTTP GET Request URL"), "BLOCK_NET_GET");
+        .appendField(new Blockly.FieldLabelSerializable("Make HTTP GET Request | URL"), "BLOCK_NET_GET");
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Make HTTP GET Request");
@@ -11480,7 +11481,27 @@ Blockly.Blocks['try_catch'] = {
   }
 };
 
+Blockly.Blocks['http_get_status'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("HTTP Response status code")
+        .appendField(new Blockly.FieldVariable("request"), "request");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Status code of the HTTP GET request");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
 
-
-
+Blockly.Blocks['http_get_content'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("HTTP Response content")
+        .appendField(new Blockly.FieldVariable("request"), "request");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Content of HTTP GET request");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
 
