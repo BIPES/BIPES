@@ -1700,6 +1700,10 @@ _
 	    </value>
     </block>
 
+
+<variables>
+<variable id="yFH}K(gY?bu`VLT9NYZ.">request</variable>
+</variables>
 <block type="variables_set" id="!1xIazB)h~sJ/!$o{Sm5" inline="false" x="-613" y="-737">
 <field name="VAR" id="yFH}K(gY?bu`VLT9NYZ.">request</field>
 <value name="VALUE">
@@ -1777,7 +1781,6 @@ _
 </block>
 </next>
 </block>
-
 
 
       <label text="POST Method"></label>

@@ -6078,17 +6078,17 @@ Blockly.Python['try_catch'] = function(block) {
 };
 
 Blockly.Python['http_get_status'] = function(block) {
-  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var variable_request = Blockly.Python.nameDB_.getName(block.getFieldValue('request'), Blockly.VARIABLE_CATEGORY_NAME);
  
-  var code = variable_filename + '.status_code';
+  var code = variable_request + '.status_code';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['http_get_content'] = function(block) {
-  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var variable_request = Blockly.Python.nameDB_.getName(block.getFieldValue('request'), Blockly.VARIABLE_CATEGORY_NAME);
  
-  var code = variable_filename + '.content';
+  var code = variable_request + '.content';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
