@@ -939,9 +939,9 @@
           </shadow>
         </value>
       </block>
-      <block type="dht_measure"> </block>
-      <block type="dht_read_temp"> </block>
-      <block type="dht_read_humidity"> </block>
+      <block type="dht_measure"></block>
+      <block type="dht_read_temp"></block>
+      <block type="dht_read_humidity"></block>
     </category>
 <!--Adicionando os blocos do Anenmômetro-->
     <category name="Anemômetro">
@@ -1676,7 +1676,6 @@ _
 
       <block type="net_get_request"></block>
     <block type="net_get_request">
-      <field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
 	 <value name="URL">
 	 <block type="text">
 	 <field name="TEXT">http://</field>
@@ -1690,7 +1689,6 @@ _
 	    <field name="VAR">request</field>
             <value name="VALUE">
 		    <block type="net_get_request">
-		      <field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
 			 <value name="URL">
 			 <block type="text">
 				<field name="TEXT">http://bipes.net.br/test.txt</field>
@@ -1708,7 +1706,6 @@ _
 <field name="VAR" id="yFH}K(gY?bu`VLT9NYZ.">request</field>
 <value name="VALUE">
 <block type="net_get_request" id="5gsz(fK06Y^`q!^eqfl^">
-<field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
 <value name="URL">
 <block type="text" id="$YN]pq|;%B-%rxn[)aK}">
 <field name="TEXT">http://bipes.net.br/test.txt</field>

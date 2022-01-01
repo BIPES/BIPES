@@ -1072,15 +1072,9 @@
           </shadow>
         </value>
       </block>
-      <block type="dht_measure">
-        <field name="MSG_MEASURE_DHT">Measure DHT11/22 Sensor</field>
-      </block>
-      <block type="dht_read_temp">
-        <field name="MSG_READ_DHT_TEMP">Read DHT11/22 Temperature</field>
-      </block>
-      <block type="dht_read_humidity">
-        <field name="MSG_READ_DHT_HUMI">Read DHT11/22 Humidity</field>
-      </block>
+      <block type="dht_measure"></block>
+      <block type="dht_read_temp"></block>
+      <block type="dht_read_humidity"></block>
     </category>
 <!--Adicionando os blocos do Anenmômetro-->
     <category name="Anemômetro">
@@ -1819,11 +1813,117 @@ _
     </block>
 
     <category name="HTTP Client">
-      <label text="HTTP Client"></label>
+      <label text="HTTP (web) Client"></label>
+      <label text="GET Method"></label>
 
+      <block type="net_get_request"></block>
     <block type="net_get_request">
-      <field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
+	 <value name="URL">
+	 <block type="text">
+	 <field name="TEXT">http://</field>
+         </block>
+         </value>
     </block>
+    <block type="http_get_status"></block>
+    <block type="http_get_content"></block>
+
+    <block type="variables_set" inline="false">
+	    <field name="VAR">request</field>
+            <value name="VALUE">
+		    <block type="net_get_request">
+			 <value name="URL">
+			 <block type="text">
+				<field name="TEXT">http://bipes.net.br/test.txt</field>
+			 </block>
+			 </value>
+		    </block>
+	    </value>
+    </block>
+
+
+<variables>
+<variable id="yFH}K(gY?bu`VLT9NYZ.">request</variable>
+</variables>
+<block type="variables_set" id="!1xIazB)h~sJ/!$o{Sm5" inline="false" x="-613" y="-737">
+<field name="VAR" id="yFH}K(gY?bu`VLT9NYZ.">request</field>
+<value name="VALUE">
+<block type="net_get_request" id="5gsz(fK06Y^`q!^eqfl^">
+<value name="URL">
+<block type="text" id="$YN]pq|;%B-%rxn[)aK}">
+<field name="TEXT">http://bipes.net.br/test.txt</field>
+</block>
+</value>
+</block>
+</value>
+<next>
+<block type="controls_if" id="gXT.6iyw4xuE[DIT|DlZ">
+<mutation else="1"/>
+<value name="IF0">
+<block type="logic_compare" id="MAl#oabnR*]}v{*w!`zM">
+<field name="OP">EQ</field>
+<value name="A">
+<block type="http_get_status" id="wtKQn`[WC=}H%N;~w)2V">
+<field name="request" id="yFH}K(gY?bu`VLT9NYZ.">request</field>
+</block>
+</value>
+<value name="B">
+<block type="math_number" id="tOXrARcB78l}%us2,2?k">
+<field name="NUM">200</field>
+</block>
+</value>
+</block>
+</value>
+<statement name="DO0">
+<block type="text_print" id="~f:`;)0R$FRjhp{cR]@E">
+<value name="TEXT">
+<shadow type="text" id="pr9Ux3[LuPqlVB$8Clx[">
+<field name="TEXT">abc</field>
+</shadow>
+<block type="text_join" id="=(rN|1TYMR;Dm$,@i*q=">
+<mutation items="2"/>
+<value name="ADD0">
+<block type="text" id="CqCB]Gb8.24=oZ!:4sB~">
+<field name="TEXT">Success. Response content: </field>
+</block>
+</value>
+<value name="ADD1">
+<block type="http_get_content" id="EIZ(Vmcg-,^Dt/N7Xc@;">
+<field name="request" id="yFH}K(gY?bu`VLT9NYZ.">request</field>
+</block>
+</value>
+</block>
+</value>
+</block>
+</statement>
+<statement name="ELSE">
+<block type="text_print" id="RpdJo2g.#On;%,bM%LRs">
+<value name="TEXT">
+<shadow type="text">
+<field name="TEXT">abc</field>
+</shadow>
+<block type="text_join" id="bazG!D4x;$0/d[t@aG7]">
+<mutation items="2"/>
+<value name="ADD0">
+<block type="text" id="Gq9,.$(51,A0{y*siaQ~">
+<field name="TEXT">Request Error. Status code = </field>
+</block>
+</value>
+<value name="ADD1">
+<block type="http_get_status" id="gZ+~#AOpOjdmdd=2F%e~">
+<field name="request" id="yFH}K(gY?bu`VLT9NYZ.">request</field>
+</block>
+</value>
+</block>
+</value>
+</block>
+</statement>
+</block>
+</next>
+</block>
+
+
+      <label text="POST Method"></label>
+
     <block type="net_post_request">
       <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
       <field name="NET_POST_REQUEST_DATA">Data</field>

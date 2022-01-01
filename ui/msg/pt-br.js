@@ -42,7 +42,9 @@ var MSG = {
   accountTooltip: "Tus proyectos y escenarios.",
   blocksLoadedFromFile: "Blocos carregados do arquivo '%1'.",
   deviceUnavailable: "Aparelho '%1' indisponível.",
-  notAvailableFlag: "$1 não está disponível nesse navegador.\r\nVerifique se a 'flag' $1 está ativa",
+  notConnected: "No connection to send data.",
+  serialFroozen: "Serial connection is unresponsive.",
+  notAvailableFlag: "$1 is not available on your browser.\r\nPlease make sure the $1 flag is enabled.",
 
 //Blocos
   block_delay: "esperar",
@@ -103,6 +105,11 @@ var MSG = {
   dht_humi: "umidade do DHT11/22",
   type: "modelo",
 
+//Network
+  net_http_get: "Requisição HTTP GET",
+  net_http_get_status: "Status da resposta HTTP",
+  net_http_get_content: "Conteúdo da resposta HTTP",
+
 //Splash screen
   splash_welcome: "Bem vindo ao BIPES!",
   splash_footer: "Não mostrar esta tela novamente",
@@ -110,9 +117,6 @@ var MSG = {
   splash_message: "<p><b>BIPES: Block based Integrated Platform for Embedded Systems</B> permite programar, usando texto ou blocos, diversos tipos de sistemas embarcados e módulos para Internet das Coisas usando MicroPython, CircuitPython, Linux ou Snek. Você pode conectar, programar, depurar e monitorar diversos tipos de placas usando rede, wifi, USB ou Bluetooth. Verifique a lista de placas suportadas <a href=https://bipes.net.br/wp/boards/>aqui</a>. Alguns exemplos de placas compatíveis são: STM32, ESP32, ESP8266, Raspberry Pi (incluindo a Pico) e até mesmo  Arduino. <p>O <b>BIPES</b> é totalmente <a href=https://bipes.net.br/wp/development/>aberto</a> e gratuito e funciona sem a necessidade de instalação de nenhum plugin ou software adicional,  além de funcionar offline, sem conexão com a Internet. Esperamos que o BIPES seja útil para você e que você possa aproveitá-lo. Se precisar de ajuda, temos o <a href=https://github.com/BIPES/BIPES/discussions>fórum de discussões</a>, onde <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>novidades também são anunciadas</a>. Sinta-se à vontade para participar e também deixar comentários e sugestões para o projeto!</p><p>Grave o MicroPython, a partir do navegador web, na ESP32 ou ESP8266 facilmente para usar o BIPES: <a href=https://bipes.net.br/flash/esp-web-tools/>https://bipes.net.br/flash/esp-web-tools/</a></p> <p>A equipe do projeto BIPES agradece o seu interesse!</p>"
 
   
-
-
-
 
 };
 
@@ -126,6 +130,4 @@ Blockly.Msg['CAT_COMM'] = "Comunicação";
 Blockly.Msg['CAT_FILES'] = "Arquivos";
 Blockly.Msg['CAT_NET'] = "Rede e Internet";
 Blockly.Msg['CAT_CONTROL'] = "Controle";
-
-
 

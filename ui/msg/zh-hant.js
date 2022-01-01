@@ -105,6 +105,11 @@ var MSG = {
   dht_humi: "get DHT11/22 humidity",
   type: "type",
 
+//Network
+  net_http_get: "HTTP GET Request",
+  net_http_get_status: "HTTP Status code",
+  net_http_get_content: "HTTP Response content",
+
 //Splash screen
   splash_welcome: "Welcome to BIPES!",
   splash_footer: "Do not show this screen again",
