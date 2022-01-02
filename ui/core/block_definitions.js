@@ -9758,12 +9758,12 @@ Blockly.Blocks['net_http_server_start'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Start HTTP Web Server");
+        .appendField(MSG["net_http_server_start"]);
 
     this.appendValueInput("port")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Port:");
+        .appendField(MSG["net_http_server_start_port"]);
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -9776,7 +9776,7 @@ Blockly.Blocks['net_http_server_accept'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Wait for HTTP Client");
+        .appendField(MSG["net_http_server_wait"]);
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -9789,7 +9789,7 @@ Blockly.Blocks['net_http_server_requested_page'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Requested Web Page");
+        .appendField(MSG["net_http_server_requested_page"]);
 
     this.setOutput(true);
     this.setTooltip('');
@@ -9801,12 +9801,12 @@ Blockly.Blocks['net_http_server_send_response'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("Sent HTTP Response to Client");
+        .appendField(MSG["net_http_server_send_response"]);
 
     this.appendValueInput("html")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("HTML Data:");
+        .appendField(MSG["net_http_server_send_html"]);
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -11507,4 +11507,7 @@ Blockly.Blocks['http_get_content'] = {
  this.setHelpUrl("bipes.net.br");
   }
 };
+
+
+
 

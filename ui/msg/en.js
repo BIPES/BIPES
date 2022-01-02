@@ -109,6 +109,12 @@ var MSG = {
   net_http_get: "HTTP GET Request",
   net_http_get_status: "HTTP Status code",
   net_http_get_content: "HTTP Response content",
+  net_http_server_start: "Start HTTP Web Server",
+  net_http_server_start_port: "Port",
+  net_http_server_wait: "Wait for HTTP Client",
+  net_http_server_requested_page: "Requested Web Page",
+  net_http_server_send_response: "Send HTTP Response",
+  net_http_server_send_html: "HTML",
 
 //Splash screen
   splash_welcome: "Welcome to BIPES!",
