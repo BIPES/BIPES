@@ -682,22 +682,35 @@ Blockly.Blocks['esp32_adc'] = {
 
 Blockly.Blocks['esp32_adc'] = {
   init: function() {
-    this.appendDummyInput()
-        .appendField("ESP32 Analog Input (ADC)");
-    this.appendDummyInput()
-        .appendField("Attenuation: ")
-        .appendField(new Blockly.FieldDropdown([["ATTN_0DB","0"], ["ATTN_2_5DB","1"], ["ATTN_6DB","2"], ["ATTN_11DB","3"]]), "Attenuation");
-    this.appendDummyInput()
-        .appendField("Width: ")
-        .appendField(new Blockly.FieldDropdown([["WIDTH_9BIT","0"], ["WIDTH_10BIT","1"], ["WIDTH_11BIT","2"], ["WIDTH_12BIT","3"]]), "Width: ");
-    this.appendValueInput("pin")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("pin");
-    this.setOutput(true, null);
-    this.setColour(230);
- this.setTooltip("Read ESP32 Analog Input");
- this.setHelpUrl("bipes.net.br");
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		this.appendDummyInput()
+		.appendField("ESP32S2 Analog Input (ADC)");
+		this.appendValueInput("pin")
+		.setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+		.appendField("pin");
+		this.setOutput(true, null);
+		this.setTooltip("Read ESP32S2 Analog Input");
+	}
+	else {
+		this.appendDummyInput()
+		.appendField("ESP32 Analog Input (ADC)");
+		this.appendDummyInput()
+		.appendField("Attenuation: ")
+		.appendField(new Blockly.FieldDropdown([["ATTN_0DB","0"], ["ATTN_2_5DB","1"], ["ATTN_6DB","2"], ["ATTN_11DB","3"]]), "Attenuation");
+		this.appendDummyInput()
+		.appendField("Width: ")
+		.appendField(new Blockly.FieldDropdown([["WIDTH_9BIT","0"], ["WIDTH_10BIT","1"], ["WIDTH_11BIT","2"], ["WIDTH_12BIT","3"]]), "Width: ");
+		this.appendValueInput("pin")
+		.setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+		.appendField("pin");
+		this.setOutput(true, null);
+		this.setColour(230);
+		this.setTooltip("Read ESP32 Analog Input");
+	}
+
+	this.setColour(230);
   }
 };
 
