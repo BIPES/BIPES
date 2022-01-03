@@ -77,7 +77,7 @@ Blockly.Python['gpio_set'] = function(block) {
 	if (UI ['workspace'].selector.value == "ESP32S2") {
 
 		Blockly.Python.definitions_['import_board'] = 'import board';
-		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction';
+		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction, Pull';
 		Blockly.Python.definitions_['gpio_set' + value_pin] = 'try:\n\tgpio' + value_pin2 + '.deinit()\nexcept:\n\tpass\ngpio' + value_pin2 + '=DigitalInOut(board.IO' + value_pin2 + ')\n' + 'gpio' + value_pin2 + '.direction = Direction.OUTPUT';
 		var code = 'gpio' + value_pin2 + '.value=' + value_value + '\n';
         } else {
