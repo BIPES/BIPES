@@ -67,9 +67,11 @@ navigation = [
     Navigation('Blocks', 'Blocks', 'blocks','blocks'),
     #Navigation('Dashboard', 'Dashboard','dashboard'),
     Navigation('Files','Files','files','files'),
-    Navigation('Notification','Messages','notification'),
+    Navigation('Notification','Notifications','notification'),
     #Navigation('Admin','Settings','admin'),
-    Navigation('Console','Console','console','console')
+    Navigation('Console','Console','console','console'),
+    Navigation('Device','Device','device','device'),
+    Navigation('Project','Projects','project','project')
     ];
 
  # Verifica se objeto possui propriedade, e pode retornar outra propriedade

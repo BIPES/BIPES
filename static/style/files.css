@@ -1,3 +1,9 @@
+nav #files::before {
+	background-position: left calc(-1.5rem*13) top;
+}
+nav #files.on::before {
+	background-position: left calc(-1.5rem*13) bottom;
+}
 section#files details {
   overflow: hidden;
   transition: .125s ease border;
@@ -47,14 +53,25 @@ section#files #pane {
   overflow: hidden;
   width: 15rem;
   border-right: 1px solid #666;
+  flex-shrink: 0;
 }
 section#files.hidePane #pane {
   width: 0rem;
 }
 section#files #editor {
   background: #282c34;
-  width: calc(100% - 15rem);
   overflow: hidden;
+}
+@media screen and (min-width: 40rem) {
+  section#files #editor {
+    width: calc(100% - 15rem);
+  }
+}
+@media screen and (max-width: 39.99rem) {
+  section#files #editor {
+    width: 100%;
+    flex-shrink: 0;
+  }
 }
 section#files.hidePane #editor {
   width: 100%;

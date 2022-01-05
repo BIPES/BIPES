@@ -28,9 +28,9 @@ class CommandBroker {
     }, true)
 
     this._clientConnect ()
-    window.addEventListener("beforeunload", () => {
+    window.addEventListener("unload", () => {
       this._clientDisconnect()
-      pipe.close()
+      this.pipe.close()
     })
   }
   /**

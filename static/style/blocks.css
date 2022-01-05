@@ -3,3 +3,9 @@ section#blocks #blockly {
   height: 100%;
   overflow: hidden;
 }
+nav #blocks::before {
+	background-position: left calc(-1.5rem*19) top;
+}
+nav #blocks.on::before {
+	background-position: left calc(-1.5rem*19) bottom;
+}

@@ -14,33 +14,37 @@ class Console {
 	  $.terminalXterm = new DOM('div', {className:"xterm"})
 	  $.quickActions = new DOM('div', {className:"quick-actions"})
 	    .append([
-	      new DOM('span', {innerText:"Reset device", className:'master'})
-	        .onclick(command, command.dispatch, [
-	          channel,
-	          'push', [
-	              '\x04',
-	              channel.targetDevice, [], command.tabUID
-	            ]
-	        ]),
-	      new DOM('span', {innerText:"Stop program", className:'master'})
-	        .onclick(command, command.dispatch, [
-	          channel,
-	          'push', [
-	              '\x03',
-	              channel.targetDevice, [], command.tabUID
-	            ]
-	        ]),
 	      new DOM('span', {innerText:"Clear terminal"})
 	        .onclick(this, ()=>{this.terminal.clear()}),
+	      new DOM('span', {innerText:"Reset device", className:'master'})
+	        .onclick(command, () => {
+	          command.dispatch(channel, 'push', [
+	              '\x04',
+	              channel.targetDevice, [], command.tabUID
+	            ])
+	          }),
+	      new DOM('span', {innerText:"Stop program", className:'master'})
+	        .onclick(command, () => {
+	          command.dispatch(channel, 'push', [
+	              '\x03',
+	              channel.targetDevice, [], command.tabUID
+	            ])
+	          }),
 	      new DOM('span', {innerText:"Stop timers", className:'master'})
-	        .onclick(command, command.dispatch, [
-	          channel,
-	          'push', [
+	        .onclick(command, () => {
+	          command.dispatch(channel, 'push', [
 	              'from machine import Timer; [Timer(i).deinit() for i in range(0,16)]\r',
 	              channel.targetDevice, [], command.tabUID
-	            ]
-	        ]),
-      ])
+	            ])
+	          }),
+	      new DOM('span', {innerText:"Device info", className:'master'})
+	        .onclick(command, () => {
+	          command.dispatch(channel, 'push', [
+	              'import os; os.uname()\r',
+	              channel.targetDevice, [], command.tabUID
+	            ])
+	          }),
+	        ])
 
 	  $.container = new DOM('div', {className:"container"})
 	    .append([

@@ -1,0 +1,47 @@
+
+nav #project::before {
+	background-position: left calc(-1.5rem*28) top;
+}
+nav #project.on::before {
+	background-position: left calc(-1.5rem*28) bottom;
+}
+section#project #user-projects .header {
+  margin-top: 0.75rem;
+}
+section#project .listy button {
+  cursor: pointer;
+  border-bottom: 1px solid #666;
+}
+section#project #user-projects button.on {
+  cursor: default;
+}
+section#project #user-projects button > div {
+  border: 1px solid transparent;
+}
+section#project #user-projects button > div {
+  transition: .25s ease background-color, .125s ease transform;
+}
+section#project #user-projects button > div > div {
+  font-size: 0.9rem;
+}
+section#project #user-projects button.on > div {
+  border: 1px solid #666;
+  background: #333;
+}
+section#project #user-projects button input {
+  font-weight: bold;
+  padding:.5rem 0 0.125rem 0;
+  margin-right: 0.5rem;
+}
+section#project #user-projects button:not(.on) input {
+  pointer-events: none;
+  border-bottom: 1px solid transparent;
+}
+section#project #user-projects button.on input {
+  border-bottom: 1px solid #666;
+}
+
+
+section#project .listy button.on:active > div {
+  transform: scale(1) !important;
+}

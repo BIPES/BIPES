@@ -3,6 +3,7 @@
 <head>
 	<title>{{ app_name }}</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
+  <link rel="icon" sizes="192x192" href="static/media/icon/icon-192x192.png">
 	<link rel="stylesheet" href='/static/style/main.css' />
 {% for key, plugin in npm.items() %}
   {% if plugin.import %}
@@ -24,7 +25,7 @@
 
 <nav>
 <div id="panels">
-	<span id="menu"></span>
+	<span id="menu">{{ app_name }}</span>
 {% for item in navigation %}
 	<a id="{{ item.href }}" href="/ide?{{ item.href }}">{{ item.caption }}</a>
 {% endfor %}

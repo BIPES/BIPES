@@ -14,7 +14,9 @@ class Admin {
 	  $.container = new DOM('div')
 	    .append([$.h2, $.wrapper])
 
-		DOM.get('section#admin').append($.container._dom)
+		$.section = new DOM(DOM.get('section#admin'))
+		  .append($.container._dom)
+		$.section._dom.classList.add('default')
 
 	}
 	init(){}

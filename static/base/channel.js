@@ -1,4 +1,6 @@
-"use strict";
+"use strict"
+
+import {Tool} from './tool.js'
 
 export {Channel}
 
@@ -15,6 +17,7 @@ class Channel {
     this.root = root
     this.current
 
+    this.currentProtocol // Just a string with the current connected protocol
     this.input = []   // Input to be sent to a device
     this.output = ''  // Output from the last command run in the decide
     this.watcher      // Store the interval to send data to a device
@@ -23,18 +26,35 @@ class Channel {
     this.callbacks = []
     this.webserial = new _WebSerial ()
     this.checkUp ()
-    this.targetDevice = 'mock'
+    this.targetDevice
+    this.ping = {      // Create a timer on connect and on message to check
+      timer:undefined, // if the device is responding
+      on:false
+    }
 
 		// Cross tabs event handler on muxing terminal
     command.add(this, {
       push: this.push,
       rawPush: this.rawPush
     })
+
+    window.addEventListener("beforeunload", () => {
+      if (this.current != undefined)
+        this.disconnect(true)
+    })
+  }
+  renewPing (){
+    clearTimeout(this.ping.timer)
+    this.ping.timer = setTimeout(()=>{
+      if (this.ping.on === false)
+        page.device.unresponsive(this.targetDevice)
+      }, 2000)
   }
   push (cmd, targetDevice, callback, tabUID){
     if (this.current == undefined || this.targetDevice != targetDevice)
       return
 
+    this.renewPing()
 
     cmd = cmd.replaceAll('\t',"    ")
 
@@ -80,29 +100,41 @@ class Channel {
     this.connect(channel)
 
   }
-  connect (channel){
-    this[channel].connect()
+  connect (channel, callback){
+    this[channel].connect(callback)
   }
-  _connected (channel){
+  _connected (channel, callback){
+    this.targetDevice = Tool.UID()
     this.current = this[channel]
+    this.currentProtocol = this.current.constructor.name
     this.watcher = setInterval(
       this.current.watch.bind(this.current),
       50);
     page.console.on()
-    page.console.write(`\r\n\x1b[31mConnected with ${this.current.constructor.name}!\x1b[m\r\n`);
+    page.console.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
     this.push('\r\n', this.targetDevice)
+    if (typeof callback == 'object' && typeof callback[1] == 'function')
+      callback[1].apply(callback[0])
   }
-  disconnect (){
-    if (!this.current.disconnect())
+  disconnect (force){
+    if (!this.current.disconnect(force))
       return
 
-    page.console.write(`\r\n\x1b[31mDisconnected from ${this.current.constructor.name}!\x1b[m\r\n`);
+    this._disconnected()
+  }
+  _disconnected (){
     clearInterval(this.watcher);
 
     this.output = ''
     this.callbacks = []
     this.current = undefined
-    page.console.term.off()
+    let uid = this.targetDevice,
+        currentProtocol = this.currentProtocol
+    this.currentProtocol = ''
+    this.targetDevice = undefined
+    page.device.unuse(uid)
+    page.console.off()
+    page.console.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
   }
   checkUp (){
     if (navigator.serial == undefined)
@@ -194,7 +226,7 @@ class _WebSerial {
 	/**
    * Connect using webserial protocol, will ask user permission for the serial port.
    */
-  connect (){
+  connect (callback){
     if (navigator.serial == undefined)
       return false
 
@@ -207,6 +239,7 @@ class _WebSerial {
               //data comes in chunks, keep last 4 chars to check MicroPython REPL string
               channel.output += chunk
               page.console.write(chunk)
+              channel.ping.on = true
               if (channel.output.substring(channel.output.length - 4) == ">>> "){
                 channel.output = channel.output.substring(0, channel.output.length - 4)
                 //After all code was executed
@@ -218,18 +251,21 @@ class _WebSerial {
                 }
               }
             }
+          },
+          abort(e){
+            channel._disconnected()
           }
         })
         this.port.readable
         .pipeThrough(new TextDecoderStream())
         .pipeTo(appendStream)
-        channel._connected('webserial')
+        channel._connected('webserial', callback)
         return true
 
       }).catch((e) => {
         console.error(e)
         if (e.code == 11) {
-          channel._connected('webserial')
+          channel._connected('webserial', callback)
           return true
         }
       })
@@ -239,16 +275,21 @@ class _WebSerial {
     })
   }  /**
    * Disconnect device connected with webserial protocol.
+   * @param {boolean} force - Try to disconnect at all cost and if fails, pretend
+   *                          it worked (useful on unload when everything is cleared anyway)
    */
-  disconnect () {
+  disconnect (force) {
     const writer = this.port.writable.getWriter()
     writer.close().then(() => {
       this.port.close().then(() => {
           this.port = undefined
         }).catch((e) => {
           console.error(e)
-          writer.abort()
-          this.port = undefined
+          if (force == true){
+            writer.abort()
+            channel._disconnected()
+            this.port = undefined
+          }
         })
         return true
     })

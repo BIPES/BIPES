@@ -43,6 +43,15 @@ input[type="submit"] {
 label {
 	cursor: pointer;
 }
+hr {
+  border: 1px solid #666;
+  border-top: none;
+}
+select {
+  border: 1px solid #fff;
+  border-radius: 2rem;
+  padding: 0.25rem 0.5em;
+}
 input[type="checkbox"]{
 	display: none;
 	width: 1em;
@@ -56,7 +65,7 @@ input[type="file"] {
 	height: 0;
 	box-sizing: border-box;
 }
-h1, h2, h3 {
+h1, h2, h3, h4 {
 	margin: 0;
 	color: #fff;
 }
@@ -67,7 +76,7 @@ h1 {
 h2 {
 	font-size: 1.125em;
 }
-h3 {
+h3, h4 {
 	font-size: 1em;
 }
 li {
@@ -120,8 +129,9 @@ nav a, nav span {
 	border: 1px solid transparent;
   margin: .25rem
 }
-nav a:before, nav span:before, button.icon:before, .button.icon:before, label.icon:before {
-	display: block;
+nav a:before, nav span:before, button.icon:before, .button.icon:before,
+label.icon:before, span.icon:before {
+	display: inline-block;
 	width: 1.5rem;
 	height: 1.5rem;
 	background: url('../media/icons.svg');
@@ -133,7 +143,7 @@ nav a::before, nav span::before {
   margin: 0.75rem 0.75rem 0.75rem 0.71rem;
 }
 nav a.on {
-    background: #4499cc;
+    border-color: #4499cc;
     box-shadow: 0px .125em .25em rgba(0,0,0,0.8);
 }
 @media only screen and (min-width: 40rem) {
@@ -189,14 +199,34 @@ nav a, nav span {
     margin: 0.75rem;
   }
 }
-
+/* Logo */
+nav #menu {
+  font-size:1.5rem;
+  color: #4499cc;
+}
+nav #menu::after {
+	display: block;
+	width: 2rem;
+	height: 2rem;
+	margin-left: -8.25rem;
+	background: #333 url('../media/icons.svg');
+	content: '';
+	flex-shrink: 0;
+  transition: .125s ease margin-left;
+	background-position: left calc(-2rem*22) top;
+	background-size: auto 4rem;
+}
+nav.on #menu {
+  width: 12rem;
+}
+nav.on #menu:after {
+  margin-left: -6.25rem;
+}
 /*Icons*/
 nav #menu::before {
   transition: .125s ease background-position;
-	background-position: left calc(-1.5rem*0) top;
-}
-nav.on #menu::before {
 	background-position: left calc(-1.5rem*0) bottom;
+	margin-right: 2.5rem
 }
 nav #settings::before {
 	background-position: left calc(-1.5rem*3) top;
@@ -243,18 +273,6 @@ nav #admin::before {
 nav #admin.on::before {
 	background-position: left calc(-1.5rem*11) bottom;
 }
-nav #console::before {
-	background-position: left calc(-1.5rem*12) top;
-}
-nav #console.on::before {
-	background-position: left calc(-1.5rem*12) bottom;
-}
-nav #files::before {
-	background-position: left calc(-1.5rem*13) top;
-}
-nav #files.on::before {
-	background-position: left calc(-1.5rem*13) bottom;
-}
 button#upload::before, label#upload::before {
 	background-position: left calc(-1.5rem*15) top;
 }
@@ -264,11 +282,17 @@ button#download:before {
 button#run:before {
 	background-position: left calc(-1.5rem*18) top;
 }
-nav #blocks::before {
-	background-position: left calc(-1.5rem*19) top;
+button#disconnect:before {
+	background-position: left calc(-1.5rem*20) top;
 }
-nav #blocks.on::before {
-	background-position: left calc(-1.5rem*19) bottom;
+button#fetch:before {
+	background-position: left calc(-1.5rem*26) top;
+}
+span.tips:before {
+	background-position: left calc(-1.5rem*27) top;
+}
+button#share:before {
+	background-position: left calc(-1.5rem*29) top;
 }
 nav #app-version {
   text-align: center;
@@ -383,12 +407,9 @@ section.ani.on {
 	display: flex;
   justify-content: space-between;
   align-items: center;
-	padding: .25rem .25rem .25rem .5rem;
-	font-weight: bold;
-  height: 3rem;
 	overflow: hidden;
 }
-button.icon {
+button.icon, .button.icon {
     cursor: pointer;
 }
 button.icon, label.icon {
@@ -524,28 +545,30 @@ a#notification.new:after {
     bottom: 3.5em;
   }
 }
-section#notification, section#admin {
+section.default {
   overflow-y: auto;
   background: #222;
 }
-section#notification > div, section#admin > div {
+section.default > .container {
   max-width: 50em;
   margin: 0 auto;
   padding: 0 1em 1em 1em;
 }
-section#notification > div > h2, section#admin > div > h2 {
+section.default > .container > h2 {
   position: sticky;
   background: #222;
   border-bottom: #666 1px solid;
   width: 100%;
   max-width: 50rem;
   top: 0;
-  padding: 1em 0 .5em 0
+  padding: 1rem 1rem 0.5rem 1rem;
+  margin: 0 -1rem;
+  z-index: 2;
 }
-section#notification .notification-cards, section#admin .admin-settings {
+.cards {
   display: block;
 }
-.notification-cards > span {
+.cards > span {
   display: flex;
   justify-content: space-between;
   padding: .5em;
@@ -555,11 +578,11 @@ section#notification .notification-cards, section#admin .admin-settings {
   align-items: center;
   user-select: text;
 }
-.notification-cards > span > span > div {
+.cards > span > span > div {
   color: #aaa;
   font-size: .9em;
 }
-.notification-cards h3 {
+.cards h3 {
   font-weight: normal;
   word-break: break-word;
 }
@@ -598,4 +621,73 @@ section#notification .notification-cards, section#admin .admin-settings {
   border-top: #666 1px solid;
   padding: 0.5rem;
   background: #000;
+}
+.funky {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 -1rem;
+  padding: 0 .5rem;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+.funky button, .funky > span {
+  width: 100%;
+  padding: .5rem;
+  min-width: 12rem;
+  max-width: 18rem;
+}
+.funky button > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: .5rem;
+  padding: 4em .5em .5em 2em;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: right;
+  transition: .125s ease transform;
+}
+.funky button:active > div {
+  transform: scale(0.98);
+}
+.listy {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 -1rem;
+  padding: 0 .5rem;
+  word-break: keep-all;
+  white-space: nowrap;
+  flex-wrap: wrap;
+}
+.listy button, .funky > span {
+  width: 100%;
+  padding: .5rem 0;
+}
+.listy button > div {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  border-radius: .5rem;
+  padding: .5em;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: right;
+  transition: .125s ease transform;
+}
+.listy button:active > div {
+  transform: scale(0.98);
+}
+.tips {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #666;
+  padding: .5rem;
+  border-radius: 2rem;
+  opacity: 0.8;
+  margin: .5rem auto;
+  font-size: 0.9rem;
+}
+.tips:before {
+  margin-right: .25rem !important;
 }

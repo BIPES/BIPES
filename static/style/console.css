@@ -1,3 +1,9 @@
+nav #console::before {
+	background-position: left calc(-1.5rem*12) top;
+}
+nav #console.on::before {
+	background-position: left calc(-1.5rem*12) bottom;
+}
 section#console.ani{
   display: flex;
   flex-direction: row;

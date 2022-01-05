@@ -12,11 +12,13 @@ class Notification {
 
 	  let $ = this._dom = {}
 	  $.h2 = new DOM('h2', {innerText:'Notifications'})
-	  $.wrapper = new DOM('span', {className: 'notification-cards'})
-	  $.container = new DOM('div')
+	  $.wrapper = new DOM('span', {className: 'cards'})
+	  $.container = new DOM('div', {className:'container'})
 	    .append([$.h2, $.wrapper])
 
-		DOM.get('section#notification').append($.container._dom)
+		$.section = new DOM(DOM.get('section#notification'))
+		  .append($.container._dom)
+		$.section._dom.classList.add('default')
 
 		// Cross tabs event handler on sending and deleting messages
     command.add(this, {

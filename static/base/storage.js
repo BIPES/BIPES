@@ -11,7 +11,7 @@ class StorageBroker {
   constructor (root){
     this.root = root
   }
-  fetchAll (reg){
+  keys (reg){
     let values = []
     let keys = Object.keys (localStorage)
 	      .filter((key) => {

@@ -14,12 +14,14 @@ class DOM {
 	  case 'button':
 	  case 'h2':
 	  case 'h3':
+	  case 'h4':
     case 'span':
     case 'div':
     case 'select':
     case 'option':
     case 'summary':
     case 'details':
+    case 'hr':
     case '':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
@@ -33,7 +35,7 @@ class DOM {
 	  case 'img':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
-          if (['preload', 'controls', 'autoplay'].includes(tag))
+          if (['preload', 'controls', 'autoplay', 'src', 'id', 'className'].includes(tag))
            this._dom[tag] = tags[tag]
         }
         break
@@ -43,7 +45,7 @@ class DOM {
 	  case 'textarea':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
-          if (['value', 'className', 'id', 'placeholder', 'htmlFor', 'type', 'autocomplete', 'innerText', 'name', 'accept'].includes(tag))
+          if (['value', 'className', 'id', 'placeholder', 'htmlFor', 'type', 'autocomplete', 'innerText', 'name', 'accept', 'disabled'].includes(tag))
            this._dom[tag] = tags[tag]
         }
         break
@@ -259,6 +261,15 @@ class DOM {
     document.body.appendChild(element)
     element.click ()
     document.body.removeChild(element)
+  }
+
+  static setSelected (dom, value){
+    for (var i = 0; i < dom._dom.options.length; i++){
+      if (dom._dom.options[i].text == value){
+        dom._dom.options[i].selected = true
+        return
+      }
+    }
   }
 }
 

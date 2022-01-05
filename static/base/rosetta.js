@@ -46,7 +46,12 @@ let MicroPython = {
   },
   ls:{
     cmd: (path) => `import os; os.listdir('${path}')\r`,
-    reg:  /\import os; os.listdir\('(.*)'\)/
+    reg:  /\import os; os\.listdir\('(.*)'\)/
+  },
+  uname:{
+    cmd:() => `import os; os.uname()\r`,
+    reg: /import os; os\.uname\(\)/,
+    reg_str: /nodename='(.*?)', release='(.*?)'/
   },
   error:{
     reg: /OSError: ([0-9]{1,})/
