@@ -152,6 +152,9 @@ class Project {
       name: 'Empty project',
       device: {
         target:page.device.default
+      },
+      blocks: {
+        xml:'<xml xmlns="https://bipes.net.br/ide"></xml>'
       }
     }
   }
@@ -245,14 +248,17 @@ class Project {
 	update (data, uid){
 	  uid = uid == undefined ? this.currentUID : uid
 
-	  command.dispatch(this, 'update', [uid, data])
+    command.dispatch(this, 'update', [uid, data, command.tabUID])
     // Update localStorage once
     storage.set(`project-${uid}`, JSON.stringify(this.projects[uid]))
 	}
-	_update (uid, data){
+	_update (uid, data, tabUID){
     for (const key in data){
-      this.projects[uid][key] = data[key]
+      if (key != 'load')
+        this.projects[uid][key] = data[key]
     }
+    if (data.hasOwnProperty('load') && data.load == false)
+      return
 
     for (const key in data){
       switch (key) {
@@ -264,9 +270,9 @@ class Project {
           break
         default:
           if (uid == this.currentUID){
-            for (const key in page){
+            for (const key in data){
               if (typeof page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
-                page[key].load(data[key])
+                page[key].load(data[key], tabUID)
           }
         }
       }

@@ -136,6 +136,9 @@ class Device {
     // be called even deinited.
     if (!this.inited)
       this.devices = []
+
+    // Request info
+    setTimeout(()=>{this.fetchInfo(channel.targetDevice)},500)
 	}
 
 	_devicePush (uid, timestamp, str, tabUID){
@@ -193,7 +196,7 @@ class Device {
 	  if (!this.inited)
 	    return
 	  if (obj.hasOwnProperty('target'))
-  	  DOM.setSelected(this._dom.targetDropdown, obj.target)
+  	  DOM.setSelected(this._dom.targetDropdown, obj.target),
       this._dom.pinout._dom.src = `./static/media/devices/${obj.target}.svg`
 	}
 	setProjectTarget (){

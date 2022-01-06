@@ -363,7 +363,7 @@ class Files {
    */
   _editorToTarget () {
     //For codemirror
-      let script = this.codemirror.state.doc.toString()
+      let script = this.codemirror.state.doc.toString(),
         filename = this._dom.filename._dom.value
     let uint8Array = new Uint8Array([...script].map(s => s.charCodeAt(0)))
 

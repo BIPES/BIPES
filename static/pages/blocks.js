@@ -7,6 +7,8 @@ export {Blocks}
 class Blocks {
 	constructor (){
 	  this.timedResize // To guarantee that blockly is ocuppying 100%
+	  this.inited = false
+	  this.loadedWorkspace = false
 
 	  let $ = this._dom = {}
 
@@ -26,10 +28,21 @@ class Blocks {
 	  })
 	}
 	init (){
-	  this.workspace.setVisible(true);
+	  this.workspace.setVisible(true)
+	  this.inited = true
+	  let obj = page.project.projects[page.project.currentUID]
+    if (obj.hasOwnProperty('blocks'))
+      this.load(obj.blocks)
+	  // Update project on changes
+    this.workspace.addChangeListener(this.update)
 	}
 	deinit(){
-	  this.workspace.setVisible(false);
+    this.workspace.removeChangeListener(this.update)
+	  this.workspace.setVisible(false)
+
+
+	  this.workspace.clear()
+	  this.inited = false
 	}
 	resize(){
 	  Blockly.svgResize(this.workspace)
@@ -37,5 +50,31 @@ class Blocks {
 	  this.timedResize = setTimeout(()=>{
   	  Blockly.svgResize(this.workspace)
 	  },250)
+	}
+	update (ev){
+    if (!ev.recordUndo)
+        return
+
+	  let xml = Blockly.Xml.domToText(
+	    Blockly.Xml.workspaceToDom(page.blocks.workspace)
+	  )
+	  page.project.update({
+	    blocks:{
+	      xml:xml
+	    }
+	  })
+	}
+	load (obj, tabUID){
+	  if (!this.inited || tabUID == command.tabUID)
+	    return
+	  if (obj.hasOwnProperty('xml')) {
+	    this.loadedWorkspace = false
+	    Blockly.Events.disable()
+      Blockly.Xml.clearWorkspaceAndLoadFromXml(
+        Blockly.Xml.textToDom(obj.xml),
+        page.blocks.workspace
+      )
+	    Blockly.Events.enable()
+    }
 	}
 }
