@@ -449,8 +449,6 @@ Code.reloadToolbox = function(XML_) {
   Code.workspace.scrollCenter(); // centralize workspace
 }
 
-
-
 function loadExampleFromURL(pName){
 
     var request = new XMLHttpRequest();

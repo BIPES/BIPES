@@ -483,6 +483,12 @@ window.onload = function() {
 		Tool.exportScreenshot();
 	});
 
+	shortcut.add("Ctrl+Shift+E",function() {
+		//alert("BIPES hotkey: Run program and switch to console!");
+		Code.handleLink('console',1)
+		Tool.runPython();
+	});
+
 	shortcut.add("Ctrl+Shift+R",function() {
 		//alert("BIPES hotkey: Run program!");
 		Tool.runPython();
