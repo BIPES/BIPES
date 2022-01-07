@@ -14,10 +14,10 @@ class StorageBroker {
   keys (reg){
     let values = []
     let keys = Object.keys (localStorage)
-	      .filter((key) => {
-		      return reg.test(key)
-	      });
-	  keys.forEach((key) => {
+        .filter((key) => {
+          return reg.test(key)
+        });
+    keys.forEach((key) => {
       values.push(key.match(reg) [1])
     })
     return values

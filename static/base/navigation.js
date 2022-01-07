@@ -10,28 +10,28 @@ function handleLink (_navigation, _pos, push){
 
   let turnOff = (elem, pos) => {
     page[elem].deinit()
-	  page[elem].nav.classList.remove('on')
-	  // just to avoid animation glitch
+    page[elem].nav.classList.remove('on')
+    // just to avoid animation glitch
   if (pos == 1)
-    	page[elem].section.classList.add(`_pos1`)
+      page[elem].section.classList.add(`_pos1`)
     if (pos == 2)
-    	page[elem].section.classList.add(`_pos2`)
-  	page[elem].section.classList.remove(`pos${pos}`)
-	  Animate.off(page[elem].section)
+      page[elem].section.classList.add(`_pos2`)
+    page[elem].section.classList.remove(`pos${pos}`)
+    Animate.off(page[elem].section)
   }
 
   let turnOn = (elem, pos) => {
     page[elem].init()
     page[elem].nav.classList.add('on')
-	  Animate.on(page[elem].section)
-	  page[elem].section.classList.remove("_pos1", "_pos2")
-	  if (pos != 0)
-  	  page[elem].section.classList.add(`pos${pos}`)
-	  if (pos != 2 && push)
-	    window.history.pushState({}, '',
-	      `${window.location.origin}/ide?${elem}`)
+    Animate.on(page[elem].section)
+    page[elem].section.classList.remove("_pos1", "_pos2")
+    if (pos != 0)
+      page[elem].section.classList.add(`pos${pos}`)
+    if (pos != 2 && push)
+      window.history.pushState({}, '',
+        `${window.location.origin}/ide?${elem}`)
 
-	  handleResize()
+    handleResize()
   }
 
   // Interpreting link
@@ -50,7 +50,7 @@ function handleLink (_navigation, _pos, push){
     _navigation.current = ['', crt[2], crt[1]]
     window.history.pushState({}, '',
       `${window.location.origin}/ide?${_navigation.current[1]}`);
- 	  return
+     return
   }
 
   // User click in the same occupying the whole screen
@@ -69,7 +69,7 @@ function handleLink (_navigation, _pos, push){
   if (_pos == 1){
     if (crt [_pos] == _name && crt[_pos0] != ''){
       turnOff(crt[_pos0], _pos0)
-   	  page[crt[_pos]].section.classList.remove(`pos${_pos}`)
+       page[crt[_pos]].section.classList.remove(`pos${_pos}`)
       _navigation.current = [_name, '', '']
       handleResize()
       return
@@ -80,7 +80,7 @@ function handleLink (_navigation, _pos, push){
   if (_pos == 2){
     if (crt [_pos] == _name && crt[_pos0] != ''){
       turnOff(crt[_pos], _pos)
-   	  page[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
+       page[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
       _navigation.current = [crt[_pos0], '', '']
       handleResize()
       return
@@ -99,7 +99,7 @@ function handleLink (_navigation, _pos, push){
 
   // User right click in a new section while another is occupying everthing
   if (_pos == 2 && crt[_pos] != _name && crt[0] != ''){
- 	  page[crt[0]].section.classList.add(`pos1`)
+     page[crt[0]].section.classList.add(`pos1`)
     turnOn(_name, 2)
     _navigation.current = ['', crt[0], _name]
     handleResize()
@@ -108,12 +108,12 @@ function handleLink (_navigation, _pos, push){
 }
 function interpretLink (inited){
   let state = inited ? 1 : 0
-	let	path = window.location.href.split('?')
+  let path = window.location.href.split('?')
   if (path [1] == undefined) {
     // default module
-	  handleLink.apply(page.files,[navigation, state])
-	  return
-	}
+    handleLink.apply(page.files,[navigation, state])
+    return
+  }
   handleLink.apply(page[path[1]],[navigation, state])
   handleResize()
 }
@@ -128,30 +128,30 @@ function handleResize (){
 }
 
 class Navigation {
-	constructor (_page){
-	  this.current = ['','','']
-	  this.portrait = false
+  constructor (_page){
+    this.current = ['','','']
+    this.portrait = false
 
-		let $ = this._dom = {}
-		$.nav = DOM.get ('nav')
-		$.menu = DOM.get ('#menu', $.nav)
-		$.panels = DOM.getAll ('a', $.nav)
-		$.menu.onclick = () => {
-			DOM.switchState (this._dom.nav)
-		};
-		for (let module in _page) {
-		  _page[module].nav = DOM.get(`a#${module}`, $.nav)
-		  _page[module].section = DOM.get(`section#${module}`)
-		  _page[module].nav.onclick = (ev) => {
-		    ev.preventDefault()
-		    handleLink.apply(_page[module], [this, 1, true])
-		  }
-		  _page[module].nav.addEventListener('contextmenu', (ev) => {
-		    ev.preventDefault()
-		    handleLink.apply(_page[module], [this, 2, true])
-		  })
-		}
-		window.onpopstate = () => {interpretLink(true)}
-		window.onresize = () => {handleResize()}
-	}
+    let $ = this._dom = {}
+    $.nav = DOM.get ('nav')
+    $.menu = DOM.get ('#menu', $.nav)
+    $.panels = DOM.getAll ('a', $.nav)
+    $.menu.onclick = () => {
+      DOM.switchState (this._dom.nav)
+    };
+    for (let module in _page) {
+      _page[module].nav = DOM.get(`a#${module}`, $.nav)
+      _page[module].section = DOM.get(`section#${module}`)
+      _page[module].nav.onclick = (ev) => {
+        ev.preventDefault()
+        handleLink.apply(_page[module], [this, 1, true])
+      }
+      _page[module].nav.addEventListener('contextmenu', (ev) => {
+        ev.preventDefault()
+        handleLink.apply(_page[module], [this, 2, true])
+      })
+    }
+    window.onpopstate = () => {interpretLink(true)}
+    window.onresize = () => {handleResize()}
+  }
 }

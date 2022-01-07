@@ -14,37 +14,37 @@ class Project {
 
     let $ = this._dom = {}
 
-		$.projects = new DOM('span', {className:'listy'})
+    $.projects = new DOM('span', {className:'listy'})
 
-	  $.h2 = new DOM('h2', {innerText:"Projects"})
-	  $.wrapper = new DOM('span', {className: "projects"})
-	    .append([
-	      new DOM('div', {id:'user-projects'})
-		    .append([
-		      new DOM('div', {className:'header'})
-		        .append([
-		          new DOM('h3', {innerText:'Your projects'}),
-		          new DOM('button', {
-		            id:'add',
-		            className:'icon text',
-		            innerText: "New"
-		          }).onclick(this, this.new)
-		        ]),
-	        $.projects
-	      ])
-	  ])
+    $.h2 = new DOM('h2', {innerText:"Projects"})
+    $.wrapper = new DOM('span', {className: "projects"})
+      .append([
+        new DOM('div', {id:'user-projects'})
+        .append([
+          new DOM('div', {className:'header'})
+            .append([
+              new DOM('h3', {innerText:'Your projects'}),
+              new DOM('button', {
+                id:'add',
+                className:'icon text',
+                innerText: "New"
+              }).onclick(this, this.new)
+            ]),
+          $.projects
+        ])
+    ])
 
-	  $.container = new DOM('div', {className:'container'})
-	    .append([$.h2, $.wrapper])
+    $.container = new DOM('div', {className:'container'})
+      .append([$.h2, $.wrapper])
 
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)
 
-		$.section = new DOM(DOM.get('section#project'))
-		  .append([$.container._dom, $.contextMenu])
-		$.section._dom.classList.add('default')
+    $.section = new DOM(DOM.get('section#project'))
+      .append([$.container._dom, $.contextMenu])
+    $.section._dom.classList.add('default')
 
-	  // Cross tabs event handler on connecting and disconnecting device
+    // Cross tabs event handler on connecting and disconnecting device
     command.add(this, {
       new: this._new,
       remove: this._remove,
@@ -82,7 +82,7 @@ class Project {
         project = this._emptyProject()
 
 
-	  command.dispatch(this, 'new', [uid, project])
+    command.dispatch(this, 'new', [uid, project])
     // Update localStorage once
     storage.set(`project-${uid}`, JSON.stringify(project))
 
@@ -104,7 +104,7 @@ class Project {
     if (Object.keys(this.projects).length == 1)
       this.select(this.new())
 
-	  command.dispatch(this, 'remove', [uid])
+    command.dispatch(this, 'remove', [uid])
     // Update localStorage once
     storage.remove(`project-${uid}`)
 
@@ -113,10 +113,10 @@ class Project {
   _remove (uid){
     delete this.projects[uid]
 
-		if (!this.inited)
-		  return
+    if (!this.inited)
+      return
 
-		// Must find child to work between tabs
+    // Must find child to work between tabs
     let child = DOM.get(`[data-uid=${uid}]`, this._dom.projects._dom)
     this._dom.projects._dom.removeChild(child)
 
@@ -203,22 +203,22 @@ class Project {
       return
 
   }
-	// Creates a DOM notificaton card
-	_domCard (uid, item){
-	  let input = new DOM('input', {
+  // Creates a DOM notificaton card
+  _domCard (uid, item){
+    let input = new DOM('input', {
             id:'name',
             value: item.name,
             placeholder: "Project name",
             disabled: true
           })
     input.onevent('change', this, (uid, dom) => {
-  	  if (dom.value == '')
-	      return
+      if (dom.value == '')
+        return
 
       this.update({name:dom.value}, uid)
     }, [uid, input._dom]);
-	  return new DOM('button', {uid: uid})
-	    .append([
+    return new DOM('button', {uid: uid})
+      .append([
         new DOM('div').append([
           input,
           new DOM('div', {
@@ -246,14 +246,14 @@ class Project {
         })
       ])
   }
-	update (data, uid){
-	  uid = uid == undefined ? this.currentUID : uid
+  update (data, uid){
+    uid = uid == undefined ? this.currentUID : uid
 
     command.dispatch(this, 'update', [uid, data, command.tabUID])
     // Update localStorage once
     storage.set(`project-${uid}`, JSON.stringify(this.projects[uid]))
-	}
-	_update (uid, data, tabUID){
+  }
+  _update (uid, data, tabUID){
     for (const key in data){
       if (key != 'load')
         this.projects[uid][key] = data[key]
@@ -278,9 +278,9 @@ class Project {
         }
       }
     }
-	}
+  }
   // Get most recent project
-	_mostRecent (){
+  _mostRecent (){
     let timestamp = 0,
         uid
     for (const key in this.projects) {

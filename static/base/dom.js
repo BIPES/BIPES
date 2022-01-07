@@ -11,10 +11,10 @@ class DOM {
       return
     }
     switch (dom) {
-	  case 'button':
-	  case 'h2':
-	  case 'h3':
-	  case 'h4':
+    case 'button':
+    case 'h2':
+    case 'h3':
+    case 'h4':
     case 'span':
     case 'div':
     case 'select':
@@ -31,8 +31,8 @@ class DOM {
             this._dom.dataset[tag] = tags[tag]
         }
         break
-	  case 'video':
-	  case 'img':
+    case 'video':
+    case 'img':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
           if (['preload', 'controls', 'autoplay', 'src', 'id', 'className'].includes(tag))
@@ -40,9 +40,9 @@ class DOM {
         }
         break
     case 'form':
-	  case 'input':
-	  case 'label':
-	  case 'textarea':
+    case 'input':
+    case 'label':
+    case 'textarea':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
           if (['value', 'className', 'id', 'placeholder', 'htmlFor', 'type', 'autocomplete', 'innerText', 'name', 'accept', 'disabled'].includes(tag))
@@ -57,14 +57,14 @@ class DOM {
   */
   onchange (self, ev, args){
     this._dom.onchange = (e) => {
-			if (typeof args == 'undefined')
-				ev.apply(self, [e])
-			else if (args.constructor == Array) {
-			  args.push(e)
-				ev.apply(self, args)
-			}
-		}
-	return this
+      if (typeof args == 'undefined')
+        ev.apply(self, [e])
+      else if (args.constructor == Array) {
+        args.push(e)
+        ev.apply(self, args)
+      }
+    }
+  return this
   }
   /**
   * Append a ``onclick`` event.
@@ -72,14 +72,14 @@ class DOM {
   */
   onclick (self, ev, args){
     this._dom.onclick = (e) => {
-			if (typeof args == 'undefined')
-				ev.apply(self, [e])
-			else if (args.constructor == Array) {
-			  args.push(e)
-				ev.apply(self, args)
-			}
-		}
-	return this
+      if (typeof args == 'undefined')
+        ev.apply(self, [e])
+      else if (args.constructor == Array) {
+        args.push(e)
+        ev.apply(self, args)
+      }
+    }
+  return this
   }
   /**
   * Append a ``mouseup`` and ``touchup`` event.
@@ -87,77 +87,77 @@ class DOM {
   */
   onup (self, ev, args){
     this._dom.addEventListener('mouseup', (e) => {
-			if (typeof args == 'undefined')
-				ev.apply(self, [e])
-			else if (args.constructor == Array) {
-			  args.push(e)
-				ev.apply(self, args)
-			}
-		})
-	return this
-	}
+      if (typeof args == 'undefined')
+        ev.apply(self, [e])
+      else if (args.constructor == Array) {
+        args.push(e)
+        ev.apply(self, args)
+      }
+    })
+  return this
+  }
   /**
   * Append a ``mousedown`` and ``touchdown`` event.
   * @param {function} ev - Function to be executed on down.
   */
   ondown (self, ev, args){
     this._dom.addEventListener('mousedown', (e) => {
-			if (typeof args == 'undefined')
-				ev.apply(self, [e])
-			else if (args.constructor == Array) {
-			  args.push(e)
-				ev.apply(self, args)
-			}
-		})
-	return this
-	}
+      if (typeof args == 'undefined')
+        ev.apply(self, [e])
+      else if (args.constructor == Array) {
+        args.push(e)
+        ev.apply(self, args)
+      }
+    })
+  return this
+  }
   /**
   * Append a ``mousemove`` and ``touchmove`` event.
   * @param {function} ev - Function to be executed on move.
   */
   onmove (self, ev, args){
     this._dom.addEventListener('mousemove', (e) => {
-			if (typeof args == 'undefined')
-				ev.apply(self, [e])
-			else if (args.constructor == Array) {
-			  args.push(e)
-				ev.apply(self, args)
-			}
-		})
-	return this
-	}
-	/**
+      if (typeof args == 'undefined')
+        ev.apply(self, [e])
+      else if (args.constructor == Array) {
+        args.push(e)
+        ev.apply(self, args)
+      }
+    })
+  return this
+  }
+  /**
   * Append a event listener.
   * @param {string} event - Event listener name.
   * @param {function} ev - Function to be executed on move.
   */
   onevent (event, self, ev, args){
     this._dom.addEventListener(event, (e) => {
-			if (typeof args == 'undefined')
-				ev.apply(self, [e])
-			else if (args.constructor == Array) {
-			  args.push(e)
-				ev.apply(self, args)
-			}
-		})
-	return this
-	}
+      if (typeof args == 'undefined')
+        ev.apply(self, [e])
+      else if (args.constructor == Array) {
+        args.push(e)
+        ev.apply(self, args)
+      }
+    })
+  return this
+  }
   /**
   * Appends others :js:func:`DOM`.
   * @param {Object[]} DOMS - Array of :js:func:`DOM` or/and direct DOM Nodes.
   */
   append (DOMS){
-	  if (DOMS.constructor != Array)
-		  DOMS = [DOMS]
+    if (DOMS.constructor != Array)
+      DOMS = [DOMS]
 
-	  DOMS.forEach ((item) => {
-	    if (/HTML(.*)Element/.test(item.constructor.name))
-		  this._dom.appendChild(item)
-	    else if (item.constructor.name == 'DOM' && (/HTML(.*)Element/.test(item._dom)))
-		  this._dom.appendChild(item._dom)
-	  })
+    DOMS.forEach ((item) => {
+      if (/HTML(.*)Element/.test(item.constructor.name))
+      this._dom.appendChild(item)
+      else if (item.constructor.name == 'DOM' && (/HTML(.*)Element/.test(item._dom)))
+      this._dom.appendChild(item._dom)
+    })
 
-	  return this
+    return this
   }
   /**
   * Remove childs from :js:func:`DOM` object.

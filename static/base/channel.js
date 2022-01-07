@@ -32,7 +32,7 @@ class Channel {
       on:false
     }
 
-		// Cross tabs event handler on muxing terminal
+    // Cross tabs event handler on muxing terminal
     command.add(this, {
       push: this.push,
       rawPush: this.rawPush
@@ -143,12 +143,12 @@ class Channel {
   handleCallback (out){
     // Remove backspaces and characters that antecends it
     out = this.interpretBackspace(out)
-	  let call = this.callbacks[0]
+    let call = this.callbacks[0]
 
-	  if (!call.hasOwnProperty('skip') && !/^[\x00-\x7F]{1}$/.test(call.cmd)) {
-	    // Emulate command in paste mode
-	    if (call.cmd[0] == '\x05')
-	      call.cmd = this.emulatePasteMode(call.cmd)
+    if (!call.hasOwnProperty('skip') && !/^[\x00-\x7F]{1}$/.test(call.cmd)) {
+      // Emulate command in paste mode
+      if (call.cmd[0] == '\x05')
+        call.cmd = this.emulatePasteMode(call.cmd)
 
       if (out.substring(0, call.cmd.length) != call.cmd) {
         console.error("Channel: callback's commands checkup failed")
@@ -176,10 +176,10 @@ class Channel {
     this.lock = false
 
     this.callbacks.shift()
-	}
-	interpretBackspace (out){
-	  let _out = []
-	  // Simplify micropython's backspace
+  }
+  interpretBackspace (out){
+    let _out = []
+    // Simplify micropython's backspace
     out = out.replaceAll(BACKSPACE, '\b')
 
     for (let char of out) {
@@ -190,28 +190,28 @@ class Channel {
     }
 
     return _out.join('')
-	}
-	emulatePasteMode (cmd) {
-	  // Remove paste mode chars
-	  cmd = cmd.substring(1,cmd.length -1)
-	  return `\r\n${PASTEMODE}\r\n=== ${cmd.replaceAll(/\r/g,'\r\n=== ')}`
-	}
-	/*
-	 * Return a command with paste mode enclosing
-	 */
-	pasteMode (cmd){
-	  return `\x05${cmd}\x04`
-	}
+  }
+  emulatePasteMode (cmd) {
+    // Remove paste mode chars
+    cmd = cmd.substring(1,cmd.length -1)
+    return `\r\n${PASTEMODE}\r\n=== ${cmd.replaceAll(/\r/g,'\r\n=== ')}`
+  }
+  /*
+   * Return a command with paste mode enclosing
+   */
+  pasteMode (cmd){
+    return `\x05${cmd}\x04`
+  }
 
-	isDirty (){
-	  if (!this.dirty)
-	    return false
+  isDirty (){
+    if (!this.dirty)
+      return false
 
     this.current.write('\x03')
     this.dirty = false
     this.callbacks.unshift({skip:true})
     return true
-	}
+  }
 }
 
 class _WebSerial {
@@ -223,7 +223,7 @@ class _WebSerial {
     }
     this.encoder = new TextEncoder();
   }
-	/**
+  /**
    * Connect using webserial protocol, will ask user permission for the serial port.
    */
   connect (callback){
@@ -294,7 +294,7 @@ class _WebSerial {
         return true
     })
   }
-	/**
+  /**
    * Runs every 50ms to check if there is code to be sent in the :js:attr:`channel#input` (appended with :js:func:`channel.push()`)
    */
   watch (){
@@ -304,7 +304,7 @@ class _WebSerial {
           return
         try {
           channel.lock = true
-		      this.write(channel.input [0])
+          this.write(channel.input [0])
           channel.input.shift()
         } catch (e) {
           console.error(e)
@@ -336,12 +336,12 @@ class _WebSerial {
         // Execution is paused until writer wrote dataArrayBuffer
         let response = await writer.write(dataArrayBuffer)
         writer.releaseLock()
-	    }
-	  }
-	  // If no callback expected, release lock
-	  if (channel.callbacks.length == 0)
-	    channel.lock = false
-	}
+      }
+    }
+    // If no callback expected, release lock
+    if (channel.callbacks.length == 0)
+      channel.lock = false
+  }
 }
 
 

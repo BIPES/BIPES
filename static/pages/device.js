@@ -4,9 +4,9 @@ import {DOM, Animate} from '../base/dom.js'
 export {Device}
 
 class Device {
-	constructor (){
-	  this.devices = storage.has('device') && storage.fetch('device') != '[]' ?
-	                  JSON.parse(storage.fetch('device')) : []
+  constructor (){
+    this.devices = storage.has('device') && storage.fetch('device') != '[]' ?
+                    JSON.parse(storage.fetch('device')) : []
 
     if (this.devices.length === 0)
       storage.set('device')
@@ -24,33 +24,33 @@ class Device {
     }
     this.default = 'esp32'
 
-	  let $ = this._dom = {}
+    let $ = this._dom = {}
 
-		$.newConnection = new DOM('div', {id:'newConnection'})
-		  .append([
-		    new DOM('h3', {innerText:'New connection'}),
-		    new DOM('span', {className:'funky'}).append([
-		      new DOM('button', {id:'WebSerial'})
-		        .append(new DOM('div', {innerText:'USB/Serial', className:'button icon'}))
-		        .onclick(this, this.connectSerial),
-		      new DOM('button', {id:'WebSocket'})
-		        .append(new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'})),
-		      new DOM('button', {id:'WebBluetooth'})
-		        .append(new DOM('div', {innerText:'Bluetooth', className:'button icon'}))
-		    ])
-		  ])
+    $.newConnection = new DOM('div', {id:'newConnection'})
+      .append([
+        new DOM('h3', {innerText:'New connection'}),
+        new DOM('span', {className:'funky'}).append([
+          new DOM('button', {id:'WebSerial'})
+            .append(new DOM('div', {innerText:'USB/Serial', className:'button icon'}))
+            .onclick(this, this.connectSerial),
+          new DOM('button', {id:'WebSocket'})
+            .append(new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'})),
+          new DOM('button', {id:'WebBluetooth'})
+            .append(new DOM('div', {innerText:'Bluetooth', className:'button icon'}))
+        ])
+      ])
 
-		$.devices = new DOM('span', {className:'funky'})
+    $.devices = new DOM('span', {className:'funky'})
 
 
-	  $.h2 = new DOM('h2', {innerText:"Device"})
-	  $.wrapper = new DOM('span', {className: "device-connect"})
-	    .append([
-	      new DOM('div', {id:'devices'})
-		    .append([
-		      new DOM('h3', {innerText:'Connected devices'}),
-		      $.devices
-	      ]), $.newConnection])
+    $.h2 = new DOM('h2', {innerText:"Device"})
+    $.wrapper = new DOM('span', {className: "device-connect"})
+      .append([
+        new DOM('div', {id:'devices'})
+        .append([
+          new DOM('h3', {innerText:'Connected devices'}),
+          $.devices
+        ]), $.newConnection])
 
     let targets = []
     for (const key in this.deviceInfo) {
@@ -63,18 +63,18 @@ class Device {
       .onevent('change', this, this.setProjectTarget)
 
     $.pinout = new DOM('img', {id:'pinout', src:`./static/media/devices/${this.default}.svg`})
-	  $.wrapper2 = new DOM('span', {className: "device-current"})
-	    .append([
-	      new DOM('div', {id:'target-device'})
-		    .append([
-		      new DOM('hr'),
-		      new DOM('div', {className:'header'})
-		        .append([
-    		      new DOM('h3', {innerText:"Target device"}),
-    		      $.targetDropdown
-		        ]),
-		      new DOM('div')
-		        .append([
+    $.wrapper2 = new DOM('span', {className: "device-current"})
+      .append([
+        new DOM('div', {id:'target-device'})
+        .append([
+          new DOM('hr'),
+          new DOM('div', {className:'header'})
+            .append([
+              new DOM('h3', {innerText:"Target device"}),
+              $.targetDropdown
+            ]),
+          new DOM('div')
+            .append([
               new DOM('div')
                 .append([
                   $.pinout
@@ -84,50 +84,50 @@ class Device {
                 className:'tips icon text'
               }),
             ])
-	      ])
-	    ])
+        ])
+      ])
 
-	  $.container = new DOM('div', {className:'container'})
-	    .append([$.h2, $.wrapper, $.wrapper2])
-
-
-		$.section = new DOM(DOM.get('section#device'))
-		  .append([$.container._dom])
-		$.section._dom.classList.add('default')
-		$.nav = new DOM(DOM.get('a#device'))
+    $.container = new DOM('div', {className:'container'})
+      .append([$.h2, $.wrapper, $.wrapper2])
 
 
-	  // Cross tabs event handler on connecting and disconnecting device
+    $.section = new DOM(DOM.get('section#device'))
+      .append([$.container._dom])
+    $.section._dom.classList.add('default')
+    $.nav = new DOM(DOM.get('a#device'))
+
+
+    // Cross tabs event handler on connecting and disconnecting device
     command.add(this, {
       use: this._use,
       unuse: this._unuse,
       updateInfo: this._updateInfo
     })
-	}
-	connectSerial (){
-	  channel.connect('webserial', [this, this.use])
-	}
-	use (){
+  }
+  connectSerial (){
+    channel.connect('webserial', [this, this.use])
+  }
+  use (){
     let timestamp = +new Date()
 
     if (channel.targetDevice == undefined){
       console.error("Device: Use function called without a established connection")
       return
     }
-	  command.dispatch(this, 'use', [
-	    channel.targetDevice, timestamp, {
-	      nodename: 'unknown',
-	      version: 'unknown'
-	    }, command.tabUID])
+    command.dispatch(this, 'use', [
+      channel.targetDevice, timestamp, {
+        nodename: 'unknown',
+        version: 'unknown'
+      }, command.tabUID])
     // Only on a master tab
     this._dom.nav._dom.classList.add('using')
-	  this._dom.devices._dom.classList.add('master')
+    this._dom.devices._dom.classList.add('master')
     let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
     child.classList.add('on')
 
-	  // If not inited, fill devices from StorageBroker (-->)
+    // If not inited, fill devices from StorageBroker (-->)
     if (!this.inited) {
-	    this.devices = JSON.parse(storage.fetch('device'))
+      this.devices = JSON.parse(storage.fetch('device'))
       this._devicePush(uid, timestamp, channel.targetDevice, command.tabUID)
     }
     // Update StorageBroker once
@@ -139,21 +139,21 @@ class Device {
 
     // Request info
     setTimeout(()=>{this.fetchInfo(channel.targetDevice)},500)
-	}
+  }
 
-	_devicePush (uid, timestamp, str, tabUID){
-	  this.devices.push({
+  _devicePush (uid, timestamp, str, tabUID){
+    this.devices.push({
       uid: uid,
       timestamp: timestamp,
       nodename: str.nodename,
       version: str.version,
       tab: tabUID
       })
-	}
+  }
 
 
-	// Visual and instance object
-	_use (uid, timestamp, str, tabUID){
+  // Visual and instance object
+  _use (uid, timestamp, str, tabUID){
     this._devicePush(uid, timestamp, str, tabUID)
 
     if (!this.inited)
@@ -166,13 +166,13 @@ class Device {
       this._domCard(this.devices[this.devices.length - 1])._dom,
       this._dom.devices._dom.firstChild
     )
-	}
-	init (){
-	  if (this.inited)
-	    return
+  }
+  init (){
+    if (this.inited)
+      return
 
-	  this.nav.classList.remove('new')
-	  if (this.devices.length > 0) {
+    this.nav.classList.remove('new')
+    if (this.devices.length > 0) {
       let msgs = []
       this.devices.forEach (item => {
         msgs.unshift(this._domCard(item))
@@ -191,33 +191,33 @@ class Device {
     let obj = page.project.projects[page.project.currentUID]
     if (obj.hasOwnProperty('device'))
       this.load(obj.device)
-	}
-	load (obj){
-	  if (!this.inited)
-	    return
-	  if (obj.hasOwnProperty('target'))
-  	  DOM.setSelected(this._dom.targetDropdown, obj.target),
+  }
+  load (obj){
+    if (!this.inited)
+      return
+    if (obj.hasOwnProperty('target'))
+      DOM.setSelected(this._dom.targetDropdown, obj.target),
       this._dom.pinout._dom.src = `./static/media/devices/${obj.target}.svg`
-	}
-	setProjectTarget (){
+  }
+  setProjectTarget (){
     let target = this._dom.targetDropdown._dom.value
 
     page.project.update({
       device:{target:target}
     })
-	}
+  }
 
-	_noDevice (){
+  _noDevice (){
     this._dom.devices.append(
       new DOM('span', {innerText:'No connected devices, connect below!'})
     )
-	}
-	// Creates a DOM notificaton card
-	_domCard (item){
-	  let about = item.tab == command.tabUID ? "On this tab" : "On other tab"
-	  let using = "Using this device"
-	  return new DOM('button', {uid: item.uid})
-	    .append([
+  }
+  // Creates a DOM notificaton card
+  _domCard (item){
+    let about = item.tab == command.tabUID ? "On this tab" : "On other tab"
+    let using = "Using this device"
+    return new DOM('button', {uid: item.uid})
+      .append([
         new DOM('div').append([
           new DOM('h4', {id:'nodename', innerText: item.nodename}),
           new DOM('div', {id:'version', innerText: item.version}),
@@ -236,21 +236,21 @@ class Device {
         ])
         .onclick(this, this.select, [item.uid])
       ])
-	}
-	deinit (){
-	  if(!this.inited)
-	    return
-	  this._dom.devices.removeChilds()
-	  this.inited = false
-	}
-	select (uid, ev){
-	  ev.preventDefault()
-	  if (channel.current != undefined)
+  }
+  deinit (){
+    if(!this.inited)
+      return
+    this._dom.devices.removeChilds()
+    this.inited = false
+  }
+  select (uid, ev){
+    ev.preventDefault()
+    if (channel.current != undefined)
       return
 
-	  if (uid != channel.targetDevice){
+    if (uid != channel.targetDevice){
       // Only on a slave tab
-	    channel.targetDevice = uid
+      channel.targetDevice = uid
       this._dom.nav._dom.classList.add('using')
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
       child.classList.add('on')
@@ -258,9 +258,9 @@ class Device {
       this._dom.nav._dom.classList.remove('using')
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
       child.classList.remove('on')
-	    channel.targetDevice = undefined
+      channel.targetDevice = undefined
     }
-	}
+  }
   fetchInfo (uid){
     let cmd = rosetta.uname.cmd()
 
@@ -284,61 +284,61 @@ class Device {
     storage.set('device', JSON.stringify(this.devices))
   }
   _updateInfo (uid, nodename, version){
-  	this.devices.forEach((device) => {
-			if (device.uid == uid) {
-				device.nodename = nodename,
-				device.version = version
-			}
-		})
+    this.devices.forEach((device) => {
+      if (device.uid == uid) {
+        device.nodename = nodename,
+        device.version = version
+      }
+    })
     if (!this.inited)
       return
 
     DOM.get(`[data-uid=${uid}] #nodename`, this._dom.devices._dom).innerText = nodename
     DOM.get(`[data-uid=${uid}] #version`, this._dom.devices._dom).innerText = version
   }
-	// Main instance call
-	unuse (uid){
+  // Main instance call
+  unuse (uid){
     // Update actual locaStorage, do right now to guarantee run before unload.
     this.devices.forEach((item, index) => {
-			if (item.uid == uid) {
-				this.devices.splice(index,1)
-			}
-		})
+      if (item.uid == uid) {
+        this.devices.splice(index,1)
+      }
+    })
     storage.set('device', JSON.stringify(this.devices))
 
-	  // Only on a master tab
-	  this._dom.nav._dom.classList.remove('using')
-	  this._dom.devices._dom.classList.remove('master')
+    // Only on a master tab
+    this._dom.nav._dom.classList.remove('using')
+    this._dom.devices._dom.classList.remove('master')
 
-	  command.dispatch(this, 'unuse', [uid])
-	}
-	// Visual and instance object
-	_unuse (uid){
+    command.dispatch(this, 'unuse', [uid])
+  }
+  // Visual and instance object
+  _unuse (uid){
     if (channel.targetDevice == uid){
       channel.targetDevice = undefined
       this._dom.nav._dom.classList.remove('using')
     }
 
-		this.devices.forEach((item, index) => {
-			if (item.uid == uid) {
-				this.devices.splice(index,1)
-			}
-		})
+    this.devices.forEach((item, index) => {
+      if (item.uid == uid) {
+        this.devices.splice(index,1)
+      }
+    })
 
-		if (!this.inited)
-		  return
+    if (!this.inited)
+      return
 
-		// Must find child to work between tabs
+    // Must find child to work between tabs
     let child = DOM.get(`[data-uid=${uid}]`, this._dom.devices._dom)
     this._dom.devices._dom.removeChild(child)
     if (this._dom.devices._dom.childElementCount == 0)
       this._noDevice()
   }
   unresponsive (uid){
-		this.devices.forEach((item, index) => {
-			if (item.uid == uid) {
-			  page.notification.send(`Device ${item.nodename} version ${item.version} is unresponsive, consider resetting it.`)
-			}
-		})
+    this.devices.forEach((item, index) => {
+      if (item.uid == uid) {
+        page.notification.send(`Device ${item.nodename} version ${item.version} is unresponsive, consider resetting it.`)
+      }
+    })
   }
 }
