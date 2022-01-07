@@ -21,6 +21,8 @@ blockly:
 	cp blockly/msg/js/de.js static/libs/blockly/msg/de.js
 	cp blockly/msg/js/pt-br.js static/libs/blockly/msg/pt-br.js
 	cp blockly/msg/js/es.js static/libs/blockly/msg/es.js
+	mkdir -p static/media/blocks
+	cp blockly/media/* static/media/blocks/
 	rm -rf blockly
 
 flask:
@@ -28,9 +30,6 @@ flask:
 	. venv/bin/activate && \
 	pip install Flask && \
 	exit
-
-requirements:
-	sudo dnf install npm python pip
 
 run:
 	. venv/bin/activate && \
@@ -46,6 +45,6 @@ clean-up:
 	rm -rf package-lock.json
 
 
-make: requirements codemirror xterm blockly flask blockly-toolbox clean-up run
+make: codemirror xterm blockly flask blockly-toolbox clean-up run
 	echo "Thanks for using BIPES :)!"
 	

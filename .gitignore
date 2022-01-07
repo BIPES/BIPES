@@ -1,0 +1,14 @@
+venv/
+_temp/
+__pycache__/
+
+README.md
+
+package-lock.json
+node_modules/
+
+*.umd.js
+
+static/libs/blockly/msg
+
+static/media/blocks/

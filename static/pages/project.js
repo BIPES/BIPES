@@ -12,21 +12,6 @@ class Project {
     this.projects = {}
     this.inited = false
 
-    let keys = storage.keys(/project-(.*)/)
-    keys.forEach((key) => {
-      let proj = storage.fetch(`project-${key}`)
-      try {
-       this.projects[key] = JSON.parse(proj)
-      } catch (e) {
-        console.error(e)
-      }
-    })
-    if (Object.keys(this.projects).length == 0)
-      this.new()
-
-    // Get most recent project
-    let uid = this._mostRecent()
-
     let $ = this._dom = {}
 
 		$.projects = new DOM('span', {className:'listy'})
@@ -59,13 +44,28 @@ class Project {
 		  .append([$.container._dom, $.contextMenu])
 		$.section._dom.classList.add('default')
 
-
 	  // Cross tabs event handler on connecting and disconnecting device
     command.add(this, {
       new: this._new,
       remove: this._remove,
       update: this._update
     })
+
+    let keys = storage.keys(/project-(.*)/)
+    keys.forEach((key) => {
+      let proj = storage.fetch(`project-${key}`)
+      try {
+       this.projects[key] = JSON.parse(proj)
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    if (Object.keys(this.projects).length == 0)
+      this.new()
+    // Get most recent project
+    let uid = this._mostRecent()
+
 
     this.select(uid)
   }
@@ -100,12 +100,13 @@ class Project {
     )
   }
   remove (uid){
+    // Create project if no project will be left
+    if (Object.keys(this.projects).length == 1)
+      this.select(this.new())
+
 	  command.dispatch(this, 'remove', [uid])
     // Update localStorage once
     storage.remove(`project-${uid}`)
-    // Create project if no project left
-    if (Object.keys(this.projects).length == 0)
-      this.select(this.new())
 
     this.contextMenu.close()
   }

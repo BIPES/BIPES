@@ -290,6 +290,8 @@ class Device {
 				device.version = version
 			}
 		})
+    if (!this.inited)
+      return
 
     DOM.get(`[data-uid=${uid}] #nodename`, this._dom.devices._dom).innerText = nodename
     DOM.get(`[data-uid=${uid}] #version`, this._dom.devices._dom).innerText = version

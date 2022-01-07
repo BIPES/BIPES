@@ -24,7 +24,20 @@ class Blocks {
         length: 3,
         colour: '#ccc',
         snap: true
-      }
+      },
+      media: './static/media/blocks/',
+      oneBasedIndex: false,
+      zoom: {
+        controls: true,
+        wheel: true
+      },
+      move:{
+        scrollbars: {
+          horizontal: true,
+          vertical: true
+        },
+        drag: true,
+        wheel: false}
 	  })
 	}
 	init (){
@@ -38,13 +51,12 @@ class Blocks {
 	}
 	deinit(){
     this.workspace.removeChangeListener(this.update)
+	  this.workspace.clear()
 	  this.workspace.setVisible(false)
 
-
-	  this.workspace.clear()
 	  this.inited = false
 	}
-	resize(){
+	resize (){
 	  Blockly.svgResize(this.workspace)
 	  clearTimeout(this.timedResize)
 	  this.timedResize = setTimeout(()=>{
