@@ -1,3 +1,6 @@
+make: codemirror xterm blockly flask blockly-toolbox clean-up run
+	echo "Thanks for using BIPES :)!"
+
 codemirror:
 	npm install rollup \
 	rollup-plugin-terser \
@@ -45,6 +48,4 @@ clean-up:
 	rm -rf package-lock.json
 
 
-make: codemirror xterm blockly flask blockly-toolbox clean-up run
-	echo "Thanks for using BIPES :)!"
 	
