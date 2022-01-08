@@ -34,13 +34,14 @@ flask:
 	pip install Flask && \
 	exit
 
+release:
+	. venv/bin/activate && \
+	python -c "import __init__; __init__.build_release()"
+
 run:
 	. venv/bin/activate && \
 	export FLASK_APP=__init__ && \
 	flask run --port=5001 --host=0.0.0.0
-
-blockly-toolbox:
-	echo "to be implemented"
 
 clean-up:
 	rm -rf node_modules

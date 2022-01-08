@@ -14,7 +14,7 @@ app_version = 'v0.01'
 if __name__ == '__main__':
     app.run(port=5001)
 
-# Bibliotecas
+# Libraries
 npm  = {
     "xtermjs":{
         'import':True,
@@ -58,7 +58,7 @@ npm  = {
         },
 }
 
-# Dicionário da navegação
+# Navigation dictionary
 class Navigation:
     def __init__ (self, js_class, caption, href, css_src=False):
         self.js_class = js_class
@@ -76,30 +76,8 @@ navigation = [
     Navigation('Project','Projects','project','project')
     ];
 
- # Verifica se objeto possui propriedade, e pode retornar outra propriedade
-def has_in (name, array, attr, return_attr=None):
-    for item in array:
-        if getattr(item, attr) == name:
-            if (return_attr==None):
-                return True
-            else:
-                return getattr(item, return_attr)
-    return False
-
-# Return "compiled" html file.
-@app.route("/ide")
-def ide(name=None):
-    name = name if has_in(name, navigation, 'href') else None
-
-    return render_template('ide.html', app_name=app_name, app_version=app_version,
-                           navigation=navigation, name=name, npm=npm)
-
-
-
-# Return "compiled" toolboxes xml embedded in a js file.
-@app.route("/static/libs/blockly/toolbox.umd.js")
-def blockly_toolbox(name=None):
-
+# Generates the toolboxes per device
+def blockly_toolbox_generator ():
     # Fetch definitions and blocks per device
     definitions = glob.glob("templates/libs/blockly/definitions/*.md")
     devices = glob.glob("templates/libs/blockly/devices/*.md")
@@ -143,9 +121,44 @@ def blockly_toolbox(name=None):
 
         js += "let blockly_toolbox_" + dev_name + " = `\n<xml>\n" + xml + "</xml>\n`\n\n"
 
-    return Response(js, mimetype='application/javascript')
+    return js
+
+# Build BIPES static release
+def build_release ():
+    # Build blockly toolboxes
+    with open("static/libs/blockly/toolbox.umd.js",'w') as f:
+        f.write(blockly_toolbox_generator())
+
+    # "Compile" ide template as ide/index.html (default filename for servers)
+    with open('ide.html','w') as f:
+        with app.app_context():
+            f.write(ide())
+
+ # Check is a object has a attribute, can also return another attribute if true
+def has_in (name, array, attr, return_attr=None):
+    for item in array:
+        if getattr(item, attr) == name:
+            if (return_attr==None):
+                return True
+            else:
+                return getattr(item, return_attr)
+    return False
+
+# Return "compiled" html file.
+@app.route("/ide")
+def ide(name=None):
+    name = name if has_in(name, navigation, 'href') else None
+
+    return render_template('ide.html', app_name=app_name, app_version=app_version,
+                           navigation=navigation, name=name, npm=npm)
+
+
+
+# Return "compiled" toolboxes xml embedded in a js file.
+@app.route("/static/libs/blockly/toolbox.umd.js")
+def blockly_toolbox(name=None):
+    return Response(blockly_toolbox_generator(), mimetype='application/javascript')
 
 @app.route("/test")
 def test(name=None):
     return render_template('test.html')
-

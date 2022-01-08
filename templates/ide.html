@@ -3,21 +3,14 @@
 <head>
   <title>{{ app_name }}</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
-  <link rel="icon" sizes="192x192" href="static/media/icon/icon-192x192.png">
-  <link rel="stylesheet" href='/static/style/main.css' />
-{% for key, plugin in npm.items() %}
-  {% if plugin.import %}
-    <script type="text/javascript" src="{{ plugin.src }}"></script>
-    {% if plugin.css_src %}
-    <link rel="stylesheet" href='{{ plugin.css_src }}' />
-    {% endif %}
-  {% endif %}
-{% endfor %}
-{% for item in navigation %}
-  {% if item.css_src %}
-  <link rel="stylesheet" href='/static/style/{{ item.css_src }}.css' />
-  {% endif %}
-{% endfor %}
+  <link rel="icon" sizes="192x192" href="./static/media/icon/icon-192x192.png">
+  <link rel="stylesheet" href='./static/style/main.css'/>
+  {% for key, plugin in npm.items() %}{% if plugin.import %}
+  <script type="text/javascript" src="{{ plugin.src }}"></script>{% endif %}{% endfor %}
+  {% for key, plugin in npm.items() %}{% if plugin.import %}{% if plugin.css_src %}
+  <link rel="stylesheet" href='{{ plugin.css_src }}'/>{% endif %}{% endif %}{% endfor %}
+  {% for item in navigation %}{% if item.css_src %}
+  <link rel="stylesheet" href='./static/style/{{ item.css_src }}.css'/>{% endif %}{% endfor %}
 </head>
 
 
@@ -26,18 +19,14 @@
 <nav>
 <div id="panels">
   <span id="menu">{{ app_name }}</span>
-{% for item in navigation %}
-  <a id="{{ item.href }}" href="/ide?{{ item.href }}">{{ item.caption }}</a>
-{% endfor %}
+{% for item in navigation %}<a id="{{ item.href }}" href="./ide?{{ item.href }}">{{ item.caption }}</a>{% endfor %}
 </div>
 <div id="extra">
   <div id="app-version">Version {{ app_version }}</div>
 </div>
 </nav>
 
-{% for item in navigation %}
-<section id="{{ item.href }}"></section>
-{% endfor %}
+{% for item in navigation %}<section id="{{ item.href }}"></section>{% endfor %}
 
 <script>
     var page = {},
@@ -49,15 +38,14 @@
 
 </script>
 <script type="module">
-    import {Navigation, interpretLink} from './static/base/navigation.js'
-    import {CommandBroker} from './static/base/command.js'
-    import {StorageBroker} from './static/base/storage.js'
-    import {Channel} from './static/base/channel.js'
-    import {Rosetta} from './static/base/rosetta.js'
+  import {Navigation, interpretLink} from './static/base/navigation.js'
+  import {CommandBroker} from './static/base/command.js'
+  import {StorageBroker} from './static/base/storage.js'
+  import {Channel} from './static/base/channel.js'
+  import {Rosetta} from './static/base/rosetta.js'
 
 {% for item in navigation %}
-    import { {{item.js_class}} } from './static/pages/{{item.href}}.js'
-{% endfor %}
+  import { {{item.js_class}} } from './static/pages/{{item.href}}.js'{% endfor %}
   // Init CommandBroker, StorageBroker and Channel with page as root object
   command = new CommandBroker(page)
   storage = new StorageBroker(page)
@@ -65,8 +53,7 @@
   rosetta = Rosetta.set('MicroPython')
 
 {% for item in navigation %}
-    page.{{item.href}} = new {{item.js_class}}
-{% endfor %}
+  page.{{item.href}} = new {{item.js_class}}{% endfor %}
 
   navigation = new Navigation(page)
 
