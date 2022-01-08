@@ -1,8 +1,10 @@
 from flask import Flask, Response, jsonify, render_template
 from flask import request
 from flask import render_template
+import glob
 import socket
 import struct
+import re
 
 app = Flask(__name__)
 
@@ -84,7 +86,7 @@ def has_in (name, array, attr, return_attr=None):
                 return getattr(item, return_attr)
     return False
 
-# Return "compiled" html file
+# Return "compiled" html file.
 @app.route("/ide")
 def ide(name=None):
     name = name if has_in(name, navigation, 'href') else None
@@ -94,7 +96,56 @@ def ide(name=None):
 
 
 
-# Return "compiled" html file
+# Return "compiled" toolboxes xml embedded in a js file.
+@app.route("/static/libs/blockly/toolbox.umd.js")
+def blockly_toolbox(name=None):
+
+    # Fetch definitions and blocks per device
+    definitions = glob.glob("templates/libs/blockly/definitions/*.md")
+    devices = glob.glob("templates/libs/blockly/devices/*.md")
+
+    # Definitions dictionary
+    dict = {}
+
+    # Build the definitions dictionary
+    for d in definitions:
+        f = open(d,'r')
+        a = f.read()
+        pattern = re.compile(r"^# (.*)$", re.MULTILINE)
+
+        m = ''
+        l = (0,0)
+        for match in pattern.finditer(a):
+            i = l[1]
+            l = match.span()
+            if l[0] - 1 == -1:
+                dict[m] = a[i+1:l[0]]
+            else:
+                dict[m] = a[i+1:l[0]-1]
+
+            m = match.group(1)
+            dict[m] = a[i+1:l[0]-1]
+
+    # toolbox.umd.js string
+    js = ''
+
+    # Build the toolboxes per device
+    for dev in devices:
+        match = re.match(r"^templates/libs/blockly/devices/(.*).md", dev)
+        dev_name = match.group(1)
+
+        with open (dev) as f:
+            lines = f.readlines()
+
+        xml = ''
+        for i in lines:
+            xml += dict[i[0:len(i)-1]]
+
+        js += "let blockly_toolbox_" + dev_name + " = `\n<xml>\n" + xml + "</xml>\n`\n\n"
+
+    return Response(js, mimetype='application/javascript')
+
 @app.route("/test")
 def test(name=None):
     return render_template('test.html')
+
