@@ -56,6 +56,11 @@ npm  = {
         'import':True,
         'src':'./static/libs/blockly/micropython-extra.js'
         },
+    # Language
+    "lang-en":{
+        'import':True,
+        'src':'./static/msg/en.js'
+        },
 }
 
 # Navigation dictionary

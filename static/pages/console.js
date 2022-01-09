@@ -2,10 +2,12 @@
 "use strict";
 
 import {DOM, Animate} from '../base/dom.js'
-export {Console}
+import {command} from '../base/command.js'
+import {channel} from '../base/channel.js'
 
 class Console {
   constructor (){
+    this.name = 'console'
     this.inited = false
     this.terminal = new Terminal ()
 
@@ -136,3 +138,5 @@ class Console {
     this.terminal.resize(parseInt(cols), parseInt(rows))
   }
 }
+
+export let _console = new Console()

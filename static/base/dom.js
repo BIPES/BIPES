@@ -153,7 +153,7 @@ class DOM {
     DOMS.forEach ((item) => {
       if (/HTML(.*)Element/.test(item.constructor.name))
       this._dom.appendChild(item)
-      else if (item.constructor.name == 'DOM' && (/HTML(.*)Element/.test(item._dom)))
+      else if (typeof item == 'object' && (/HTML(.*)Element/.test(item._dom)))
       this._dom.appendChild(item._dom)
     })
 

@@ -2,12 +2,12 @@
 
 import {Tool} from '../base/tool.js'
 import {DOM, Animate, ContextMenu} from '../base/dom.js'
-
-export {Project}
-
+import {command} from '../base/command.js'
+import {storage} from '../base/storage.js'
 
 class Project {
   constructor (){
+    this.name = 'project'
     this.currentUID = undefined
     this.projects = {}
     this.inited = false
@@ -63,9 +63,10 @@ class Project {
 
     if (Object.keys(this.projects).length == 0)
       this.new()
+  }
+  _init (){
     // Get most recent project
     let uid = this._mostRecent()
-
 
     this.select(uid)
   }
@@ -130,9 +131,9 @@ class Project {
   load (uid){
     this.currentUID = uid
 
-    for (const key in page) {
-      if (typeof page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
-        page[key].load(this.projects[uid][key])
+    for (const key in window.bipes.page) {
+      if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
+        window.bipes.page[key].load(this.projects[uid][key])
     }
     return uid
   }
@@ -152,7 +153,7 @@ class Project {
       lastEdited: +new Date(),
       name: 'Empty project',
       device: {
-        target:page.device.default
+        target:'esp32'
       },
       blocks: {
         xml:'<xml xmlns="https://bipes.net.br/ide"></xml>'
@@ -230,10 +231,16 @@ class Project {
         .onevent('contextmenu', this, (ev) => {
           ev.preventDefault()
           this.contextMenu.open([
-             {
+            {
               id:'share',
               innerText:'Share',
               fun:this.share,
+              args:[uid]
+            },
+            {
+              id:'download',
+              innerText:'Download',
+              fun:this.download,
               args:[uid]
             },
             {
@@ -272,8 +279,8 @@ class Project {
         default:
           if (uid == this.currentUID){
             for (const key in data){
-              if (typeof page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
-                page[key].load(data[key], tabUID)
+              if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
+                window.bipes.page[key].load(data[key], tabUID)
           }
         }
       }
@@ -291,7 +298,5 @@ class Project {
     return uid
   }
 }
-// on all tabs
-// project.set(uid, {blockly:blockly.xml()}
-// on current tab
-// project.save(uid)
+
+export let project = new Project()

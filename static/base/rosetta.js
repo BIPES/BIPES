@@ -1,14 +1,9 @@
 "use strict"
 
-export {Rosetta}
-
-class Rosetta {
-  constructor () {}
-  static set (mode) {
-    switch (mode) {
-      case 'MicroPython':
-        return MicroPython
-    }
+let Rosetta = (mode) => {
+  switch (mode) {
+    case 'MicroPython':
+      return MicroPython
   }
 }
 
@@ -57,3 +52,5 @@ let MicroPython = {
     reg: /OSError: ([0-9]{1,})/
   }
 }
+
+export let rosetta = Rosetta('MicroPython')

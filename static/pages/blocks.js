@@ -2,10 +2,11 @@
 "use strict";
 
 import {DOM, Animate} from '../base/dom.js'
-export {Blocks}
+import {command} from '../base/command.js'
 
 class Blocks {
   constructor (){
+    this.name = 'blocks'
     this.timedResize // To guarantee that blockly is ocuppying 100%
     this.inited = false
     this.loadedWorkspace = false
@@ -13,7 +14,7 @@ class Blocks {
     let $ = this._dom = {}
 
     $.section = new DOM (DOM.get('section#blocks'))
-      .append(new DOM('div', {id:'blockly'}))
+      //.append(new DOM('div', {id:'blockly'}))
 
     // Empty toolbox to use in the workspace until loading project
     let emptyToolbox = Blockly.Xml.textToDom("<xml><category name='...'></category></xml>")
@@ -45,13 +46,15 @@ class Blocks {
 
     // Init language strings
     for (const target in blockly_toolbox){
-      blockly_toolbox[target] = blockly_toolbox[target].replace(/%{(\w+)}/g, (m, p1) => Blockly.Msg[p1])
+      blockly_toolbox[target] = blockly_toolbox[target].replace(/%{(\w+)}/g,
+        (m, p1) => Blockly.Msg[p1]
+      )
     }
   }
   init (){
     this.workspace.setVisible(true)
     this.inited = true
-    let obj = page.project.projects[page.project.currentUID]
+    let obj = window.bipes.page.project.projects[window.bipes.page.project.currentUID]
     if (obj.hasOwnProperty('blocks'))
       this.load(obj.blocks)
     if (obj.hasOwnProperty('device'))
@@ -80,9 +83,9 @@ class Blocks {
         return
 
     let xml = Blockly.Xml.domToText(
-      Blockly.Xml.workspaceToDom(page.blocks.workspace)
+      Blockly.Xml.workspaceToDom(blocks.workspace)
     )
-    page.project.update({
+    window.bipes.page.project.update({
       blocks:{
         xml:xml
       }
@@ -96,7 +99,7 @@ class Blocks {
       Blockly.Events.disable()
       Blockly.Xml.clearWorkspaceAndLoadFromXml(
         Blockly.Xml.textToDom(obj.xml),
-        page.blocks.workspace
+        this.workspace
       )
       Blockly.Events.enable()
     }
@@ -131,3 +134,5 @@ Blockly.Themes.Dark = Blockly.Theme.defineTheme('dark', {
     'blackBackground': '#333',
   },
 })
+
+export let blocks = new Blocks()

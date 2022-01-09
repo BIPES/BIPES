@@ -10,7 +10,7 @@ codemirror:
 	@codemirror/lang-python \
 	@codemirror/lang-markdown \
 	@codemirror/theme-one-dark
-	node_modules/.bin/rollup -c templates/libs/rollup.config.js
+	node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 xterm:
 	wget -O static/libs/xterm.umd.js https://unpkg.com/xterm@4.15.0/lib/xterm.js
@@ -37,6 +37,13 @@ flask:
 release:
 	. venv/bin/activate && \
 	python -c "import __init__; __init__.build_release()"
+
+offline: bipes-offline clean-up
+
+bipes-offline:
+	npm install rollup \
+	rollup-plugin-terser
+	node_modules/.bin/rollup -c templates/libs/rollup.config.bipes.js
 
 run:
 	. venv/bin/activate && \

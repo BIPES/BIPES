@@ -1,35 +1,33 @@
 "use strict";
 
 import {DOM, Animate} from './dom.js'
-export {Navigation, interpretLink}
 
-function handleLink (_navigation, _pos, push){
+function handleLink (_navigation, _pos, root, _name, push){
   let _pos0 = _pos == 2 ? 1 : 2
   let crt = _navigation.current
-  let _name = this.constructor.name.toLowerCase()
 
   let turnOff = (elem, pos) => {
-    page[elem].deinit()
-    page[elem].nav.classList.remove('on')
+    root[elem].deinit()
+    root[elem].nav.classList.remove('on')
     // just to avoid animation glitch
   if (pos == 1)
-      page[elem].section.classList.add(`_pos1`)
+      root[elem].section.classList.add(`_pos1`)
     if (pos == 2)
-      page[elem].section.classList.add(`_pos2`)
-    page[elem].section.classList.remove(`pos${pos}`)
-    Animate.off(page[elem].section)
+      root[elem].section.classList.add(`_pos2`)
+    root[elem].section.classList.remove(`pos${pos}`)
+    Animate.off(root[elem].section)
   }
 
   let turnOn = (elem, pos) => {
-    page[elem].init()
-    page[elem].nav.classList.add('on')
-    Animate.on(page[elem].section)
-    page[elem].section.classList.remove("_pos1", "_pos2")
+    root[elem].init()
+    root[elem].nav.classList.add('on')
+    Animate.on(root[elem].section)
+    root[elem].section.classList.remove("_pos1", "_pos2")
     if (pos != 0)
-      page[elem].section.classList.add(`pos${pos}`)
-    if (pos != 2 && push)
+      root[elem].section.classList.add(`pos${pos}`)
+    /*if (pos != 2 && push)
       window.history.pushState({}, '',
-        `${window.location.origin}/ide?${elem}`)
+        `${window.location.origin}/ide?${elem}`)*/
 
     handleResize()
   }
@@ -43,13 +41,13 @@ function handleLink (_navigation, _pos, push){
 
   // User switch opened section
   if (crt[_pos0] == _name) {
-    page[crt[_pos]].section.classList.remove(`pos${_pos}`)
-    page[crt[_pos]].section.classList.add(`pos${_pos0}`)
-    page[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
-    page[crt[_pos0]].section.classList.add(`pos${_pos}`)
+    root[crt[_pos]].section.classList.remove(`pos${_pos}`)
+    root[crt[_pos]].section.classList.add(`pos${_pos0}`)
+    root[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
+    root[crt[_pos0]].section.classList.add(`pos${_pos}`)
     _navigation.current = ['', crt[2], crt[1]]
-    window.history.pushState({}, '',
-      `${window.location.origin}/ide?${_navigation.current[1]}`);
+    /*window.history.pushState({}, '',
+      `${window.location.origin}/ide?${_navigation.current[1]}`);*/
      return
   }
 
@@ -69,7 +67,7 @@ function handleLink (_navigation, _pos, push){
   if (_pos == 1){
     if (crt [_pos] == _name && crt[_pos0] != ''){
       turnOff(crt[_pos0], _pos0)
-       page[crt[_pos]].section.classList.remove(`pos${_pos}`)
+       root[crt[_pos]].section.classList.remove(`pos${_pos}`)
       _navigation.current = [_name, '', '']
       handleResize()
       return
@@ -80,7 +78,7 @@ function handleLink (_navigation, _pos, push){
   if (_pos == 2){
     if (crt [_pos] == _name && crt[_pos0] != ''){
       turnOff(crt[_pos], _pos)
-       page[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
+       root[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
       _navigation.current = [crt[_pos0], '', '']
       handleResize()
       return
@@ -99,22 +97,22 @@ function handleLink (_navigation, _pos, push){
 
   // User right click in a new section while another is occupying everthing
   if (_pos == 2 && crt[_pos] != _name && crt[0] != ''){
-     page[crt[0]].section.classList.add(`pos1`)
+     root[crt[0]].section.classList.add(`pos1`)
     turnOn(_name, 2)
     _navigation.current = ['', crt[0], _name]
     handleResize()
     return
   }
 }
-function interpretLink (inited){
+function interpretLink (inited, root){
   let state = inited ? 1 : 0
   let path = window.location.href.split('?')
   if (path [1] == undefined) {
     // default module
-    handleLink.apply(page.files,[navigation, state])
+    handleLink.apply(root.files,[navigation, state, root, 'files'])
     return
   }
-  handleLink.apply(page[path[1]],[navigation, state])
+  handleLink.apply(root[path[1]],[navigation, state, root, path[1]])
   handleResize()
 }
 
@@ -122,13 +120,14 @@ function handleResize (){
   navigation.portrait = window.innerHeight > window.innerWidth ? true : false
 
   navigation.current.forEach ((item) => {
-    if (item != '' && page.hasOwnProperty(item) && typeof page[item].resize == 'function')
-      setTimeout(() => {page[item].resize()}, 125)
+    if (item != '' && window.bipes.page.hasOwnProperty(item) &&
+        typeof window.bipes.page[item].resize == 'function')
+      setTimeout(() => {window.bipes.page[item].resize()}, 125)
   })
 }
 
 class Navigation {
-  constructor (_page){
+  constructor (){
     this.current = ['','','']
     this.portrait = false
 
@@ -138,20 +137,26 @@ class Navigation {
     $.panels = DOM.getAll ('a', $.nav)
     $.menu.onclick = () => {
       DOM.switchState (this._dom.nav)
-    };
-    for (let module in _page) {
-      _page[module].nav = DOM.get(`a#${module}`, $.nav)
-      _page[module].section = DOM.get(`section#${module}`)
-      _page[module].nav.onclick = (ev) => {
+    }
+  }
+  init (){
+    for (let module in window.bipes.page) {
+      window.bipes.page[module].nav = DOM.get(`a#${module}`, this._dom.nav)
+      window.bipes.page[module].section = DOM.get(`section#${module}`)
+      window.bipes.page[module].nav.onclick = (ev) => {
         ev.preventDefault()
-        handleLink.apply(_page[module], [this, 1, true])
+        handleLink.apply(window.bipes.page[module], [this, 1, window.bipes.page, module, true])
       }
-      _page[module].nav.addEventListener('contextmenu', (ev) => {
+      window.bipes.page[module].nav.addEventListener('contextmenu', (ev) => {
         ev.preventDefault()
-        handleLink.apply(_page[module], [this, 2, true])
+        handleLink.apply(window.bipes.page[module], [this, 2, window.bipes.page, module, true])
       })
     }
-    window.onpopstate = () => {interpretLink(true)}
+    window.onpopstate = () => {interpretLink(true, window.bipes.page)}
     window.onresize = () => {handleResize()}
+
+    interpretLink(false, window.bipes.page)
   }
 }
+
+export let navigation = new Navigation()

@@ -1,16 +1,12 @@
 
 "use strict";
 
-export {StorageBroker}
-
 /**
  * Store data in the localStorage.
  * It is intended to also support synching to a server in the future.
  */
 class StorageBroker {
-  constructor (root){
-    this.root = root
-  }
+  constructor (){}
   keys (reg){
     let values = []
     let keys = Object.keys (localStorage)
@@ -51,3 +47,5 @@ class StorageBroker {
     localStorage.removeItem(key)
   }
 }
+
+export let storage = new StorageBroker()

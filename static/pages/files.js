@@ -1,10 +1,15 @@
 "use strict";
 
 import {DOM, ContextMenu, Animate} from '../base/dom.js'
-export {Files}
+import {command} from '../base/command.js'
+import {rosetta} from '../base/rosetta.js'
+import {channel} from '../base/channel.js'
+
+import {notification} from './notification.js'
 
 class Files {
   constructor (){
+    this.name = 'files'
     this.fileOnTarget = [{name:'', files:[]}] // Files stored on target device, default depth 1 (root)
     this.fileOnHost   = {} // Files stored on host device
 
@@ -101,7 +106,7 @@ class Files {
     $.container = new DOM('div', {className:'container'})
       .append([$.pane, $.editor])
 
-    $.section.append([$.container._dom, $.contextMenu])
+    $.section.append([$.container, $.contextMenu])
 
     // Codemirror
     this.codemirror = CodeMirror($.codemirror._dom)
@@ -117,6 +122,7 @@ class Files {
       return
 
     this.inited = true
+
   }
   deinit (){
     if (!this.inited)
@@ -444,10 +450,10 @@ class Files {
       let error = str.match(reg_oserror)[1]
       switch (error) {
         case '39':
-          page.notification.send(`Folder ${path[1]}/${path[2]} not empty, can't be removed.`)
+          notification.send(`Folder ${path[1]}/${path[2]} not empty, can't be removed.`)
           break
         default:
-          page.notification.send(`Could not remove folder ${path[1]}/${path[2]}.`)
+          notification.send(`Could not remove folder ${path[1]}/${path[2]}.`)
           break;
       }
     }
@@ -470,7 +476,7 @@ class Files {
     if (!reg.test(cmd))
       return
 
-    page.notification.send(`Script ${cmd.match(reg)[1]} finished executing!`)
+    notification.send(`Script ${cmd.match(reg)[1]} finished executing!`)
   }
   downloadFromTarget (filename){
     this.contextMenu.close()
@@ -524,3 +530,5 @@ class Files {
     this.contextMenu.close()
   }
 }
+
+export let files = new Files()

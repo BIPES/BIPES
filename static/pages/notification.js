@@ -1,10 +1,13 @@
 "use strict";
 
 import {DOM, Animate} from '../base/dom.js'
-export {Notification}
+import {command} from '../base/command.js'
+import {storage} from '../base/storage.js'
+
 
 class Notification {
   constructor (){
+    this.name = 'notification'
     this.notify = new Notify()
     this.messages = []
 
@@ -193,3 +196,6 @@ Notify.prototype.send = function (message) {
       150)
   }, 4000);
 }
+
+
+export let notification = new Notification()

@@ -1,10 +1,16 @@
 "use strict";
 
 import {DOM, Animate} from '../base/dom.js'
-export {Device}
+import {command} from '../base/command.js'
+import {storage} from '../base/storage.js'
+import {channel} from '../base/channel.js'
+import {rosetta} from '../base/rosetta.js'
+
+import {notification} from './notification.js'
 
 class Device {
   constructor (){
+    this.name = 'device'
     this.devices = storage.has('device') && storage.fetch('device') != '[]' ?
                     JSON.parse(storage.fetch('device')) : []
 
@@ -188,14 +194,14 @@ class Device {
     }
 
     this.inited = true
-    let obj = page.project.projects[page.project.currentUID]
+    let obj = window.bipes.page.project.projects[window.bipes.page.project.currentUID]
     if (obj.hasOwnProperty('device'))
       this.load(obj.device)
   }
   load (obj){
     // Trigger blocks because blocks might be inited
     if (obj.hasOwnProperty('target'))
-      page.blocks.toolbox(obj.target)
+      window.bipes.page.blocks.toolbox(obj.target)
 
     if (!this.inited)
       return
@@ -208,7 +214,7 @@ class Device {
   setProjectTarget (){
     let target = this._dom.targetDropdown._dom.value
 
-    page.project.update({
+    window.bipes.page.project.update({
       device:{target:target}
     })
   }
@@ -343,8 +349,10 @@ class Device {
   unresponsive (uid){
     this.devices.forEach((item, index) => {
       if (item.uid == uid) {
-        page.notification.send(`Device ${item.nodename} version ${item.version} is unresponsive, consider resetting it.`)
+        notification.send(`Device ${item.nodename} version ${item.version} is unresponsive, consider resetting it.`)
       }
     })
   }
 }
+
+export let device = new Device()

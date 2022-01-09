@@ -1,7 +1,6 @@
 "use strict";
 
 import {Tool} from './tool.js'
-export {CommandBroker}
 
 /**
  * Send commands across tabs and windows by listening to localStorage events.
@@ -13,8 +12,8 @@ class CommandBroker {
    * be tightly structured and easily navigable to properley dispatch commands.
    * @param {Object} root - Root object, where all callbacks are child from.
    */
-  constructor (root) {
-    this.root = root
+  constructor () {
+    this.name = 'command'
     this.map = {}
     this.pipe = new BroadcastChannel('main')
     this.pipe.onmessage = (ev) => {
@@ -44,15 +43,15 @@ class CommandBroker {
    */
   add (self, callbacks, skipMain){
    for (let key in callbacks){
-      let _key = `${self.constructor.name.toLowerCase()}_${key}`
+      let _key = `${self.name}_${key}`
       this.map[_key] = {}
       this.map[_key].fun = (key, args) => {
 
-        let self = this.root
+        let self = window.bipes.page
         if (args[0] == 'channel') {
-          self = window.channel
+          self = window.bipes.channel
         } else if (args[0] == 'commandbroker') {
-          self = window.command
+          self = window.bipes.command
         } else {
           args[0].forEach((item) => {
             self = self[item]
@@ -76,7 +75,7 @@ class CommandBroker {
     if (keys.constructor.name != 'Array')
       keys = [keys]
     keys.forEach((key) => {
-      let _key = `${self.constructor.name}_${key}`
+      let _key = `${self.name}_${key}`
       window.removeEventListener ("storage", this.map[_key].fun)
       delete this.map[_key]
     })
@@ -92,7 +91,7 @@ class CommandBroker {
       self = [self]
 
     // Call function on main window
-    let _key = `${self[self.length-1].constructor.name.toLowerCase()}_${key}`,
+    let _key = `${self[self.length-1].name.toLowerCase()}_${key}`,
         _self = []
 
     if (!this.map.hasOwnProperty(_key)) {
@@ -106,7 +105,7 @@ class CommandBroker {
     // Include this parent to child key
     self.forEach((item) => {
       _self.push(item.constructor.name == 'String' ?
-                 item : item.constructor.name.toLowerCase())
+                 item : item.name.toLowerCase())
     })
     args.unshift(_self)
 
@@ -161,3 +160,6 @@ class CommandBroker {
     }
   }
 }
+
+
+export let command = new CommandBroker()

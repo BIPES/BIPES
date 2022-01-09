@@ -1,11 +1,10 @@
 "use strict"
 
 import {Tool} from './tool.js'
-
-export {Channel}
+import {command} from './command.js'
 
 // Commom MicroPython outputs
-const BACKSPACE = '[K' // Bbackspace character
+const BACKSPACE = '[K' // Backspace character
 const PASTEMODE = "paste mode; Ctrl-C to cancel, Ctrl-D to finish" // Paste mode output
 
 class Channel {
@@ -13,8 +12,8 @@ class Channel {
    * Create the Channel object with a root object.
    * @param {Object} root - Root object, where all callbacks are child from.
    */
-  constructor (root){
-    this.root = root
+  constructor (){
+    this.name = 'channel'
     this.current
 
     this.currentProtocol // Just a string with the current connected protocol
@@ -24,14 +23,15 @@ class Channel {
     this.lock = false // If the terminal is free to send new data
     this.dirty = false// If the terminal has input (user raw input or timers)
     this.callbacks = []
-    this.webserial = new _WebSerial ()
+
+    this.webserial = new _WebSerial(this)
+
     this.checkUp ()
     this.targetDevice
     this.ping = {      // Create a timer on connect and on message to check
       timer:undefined, // if the device is responding
       on:false
     }
-
     // Cross tabs event handler on muxing terminal
     command.add(this, {
       push: this.push,
@@ -47,7 +47,7 @@ class Channel {
     clearTimeout(this.ping.timer)
     this.ping.timer = setTimeout(()=>{
       if (this.ping.on === false)
-        page.device.unresponsive(this.targetDevice)
+        window.bipes.page.device.unresponsive(this.targetDevice)
       }, 2000)
   }
   push (cmd, targetDevice, callback, tabUID){
@@ -68,7 +68,7 @@ class Channel {
     }
     // Build callback function
     if (callback != undefined && callback.constructor.name == 'Array') {
-      let self = this.root,
+      let self = window.bipes.page,
           fun
       if (callback.length == 0) {
         // Filler/dummy callback
@@ -106,12 +106,12 @@ class Channel {
   _connected (channel, callback){
     this.targetDevice = Tool.UID()
     this.current = this[channel]
-    this.currentProtocol = this.current.constructor.name
+    this.currentProtocol = this.current.name
     this.watcher = setInterval(
       this.current.watch.bind(this.current),
       50);
-    page.console.on()
-    page.console.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
+    window.bipes.page.console.on()
+    window.bipes.page.console.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
     this.push('\r\n', this.targetDevice)
     if (typeof callback == 'object' && typeof callback[1] == 'function')
       callback[1].apply(callback[0])
@@ -132,9 +132,9 @@ class Channel {
         currentProtocol = this.currentProtocol
     this.currentProtocol = ''
     this.targetDevice = undefined
-    page.device.unuse(uid)
-    page.console.off()
-    page.console.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
+    window.bipes.page.device.unuse(uid)
+    window.bipes.page.console.off()
+    window.bipes.page.console.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
   }
   checkUp (){
     if (navigator.serial == undefined)
@@ -214,19 +214,19 @@ class Channel {
   }
 }
 
-class _WebSerial {
-  constructor (){
-    this.port
-    this.config = {
-      baudrate:115200,
-      packetSize:100
-    }
-    this.encoder = new TextEncoder();
+function _WebSerial (parent){
+  this.name = 'WebSerial'
+  this.port
+  this.config = {
+    baudrate:115200,
+    packetSize:100
   }
+  this.encoder = new TextEncoder()
+  this.parent = parent
   /**
    * Connect using webserial protocol, will ask user permission for the serial port.
    */
-  connect (callback){
+  this.connect = (callback) => {
     if (navigator.serial == undefined)
       return false
 
@@ -237,35 +237,35 @@ class _WebSerial {
           write(chunk) {
             if (typeof chunk == 'string') {
               //data comes in chunks, keep last 4 chars to check MicroPython REPL string
-              channel.output += chunk
-              page.console.write(chunk)
-              channel.ping.on = true
-              if (channel.output.substring(channel.output.length - 4) == ">>> "){
-                channel.output = channel.output.substring(0, channel.output.length - 4)
+              window.bipes.channel.output += chunk
+              window.bipes.page.console.write(chunk)
+              window.bipes.channel.ping.on = true
+              if (window.bipes.channel.output.substring(window.bipes.channel.output.length - 4) == ">>> "){
+                window.bipes.channel.output = window.bipes.channel.output.substring(0, window.bipes.channel.output.length - 4)
                 //After all code was executed
-                if (channel.callbacks.length > 0)
-                  channel.handleCallback(channel.output)
+                if (window.bipes.channel.callbacks.length > 0)
+                  window.bipes.channel.handleCallback(window.bipes.channel.output)
                 else {
-                  channel.output = ''
-                  channel.lock = false
+                  window.bipes.channel.output = ''
+                  window.bipes.channel.lock = false
                 }
               }
             }
           },
           abort(e){
-            channel._disconnected()
+            window.bipes.channel._disconnected()
           }
         })
         this.port.readable
         .pipeThrough(new TextDecoderStream())
         .pipeTo(appendStream)
-        channel._connected('webserial', callback)
+        this.parent._connected('webserial', callback)
         return true
 
       }).catch((e) => {
         console.error(e)
         if (e.code == 11) {
-          channel._connected('webserial', callback)
+          this.parent._connected('webserial', callback)
           return true
         }
       })
@@ -278,7 +278,7 @@ class _WebSerial {
    * @param {boolean} force - Try to disconnect at all cost and if fails, pretend
    *                          it worked (useful on unload when everything is cleared anyway)
    */
-  disconnect (force) {
+  this.disconnect = (force) => {
     const writer = this.port.writable.getWriter()
     writer.close().then(() => {
       this.port.close().then(() => {
@@ -287,7 +287,7 @@ class _WebSerial {
           console.error(e)
           if (force == true){
             writer.abort()
-            channel._disconnected()
+            this.parent._disconnected()
             this.port = undefined
           }
         })
@@ -295,17 +295,17 @@ class _WebSerial {
     })
   }
   /**
-   * Runs every 50ms to check if there is code to be sent in the :js:attr:`channel#input` (appended with :js:func:`channel.push()`)
+   * Runs every 50ms to check if there is code to be sent in the :js:attr:`channel#input` (appended with :js:func:`this.parent.push()`)
    */
-  watch (){
-    if (this.port && this.port.writable && this.port.writable.locked == false && channel.lock == false) {
-      if (channel.input.length > 0) {
-        if (channel.isDirty())
+  this.watch = () => {
+    if (this.port && this.port.writable && this.port.writable.locked == false && this.parent.lock == false) {
+      if (this.parent.input.length > 0) {
+        if (this.parent.isDirty())
           return
         try {
-          channel.lock = true
-          this.write(channel.input [0])
-          channel.input.shift()
+          this.parent.lock = true
+          this.write(this.parent.input [0])
+          this.parent.input.shift()
         } catch (e) {
           console.error(e)
         }
@@ -316,7 +316,7 @@ class _WebSerial {
    * Directly send code via webserial, normally called by this.watch()
    * @param {(Uint8Array|string|number)} data - code to be sent via webserial
    */
-  async write (data){
+  this.write = async (data) => {
     if (data.constructor.name != 'Array')
       data = [data]
 
@@ -339,16 +339,9 @@ class _WebSerial {
       }
     }
     // If no callback expected, release lock
-    if (channel.callbacks.length == 0)
-      channel.lock = false
+    if (this.parent.callbacks.length == 0)
+      this.parent.lock = false
   }
 }
 
-
-
-
-
-
-
-
-
+export let channel = new Channel()
