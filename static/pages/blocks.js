@@ -15,14 +15,16 @@ class Blocks {
     $.section = new DOM (DOM.get('section#blocks'))
       .append(new DOM('div', {id:'blockly'}))
 
-
+    // Empty toolbox to use in the workspace until loading project
+    let emptyToolbox = Blockly.Xml.textToDom("<xml><category name='...'></category></xml>")
     this.workspace = Blockly.inject('blockly', {
-      toolbox: blockly_toolbox_esp32,
+      theme: Blockly.Themes.Dark,
+      toolbox: emptyToolbox,
       visible: false,
       grid: {
         spacing: 25,
         length: 3,
-        colour: '#ccc',
+        colour: '#666',
         snap: true
       },
       media: './static/media/blocks/',
@@ -39,6 +41,12 @@ class Blocks {
         drag: true,
         wheel: false}
     })
+
+
+    // Init language strings
+    for (const target in blockly_toolbox){
+      blockly_toolbox[target] = blockly_toolbox[target].replace(/%{(\w+)}/g, (m, p1) => Blockly.Msg[p1])
+    }
   }
   init (){
     this.workspace.setVisible(true)
@@ -46,8 +54,12 @@ class Blocks {
     let obj = page.project.projects[page.project.currentUID]
     if (obj.hasOwnProperty('blocks'))
       this.load(obj.blocks)
+    if (obj.hasOwnProperty('device'))
+      this.toolbox(obj.device.target)
     // Update project on changes
     this.workspace.addChangeListener(this.update)
+
+
   }
   deinit(){
     this.workspace.removeChangeListener(this.update)
@@ -89,4 +101,33 @@ class Blocks {
       Blockly.Events.enable()
     }
   }
+
+  toolbox (target){
+    if (!this.inited)
+      return
+
+    this.workspace.updateToolbox(blockly_toolbox[target])
+    this.workspace.scrollCenter()
+  }
 }
+
+
+
+/* Dark blockly theme*/
+Blockly.Themes.Dark = Blockly.Theme.defineTheme('dark', {
+  'base': Blockly.Themes.Classic,
+  'componentStyles': {
+    'workspaceBackgroundColour': '#1e1e1e',
+    'toolboxBackgroundColour': 'blackBackground',
+    'toolboxForegroundColour': '#fff',
+    'flyoutBackgroundColour': '#252526',
+    'flyoutForegroundColour': '#ccc',
+    'flyoutOpacity': 1,
+    'scrollbarColour': '#797979',
+    'insertionMarkerColour': '#fff',
+    'insertionMarkerOpacity': 0.3,
+    'scrollbarOpacity': 0.4,
+    'cursorColour': '#d0d0d0',
+    'blackBackground': '#333',
+  },
+})

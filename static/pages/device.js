@@ -193,11 +193,17 @@ class Device {
       this.load(obj.device)
   }
   load (obj){
+    // Trigger blocks because blocks might be inited
+    if (obj.hasOwnProperty('target'))
+      page.blocks.toolbox(obj.target)
+
     if (!this.inited)
       return
-    if (obj.hasOwnProperty('target'))
+    if (obj.hasOwnProperty('target')){
       DOM.setSelected(this._dom.targetDropdown, obj.target),
       this._dom.pinout._dom.src = `./static/media/devices/${obj.target}.svg`
+      // Set target's blockly toolbox
+    }
   }
   setProjectTarget (){
     let target = this._dom.targetDropdown._dom.value

@@ -105,7 +105,7 @@ def blockly_toolbox_generator ():
             dict[m] = a[i+1:l[0]-1]
 
     # toolbox.umd.js string
-    js = ''
+    js = "let blockly_toolbox = {}\n"
 
     # Build the toolboxes per device
     for dev in devices:
@@ -119,7 +119,7 @@ def blockly_toolbox_generator ():
         for i in lines:
             xml += dict[i[0:len(i)-1]]
 
-        js += "let blockly_toolbox_" + dev_name + " = `\n<xml>\n" + xml + "</xml>\n`\n\n"
+        js += "blockly_toolbox." + dev_name + " = `\n<xml>\n" + xml + "</xml>\n`\n\n"
 
     return js
 

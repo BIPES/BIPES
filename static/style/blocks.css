@@ -2,10 +2,18 @@ section#blocks #blockly {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #333;
 }
 nav #blocks::before {
 	background-position: left calc(-1.5rem*19) top;
 }
 nav #blocks.on::before {
 	background-position: left calc(-1.5rem*19) bottom;
+}
+section#blocks {
+  display: block;
+  visibility: hidden;
+}
+section#blocks.on {
+  visibility: visible;
 }

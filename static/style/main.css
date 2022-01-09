@@ -107,7 +107,7 @@ nav {
 	flex-flow: column;
 	justify-content: space-between;
 
-	z-index: 21;
+	z-index: 71;
 	transition: 0.25s ease width;
 
 	background: #333;
@@ -341,30 +341,24 @@ section.ani.on {
   section {
   	transition: .125s ease left, .125s ease opacity;
   }
-  section._pos1 {
-    left: -1em !important;
-  }
-  section.pos2 {
+  section.pos2, section._pos2{
     border-left: 1px solid #666;
-  }
-  section._pos2 {
-    left: calc(50vw - 0.85rem) !important;
   }
 }
 @media screen and (orientation:landscape) and (min-width: 40rem) {
-  section.pos1 {
+  section.pos1, section._pos1{
     width: calc(50vw - 1.85rem);
   }
-  section.pos2 {
+  section.pos2, section._pos2{
     width: calc(50vw - 1.85rem);
     left: calc(50vw - 1.85rem) !important;
   }
 }
 @media screen and (orientation:landscape) and (max-width: 39.99rem) {
-  section.pos1 {
+  section.pos1, section._pos{
     width: 50vw;
   }
-  section.pos2 {
+  section.pos2, section._pos2{
     width: 50vw;
     left: 50vw !important;
   }
@@ -373,32 +367,26 @@ section.ani.on {
   section {
   	transition: .125s ease top, .125s ease opacity;
   }
-  section._pos1 {
-    top: -1em !important;
-  }
-  section._pos2 {
-    top: calc(50vh - 0.85rem) !important;
-  }
-  section.pos2 {
+  section.pos2, section._pos2{
     border-top: 1px solid #666;
   }
 }
 @media screen and (orientation:portrait) and (min-width: 40rem) {
-  section.pos1 {
+  section.pos1, section._pos1{
     height: 50vh;
     top: 0vh;
   }
-  section.pos2 {
+  section.pos2, section._pos2{
     height: 50vh;
     top: 50vh;
   }
 }
 @media screen and (orientation:portrait) and (max-width: 39.99rem) {
-  section.pos1 {
+  section.pos1, section._pos1{
     height: calc(50vh - 1.85rem);
     top: 0vh;
   }
-  section.pos2 {
+  section.pos2, section._pos2{
     height: calc(50vh - 1.85rem);
     top: calc(50vh - 1.85rem);
   }
@@ -442,7 +430,7 @@ button.icon.text, label.icon.text {
   width: 100vw;
   height: 100vh;
   background: rgba(0,0,0,0);
-  z-index:23;
+  z-index: 73;
   transition: background-color ease .25s;
   font-weight: bold;
   top: 0;
@@ -505,7 +493,7 @@ a#notification.new:after {
   background: #4499cc;
 }
 #notify {
-  z-index: 22;
+  z-index: 72;
 	left: -18em;
   top: 9.875em;
 	padding: 1em;
