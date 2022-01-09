@@ -8,6 +8,7 @@ package-lock.json
 node_modules/
 
 *.umd.js
+*.temp.js
 
 static/libs/blockly/msg
 

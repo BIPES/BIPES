@@ -1,36 +1,26 @@
-import {command} from '../../static/base/command.js'
-import {storage} from '../../static/base/storage.js'
-import {channel} from '../../static/base/channel.js'
-import {rosetta} from '../../static/base/rosetta.js'
-import {navigation} from '../../static/base/navigation.js'
+{% for item in base %}
+import { {{item}} } from '../../static/base/{{item}}.js'{% endfor %}
 
-import {blocks} from '../../static/pages/blocks.js'
-import {files} from '../../static/pages/files.js'
-import {notification} from '../../static/pages/notification.js'
-import {_console} from '../../static/pages/console.js'
-import {device} from '../../static/pages/device.js'
-import {project} from '../../static/pages/project.js'
-
+{% for item in navigation %}
+import { {{item.href}} } from '../../static/pages/{{item.href}}.js'{% endfor %}
 
 export default function Bipes (){
   window.bipes = {}
   window.bipes.page = {}
 
   // Make bipes enviroment acessible
-  window.bipes.command = command
-  window.bipes.storage = storage
-  window.bipes.channel = channel
-  window.bipes.rosetta = rosetta
+  {% for item in base %}
+  window.bipes.{{item}} = {{item}}{% endfor %}
 
-  window.bipes.page.blocks = blocks
-  window.bipes.page.files = files
-  window.bipes.page.notification = notification
-  window.bipes.page.console = _console
-  window.bipes.page.device = device
-  window.bipes.page.project = project
+  {% for item in navigation %}
+  window.bipes.page.{{item.href}} = {{item.href}}{% endfor %}
 
   window.bipes.navigation = navigation
 
   window.bipes.page.project._init()
   window.bipes.navigation.init()
 }
+
+{% if import_type == "module" %}
+Bipes ()
+{% endif %}

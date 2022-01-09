@@ -5,19 +5,19 @@ import {DOM, Animate} from '../base/dom.js'
 import {command} from '../base/command.js'
 import {channel} from '../base/channel.js'
 
-class Console {
+class Prompt {
   constructor (){
-    this.name = 'console'
+    this.name = 'prompt'
     this.inited = false
-    this.terminal = new Terminal ()
+    this.prompt = new Terminal ()
 
     let $ = this._dom = {}
-    $.section = new DOM(DOM.get('section#console'))
-    $.terminalXterm = new DOM('div', {className:"xterm"})
+    $.section = new DOM(DOM.get('section#prompt'))
+    $.promptXterm = new DOM('div', {className:"xterm"})
     $.quickActions = new DOM('div', {className:"quick-actions"})
       .append([
-        new DOM('span', {innerText:"Clear terminal"})
-          .onclick(this, ()=>{this.terminal.clear()}),
+        new DOM('span', {innerText:"Clear prompt"})
+          .onclick(this, ()=>{this.prompt.clear()}),
         new DOM('span', {innerText:"Reset device", className:'master'})
           .onclick(command, () => {
             command.dispatch(channel, 'push', [
@@ -50,13 +50,13 @@ class Console {
 
     $.container = new DOM('div', {className:"container"})
       .append([
-        new DOM('div', {className:"wrapper"}).append($.terminalXterm),
+        new DOM('div', {className:"wrapper"}).append($.promptXterm),
         $.quickActions
       ])
 
-    this.terminal.open($.terminalXterm._dom)
-    this.terminal.setOption('fontSize',14)
-    this.terminal.onData((data) => {
+    this.prompt.open($.promptXterm._dom)
+    this.prompt.setOption('fontSize',14)
+    this.prompt.onData((data) => {
       // If tab is master, write directly to reduce delay
       if (channel.current != undefined)
         channel.rawPush(data, channel.targetDevice)
@@ -64,9 +64,9 @@ class Console {
         command.dispatch(channel, 'rawPush', [data, channel.targetDevice])
     });
 
-    DOM.get('section#console').append($.container._dom)
+    DOM.get('section#prompt').append($.container._dom)
 
-    // Cross tabs event handler on muxing terminal
+    // Cross tabs event handler on muxing prompt
     command.add(this, {
       write: this._write
     }, true)
@@ -91,25 +91,25 @@ class Console {
       return
     this.inited = false
   }
-  /** Enable the terminal. */
+  /** Enable the prompt. */
   on (){
     if(!this.inited)
       return
 
-    this.terminal.setOption('disableStdin', false);
-    this.terminal.focus();
+    this.prompt.setOption('disableStdin', false);
+    this.prompt.focus();
   }
-  /** Disable the terminal. */
+  /** Disable the prompt. */
   off (){
     if(!this.inited)
       return
 
-    this.terminal.setOption('disableStdin', true);
-    this.terminal.blur();
+    this.prompt.setOption('disableStdin', true);
+    this.prompt.blur();
   }
-  /** Write data in the terminal. */
+  /** Write data in the prompt. */
   write (data){
-    this.terminal.write(data);
+    this.prompt.write(data);
 
     // Write to delayed dispatch
     if (this.tabs.target != channel.targetDevice)
@@ -122,10 +122,10 @@ class Console {
   _write (data, target){
     if(channel.targetDevice != target)
       return
-    this.terminal.write(data)
+    this.prompt.write(data)
   }
   /**
-   * Resize the ``xterm.js`` terminal, triggered by ``window.onresize`` event on
+   * Resize the ``xterm.js`` prompt, triggered by ``window.onresize`` event on
    * on base/navigation.js.
    */
   resize (){
@@ -135,8 +135,8 @@ class Console {
     let cols = (this._dom.section._dom.offsetWidth - 5*8)/8,
         rows = (this._dom.section._dom.offsetHeight - 3*16)/16.5
 
-    this.terminal.resize(parseInt(cols), parseInt(rows))
+    this.prompt.resize(parseInt(cols), parseInt(rows))
   }
 }
 
-export let _console = new Console()
+export let prompt = new Prompt()

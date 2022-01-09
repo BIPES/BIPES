@@ -37,10 +37,6 @@ flask:
 release:
 	. venv/bin/activate && \
 	python -c "import __init__; __init__.build_release()"
-
-offline: bipes-offline clean-up
-
-bipes-offline:
 	npm install rollup \
 	rollup-plugin-terser
 	node_modules/.bin/rollup -c templates/libs/rollup.config.bipes.js
@@ -54,6 +50,7 @@ clean-up:
 	rm -rf node_modules
 	rm -rf blockly
 	rm -rf package-lock.json
+	rm -rf templates/libs/bipes.temp.js
 
 
 	

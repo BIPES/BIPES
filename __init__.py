@@ -65,21 +65,29 @@ npm  = {
 
 # Navigation dictionary
 class Navigation:
-    def __init__ (self, js_class, caption, href, css_src=False):
-        self.js_class = js_class
+    def __init__ (self, caption, href, css_src=False):
         self.caption = caption
         self.href = href
         self.css_src = css_src
 navigation = [
-    Navigation('Blocks', 'Blocks', 'blocks','blocks'),
-    #Navigation('Dashboard', 'Dashboard','dashboard'),
-    Navigation('Files','Files','files','files'),
-    Navigation('Notification','Notifications','notification'),
-    #Navigation('Admin','Settings','admin'),
-    Navigation('Console','Console','console','console'),
-    Navigation('Device','Device','device','device'),
-    Navigation('Project','Projects','project','project')
+    Navigation('Blocks', 'blocks','blocks'),
+    #Navigation('Dashboard','dashboard'),
+    Navigation('Files','files','files'),
+    Navigation('Notifications','notification'),
+    #Navigation('Settings','admin'),
+    Navigation('Terminal','prompt','prompt'),
+    Navigation('Device','device','device'),
+    Navigation('Projects','project','project')
     ];
+
+# Base core files
+base = {
+    'command',
+    'storage',
+    'channel',
+    'rosetta',
+    'navigation'
+}
 
 # Generates the toolboxes per device
 def blockly_toolbox_generator ():
@@ -128,6 +136,10 @@ def blockly_toolbox_generator ():
 
     return js
 
+# Return BIPES imports.
+def bipes_imports(import_type='module'):
+    return render_template('libs/bipes.js', base=base,navigation=navigation, import_type=import_type)
+
 # Build BIPES static release
 def build_release ():
     # Build blockly toolboxes
@@ -137,7 +149,11 @@ def build_release ():
     # "Compile" ide template as ide/index.html (default filename for servers)
     with open('ide.html','w') as f:
         with app.app_context():
-            f.write(ide())
+            f.write(ide(import_type='text/javascript'))
+
+    with open("templates/libs/bipes.temp.js",'w') as f:
+        with app.app_context():
+            f.write(bipes_imports(import_type='text/javascript'))
 
  # Check is a object has a attribute, can also return another attribute if true
 def has_in (name, array, attr, return_attr=None):
@@ -151,19 +167,28 @@ def has_in (name, array, attr, return_attr=None):
 
 # Return "compiled" html file.
 @app.route("/ide")
-def ide(name=None):
+def ide(name=None, import_type='module'):
     name = name if has_in(name, navigation, 'href') else None
 
     return render_template('ide.html', app_name=app_name, app_version=app_version,
-                           navigation=navigation, name=name, npm=npm)
+                           navigation=navigation, name=name, npm=npm, import_type=import_type)
 
 
 
 # Return "compiled" toolboxes xml embedded in a js file.
 @app.route("/static/libs/blockly/toolbox.umd.js")
-def blockly_toolbox(name=None):
+def blockly_toolbox():
     return Response(blockly_toolbox_generator(), mimetype='application/javascript')
 
-@app.route("/test")
+@app.route("/static/libs/bipes.umd.js")
+def bipes():
+    return Response(bipes_imports(), mimetype='application/javascript')
+
+
+@app.route("/empty")
 def test(name=None):
-    return render_template('test.html')
+    return render_template('empty.html')
+
+
+
+

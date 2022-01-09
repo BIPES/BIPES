@@ -110,8 +110,8 @@ class Channel {
     this.watcher = setInterval(
       this.current.watch.bind(this.current),
       50);
-    window.bipes.page.console.on()
-    window.bipes.page.console.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
+    window.bipes.page.prompt.on()
+    window.bipes.page.prompt.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
     this.push('\r\n', this.targetDevice)
     if (typeof callback == 'object' && typeof callback[1] == 'function')
       callback[1].apply(callback[0])
@@ -133,12 +133,12 @@ class Channel {
     this.currentProtocol = ''
     this.targetDevice = undefined
     window.bipes.page.device.unuse(uid)
-    window.bipes.page.console.off()
-    window.bipes.page.console.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
+    window.bipes.page.prompt.off()
+    window.bipes.page.prompt.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
   }
   checkUp (){
     if (navigator.serial == undefined)
-      console.error("Don't support WebSerial")
+      prompt.error("Don't support WebSerial")
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it
@@ -151,7 +151,7 @@ class Channel {
         call.cmd = this.emulatePasteMode(call.cmd)
 
       if (out.substring(0, call.cmd.length) != call.cmd) {
-        console.error("Channel: callback's commands checkup failed")
+        prompt.error("Channel: callback's commands checkup failed")
         this.callbacks = []
         this.output = ''
         this.lock = false
@@ -169,7 +169,7 @@ class Channel {
           )
         }
       } catch (e){
-        console.error(e)
+        prompt.error(e)
       }
     }
     this.output = ''
@@ -238,7 +238,7 @@ function _WebSerial (parent){
             if (typeof chunk == 'string') {
               //data comes in chunks, keep last 4 chars to check MicroPython REPL string
               window.bipes.channel.output += chunk
-              window.bipes.page.console.write(chunk)
+              window.bipes.page.prompt.write(chunk)
               window.bipes.channel.ping.on = true
               if (window.bipes.channel.output.substring(window.bipes.channel.output.length - 4) == ">>> "){
                 window.bipes.channel.output = window.bipes.channel.output.substring(0, window.bipes.channel.output.length - 4)
@@ -263,14 +263,14 @@ function _WebSerial (parent){
         return true
 
       }).catch((e) => {
-        console.error(e)
+        prompt.error(e)
         if (e.code == 11) {
           this.parent._connected('webserial', callback)
           return true
         }
       })
     }).catch((e) => {
-      console.error(e)
+      prompt.error(e)
       return false
     })
   }  /**
@@ -284,7 +284,7 @@ function _WebSerial (parent){
       this.port.close().then(() => {
           this.port = undefined
         }).catch((e) => {
-          console.error(e)
+          prompt.error(e)
           if (force == true){
             writer.abort()
             this.parent._disconnected()
@@ -307,7 +307,7 @@ function _WebSerial (parent){
           this.write(this.parent.input [0])
           this.parent.input.shift()
         } catch (e) {
-          console.error(e)
+          prompt.error(e)
         }
       }
     }

@@ -14,7 +14,7 @@ class Blocks {
     let $ = this._dom = {}
 
     $.section = new DOM (DOM.get('section#blocks'))
-      //.append(new DOM('div', {id:'blockly'}))
+      .append(new DOM('div', {id:'blockly'}))
 
     // Empty toolbox to use in the workspace until loading project
     let emptyToolbox = Blockly.Xml.textToDom("<xml><category name='...'></category></xml>")

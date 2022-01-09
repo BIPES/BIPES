@@ -1,32 +1,32 @@
-nav #console::before {
+nav #prompt::before {
 	background-position: left calc(-1.5rem*12) top;
 }
-nav #console.on::before {
+nav #prompt.on::before {
 	background-position: left calc(-1.5rem*12) bottom;
 }
-section#console.ani{
+section#prompt.ani{
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
-section#console .container {
+section#prompt .container {
   background: #000;
   overflow: hidden;
   border: 1px solid #666;
   overscroll-behavior: none;
 }
-section#console .wrapper {
+section#prompt .wrapper {
   padding: 0.5em 0.5em 0.5em 0.5em;
 }
-section#console .quick-actions {
+section#prompt .quick-actions {
   border-top: 1px solid #666;
   display: flex;
   overflow-x: auto;
   padding: 0 .25rem;
   font-size: 0.9em;
 }
-section#console .quick-actions > span {
+section#prompt .quick-actions > span {
   border: 1px solid #666;
   border-radius: .25rem;
   padding: .25rem;

@@ -28,37 +28,11 @@
 
 {% for item in navigation %}<section id="{{ item.href }}"></section>{% endfor %}
 
+<script type="{{import_type}}" src="./static/libs/bipes.umd.js"></script>
+{% if import_type == "text/javascript" %}
 <script>
-    var page = {},
-        navigation,
-        storage,
-        command,
-        channel,
-        rosetta
-
+  Bipes()
 </script>
-<script type="module">
-  import {Navigation, interpretLink} from './static/base/navigation.js'
-  import {CommandBroker} from './static/base/command.js'
-  import {StorageBroker} from './static/base/storage.js'
-  import {Channel} from './static/base/channel.js'
-  import {Rosetta} from './static/base/rosetta.js'
-
-{% for item in navigation %}
-  import { {{item.js_class}} } from './static/pages/{{item.href}}.js'{% endfor %}
-  // Init CommandBroker, StorageBroker and Channel with page as root object
-  command = new CommandBroker(page)
-  storage = new StorageBroker(page)
-  channel = new Channel(page)
-  rosetta = Rosetta.set('MicroPython')
-
-{% for item in navigation %}
-  page.{{item.href}} = new {{item.js_class}}{% endfor %}
-
-  navigation = new Navigation(page)
-
-  interpretLink(false)
-
-</script>
+{% endif %}
 
 </body>
