@@ -138,7 +138,7 @@ class Channel {
   }
   checkUp (){
     if (navigator.serial == undefined)
-      prompt.error("Don't support WebSerial")
+      console.error("Don't support WebSerial")
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it
@@ -151,7 +151,7 @@ class Channel {
         call.cmd = this.emulatePasteMode(call.cmd)
 
       if (out.substring(0, call.cmd.length) != call.cmd) {
-        prompt.error("Channel: callback's commands checkup failed")
+        console.error("Channel: callback's commands checkup failed")
         this.callbacks = []
         this.output = ''
         this.lock = false
@@ -169,7 +169,7 @@ class Channel {
           )
         }
       } catch (e){
-        prompt.error(e)
+        console.error(e)
       }
     }
     this.output = ''
@@ -263,14 +263,14 @@ function _WebSerial (parent){
         return true
 
       }).catch((e) => {
-        prompt.error(e)
+        console.error(e)
         if (e.code == 11) {
           this.parent._connected('webserial', callback)
           return true
         }
       })
     }).catch((e) => {
-      prompt.error(e)
+      console.error(e)
       return false
     })
   }  /**
@@ -284,7 +284,7 @@ function _WebSerial (parent){
       this.port.close().then(() => {
           this.port = undefined
         }).catch((e) => {
-          prompt.error(e)
+          console.error(e)
           if (force == true){
             writer.abort()
             this.parent._disconnected()
@@ -307,7 +307,7 @@ function _WebSerial (parent){
           this.write(this.parent.input [0])
           this.parent.input.shift()
         } catch (e) {
-          prompt.error(e)
+          console.error(e)
         }
       }
     }

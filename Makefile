@@ -1,4 +1,4 @@
-make: codemirror xterm blockly flask blockly-toolbox clean-up run
+make: codemirror xterm blockly flask clean-up run
 	echo "Thanks for using BIPES :)!"
 
 codemirror:
@@ -34,23 +34,40 @@ flask:
 	pip install Flask && \
 	exit
 
-release:
+run:
+	. venv/bin/activate && \
+	export FLASK_APP=__init__ && \
+	flask run --port=5001 --host=0.0.0.0
+
+
+release: build-release zip clean-up
+
+
+build-release:
 	. venv/bin/activate && \
 	python -c "import __init__; __init__.build_release()"
 	npm install rollup \
 	rollup-plugin-terser
 	node_modules/.bin/rollup -c templates/libs/rollup.config.bipes.js
 
-run:
-	. venv/bin/activate && \
-	export FLASK_APP=__init__ && \
-	flask run --port=5001 --host=0.0.0.0
+zip:
+	rm -rf BIPES.zip
+	mkdir -p .BIPES
+	cp ide.html .BIPES
+	mkdir -p .BIPES/static
+	cp -r static/libs .BIPES/static/
+	cp -r static/media .BIPES/static/
+	cp -r static/msg .BIPES/static/
+	cp -r static/style .BIPES/static/
+	cd .BIPES && zip -q -r BIPES.zip * && \
+	mv BIPES.zip ../BIPES.zip
+	rm -rf .BIPES
+
 
 clean-up:
 	rm -rf node_modules
 	rm -rf blockly
 	rm -rf package-lock.json
 	rm -rf templates/libs/bipes.temp.js
-
-
-	
+	rm -rf ide.html
+	rm -rf static/libs/bipes.umd.js

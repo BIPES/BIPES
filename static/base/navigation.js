@@ -130,6 +130,7 @@ class Navigation {
   constructor (){
     this.current = ['','','']
     this.portrait = false
+    this.isLocal = (/^file:\/\//).test(window.location.href)
 
     let $ = this._dom = {}
     $.nav = DOM.get ('nav')

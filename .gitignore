@@ -2,15 +2,15 @@ venv/
 _temp/
 __pycache__/
 
-README.md
-
 package-lock.json
 node_modules/
 
 *.umd.js
 *.temp.js
+*.zip
 
 static/libs/blockly/msg
 
 static/media/blocks/
 /ide.html
+BIPES

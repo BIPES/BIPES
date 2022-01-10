@@ -50,7 +50,7 @@ class CommandBroker {
         let self = window.bipes.page
         if (args[0] == 'channel') {
           self = window.bipes.channel
-        } else if (args[0] == 'commandbroker') {
+        } else if (args[0] == 'command') {
           self = window.bipes.command
         } else {
           args[0].forEach((item) => {
