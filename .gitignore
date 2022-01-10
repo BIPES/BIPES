@@ -2,6 +2,7 @@ venv/
 _temp/
 __pycache__/
 
+package.json
 package-lock.json
 node_modules/
 

@@ -1,5 +1,5 @@
 from flask import Flask, Response, jsonify, render_template
-from flask import request
+from flask import request, redirect
 from flask import render_template
 import glob
 import socket
@@ -190,5 +190,7 @@ def test(name=None):
     return render_template('empty.html')
 
 
-
+@app.route('/')
+def go_to_ide():
+    return redirect("/ide", code=302)
 
