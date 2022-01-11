@@ -4,26 +4,26 @@ nav #device::before {
 nav #device.using::before {
 	background-position: left calc(-1.5rem*20) bottom;
 }
-section#device #newConnection h3, section#device #devices, section#device #target-device {
+section#device #new-connection h3, section#device #devices, section#device #target-device {
   margin-top: 0.75rem;
 }
-section#device #newConnection #WebSerial > div {
+section#device #new-connection #WebSerial > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) 0%, rgba(123,73,173,1) 200%);
 }
-section#device #newConnection #WebSocket > div {
+section#device #new-connection #WebSocket > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) -100%, rgba(123,73,173,1) 200%);
 }
-section#device #newConnection #WebBluetooth > div {
+section#device #new-connection #WebBluetooth > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) -200%, rgba(123,73,173,1) 100%);
 
 }
-section#device #newConnection #WebSerial > div:before {
+section#device #new-connection #WebSerial > div:before {
 	background-position: left calc(-1.5rem*23) top;
 }
-section#device #newConnection #WebSocket > div:before {
+section#device #new-connection #WebSocket > div:before {
 	background-position: left calc(-1.5rem*24) top;
 }
-section#device #newConnection #WebBluetooth > div:before {
+section#device #new-connection #WebBluetooth > div:before {
 	background-position: left calc(-1.5rem*25) top;
 }
 section#device #devices button {
@@ -75,11 +75,18 @@ section#device button#fetch {
   margin-left: -1.75rem;
   display: none;
 }
-section#device .funky.master button#disconnect, section#device .funky.master button#fetch {
-  display: inline-flex;
+section#device .device-connect #new-connection {
+  transition: .5s ease height, .25s ease opacity;
+  overflow: hidden;
+  height: 9rem;
 }
-section#device .funky.master button.on button#disconnect,
-section#device .funky.master button.on button#fetch {
+section#device .device-connect.master #new-connection {
+  height: 0rem;
+  opacity: 0;
+}
+section#device .device-connect.master button.on button#disconnect,
+section#device .device-connect.master button.on button#fetch {
+  display: inline-flex;
   filter: invert(1);
 }
 section#device .funky.master button:active > div {

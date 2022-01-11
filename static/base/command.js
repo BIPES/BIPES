@@ -83,14 +83,14 @@ class CommandBroker {
   /**
    * Dispatch a LocalCommand.
    * @param {Object} self - Object with the callback.
-   * @param {key} - Key or keys to remove.
+   * @param {key} - Key of the command.
    * @param {Object[]} - Arguments to apply to the callback.
    */
   dispatch (self, key, args){
     if (self.constructor.name != 'Array')
       self = [self]
 
-    // Call function on main window
+
     let _key = `${self[self.length-1].name.toLowerCase()}_${key}`,
         _self = []
 
@@ -99,6 +99,7 @@ class CommandBroker {
       return
     }
 
+    // Call function on main window
     if (this.map[_key].skipMain == false)
       this.map[_key].callback.apply(self[self.length-1], args)
 
@@ -109,6 +110,19 @@ class CommandBroker {
     })
     args.unshift(_self)
 
+    // Preserve structure of some objects
+    args = args.map(arg => {
+      if (arg == undefined)
+        return
+      switch (arg.constructor.name) {
+        case 'Uint8Array':
+          return {Uint8Array:Array.from(arg)}
+          break
+        default:
+          return arg
+      }
+    })
+
     // Dispatch command
     this.pipe.postMessage(`["${Tool.SID()}_${_key}",${JSON.stringify(args)}]`)
   }
@@ -116,6 +130,16 @@ class CommandBroker {
     let data = JSON.parse(ev.data)
     let _key = data[0],
         args = data[1]
+
+    // Restore structure of some objects
+    args = args.map(arg => {
+      if (typeof arg === 'object' && arg !== null){
+        if (Object.keys(arg)[0] === 'Uint8Array'){
+          return new Uint8Array(arg.Uint8Array)
+        }
+      }
+      return arg
+    })
 
     const key = _key.substring(7)
     if (!this.map.hasOwnProperty(key))

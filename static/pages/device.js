@@ -32,7 +32,7 @@ class Device {
 
     let $ = this._dom = {}
 
-    $.newConnection = new DOM('div', {id:'newConnection'})
+    $.newConnection = new DOM('div', {id:'new-connection'})
       .append([
         new DOM('h3', {innerText:'New connection'}),
         new DOM('span', {className:'funky'}).append([
@@ -40,7 +40,8 @@ class Device {
             .append(new DOM('div', {innerText:'USB/Serial', className:'button icon'}))
             .onclick(this, this.connectSerial),
           new DOM('button', {id:'WebSocket'})
-            .append(new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'})),
+            .append(new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'}))
+            .onclick(this, this.connectWebSocket),
           new DOM('button', {id:'WebBluetooth'})
             .append(new DOM('div', {innerText:'Bluetooth', className:'button icon'}))
         ])
@@ -113,6 +114,9 @@ class Device {
   connectSerial (){
     channel.connect('webserial', [this, this.use])
   }
+  connectWebSocket (){
+    channel.connect('websocket', [this, this.use], {url:'ws://my_ip:8266',passwd:'totally_real_password'})
+  }
   use (){
     let timestamp = +new Date()
 
@@ -120,21 +124,24 @@ class Device {
       console.error("Device: Use function called without a established connection")
       return
     }
-    command.dispatch(this, 'use', [
-      channel.targetDevice, timestamp, {
+    let str = {
+        protocol: channel.currentProtocol,
         nodename: 'unknown',
         version: 'unknown'
-      }, command.tabUID])
+      }
+    command.dispatch(this, 'use', [
+      channel.targetDevice, timestamp, str, command.tabUID
+    ])
     // Only on a master tab
     this._dom.nav._dom.classList.add('using')
-    this._dom.devices._dom.classList.add('master')
+    this._dom.wrapper._dom.classList.add('master')
     let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
     child.classList.add('on')
 
     // If not inited, fill devices from StorageBroker (-->)
     if (!this.inited) {
       this.devices = JSON.parse(storage.fetch('device'))
-      this._devicePush(uid, timestamp, channel.targetDevice, command.tabUID)
+      this._devicePush(uid, timestamp, str, command.tabUID)
     }
     // Update StorageBroker once
     storage.set('device', JSON.stringify(this.devices))
@@ -151,6 +158,7 @@ class Device {
     this.devices.push({
       uid: uid,
       timestamp: timestamp,
+      protocol: str.protocol,
       nodename: str.nodename,
       version: str.version,
       tab: tabUID
@@ -263,6 +271,11 @@ class Device {
     if (uid != channel.targetDevice){
       // Only on a slave tab
       channel.targetDevice = uid
+      this.devices.forEach((device) => {
+        if (device.uid == uid) {
+          channel.currentProtocol = device.protocol
+        }
+      })
       this._dom.nav._dom.classList.add('using')
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
       child.classList.add('on')
@@ -271,6 +284,7 @@ class Device {
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
       child.classList.remove('on')
       channel.targetDevice = undefined
+      channel.currentProtocol = undefined
     }
   }
   fetchInfo (uid){
@@ -320,7 +334,7 @@ class Device {
 
     // Only on a master tab
     this._dom.nav._dom.classList.remove('using')
-    this._dom.devices._dom.classList.remove('master')
+    this._dom.wrapper._dom.classList.remove('master')
 
     command.dispatch(this, 'unuse', [uid])
   }

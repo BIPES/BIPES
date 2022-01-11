@@ -650,7 +650,7 @@ section.default > .container > h2 {
 }
 .listy button, .funky > span {
   width: 100%;
-  padding: .5rem 0;
+  padding: .5rem;
 }
 .listy button > div {
   display: flex;

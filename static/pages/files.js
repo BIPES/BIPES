@@ -13,6 +13,10 @@ class Files {
     this.fileOnTarget = [{name:'', files:[]}] // Files stored on target device, default depth 1 (root)
     this.fileOnHost   = {} // Files stored on host device
 
+    this.arrayBufferFile = new Uint8Array(0) // Temporaly store incoming files comming as buffer
+    this.arrayBufferFilename                 // Temporaly store file filename
+    this.arrayBufferTarget                   // After fetch, download or show
+
     let $ = this._dom = {}
 
     $.section = new DOM(DOM.get('section#files'))
@@ -114,7 +118,8 @@ class Files {
     command.add(this, {
       buildFileTree: this._buildFileTree,
       editorSetValue: this._editorSetValue,
-      downloadValue: this._downloadValue
+      downloadValue: this._downloadValue,
+      gotFileArrayBuffer: this.__gotFileArrayBuffer
     })
   }
   init (){
@@ -307,22 +312,109 @@ class Files {
     this._dom.detailsFileOnTarget._dom.open = true
   }
   fetchFile (target, filename){
-    let cmd1 = rosetta.preopen.cmd(filename),
-        cmd2 = channel.pasteMode(
-          rosetta.open.cmd(filename)
-        )
+    switch (channel.currentProtocol) {
+      case 'WebSocket':
+        if (this.arrayBufferFilename !== undefined){
+          console.error('Files: another get request is running')
+          return
+        }
 
-    command.dispatch(channel, 'push', [
-      cmd1,
-      channel.targetDevice,
-      []
-    ])
-    command.dispatch(channel, 'push', [
-      cmd2,
-      channel.targetDevice,
-      ['files', target == 'editor' ? '_fetchFileToEditor' : '_fetchFileToDownload'],
-      command.tabUID
-    ])
+        // get request
+        let rec1 = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64)
+        rec1[0] = 'W'.charCodeAt(0) // 87 (retruns 87)
+        rec1[1] = 'A'.charCodeAt(0) // 65 (returns 66)
+        rec1[2] = 2 // get
+        rec1[16] = filename.length & 0xff
+        rec1[17] = (filename.length >> 8) & 0xff
+        for (let i = 0; i < filename.length && i < 64; i++)
+          rec1[18 + i] = filename.charCodeAt(i)
+
+        command.dispatch(channel, 'push', [
+          rec1,
+          channel.targetDevice,
+          ['files', '__checkHexaGet'],
+          command.tabUID
+        ])
+
+        this.arrayBufferTarget = 'editor' ? 'editor' : 'download'
+        this.arrayBufferFilename = filename
+
+        break
+      case 'WebSerial':
+      case 'WebBluetooth':
+        let cmd1 = rosetta.preopen.cmd(filename),
+            cmd2 = channel.pasteMode(
+              rosetta.open.cmd(filename)
+            )
+
+        command.dispatch(channel, 'push', [
+          cmd1,
+          channel.targetDevice,
+          []
+        ])
+        command.dispatch(channel, 'push', [
+          cmd2,
+          channel.targetDevice,
+          ['files', target == 'editor' ? '_fetchFileToEditor' : '_fetchFileToDownload'],
+          command.tabUID
+        ])
+        break
+    }
+  }
+  __checkHexaGet (uint8, cmd, tabUID){
+    if (uint8[0] == cmd[0]) {
+      // clear anay other
+      this.arrayBufferFile = new Uint8Array(0)
+      console.log('got a match')
+      // confirm get
+      let rec2 = new Uint8Array([0x00])
+      command.dispatch(channel, 'push', [
+        rec2,
+        channel.targetDevice,
+        ['files', '__checkFileGet'],
+        tabUID
+      ])
+    }
+  }
+  __checkFileGet (uint8, cmd, tabUID){
+    if (cmd[0] == 0x03) {
+      console.log('Files: Got file!')
+      let str = new TextDecoder().decode(this.arrayBufferFile)
+      command.dispatch(this, 'gotFileArrayBuffer', [str, tabUID])
+    } else {
+      // concatanate array
+      let ar = new Uint8Array(uint8.length - 2 + this.arrayBufferFile.length)
+      ar.set(this.arrayBufferFile)
+      ar.set(uint8.slice(2), this.arrayBufferFile.length)
+      this.arrayBufferFile = ar
+      // telemetry size
+      // let sz =uint8[0] | (uint8[1] << 8) == 0)
+
+      // continue get
+      let rec2 = new Uint8Array([0x00])
+      command.dispatch(channel, 'push', [
+        rec2,
+        channel.targetDevice,
+        ['files', '__checkFileGet'],
+        tabUID
+      ])
+    }
+  }
+  __gotFileArrayBuffer (str, tabUID){
+    if (command.tabUID != tabUID)
+      return
+    // Converts MicroPython output \r into unix new line \n and 4 spaces to \t
+    let script = str.replaceAll(/\r/g,'\n').replaceAll(/    /g,'\t'),
+        filename = this.arrayBufferFilename,
+        then = this.arrayBufferTarget
+    this.arrayBufferTarget = undefined
+    this.arrayBufferFilename = undefined
+    this.arrayBufferFile = undefined
+
+    if (then == 'editor')
+      this._editorSetValue(filename, script, tabUID)
+    else if (then == 'download')
+      this._downloadValue(filename, script, tabUID)
   }
 
   _fetchFileToEditor (str, cmd, tabUID){

@@ -25,6 +25,7 @@ class Channel {
     this.callbacks = []
 
     this.webserial = new _WebSerial(this)
+    this.websocket = new _WebSocket(this)
 
     this.checkUp ()
     this.targetDevice
@@ -50,20 +51,20 @@ class Channel {
         window.bipes.page.device.unresponsive(this.targetDevice)
       }, 2000)
   }
+  /*
+  @param {String, Uint8Array} cmd - String or uint8 array.
+  */
   push (cmd, targetDevice, callback, tabUID){
     if (this.current == undefined || this.targetDevice != targetDevice)
       return
 
     this.renewPing()
 
-    cmd = cmd.replaceAll('\t',"    ")
-
-    let reg = new RegExp(`(.|[\r]){1,${this.current.config.packetSize}}`, 'g')
-
-    if (typeof cmd == 'object')
+    if (cmd.constructor.name == 'Uint8Array') {
       this.input.push([cmd])
-    else if (typeof cmd == 'string') {
-      cmd = cmd.replaceAll(/\r\n|\n/gm, '\r')
+    } else if (typeof cmd == 'string') {
+      let reg = new RegExp(`(.|[\r]){1,${this.current.config.packetSize}}`, 'g')
+      cmd = cmd.replaceAll('\t',"    ").replaceAll(/\r\n|\n/gm, '\r')
       this.input.push([...cmd.match(reg)])
     }
     // Build callback function
@@ -100,8 +101,14 @@ class Channel {
     this.connect(channel)
 
   }
-  connect (channel, callback){
-    this[channel].connect(callback)
+  connect (channel, callback, conf){
+    switch (channel){
+      case 'websocket':
+        this[channel].connect(callback, conf)
+        break
+      default:
+        this[channel].connect(callback)
+    }
   }
   _connected (channel, callback){
     this.targetDevice = Tool.UID()
@@ -212,6 +219,52 @@ class Channel {
     this.callbacks.unshift({skip:true})
     return true
   }
+  inArrayBuffer (buffer){
+    let uint8 = new Uint8Array(buffer)
+
+    console.log(uint8)
+    let call = this.callbacks[0]
+    if (uint8.length == 2){
+      if (uint8[0] | (uint8[1] << 8) == 0) {
+        console.log('Channel: End of text detected')
+        // tell that the next buffer is the ending of text,
+        // probably the header as a footer.
+        call.cmd[0] = 0x03
+        return
+      }
+    }
+    try {
+      if (call.uid) {
+        call.fun.apply(
+         call.self, [uint8, call.cmd, call.uid]
+        )
+      } else {
+        call.fun.apply(
+          call.self, [uint8, call.cmd]
+        )
+      }
+    } catch (e){
+      console.error(e)
+    }
+
+    this.callbacks.shift()
+  }
+  inString (chunk){
+    //data comes in chunks, keep last 4 chars to check MicroPython REPL string
+    this.output += chunk
+    window.bipes.page.prompt.write(chunk)
+    this.ping.on = true
+    if (this.output.substring(this.output.length - 4) == ">>> "){
+      this.output = this.output.substring(0, this.output.length - 4)
+      //After all code was executed
+      if (this.callbacks.length > 0)
+        this.handleCallback(this.output)
+      else {
+        this.output = ''
+        this.lock = false
+      }
+    }
+  }
 }
 
 function _WebSerial (parent){
@@ -236,20 +289,7 @@ function _WebSerial (parent){
         const appendStream = new WritableStream({
           write(chunk) {
             if (typeof chunk == 'string') {
-              //data comes in chunks, keep last 4 chars to check MicroPython REPL string
-              window.bipes.channel.output += chunk
-              window.bipes.page.prompt.write(chunk)
-              window.bipes.channel.ping.on = true
-              if (window.bipes.channel.output.substring(window.bipes.channel.output.length - 4) == ">>> "){
-                window.bipes.channel.output = window.bipes.channel.output.substring(0, window.bipes.channel.output.length - 4)
-                //After all code was executed
-                if (window.bipes.channel.callbacks.length > 0)
-                  window.bipes.channel.handleCallback(window.bipes.channel.output)
-                else {
-                  window.bipes.channel.output = ''
-                  window.bipes.channel.lock = false
-                }
-              }
+              window.bipes.channel.inString(chunk)
             }
           },
           abort(e){
@@ -273,7 +313,8 @@ function _WebSerial (parent){
       console.error(e)
       return false
     })
-  }  /**
+  }
+  /**
    * Disconnect device connected with webserial protocol.
    * @param {boolean} force - Try to disconnect at all cost and if fails, pretend
    *                          it worked (useful on unload when everything is cleared anyway)
@@ -336,6 +377,89 @@ function _WebSerial (parent){
         // Execution is paused until writer wrote dataArrayBuffer
         let response = await writer.write(dataArrayBuffer)
         writer.releaseLock()
+      }
+    }
+    // If no callback expected, release lock
+    if (this.parent.callbacks.length == 0)
+      this.parent.lock = false
+  }
+}
+
+function _WebSocket (parent){
+  this.name = 'WebSocket'
+  this.parent = parent
+  this.ws
+  this.encoder = new TextEncoder()
+  this.config = {
+    packetSize:100
+  }
+  /**
+   * Connect using websocket protocol.
+   */
+  this.connect = (callback, conf) => {
+    if (WebSocket == undefined)
+      return false
+
+    this.ws = new WebSocket(conf.url)
+    this.ws.binaryType = 'arraybuffer';
+    this.ws.onopen = () => {
+      this.ws.send(`${conf.passwd}\n\n`)
+      this.parent._connected('websocket', callback)
+      this.ws.onmessage = (event) => {
+        if (event.data instanceof ArrayBuffer){
+          window.bipes.channel.inArrayBuffer(event.data)
+        }
+        if (typeof event.data == 'string'){
+          window.bipes.channel.inString(event.data)
+
+          if (event.data.includes("Access denied"))
+            window.bipes.page.notification.send("Wrong board password")
+        }
+      }
+    }
+    this.ws.onclose = () => {
+      this.parent._disconnected()
+    }
+
+  }
+  /**
+   * Disconnect device connected with websocket protocol.
+   */
+  this.disconnect = (force) => {
+    this.ws.close()
+    this.parent._disconnected()
+  }
+  /**
+   * Runs every 50ms to check if there is code to be sent in the :js:attr:`channel#input` (appended with :js:func:`this.parent.push()`)
+   */
+  this.watch = () => {
+    if (this.ws.bufferedAmount == 0) {
+      if (this.parent.input.length > 0) {
+        if (this.parent.isDirty())
+          return
+        try {
+          this.parent.lock = true
+          this.write (this.parent.input[0]);
+          this.parent.input.shift();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }
+  /**
+   * Directly send code via websocket, normally called by this.watch()
+   * @param {(Uint8Array|string|number)} data - code to be sent via websocket
+   */
+  this.write = async (data) => {
+    if (data.constructor.name != 'Array')
+      data = [data]
+
+    let dataArrayBuffer = undefined
+    for (const pack of data){
+      if (this.ws.bufferedAmount == 0) {
+        if (['Uint8Array', 'String', 'Number'].includes(pack.constructor.name))
+          await this.ws.send(pack)
       }
     }
     // If no callback expected, release lock
