@@ -112,10 +112,14 @@ class Device {
     })
   }
   connectSerial (){
+    if (channel.targetDevice != undefined)
+      this.select(channel.targetDevice)
     channel.connect('webserial', [this, this.use])
   }
   connectWebSocket (){
-    channel.connect('websocket', [this, this.use], {url:'ws://my_ip:8266',passwd:'totally_real_password'})
+    if (channel.targetDevice != undefined)
+      this.select(channel.targetDevice)
+    channel.connect('websocket', [this, this.use], {url:'ws://undefined:8266',passwd:'123'})
   }
   use (){
     let timestamp = +new Date()
@@ -264,7 +268,8 @@ class Device {
     this.inited = false
   }
   select (uid, ev){
-    ev.preventDefault()
+    if (ev !== undefined)
+      ev.preventDefault()
     if (channel.current != undefined)
       return
 
@@ -278,11 +283,13 @@ class Device {
       })
       this._dom.nav._dom.classList.add('using')
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
-      child.classList.add('on')
+      if (child != null)
+        child.classList.add('on')
     } else {
       this._dom.nav._dom.classList.remove('using')
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
-      child.classList.remove('on')
+      if (child != null)
+        child.classList.remove('on')
       channel.targetDevice = undefined
       channel.currentProtocol = undefined
     }

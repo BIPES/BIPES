@@ -37,7 +37,7 @@ section#device #devices button > div {
   border: 1px solid #fff;
   display: block;
 }
-section#device .funky:not(.master) button > div {
+section#device .device-connect:not(.master) button > div {
   cursor:pointer;
 }
 section#device #devices button > div > div.using-text {
@@ -89,7 +89,7 @@ section#device .device-connect.master button.on button#fetch {
   display: inline-flex;
   filter: invert(1);
 }
-section#device .funky.master button:active > div {
+section#device .device-connect.master button:active > div {
   transform: scale(1) !important;
 }
 

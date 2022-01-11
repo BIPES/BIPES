@@ -418,7 +418,9 @@ function _WebSocket (parent){
       }
     }
     this.ws.onclose = () => {
-      this.parent._disconnected()
+      // onclose might be called even if onpen didn't exec
+      if (this.parent.current != undefined)
+        this.parent._disconnected()
     }
 
   }
