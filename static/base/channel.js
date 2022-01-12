@@ -473,4 +473,161 @@ function _WebSocket (parent){
   }
 }
 
+function _WebBluetooth (parent){
+  this.name = 'WebBluetooth'
+  this.parent = parent
+  this.encoder = new TextEncoder()
+  this.decoder = new TextDecoder()
+
+  this.streaming                         // If is streaming data over bluetooth
+  this.bleDevice                         // Store selected device
+  this.nusService = undefined
+  this.txCharacteristic = undefined
+  this.rxCharacteristic = undefined
+
+  this.config = {
+    ServiceUUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
+    RXUUID: '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
+    TXUUID: '6e400003-b5a3-f393-e0a9-e50e24dcca9e',
+  }
+  /**
+   * Connect using webbluetooth protocol.
+   */
+  this.connect = (callback) => {
+    if (navigator.bluetooth == undefined == undefined)
+      return false
+
+      navigator.bluetooth.requestDevice({
+        //filters: [{services: []}]
+        optionalServices: [_WebBluetooth.config.ServiceUUID],
+        acceptAllDevices: true
+      })
+      .then(bleDevice => {
+        this.bleDevice = bleDevice; //check
+        console.log(`Found ${bleDevice.name}\nConnecting to GATT Server...`)
+        this.bleDevice.addEventListener(
+          'gattserverdisconnected',
+          this.disconnect.bind(this)
+          );
+        return bleDevicec.gatt.connect()
+      })
+      .then(server => {
+        console.log('Locate NUS service')
+        return server.getPrimaryService(_WebBluetooth.config.ServiceUUID)
+      }).then(service => {
+        this.nusService = service;
+        console.log(`Found NUS service: ${service.uuid}`)
+      })
+      .then(() => {
+        console.log('Locate RX characteristic')
+        return this.nusService.getCharacteristic(_WebBluetooth.config.RXUUID)
+      })
+      .then(characteristic => {
+        this.rxCharacteristic = characteristic
+        console.log('Found RX characteristic')
+      })
+      .then(() => {
+        console.log('Locate TX characteristic')
+        return this.nusService.getCharacteristic(_WebBluetooth.config.TXUUID)
+      })
+      .then(characteristic => {
+        this.txCharacteristic = characteristic
+        console.log('Found TX characteristic')
+      })
+      .then(() => {
+        console.log('Enable notifications')
+        return this.txCharacteristic.startNotifications()
+      })
+      .then(() => {
+        this.txCharacteristic.addEventListener(
+          'characteristicvaluechanged',
+          (ev) => {
+            this.parent.inString(
+              this.decoder.decode(ev.target.value)
+              )
+            }
+          )
+        this.parent._connected('webluetooth', callback)
+        /* connnected */
+      }).catch(error => {
+        this.parent._disconnected()
+        /* error */
+        if(this.bleDevice && this.bleDevice.gatt.connected)
+          this.bleDevice.gatt.disconnect()
+      })
+  }
+  /**
+   * Disconnect device connected with webbluetooth protocol.
+   */
+  this.disconnect = (force) => {
+    if (!this.bleDevice)
+      if (this.bleDevice.gatt.connected)
+        this.bleDevice.gatt.disconnect()
+
+    this.bleDevice = undefined;
+    this.nusService = undefined;
+    this.txCharacteristic = undefined;
+    this.rxCharacteristic = undefined;
+
+    this.parent._disconnected()
+  }
+  /**
+   * Runs every 50ms to check if there is code to be sent in the :js:attr:`channel#input` (appended with :js:func:`this.parent.push()`)
+   */
+  this.watch = () => {
+    if (this.bleDevice && this.bleDevice.gatt.connected) {
+      if (this.parent.input.length > 0 && !this.streaming) {
+        if (this.parent.isDirty())
+          return
+        try {
+          this.parent.lock = true
+          this.write (this.parent.input[0])
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }
+  /**
+   * Directly send code via webbluetooth, normally called by this.watch()
+   * @param {(Uint8Array|string|number)} data - code to be sent via webbluetooth
+   */
+  this.write = async (data) => {
+    return new Promise((resolve, reject) => {
+      this.streaming = true
+      const value = this.encoder.encode(data)
+
+      this.rxCharacteristic.writeValue(value).then(() => {
+
+        // If no callback expected, release lock
+        if (this.parent.callbacks.length == 0)
+          this.parent.lock = false
+
+        this.parent.input.shift()
+
+        if (this.parent.input.length > 0)
+          this.write (this.parent.input[0])
+        else
+          this.streaming = false
+      }).catch(e => {
+        console.error (e)
+        return Promise.resolve()
+        .then(() => this.delayPromise(500))
+        // Retry once
+        .then(() => this.rxCharacteristic.writeValue(value)).catch((e) => {
+        console.error (e)
+        if (e == "NetworkError: Failed to execute 'writeValue' on 'BluetoothRemoteGATTCharacteristic': GATT Server is disconnected. Cannot perform GATT operations. (Re)connect first with `device.gatt.connect`.")
+        console.error ("Lost Bluetooth connection.")
+        })
+      })
+    })
+  }
+
+  this.delayPromise = (delay) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, delay)
+    })
+  }
+}
+
 export let channel = new Channel()
