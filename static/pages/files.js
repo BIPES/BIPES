@@ -13,9 +13,11 @@ class Files {
     this.fileOnTarget = [{name:'', files:[]}] // Files stored on target device, default depth 1 (root)
     this.fileOnHost   = {} // Files stored on host device
 
+    // Miscellaneous variables to get/put through WebSocket
     this.arrayBufferFile = new Uint8Array(0) // Temporaly store incoming files comming as buffer
     this.arrayBufferFilename                 // Temporaly store file filename
     this.arrayBufferTarget                   // After fetch, download or show
+    this.arrayBufferPos                      // Position on the current file being sent
 
     let $ = this._dom = {}
 
@@ -80,7 +82,9 @@ class Files {
       str = str [0] != '/' && str.length > 1 ?
                    '/' + str : str
       str += str.indexOf('.') == -1 ? '.py' : ''
-      _dom.value = str.replaceAll(' ', '_')
+      str = str.replaceAll(' ', '_')
+      _dom.value = str
+      document.title = `${str} - BIPES`
     })
 
     $.saveToTarget = new DOM('button', {
@@ -119,7 +123,11 @@ class Files {
       buildFileTree: this._buildFileTree,
       editorSetValue: this._editorSetValue,
       downloadValue: this._downloadValue,
-      gotFileArrayBuffer: this.__gotFileArrayBuffer
+      // miscellanious WebSocket file handling (run on master)
+      getFileArrayBuffer: this._getFileArrayBuffer,
+      gotFileArrayBuffer: this.__gotFileArrayBuffer,
+      putFileArrayBuffer: this._putFileArrayBuffer,
+      putFileArrayBufferEnd: this.__putFileArrayBufferEnd,
     })
   }
   init (){
@@ -311,34 +319,19 @@ class Files {
 
     this._dom.detailsFileOnTarget._dom.open = true
   }
+  /**
+   * Fetch file from a device
+   * @param{string} target - Target device uid
+   * @param{string} filename - Path to file, eg. /libs/my_lib.py
+   */
   fetchFile (target, filename){
     switch (channel.currentProtocol) {
       case 'WebSocket':
-        if (this.arrayBufferFilename !== undefined){
-          console.error('Files: another get request is running')
-          return
-        }
-
-        // get request
-        let rec1 = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64)
-        rec1[0] = 'W'.charCodeAt(0) // 87 (retruns 87)
-        rec1[1] = 'A'.charCodeAt(0) // 65 (returns 66)
-        rec1[2] = 2 // get
-        rec1[16] = filename.length & 0xff
-        rec1[17] = (filename.length >> 8) & 0xff
-        for (let i = 0; i < filename.length && i < 64; i++)
-          rec1[18 + i] = filename.charCodeAt(i)
-
-        command.dispatch(channel, 'push', [
-          rec1,
-          channel.targetDevice,
-          ['files', '__checkHexaGet'],
-          command.tabUID
+        command.dispatch(this, 'getFileArrayBuffer', [
+          filename,
+          command.tabUID,
+          channel.targetDevice
         ])
-
-        this.arrayBufferTarget = 'editor' ? 'editor' : 'download'
-        this.arrayBufferFilename = filename
-
         break
       case 'WebSerial':
       case 'WebBluetooth':
@@ -361,11 +354,40 @@ class Files {
         break
     }
   }
+  _getFileArrayBuffer(filename, tabUID, targetDevice){
+    if (channel.current == undefined || channel.targetDevice != targetDevice)
+      return
+    if (this.arrayBufferFile.length !== 0){
+      console.error('Files: another hexastream is running')
+      return
+    }
+    // get request
+    let rec1 = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64)
+    rec1[0] = 'W'.charCodeAt(0) // 87 (retruns 87)
+    rec1[1] = 'A'.charCodeAt(0) // 65 (returns 66)
+    rec1[2] = 2 // get
+    rec1[16] = filename.length & 0xff
+    rec1[17] = (filename.length >> 8) & 0xff
+    for (let i = 0; i < filename.length && i < 64; i++)
+      rec1[18 + i] = filename.charCodeAt(i)
+
+    command.dispatch(channel, 'push', [
+      rec1,
+      channel.targetDevice,
+      ['files', '__checkHexaGet'],
+      tabUID
+    ])
+
+    this.arrayBufferTarget = 'editor' ? 'editor' : 'download'
+    this.arrayBufferFilename = filename
+  }
+
+
   __checkHexaGet (uint8, cmd, tabUID){
-    if (uint8[0] == cmd[0]) {
-      // clear anay other
+    if (uint8[0] == cmd[0] && uint8[1] == cmd[1] + 1) {
+      // clear any other
       this.arrayBufferFile = new Uint8Array(0)
-      console.log('got a match')
+      console.log('Files: Got get match')
       // confirm get
       let rec2 = new Uint8Array([0x00])
       command.dispatch(channel, 'push', [
@@ -380,16 +402,22 @@ class Files {
     if (cmd[0] == 0x03) {
       console.log('Files: Got file!')
       let str = new TextDecoder().decode(this.arrayBufferFile)
-      command.dispatch(this, 'gotFileArrayBuffer', [str, tabUID])
+      // Converts MicroPython output \r into unix new line \n and 4 spaces to \t
+      let script = str.replaceAll(/\r/g,'\n').replaceAll(/    /g,'\t'),
+          filename = this.arrayBufferFilename,
+          then = this.arrayBufferTarget
+
+      command.dispatch(this, 'gotFileArrayBuffer', [filename, str, then, tabUID])
+      // End request, clear variables
+      this.arrayBufferTarget = undefined
+      this.arrayBufferFilename = undefined
+      this.arrayBufferFile = new Uint8Array(0)
     } else {
       // concatanate array
       let ar = new Uint8Array(uint8.length - 2 + this.arrayBufferFile.length)
       ar.set(this.arrayBufferFile)
       ar.set(uint8.slice(2), this.arrayBufferFile.length)
       this.arrayBufferFile = ar
-      // telemetry size
-      // let sz =uint8[0] | (uint8[1] << 8) == 0)
-
       // continue get
       let rec2 = new Uint8Array([0x00])
       command.dispatch(channel, 'push', [
@@ -400,17 +428,9 @@ class Files {
       ])
     }
   }
-  __gotFileArrayBuffer (str, tabUID){
+  __gotFileArrayBuffer (filename, script, then, tabUID){
     if (command.tabUID != tabUID)
       return
-    // Converts MicroPython output \r into unix new line \n and 4 spaces to \t
-    let script = str.replaceAll(/\r/g,'\n').replaceAll(/    /g,'\t'),
-        filename = this.arrayBufferFilename,
-        then = this.arrayBufferTarget
-    this.arrayBufferTarget = undefined
-    this.arrayBufferFilename = undefined
-    this.arrayBufferFile = undefined
-
     if (then == 'editor')
       this._editorSetValue(filename, script, tabUID)
     else if (then == 'download')
@@ -463,31 +483,102 @@ class Files {
     //For codemirror
       let script = this.codemirror.state.doc.toString(),
         filename = this._dom.filename._dom.value
-    let uint8Array = new Uint8Array([...script].map(s => s.charCodeAt(0)))
+    //let uint8Array = new Uint8Array([...script].map(s => s.charCodeAt(0)))
 
-    this.writeToTarget (filename, uint8Array)
+    this.writeToTarget (filename, script)
   }
-  writeToTarget (filename, uint8Array) {
-    let decoderUint8 =  new TextDecoder().decode(uint8Array)
-      .replaceAll(/\\/g, '\\\\')
-      .replaceAll(/(\r\n|\r|\n)/g, '\\r')
-      .replaceAll(/'/g, "\\'")
-      .replaceAll(/"/g, '\\"')
-      .replaceAll(/\t/g, '    ')
+  writeToTarget (filename, script) {
 
+    switch (channel.currentProtocol) {
+      case 'WebSocket':
+        script = script
+          .replaceAll(/\t/g, '    ')
+        command.dispatch(this, 'putFileArrayBuffer', [
+          filename,
+          script,
+          command.tabUID,
+          channel.targetDevice
+        ])
+        break
+      case 'WebSerial':
+      case 'WebBluetooth':
 
+        script =  script
+          .replaceAll(/\\/g, '\\\\')
+          .replaceAll(/(\r\n|\r|\n)/g, '\\r')
+          .replaceAll(/'/g, "\\'")
+          .replaceAll(/"/g, '\\"')
+          .replaceAll(/\t/g, '    ')
+        let cmd = channel.pasteMode(
+          rosetta.write.cmd(filename, script)
+        )
 
-    let cmd = channel.pasteMode(
-      rosetta.write.cmd(filename, decoderUint8)
-    )
+        command.dispatch(channel, 'push', [
+          cmd,
+          channel.targetDevice,
+          ['files','_wroteToTarget'],
+          command.tabUID
+        ])
+        break
+    }
+  }
+  _putFileArrayBuffer (filename, script, tabUID, targetDevice){
+    if (channel.current == undefined || channel.targetDevice != targetDevice)
+      return
+    if (this.arrayBufferFile.length !== 0){
+      console.error('Files: another hexastream is running')
+      return
+    }
+    let fsize = script.length
+    // get request
+    let rec1 = new Uint8Array(2 + 1 + 1 + 8 + 4 + 2 + 64)
+    rec1[0] = 'W'.charCodeAt(0) // 87 (returns 87)
+    rec1[1] = 'A'.charCodeAt(0) // 65 (returns 66)
+    rec1[2] = 1 // put
+    rec1[12] = fsize & 0xff
+    rec1[13] = (fsize >> 8) & 0xff
+    rec1[14] = (fsize >> 16) & 0xff
+    rec1[15] = (fsize >> 24) & 0xff
+    rec1[16] = filename.length & 0xff
+    rec1[17] = (filename.length >> 8) & 0xff
+    for (let i = 0; i < filename.length && i < 64; i++)
+      rec1[18 + i] = filename.charCodeAt(i)
+
+    this.arrayBufferFilename = filename
+    this.arrayBufferFile = new TextEncoder().encode(script)
 
     command.dispatch(channel, 'push', [
-      cmd,
+      rec1,
       channel.targetDevice,
-      ['files','_wroteToTarget'],
-      command.tabUID
+      ['files', '__checkHexaPut'],
+      tabUID
     ])
   }
+  __checkHexaPut (uint8, cmd, tabUID){
+    if (uint8[0] == cmd[0] && uint8[1] == cmd[1] + 1) {
+      console.log('Files: Got put match')
+      let rec2 = this.arrayBufferFile
+      command.dispatch(channel, 'push', [
+        rec2,
+        channel.targetDevice,
+        ['files', '__checkFilePut'],
+        tabUID
+      ])
+    }
+  }
+  __checkFilePut (uint8, cmd, tabUID){
+    console.log('Files: file put finished')
+    command.dispatch(this, 'putFileArrayBufferEnd', [this.arrayBufferFilename, tabUID])
+    this.arrayBufferFile = new Uint8Array(0)
+    this.arrayBufferPos = undefined
+    this.arrayBufferFilename = undefined
+  }
+  __putFileArrayBufferEnd (filename, tabUID){
+    if (command.tabUID != tabUID)
+      return
+    this.listDir(filename.match(/(.*)\/(?:.*)/)[1], tabUID)
+  }
+
   _wroteToTarget (str, cmd, tabUID){
     let reg = rosetta.write.reg
     if (!reg.test(cmd))
@@ -514,7 +605,7 @@ class Files {
 
       this.writeToTarget(
         `${path}/${filename}`,
-        new Uint8Array([...script].map(s => s.charCodeAt(0)))
+        script
       )
     })
   }
@@ -614,8 +705,7 @@ class Files {
 
     let reader = new FileReader()
     reader.onload = (e) => {
-        let data = new Uint8Array(e.target.result)
-        this.writeToTarget (filename, data)
+        this.writeToTarget (filename, e.target.result)
     };
     reader.readAsArrayBuffer(file)
 

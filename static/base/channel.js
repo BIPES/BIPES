@@ -223,31 +223,34 @@ class Channel {
     let uint8 = new Uint8Array(buffer)
 
     console.log(uint8)
-    let call = this.callbacks[0]
-    if (uint8.length == 2){
-      if (uint8[0] | (uint8[1] << 8) == 0) {
-        console.log('Channel: End of text detected')
-        // tell that the next buffer is the ending of text,
-        // probably the header as a footer.
-        call.cmd[0] = 0x03
-        return
+    if (this.callbacks.length > 0){
+      let call = this.callbacks[0]
+      if (uint8.length == 2){
+        if (uint8[0] | (uint8[1] << 8) == 0) {
+          console.log('Channel: End of text detected')
+          // tell that the next buffer is the ending of text,
+          // probably the header as a footer.
+          call.cmd[0] = 0x03
+          return
+        }
       }
-    }
-    try {
-      if (call.uid) {
-        call.fun.apply(
-         call.self, [uint8, call.cmd, call.uid]
-        )
-      } else {
-        call.fun.apply(
-          call.self, [uint8, call.cmd]
-        )
+      console.log(call, uint8, call.cmd, call.uid)
+      try {
+        if (call.uid) {
+          call.fun.apply(
+           call.self, [uint8, call.cmd, call.uid]
+          )
+        } else {
+          call.fun.apply(
+            call.self, [uint8, call.cmd]
+          )
+        }
+      } catch (e){
+        console.error(e)
       }
-    } catch (e){
-      console.error(e)
-    }
 
-    this.callbacks.shift()
+      this.callbacks.shift()
+    }
   }
   inString (chunk){
     //data comes in chunks, keep last 4 chars to check MicroPython REPL string
