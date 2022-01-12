@@ -329,6 +329,7 @@ class Files {
       case 'WebSocket':
         command.dispatch(this, 'getFileArrayBuffer', [
           filename,
+          target,
           command.tabUID,
           channel.targetDevice
         ])
@@ -354,7 +355,7 @@ class Files {
         break
     }
   }
-  _getFileArrayBuffer(filename, tabUID, targetDevice){
+  _getFileArrayBuffer(filename, target, tabUID, targetDevice){
     if (channel.current == undefined || channel.targetDevice != targetDevice)
       return
     if (this.arrayBufferFile.length !== 0){
@@ -378,7 +379,7 @@ class Files {
       tabUID
     ])
 
-    this.arrayBufferTarget = 'editor' ? 'editor' : 'download'
+    this.arrayBufferTarget = target == 'editor' ? 'editor' : 'download'
     this.arrayBufferFilename = filename
   }
 

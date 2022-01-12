@@ -18,7 +18,8 @@ section#files summary, section#files .listedFile {
 section#files #fileOnTarget > summary {
   font-weight: bold;
 }
-section#files #fileOnTarget > summary:before, section#files #hidePane:before {
+
+section#files #hidePane:before {
   content: "\1433";
   margin-right: .5rem;
   transition: transform .125s ease;
@@ -26,9 +27,6 @@ section#files #fileOnTarget > summary:before, section#files #hidePane:before {
   font-weight: normal;
   font-size: 0.8rem;
   line-height: 1rem;
-}
-section#files #fileOnTarget[open] > summary:before {
-  transform: rotateZ(90deg);
 }
 section#files #hidePane {
   padding: 1em 0.5em;
@@ -124,7 +122,7 @@ section#files #projectTree {
   }
 }
 section#files #projectTree > details {
-  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+  padding: 0.5rem 0 0.25rem 0;
 }
 section#files #fileOnTarget details {
   padding-left: .25em;
@@ -133,34 +131,30 @@ section#files .listedFile {
   width: 100%;
 }
 section#files .listedFile, section#files #fileOnTarget summary {
-  padding: .25em;
+  padding: .25em .75em .25em .75em;
   cursor: pointer;
-  border: 1px solid transparent;
   border-radius: .125rem;
 }
 section#files #fileOnTarget summary:focus {
-  border: 1px solid #666;
+  background: #334
 }
 section#files #fileOnTarget details > summary {
   margin-left: -.25em;
 }
 
-section#files .listedFile:hover, section#files #fileOnTarget details > summary:hover {
-  border: 1px solid #666;
+section#files .listedFile:hover, section#files #fileOnTarget summary:hover {
+  background: #333;
 }
-section#files .listedFile:focus,  section#files #fileOnTarget details > summary:focus {
-  border: 1px solid #fff;
+section#files .listedFile:focus,  section#files #fileOnTarget summary:focus {
+  background: #334;
 }
-
 
 section#files .emptyDir {
   color: #aaa;
   font-style: italic;
-  padding-left: 0.25em;
+  padding-left: .75rem;
 }
-button#upload::before, label#upload::before {
-
-}
+section#files #fileOnTarget > summary::before,
 section#files #fileOnTarget > span summary::before, section#files .listedFile:before {
 	display: block;
 	width: 1.25rem;
@@ -170,6 +164,9 @@ section#files #fileOnTarget > span summary::before, section#files .listedFile:be
 	content: '';
 	margin: 0 .125rem 0 0;
 	flex-shrink: 0;
+}
+section#files #fileOnTarget > summary::before {
+	background-position: left calc(1.25rem*10) bottom;
 }
 section#files #fileOnTarget > span summary::before {
 	background-position: left calc(-1.25rem*16) top;
