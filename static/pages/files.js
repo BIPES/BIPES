@@ -475,7 +475,7 @@ class Files {
   _downloadValue (filename, script, tabUID) {
     if (command.tabUID != tabUID)
       return
-    DOM.prototypeDownload(filename, script)
+    DOM.prototypeDownload(filename.substring(1), script)
   }
   /**
    * Get file from ``codemirror`` editor and calls :js:func:`Files.writeToTarget` to upload.

@@ -286,7 +286,9 @@ class Project {
       }
     }
   }
-  // Get most recent project
+ /*
+  * Get the most recent project by last edited date
+  */
   _mostRecent (){
     let timestamp = 0,
         uid
@@ -296,6 +298,18 @@ class Project {
         uid = key
     }
     return uid
+  }
+ /*
+  * Download a project to the computer
+  * @param {string} uid - project uid
+  */
+  download (uid){
+    let proj = this.projects[uid]
+    DOM.prototypeDownload(`bipes-${proj.name}.json`, JSON.stringify(proj))
+    this.contextMenu.close()
+  }
+  share (uid){
+
   }
 }
 

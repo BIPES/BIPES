@@ -235,15 +235,22 @@ class DOM {
         new DOM('input', {id:`${str.id}_input`, type:'file'})
       )
   }
-
+  /**
+  * Prototype a DOM that allows data to be downloded on its creation.
+  * @param {string} filename - name of the file.
+  * @param {string} file - file content.
+  */
   static prototypeDownload (filename, file){
     let data,
-        reg = /.*\.(py|xml|csv)$/
+        reg = /.*\.(py|xml|csv|json)$/
     if (!reg.test(filename))
       return
 
     let format = filename.match(reg)[1]
-    filename = filename.substring(1).replaceAll('/','-')
+    filename = filename
+      .replaceAll('/','-')
+      .replaceAll(' ','_')
+      .toLowerCase()
 
     switch (format) {
       case 'xml':
@@ -251,6 +258,12 @@ class DOM {
         break
       case 'py':
         data = "data:text/python;charset=utf-8," + encodeURIComponent(file);
+        break
+      case 'json':
+        data = "data:text/json;charset=utf-8," + encodeURIComponent(file);
+        break
+      case 'csv':
+        data = "data:text/csv;charset=utf-8," + encodeURIComponent(file);
         break
     }
     let element = document.createElement('a')
@@ -332,8 +345,10 @@ class ContextMenu {
   open (actions, ev){
     let $ = this._dom
     let y = window.innerHeight < (ev.y + (actions.length*2)*16) ?
-            ev.y-(1+actions.length*2)*16 : ev.y-1*16
-    $.wrapper._dom.style.margin = `${y}px auto auto ${ev.x-1*16}px`
+            ev.y - (1 + (actions.length*2-1))*16 : ev.y-1*16
+    let x = window.innerWidth < (ev.x + 10*16) ?
+            ev.x - 11*16: ev.x - 1*16
+    $.wrapper._dom.style.margin = `${y}px auto auto ${x}px`
     setTimeout(() =>{
       $.wrapper._dom.style.height = `${(actions.length*2 + .25)*16}px`
       },125)
