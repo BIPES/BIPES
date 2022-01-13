@@ -25,9 +25,11 @@ function handleLink (_navigation, _pos, root, _name, push){
     root[elem].section.classList.remove("_pos1", "_pos2")
     if (pos != 0)
       root[elem].section.classList.add(`pos${pos}`)
-    /*if (pos != 2 && push)
-      window.history.pushState({}, '',
-        `${window.location.origin}/ide?${elem}`)*/
+    if (pos != 2 && push)
+      if (!_navigation.isLocal) {
+        window.history.pushState({}, '',
+          `${window.location.origin}/ide?${elem}`)
+      }
 
     handleResize()
   }
@@ -46,9 +48,11 @@ function handleLink (_navigation, _pos, root, _name, push){
     root[crt[_pos0]].section.classList.remove(`pos${_pos0}`)
     root[crt[_pos0]].section.classList.add(`pos${_pos}`)
     _navigation.current = ['', crt[2], crt[1]]
-    /*window.history.pushState({}, '',
-      `${window.location.origin}/ide?${_navigation.current[1]}`);*/
-     return
+    if (!_navigation.isLocal) {
+      window.history.pushState({}, '',
+        `${window.location.origin}/ide?${_navigation.current[1]}`);
+    }
+    return
   }
 
   // User click in the same occupying the whole screen
@@ -130,7 +134,7 @@ class Navigation {
   constructor (){
     this.current = ['','','']
     this.portrait = false
-    this.isLocal = (/^file:\/\//).test(window.location.href)
+    this.isLocal = 'file:' == window.location.protocol
 
     let $ = this._dom = {}
     $.nav = DOM.get ('nav')

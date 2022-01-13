@@ -133,7 +133,7 @@ class Prompt {
       return
 
     let cols = (this._dom.section._dom.offsetWidth - 5*8)/8,
-        rows = (this._dom.section._dom.offsetHeight - 3*16)/16.5
+        rows = (this._dom.section._dom.offsetHeight - 5*16)/16.5
 
     this.prompt.resize(parseInt(cols), parseInt(rows))
   }

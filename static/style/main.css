@@ -68,6 +68,7 @@ input[type="file"] {
 h1, h2, h3, h4 {
 	margin: 0;
 	color: #fff;
+	box-sizing: border-box;
 }
 h1 {
     cursor: default;
@@ -540,7 +541,7 @@ section.default {
 section.default > .container {
   max-width: 50em;
   margin: 0 auto;
-  padding: 0 1em 1em 1em;
+  padding: 0 0 1em 0;
 }
 section.default > .container > h2 {
   position: sticky;
@@ -550,8 +551,10 @@ section.default > .container > h2 {
   max-width: 50rem;
   top: 0;
   padding: 1rem 1rem 0.5rem 1rem;
-  margin: 0 -1rem;
   z-index: 2;
+}
+section.default > .container h3 {
+  padding: 0 1em;
 }
 .cards {
   display: block;
@@ -613,7 +616,6 @@ section.default > .container > h2 {
 .funky {
   display: flex;
   justify-content: flex-start;
-  margin: 0 -1rem;
   padding: 0 .5rem;
   word-break: keep-all;
   white-space: nowrap;
@@ -642,21 +644,27 @@ section.default > .container > h2 {
 .listy {
   display: flex;
   justify-content: flex-start;
-  margin: 0 -1rem;
-  padding: 0 .5rem;
   word-break: keep-all;
   white-space: nowrap;
   flex-wrap: wrap;
+  background: #1c1c1c;
+  border: 1px solid #111;
+  border-bottom: none;
+  margin: 0 .5em;
+}
+
+.listy button {
+  cursor: pointer;
+  border-bottom: 1px solid #111;
+  padding: 0;
 }
 .listy button, .funky > span {
   width: 100%;
-  padding: .5rem;
 }
 .listy button > div {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  border-radius: .5rem;
   padding: .5em;
   width: 100%;
   box-sizing: border-box;

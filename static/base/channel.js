@@ -26,8 +26,8 @@ class Channel {
 
     this.webserial = new _WebSerial(this)
     this.websocket = new _WebSocket(this)
+    this.webbluetooth = new _WebBluetooth(this)
 
-    this.checkUp ()
     this.targetDevice
     this.ping = {      // Create a timer on connect and on message to check
       timer:undefined, // if the device is responding
@@ -142,10 +142,6 @@ class Channel {
     window.bipes.page.device.unuse(uid)
     window.bipes.page.prompt.off()
     window.bipes.page.prompt.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
-  }
-  checkUp (){
-    if (navigator.serial == undefined)
-      console.error("Don't support WebSerial")
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it
@@ -494,7 +490,7 @@ function _WebBluetooth (parent){
    * Connect using webbluetooth protocol.
    */
   this.connect = (callback) => {
-    if (navigator.bluetooth == undefined == undefined)
+    if (navigator.bluetooth == undefined)
       return false
 
       navigator.bluetooth.requestDevice({

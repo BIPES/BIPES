@@ -7,15 +7,18 @@ nav #device.using::before {
 section#device #new-connection h3, section#device #devices, section#device #target-device {
   margin-top: 0.75rem;
 }
-section#device #new-connection #WebSerial > div {
+section#device #new-connection #WebSerial:not(.unsupported) > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) 0%, rgba(123,73,173,1) 200%);
 }
-section#device #new-connection #WebSocket > div {
+section#device #new-connection #WebSocket:not(.unsupported) > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) -100%, rgba(123,73,173,1) 200%);
 }
-section#device #new-connection #WebBluetooth > div {
+section#device #new-connection #WebBluetooth:not(.unsupported) > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) -200%, rgba(123,73,173,1) 100%);
 
+}
+section#device button.unsupported > div {
+  border: 1px solid #fff;
 }
 section#device #new-connection #WebSerial > div:before {
 	background-position: left calc(-1.5rem*23) top;
@@ -37,8 +40,20 @@ section#device #devices button > div {
   border: 1px solid #fff;
   display: block;
 }
-section#device .device-connect:not(.master) button > div {
-  cursor:pointer;
+section#device .device-connect.master button > div,
+section#device button.unsupported > div {
+  cursor: default !important;
+}
+section#device button:not(.unsupported) span {
+  display: none;
+}
+section#device button.unsupported span {
+  width: 0;
+  float: left;
+  font-size: 0.9rem;
+  margin-right: -.75em;
+  margin-left: .75em;
+  margin-top: .25em;
 }
 section#device #devices button > div > div.using-text {
   float: right;
@@ -89,12 +104,16 @@ section#device .device-connect.master button.on button#fetch {
   display: inline-flex;
   filter: invert(1);
 }
-section#device .device-connect.master button:active > div {
+section#device .device-connect.master button:active > div,
+section#device button.unsupported:active > div{
   transform: scale(1) !important;
 }
 
 section#device #target-device > div {
   text-align: center;
+}
+section#device #target-device select {
+  margin-right: 1rem;
 }
 section#device #target-device #pinout {
   max-width: 40rem;

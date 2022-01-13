@@ -32,18 +32,28 @@ class Device {
 
     let $ = this._dom = {}
 
+
+    $.buttonWebSerial = new DOM('button', {id:'WebSerial'})
+        .append([
+          new DOM('span', {innerText:'Not supported'}),
+          new DOM('div', {innerText:'USB/Serial', className:'button icon'}),
+        ]).onclick(this, this.connectWebSerial),
+    $.buttonWebSocket = new DOM('button', {id:'WebSocket'})
+          .append([
+          new DOM('span', {innerText:'Not supported'}),
+          new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'}),
+        ]).onclick(this, this.connectWebSocket),
+    $.buttonWebBluetooth = new DOM('button', {id:'WebBluetooth'})
+        .append([
+          new DOM('span', {innerText:'Not supported'}),
+          new DOM('div', {innerText:'Bluetooth', className:'button icon'}),
+        ]).onclick(this, this.connectWebBluetooth)
+
     $.newConnection = new DOM('div', {id:'new-connection'})
       .append([
         new DOM('h3', {innerText:'New connection'}),
         new DOM('span', {className:'funky'}).append([
-          new DOM('button', {id:'WebSerial'})
-            .append(new DOM('div', {innerText:'USB/Serial', className:'button icon'}))
-            .onclick(this, this.connectSerial),
-          new DOM('button', {id:'WebSocket'})
-            .append(new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'}))
-            .onclick(this, this.connectWebSocket),
-          new DOM('button', {id:'WebBluetooth'})
-            .append(new DOM('div', {innerText:'Bluetooth', className:'button icon'}))
+          $.buttonWebSerial, $.buttonWebSocket, $.buttonWebBluetooth
         ])
       ])
 
@@ -110,8 +120,10 @@ class Device {
       unuse: this._unuse,
       updateInfo: this._updateInfo
     })
+
+    this.checkAPISupport()
   }
-  connectSerial (){
+  connectWebSerial (){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
     channel.connect('webserial', [this, this.use])
@@ -120,6 +132,11 @@ class Device {
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
     channel.connect('websocket', [this, this.use], {url:'ws://192.168.0.16:8266',passwd:'123'})
+  }
+  connectWebBluetooth (){
+    if (channel.targetDevice != undefined)
+      this.select(channel.targetDevice)
+    channel.connect('webbluetooth', [this, this.use])
   }
   use (){
     let timestamp = +new Date()
@@ -373,6 +390,24 @@ class Device {
         notification.send(`Device ${item.nodename} version ${item.version} is unresponsive, consider resetting it.`)
       }
     })
+  }
+	/**
+   * Wheck if the browser or current protocol (file:, https: and http) enables
+   * the APIs.
+   */
+  checkAPISupport (){
+    if (window.location.protocol == 'https:')
+      this._dom.buttonWebSocket._dom.classList.add('unsupported')
+
+    if (window.location.protocol == 'http:' && window.location.hostname != '127.0.0.1')
+      this._dom.buttonWebSerial._dom.classList.add('unsupported'),
+      this._dom.buttonWebBluetooth._dom.classList.add('unsupported')
+
+    if (navigator.serial == undefined)
+      this._dom.buttonWebSerial._dom.classList.add('unsupported')
+
+    if (navigator.bluetooth == undefined)
+      this._dom.buttonWebBluetooth._dom.classList.add('unsupported')
   }
 }
 
