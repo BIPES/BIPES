@@ -123,7 +123,6 @@ class CommandBroker {
                  item : item.name.toLowerCase())
     })
     args.unshift(_self)
-    console.log(args)
 
     // Preserve structure of some objects
     args = args.map(arg => {

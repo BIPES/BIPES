@@ -85,12 +85,9 @@ class Files {
     this.project.deinit()
     this.inited = false
   }
-  load (obj, tabUID){
-    if (!this.inited)
-      return
-
+  load (obj){
     if (obj.hasOwnProperty('tree')){
-      this.project.load(obj, tabUID)
+      this.project.load(obj)
     }
   }
 }
@@ -241,7 +238,7 @@ class DeviceFiles {
     } else
         ref.push({empty:true})
 
-    command.dispatch(this, 'buildFileTree', [this.fileOnTarget, map, tabUID])
+    command.dispatch([this.parent, this], 'buildFileTree', [this.fileOnTarget, map, tabUID])
   }
   /**
    * Build the file tree
@@ -365,7 +362,7 @@ class DeviceFiles {
   fetchFile (target, filename) {
     switch (channel.currentProtocol) {
       case 'WebSocket':
-        command.dispatch(this, 'getFileArrayBuffer', [
+        command.dispatch([this.parent, this], 'getFileArrayBuffer', [
           filename,
           target,
           command.tabUID,
@@ -446,7 +443,7 @@ class DeviceFiles {
           filename = this.arrayBufferFilename,
           then = this.arrayBufferTarget
 
-      command.dispatch(this, 'gotFileArrayBuffer', [filename, str, then, tabUID])
+      command.dispatch([this.parent, this], 'gotFileArrayBuffer', [filename, str, then, tabUID])
       // End request, clear variables
       this.arrayBufferTarget = undefined
       this.arrayBufferFilename = undefined
@@ -496,9 +493,9 @@ class DeviceFiles {
     let script = str.substring(2).replaceAll(/\r/g,'\n').replaceAll(/    /g,'\t')
 
     if (then == 'editor')
-      command.dispatch(this, 'editorSetValue', [filename, script, tabUID])
+      command.dispatch([this.parent, this], 'editorSetValue', [filename, script, tabUID])
     else if (then == 'download')
-      command.dispatch(this, 'downloadValue', [filename, script, tabUID])
+      command.dispatch([this.parent, this], 'downloadValue', [filename, script, tabUID])
   }
   _editorSetValue (filename, script, tabUID){
     if (command.tabUID != tabUID)
@@ -532,7 +529,7 @@ class DeviceFiles {
       case 'WebSocket':
         script = script
           .replaceAll(/\t/g, '    ')
-        command.dispatch(this, 'putFileArrayBuffer', [
+        command.dispatch([this.parent, this], 'putFileArrayBuffer', [
           filename,
           script,
           command.tabUID,
@@ -607,7 +604,7 @@ class DeviceFiles {
   }
   __checkFilePut (uint8, cmd, tabUID){
     console.log('Files: file put finished')
-    command.dispatch(this, 'putFileArrayBufferEnd', [this.arrayBufferFilename, tabUID])
+    command.dispatch([this.parent, this], 'putFileArrayBufferEnd', [this.arrayBufferFilename, tabUID])
     this.arrayBufferFile = new Uint8Array(0)
     this.arrayBufferPos = undefined
     this.arrayBufferFilename = undefined
@@ -809,7 +806,8 @@ class ProjectFiles {
 
     command.add([this.parent, this], {
       newFolder: this._newFolder,
-      newScript: this._newScript
+      newScript: this._newScript,
+      remove: this._remove
     })
   }
   init(){
@@ -821,15 +819,28 @@ class ProjectFiles {
       this.tree = obj.files.tree
     }
     this._buildFileTree([])
-    this.inited = true
   }
   deinit(){
     this._destroyFileTree()
-    this.inited = false
+  }
+  load (obj){
+    console.log('hi')
+    this.tree = obj.tree
+
+    if (!this.parent.inited)
+      return
+
+    this._destroyFileTree()
+    this._buildFileTree([])
   }
   _fromEditor (){
 
   }
+  /**
+   * Create a new folder, context menu input.
+   * Will dispatch command and update project by reference on input.
+   * @param{string} path - Path to new folder
+   */
   newFolder (path){
     this.contextMenu.oninput({
       title:"New folder's name",
@@ -844,26 +855,47 @@ class ProjectFiles {
         return
 
       // Apply to all tabs
-      command.dispatch([this.parent, this], 'newFolder', [path, folder])
+      command.dispatch([this.parent, this], 'newFolder', [
+        path, folder,
+        window.bipes.page.project.currentUID
+      ])
       // Changed by reference, just write to localStorage
       window.bipes.page.project.write()
     })
   }
-  _newFolder (path, folder){
+  /**
+   * Create a new folder
+   * @param{string} path - Path to new folder
+   * @param{string} folder - Name of the new folder
+   * @param{string} projectUID - UID of the project with a new folder
+   */
+  _newFolder (path, folder, projectUID){
+    let obj
+    if (projectUID === window.bipes.page.project.currentUID)
+      obj = this.objByName(path)
+    else
+      obj = this.objByName(path, projectUID)
 
-    let obj = this.objByName(path)
+
     if (obj === true || obj.files == undefined)
       return
     let item = {
       name:folder,
       files:[]
     }
+
+    // Search if already exist
+    if  (!obj.files.every(item => item.name !== folder)){
+      console.log(`Files: Folder ${folder} already exist in path "${path}"`)
+      return
+    }
+
     path += path == '/' ? folder : '/' + folder
     let map = path.split('/')
       map.shift()
     obj.files.push(item)
 
-    if (!this.parent.inited)
+    if (!this.parent.inited || projectUID !== window.bipes.page.project.currentUID)
       return
 
     item.dom = this._domSpan(item, map, false)
@@ -871,18 +903,69 @@ class ProjectFiles {
 
     obj.dom._dom.open = true
   }
+  /**
+   * Remove folder or file, dispatch command and update project by reference.
+   * @param{string} path - Path to folder or file
+   */
   remove (path){
-    window.bipes.page.project.update({files:{tree:this.tree}})
+    this.contextMenu.close()
+
+    // Apply to all tabs
+    command.dispatch([this.parent, this], 'remove', [
+      path,
+      window.bipes.page.project.currentUID
+    ])
+    // Changed by reference, just write to localStorage
+    window.bipes.page.project.write()
   }
+  /**
+   * Remove folder or path
+   * @param{string} path - Path to new folder
+   * @param{string} projectUID - UID of the project with a new folder
+   */
+  _remove (path, projectUID){
+    // Remove DOM Node
+    if (this.parent.inited && projectUID === window.bipes.page.project.currentUID) {
+      let obj
+      if (projectUID === window.bipes.page.project.currentUID)
+        obj = this.objByName(path)
+
+      obj.dom._dom.remove()
+    }
+
+    // Get parent object
+    let ar = path.split('/')
+    let toRemoval = ar[ar.length - 1]
+    ar.shift()
+    ar.pop()
+
+    let obj
+    if (projectUID === window.bipes.page.project.currentUID)
+      obj = this.objByName(ar)
+    else
+      obj = this.objByName(ar, projectUID)
+
+    if (obj === true || obj.files == undefined)
+      return
+
+    obj.files.forEach((item, index) => {
+      if (item.name == toRemoval) {
+        obj.files.splice(index,1)
+      }
+    })
+  }
+  /**
+   * Create a new file, context menu input.
+   * Will dispatch command and update project by reference on input.
+   * @param{string} path - Path to new file
+   */
   newScript (path){
     this.contextMenu.oninput({
       title:"New script's name",
       placeholder:"eg.: my_script.py"
     }, (input, ev) => {
       ev.preventDefault()
-      let filename = input.value.replaceAll(' ','_'),
-          script = "# Create your script here"
-
+      let filename = input.value.replaceAll(' ','_')
       this.contextMenu.close()
 
       if (filename == undefined || filename == '')
@@ -890,7 +973,54 @@ class ProjectFiles {
 
       if (filename.indexOf('.') == -1)
         filename += '.py'
+
+      // Apply to all tabs
+      command.dispatch([this.parent, this], 'newScript', [
+        path, filename,
+        window.bipes.page.project.currentUID
+      ])
+      // Changed by reference, just write to localStorage
+      window.bipes.page.project.write()
     })
+  }
+  /**
+   * Create a new file
+   * @param{string} path - Path to new file
+   * @param{string} filename - Name of the new file
+   * @param{string} projectUID - UID of the project with a new file
+   */
+  _newScript (path, filename, projectUID){
+    let obj
+    if (projectUID === window.bipes.page.project.currentUID)
+      obj = this.objByName(path)
+    else
+      obj = this.objByName(path, projectUID)
+
+    if (obj === true || obj.files == undefined)
+      return
+    let item = {
+      name:filename,
+      script:`# Create your "${filename}" script here`
+    }
+
+    // Search if already exist
+    if  (!obj.files.every(item => item.name !== filename)){
+      console.log(`Files: File "${filename}" already exist in path "${path}"`)
+      return
+    }
+
+    //path += path == '/' ? filename : '/' + filename
+    let map = path.split('/')
+      map.shift()
+    obj.files.push(item)
+
+    if (!this.parent.inited || projectUID !== window.bipes.page.project.currentUID)
+      return
+
+    item.dom = this._domSpan(item, map, true)
+    obj.dom._dom.append(item.dom._dom)
+
+    obj.dom._dom.open = true
   }
   uploadFile (path, dom, ev){
     if  (dom.files [0] == undefined)
@@ -912,7 +1042,6 @@ class ProjectFiles {
    * @param{object} map - Array path to a directory
    */
   _buildFileTree (map) {
-    console.log('hi')
     let _iterate = (obj, dom, path) => {
       let doms = []
       obj.forEach(item => {
@@ -1006,11 +1135,13 @@ class ProjectFiles {
           }]
         })
       case true:
+        let _path = `/${path.join('/')}`
+        _path += _path == '/' ? item.name : '/' + item.name
         return new DOM('button',{
           innerText:item.name,
           className:'listedFile'
         })
-        .onclick(this, () => {this.open(`${_path}/${item.name}`)})
+        .onclick(this, () => {this.open(_path)})
         .onevent('contextmenu', this, (ev) => {
           ev.preventDefault()
           this.contextMenu.open([
@@ -1018,17 +1149,17 @@ class ProjectFiles {
               id:'run',
               innerText:'Execute script',
               fun:this.pasteModedOnTarget,
-              args:[`${_path}/${item.name}`]
+              args:[_path]
             }, {
               id:'download',
               innerText:'Download',
               fun:this.download,
-              args:[`${_path}/${item.name}`]
+              args:[_path]
             }, {
               id:'remove',
               innerText:'Remove',
               fun:this.remove,
-              args:[`${_path}/${item.name}`]
+              args:[_path]
             },
           ], ev)
         })
@@ -1051,12 +1182,21 @@ class ProjectFiles {
   }
   /*
    * Gets object in the file tree by array path or string path.
-   * @param {String/Array} path - array or string path.
+   * If projectUID is null, assume current project.
+   * @param{string/array} path - array or string path.
+   * @param{string} projectUID - UID of the project with the path.
    */
-  objByName (path) {
-    if (path == '/')
-      return this.tree
+  objByName (path, projectUID) {
+    let tree
+    if (projectUID === undefined)
+      tree = this.tree
+    else
+      tree = window.bipes.page.project.projects[projectUID].files.tree
 
+    if (path == '/')
+      return tree
+
+    console.log(path)
     let map
     if (typeof path == 'string'){
       map = path.split('/')
@@ -1064,11 +1204,11 @@ class ProjectFiles {
     } else if (path instanceof Array){
       map = path
       if (path.length == 0)
-        return this.tree
+        return tree
     }
 
-    let ref_dir = this.tree.files,
-        ref = this.tree.files,
+    let ref_dir = tree.files,
+        ref = tree.files,
       found = new Array(map.length).fill(false)
 
     map.forEach ((m, i) => {

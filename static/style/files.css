@@ -132,11 +132,19 @@ section#files #fileOnProject details {
 section#files .listedFile {
   width: 100%;
 }
-section#files .listedFile, section#files #fileOnTarget summary,
-section#files .listedFile, section#files #fileOnProject summary {
-  padding: .25em .75em .25em .75em;
+section#files .listedFile,
+section#files #fileOnTarget summary,
+section#files #fileOnProject summary {
   cursor: pointer;
   border-radius: .125rem;
+}
+section#files .listedFile {
+  padding: .25em .75em .25em .75em;
+}
+section#files #fileOnTarget summary,
+section#files #fileOnProject summary {
+  padding: .25em .75em 0em .75em;
+  margin-left: -.25rem;
 }
 section#files #fileOnTarget summary:focus,
 section#files #fileOnProject summary:focus {
@@ -146,12 +154,14 @@ section#files #fileOnTarget details > summary {
   margin-left: -.25em;
 }
 
-section#files .listedFile:hover, section#files #fileOnTarget summary:hover,
-section#files .listedFile:hover, section#files #fileOnProject summary:hover {
+section#files .listedFile:hover,
+section#files #fileOnTarget summary:hover,
+section#files #fileOnProject summary:hover {
   background: #333;
 }
-section#files .listedFile:focus,  section#files #fileOnTarget summary:focus,
-section#files .listedFile:focus,  section#files #fileOnProject summary:focus {
+section#files .listedFile:focus,
+section#files #fileOnTarget summary:focus,
+section#files #fileOnProject summary:focus {
   background: #334;
 }
 
@@ -174,10 +184,10 @@ section#files #fileOnProject summary::before, section#files .listedFile:before {
 	flex-shrink: 0;
 }
 section#files #fileOnTarget > summary::before {
-	background-position: left calc(1.25rem*13) bottom;
+	background-position: left calc(1.25rem*13) bottom !important;
 }
 section#files #fileOnProject > summary::before {
-	background-position: left calc(1.25rem*3) top;
+	background-position: left calc(1.25rem*3) top !important;
 }
 section#files #fileOnTarget summary::before,
 section#files #fileOnProject summary::before {
