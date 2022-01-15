@@ -70,7 +70,7 @@ class Files {
     this.device = new DeviceFiles(this)
 
     // Codemirror
-    this.codemirror = CodeMirror($.codemirror._dom)
+    this.codemirror = CodeMirror($.codemirror._dom, 'dark')
   }
   init (){
     if (this.inited)

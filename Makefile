@@ -8,7 +8,20 @@ codemirror:
 	rollup-plugin-terser \
 	@rollup/plugin-node-resolve \
 	@codemirror/view \
-	@codemirror/basic-setup \
+	@codemirror/state \
+	@codemirror/history \
+	@codemirror/fold \
+	@codemirror/language \
+	@codemirror/gutter \
+	@codemirror/commands \
+	@codemirror/matchbrackets \
+	@codemirror/closebrackets \
+	@codemirror/search \
+	@codemirror/autocomplete \
+	@codemirror/comment \
+	@codemirror/rectangular-selection \
+	@codemirror/highlight \
+	@codemirror/lint \
 	@codemirror/lang-python \
 	@codemirror/lang-markdown \
 	@codemirror/theme-one-dark

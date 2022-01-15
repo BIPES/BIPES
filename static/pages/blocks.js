@@ -19,13 +19,13 @@ class Blocks {
     // Empty toolbox to use in the workspace until loading project
     let emptyToolbox = Blockly.Xml.textToDom("<xml><category name='...'></category></xml>")
     this.workspace = Blockly.inject('blockly', {
-      theme: Blockly.Themes.Dark,
+      theme: 'dark' === 'dark' ? Blockly.Themes.Dark : Blockly.Themes.Light,
       toolbox: emptyToolbox,
       visible: false,
       grid: {
         spacing: 25,
         length: 3,
-        colour: '#666',
+        colour: 'dark' === 'dark' ? '#444' : '#ccc',
         snap: true
       },
       media: './static/media/blocks/',
