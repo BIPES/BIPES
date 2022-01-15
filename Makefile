@@ -1,4 +1,4 @@
-make: codemirror xterm blockly flask clean-up greeting run
+make: codemirror xterm blockly flask clean greeting run
 
 greeting:
 	@echo "Thanks for using BIPES 😄!"
@@ -42,7 +42,7 @@ run:
 	flask run --port=5001 --host=0.0.0.0
 
 
-release: build-release zip clean-up
+release: build-release zip clean
 	@echo "BIPES release is ready 😄!"
 
 build-release:
@@ -66,7 +66,7 @@ zip:
 	@rm -rf .BIPES
 
 
-clean-up:
+clean:
 	@rm -rf node_modules
 	@rm -rf blockly
 	@rm -rf package-lock.json

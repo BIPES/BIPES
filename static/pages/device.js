@@ -131,7 +131,7 @@ class Device {
   connectWebSocket (){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
-    channel.connect('websocket', [this, this.use], {url:'ws://192.168.0.16:8266',passwd:'123'})
+    channel.connect('websocket', [this, this.use], {url:'ws://192.168.0.16:8266',passwd:'1234'})
   }
   connectWebBluetooth (){
     if (channel.targetDevice != undefined)

@@ -80,7 +80,7 @@ section#files #codemirror {
   overflow-y: auto;
 }
 @media screen and (orientation: portrait){
-  section#files.pos1 #pane, section#files.pos2 {
+  section#files.pos1 #pane, section#files.pos2 #pane{
     height: 100%;
   }
 }

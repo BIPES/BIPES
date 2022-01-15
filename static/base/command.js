@@ -65,10 +65,6 @@ class CommandBroker {
         }
 
         args.shift()
-        console.log(_key)
-        console.log(this.map[_key])
-        console.log(self)
-        console.log(args)
         this.map[_key].callback.apply(self, args)
         localStorage.removeItem(key)
       }
