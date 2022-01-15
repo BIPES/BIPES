@@ -295,6 +295,12 @@ span.tips:before {
 button#share:before {
 	background-position: left calc(-1.5rem*29) top;
 }
+button#write:before {
+	background-position: left calc(-1.5rem*32) top;
+}
+button#save:before {
+	background-position: left calc(-1.5rem*31) top;
+}
 nav #app-version {
   text-align: center;
   font-weight: normal;
@@ -409,6 +415,7 @@ button.icon, label.icon {
     padding: .25rem;
     transition: border-color ease .125s;
     -webkit-tap-highlight-color: transparent;
+    display: inline-flex;
 }
 button.icon:hover, label.icon:hover {
 	border: 1px solid #fff;
@@ -419,7 +426,6 @@ button.noicon {
   cursor: pointer;
 }
 button.icon.text, label.icon.text {
-    display: inline-flex;
     align-items: center;
     font-size: 1rem;
     padding: 0.25em 0.5em;
@@ -584,6 +590,9 @@ section.default > .container h3 {
   overflow: hidden;
   height: 0px;
   max-width: 12rem;
+  position:absolute;
+  top: 0;
+  left: 0;
 }
 #contextMenu button, #contextMenu label {
   font-size: 1em;

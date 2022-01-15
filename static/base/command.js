@@ -42,8 +42,14 @@ class CommandBroker {
    * @param {Boolenan} skipMain - Set "true" to skip the callback on main tab
    */
   add (self, callbacks, skipMain){
-   for (let key in callbacks){
-      let _key = `${self.name}_${key}`
+    let _header = ''
+    if (self instanceof Array){
+      self.forEach(s => {_header += `_${s.name}`})
+      _header = _header.substr(1)
+    } else
+      _header = self.name
+    for (let key in callbacks){
+      let _key =`${_header}_${key}`
       this.map[_key] = {}
       this.map[_key].fun = (key, args) => {
 
@@ -59,6 +65,10 @@ class CommandBroker {
         }
 
         args.shift()
+        console.log(_key)
+        console.log(this.map[_key])
+        console.log(self)
+        console.log(args)
         this.map[_key].callback.apply(self, args)
         localStorage.removeItem(key)
       }
@@ -82,17 +92,21 @@ class CommandBroker {
   }
   /**
    * Dispatch a LocalCommand.
-   * @param {Object} self - Object with the callback.
+   * @param {Object} self - Object with the callback, if a subobject, include
+   * its parents until it.
    * @param {key} - Key of the command.
    * @param {Object[]} - Arguments to apply to the callback.
    */
   dispatch (self, key, args){
-    if (self.constructor.name != 'Array')
+    if (!(self instanceof Array))
       self = [self]
 
-
-    let _key = `${self[self.length-1].name.toLowerCase()}_${key}`,
+    let _key = '',
         _self = []
+
+    self.forEach(s => {_key += `_${s.name}`})
+    _key = _key.substr(1)
+    _key += `_${key}`
 
     if (!this.map.hasOwnProperty(_key)) {
       console.error(`CommandBroker: ${_key} does not exist in the command map.`)
@@ -109,6 +123,7 @@ class CommandBroker {
                  item : item.name.toLowerCase())
     })
     args.unshift(_self)
+    console.log(args)
 
     // Preserve structure of some objects
     args = args.map(arg => {

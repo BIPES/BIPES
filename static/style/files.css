@@ -15,6 +15,7 @@ section#files summary, section#files .listedFile {
   display: flex;
   align-items: center;
 }
+section#files #fileOnProject > summary,
 section#files #fileOnTarget > summary {
   font-weight: bold;
 }
@@ -109,43 +110,48 @@ section#files #pane .header h2 {
   flex-grow: 2;
   text-align: center;
 }
-section#files #projectTree, section#file #pane .header {
+section#files #sidebar, section#file #pane .header {
   width: 15rem;
 }
-section#files #projectTree {
+section#files #sidebar {
   overflow-y: auto;
   height: calc(100% - 3rem);
 }
 @media screen and (orientation: portrait){
-  section#files.pos1 #projectTree, section#files.pos2 #projectTree {
+  section#files.pos1 #sidebar, section#files.pos2 #sidebar {
     height: calc(100% - 3rem);
   }
 }
-section#files #projectTree > details {
+section#files #sidebar > details {
   padding: 0.5rem 0 0.25rem 0;
 }
-section#files #fileOnTarget details {
+section#files #fileOnTarget details,
+section#files #fileOnProject details {
   padding-left: .25em;
 }
 section#files .listedFile {
   width: 100%;
 }
-section#files .listedFile, section#files #fileOnTarget summary {
+section#files .listedFile, section#files #fileOnTarget summary,
+section#files .listedFile, section#files #fileOnProject summary {
   padding: .25em .75em .25em .75em;
   cursor: pointer;
   border-radius: .125rem;
 }
-section#files #fileOnTarget summary:focus {
+section#files #fileOnTarget summary:focus,
+section#files #fileOnProject summary:focus {
   background: #334
 }
 section#files #fileOnTarget details > summary {
   margin-left: -.25em;
 }
 
-section#files .listedFile:hover, section#files #fileOnTarget summary:hover {
+section#files .listedFile:hover, section#files #fileOnTarget summary:hover,
+section#files .listedFile:hover, section#files #fileOnProject summary:hover {
   background: #333;
 }
-section#files .listedFile:focus,  section#files #fileOnTarget summary:focus {
+section#files .listedFile:focus,  section#files #fileOnTarget summary:focus,
+section#files .listedFile:focus,  section#files #fileOnProject summary:focus {
   background: #334;
 }
 
@@ -155,7 +161,9 @@ section#files .emptyDir {
   padding-left: .75rem;
 }
 section#files #fileOnTarget > summary::before,
-section#files #fileOnTarget > span summary::before, section#files .listedFile:before {
+section#files #fileOnTarget summary::before, section#files .listedFile:before,
+section#files #fileOnProject > summary::before,
+section#files #fileOnProject summary::before, section#files .listedFile:before {
 	display: block;
 	width: 1.25rem;
 	height: 1.25rem;
@@ -166,9 +174,13 @@ section#files #fileOnTarget > span summary::before, section#files .listedFile:be
 	flex-shrink: 0;
 }
 section#files #fileOnTarget > summary::before {
-	background-position: left calc(1.25rem*10) bottom;
+	background-position: left calc(1.25rem*13) bottom;
 }
-section#files #fileOnTarget > span summary::before {
+section#files #fileOnProject > summary::before {
+	background-position: left calc(1.25rem*3) top;
+}
+section#files #fileOnTarget summary::before,
+section#files #fileOnProject summary::before {
 	background-position: left calc(-1.25rem*16) top;
 }
 section#files .listedFile:before {
@@ -177,7 +189,8 @@ section#files .listedFile:before {
 section#files button#script:before {
 	background-position: left calc(-1.5rem*17) top;
 }
-section#files #fileOnTarget > span details[open] summary:before {
+section#files #fileOnProject details[open] summary:before,
+section#files #fileOnProject details[open] summary:before {
 	background-position: left calc(-1.25rem*16) bottom;
 }
 

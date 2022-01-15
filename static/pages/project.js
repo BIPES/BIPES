@@ -157,7 +157,16 @@ class Project {
       },
       blocks: {
         xml:'<xml xmlns="https://bipes.net.br/ide"></xml>'
-      }
+      },
+      files:{
+        tree:{
+          name:'',
+          files:[{
+              name:'script.py',
+              script:"# Create your script here"
+            }]
+          }
+        }
     }
   }
   init (){
@@ -253,6 +262,19 @@ class Project {
         })
       ])
   }
+  /*
+   * Write project from current scope to localStorage
+   * @param {String} uid - project's uid
+   */
+  write (uid){
+    uid = uid == undefined ? this.currentUID : uid
+    storage.set(`project-${uid}`, JSON.stringify(this.projects[uid]))
+  }
+  /*
+   * Update project data on all tabs then from current scope write to localStorage
+   * @param {Object} data - changed project data
+   * @param {String} uid - project's uid
+   */
   update (data, uid){
     uid = uid == undefined ? this.currentUID : uid
 
@@ -305,7 +327,7 @@ class Project {
   */
   download (uid){
     let proj = this.projects[uid]
-    DOM.prototypeDownload(`bipes-${proj.name}.json`, JSON.stringify(proj))
+    DOM.prototypeDownload(`${proj.name}.bipes.json`, JSON.stringify(proj))
     this.contextMenu.close()
   }
   share (uid){

@@ -129,15 +129,16 @@ class DOM {
   /**
   * Append a event listener.
   * @param {string} event - Event listener name.
-  * @param {function} ev - Function to be executed on move.
+  * @param {function} fun - Function to be executed on move.
+  * @param {function} args - Arguments to be applied to the function.
   */
-  onevent (event, self, ev, args){
+  onevent (event, self, fun, args){
     this._dom.addEventListener(event, (e) => {
       if (typeof args == 'undefined')
-        ev.apply(self, [e])
+        fun.apply(self, [e])
       else if (args.constructor == Array) {
         args.push(e)
-        ev.apply(self, args)
+        fun.apply(self, args)
       }
     })
   return this

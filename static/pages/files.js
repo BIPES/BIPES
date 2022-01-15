@@ -10,66 +10,21 @@ import {notification} from './notification.js'
 class Files {
   constructor (){
     this.name = 'files'
-    this.fileOnTarget = [{name:'', files:[]}] // Files stored on target device, default depth 1 (root)
-    this.fileOnHost   = {} // Files stored on host device
-
-    // Miscellaneous variables to get/put through WebSocket
-    this.arrayBufferFile = new Uint8Array(0) // Temporaly store incoming files comming as buffer
-    this.arrayBufferFilename                 // Temporaly store file filename
-    this.arrayBufferTarget                   // After fetch, download or show
-    this.arrayBufferPos                      // Position on the current file being sent
 
     let $ = this._dom = {}
 
     $.section = new DOM(DOM.get('section#files'))
-    $.fileOnTarget = new DOM('span')
-    $.detailsFileOnTarget = DOM.prototypeDetails({
-      id:'fileOnTarget',
-      innerText: "Files on device",
-      onevent: [{
-        event:'click',
-        self:this,
-        fun:this.listDir,
-        args:['/', undefined]
-      }, {
-        event:'contextmenu',
-        fun: (path, dom, ev) => {
-          ev.preventDefault()
-          this.contextMenu.open([
-            {
-              id:'add',
-              innerText:'New folder',
-              fun:this.newFolderOnTarget,
-              args:[path]
-            }, {
-              id:'script',
-              innerText:'New script',
-              fun:this.newFileOnTarget,
-              args:[path]
-            }, {
-              id:'upload',
-              accept:'.py,.csv,.md',
-              innerText:'Upload file',
-              fun:this.uploadFileToTarget,
-              args:[path]
-            }
-          ], ev)
-        },
-        args:['/']
-      }]
-    })
-    .append($.fileOnTarget)
 
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)
 
+    $.sidebar = new DOM('div', {id:'sidebar'})
     $.pane = new DOM('div', {id:'pane'})
       .append([
-        new DOM('div', {className:'header'})
-          .append([
-         //   new DOM('h2', {innerText:'Files'})
-          ]),
-        new DOM('div', {id:'projectTree'}).append($.detailsFileOnTarget)])
+        new DOM('div', {className:'header'}),
+        $.sidebar
+      ])
+
 
     $.filename = new DOM('input', {
       id:'filename',
@@ -87,27 +42,21 @@ class Files {
       document.title = `${str} - BIPES`
     })
 
-    $.saveToTarget = new DOM('button', {
-      id:'upload',
-      accept:'.py,.csv,.md',
-      className:'icon text',
-      innerText:'Write'
-    }).onclick(this, this._editorToTarget)
 
     $.codemirror = new DOM('div', {id:'codemirror'})
 
-    $.editor = new DOM('div', {id:'editor'})
-      .append([
-        new DOM('div', {id:'header'}).append([
+    $.header = new DOM('div', {id:'header'}).append([
           new DOM('button', {
             id:'hidePane',
             title:'Hide/show project tree.'
           }).onclick(this, () => {
             DOM.switchState($.section._dom, 'hidePane')
           }),
-          $.filename,
-          $.saveToTarget
-        ]),
+          $.filename
+        ])
+    $.editor = new DOM('div', {id:'editor'})
+      .append([
+        $.header,
         $.codemirror
         ])
 
@@ -116,10 +65,104 @@ class Files {
 
     $.section.append([$.container, $.contextMenu])
 
+    this.project = new ProjectFiles(this)
+    this.device = new DeviceFiles(this)
+
     // Codemirror
     this.codemirror = CodeMirror($.codemirror._dom)
+  }
+  init (){
+    if (this.inited)
+      return
 
-    command.add(this, {
+    this.project.init()
+    this.inited = true
+  }
+  deinit (){
+    if (!this.inited)
+      return
+
+    this.project.deinit()
+    this.inited = false
+  }
+  load (obj, tabUID){
+    if (!this.inited)
+      return
+
+    if (obj.hasOwnProperty('tree')){
+      this.project.load(obj, tabUID)
+    }
+  }
+}
+
+class DeviceFiles {
+  constructor (parent){
+    this.parent = parent
+    this.dom = {}
+
+    this.name = "device"
+
+    this.fileOnTarget = [{name:'', files:[]}] // Files stored on target device, default depth 1 (root)
+
+    // Miscellaneous variables to get/put through WebSocket
+    this.arrayBufferFile = new Uint8Array(0) // Temporaly store incoming files comming as buffer
+    this.arrayBufferFilename                 // Temporaly store file filename
+    this.arrayBufferTarget                   // After fetch, download or show
+    this.arrayBufferPos                      // Position on the current file being sent
+
+    this.contextMenu = new ContextMenu(parent._dom.contextMenu, this)
+
+    let $ = this._dom = {}
+
+    $.fileOnTarget = new DOM('span')
+    $.detailsFileOnTarget = DOM.prototypeDetails({
+      id:'fileOnTarget',
+      innerText: "Device files",
+      onevent: [{
+        event:'click',
+        self:this,
+        fun:this.listDir,
+        args:['/', undefined]
+      }, {
+        event:'contextmenu',
+        fun: (path, dom, ev) => {
+          ev.preventDefault()
+          this.contextMenu.open([
+            {
+              id:'add',
+              innerText:'New folder',
+              fun:this.newFolder,
+              args:[path]
+            }, {
+              id:'script',
+              innerText:'New script',
+              fun:this.newScript,
+              args:[path]
+            }, {
+              id:'upload',
+              accept:'.py,.csv,.md',
+              innerText:'Upload file',
+              fun:this.uploadFile,
+              args:[path]
+            }
+          ], ev)
+        },
+        args:['/']
+      }]
+    })
+    .append($.fileOnTarget)
+
+    $.saveToTarget = new DOM('button', {
+      id:'upload',
+      className:'icon text',
+      innerText:'Write',
+      title:'Write to device'
+    }).onclick(this, this._fromEditor)
+
+    this.parent._dom.sidebar.append($.detailsFileOnTarget)
+    this.parent._dom.header.append($.saveToTarget)
+
+    command.add([this.parent, this], {
       buildFileTree: this._buildFileTree,
       editorSetValue: this._editorSetValue,
       downloadValue: this._downloadValue,
@@ -130,19 +173,8 @@ class Files {
       putFileArrayBufferEnd: this.__putFileArrayBufferEnd,
     })
   }
-  init (){
-    if (this.inited)
-      return
 
-    this.inited = true
-
-  }
-  deinit (){
-    if (!this.inited)
-      return
-    this.inited = false
-  }
-  listDir (path, tabUID, dom, ev){
+  listDir (path, tabUID, dom, ev) {
     if (dom != undefined) {
       ev.preventDefault()
       if (dom.id != "fileOnTarget"){
@@ -161,7 +193,7 @@ class Files {
     command.dispatch(channel, 'push', [
       cmd,
       channel.targetDevice,
-      ['files','_fetchRecursive'],
+      ['files', 'device', '_fetchRecursive'],
       tabUID == undefined ? command.tabUID : tabUID
     ])
   }
@@ -211,7 +243,13 @@ class Files {
 
     command.dispatch(this, 'buildFileTree', [this.fileOnTarget, map, tabUID])
   }
-  _buildFileTree (fileOnTarget, map, tabUID){
+  /**
+   * Build the file tree
+   * @param{object} fileOnTarget - DOM node of the file tree
+   * @param{object} map - Array path to a directory
+   * @param{string} tabUID - UID from the requesting tab
+   */
+  _buildFileTree (fileOnTarget, map, tabUID) {
     this.fileOnTarget = fileOnTarget
 
     if (tabUID != command.tabUID)
@@ -240,22 +278,22 @@ class Files {
                     {
                       id:'add',
                       innerText:'New folder',
-                      fun:this.newFolderOnTarget,
+                      fun:this.newFolder,
                       args:[path]
                     }, {
                       id:'script',
                       innerText:'New script',
-                      fun:this.newFileOnTarget,
+                      fun:this.newScript,
                       args:[path]
                     }, {
                       id:'upload',
                       innerText:'Upload file',
-                      fun:this.uploadFileToTarget,
+                      fun:this.uploadFile,
                       args:[path]
                     }, {
                       id:'remove',
                       innerText:'Remove folder',
-                      fun:this.removeFromTarget,
+                      fun:this.remove,
                       args:[path]
                     }
                   ], ev)
@@ -294,12 +332,12 @@ class Files {
                 }, {
                   id:'download',
                   innerText:'Download',
-                  fun:this.downloadFromTarget,
+                  fun:this.download,
                   args:[`${_path}/${item.name}`]
                 }, {
                   id:'remove',
                   innerText:'Remove',
-                  fun:this.removeFromTarget,
+                  fun:this.remove,
                   args:[`${_path}/${item.name}`]
                 },
               ], ev)
@@ -324,7 +362,7 @@ class Files {
    * @param{string} target - Target device uid
    * @param{string} filename - Path to file, eg. /libs/my_lib.py
    */
-  fetchFile (target, filename){
+  fetchFile (target, filename) {
     switch (channel.currentProtocol) {
       case 'WebSocket':
         command.dispatch(this, 'getFileArrayBuffer', [
@@ -349,13 +387,13 @@ class Files {
         command.dispatch(channel, 'push', [
           cmd2,
           channel.targetDevice,
-          ['files', target == 'editor' ? '_fetchFileToEditor' : '_fetchFileToDownload'],
+          ['files', 'device', target == 'editor' ? '_fetchFileToEditor' : '_fetchFileToDownload'],
           command.tabUID
         ])
         break
     }
   }
-  _getFileArrayBuffer(filename, target, tabUID, targetDevice){
+  _getFileArrayBuffer (filename, target, tabUID, targetDevice){
     if (channel.current == undefined || channel.targetDevice != targetDevice)
       return
     if (this.arrayBufferFile.length !== 0){
@@ -375,7 +413,7 @@ class Files {
     command.dispatch(channel, 'push', [
       rec1,
       channel.targetDevice,
-      ['files', '__checkHexaGet'],
+      ['files', 'device', '__checkHexaGet'],
       tabUID
     ])
 
@@ -424,7 +462,7 @@ class Files {
       command.dispatch(channel, 'push', [
         rec2,
         channel.targetDevice,
-        ['files', '__checkFileGet'],
+        ['files', 'device', '__checkFileGet'],
         tabUID
       ])
     }
@@ -462,17 +500,17 @@ class Files {
     else if (then == 'download')
       command.dispatch(this, 'downloadValue', [filename, script, tabUID])
   }
-  _editorSetValue (filename, script, tabUID) {
+  _editorSetValue (filename, script, tabUID){
     if (command.tabUID != tabUID)
       return
 
-    this._dom.filename._dom.value = filename
-    this.codemirror.dispatch({
-      changes: {from:0, to:this.codemirror.state.doc.length, insert:script}
+    this.parent._dom.filename._dom.value = filename
+    this.parent.codemirror.dispatch({
+      changes: {from:0, to:this.parent.codemirror.state.doc.length, insert:script}
     })
     document.title = `${filename} - BIPES`
   }
-  _downloadValue (filename, script, tabUID) {
+  _downloadValue = (filename, script, tabUID) => {
     if (command.tabUID != tabUID)
       return
     DOM.prototypeDownload(filename.substring(1), script)
@@ -480,15 +518,15 @@ class Files {
   /**
    * Get file from ``codemirror`` editor and calls :js:func:`Files.writeToTarget` to upload.
    */
-  _editorToTarget () {
+  _fromEditor (){
     //For codemirror
-      let script = this.codemirror.state.doc.toString(),
-        filename = this._dom.filename._dom.value
+      let script = this.parent.codemirror.state.doc.toString(),
+        filename = this.parent._dom.filename._dom.value
     //let uint8Array = new Uint8Array([...script].map(s => s.charCodeAt(0)))
 
     this.writeToTarget (filename, script)
   }
-  writeToTarget (filename, script) {
+  writeToTarget (filename, script){
 
     switch (channel.currentProtocol) {
       case 'WebSocket':
@@ -517,7 +555,7 @@ class Files {
         command.dispatch(channel, 'push', [
           cmd,
           channel.targetDevice,
-          ['files','_wroteToTarget'],
+          ['files', 'device', '_wroteToTarget'],
           command.tabUID
         ])
         break
@@ -551,7 +589,7 @@ class Files {
     command.dispatch(channel, 'push', [
       rec1,
       channel.targetDevice,
-      ['files', '__checkHexaPut'],
+      ['files', 'device, __checkHexaPut'],
       tabUID
     ])
   }
@@ -562,7 +600,7 @@ class Files {
       command.dispatch(channel, 'push', [
         rec2,
         channel.targetDevice,
-        ['files', '__checkFilePut'],
+        ['files', 'device', '__checkFilePut'],
         tabUID
       ])
     }
@@ -587,7 +625,7 @@ class Files {
 
     this.listDir(cmd.match(reg)[1], tabUID)
   }
-  newFileOnTarget (path){
+  newScript (path){
     this.contextMenu.oninput({
       title:"New script's name",
       placeholder:"eg.: my_script.py"
@@ -610,7 +648,7 @@ class Files {
       )
     })
   }
-  removeFromTarget (filename){
+  remove (filename){
     this.contextMenu.close()
 
     let cmd = rosetta.rm.cmd(filename)
@@ -618,7 +656,7 @@ class Files {
     command.dispatch(channel, 'push', [
       cmd,
       channel.targetDevice,
-      ['files','_removedFromTarget'],
+      ['files', 'device', '_removedFromTarget'],
       command.tabUID
     ])
   }
@@ -651,7 +689,7 @@ class Files {
     command.dispatch(channel, 'push', [
       cmd,
       channel.targetDevice,
-      ['files','_ranOnTarget'],
+      ['files', 'device', '_ranOnTarget'],
       command.tabUID
     ])
   }
@@ -662,12 +700,12 @@ class Files {
 
     notification.send(`Script ${cmd.match(reg)[1]} finished executing!`)
   }
-  downloadFromTarget (filename){
+  download (filename){
     this.contextMenu.close()
 
     this.fetchFile('download', filename)
   }
-  newFolderOnTarget (path){
+  newFolder (path){
     this.contextMenu.oninput({
       title:"New folder's name",
       placeholder:"eg.: important_files"
@@ -685,7 +723,7 @@ class Files {
       command.dispatch(channel, 'push', [
         cmd,
         channel.targetDevice,
-        ['files','_addedFolderOnTarget'],
+        ['files','device', '_addedFolderOnTarget'],
         command.tabUID
       ])
     })
@@ -697,7 +735,7 @@ class Files {
 
     this.listDir(cmd.match(reg)[1], tabUID)
  }
-  uploadFileToTarget (path, dom, ev){
+  uploadFile (path, dom, ev){
     if  (dom.files [0] == undefined)
       return
 
@@ -713,5 +751,345 @@ class Files {
     this.contextMenu.close()
   }
 }
+
+class ProjectFiles {
+  constructor (parent){
+    this.name = 'project'
+    this.parent = parent
+    this.dom = {}
+
+    this.tree                       //  Reference to project file tree
+
+    this.contextMenu = new ContextMenu(parent._dom.contextMenu, this)
+
+    let $ = this._dom = {}
+
+    $.section = new DOM(DOM.get('section#files'))
+    $.detailsFileOnProject = DOM.prototypeDetails({
+      id:'fileOnProject',
+      innerText: "Project files",
+      onevent: [{
+        event:'contextmenu',
+        fun: (path, dom, ev) => {
+          ev.preventDefault()
+          this.contextMenu.open([
+            {
+              id:'add',
+              innerText:'New folder',
+              fun:this.newFolder,
+              args:[path]
+            }, {
+              id:'script',
+              innerText:'New script',
+              fun:this.newScript,
+              args:[path]
+            }, {
+              id:'upload',
+              accept:'.py,.csv,.md',
+              innerText:'Upload file',
+              fun:this.uploadFile,
+              args:[path]
+            }
+          ], ev)
+        },
+        args:['/']
+      }]
+    })
+
+
+    $.saveToLocal = new DOM('button', {
+      id:'save',
+      className:'icon',
+      title:'Save to project'
+    }).onclick(this, this._fromEditor)
+
+    this.parent._dom.sidebar.append($.detailsFileOnProject)
+    this.parent._dom.header.append($.saveToLocal)
+
+
+    command.add([this.parent, this], {
+      newFolder: this._newFolder,
+      newScript: this._newScript
+    })
+  }
+  init(){
+    if (this.tree === undefined){
+      let obj = window.bipes.page.project.projects[window.bipes.page.project.currentUID]
+      if (!obj.hasOwnProperty('files'))
+        obj.files = {tree:{name:'',files:[]}}
+
+      this.tree = obj.files.tree
+    }
+    this._buildFileTree([])
+    this.inited = true
+  }
+  deinit(){
+    this._destroyFileTree()
+    this.inited = false
+  }
+  _fromEditor (){
+
+  }
+  newFolder (path){
+    this.contextMenu.oninput({
+      title:"New folder's name",
+      placeholder:"eg.: important_files"
+    }, (input, ev) => {
+      ev.preventDefault()
+      let folder = input.value.replaceAll(' ', '_').replaceAll('.', '-')
+
+      this.contextMenu.close()
+
+      if (folder == undefined || folder == '')
+        return
+
+      // Apply to all tabs
+      command.dispatch([this.parent, this], 'newFolder', [path, folder])
+      // Changed by reference, just write to localStorage
+      window.bipes.page.project.write()
+    })
+  }
+  _newFolder (path, folder){
+
+    let obj = this.objByName(path)
+    if (obj === true || obj.files == undefined)
+      return
+    let item = {
+      name:folder,
+      files:[]
+    }
+    path += path == '/' ? folder : '/' + folder
+    let map = path.split('/')
+      map.shift()
+    obj.files.push(item)
+
+    if (!this.parent.inited)
+      return
+
+    item.dom = this._domSpan(item, map, false)
+    obj.dom._dom.append(item.dom._dom)
+
+    obj.dom._dom.open = true
+  }
+  remove (path){
+    window.bipes.page.project.update({files:{tree:this.tree}})
+  }
+  newScript (path){
+    this.contextMenu.oninput({
+      title:"New script's name",
+      placeholder:"eg.: my_script.py"
+    }, (input, ev) => {
+      ev.preventDefault()
+      let filename = input.value.replaceAll(' ','_'),
+          script = "# Create your script here"
+
+      this.contextMenu.close()
+
+      if (filename == undefined || filename == '')
+        return
+
+      if (filename.indexOf('.') == -1)
+        filename += '.py'
+    })
+  }
+  uploadFile (path, dom, ev){
+    if  (dom.files [0] == undefined)
+      return
+
+    let file = dom.files[0]
+    let filename = `${path}/${file.name}`.replaceAll(' ', '_')
+
+    let reader = new FileReader()
+    reader.onload = (e) => {
+        //filename, e.target.result
+    };
+    reader.readAsArrayBuffer(file)
+
+    this.contextMenu.close()
+  }
+  /**
+   * Build the file tree
+   * @param{object} map - Array path to a directory
+   */
+  _buildFileTree (map) {
+    console.log('hi')
+    let _iterate = (obj, dom, path) => {
+      let doms = []
+      obj.forEach(item => {
+        if (item.files != undefined) {
+          path.push(item.name)
+          doms.push(item.dom = this._domSpan(item, path, false))
+          if (item.files.length > 0) {
+            doms[doms.length - 1]._dom.open = true
+            if (item.files[0].hasOwnProperty('empty')) {
+              doms[doms.length - 1]._dom.open = true
+              doms[doms.length - 1].append(
+                new DOM('span', {innerText:'(Empty)', className:'emptyDir'})
+              )
+            } else
+            _iterate (item.files, doms[doms.length - 1], path)
+          }
+          path.pop()
+        } else {
+          let _path = path.length == 0 ? '' : `/${path.join('/')}`
+
+          doms.push(item.dom = this._domSpan(item, path, true))
+        }
+      })
+      dom.append(doms)
+
+      return
+    },
+    path = []
+    _iterate(this.tree.files, this._dom.detailsFileOnProject, path)
+
+    this.tree.dom = {}
+    this.tree.dom._dom = this._dom.detailsFileOnProject._dom
+    this._dom.detailsFileOnProject._dom.open = true
+
+  }
+  /**
+   * Destroy the file tree, triggered by ::js::fun::Files::devinit.
+   */
+  _destroyFileTree () {
+    let _dom = this._dom.detailsFileOnProject._dom
+
+    let child = _dom.lastElementChild
+    while (child) {
+      if (child.nodeName === 'SUMMARY')
+        return
+      _dom.removeChild(child)
+      child = _dom.lastElementChild
+    }
+  }
+  /*
+   * Generate the folder or file DOM node.
+   * @param {String} item - folder/file object.
+   * @param {Array} path - array path to folder/file object.
+   * @param {bool} type - false equals folder and true a file.
+   */
+  _domSpan (item, path, type){
+    switch (type) {
+      case false:
+        return DOM.prototypeDetails({
+          id:`path_${path.join('_')}`,
+          innerText: item.name,
+          onevent: [{
+            event:'contextmenu',
+            fun: (path, dom, ev) => {
+              ev.preventDefault()
+              this.contextMenu.open([
+                {
+                  id:'add',
+                  innerText:'New folder',
+                  fun:this.newFolder,
+                  args:[path]
+                }, {
+                  id:'script',
+                  innerText:'New script',
+                  fun:this.newScript,
+                  args:[path]
+                }, {
+                  id:'upload',
+                  innerText:'Upload file',
+                  fun:this.uploadFile,
+                  args:[path]
+                }, {
+                  id:'remove',
+                  innerText:'Remove folder',
+                  fun:this.remove,
+                  args:[path]
+                }
+              ], ev)
+            },
+            args:[`/${path.join('/')}`]
+          }]
+        })
+      case true:
+        return new DOM('button',{
+          innerText:item.name,
+          className:'listedFile'
+        })
+        .onclick(this, () => {this.open(`${_path}/${item.name}`)})
+        .onevent('contextmenu', this, (ev) => {
+          ev.preventDefault()
+          this.contextMenu.open([
+            {
+              id:'run',
+              innerText:'Execute script',
+              fun:this.pasteModedOnTarget,
+              args:[`${_path}/${item.name}`]
+            }, {
+              id:'download',
+              innerText:'Download',
+              fun:this.download,
+              args:[`${_path}/${item.name}`]
+            }, {
+              id:'remove',
+              innerText:'Remove',
+              fun:this.remove,
+              args:[`${_path}/${item.name}`]
+            },
+          ], ev)
+        })
+    }
+  }
+  /*
+   * Open file.
+   * @param {String/Array} path - array or string path.
+   */
+  open (path){
+    let file = this.objByName(path)
+    if (file === true)
+      return
+
+    this.parent._dom.filename._dom.value = path
+    this.parent.codemirror.dispatch({
+      changes: {from:0, to:this.parent.codemirror.state.doc.length, insert:file.script}
+    })
+    document.title = `${path} - BIPES`
+  }
+  /*
+   * Gets object in the file tree by array path or string path.
+   * @param {String/Array} path - array or string path.
+   */
+  objByName (path) {
+    if (path == '/')
+      return this.tree
+
+    let map
+    if (typeof path == 'string'){
+      map = path.split('/')
+      map.shift()
+    } else if (path instanceof Array){
+      map = path
+      if (path.length == 0)
+        return this.tree
+    }
+
+    let ref_dir = this.tree.files,
+        ref = this.tree.files,
+      found = new Array(map.length).fill(false)
+
+    map.forEach ((m, i) => {
+      ref_dir.every(p => {
+        if (p.name == m){
+          found[i] = true
+          ref_dir = p.files
+          ref = p
+          return false
+        }
+        return true
+      })
+    })
+
+    if (found.includes(false)){
+      console.error("Files: some directory don't exist or haven't been mapped!")
+      return true
+    }
+    return ref
+  }
+}
+
 
 export let files = new Files()
