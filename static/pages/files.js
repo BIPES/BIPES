@@ -16,9 +16,6 @@ class Files {
 
     $.section = new DOM(DOM.get('section#files'))
 
-    $.contextMenu = new DOM('div')
-    this.contextMenu = new ContextMenu($.contextMenu, this)
-
     $.sidebar = new DOM('div', {id:'sidebar'})
     $.pane = new DOM('div', {id:'pane'})
       .append([
@@ -64,7 +61,7 @@ class Files {
     $.container = new DOM('div', {className:'container'})
       .append([$.pane, $.editor])
 
-    $.section.append([$.container, $.contextMenu])
+    $.section.append([$.container])
 
     this.project = new ProjectFiles(this)
     this.device = new DeviceFiles(this)
@@ -108,9 +105,11 @@ class DeviceFiles {
     this.arrayBufferTarget                   // After fetch, download or show
     this.arrayBufferPos                      // Position on the current file being sent
 
-    this.contextMenu = new ContextMenu(parent._dom.contextMenu, this)
-
     let $ = this._dom = {}
+
+    $.contextMenu = new DOM('div')
+    this.contextMenu = new ContextMenu($.contextMenu, this)
+    this.parent._dom.section.append($.contextMenu)
 
     $.fileOnTarget = new DOM('span')
     $.detailsFileOnTarget = DOM.prototypeDetails({
@@ -779,9 +778,11 @@ class ProjectFiles {
 
     this.tree                       //  Reference to project file tree
 
-    this.contextMenu = new ContextMenu(parent._dom.contextMenu, this)
-
     let $ = this._dom = {}
+
+    $.contextMenu = new DOM('div')
+    this.contextMenu = new ContextMenu($.contextMenu, this)
+    this.parent._dom.section.append($.contextMenu)
 
     $.section = new DOM(DOM.get('section#files'))
     $.detailsFileOnProject = DOM.prototypeDetails({

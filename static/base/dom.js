@@ -337,7 +337,7 @@ class ContextMenu {
   close (ev) {
     if (ev != undefined)
       ev.preventDefault()
-    if (ev == undefined || ev.target.id == 'contextMenu') {
+    if (ev == undefined || ev.target.id == 'contextMenu'){
       this._dom.wrapper._dom.style.height = '0px'
       Animate.off(this._dom.contextMenu._dom, undefined, 125)
       setTimeout(() => {this._dom.wrapper.removeChilds()}, 125)
