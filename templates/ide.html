@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <link rel="icon" sizes="192x192" href="./static/media/icon/icon-192x192.png">
   <link rel="stylesheet" href='./static/style/main.css'/>
-  {% for key, plugin in npm.items() -%}{% if plugin.import -%}
+  {% for key, plugin in imports.items() -%}{% if plugin.import -%}
   <script type="text/javascript" src="{{ plugin.src }}"></script>
   {% endif %}{% endfor %}
-  {% for key, plugin in npm.items() -%}{% if plugin.import -%}{% if plugin.css_src -%}
+  {% for plugin in lang_imports -%}
+  <script type="text/javascript" src="{{ plugin }}"></script>
+  {% endfor %}
+  {% for key, plugin in imports.items() -%}{% if plugin.import -%}{% if plugin.css_src -%}
   <link rel="stylesheet" href='{{ plugin.css_src }}'/>{% endif %}
   {% endif %}{% endfor %}
   {% for item in navigation -%}{% if item.css_src -%}
@@ -24,9 +27,9 @@
   <span id="menu">{{ app_name }}</span>
 {% for item in navigation -%}
 {% if import_type == "text/javascript" -%}
-  <a id="{{ item.href }}" href="./ide.html?{{ item.href }}">{{ item.caption }}</a>
+  <a id="{{ item.href }}" href="./ide.html?page={{ item.href }}">{{ item.caption }}</a>
 {% else %}
-  <a id="{{ item.href }}" href="./ide?{{ item.href }}">{{ item.caption }}</a>
+  <a id="{{ item.href }}" href="./ide?page={{ item.href }}">{{ item.caption }}</a>
 {% endif %}
 {% endfor %}
 </div>

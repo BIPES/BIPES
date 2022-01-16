@@ -1,3 +1,5 @@
+lang ?= "en"
+
 make: codemirror xterm blockly flask clean greeting run
 
 greeting:
@@ -60,7 +62,7 @@ release: build-release zip clean
 
 build-release:
 	@. venv/bin/activate && \
-	python -c "import __init__; __init__.build_release()"
+	python -c "import __init__; __init__.build_release('$(lang)')"
 	@npm install rollup \
 	rollup-plugin-terser
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.bipes.js
@@ -68,7 +70,7 @@ build-release:
 zip:
 	@rm -rf BIPES.zip
 	@mkdir -p .BIPES
-	@cp ide.html .BIPES
+	@cp ide.html .BIPES/ide-$(lang).html
 	@mkdir -p .BIPES/static
 	@cp -r static/libs .BIPES/static/
 	@cp -r static/media .BIPES/static/

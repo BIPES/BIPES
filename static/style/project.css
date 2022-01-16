@@ -14,9 +14,6 @@ section#project button#add {
 section#project .listy button.on {
   cursor: default;
 }
-section#project .listy button:hover {
-  background: #444;
-}
 section#project .listy button {
   transition: .25s ease background-color;
 }
@@ -27,7 +24,10 @@ section#project #user-projects button > div > div {
   font-size: 0.9rem;
 }
 section#project #user-projects button.on {
-  background: #333;
+  background-color: rgba(68,153,204,.25);
+}
+section#project .listy button:hover {
+  background-color: rgba(68,153,204,.5);
 }
 section#project #user-projects button input {
   font-weight: bold;

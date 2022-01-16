@@ -8,6 +8,8 @@ import { {{item.href}} } from '../../static/pages/{{item.href}}.js'
 
 export default function Bipes (){
   window.bipes = {}
+  window.bipes.theme = '{{ theme }}'
+  window.bipes.lang = '{{ lang }}'
   window.bipes.page = {}
 
   // Make bipes enviroment acessible

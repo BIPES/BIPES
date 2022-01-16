@@ -7,6 +7,12 @@ nav #device.using::before {
 section#device #new-connection h3, section#device #devices, section#device #target-device {
   margin-top: 0.75rem;
 }
+section#device button:not(.unsupported) > div.icon {
+  color: #fff !important;
+}
+section#device button:not(.unsupported) > div.icon::before {
+  filter: invert(0) !important;
+}
 section#device #new-connection #WebSerial:not(.unsupported) > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) 0%, rgba(123,73,173,1) 200%);
 }
@@ -17,8 +23,11 @@ section#device #new-connection #WebBluetooth:not(.unsupported) > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) -200%, rgba(123,73,173,1) 100%);
 
 }
-section#device button.unsupported > div {
+body.dark section#device button.unsupported > div {
   border: 1px solid #fff;
+}
+body.light section#device button.unsupported > div {
+  border: 1px solid #000;
 }
 section#device #new-connection #WebSerial > div:before {
 	background-position: left calc(-1.5rem*23) top;
@@ -37,12 +46,20 @@ section#device #devices button > div {
 }
 section#device #devices button > div {
   transition: .25s ease background-color, .125s ease transform;
-  border: 1px solid #fff;
   display: block;
+}
+body.dark section#device #devices button > div {
+  border: 1px solid #fff;
+}
+body.light section#device #devices button > div {
+  border: 1px solid #000;
 }
 section#device .device-connect.master button > div,
 section#device button.unsupported > div {
   cursor: default !important;
+}
+section#device #devices .funky:not(.master) button {
+  cursor: pointer
 }
 section#device button:not(.unsupported) span {
   display: none;
@@ -67,12 +84,19 @@ section#device #devices button.on > div > div.using-text {
 section#device #devices button > div > div {
   font-size: 0.9rem;
 }
-section#device #devices button.on > div {
-  background: #fff;
+body.dark section#device #devices button.on > div {
+  background-color: #fff;
   color: #222;
 }
-section#device #devices button.on h4 {
+body.dark section#device #devices button.on h4 {
   color: #222;
+}
+body.light section#device #devices button.on > div {
+  background-color: #111;
+  color: #eee;
+}
+body.light section#device #devices button.on h4 {
+  color: #eee;
 }
 section#device button#disconnect {
   float: left;

@@ -1,6 +1,7 @@
 "use strict";
 
 import {DOM, ContextMenu, Animate} from '../base/dom.js'
+import {Tool} from '../base/tool.js'
 import {command} from '../base/command.js'
 import {rosetta} from '../base/rosetta.js'
 import {channel} from '../base/channel.js'
@@ -19,7 +20,10 @@ class Files {
     $.sidebar = new DOM('div', {id:'sidebar'})
     $.pane = new DOM('div', {id:'pane'})
       .append([
-        new DOM('div', {className:'header'}),
+        new DOM('div', {
+          className:'header',
+          innerText:'File manager'
+          }),
         $.sidebar
       ])
 
@@ -67,7 +71,7 @@ class Files {
     this.device = new DeviceFiles(this)
 
     // Codemirror
-    this.codemirror = CodeMirror($.codemirror._dom, 'dark')
+    this.codemirror = CodeMirror($.codemirror._dom, Tool.fromUrl('theme'))
   }
   init (){
     if (this.inited)

@@ -1,6 +1,7 @@
 "use strict";
 
 import {DOM, Animate} from './dom.js'
+import {Tool} from './tool.js'
 
 function handleLink (_navigation, _pos, root, _name, push){
   let _pos0 = _pos == 2 ? 1 : 2
@@ -27,8 +28,9 @@ function handleLink (_navigation, _pos, root, _name, push){
       root[elem].section.classList.add(`pos${pos}`)
     if (pos != 2 && push)
       if (!_navigation.isLocal) {
-        window.history.pushState({}, '',
-          `${window.location.origin}/ide?${elem}`)
+     let _url = new URL(location.href)
+      _url.searchParams.set('page', elem)
+      history.pushState({}, '', _url)
       }
 
     handleResize()
@@ -49,8 +51,9 @@ function handleLink (_navigation, _pos, root, _name, push){
     root[crt[_pos0]].section.classList.add(`pos${_pos}`)
     _navigation.current = ['', crt[2], crt[1]]
     if (!_navigation.isLocal) {
-      window.history.pushState({}, '',
-        `${window.location.origin}/ide?${_navigation.current[1]}`);
+      let _url = new URL(location.href)
+      _url.searchParams.set('page', _navigation.current[1])
+      history.pushState({}, '', _url)
     }
     return
   }
@@ -110,13 +113,17 @@ function handleLink (_navigation, _pos, root, _name, push){
 }
 function interpretLink (inited, root){
   let state = inited ? 1 : 0
-  let path = window.location.href.split('?')
-  if (path [1] == undefined) {
+  let path = document.URL.split('#').length > 1 ? document.URL.split('#')[1] : null
+
+  let params = new URLSearchParams(window.location.search)
+
+
+  if (params.get('page') == null) {
     // default module
-    handleLink.apply(root.files,[navigation, state, root, 'files'])
+    handleLink.apply(root.blocks,[navigation, state, root, 'blocks'])
     return
   }
-  handleLink.apply(root[path[1]],[navigation, state, root, path[1]])
+  handleLink.apply(root[params.get('page')],[navigation, state, root, params.get('page')])
   handleResize()
 }
 
@@ -143,11 +150,24 @@ class Navigation {
     $.menu.onclick = () => {
       DOM.switchState (this._dom.nav)
     }
+
+    // Set theme from url
+    document.body.className = Tool.fromUrl('theme')
   }
   init (){
     for (let module in window.bipes.page) {
       window.bipes.page[module].nav = DOM.get(`a#${module}`, this._dom.nav)
       window.bipes.page[module].section = DOM.get(`section#${module}`)
+      window.bipes.page[module].nav.onauxclick = (ev) => {
+        ev.preventDefault()
+        // Return on right click
+        if (ev.which !== 2)
+          return
+
+        let _url = new URL(location.href)
+        _url.searchParams.set('page', ev.target.id)
+        window.open(_url, '_blank').focus()
+      }
       window.bipes.page[module].nav.onclick = (ev) => {
         ev.preventDefault()
         handleLink.apply(window.bipes.page[module], [this, 1, window.bipes.page, module, true])
@@ -161,6 +181,7 @@ class Navigation {
     window.onresize = () => {handleResize()}
 
     interpretLink(false, window.bipes.page)
+
   }
 }
 

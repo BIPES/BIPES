@@ -13,13 +13,18 @@ body, input{
   overflow: hidden;
   user-select: none;
   box-sizing: border-box;
+}
+body.dark, body.dark input, body.dark textarea,
+body.dark select, body.dark button {
   color: #fff;
 }
-body {
+body.light {
+  background: #fff;
+}
+body.dark {
   background: #222;
 }
 input, textarea, select, button, summary {
-	color: #fff;
 	background: none;
 	font: 1em 'OpenSans', sans-serif;
 	outline: none;
@@ -33,7 +38,6 @@ input, textarea, .content h2, .content p {
 
 input[type="submit"] {
      -webkit-appearance: none;
-
 	width: auto;
 	cursor: pointer;
 	padding: 0.5em;
@@ -47,8 +51,13 @@ hr {
   border: 1px solid #666;
   border-top: none;
 }
-select {
+body.dark select {
   border: 1px solid #fff;
+}
+body.light select {
+  border: 1px solid #000;
+}
+select {
   border-radius: 2rem;
   padding: 0.25rem 0.5em;
 }
@@ -67,7 +76,6 @@ input[type="file"] {
 }
 h1, h2, h3, h4 {
 	margin: 0;
-	color: #fff;
 	box-sizing: border-box;
 }
 h1 {
@@ -111,20 +119,29 @@ nav {
 	z-index: 71;
 	transition: 0.25s ease width;
 
-	background: #333;
 	border-right: 1px solid #666;
 
 	font-weight: bold;
 }
-
-
-nav a:link, nav a:visited {
+body.light nav {
+	border-color: #aaa;
+}
+body.dark nav, body.dark nav #menu::after {
+	background-color: #333;
+}
+body.light nav, body.light nav #menu::after {
+	background-color: #fff;
+}
+body.dark nav a:link, body.dark nav a:visited {
 	color: #fff;
+}
+body.light nav a:link, body.light nav a:visited {
+	color: #000;
 }
 nav a, nav span {
 	white-space: nowrap;
 	cursor: pointer;
-	transition: .125s ease border-color, .125s ease opacity, .125s ease background-color, .25s ease width;
+	transition: .125s ease border-color, .25s ease background-color, .25s ease width;
 	display: flex;
 	align-items: center;
 	border: 1px solid transparent;
@@ -139,13 +156,21 @@ label.icon:before, span.icon:before {
 	content: '';
 	margin: 0;
 	flex-shrink: 0;
+
+}
+body.light .icon:before, body.light nav a:before,
+body.light summary:before, body.light button:before,
+body.light nav #menu:before {
+  filter: invert(1);
 }
 nav a::before, nav span::before {
   margin: 0.75rem 0.75rem 0.75rem 0.71rem;
 }
 nav a.on {
-    border-color: #4499cc;
-    box-shadow: 0px .125em .25em rgba(0,0,0,0.8);
+  background-color: rgba(84,190,255,0.25);
+}
+body.light nav.on {
+  box-shadow: 0.25em 0em 0.5em rgb(0,0,0,0.125);
 }
 @media only screen and (min-width: 40rem) {
   nav a, nav span {
@@ -158,9 +183,6 @@ nav a.on {
   nav.on a {
     width: 13rem;
   }
-}
-nav a:hover {
-  border-color: #fff;
 }
 nav a, nav span {
   border-radius: .5rem;
@@ -175,11 +197,14 @@ nav a, nav span {
     width: 100vw;
     height: 3.5rem;
     border-top: 1px solid #666;
+    overflow-y: hidden;
   }
   nav span#menu {
     display: none;
   }
   nav #panels {
+    height: 3.5rem;
+    overflow: hidden;
     display: flex;
     justify-content: space-around;
     width: 100vw;
@@ -189,15 +214,25 @@ nav a, nav span {
   }
   nav a, nav span {
     flex-direction: column;
-    font-size: .75rem;
+    font-size: .7rem;
     font-weight: normal;
     overflow: hidden;
-    height: 3rem;
+    height: 2rem;
     width: 3rem;
+    font-weight: bold;
+    overflow: visible;
+  }
+  nav a:before {
+    transition: margin ease .25s
   }
   nav a::before, nav span::before {
-    /*margin: 0.25rem 0.75rem 0.125rem 0.75rem;*/
     margin: 0.75rem;
+  }
+  nav a.on::before {
+    margin: 0.25rem 0.75rem;;
+  }
+  nav a:hover, nav span:hover {
+    border-color: transparent !important;
   }
 }
 /* Logo */
@@ -210,12 +245,13 @@ nav #menu::after {
 	width: 2rem;
 	height: 2rem;
 	margin-left: -8.25rem;
-	background: #333 url('../media/icons.svg');
+	background: url('../media/icons.svg');
 	content: '';
 	flex-shrink: 0;
   transition: .125s ease margin-left;
 	background-position: left calc(-2rem*22) top;
 	background-size: auto 4rem;
+	z-index: 1;
 }
 nav.on #menu {
   width: 12rem;
@@ -304,7 +340,6 @@ button#save:before {
 nav #app-version {
   text-align: center;
   font-weight: normal;
-  color: #aaa;
   font-size: 0.9rem;
   width: 100%;
   border-bottom: 1px solid #444;
@@ -312,6 +347,12 @@ nav #app-version {
   opacity: 0;
   transition: .125s ease opacity;
   transition-delay: .25s;
+}
+body.dark nav#app-version {
+  color: #aaa;
+}
+body.light nav#app-version {
+  color: #666;
 }
 nav.on #app-version {
   opacity: 1;
@@ -411,14 +452,19 @@ button.icon, label.icon {
     border-radius: 2rem;
     border: 1px solid transparent;
     background-color: transparent;
-    color: #fff;
     padding: .25rem;
     transition: border-color ease .125s;
     -webkit-tap-highlight-color: transparent;
     display: inline-flex;
 }
-button.icon:hover, label.icon:hover {
-	border: 1px solid #fff;
+body.dark button.icon:hover, body.dark label.icon:hover {
+	border-color: #fff;
+}
+body.light button.icon:hover, body.light label.icon:hover {
+	border-color: #000;
+}
+nav a:hover {
+  border-color: rgb(84,190,255)
 }
 button.noicon {
 	border: none;
@@ -449,8 +495,13 @@ button.icon.text, label.icon.text {
 .popup.on{
   background: rgba(0,0,0,.4);
 }
+body.light .popup > div {
+  background: #eee;
+}
+body.dark .popup > div {
+  background: #222;
+}
 .popup > div {
-  background: #111;
   border: 1px solid #666;
   box-shadow: 0 .25em .5em rgba(0,0,0,0.5);
   border-radius: 1em;
@@ -542,6 +593,11 @@ a#notification.new:after {
 }
 section.default {
   overflow-y: auto;
+}
+body.light section.default {
+  background: #fff;
+}
+body.dark section.default {
   background: #222;
 }
 section.default > .container {
@@ -550,14 +606,18 @@ section.default > .container {
   padding: 0 0 1em 0;
 }
 section.default > .container > h2 {
-  position: sticky;
-  background: #222;
   border-bottom: #666 1px solid;
   width: 100%;
   max-width: 50rem;
   top: 0;
   padding: 1rem 1rem 0.5rem 1rem;
   z-index: 2;
+}
+body.dark section.default > .container > h2 {
+  background: #222;
+}
+body.light section.default > .container > h2 {
+  background: #fff;
 }
 section.default > .container h3 {
   padding: 0 1em;
@@ -576,8 +636,10 @@ section.default > .container h3 {
   user-select: text;
 }
 .cards > span > span > div {
-  color: #aaa;
   font-size: .9em;
+}
+body.dark .cards > span > span > div {
+  color: #aaa;
 }
 .cards h3 {
   font-weight: normal;
@@ -620,7 +682,12 @@ section.default > .container h3 {
 #contextMenu input {
   border-top: #666 1px solid;
   padding: 0.5rem;
+}
+body.dark #contextMenu input {
   background: #000;
+}
+body.light #contextMenu input {
+  background: #fff;
 }
 .funky {
   display: flex;
@@ -656,16 +723,27 @@ section.default > .container h3 {
   word-break: keep-all;
   white-space: nowrap;
   flex-wrap: wrap;
+  border-bottom: none !important;
+  margin: 0 .5em;
+}
+body.dark .listy {
   background: #1c1c1c;
   border: 1px solid #111;
-  border-bottom: none;
-  margin: 0 .5em;
+}
+body.light .listy {
+  background: #eee;
+  border: 1px solid #aaa;
 }
 
 .listy button {
   cursor: pointer;
-  border-bottom: 1px solid #111;
   padding: 0;
+}
+body.dark .listy button {
+  border-bottom: 1px solid #111;
+}
+body.light .listy button {
+  border-bottom: 1px solid #aaa;
 }
 .listy button, .funky > span {
   width: 100%;

@@ -11,13 +11,18 @@ section#prompt.ani{
   justify-content: center;
 }
 section#prompt .container {
-  background: #000;
   overflow: hidden;
   border: 1px solid #666;
   overscroll-behavior: none;
 }
+body.dark section#prompt .container {
+  background: #000;
+}
 section#prompt .wrapper {
   padding: 0.5em 0.5em 0.5em 0.5em;
+}
+body.light section#prompt .wrapper {
+  background: #000;
 }
 section#prompt .quick-actions {
   border-top: 1px solid #666;

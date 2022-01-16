@@ -2,6 +2,7 @@
 "use strict";
 
 import {DOM, Animate} from '../base/dom.js'
+import {Tool} from '../base/tool.js'
 import {command} from '../base/command.js'
 
 class Blocks {
@@ -19,13 +20,13 @@ class Blocks {
     // Empty toolbox to use in the workspace until loading project
     let emptyToolbox = Blockly.Xml.textToDom("<xml><category name='...'></category></xml>")
     this.workspace = Blockly.inject('blockly', {
-      theme: 'dark' === 'dark' ? Blockly.Themes.Dark : Blockly.Themes.Light,
+      theme: Tool.fromUrl('theme') === 'dark' ? Blockly.Themes.Dark : Blockly.Themes.Light,
       toolbox: emptyToolbox,
       visible: false,
       grid: {
         spacing: 25,
         length: 3,
-        colour: 'dark' === 'dark' ? '#444' : '#ccc',
+        colour: Tool.fromUrl('theme') === 'dark' ? '#444' : '#ccc',
         snap: true
       },
       media: './static/media/blocks/',

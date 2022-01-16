@@ -33,11 +33,21 @@ make release
 ```
 it will generate a tiny BIPES.zip file, which contain only the essential files.
 
-With this, extract anywhere and anytime to use BIPES serverless or include in a 
-server to allow external requests (CORS policies).
+With this, extract anywhere and open the *ide-en.html* file to use BIPES serverless 
+or include in a server to allow external requests (CORS policies).
 
+By default, it will build in english, hence the *-en*.
+To build in another language, like brazilian portuguese, do
+
+```
+make release lang=pt-br
+```
+and it will generate *BIPES.zip* with a *ide-pt-br.html* file.
+
+Note: only the *ide-\*.html* file changes between different language builds, 
+therefore, for multiple languages in the static version, just keep mutiple
+*ide-\*.html* files in the zip's root folder. 
 
 ### Notes
 `make doc` (documentation) is missing.
-
-Only WebSerial is implemented.
+Bluetooth was not tested at all.
