@@ -12,8 +12,10 @@ app_name = 'BIPES'
 app_version = 'v0.01'
 
 # Default language on server mode
-# Note: when doing 'make release', this is overwritten by the Makefile's lang arg.
+# Note: this is overwritten by the Makefile's lang arg on the "make release" command.
 default_lang = 'en'
+# Languages available, used in the templates generators.
+available_lang = ['en','pt-br','de','es']
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
 
 if __name__ == '__main__':
@@ -149,16 +151,16 @@ def bipes_imports(import_type='module'):
                            import_type=import_type)
 
 # Build BIPES static release
-def build_release (lang):
-    lang = lang if lang != '' else default_lang
+def build_release ():
     # Build blockly toolboxes
     with open("static/libs/blockly/toolbox.umd.js",'w') as f:
         f.write(blockly_toolbox_generator())
 
     # "Compile" ide template as ide/index.html (default filename for servers)
-    with open('ide.html','w') as f:
-        with app.app_context():
-            f.write(ide(import_type='text/javascript', lang=lang))
+    with app.app_context():
+        for ln in available_lang:
+            with open('ide-' + ln + '.html','w') as f:
+                f.write(ide(import_type='text/javascript', lang=ln))
 
     with open("templates/libs/bipes.temp.js",'w') as f:
         with app.app_context():
@@ -176,17 +178,14 @@ def has_in (name, array, attr, return_attr=None):
 
 # Return "compiled" html file.
 @app.route("/ide")
-def ide(name=None, import_type='module', lang=None):
-    name = name if has_in(name, navigation, 'href') else None
-
-    # If dev mode, since on release build the lang arg is provided explicitly.
-    if lang == None:
-         lang = request.args.get('lang') if request.args.get('lang') != None else default_lang
+@app.route("/ide-<lang>")
+def ide(lang=None, import_type='module'):
+    lang = default_lang if lang == None else lang
 
     lang_imports = render_lang(lang)
 
     return render_template('ide.html', app_name=app_name, app_version=app_version,
-                           navigation=navigation, name=name, imports=imports,
+                           navigation=navigation, imports=imports,
                            lang_imports=lang_imports, import_type=import_type)
 
 

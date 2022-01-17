@@ -53,7 +53,7 @@ flask:
 
 run:
 	@. venv/bin/activate && \
-	export FLASK_APP=__init__ && \
+	export FLASK_APP="__init__" && \
 	flask run --port=5001 --host=0.0.0.0
 
 
@@ -62,7 +62,7 @@ release: build-release zip clean
 
 build-release:
 	@. venv/bin/activate && \
-	python -c "import __init__; __init__.build_release('$(lang)')"
+	python -c "import __init__; __init__.build_release()"
 	@npm install rollup \
 	rollup-plugin-terser
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.bipes.js
@@ -70,13 +70,14 @@ build-release:
 zip:
 	@rm -rf BIPES.zip
 	@mkdir -p .BIPES
-	@cp ide.html .BIPES/ide-$(lang).html
+	@cp ide-*.html .BIPES/
+	@cd .BIPES && ln -s ide-$(lang).html ide.html
 	@mkdir -p .BIPES/static
 	@cp -r static/libs .BIPES/static/
 	@cp -r static/media .BIPES/static/
 	@cp -r static/msg .BIPES/static/
 	@cp -r static/style .BIPES/static/
-	@cd .BIPES && zip -q -r BIPES.zip * && \
+	@cd .BIPES && zip -y -q -r BIPES.zip * && \
 	mv BIPES.zip ../BIPES.zip
 	@rm -rf .BIPES
 
@@ -87,5 +88,5 @@ clean:
 	@rm -rf package-lock.json
 	@rm -rf package.json
 	@rm -rf templates/libs/bipes.temp.js
-	@rm -rf ide.html
+	@rm -rf ide-*.html
 	@rm -rf static/libs/bipes.umd.js
