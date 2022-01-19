@@ -552,11 +552,12 @@ a#notification.new:after {
 }
 #notify {
   z-index: 72;
-	left: -18em;
-  top: 9.875em;
-	padding: 1em;
+  font-size: 0.9rem;
+	left: -18rem;
+  top: 10.125rem;
+	padding: 0.75rem;
 	position: fixed;
-  box-shadow: 0 .125em .5em rgba(0,0,0,.6);
+  box-shadow: 0 .125rem .5rem rgba(0,0,0,.6);
   background: #4499cc;
   color:#fff;
   user-select: none;
@@ -567,7 +568,7 @@ a#notification.new:after {
 }
 #notify.on {
 	opacity: 1;
-	left: 3.75em;
+	left: 3.25em;
 }
 #notify hr {
   border: none;
@@ -698,9 +699,8 @@ body.light #contextMenu input {
   overflow-x: auto;
 }
 .funky button, .funky > span {
-  width: 100%;
   padding: .5rem;
-  min-width: 12rem;
+  min-width: 11rem;
   max-width: 18rem;
 }
 .funky button > div {

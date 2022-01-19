@@ -38,6 +38,13 @@ section#device #new-connection #WebSocket > div:before {
 section#device #new-connection #WebBluetooth > div:before {
 	background-position: left calc(-1.5rem*25) top;
 }
+section#device #new-connection button div {
+  justify-content: flex-start;
+  padding-left: 1em;
+}
+section#device #new-connection button div:before {
+  margin: -6rem -1.5rem 0 0 !important;
+}
 section#device #devices button {
   flex-shrink: 0;
 }
@@ -66,11 +73,12 @@ section#device button:not(.unsupported) span {
 }
 section#device button.unsupported span {
   width: 0;
-  float: left;
+  float: right;
   font-size: 0.9rem;
-  margin-right: -.75em;
-  margin-left: .75em;
-  margin-top: .25em;
+  margin-right: 7.75em;
+  margin-left: -7.75em;
+  margin-top: 0.25em;
+  font-weight: bold;
 }
 section#device #devices button > div > div.using-text {
   float: right;
