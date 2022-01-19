@@ -11,7 +11,7 @@ all: dependencies codemirror xterm blockly flask clean greeting run
 
 dependencies:
 	@printf "$(NC)The dependencies $(PURPLE)$(DEPS)$(NC) are needed.\n"
-	@read -p "[1/5] Install dependencies? (requires sudo) [y/N]:" dep ; \
+	@read -p "[1/5] Install dependencies? (requires sudo) [y/N]: " dep ; \
 	if [ "$$dep" = 'y' ] || [ "$$dep" = 'Y' ] ; \
 	then \
 	make deps --no-print-directory ; \
@@ -34,7 +34,7 @@ deps:
 	fi
 
 greeting:
-	@printf "😄 $(NC)Thanks for using $(PURPLE)BIPES$(NC)!\n"
+	@printf "😄 $(NC)Thanks for testing $(PURPLE)BIPES$(NC)!\n"
 
 codemirror:
 	@printf "[2/5] Fetching and builing $(PURPLE)rollup$(NC) and \
@@ -135,7 +135,7 @@ clean:
 help:
 	@printf "$(NC)Usage: make [options] $(PURPLE)[params]$(NC) ...\n"
 	@printf "Options:\n\
-	 all			Build project ${BLUE}[default]${NC}.\n\
+	 all			Build BIPES from source ${BLUE}[default]${NC}.\n\
 	 			Will use either dnf or apt to install the \n\
 	 			dependencies, depending on what's available\n\
 	 			on your system.\n\
@@ -143,4 +143,4 @@ help:
 	 			version of BIPES. Use the $(PURPLE)lang$(NC) param to setup \n\
 	 			a default language.\n\
 	 clean			Clean all build files.\n\
-	 doc			Render the documentation into HTML with $(PURPLE)sphinx$(NC).\n"
+	 doc			Render the documentation into HTML.\n"

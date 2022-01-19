@@ -55,33 +55,34 @@ serverless or include in a server to allow external requests
 #### Dependencies
 
 BIPES has these packages as depedencies:
+
  * npm
  * python
  * pip
  * mosquitto
  
 The Makefile will automatically use either `dnf` or `apt` to install these packages.
-Then, inside a Python virtual enviroment, Flask will be installed to run the 
-development server.
+
+#### Python packages
+
+Inside a virtual enviroment, some Python packages are installed to run the 
+development server, these are:
+
+ * Flask
+ * sphinx
+ * sphinx-js
 
 #### JavaScript libraries
 
 The JavaScript libraries are:
 
- * Codemirro6
+ * Codemirror6
  * xterm.js
  * blockly
  * rollup
 
 which are directly fetched or "compiled" with `node.js`.
 
-#### Python packages
-
-The Python packages installed inside a virtual enviroment with `pip` are:
-
- * Flask
- * sphinx
- * sphinx-js
 
 #### Setting up another default language to BIPES release
 
