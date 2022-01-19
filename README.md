@@ -1,34 +1,31 @@
 # BIPES: Block based Integrated Platform for Embedded Systems
 
-## Build BIPES from source
+## Build from source
 
-To build BIPES, first check if `npm`, `python` and `pip` are installed:
-
-```
-sudo dnf install npm python pip
-```
-
-Then run
+To build BIPES, run
 ```
 make
 ```
-which will fetch and "compile" some dependecies like
-Codemirror6, xterm.js, and blockly and run a development server on port 5001
-written in flask.
+and follow the prompts.
 
-Just enter http://127.0.0.1:5001/ide in the browser to use BIPES.
+It will install the dependencies, fetch and "compile" 
+some JavaScript libraries and run a development server on port 5001.
 
-For subsequent runs in development mode, just do 
+Just enter http://127.0.0.1:5001/ide in the browser!
+
+For subsequent runs in development mode, do 
 ```
 make run
 ```
-In the development mode, different languages are acessed by including the language 
-code to the link, e.g. http://127.0.0.1:5001/ide-de loads in german.
+In development mode, different languages are acessed by including the language 
+code to the link, e.g. http://127.0.0.1:5001/ide-de loads the IDE in german.
+
+For more information about the Makefile, the dependencies and libraries, check the Notes.
 
 
-### Build BIPES release
+## Build release
 
-BIPES release is a static version of BIPES than can be run both serverless or
+The release is a static version of BIPES than can be run both serverless or
 with a server.
 
 BIPES serverless provides all functionalities that do not require a dynamic loading.
@@ -45,14 +42,43 @@ With this, extract anywhere and open the desired *ide-\*.html* file to use BIPES
 serverless or include in a server to allow external requests 
 ([CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) policies).
 
+## Notes
+
+### Additional Makefile information
+
+#### Dependencies
+
+BIPES use as dependencies the packages:
+ * npm
+ * python
+ * pip
+ * mosquitto
+ 
+The Makefile will automatically use either `dnf` or `apt` to install these dependencies, 
+but if you desire to use `flatpak` or `snap` pass either one to the flag:
+```
+make source=snap
+```
+#### JavaScript libraries
+
+The JavaScript libraries are:
+ * Codemirro6
+ * xterm.js
+ * blockly
+
+which are directly fetched or "compiled" with `node.js`.
+The development server is written in flask.
+
+#### Setting up another default language to BIPES release
+
 By default, the main */ide.html* loads the english version, however, to link to another 
 language, like brazilian portuguese, do
 ```
 make release lang=pt-br
 ```
-Note: On a server, its good to link *ide-\*.html* as *ide-\**, making the url
+On a server, its good to link *ide-\*.html* as *ide-\**, making the url
 friendlier.
 
-### Notes
+### Other notes
 `make doc` (documentation) is missing.
 Bluetooth was not tested at all.
