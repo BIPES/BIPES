@@ -202,7 +202,10 @@ class DOM {
   /**
   * Prototype a DOM composed by details, sumamary and a h2 title with optional
   * onclick event.
-  * @param {object} str[id, title, onclick] - id, title and onclick of the DOM element.
+  * @param {Object} str - id, title and onclick function of the DOM element.
+  * @param {string} str.id - Id of the DOM element.
+  * @param {string} str.title - Title of the DOM element.
+  * @param {Object} str.onclick - Onclick function of the DOM element.
   */
   static prototypeDetails (str){
     let summary = new DOM('summary', {innerText:str.innerText})
@@ -224,7 +227,10 @@ class DOM {
   }
   /**
   * Prototype a DOM composed by input(file type) and label.
-  * @param {object} str[id, className] - id and class of the DOM element.
+  * @param {Object} str - id and className of the DOM element.
+  * @param {string} str.id - Id of the DOM element.
+  * @param {string} str.className - ClassName of the DOM element.
+  * @param {string} str.innerText - Inner text of the DOM element.
   */
   static prototypeInputFile (str){
     return new DOM('label', {
@@ -276,7 +282,11 @@ class DOM {
     element.click ()
     document.body.removeChild(element)
   }
-
+  /**
+  * Set a option of a select list by its value.
+  * @param {Object} dom - Node of the select list.
+  * @param {string} value - Value of the target option.
+  */
   static setSelected (dom, value){
     for (var i = 0; i < dom._dom.options.length; i++){
       if (dom._dom.options[i].text == value){
@@ -323,6 +333,8 @@ class ContextMenu {
   constructor (dom, ref){
     this.ref = ref
 
+    this.mdTimestamp  // A timestamp to differentiate click and selection drag.
+
     let $ = this._dom = {}
     $.contextMenu = dom
     $.contextMenu._dom.id = 'contextMenu'
@@ -330,19 +342,35 @@ class ContextMenu {
 
     $.contextMenu.onclick(this, this.close)
       .onevent('contextmenu', this, this.close)
+      .onevent('mousedown', this, (ev) => {this.mdTimestamp = +new Date()})
 
     $.wrapper = new DOM('div')
     $.contextMenu.append($.wrapper)
   }
+  /**
+  * Close the context menu.
+  * @param {Object} ev - On click event, close when target is undefined or the
+  *                      blank grey area.
+  */
   close (ev) {
     if (ev != undefined)
       ev.preventDefault()
     if (ev == undefined || ev.target.id == 'contextMenu'){
-      this._dom.wrapper._dom.style.height = '0px'
-      Animate.off(this._dom.contextMenu._dom, undefined, 125)
-      setTimeout(() => {this._dom.wrapper.removeChilds()}, 125)
+      if (+new Date - this.mdTimestamp < 150 || ev == undefined){
+        this._dom.wrapper._dom.style.height = '0px'
+        Animate.off(this._dom.contextMenu._dom, undefined, 125)
+        setTimeout(() => {this._dom.wrapper.removeChilds()}, 125)
+      }
     }
   }
+  /**
+  * Render the context menu and open it.
+  * @param {Object[]} actions - Array of actions to be rendered.
+  * @param {string} actions[].id - Id of the action.
+  * @param {string} actions[].innerText - InnerText of the action.
+  * @param {string} actions[].fun - On click callback function.
+  * @param {string} actions[].args - Arguments applied to the callback function.
+  */
   open (actions, ev){
     let $ = this._dom
     let y = window.innerHeight < (ev.y + (actions.length*2)*16) ?
@@ -383,14 +411,25 @@ class ContextMenu {
     setTimeout(() => {doms[0]._dom.focus()}, 125)
     Animate.on($.contextMenu._dom, 125)
   }
-  oninput (str, callback){
+  /**
+  * Sets the context menu to on input mode, to receive string data.
+  * @param {Object} str - Information about the input state.
+  * @param {string} str.title - Input's informative title.
+  * @param {string} str.placeholder - Input's placeholder.
+  * @param {string} str.value - A initial value for the input.
+  * @param {Object} fun - Callback function to when input changes.
+  */
+  oninput (str, fun){
     let $ = this._dom
     $.wrapper.removeChilds()
     $.wrapper._dom.style.height = `${4.75*16}px`
 
-    let input = new DOM('input', {placeholder:str.placeholder})
+    let input = new DOM('input', {
+        placeholder:str.placeholder,
+        value:str.value == undefined ? '' : str.value
+      })
     let form = new DOM('form')
-      .onevent('submit', this, callback, [input._dom])
+      .onevent('submit', this, fun, [input._dom])
       .append(input)
 
     $.wrapper.append([

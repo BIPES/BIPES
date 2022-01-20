@@ -24,11 +24,18 @@ class Project {
           new DOM('div', {className:'header'})
             .append([
               new DOM('h3', {innerText:'Your projects'}),
-              new DOM('button', {
-                id:'add',
-                className:'icon text',
-                innerText: "New"
-              }).onclick(this, this.new)
+              new DOM('span').append([
+                DOM.prototypeInputFile({
+                  id:'upload',
+                  className:'icon',
+                  innerText: "Upload"
+                }).onevent('change', this, this.upload),
+                new DOM('button', {
+                  id:'add',
+                  className:'icon text',
+                  innerText: "New"
+                }).onclick(this, this.new)
+              ])
             ]),
           $.projects
         ])
@@ -78,10 +85,17 @@ class Project {
 
     storage.set(`project-${uid}`, json)
   }
-  new (){
+  /*
+   * Create a new project in the platform. If an existing project is provided,
+   * will be imported with a new uid, if not, a new empty project.
+   * Then dispatches changes.
+   * (:js:func:`_emptyProject`) is created.
+   * @param {string} ev - On click event.
+   * @param {string} str - Existing project.
+   */
+  new (ev, str){
     let uid = Tool.UID(),
-        project = this._emptyProject()
-
+        project = str == undefined ? this._emptyProject() : JSON.parse(str)
 
     command.dispatch(this, 'new', [uid, project])
     // Update localStorage once
@@ -89,6 +103,11 @@ class Project {
 
     return uid
   }
+  /*
+   * Include the new project, called by the dispatch of :js:func:`new`.
+   * @param {string} uid - Project's uid.
+   * @param {Object} project - The project.
+   */
   _new (uid, project){
     this.projects[uid] = project
 
@@ -215,22 +234,13 @@ class Project {
   }
   // Creates a DOM notificaton card
   _domCard (uid, item){
-    let input = new DOM('input', {
-            id:'name',
-            value: item.name,
-            placeholder: "Project name",
-            disabled: true
-          })
-    input.onevent('change', this, (uid, dom) => {
-      if (dom.value == '')
-        return
-
-      this.update({name:dom.value}, uid)
-    }, [uid, input._dom]);
     return new DOM('button', {uid: uid})
       .append([
         new DOM('div').append([
-          input,
+          new DOM('h4', {
+            id:'name',
+            innerText: item.name
+          }),
           new DOM('div', {
             id:'lastEdited',
             innerText: new Date(item.lastEdited).toLocaleString()
@@ -240,6 +250,12 @@ class Project {
         .onevent('contextmenu', this, (ev) => {
           ev.preventDefault()
           this.contextMenu.open([
+            {
+              id:'rename',
+              innerText:'Rename',
+              fun:this.rename,
+              args:[uid, item.name]
+            },
             {
               id:'share',
               innerText:'Share',
@@ -263,12 +279,34 @@ class Project {
       ])
   }
   /*
-   * Write project from current scope to localStorage
-   * @param {String} uid - project's uid
+   * Write project from current scope to localStorage.
+   * @param {string} uid - project's uid.
    */
   write (uid){
     uid = uid == undefined ? this.currentUID : uid
     storage.set(`project-${uid}`, JSON.stringify(this.projects[uid]))
+  }
+  /*
+   * Rename a project.
+   * @param {string} uid - Project's uid
+   * @param {string} name - Old project's name
+   */
+  rename (uid, name){
+    this.contextMenu.oninput({
+      title:"Project's name",
+      placeholder:name,
+      value:name
+    }, (input, ev) => {
+      ev.preventDefault()
+      let name = input.value
+
+      this.contextMenu.close()
+
+      if (name == undefined || name == '')
+        return
+
+      this.update({name:name}, uid)
+    })
   }
   /*
    * Update project data on all tabs then from current scope write to localStorage
@@ -295,7 +333,7 @@ class Project {
         case 'name':
           if (this.inited) {
             let name = DOM.get(`[data-uid=${uid}] #name`, this._dom.projects._dom)
-            name.value = data[key]
+            name.innerText = data[key]
           }
           break
         default:
@@ -323,7 +361,7 @@ class Project {
   }
  /*
   * Download a project to the computer
-  * @param {string} uid - project uid
+  * @param {string} uid - Project uid
   */
   download (uid){
     let proj = this.projects[uid]
@@ -332,6 +370,22 @@ class Project {
   }
   share (uid){
 
+  }
+ /*
+  * Upload a project to the platform.
+   * @param {string} ev - Input on change event, contains the input node as target.
+   */
+  upload (ev){
+    if  (ev.target.files [0] == undefined)
+      return
+
+    let file = ev.target.files[0]
+
+    let reader = new FileReader()
+    reader.onload = (e) => {
+      this.new(ev, e.target.result)
+    }
+    reader.readAsText(file)
   }
 }
 

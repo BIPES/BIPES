@@ -495,7 +495,7 @@ function _WebBluetooth (parent){
 
       navigator.bluetooth.requestDevice({
         //filters: [{services: []}]
-        optionalServices: [_WebBluetooth.config.ServiceUUID],
+        optionalServices: [this.config.ServiceUUID],
         acceptAllDevices: true
       })
       .then(bleDevice => {
@@ -509,14 +509,14 @@ function _WebBluetooth (parent){
       })
       .then(server => {
         console.log('Locate NUS service')
-        return server.getPrimaryService(_WebBluetooth.config.ServiceUUID)
+        return server.getPrimaryService(this.config.ServiceUUID)
       }).then(service => {
         this.nusService = service;
         console.log(`Found NUS service: ${service.uuid}`)
       })
       .then(() => {
         console.log('Locate RX characteristic')
-        return this.nusService.getCharacteristic(_WebBluetooth.config.RXUUID)
+        return this.nusService.getCharacteristic(this.config.RXUUID)
       })
       .then(characteristic => {
         this.rxCharacteristic = characteristic
@@ -524,7 +524,7 @@ function _WebBluetooth (parent){
       })
       .then(() => {
         console.log('Locate TX characteristic')
-        return this.nusService.getCharacteristic(_WebBluetooth.config.TXUUID)
+        return this.nusService.getCharacteristic(this.config.TXUUID)
       })
       .then(characteristic => {
         this.txCharacteristic = characteristic

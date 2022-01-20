@@ -744,6 +744,12 @@ class DeviceFiles {
       ])
     })
   }
+  /*
+   * After command execution callback to the :js:func:`newFolder` command.
+   * @param {string} str - Sent command
+   * @param {string} cmd - Repplied back command plus output
+   * @param {string} tabUID - UID from the origin tab.
+   */
   _addedFolderOnTarget (str, cmd, tabUID){
     let reg = rosetta.mkdir.reg
     if (!reg.test(cmd))
@@ -753,9 +759,9 @@ class DeviceFiles {
   }
   /*
    * Upload a file from the operation system's file picker to the device.
-   * @param{string} path - target path to upload the file
-   * @param{object} dom - Node containig the file
-   * @param{string} ev - input on change event
+   * @param {string} path - Target path to upload the file
+   * @param {Object} dom - Node containig the file
+   * @param {string} ev - Input on change event
    */
   uploadFile (path, dom, ev){
     if  (dom.files [0] == undefined)
@@ -767,7 +773,7 @@ class DeviceFiles {
     let reader = new FileReader()
     reader.onload = (e) => {
         this.writeToTarget (filename, e.target.result)
-    };
+    }
     reader.readAsArrayBuffer(file)
 
     this.contextMenu.close()
@@ -780,7 +786,7 @@ class ProjectFiles {
     this.parent = parent
     this.dom = {}
 
-    this.tree                       //  Reference to project file tree
+    this.tree               //  Reference to project file tree
 
     let $ = this._dom = {}
 

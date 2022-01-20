@@ -6,7 +6,7 @@ nav #project.on::before {
 	background-position: left calc(-1.5rem*28) bottom;
 }
 section#project #user-projects .header {
-  margin-top: 0.75rem;
+  margin-top: 0.75rem 0 0.25rem 0;
 }
 section#project button#add {
   margin-right: .5rem;
@@ -29,17 +29,11 @@ section#project #user-projects button.on {
 section#project .listy button:hover {
   background-color: rgba(68,153,204,.5);
 }
-section#project #user-projects button input {
-  font-weight: bold;
+section#project #user-projects button h4 {
   padding:.5rem 0 0.125rem 0;
   margin-right: 0.5rem;
-}
-section#project #user-projects button:not(.on) input {
-  pointer-events: none;
-  border-bottom: 1px solid transparent;
-}
-section#project #user-projects button.on input {
-  border-bottom: 1px solid #666;
+  width: 100%;
+  text-align: left;
 }
 section#project .listy button.on:active > div {
   transform: scale(1) !important;
