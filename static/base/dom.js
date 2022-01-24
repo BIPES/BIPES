@@ -1,5 +1,4 @@
 "use strict";
-
 export {DOM, ContextMenu, Animate}
 
 /** Make DOM Node element*/

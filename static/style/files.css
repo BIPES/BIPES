@@ -30,7 +30,7 @@ section#files #hidePane:before {
   line-height: 1rem;
 }
 section#files #hidePane {
-  padding: 1em 0.5em;
+  padding: .75rem 0.5rem;
   cursor: pointer;
 }
 section#files #hidePane:before {
@@ -83,7 +83,7 @@ section#files.hidePane #editor {
   width: 100%;
 }
 section#files #codemirror {
-  height: calc(100% - 3rem);
+  height: calc(100% - 2.5rem);
   overflow-y: auto;
 }
 @media screen and (orientation: portrait){
@@ -103,7 +103,7 @@ body.light section#files #filename {
 section#files input {
 }
 section#files #editor #header {
-  height: 3rem;
+  height: 2.5rem;
   border-bottom: 1px solid #666;
   display: flex;
   align-items: center;
@@ -113,7 +113,7 @@ section#files #pane .header {
   white-space: nowrap;
   padding: 0 0.5rem;
   display: flex;
-  height: 3rem;
+  height: 2.5rem;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #666;
@@ -131,11 +131,11 @@ section#files #sidebar, section#file #pane .header {
 }
 section#files #sidebar {
   overflow-y: auto;
-  height: calc(100% - 3rem);
+  height: calc(100% - 2.5rem);
 }
 @media screen and (orientation: portrait){
   section#files.pos1 #sidebar, section#files.pos2 #sidebar {
-    height: calc(100% - 3rem);
+    height: calc(100% - 2.5rem);
   }
 }
 section#files #sidebar > details {

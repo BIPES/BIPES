@@ -4,6 +4,7 @@ import {Tool} from '../base/tool.js'
 import {DOM, Animate, ContextMenu} from '../base/dom.js'
 import {command} from '../base/command.js'
 import {storage} from '../base/storage.js'
+import {navigation} from '../base/navigation.js'
 
 class Project {
   constructor (){
@@ -249,18 +250,12 @@ class Project {
         .onclick(this, this.select, [uid])
         .onevent('contextmenu', this, (ev) => {
           ev.preventDefault()
-          this.contextMenu.open([
+          let actions = [
             {
               id:'rename',
               innerText:'Rename',
               fun:this.rename,
               args:[uid, item.name]
-            },
-            {
-              id:'share',
-              innerText:'Share',
-              fun:this.share,
-              args:[uid]
             },
             {
               id:'download',
@@ -274,7 +269,15 @@ class Project {
               fun:this.remove,
               args:[uid]
             }
-          ], ev)
+          ]
+          if (!navigation.isLocal)
+            actions.unshift({
+              id:'share',
+              innerText:'Share',
+              fun:this.share,
+              args:[uid]
+            })
+          this.contextMenu.open(actions, ev)
         })
       ])
   }

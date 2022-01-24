@@ -6,7 +6,7 @@ nav #project.on::before {
 	background-position: left calc(-1.5rem*28) bottom;
 }
 section#project #user-projects .header {
-  margin-top: 0.75rem 0 0.25rem 0;
+  margin: 0.5rem 0 0.25rem 0;
 }
 section#project button#add {
   margin-right: .5rem;

@@ -26,13 +26,13 @@
      showgrid="true"
      units="px"
      width="500px"
-     inkscape:zoom="0.5"
-     inkscape:cx="294"
-     inkscape:cy="251"
-     inkscape:window-width="1920"
+     inkscape:zoom="1"
+     inkscape:cx="604"
+     inkscape:cy="324.5"
+     inkscape:window-width="2560"
      inkscape:window-height="1014"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-x="1920"
+     inkscape:window-y="29"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer8"
      showguides="false">
@@ -42,18 +42,6 @@
   </sodipodi:namedview>
   <defs
      id="defs2">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient187486">
-      <stop
-         style="stop-color:#7b49ad;stop-opacity:1"
-         offset="0"
-         id="stop187482" />
-      <stop
-         style="stop-color:#6aa8fb;stop-opacity:1"
-         offset="1"
-         id="stop187484" />
-    </linearGradient>
     <marker
        style="overflow:visible"
        id="DotM"
@@ -818,23 +806,13 @@
          d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
          id="path93894-9-6-6-1-5-1-1" />
     </marker>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient187486"
-       id="linearGradient187488"
-       x1="264.58334"
-       y1="10.583333"
-       x2="-26.458334"
-       y2="243.41667"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.88373749,0,0,0.88373749,27.071902,5.2889051)" />
   </defs>
   <g
      inkscape:groupmode="layer"
      id="layer8"
      inkscape:label="Blob">
     <path
-       style="fill:url(#linearGradient187488);fill-opacity:1;stroke:none;stroke-width:0.23419;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#009eff;fill-opacity:0.25;stroke:none;stroke-width:0.23419;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 19.364951,208.14679 C -8.1611819,180.16697 8.783096,121.81098 33.394284,91.235691 57.196381,61.66556 106.40027,69.542789 140.9525,53.824138 163.83142,43.415962 182.29846,9.3560641 206.42273,16.412586 c 35.46792,10.374617 59.33207,62.103598 51.44088,98.205324 -9.25473,42.33988 -62.64168,63.40451 -102.88177,79.49955 -42.19673,16.87765 -103.744839,46.42671 -135.616889,14.02933 z"
        id="path186896"
        sodipodi:nodetypes="sssssss" />

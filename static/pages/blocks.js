@@ -32,7 +32,7 @@ class Blocks {
       media: './static/media/blocks/',
       oneBasedIndex: false,
       zoom: {
-        controls: true,
+        controls: false,
         wheel: true
       },
       move:{
@@ -41,7 +41,8 @@ class Blocks {
           vertical: true
         },
         drag: true,
-        wheel: false}
+        wheel: false
+        }
     })
 
 
