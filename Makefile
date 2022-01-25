@@ -6,6 +6,7 @@ RED=\033[0;31m
 NC=\033[0m
 
 DEPS = python pip npm mosquitto
+SUSE_DEPS = python python3-pip npm17 mosquitto
 
 all: dependencies codemirror xterm blockly flask clean greeting run
 
@@ -28,9 +29,13 @@ deps:
 	then \
 	printf "$(BLUE)Installing with apt.$(NC)\n" ; \
 	sudo apt install $(DEPS) ; \
+	elif [ -n "$$(command -v zypper)" ] ; \
+	then \
+	printf "$(BLUE)Installing with zypper.$(NC)\n" ; \
+	sudo zypper install $(SUSE_DEPS) ; \
 	else \
-	printf "$(RED)No package installed! Neither apt or dnf package managers \
-	have been found.$(NC)" ; \
+	printf "$(RED)No package installed! Neither dnf, apt or zypper package \
+	managers have been found.$(NC)" ; \
 	fi
 
 greeting:
@@ -83,7 +88,7 @@ blockly:
 flask:
 	@printf "[5/5] Creating enviroment and installing $(PURPLE)flask$(NC), \
 	$(PURPLE)sphinx$(NC) and $(PURPLE)sphinx-js$(NC).\n"
-	@python -m venv venv
+	@python3 -m venv venv
 	@. venv/bin/activate && \
 	pip install Flask sphinx sphinx-js && \
 	exit
