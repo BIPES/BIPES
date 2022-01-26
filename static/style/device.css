@@ -150,4 +150,49 @@ section#device #target-device select {
 section#device #target-device #pinout {
   max-width: 40rem;
   width: 100%;
+}
+
+section#device #webSocketSetup.on {
+  overflow-y: auto;
+}
+section#device #webSocketSetup > div {
+  max-width: 30rem;
+  padding: 0 1rem 1rem;
+  min-height: 20rem;
+  margin: 110vh auto 0 auto;
+  overflow: hidden;
+  text-align: center;
+}
+@media screen and (max-width: 30rem){
+  section#device #webSocketSetup > div {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+}
+ 
+section#device #webSocketSetup h3 {
+  padding-top: 1rem;
+}
+section#device #webSocketSetup h4 {
+  text-align: left;
+  padding: 1rem 0 0 0;
+}
+section#device #webSocketSetup input {
+  padding: .5rem 0;
+  border-bottom: 1px solid #666;
+}
+section#device #webSocketSetup > div > div {
+  text-align: right;
+  padding-top: 1em;
 } 
+section#device #webSocketSetup #connect {
+  background: linear-gradient(130deg, rgba(106,168,251,1) -100%, rgba(123,73,173,1) 200%);
+  color: #fff !important;
+  padding: .5rem 1rem;
+  margin-left: .25rem;
+}
+section#device #webSocketSetup #connect:before {
+  filter: invert(0) !important;
+}

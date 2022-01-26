@@ -199,10 +199,10 @@ section#files #fileOnProject summary::before, section#files .listedFile:before {
 	flex-shrink: 0;
 }
 section#files #fileOnTarget > summary::before {
-	background-position: left calc(1.25rem*13) bottom !important;
+	background-position: left calc(1.25rem*18) bottom !important;
 }
 section#files #fileOnProject > summary::before {
-	background-position: left calc(1.25rem*3) top !important;
+	background-position: left calc(1.25rem*8) top !important;
 }
 section#files #fileOnTarget summary::before,
 section#files #fileOnProject summary::before {

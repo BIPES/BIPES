@@ -32,7 +32,6 @@ class Device {
 
     let $ = this._dom = {}
 
-
     $.buttonWebSerial = new DOM('button', {id:'WebSerial'})
         .append([
           new DOM('span', {innerText:'Not supported'}),
@@ -42,7 +41,7 @@ class Device {
           .append([
           new DOM('span', {innerText:'Not supported'}),
           new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'}),
-        ]).onclick(this, this.connectWebSocket),
+        ])
     $.buttonWebBluetooth = new DOM('button', {id:'WebBluetooth'})
         .append([
           new DOM('span', {innerText:'Not supported'}),
@@ -112,6 +111,11 @@ class Device {
       .append([$.container._dom])
     $.section._dom.classList.add('default')
     $.nav = new DOM(DOM.get('a#device'))
+    
+    $.webSocketSetup = new DOM('div')
+    this.webSocketSetup = new WebSocketSetup($.webSocketSetup, this)
+    $.buttonWebSocket.onclick(this.webSocketSetup, this.webSocketSetup.open)
+    $.section.append($.webSocketSetup)
 
 
     // Cross tabs event handler on connecting and disconnecting device
@@ -123,16 +127,27 @@ class Device {
 
     this.checkAPISupport()
   }
+  /*
+   * Trigger WebSerial connection to a device.
+   */  
   connectWebSerial (){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
     channel.connect('webserial', [this, this.use])
   }
-  connectWebSocket (){
+  /*
+   * Trigger WebSocket connection to a device.
+   * @param{string} url - Device's URL (IP + port number)
+   * @param{string} passwd - Device's password.
+   */
+  connectWebSocket (url, passwd){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
-    channel.connect('websocket', [this, this.use], {url:'ws://192.168.0.16:8266',passwd:'1234'})
+    channel.connect('websocket', [this, this.use], {url:url,passwd:passwd})
   }
+  /*
+   * Trigger WebBluetooth connection to a device.
+   */  
   connectWebBluetooth (){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
@@ -408,6 +423,88 @@ class Device {
 
     if (navigator.bluetooth == undefined)
       this._dom.buttonWebBluetooth._dom.classList.add('unsupported')
+  }
+}
+
+
+/* Create the WebSocket setup popup */
+class WebSocketSetup {
+  constructor (dom, ref){
+    this.ref = ref
+
+    this.mdTimestamp  // A timestamp to differentiate click and selection drag.
+
+    let $ = this._dom = {}
+    $.webSocketSetup = dom
+    $.webSocketSetup._dom.id = 'webSocketSetup'
+    $.webSocketSetup._dom.classList.add('popup')
+
+    $.webSocketSetup.onclick(this, this.close)
+      .onevent('contextmenu', this, this.close)
+      .onevent('mousedown', this, (ev) => {this.mdTimestamp = +new Date()})
+    $.title = new DOM('h3', {innerText:'New WebSocket connection'})
+    $.urlLabel = new DOM('h4', {innerText:'Address:'})
+    $.urlInput = new DOM('input', {
+      placeholder:'Device address',
+      value:'ws://192.168.0.35:8266'
+    })
+    $.passwordLabel = new DOM('h4', {innerText:'Password:'})
+    $.passwordInput = new DOM('input', {
+      placeholder:'Device password',
+      type:'password'
+    })
+    $.buttonConnect = new DOM('button', {
+      innerText:'Connect',
+      className:'icon text',
+      id:'connect'
+    }).onclick(this, () => {
+      this.close()
+      ref.connectWebSocket($.urlInput._dom.value, $.passwordInput._dom.value)
+    })
+    $.buttonScan = new DOM('button', {
+      innerText:'Scan devices',
+      className:'icon text',
+      id:'scan'
+    })
+    $.info = new DOM('span', {
+      className:'icon text warnings',
+      innerText:'wss only works for https and ws for http.'
+    })
+    $.wrapper = new DOM('div')
+      .append([
+        $.title, $.info, $.urlLabel, $.urlInput,
+        $.passwordLabel, $.passwordInput,
+        new DOM ('div').append([
+          $.buttonScan,$.buttonConnect,
+        ])
+      ])
+    $.webSocketSetup.append($.wrapper)
+  }
+  /**
+  * Close the webSocketSetup menu.
+  * @param {Object} ev - On click event, close when target is undefined or the
+  *                      blank grey area.
+  */
+  close (ev) {
+    if (ev != undefined)
+      ev.preventDefault()
+    if (ev == undefined || ev.target.id == 'webSocketSetup'){
+      if (+new Date - this.mdTimestamp < 150 || ev == undefined){
+        this._dom.wrapper._dom.style.marginTop = '110vh'
+        Animate.off(this._dom.webSocketSetup._dom, undefined, 125)
+      }
+    }
+  }
+  /**
+  * Render the webSocketSetup and open it.
+  */
+  open (){
+    let $ = this._dom
+    setTimeout(() =>{
+      $.wrapper._dom.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 20rem)`
+      },125)
+    setTimeout(() => {this._dom.urlInput._dom.focus()}, 125)
+    Animate.on($.webSocketSetup._dom, 125)
   }
 }
 

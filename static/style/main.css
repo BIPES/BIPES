@@ -11,8 +11,13 @@ body, input{
   font: 1em 'OpenSans', sans-serif;
   margin: 0;
   overflow: hidden;
-  user-select: none;
   box-sizing: border-box;
+}
+body {
+  user-select: none;
+}
+input {
+  user-select: text;
 }
 body.dark, body.dark input, body.dark textarea,
 body.dark select, body.dark button {
@@ -339,6 +344,15 @@ button#save:before {
 }
 button#rename:before {
 	background-position: left calc(-1.5rem*32) top;
+}
+span.warnings:before {
+	background-position: left calc(-1.5rem*33) top;
+}
+button#connect:before {
+	background-position: left calc(-1.5rem*21) top;
+}
+button#scan:before {
+	background-position: left calc(-1.5rem*34) top;
 }
 nav #app-version {
   text-align: center;
@@ -764,7 +778,7 @@ body.light .listy button {
 .listy button:active > div {
   transform: scale(0.98);
 }
-.tips {
+.warnings, .tips {
   display: inline-flex;
   align-items: center;
   border: 1px solid #666;
@@ -774,6 +788,6 @@ body.light .listy button {
   margin: .5rem auto;
   font-size: 0.9rem;
 }
-.tips:before {
+.warnings:before, .tips:before {
   margin-right: .25rem !important;
 }

@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="792"
+   width="912"
    height="48"
-   viewBox="0 0 209.55 12.7"
+   viewBox="0 0 241.3 12.7"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
@@ -41,9 +41,9 @@
      units="px"
      width="432px"
      height="24px"
-     inkscape:zoom="0.66647682"
-     inkscape:cx="638.43181"
-     inkscape:cy="-171.79892"
+     inkscape:zoom="1.3329536"
+     inkscape:cx="423.4956"
+     inkscape:cy="125.66078"
      inkscape:window-width="2560"
      inkscape:window-height="1014"
      inkscape:window-x="0"
@@ -458,7 +458,7 @@
     </g>
     <g
        id="g1321"
-       transform="translate(-6.125226,36.896808)">
+       transform="translate(127)">
       <g
          id="g1281"
          transform="matrix(0.26458333,0,0,0.26458333,34.561198,5.3908855)"
@@ -637,7 +637,7 @@
     <g
        style="fill:#ffffff"
        id="g1021"
-       transform="matrix(0.26458333,0,0,0.26458333,133.57478,30.546808)">
+       transform="matrix(0.26458333,0,0,0.26458333,209.55,6.3499999)">
       <path
          d="M 0,0 H 24 V 24 H 0 Z"
          fill="none"
@@ -653,7 +653,7 @@
        style="stroke-width:0.264583" />
     <g
        id="g1452"
-       transform="translate(6.574776,30.546808)">
+       transform="translate(82.55,-6.3500001)">
       <g
          style="fill:#ffffff"
          id="g1240"
@@ -744,7 +744,7 @@
              d="m 3,21 h 8 V 13 H 3 Z m 2,-6 h 4 v 4 H 5 Z"
              id="path451" />
           <polygon
-             points="21,18 21,16 18,16 18,13 16,13 16,16 13,16 13,18 16,18 16,21 18,21 18,18 "
+             points="18,16 18,13 16,13 16,16 13,16 13,18 16,18 16,21 18,21 18,18 21,18 21,16 "
              id="polygon453" />
         </g>
       </g>
