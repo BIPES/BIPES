@@ -1,4 +1,3 @@
-
 nav #project::before {
 	background-position: left calc(-1.5rem*28) top;
 }
@@ -11,23 +10,8 @@ section#project #user-projects .header {
 section#project button#add {
   margin-right: .5rem;
 }
-section#project .listy button.on {
-  cursor: default;
-}
-section#project .listy button {
-  transition: .25s ease background-color;
-}
-section#project #user-projects button > div {
-  transition: .125s ease transform;
-}
 section#project #user-projects button > div > div {
   font-size: 0.9rem;
-}
-section#project #user-projects button.on {
-  background-color: rgba(68,153,204,.25);
-}
-section#project .listy button:hover {
-  background-color: rgba(68,153,204,.5);
 }
 section#project #user-projects button h4 {
   padding:.5rem 0 0.125rem 0;
@@ -35,6 +19,4 @@ section#project #user-projects button h4 {
   width: 100%;
   text-align: left;
 }
-section#project .listy button.on:active > div {
-  transform: scale(1) !important;
-}
+

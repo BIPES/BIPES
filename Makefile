@@ -147,5 +147,6 @@ help:
 	 release $(PURPLE)lang=LANG$(NC)	Build release, a static, server/serverless \n\
 	 			version of BIPES. Use the $(PURPLE)lang$(NC) param to setup \n\
 	 			a default language.\n\
-	 clean			Clean all build files.\n\
-	 doc			Render the documentation into HTML.\n"
+	 run                    Run development mode.\n\
+ clean                  Clean all build files.\n\
+	 doc                    Render the documentation into HTML.\n"

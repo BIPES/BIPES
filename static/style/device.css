@@ -157,7 +157,7 @@ section#device #webSocketSetup.on {
 }
 section#device #webSocketSetup > div {
   max-width: 30rem;
-  padding: 0 1rem 1rem;
+  padding: 0 1rem;
   min-height: 20rem;
   margin: 110vh auto 0 auto;
   overflow: hidden;
@@ -188,11 +188,73 @@ section#device #webSocketSetup > div > div {
   padding-top: 1em;
 } 
 section#device #webSocketSetup #connect {
+  margin-bottom: .5rem;
   background: linear-gradient(130deg, rgba(106,168,251,1) -100%, rgba(123,73,173,1) 200%);
   color: #fff !important;
   padding: .5rem 1rem;
   margin-left: .25rem;
 }
+section#device #webSocketSetup #addressConf {
+  transition: .25s ease height, .25s ease border-color;
+  height: 0rem;
+  overflow: hidden;
+  padding-top: 0;
+  border: 1px solid transparent;
+}
+section#device #webSocketSetup #addressConf {
+  margin-bottom: .5rem;
+}
+section#device #webSocketSetup #addressConf.on {
+  height: 8rem;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
 section#device #webSocketSetup #connect:before {
   filter: invert(0) !important;
+}
+section#device #webSocketSetup #addressConf > div {
+  display: flex;
+}
+section#device #webSocketSetup #addressConf span {
+  margin: 0.5rem  0.25rem;
+  color: #666;
+}
+section#device #webSocketSetup #addressConf #scan {
+  padding: .25rem .5rem;
+  margin: .5rem;
+  border-radius: 1rem;
+}
+body.light section#device #webSocketSetup #addressConf #scan {
+  border: 1px solid #000;
+}
+body.dark section#device #webSocketSetup #addressConf #scan {
+  border: 1px solid #fff;
+}
+section#device #webSocketSetup #addressConf input {
+  text-align: right;
+}
+section#device #webSocketSetup #addressConf input:first-child {
+  width: 6rem;
+}
+section#device #webSocketSetup #addressConf input:last-child {
+  text-align: left;
+}
+section#device #webSocketSetup #addressFound {
+  display: none;
+  padding-top: 0;
+}
+section#device #webSocketSetup #addressFound.on {
+  display: block;
+}
+section#device #webSocketSetup #addressFound > div {
+  margin: .75em 0 .5rem;
+}
+section#device #webSocketSetup #addressFound div {
+  text-align: left;
+}
+section#device #webSocketSetup #addressFound .listy {
+  margin: 0 0 .5rem 0;
+}
+section#device #webSocketSetup #addressFound .listy button > div {
+  display: block;
 }

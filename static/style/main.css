@@ -474,10 +474,12 @@ button.icon, label.icon {
     -webkit-tap-highlight-color: transparent;
     display: inline-flex;
 }
-body.dark button.icon:hover, body.dark label.icon:hover {
+body.dark button.icon:hover, body.dark label.icon:hover,
+body.dark button.icon:focus, body.dark label.icon:focus {
 	border-color: #fff;
 }
-body.light button.icon:hover, body.light label.icon:hover {
+body.light button.icon:hover, body.light label.icon:hover,
+body.light button.icon:focus, body.light label.icon:focus-within {
 	border-color: #000;
 }
 nav a:hover {
@@ -777,6 +779,21 @@ body.light .listy button {
 }
 .listy button:active > div {
   transform: scale(0.98);
+}
+.listy button {
+  transition: .25s ease background-color;
+}
+.listy button.on:active > div {
+  transform: scale(1) !important;
+}
+.listy button.on {
+  background-color: rgba(68,153,204,.25);
+}
+.listy button:hover, .listy button:focus {
+  background-color: rgba(68,153,204,.5);
+}
+.listy button.on {
+  cursor: default;
 }
 .warnings, .tips {
   display: inline-flex;

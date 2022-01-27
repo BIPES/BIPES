@@ -429,9 +429,7 @@ class Device {
 
 /* Create the WebSocket setup popup */
 class WebSocketSetup {
-  constructor (dom, ref){
-    this.ref = ref
-
+  constructor (dom, parent){
     this.mdTimestamp  // A timestamp to differentiate click and selection drag.
 
     let $ = this._dom = {}
@@ -445,12 +443,12 @@ class WebSocketSetup {
     $.title = new DOM('h3', {innerText:'New WebSocket connection'})
     $.urlLabel = new DOM('h4', {innerText:'Address:'})
     $.urlInput = new DOM('input', {
-      placeholder:'Device address',
+      placeholder:"Device' address, e.g. [ws/wss]://192.168.0.35:8266",
       value:'ws://192.168.0.35:8266'
     })
     $.passwordLabel = new DOM('h4', {innerText:'Password:'})
     $.passwordInput = new DOM('input', {
-      placeholder:'Device password',
+      placeholder:"Device's  password",
       type:'password'
     })
     $.buttonConnect = new DOM('button', {
@@ -459,7 +457,7 @@ class WebSocketSetup {
       id:'connect'
     }).onclick(this, () => {
       this.close()
-      ref.connectWebSocket($.urlInput._dom.value, $.passwordInput._dom.value)
+      parent.connectWebSocket($.urlInput._dom.value, $.passwordInput._dom.value)
     })
     $.buttonScan = new DOM('button', {
       innerText:'Scan devices',
@@ -468,16 +466,23 @@ class WebSocketSetup {
     })
     $.info = new DOM('span', {
       className:'icon text warnings',
-      innerText:'wss only works for https and ws for http.'
+      innerText:"ws don't work in https, only ws."
     })
     $.wrapper = new DOM('div')
-      .append([
-        $.title, $.info, $.urlLabel, $.urlInput,
+      .append([$.title, $.info]);
+    this.webSocketScan = new WebSocketScan(this, $.wrapper)
+    $.buttonScan.onclick (this, () => {
+      DOM.switchState(this.webSocketScan._dom.container._dom)
+      this.webSocketScan._dom.inputPrefix._dom.focus()
+    })
+    $.wrapper.append([
+        $.urlLabel, $.urlInput,
         $.passwordLabel, $.passwordInput,
         new DOM ('div').append([
-          $.buttonScan,$.buttonConnect,
+          $.buttonScan, $.buttonConnect
         ])
       ])
+    
     $.webSocketSetup.append($.wrapper)
   }
   /**
@@ -505,6 +510,158 @@ class WebSocketSetup {
       },125)
     setTimeout(() => {this._dom.urlInput._dom.focus()}, 125)
     Animate.on($.webSocketSetup._dom, 125)
+  }
+}
+
+/* Scan network for devices acessible through WebSocket */
+class WebSocketScan {
+  /*
+   * Construct class with parent class and target to insert
+   * @param {Object} parent - Parent class.
+   * @param {Object} dom - target to insert the device scanner.
+   */
+  constructor (parent, dom) {
+    this.parent = parent
+    this.last = 255             // Last valid id
+    this.multiplier = 0         // protocol*prefix*port
+    this.count = 0              // Increment for every error or connect
+    this.found = 0              // How many have been found.
+    this.scanning = false       // Is currently scanning?
+    
+    let $ = this._dom = {}
+    $.label = new DOM('h4', {
+      innerText:'Scan network for addresses like:'  
+    }) 
+    $.inputProtocol = new DOM('input', {
+      value: 'ws',
+      placeholder: 'xx'
+    }) 
+    $.inputPrefix = new DOM('input', {
+      value: '192.168.0',
+      placeholder: '000.000.0'
+    }) 
+    $.inputPort = new DOM('input', {
+      value: '8266,8261',
+      placeholder: '0000'
+    }) 
+    $.buttonScan = new DOM('button', {
+      innerText:'Start scan',
+      className:'noicon text',
+      id:'scan'
+      }).onclick(this, this.scan)
+    $.container = new DOM('div', {id:'addressConf'})
+      .append([$.label,
+        new DOM('div').append([
+          $.inputProtocol, new DOM('span', {innerText:'://'}),
+          $.inputPrefix, new DOM('span', {innerText:'.0/24:'}),
+          $.inputPort,
+        ]),
+        $.buttonScan
+    ])
+    $.status = new DOM('div')
+    $.found = new DOM('div', {className:'listy'})
+    $.addressFound = new DOM('div', {id:'addressFound'}).append([
+      $.status, $.found
+    ])
+    dom.append([
+      $.container,
+      $.addressFound
+    ])
+  }
+  /*
+   * Start network scan.
+   */
+  scan (){
+    if (this.scanning)
+      return
+
+    this._dom.container._dom.classList.remove('on')
+    this._dom.addressFound._dom.classList.add('on')
+    let $ = this._dom
+    let protocol = $.inputProtocol._dom.value.replaceAll(' ','').split(','),
+        prefix = $.inputPrefix._dom.value.replaceAll(' ','').split(','),
+        ports = $.inputPort._dom.value.replaceAll(' ','').split(','),
+        last = 0
+    
+    if (!protocol.every(this._checkIPAddress)) {
+      notification.send('Device: Invalid network prefix.')
+      return  
+    }
+    this.multiplier = protocol.length * prefix.length * ports.length
+    this.scanning = true
+    this.clear()
+    protocol.forEach (pro => {
+      prefix.forEach (pre => {
+        ports.forEach (por => {
+          for (let i = 1; i <= this.last; i++) {
+            let addr = `${pro}://${pre}.${i}:${por}`
+            console.log(addr)
+            let ws = new WebSocket(addr)
+            ws.start = performance.now
+            ws.port = por
+            ws.onerror = () => {
+              this.progress() 
+            }
+            ws.onopen = () => {
+              this.include(ws.url)
+              this.progress() 
+              ws.close()
+            }
+          }
+        })
+      })
+    })
+  }
+  /*
+   * Update process status.
+   */
+  progress (){
+    this._dom.status._dom.innerText = `Scanned ${this.count} of ${this.last*this.multiplier} IPs, found ${this.found}:` 
+    
+    if (this.count == (this.last) * this.multiplier){
+      this._dom.status._dom.innerText = `Done scanning ${this.last*this.multiplier} IPs, found ${this.found}:` 
+      this.scanning = false
+      this.multiplier = 0
+      this.count = 0
+      this.found = 0
+    }
+    this.count++
+  }
+  /*
+   * Include found url to the list.
+   * @param{string} url - Reachable url.
+   */
+  include (url){
+    this.found++
+    url = url.substring(0, url.length - 1)
+    this._dom.found.append(
+      new DOM('button', {
+        className:'noicon text'
+      }).append([new DOM('div', {innerText:url})])
+        .onclick(this, this.apply, [url])
+    )
+  }
+  /*
+   * Apply url to WebSocket setup.
+   * @param{string} url - Reachable url to apply.
+   */
+  apply (url){
+    this.parent._dom.urlInput._dom.value = url
+    this.parent._dom.passwordInput._dom.focus()
+  }
+  /*
+   * Clear previous urls.
+   */
+  clear (){
+    this._dom.found.removeChilds()
+  }
+  /*
+   * Apply url to WebSocket setup.
+   */
+  _checkIPAddress (ipaddress){
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress))
+      return (false)
+    return (true)
   }
 }
 
