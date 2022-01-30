@@ -3030,9 +3030,9 @@ Blockly.Python["uos_ilistdir"] = function(block) {
 	return code;
 };
 Blockly.Python["uos_listdir"] = function(block) {
-		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
-	var code = "os.listdir(" + value_pIn + ")\n"; 
-	return code;
+	var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
+	var code = "os.listdir(" + value_pIn + ")"; 
+	return [code, Blockly.JavaScript.ORDER_NONE]; 
 };
 
 Blockly.Python["uos_mkdir"] = function(block) {
@@ -5060,6 +5060,26 @@ Blockly.Python['net_http_server_send_response'] = function(block) {
 
   return code;
 };
+
+Blockly.Python['net_http_server_send_response_jpg'] = function(block) {
+  var html = Blockly.Python.valueToCode(block, 'html', Blockly.Python.ORDER_ATOMIC);
+
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		var code = 'response = ' + html + '\n';
+		code += "conn.send('HTTP/1.0 200 OK\\r\\nContent-type: image/jpg\\r\\n\\r\\n')\n";
+		code += 'conn.send(response)\n';
+		code += 'conn.close()\n';
+	} else {
+		var code = 'response = ' + html + '\n';
+		code += "cl.send('HTTP/1.0 200 OK\\r\\nContent-type: image/jpg\\r\\n\\r\\n')\n";
+		code += 'cl.send(response)\n';
+		code += 'cl.close()\n';
+	}
+
+  return code;
+};
+
+
 
 
 Blockly.Python['net_http_server_close'] = function(block) {

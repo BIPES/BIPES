@@ -1926,7 +1926,8 @@ _
             <field name="TEXT">You reached BIPES WebServer!</field>
           </shadow>
         </value>
-
+    </block>
+    <block type="net_http_server_send_response_jpg">
     </block>
     <block type="net_http_server_close">
     </block>

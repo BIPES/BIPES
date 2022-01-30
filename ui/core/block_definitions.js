@@ -8143,8 +8143,9 @@ Blockly.Blocks["uos_listdir"] = {
   this.appendValueInput("pIn")
         .appendField(" listdir");
         this.setColour(0);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    //this.setPreviousStatement(true, null);
+    //this.setNextStatement(true, null);
+    this.setOutput(true, null);
  this.setTooltip(" ");
  this.setHelpUrl("https://docs.micropython.org/en/latest/library/uos.html");
   }
@@ -9845,6 +9846,24 @@ Blockly.Blocks['net_http_server_send_response'] = {
     this.setTooltip('');
   }
 };
+
+Blockly.Blocks['net_http_server_send_response_jpg'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(MSG["net_http_server_send_response"]);
+
+    this.appendValueInput("html")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("JPG Image");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
 
 
 Blockly.Blocks['net_http_server_close'] = {
