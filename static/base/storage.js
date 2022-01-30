@@ -29,11 +29,11 @@ class StorageBroker {
     else
       return match
   }
-  has (str){
-    if (!localStorage.hasOwnProperty(str))
+  has (key){
+    if (!localStorage.hasOwnProperty(key))
       return false
-    else if(localStorage[str] == '') {
-      this.remove(str)
+    else if(localStorage[key] == '') {
+      this.remove(key)
       return false
     } else
       return true
@@ -42,6 +42,7 @@ class StorageBroker {
     if (value == undefined)
       value = '[]'
     localStorage.setItem(key, value)
+    return value
   }
   remove (key){
     localStorage.removeItem(key)

@@ -1,12 +1,12 @@
 from flask import Flask, Response, jsonify, render_template
 from flask import request, redirect
 from flask import render_template
+import os
 import glob
 import socket
 import struct
 import re
-
-app = Flask(__name__)
+import sqlite3
 
 app_name = 'BIPES'
 app_version = 'v0.01'
@@ -17,9 +17,6 @@ default_lang = 'en'
 # Languages available, used in the templates generators.
 available_lang = ['en','pt-br','de','es']
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
 
 # Libraries imports
 imports = {
@@ -94,6 +91,61 @@ base = {
     'navigation'
 }
 
+# Create app for developemnt mode
+def create_app(test_config=None):
+    app = Flask(__name__)
+    app.config.from_mapping(
+      SECRET_KEY = 'dev',
+      DATABASE = os.path.join(app.root_path, 'server/database.db')
+    )
+    if test_config is None:
+        app.config.from_pyfile('server/config.py', silent=True)
+    else:
+        app.config.from_mapping(test_config)
+    
+    
+    from server import database
+    app.register_blueprint(database.bp)
+ 
+    # Return "compiled" html file.
+    @app.route("/ide")
+    @app.route("/ide-<lang>")
+    def call_ide(lang=None, import_type='module'):
+        return ide(lang, import_type) 
+    
+    # Return "compiled" toolboxes xml embedded in a js file.
+    @app.route("/static/libs/blockly/toolbox.umd.js")
+    def blockly_toolbox():
+        return Response(blockly_toolbox_generator(), mimetype='application/javascript')
+    
+    @app.route("/static/libs/bipes.umd.js")
+    def bipes():
+        return Response(bipes_imports(), mimetype='application/javascript')
+    
+    
+    @app.route("/empty")
+    def test(name=None):
+        return render_template('empty.html')
+    
+    
+    @app.route('/')
+    def go_to_ide():
+        return redirect("/ide", code=302)   
+    
+
+    return app
+
+# Generate the ide html file
+def ide(lang=None, import_type='module'):
+    lang = default_lang if lang == None else lang
+
+    lang_imports = render_lang(lang)
+
+    return render_template('ide.html', app_name=app_name, app_version=app_version,
+                           navigation=navigation, imports=imports,
+                           lang_imports=lang_imports, import_type=import_type)
+
+
 # Render language string imports
 def render_lang (lang):
     return [(src.replace('{{ lang }}', lang)) for src in lang_str]
@@ -155,7 +207,8 @@ def build_release ():
     # Build blockly toolboxes
     with open("static/libs/blockly/toolbox.umd.js",'w') as f:
         f.write(blockly_toolbox_generator())
-
+    
+    app = create_app()
     # "Compile" ide template as ide/index.html (default filename for servers)
     with app.app_context():
         for ln in available_lang:
@@ -165,47 +218,4 @@ def build_release ():
     with open("templates/libs/bipes.temp.js",'w') as f:
         with app.app_context():
             f.write(bipes_imports(import_type='text/javascript'))
-
- # Check is a object has a attribute, can also return another attribute if true
-def has_in (name, array, attr, return_attr=None):
-    for item in array:
-        if getattr(item, attr) == name:
-            if (return_attr==None):
-                return True
-            else:
-                return getattr(item, return_attr)
-    return False
-
-# Return "compiled" html file.
-@app.route("/ide")
-@app.route("/ide-<lang>")
-def ide(lang=None, import_type='module'):
-    lang = default_lang if lang == None else lang
-
-    lang_imports = render_lang(lang)
-
-    return render_template('ide.html', app_name=app_name, app_version=app_version,
-                           navigation=navigation, imports=imports,
-                           lang_imports=lang_imports, import_type=import_type)
-
-
-
-# Return "compiled" toolboxes xml embedded in a js file.
-@app.route("/static/libs/blockly/toolbox.umd.js")
-def blockly_toolbox():
-    return Response(blockly_toolbox_generator(), mimetype='application/javascript')
-
-@app.route("/static/libs/bipes.umd.js")
-def bipes():
-    return Response(bipes_imports(), mimetype='application/javascript')
-
-
-@app.route("/empty")
-def test(name=None):
-    return render_template('empty.html')
-
-
-@app.route('/')
-def go_to_ide():
-    return redirect("/ide", code=302)
 

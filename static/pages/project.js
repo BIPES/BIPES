@@ -1,10 +1,12 @@
 "use strict"
 
-import {Tool} from '../base/tool.js'
+import {Tool, API} from '../base/tool.js'
 import {DOM, Animate, ContextMenu} from '../base/dom.js'
 import {command} from '../base/command.js'
 import {storage} from '../base/storage.js'
 import {navigation} from '../base/navigation.js'
+
+import {notification} from './notification.js'
 
 class Project {
   constructor (){
@@ -12,6 +14,14 @@ class Project {
     this.currentUID = undefined
     this.projects = {}
     this.inited = false
+
+    this.cors_token = storage.has('cors_token') ?
+                      storage.fetch('cors_token') :
+                      storage.set('cors_token', Tool.UID().substring(0,12))
+    
+    this.username = storage.has('username') ?
+                    storage.fetch('username') :
+                    storage.set('username', 'a user')
 
     let $ = this._dom = {}
 
@@ -49,7 +59,7 @@ class Project {
     this.contextMenu = new ContextMenu($.contextMenu, this)
 
     $.section = new DOM(DOM.get('section#project'))
-      .append([$.container._dom, $.contextMenu])
+      .append([$.container, $.contextMenu])
     $.section._dom.classList.add('default')
 
     // Cross tabs event handler on connecting and disconnecting device
@@ -68,9 +78,13 @@ class Project {
         console.error(e)
       }
     })
-
+    
     if (Object.keys(this.projects).length == 0)
       this.new()
+    
+    // Init shared projects if server mode
+    if (!navigation.isLocal)
+      this.shared = new SharedProject(this, $.wrapper)
   }
   _init (){
     // Get most recent project
@@ -92,11 +106,12 @@ class Project {
    * Then dispatches changes.
    * (:js:func:`_emptyProject`) is created.
    * @param {string} ev - On click event.
-   * @param {string} str - Existing project.
+   * @param {Object/string} obj - Existing project, as parsed object or string.
    */
-  new (ev, str){
+  new (ev, obj){
     let uid = Tool.UID(),
-        project = str == undefined ? this._emptyProject() : JSON.parse(str)
+        project = obj == undefined ? this._emptyProject() :
+                  obj instanceof Object ? obj : JSON.parse(obj)
 
     command.dispatch(this, 'new', [uid, project])
     // Update localStorage once
@@ -125,9 +140,16 @@ class Project {
     if (Object.keys(this.projects).length == 1)
       this.select(this.new())
 
+    // Unshare if shared
+    console.log(uid)
+    let shared = this.projects[uid].project.shared
+    if (shared.hasOwnProperty('uid') && shared.uid !== '')
+      this.unshare(uid)
+
     command.dispatch(this, 'remove', [uid])
     // Update localStorage once
     storage.remove(`project-${uid}`)
+
 
     this.contextMenu.close()
   }
@@ -169,9 +191,6 @@ class Project {
   }
   _emptyProject (){
     return {
-      createdAt: +new Date(),
-      lastEdited: +new Date(),
-      name: 'Empty project',
       device: {
         target:'esp32'
       },
@@ -182,11 +201,21 @@ class Project {
         tree:{
           name:'',
           files:[{
-              name:'script.py',
-              script:"# Create your script here"
-            }]
-          }
+            name:'script.py',
+            script:"# Create your script here"
+          }]
         }
+      },
+      project:{
+        name: 'Empty project',
+        author: this.username,
+        shared:{
+          uid:'',
+          token:''
+        },
+        createdAt: +new Date(),
+        lastEdited: +new Date()
+      }
     }
   }
   init (){
@@ -205,6 +234,9 @@ class Project {
       child.classList.add('on')
       DOM.get('#name', child).disabled = false
     }
+    if (this.hasOwnProperty('shared'))
+      this.shared.init()    
+
     this.inited = true
   }
   select (uid){
@@ -232,54 +264,81 @@ class Project {
     if(!this.inited)
       return
 
+    if (this.hasOwnProperty('shared'))
+      this.shared.deinit()
   }
-  // Creates a DOM notificaton card
+  /*
+   * Creates a DOM project card
+   */
   _domCard (uid, item){
-    return new DOM('button', {uid: uid})
+    let _shared_class = item.project.shared.uid != '' ? 'shared' : ''
+
+    return new DOM('button', {className:_shared_class, uid: uid})
       .append([
-        new DOM('div').append([
+        new DOM('div', {className:'row'}).append([
           new DOM('h4', {
             id:'name',
-            innerText: item.name
+            innerText: item.project.name
           }),
           new DOM('div', {
+            id:'sharedUID',
+            innerText:item.project.shared.uid
+          })
+        ]),
+        new DOM('div', {className:'row'}).append([
+          new DOM('div', {
             id:'lastEdited',
-            innerText: new Date(item.lastEdited).toLocaleString()
+            innerText:Tool.prettyEditedAt(item.project.lastEdited)
           })
         ])
-        .onclick(this, this.select, [uid])
-        .onevent('contextmenu', this, (ev) => {
-          ev.preventDefault()
-          let actions = [
-            {
-              id:'rename',
-              innerText:'Rename',
-              fun:this.rename,
-              args:[uid, item.name]
-            },
-            {
-              id:'download',
-              innerText:'Download',
-              fun:this.download,
-              args:[uid]
-            },
-            {
-              id:'remove',
-              innerText:'Delete',
-              fun:this.remove,
-              args:[uid]
-            }
-          ]
-          if (!navigation.isLocal)
-            actions.unshift({
-              id:'share',
-              innerText:'Share',
-              fun:this.share,
-              args:[uid]
-            })
-          this.contextMenu.open(actions, ev)
-        })
-      ])
+     ])
+     .onclick(this, this.select, [uid])
+     .onevent('contextmenu', this, (ev) => {
+       ev.preventDefault()
+       let actions = [
+         {
+           id:'rename',
+           innerText:'Rename',
+           fun:this.rename,
+           args:[uid, item.project.name]
+         },
+         {
+           id:'download',
+           innerText:'Download',
+           fun:this.download,
+           args:[uid]
+         },
+         {
+           id:'remove',
+           innerText:'Delete',
+           fun:this.remove,
+           args:[uid]
+         }
+       ]
+       if (!navigation.isLocal) {
+         if (item.project.shared.hasOwnProperty('uid') && item.project.shared.uid !== '')
+           actions.unshift({
+             id:'share',
+             innerText:'Update shared',
+             fun:this.updateShared,
+             args:[uid]
+           },
+           {
+             id:'unshare',
+             innerText:'Unshare',
+             fun:this.unshare,
+             args:[uid]
+           })
+         else
+           actions.unshift({
+             id:'share',
+             innerText:'Share',
+             fun:this.share,
+             args:[uid]
+           })
+         }
+         this.contextMenu.open(actions, ev)
+       }) 
   }
   /*
    * Write project from current scope to localStorage.
@@ -307,8 +366,11 @@ class Project {
 
       if (name == undefined || name == '')
         return
-
-      this.update({name:name}, uid)
+      
+      let obj = {...this.projects[uid].project}
+      obj.name = name
+      
+      this.update({project:obj}, uid)
     })
   }
   /*
@@ -318,6 +380,10 @@ class Project {
    */
   update (data, uid){
     uid = uid == undefined ? this.currentUID : uid
+    // Update lastEdited
+    if (!data.hasOwnProperty('project'))
+      data.project = {...this.projects[uid].project}
+    data.project.lastEdited = +new Date()
 
     command.dispatch(this, 'update', [uid, data, command.tabUID])
     // Update localStorage once
@@ -330,13 +396,20 @@ class Project {
     }
     if (data.hasOwnProperty('load') && data.load == false)
       return
-
     for (const key in data){
       switch (key) {
-        case 'name':
+        case 'project':
           if (this.inited) {
-            let name = DOM.get(`[data-uid=${uid}] #name`, this._dom.projects._dom)
-            name.innerText = data[key]
+            DOM.lazyUpdate(this._dom.projects._dom, uid, {
+              name: data[key].name,
+              lastEdited: Tool.prettyEditedAt(data[key].lastEdited),
+              sharedUID: data[key].shared.uid
+            })
+            let _dom = DOM.get(`[data-uid='${uid}']`, this._dom.projects)
+            if (data[key].shared.uid != '')
+             _dom.classList.add('shared')
+            else
+             _dom.classList.remove('shared')
           }
           break
         default:
@@ -349,33 +422,119 @@ class Project {
       }
     }
   }
- /*
-  * Get the most recent project by last edited date
-  */
+  /**
+   * Get the most recent project by last edited date.
+   */
   _mostRecent (){
     let timestamp = 0,
         uid
     for (const key in this.projects) {
-      if (this.projects[key].lastEdited > timestamp)
-        timestamp = this.projects[key].lastEdited,
+      if (this.projects[key].project.lastEdited > timestamp)
+        timestamp = this.projects[key].project.lastEdited,
         uid = key
     }
     return uid
   }
- /*
-  * Download a project to the computer
-  * @param {string} uid - Project uid
-  */
+  /**
+   * Download a project to the computer
+   * @param {string} uid - Project uid
+   */
   download (uid){
-    let proj = this.projects[uid]
-    DOM.prototypeDownload(`${proj.name}.bipes.json`, JSON.stringify(proj))
+    let proj = JSON.stringify(this.projects[uid])
+    // Strip shared metadata.
+    proj = proj.replace(/("shared":{"uid":")(.*?)(","token":")(.*?)("})/g,'$1$3$5')
+    DOM.prototypeDownload(`${this.projects[uid].project.name}.bipes.json`,proj)
     this.contextMenu.close()
   }
+  /**
+   * Share a local project.
+   * @param {string} uid - Project uid
+   */
   share (uid){
+    this.contextMenu.close()
+    if (!this.hasOwnProperty('shared'))
+      return
 
+    API.do('project/cp', {
+      cors_token:this.cors_token,
+      data:this.projects[uid] 
+    }).then(obj => {
+      let proj = {...this.projects[uid].project}
+      proj.shared = {
+        uid:obj.uid,
+        token:obj.token
+      }
+      
+      this.update({project:proj}, uid) 
+      this.shared._dom.projects._dom.insertBefore(
+        this.shared._domCard({
+          uid:obj.uid,
+          name:proj.name,
+          author:proj.author,
+          lastEdited:proj.lastEdited,
+        })._dom,
+        this.shared._dom.projects._dom.firstChild
+      )
+     }).catch(e => {console.error(e)})
   }
- /*
-  * Upload a project to the platform.
+  /**
+   * Update a shared project with the local project.
+   * @param {string} uid - Project uid
+   */
+  updateShared (uid){
+    this.contextMenu.close()
+    let proj = this.projects[uid].project
+    if (!this.hasOwnProperty('shared'))
+      return
+
+    API.do('project/w', {
+      cors_token:this.cors_token,
+      data:this.projects[uid]
+    }).then(obj => {
+      // Server returns uid
+      if (obj.uid !== proj.shared.uid)
+        return
+      // Update DOM in the shared list if fetched
+      DOM.lazyUpdate(this.shared._dom.projects,
+        proj.shared.uid, {
+        name: proj.name,
+        author: `By ${proj.author}`,
+        lastEdited: Tool.prettyEditedAt(proj.lastEdited)
+      })
+    }).catch(e => {console.error(e)})
+  }
+  /**
+   * Unshare a local project.
+   * @param {string} uid - Project uid
+   */
+  unshare (uid){
+    this.contextMenu.close()
+    let proj = this.projects[uid].project
+    if (!this.hasOwnProperty('shared'))
+      return
+    API.do('project/rm', {
+      uid:proj.shared.uid,
+      token:proj.shared.token,
+      cors_token:this.cors_token
+    }).then(obj => {
+      // Server returns uid
+      if (obj.uid !== proj.shared.uid)
+        return
+      try {
+        let _proj = {...this.projects[uid].project}
+        _proj.shared = {
+          uid:'',
+          token:''
+        }
+        this.update({project:_proj}, uid)      
+      } catch(e){}
+      let dom = DOM.get(`[data-uid='${obj.uid}']`, this.shared._dom.projects)
+      if (dom !== null)
+        dom.remove()
+    }).catch(e => {console.error(e)})
+  }
+  /*
+   * Upload a project to the platform.
    * @param {string} ev - Input on change event, contains the input node as target.
    */
   upload (ev){
@@ -389,6 +548,126 @@ class Project {
       this.new(ev, e.target.result)
     }
     reader.readAsText(file)
+  }
+}
+/* Show shared projects */
+class SharedProject {
+  constructor (parent, dom){
+    this.parent = parent
+    // This is a lazy object and is not in sync with the DOM list.
+    this.projects = []
+    this.inited = false
+    this.firstInited = false    
+
+    let $ = this._dom = {}
+
+    $.projects = new DOM('span', {className:'listy'})
+
+    dom.append([
+      new DOM('div', {id:'shared-projects'})
+        .append([
+          new DOM('div', {className:'header'})
+            .append([
+              new DOM('h3', {innerText:'Shared projects'})
+            ]),
+            $.projects,
+            new DOM('span', {className:'listy more-button'})
+              .append([
+                new DOM('button', {title:'Load more'})
+                  .append([new DOM('div', {className:'button icon'})])
+                  .onclick(this, this.fetchAutoFromTo)
+              ])
+        ])
+    ]) 
+  }
+  init (){
+    if (!this.firstInited) {
+      this.fetchSome({from: +new Date(), limit:5})
+      this.firstInited = true
+    }
+    if (this.inited)
+      return
+
+    let doms = []
+    this.projects.forEach(proj => doms.unshift(this._domCard(proj)))
+    this._dom.projects.append(doms)
+
+    this.inited = true
+  }
+  deinit (){
+    if (!this.inited)
+      return
+
+    this.inited = false
+  }
+  /*
+   * Fetch some shared projects.
+   * @param{Object} args - Arguments to pass to the project ls command,
+   *                       send empty {} object to fetch latest batch.
+   */
+  async fetchSome (args){
+    API.do('project/ls', args)
+      .then(obj => { 
+        let doms = []
+        // Push unique values and also return an array of these unique
+        Tool.pushUnique(this.projects, obj.projects, 'uid')
+          .forEach(unique => doms.unshift(this._domCard(unique)))
+        this._dom.projects.append(doms)
+        if (doms.length == 0)
+          notification.send('Project: No more shared projects.')
+      })
+      .catch(e => {console.error(e)})
+  }
+  /*
+   * Clone a shared project.
+   * @param{string} uid - shared project unique public id.
+   */
+  async clone (uid){
+   API.do('project/o', {uid:uid})
+    .then(obj => {
+      if (obj.hasOwnProperty('projects'))
+        this.parent.new(undefined, obj.projects[0].data)
+      else
+        notification.send('Project: Shared project does not exist anymore.')
+    }) 
+    .catch(e => {console.error(e)})
+  }
+  /*
+   * Automatically fetch a new from to lastEdited interval.
+   */
+  fetchAutoFromTo (){
+    // Get oldest edited project
+    let obj = Tool.getMin(this.projects, 'lastEdited') 
+    this.fetchSome({from:obj.lastEdited, limit:10})
+  }
+  /*
+   * Creates a DOM shared project card
+   */
+  _domCard (item){
+    return new DOM('button', {uid: item.uid})
+      .append([
+        new DOM('div', {className:'row'}).append([
+          new DOM('h4', {
+            id:'name',
+            innerText: item.name
+          }),
+          new DOM('div', {
+            id:'uid',
+            innerText: item.uid
+          })
+        ]),
+        new DOM('div', {className:'row'}).append([
+          new DOM('span', {
+            id:'author',
+            innerText: `By ${item.author}`
+          }),
+          new DOM('div', {
+            id:'lastEdited',
+            innerText: Tool.prettyEditedAt(item.lastEdited)
+          })
+        ])
+      ])
+      .onclick(this, this.clone, [item.uid]) 
   }
 }
 

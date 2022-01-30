@@ -152,9 +152,9 @@ class DOM {
 
     DOMS.forEach ((item) => {
       if (/HTML(.*)Element/.test(item.constructor.name))
-      this._dom.appendChild(item)
+        this._dom.appendChild(item)
       else if (typeof item == 'object' && (/HTML(.*)Element/.test(item._dom)))
-      this._dom.appendChild(item._dom)
+        this._dom.appendChild(item._dom)
     })
 
     return this
@@ -174,12 +174,14 @@ class DOM {
   * Get DOM Node element.
   */
   static get (a, b){
+    b = b instanceof DOM ? b._dom : b
     return (typeof b == 'undefined') ? document.querySelector (a) : b.querySelector(a)
   }
   /**
   * Get all DOM Node elements.
   */
   static getAll(a, b){
+    b = b instanceof DOM ? b._dom : b
     return (typeof b == 'object') ? b.querySelectorAll(a) : get(b).querySelectorAll(a)
   }
   /**
@@ -282,16 +284,32 @@ class DOM {
     document.body.removeChild(element)
   }
   /**
-  * Set a option of a select list by its value.
-  * @param {Object} dom - Node of the select list.
-  * @param {string} value - Value of the target option.
-  */
+   * Set a option of a select list by its value.
+   * @param {Object} dom - Node of the select list.
+   * @param {string} value - Value of the target option.
+   */
   static setSelected (dom, value){
     for (var i = 0; i < dom._dom.options.length; i++){
       if (dom._dom.options[i].text == value){
         dom._dom.options[i].selected = true
         return
       }
+    }
+  }
+  /**
+   * Updates parameter of children of a DOM.
+   * Lazy because doesn't care is successful or not.
+   * Useful for generic lists, like in searches.
+   * @param {Object} dom - Container of the list.
+   * @param {string} uid - Item to search for.
+   * @param {Object} props - Properties to update, where the key is also the DOM id.
+   * @param {string} param - Parameter to update.
+   */
+  static lazyUpdate (dom, uid, props, param){
+    param = param == undefined ? 'innerText' : param
+    let element = DOM.get(`[data-uid='${uid}']`, dom)
+    for (const key in props){
+      DOM.get(`#${key}`, element)[param] = props[key]
     }
   }
 }

@@ -93,11 +93,17 @@ flask:
 	pip install Flask sphinx sphinx-js && \
 	exit
 
+database:
+	@. venv/bin/activate && \
+  cd server && \
+  python -c "import database; database.make()" && \
+  exit
+
 run:
 	@printf "Running $(PURPLE)BIPES$(NC) in development mode.\n"
 	@. venv/bin/activate && \
 	export FLASK_ENV=development && \
-	export FLASK_APP="__init__" && \
+	export FLASK_APP=app && \
 	flask run --port=5001 --host=0.0.0.0
 
 
@@ -106,7 +112,8 @@ release: build-release zip clean
 
 build-release:
 	@. venv/bin/activate && \
-	python -c "import __init__; __init__.build_release()"
+	python -c "import app; app.build_release()" && \
+  exit
 	@npm install rollup \
 	rollup-plugin-terser
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.bipes.js

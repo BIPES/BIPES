@@ -53,7 +53,7 @@ label {
 	cursor: pointer;
 }
 hr {
-  border: 1px solid #666;
+  border: 1px solid #7d7d7d;
   border-top: none;
 }
 body.dark select {
@@ -124,7 +124,7 @@ nav {
 	z-index: 71;
 	transition: 0.25s ease width;
 
-	border-right: 1px solid #666;
+	border-right: 1px solid #7d7d7d;
 
 	font-weight: bold;
 }
@@ -201,7 +201,7 @@ nav a, nav span {
     bottom: 0;
     width: 100vw;
     height: 3.5rem;
-    border-top: 1px solid #666;
+    border-top: 1px solid #7d7d7d;
     overflow-y: hidden;
   }
   nav span#menu {
@@ -336,6 +336,9 @@ span.tips:before {
 button#share:before {
 	background-position: left calc(-1.5rem*29) top;
 }
+button#unshare:before {
+	background-position: left calc(-1.5rem*29) bottom;
+}
 button#write:before {
 	background-position: left calc(-1.5rem*32) top;
 }
@@ -354,6 +357,9 @@ button#connect:before {
 button#scan:before {
 	background-position: left calc(-1.5rem*34) top;
 }
+.listy.more-button div:before {
+	background-position: left calc(-1.5rem*35) top;
+}
 nav #app-version {
   text-align: center;
   font-weight: normal;
@@ -369,7 +375,7 @@ body.dark nav#app-version {
   color: #aaa;
 }
 body.light nav#app-version {
-  color: #666;
+  color: #7d7d7d;
 }
 nav.on #app-version {
   opacity: 1;
@@ -407,7 +413,7 @@ section.ani.on {
   	transition: .125s ease left, .125s ease opacity;
   }
   section.pos2, section._pos2{
-    border-left: 1px solid #666;
+    border-left: 1px solid #7d7d7d;
   }
 }
 @media screen and (orientation:landscape) and (min-width: 40rem) {
@@ -433,7 +439,7 @@ section.ani.on {
   	transition: .125s ease top, .125s ease opacity;
   }
   section.pos2, section._pos2{
-    border-top: 1px solid #666;
+    border-top: 1px solid #7d7d7d;
   }
 }
 @media screen and (orientation:portrait) and (min-width: 40rem) {
@@ -521,7 +527,7 @@ body.dark .popup > div {
   background: #222;
 }
 .popup > div {
-  border: 1px solid #666;
+  border: 1px solid #7d7d7d;
   box-shadow: 0 .25em .5em rgba(0,0,0,0.5);
   border-radius: 1em;
   margin-top: 100vh;
@@ -550,7 +556,7 @@ body.dark .popup > div {
   padding: 1.5em;
 }
 .popup#urlPopup input {
-	border-bottom: 1px solid #666;
+	border-bottom: 1px solid #7d7d7d;
 	padding: 0.5em 0;
 	margin: 0.5em 0;
 }
@@ -626,7 +632,7 @@ section.default > .container {
   padding: 0 0 1em 0;
 }
 section.default > .container > h2 {
-  border-bottom: #666 1px solid;
+  border-bottom: #7d7d7d 1px solid;
   width: 100%;
   max-width: 50rem;
   top: 0;
@@ -700,7 +706,7 @@ body.dark .cards > span > span > div {
   font-weight: normal;
 }
 #contextMenu input {
-  border-top: #666 1px solid;
+  border-top: #7d7d7d 1px solid;
   padding: 0.5rem;
 }
 body.dark #contextMenu input {
@@ -795,10 +801,20 @@ body.light .listy button {
 .listy button.on {
   cursor: default;
 }
+.listy.more-button {
+  border-top: none !important;
+}
+.listy.more-button button {
+}
+.listy.more-button div {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-block;
+}
 .warnings, .tips {
   display: inline-flex;
   align-items: center;
-  border: 1px solid #666;
+  border: 1px solid #7d7d7d;
   padding: .5rem;
   border-radius: 2rem;
   opacity: 0.8;
