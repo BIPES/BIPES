@@ -5807,7 +5807,7 @@ Blockly.Python['simulate_dcmotor.vars'] = function(block) {
 
 Blockly.Python["esp32_cam_init"] = function(block) {
 	Blockly.Python.definitions_['import_camera'] = 'import camera';
-	var code = "camera.init()\n"; 
+	var code = "camera.init(1)\n"; 
 	return code;
 };
 
