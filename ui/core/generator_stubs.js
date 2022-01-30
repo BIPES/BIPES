@@ -3031,14 +3031,29 @@ Blockly.Python["uos_ilistdir"] = function(block) {
 };
 Blockly.Python["uos_listdir"] = function(block) {
 		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
-	var code = "uos.listdir(" + value_pIn + ")\n"; 
+	var code = "os.listdir(" + value_pIn + ")\n"; 
 	return code;
 };
+
 Blockly.Python["uos_mkdir"] = function(block) {
 		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
 	var code = "uos.mkdir(" + value_pIn + ")\n"; 
 	return code;
 };
+
+Blockly.Python["sd_mount"] = function(block) {
+	Blockly.Python.definitions_['import_os'] = 'import os';
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+
+	var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
+
+	var code = "os.mount(machine.SDCard(), " + value_pIn + ")\n"; 
+
+	return code;
+};
+
+
+
 Blockly.Python["uos_remove"] = function(block) {
 		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
 	var code = "uos.remove(" + value_pIn + ")\n"; 
@@ -3081,7 +3096,7 @@ Blockly.Python["uos_mount"] = function(block) {
 };
 Blockly.Python["uos_umount"] = function(block) {
 		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
-	var code = "uos.umount(" + value_pIn + ")\n"; 
+	var code = "os.umount(" + value_pIn + ")\n"; 
 	return code;
 };
 Blockly.Python["uos_readblocks"] = function(block) {

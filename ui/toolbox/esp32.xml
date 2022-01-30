@@ -1655,25 +1655,48 @@ _
 <block type="files_list">
 </block>
 <block type="uos_mkdir">
-
   <value name="pIn">
         <shadow type="text">
           <field name="TEXT">file.txt</field>
         </shadow>
       </value>
-
-
 </block>
+
 <block type="uos_remove">
-
   <value name="pIn">
         <shadow type="text">
           <field name="TEXT">file.txt</field>
         </shadow>
       </value>
-
-
 </block>
+
+      <label text="SD Card"></label>
+
+<block type="sd_mount">
+  <value name="pIn">
+        <shadow type="text">
+		<field name="TEXT">/sd</field>
+        </shadow>
+      </value>
+</block>
+
+<block type="uos_listdir">
+  <value name="pIn">
+        <shadow type="text">
+		<field name="TEXT">/sd</field>
+        </shadow>
+      </value>
+</block>
+
+<block type="uos_umount">
+  <value name="pIn">
+        <shadow type="text">
+		<field name="TEXT">/sd</field>
+        </shadow>
+      </value>
+</block>
+
+      <label text="Other file operations"></label>
 
 <block type="uos_listdir">
 </block>

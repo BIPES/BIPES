@@ -8150,6 +8150,25 @@ Blockly.Blocks["uos_listdir"] = {
   }
 };
 
+Blockly.Blocks["sd_mount"] = {
+  init: function() {
+
+   this.appendDummyInput()
+        .appendField("Mount SD Card");
+
+  this.appendValueInput("pIn")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("mount point");
+
+        this.setColour(0);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+ this.setTooltip("Mount SD Card on the specified folder");
+ this.setHelpUrl("https://docs.micropython.org/en/latest/library/uos.html");
+  }
+};
+
+
 
 
 Blockly.Blocks["uos_mkdir"] = {
