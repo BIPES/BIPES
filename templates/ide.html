@@ -4,18 +4,12 @@
   <title>{{ app_name }}</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <link rel="icon" sizes="192x192" href="./static/media/icon/icon-192x192.png">
-  <link rel="stylesheet" href='./static/style/main.css'/>
-  {% for key, plugin in imports.items() -%}{% if plugin.import -%}
-  <script type="text/javascript" src="{{ plugin.src }}"></script>
-  {% endif %}{% endfor %}
+  <link rel="stylesheet" href='./static/style.css'/>
+  {% for item in imports -%}
+  <script type="text/javascript" src="./static/libs/{{ item }}.js"></script>
+  {% endfor %}
   {% for plugin in lang_imports -%}
   <script type="text/javascript" src="{{ plugin }}"></script>
-  {% endfor %}
-  {% for key, plugin in imports.items() -%}{% if plugin.import -%}{% if plugin.css_src -%}
-  <link rel="stylesheet" href='{{ plugin.css_src }}'/>{% endif %}
-  {% endif %}{% endfor %}
-  {% for item in navigation -%}{% if item.css_src -%}
-  <link rel="stylesheet" href='./static/style/{{ item.css_src }}.css'/>{% endif %}
   {% endfor %}
 </head>
 
@@ -25,11 +19,11 @@
 <nav>
 <div id="panels">
   <span id="menu">{{ app_name }}</span>
-{% for item in navigation -%}
+{% for item in page -%}
 {% if import_type == "text/javascript" -%}
-  <a id="{{ item.href }}" href="./ide.html?page={{ item.href }}">{{ item.caption }}</a>
+  <a id="{{ item }}" href="./ide.html?page={{ item }}"></a>
 {% else %}
-  <a id="{{ item.href }}" href="./ide?page={{ item.href }}">{{ item.caption }}</a>
+  <a id="{{ item }}" href="./ide?page={{ item }}"></a>
 {% endif %}
 {% endfor %}
 </div>
@@ -38,8 +32,8 @@
 </div>
 </nav>
 
-{% for item in navigation -%}
-  <section id="{{ item.href }}"></section>
+{% for item in page -%}
+  <section id="{{ item }}"></section>
 {% endfor %}
 
 <script type="{{import_type}}" src="./static/libs/bipes.umd.js"></script>

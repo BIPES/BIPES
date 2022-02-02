@@ -1,10 +1,11 @@
-import {EditorState, EditorView, genericImports} from "./codemirror-generic.js"
+import { EditorState, EditorView, genericImports } from "./codemirror-generic.js"
 import { keymap } from "@codemirror/view"
 import { indentWithTab } from "@codemirror/commands"
 import { indentUnit } from "@codemirror/language"
 import { python } from "@codemirror/lang-python"
 import { markdown } from "@codemirror/lang-markdown"
 import { oneDark } from "@codemirror/theme-one-dark"
+
 
 let setTheme = (theme) => {
   if (theme == 'dark')

@@ -9,9 +9,13 @@ node_modules/
 *.umd.js
 *.temp.js
 *.zip
+*.db
+*.swp
 
 static/libs/blockly/msg
 
 static/media/blocks/
 /ide.html
 BIPES
+
+server/*.txt

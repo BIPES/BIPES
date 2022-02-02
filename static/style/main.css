@@ -4,7 +4,7 @@ preview
 }
 @font-face {
         font-family: "OpenSans";
-        src: url("../media/OpenSans.ttf");
+        src: url("./media/OpenSans.ttf");
 }
 
 body, input{
@@ -124,12 +124,8 @@ nav {
 	z-index: 71;
 	transition: 0.25s ease width;
 
-	border-right: 1px solid #7d7d7d;
-
 	font-weight: bold;
-}
-body.light nav {
-	border-color: #aaa;
+  box-shadow: 0 0 .5em rgba(0,0,0,.25);
 }
 body.dark nav, body.dark nav #menu::after {
 	background-color: #333;
@@ -157,7 +153,7 @@ label.icon:before, span.icon:before {
 	display: inline-block;
 	width: 1.5rem;
 	height: 1.5rem;
-	background: url('../media/icons.svg');
+	background: url('./media/icons.svg');
 	content: '';
 	margin: 0;
 	flex-shrink: 0;
@@ -201,7 +197,6 @@ nav a, nav span {
     bottom: 0;
     width: 100vw;
     height: 3.5rem;
-    border-top: 1px solid #7d7d7d;
     overflow-y: hidden;
   }
   nav span#menu {
@@ -250,7 +245,7 @@ nav #menu::after {
 	width: 2rem;
 	height: 2rem;
 	margin-left: -8.25rem;
-	background: url('../media/icons.svg');
+	background: url('./media/icons.svg');
 	content: '';
 	flex-shrink: 0;
   transition: .125s ease margin-left;
@@ -582,14 +577,18 @@ a#notification.new:after {
   top: 10.125rem;
 	padding: 0.75rem;
 	position: fixed;
-  box-shadow: 0 .125rem .5rem rgba(0,0,0,.6);
-  background: #4499cc;
-  color:#fff;
+  box-shadow: 0 .5rem .5rem rgba(0,0,0,.125);
   user-select: none;
 	transition: left ease .5s, bottom ease .5s, opacity ease .5s;
-  border-radius: 0.25rem;
+  border-radius: 1.5rem;
   opacity: 0;
   box-sizing: border-box;
+}
+body.light #notify {
+  background: #d4efff;
+}
+body.dark #notify {
+  background: #3b5666;
 }
 #notify.on {
 	opacity: 1;

@@ -141,7 +141,6 @@ class Project {
       this.select(this.new())
 
     // Unshare if shared
-    console.log(uid)
     let shared = this.projects[uid].project.shared
     if (shared.hasOwnProperty('uid') && shared.uid !== '')
       this.unshare(uid)
@@ -575,7 +574,7 @@ class SharedProject {
               .append([
                 new DOM('button', {title:'Load more'})
                   .append([new DOM('div', {className:'button icon'})])
-                  .onclick(this, this.fetchAutoFromTo)
+                  .onclick(this, this.fetchAutoFrom)
               ])
         ])
     ]) 
@@ -604,8 +603,9 @@ class SharedProject {
    * Fetch some shared projects.
    * @param{Object} args - Arguments to pass to the project ls command,
    *                       send empty {} object to fetch latest batch.
+   * @param{bool} notify- True to throw a notification.
    */
-  async fetchSome (args){
+  async fetchSome (args, notify){
     API.do('project/ls', args)
       .then(obj => { 
         let doms = []
@@ -613,8 +613,8 @@ class SharedProject {
         Tool.pushUnique(this.projects, obj.projects, 'uid')
           .forEach(unique => doms.unshift(this._domCard(unique)))
         this._dom.projects.append(doms)
-        if (doms.length == 0)
-          notification.send('Project: No more shared projects.')
+        if (doms.length == 0 && notify === true)
+          notification.send('Project: No older shared projects.')
       })
       .catch(e => {console.error(e)})
   }
@@ -635,10 +635,13 @@ class SharedProject {
   /*
    * Automatically fetch a new from to lastEdited interval.
    */
-  fetchAutoFromTo (){
+  fetchAutoFrom (){
     // Get oldest edited project
     let obj = Tool.getMin(this.projects, 'lastEdited') 
-    this.fetchSome({from:obj.lastEdited, limit:10})
+    if (obj !== null)
+      this.fetchSome({from:obj.lastEdited, limit:10}, true)
+    else
+      this.fetchSome({from:+new Date(), limit:10}, true)
   }
   /*
    * Creates a DOM shared project card

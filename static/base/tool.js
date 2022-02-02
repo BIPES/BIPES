@@ -20,8 +20,9 @@ class Tool {
     return (Math.random()).toString(36).substring(2,8)
   }
   /**
-   * Return theme from url search param "theme"
-   * if not set, return light
+   * Return param from url search parami, if unset, return the default.
+   * @param {string} _param - Parameter to search in the array. 
+   * @return Requested parameter.
    */
   static fromUrl (_param){
     let param = new URLSearchParams(document.location.search)
@@ -30,6 +31,8 @@ class Tool {
   }
   /**
    * Default url parameters values if not set
+   * @param {string} _param - Parameter to return the default.
+   * @return Default parameter.
    */
   static urlDefaults (_param){
     switch (_param) {
@@ -38,7 +41,7 @@ class Tool {
     }
   }
   /**
-   * Valid parameters, if a invalid is passed, will return the default
+   * Valid parameters, if a invalid is passed, will return the default.
    */
   static urlValidParams (_param, value){
     switch (_param) {
@@ -46,11 +49,11 @@ class Tool {
         return ['dark', 'light'].includes(value) ? value : this.urlDefaults(_param)
     }
   }
-  
   /**
    * Encode a query data to url from a Object, use this instead of SearchParameters
    * since that last converts spaces into plus sign '+', plus signs into escaped, etc.
-   * @param{Object} obj - Depth one object with parameters
+   * @param {Object} obj - Depth one object with parameters.
+   * @return {string} URL encoded query parameters.
    */
   static encodeQueryData (obj){
     const ret = []
@@ -61,9 +64,10 @@ class Tool {
   /**
    * Push unique keys from one array to another and return a list of these filters 
    * values.
-   * @param{array} as - Target array.
-   * @param{array} bs - New values array.
-   * @param{string} prop - Property to be used as unique key/uid.
+   * @param {Object[]} as - Target array.
+   * @param {array} bs - New values array.
+   * @param {string} prop - Property to be used as unique key/uid.
+   * @return {Object[]} List of unique objects.
    */
   static pushUnique (as, bs, prop){
     let c = []
@@ -79,11 +83,12 @@ class Tool {
   }
   /**
    * Get smallest value from object array.
-   * @param{array} as - Object array.
-   * @param{string} prop - Property to be used as unique key/uid.
-   * @param{bool} toNumber - Id property is stored as string and should be parsed.
+   * @param {Object[]} as - Object array.
+   * @param {string} prop - Property to be used as unique key/uid.
+   * @param {bool} toNumber - Id property is stored as string and should be parsed.
+   * @return {Object} Object with the smallest value.
    */
-  static getMin(as, prop, toNumber){
+  static getMin (as, prop, toNumber){
     return (as.length && as.reduce(function(prev, curr){
       if (toNumber) 
         return parseFloat(prev[prop]) < parseFloat(curr[prop]) ? prev : curr; 
@@ -93,18 +98,27 @@ class Tool {
   }
   /**
    * Return a pretty edited at string.
-   * @param{string} value - Value.
+   * @param {string} value - Value.
    */
-  static prettyEditedAt(value){
+  static prettyEditedAt (value){
     return `Edited at ${new Date(value).toLocaleString()}`
+  }
+  /**
+   * Return the first character in upper case.
+   * @param {string} str - String.
+   */
+  static firstUpper (str){
+    return str.charAt(0).toUpperCase() + str.slice(1)
   }
 }
 /**
  * Handle API requests, return JSON on success and true on error.
  */
 class API {
- /**
-  * Do an API request.
+  /**
+   * Do an API request, the sent object is implicitelly converted to a JSON.
+   * @param {string} url - Path after the `/api`.
+   * @return {Object} obj - Object sent with the request.
   */
   static async do (url, obj){
     const response = await fetch(`${window.location.origin}/api/${url}`, {

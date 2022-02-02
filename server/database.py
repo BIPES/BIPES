@@ -17,7 +17,7 @@ import re
 def make():
     db = sqlite3.connect('database.db')
   
-    with open('schema.sql') as f:
+    with open('database.sql') as f:
         db.executescript(f.read())
     db.commit()
     db.close()

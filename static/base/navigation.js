@@ -157,6 +157,7 @@ class Navigation {
   init (){
     for (let module in window.bipes.page) {
       window.bipes.page[module].nav = DOM.get(`a#${module}`, this._dom.nav)
+      window.bipes.page[module].nav.innerText = Msg[`Page${Tool.firstUpper(module)}`]
       window.bipes.page[module].section = DOM.get(`section#${module}`)
       window.bipes.page[module].nav.onauxclick = (ev) => {
         ev.preventDefault()

@@ -18,45 +18,15 @@ default_lang = 'en'
 available_lang = ['en','pt-br','de','es']
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
 
-# Libraries imports
-imports = {
-    "xtermjs":{
-        'import':True,
-        'src':'./static/libs/xterm.umd.js'
-        },
-    # Codemirror rollup script
-    "codemirror":{
-        'import':True,
-        'src':'./static/libs/codemirror.umd.js'
-        },
-    # Blockly imported scripts
-    "blockly_blockly":{
-        'import':True,
-        'src':'./static/libs/blockly/blockly.umd.js'
-        },
-    "blockly_blocks":{
-        'import':True,
-        'src':'./static/libs/blockly/blocks.umd.js'
-        },
-    "blockly_blocks_extra":{
-        'import':True,
-        'src':'./static/libs/blockly/blocks-extra.js'
-        },
-    # Blockly compiled toolbox
-    "blockly_toolbox":{
-        'import':True,
-        'src':'./static/libs/blockly/toolbox.umd.js'
-        },
-    # Blockly custom scripts
-    "blockly_micropython":{
-        'import':True,
-        'src':'./static/libs/blockly/micropython.js'
-        },
-    "blockly_micropython_extra":{
-        'import':True,
-        'src':'./static/libs/blockly/micropython-extra.js'
-        }
-}
+# Libraries explicit set.
+# Probably create a */package.json for directories, to it would be super easy to 
+# implement complex plugins.
+explicit_imports = [
+    'blockly/blockly.umd',
+    'blockly/blocks',
+    'blockly/pythonic',
+    'blockly/toolbox.umd'
+]
 # Language strings
 lang_str = [
     # Global
@@ -64,32 +34,6 @@ lang_str = [
     # Blockly
     './static/libs/blockly/msg/{{ lang }}.js'
 ]
-
-# Navigation dictionary
-class Navigation:
-    def __init__ (self, caption, href, css_src=False):
-        self.caption = caption
-        self.href = href
-        self.css_src = css_src
-navigation = [
-    Navigation('Blocks', 'blocks','blocks'),
-    #Navigation('Dashboard','dashboard'),
-    Navigation('Files','files','files'),
-    Navigation('Notifications','notification'),
-    #Navigation('Settings','admin'),
-    Navigation('Terminal','prompt','prompt'),
-    Navigation('Device','device','device'),
-    Navigation('Projects','project','project')
-    ];
-
-# Base core files
-base = {
-    'command',
-    'storage',
-    'channel',
-    'rosetta',
-    'navigation'
-}
 
 # Create app for developemnt mode
 def create_app(test_config=None):
@@ -104,19 +48,35 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
     
     
-    from server import database
+    from server import database, mosquitto
     app.register_blueprint(database.bp)
+    app.register_blueprint(mosquitto.bp)
  
     # Return "compiled" html file.
     @app.route("/ide")
     @app.route("/ide-<lang>")
     def call_ide(lang=None, import_type='module'):
         return ide(lang, import_type) 
+        
+    # Return concatanate styles.
+    @app.route("/static/style.css")
+    def style():
+        return Response(concat_files("static/style/*.css"), mimetype='text/css')
     
     # Return "compiled" toolboxes xml embedded in a js file.
     @app.route("/static/libs/blockly/toolbox.umd.js")
     def blockly_toolbox():
         return Response(blockly_toolbox_generator(), mimetype='application/javascript')
+        
+    # Return concatanate blocks.
+    @app.route("/static/libs/blockly/blocks.js")
+    def blockly_blocks():
+        return Response(concat_files("static/libs/blockly/blocks/*.js"), mimetype='application/javascript')
+        
+    # Return concatanate pythonic generators.
+    @app.route("/static/libs/blockly/pythonic.js")
+    def blockly_pythonic():
+        return Response(concat_files("static/libs/blockly/pythonic/*.js"), mimetype='application/javascript')
     
     @app.route("/static/libs/bipes.umd.js")
     def bipes():
@@ -134,21 +94,74 @@ def create_app(test_config=None):
     
 
     return app
+    
+# Build BIPES static release
+def build_release():
+    # Build styles
+    with open("static/style.css",'w') as f:
+        f.write(concat_files("static/style/*.js"))
+    # Build blockly toolboxes
+    with open("static/libs/blockly/toolbox.umd.js",'w') as f:
+        f.write(blockly_toolbox_generator())
+    # Build blockly blocks and generator
+    with open("static/libs/blockly/blocks.js",'w') as f:
+        f.write(concat_files("static/libs/blockly/blocks/*.js"))
+    with open("static/libs/blockly/pythonic.js",'w') as f:
+        f.write(concat_files("static/libs/blockly/pythonic/*.js"))
+    
+    app = create_app()
+    # "Compile" ide template as ide/index.html (default filename for servers)
+    with app.app_context():
+        for ln in available_lang:
+            with open('ide-' + ln + '.html','w') as f:
+                f.write(ide(import_type='text/javascript', lang=ln))
+
+    with open("templates/libs/bipes.temp.js",'w') as f:
+        with app.app_context():
+            f.write(bipes_imports(import_type='text/javascript'))
+
 
 # Generate the ide html file
 def ide(lang=None, import_type='module'):
     lang = default_lang if lang == None else lang
 
     lang_imports = render_lang(lang)
-
+    page = get_files_names("static/pages/*.js", r"^static/pages/(.*).js")
+    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js") + explicit_imports
+    
     return render_template('ide.html', app_name=app_name, app_version=app_version,
-                           navigation=navigation, imports=imports,
+                           page=page, imports=imports,
                            lang_imports=lang_imports, import_type=import_type)
 
 
 # Render language string imports
 def render_lang (lang):
     return [(src.replace('{{ lang }}', lang)) for src in lang_str]
+    
+    
+# Concatanate files
+def concat_files (rule):
+    # Fetch files
+    files = glob.glob(rule)
+    _str = ""
+    # Concatanate
+    for _file in files:
+        with open (_file) as f:
+            for line in f:
+                _str += line
+
+    return _str
+
+# Get file names
+def get_files_names (bash, reg):
+    files = glob.glob(bash)
+    names = []
+
+    for _file in files:
+        match = re.match(reg, _file)
+        names.append(match.group(1))
+    return names
+
 
 # Generates the toolboxes per device
 def blockly_toolbox_generator ():
@@ -199,23 +212,10 @@ def blockly_toolbox_generator ():
 
 # Return BIPES imports.
 def bipes_imports(import_type='module'):
-    return render_template('libs/bipes.js', base=base,navigation=navigation,
+    base = get_files_names("static/base/*.js", r"^static/base/(.*).js")
+    base.remove('dom'); base.remove('tool')
+    page = get_files_names("static/pages/*.js", r"^static/pages/(.*).js")
+    return render_template('libs/bipes.js', base=base,
+                           page=page,
                            import_type=import_type)
-
-# Build BIPES static release
-def build_release ():
-    # Build blockly toolboxes
-    with open("static/libs/blockly/toolbox.umd.js",'w') as f:
-        f.write(blockly_toolbox_generator())
-    
-    app = create_app()
-    # "Compile" ide template as ide/index.html (default filename for servers)
-    with app.app_context():
-        for ln in available_lang:
-            with open('ide-' + ln + '.html','w') as f:
-                f.write(ide(import_type='text/javascript', lang=ln))
-
-    with open("templates/libs/bipes.temp.js",'w') as f:
-        with app.app_context():
-            f.write(bipes_imports(import_type='text/javascript'))
 
