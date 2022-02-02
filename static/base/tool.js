@@ -106,9 +106,22 @@ class Tool {
   /**
    * Return the first character in upper case.
    * @param {string} str - String.
+   * @return {string} String with first character in upper case.
    */
   static firstUpper (str){
     return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
+  /**
+   * Format a string.
+   * @param {string[]} str - Array of strings, first is the on to format.
+   * @return {string} Formated string.
+   */
+  static format (str){
+    let args = Array.prototype.slice.call(arguments, 1)
+    return str.replace(/{(\d+)}/g, (match, number) => { 
+      return typeof args[number] != 'undefined' ? args[number] : match
+    })
   }
 }
 /**

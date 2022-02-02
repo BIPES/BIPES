@@ -22,7 +22,7 @@ class Files {
       .append([
         new DOM('div', {
           className:'header',
-          innerText:'File manager'
+          innerText:Msg['FileManager']
           }),
         $.sidebar
       ])
@@ -31,7 +31,7 @@ class Files {
     $.filename = new DOM('input', {
       id:'filename',
       autocomplete:'off',
-      placeholder:'Filename'}
+      placeholder:Msg['Filename']}
     ).onchange(this, () => {
       let _dom = $.filename._dom
       let str = _dom.value
@@ -50,7 +50,7 @@ class Files {
     $.header = new DOM('div', {id:'header'}).append([
           new DOM('button', {
             id:'hidePane',
-            title:'Hide/show project tree.'
+            title:Msg['HideShowProjectTree']
           }).onclick(this, () => {
             DOM.switchState($.section._dom, 'hidePane')
           }),
@@ -118,7 +118,7 @@ class DeviceFiles {
     $.fileOnTarget = new DOM('span')
     $.detailsFileOnTarget = DOM.prototypeDetails({
       id:'fileOnTarget',
-      innerText: "Device files",
+      innerText: Msg['DeviceFiles'],
       onevent: [{
         event:'click',
         self:this,
@@ -131,18 +131,18 @@ class DeviceFiles {
           this.contextMenu.open([
             {
               id:'add',
-              innerText:'New folder',
+              innerText:Msg['NewFolder'],
               fun:this.newFolder,
               args:[path]
             }, {
               id:'script',
-              innerText:'New script',
+              innerText:Msg['NewFile'],
               fun:this.newScript,
               args:[path]
             }, {
               id:'upload',
               accept:'.py,.csv,.md',
-              innerText:'Upload file',
+              innerText:Msg['UploadFile'],
               fun:this.uploadFile,
               args:[path]
             }
@@ -156,8 +156,8 @@ class DeviceFiles {
     $.saveToTarget = new DOM('button', {
       id:'upload',
       className:'icon text',
-      innerText:'Write',
-      title:'Write to device'
+      innerText:Msg['Write'],
+      title:Msg['WriteToDevice']
     }).onclick(this, this._fromEditor)
 
     this.parent._dom.sidebar.append($.detailsFileOnTarget)
@@ -221,7 +221,7 @@ class DeviceFiles {
       })
     })
     if (found.includes(false)){
-      console.error("Files: some directory don't exist or haven't been mapped!")
+      notification.send(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
       return true
     }
     ref.length = 0 // clear reference pointer to update with files
@@ -278,22 +278,22 @@ class DeviceFiles {
                   this.contextMenu.open([
                     {
                       id:'add',
-                      innerText:'New folder',
+                      innerText:Msg['NewFolder'],
                       fun:this.newFolder,
                       args:[path]
                     }, {
                       id:'script',
-                      innerText:'New script',
+                      innerText:Msg['NewFile'],
                       fun:this.newScript,
                       args:[path]
                     }, {
                       id:'upload',
-                      innerText:'Upload file',
+                      innerText:Msg['UploadFile'],
                       fun:this.uploadFile,
                       args:[path]
                     }, {
                       id:'remove',
-                      innerText:'Remove folder',
+                      innerText:Msg['RemoveFolder'],
                       fun:this.remove,
                       args:[path]
                     }
@@ -327,17 +327,17 @@ class DeviceFiles {
               this.contextMenu.open([
                 {
                   id:'run',
-                  innerText:'Execute script',
+                  innerText:Msg['ExecuteScript'],
                   fun:this.runOnTarget,
                   args:[`${_path}/${item.name}`]
                 }, {
                   id:'download',
-                  innerText:'Download',
+                  innerText:Msg['Download'],
                   fun:this.download,
                   args:[`${_path}/${item.name}`]
                 }, {
                   id:'remove',
-                  innerText:'Remove',
+                  innerText:Msg['Remove'],
                   fun:this.remove,
                   args:[`${_path}/${item.name}`]
                 },
@@ -639,12 +639,12 @@ class DeviceFiles {
   }
   newScript (path){
     this.contextMenu.oninput({
-      title:"New script's name",
-      placeholder:"eg.: my_script.py"
+      title:Msg['NewFilename'],
+      placeholder:`${Msg['eg']}: ${Msg['my_script']}.py`
     }, (input, ev) => {
       ev.preventDefault()
       let filename = input.value.replaceAll(' ','_'),
-          script = "# Create your script here"
+          script = `${Tool.format(Msg['CreateScriptHere'], filename)}`
 
       this.contextMenu.close()
 
@@ -684,10 +684,10 @@ class DeviceFiles {
       let error = str.match(reg_oserror)[1]
       switch (error) {
         case '39':
-          notification.send(`Folder "${path[1]}/${path[2]}" not empty, can't be removed.`)
+          notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['FolderNotEmpty']), path[1], path[2]}`)
           break
         default:
-          notification.send(`Could not remove folder ${path[1]}/${path[2]}.`)
+          notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['CouldNotRemoveFolder']), path[1], path[2]}`)
           break;
       }
     }
@@ -711,7 +711,7 @@ class DeviceFiles {
     //  return
 
     //notification.send(`Script ${cmd.match(reg)[1]} finished executing!`)
-    notification.send(`Script finished executing!`)
+    notification.send(`${Msg['PageFiles']}: ${Msg['ScriptFinishedExecuting']}`)
   }
   /* Download a file
    * @param{string} filename - Full path with filename
@@ -723,8 +723,8 @@ class DeviceFiles {
   }
   newFolder (path){
     this.contextMenu.oninput({
-      title:"New folder's name",
-      placeholder:"eg.: important_files"
+      title:Msg['NewFolderName'],
+      placeholder:`${Msg['eg']}: ${Msg['my_examples']}`
     }, (input, ev) => {
       ev.preventDefault()
       let folder = input.value.replaceAll('.', '-')
@@ -797,7 +797,7 @@ class ProjectFiles {
     $.section = new DOM(DOM.get('section#files'))
     $.detailsFileOnProject = DOM.prototypeDetails({
       id:'fileOnProject',
-      innerText: "Project files",
+      innerText: Msg['ProjectFiles'],
       onevent: [{
         event:'contextmenu',
         fun: (path, dom, ev) => {
@@ -805,18 +805,18 @@ class ProjectFiles {
           this.contextMenu.open([
             {
               id:'add',
-              innerText:'New folder',
+              innerText:Msg['NewFolder'],
               fun:this.newFolder,
               args:[path]
             }, {
               id:'script',
-              innerText:'New script',
+              innerText:Msg['NewFile'],
               fun:this.newScript,
               args:[path]
             }, {
               id:'upload',
               accept:'.py,.csv,.md',
-              innerText:'Upload file',
+              innerText:Msg['UploadFile'],
               fun:this.uploadFile,
               args:[path]
             }
@@ -830,7 +830,7 @@ class ProjectFiles {
     $.saveToLocal = new DOM('button', {
       id:'save',
       className:'icon',
-      title:'Save to project'
+      title:Msg['SaveToProject']
     }).onclick(this, this._fromEditor)
 
     this.parent._dom.sidebar.append($.detailsFileOnProject)
@@ -903,7 +903,7 @@ class ProjectFiles {
       obj = this.objByName(path, projectUID)
 
     if (obj === true || obj.script == undefined) {
-      bipes.page.notification.send(`Create paths or file for "${filename}" before saving to project.`)
+      bipes.page.notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['CreatePathFileBeforeSaving'], filename)}`)
       return
     }
     obj.script = file
@@ -911,12 +911,12 @@ class ProjectFiles {
   /**
    * Create a new folder, context menu input.
    * Will dispatch command and update project by reference on input.
-   * @param{string} path - Path to new folder
+   * @param {string} path - Path to new folder.
    */
   newFolder (path){
     this.contextMenu.oninput({
-      title:"New folder's name",
-      placeholder:"eg.: important_files"
+      title:Msg['NewFolderName'],
+      placeholder:`${Msg['eg']}:${Msg['my_examples']}`
     }, (input, ev) => {
       ev.preventDefault()
       let folder = input.value.replaceAll('.', '-')
@@ -936,10 +936,10 @@ class ProjectFiles {
     })
   }
   /**
-   * Create a new folder
-   * @param{string} path - Path to new folder
-   * @param{string} folder - Name of the new folder
-   * @param{string} projectUID - UID of the project with a new folder
+   * Create a new folder.
+   * @param {string} path - Path to new folder.
+   * @param {string} folder - Name of the new folder.
+   * @param {string} projectUID - UID of the project with a new folder.
    */
   _newFolder (path, folder, projectUID){
     let obj
@@ -958,7 +958,7 @@ class ProjectFiles {
 
     // Search if already exist
     if  (!obj.files.every(item => item.name !== folder)){
-      console.log(`Files: Folder ${folder} already exist in path "${path}"`)
+      console.log(`${Msg['PageFiles']}: ${Tool.format(Msg['FolderAlreadyExist'], folder, path)}"`)
       return
     }
 
@@ -977,7 +977,7 @@ class ProjectFiles {
   }
   /**
    * Remove folder or file, dispatch command and update project by reference.
-   * @param{string} path - Path to folder or file
+   * @param {string} path - Path to folder or file.
    */
   remove (path){
     this.contextMenu.close()
@@ -991,9 +991,9 @@ class ProjectFiles {
     project.write()
   }
   /**
-   * Remove folder or path
-   * @param{string} path - Path to new folder
-   * @param{string} projectUID - UID of the project with a new folder
+   * Remove folder or path.
+   * @param {string} path - Path to new folder.
+   * @param {string} projectUID - UID of the project with a new folder.
    */
   _remove (path, projectUID){
     // Remove DOM Node
@@ -1029,12 +1029,12 @@ class ProjectFiles {
   /**
    * Create a new file, context menu input.
    * Will dispatch command and update project by reference on input.
-   * @param{string} path - Path to new file
+   * @param {string} path - Path to new file.
    */
   newScript (path){
     this.contextMenu.oninput({
-      title:"New script's name",
-      placeholder:"eg.: my_script.py"
+      title:Msg['NewFilename'],
+      placeholder:`${Msg['eg']}: ${Msg['my_script']}.py`
     }, (input, ev) => {
       ev.preventDefault()
       let filename = input.value.replaceAll(' ','_')
@@ -1057,10 +1057,10 @@ class ProjectFiles {
   }
   /**
    * Create a new file
-   * @param{string} path - Path to new file
-   * @param{string} filename - Name of the new file
-   * @param{string} file - Content of the new file, if empty, will default
-   * @param{string} projectUID - UID of the project with a new file
+   * @param {string} path - Path to new file
+   * @param {string} filename - Name of the new file
+   * @param {string} file - Content of the new file, if empty, will default
+   * @param {string} projectUID - UID of the project with a new file
    */
   _newScript (path, filename, file, projectUID){
     let obj
@@ -1073,13 +1073,12 @@ class ProjectFiles {
       return
     let item = {
       name:filename,
-      script: file == undefined ? `# Create your "${filename}" script here` : file
+      script: file == undefined ? `${Tool.format(Msg['CreateScriptHere'], filename)}` : file
     }
 
     // Search if already exist
     if  (!obj.files.every(item => item.name !== filename)){
-      console.log(`Files: File "${filename}" already exist in path "${path}"`)
-      notification.send(`File "${filename}" already exist in path "${path}"`)
+      notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['FileAlreadyExist'], filename, path)}`)
       return
     }
 
@@ -1138,7 +1137,7 @@ class ProjectFiles {
     let obj = this.objByName(path)
 
     if (obj === true || obj.script == undefined) {
-      console.error('Files: File do not exist')
+      console.error(`${Msg['PageFiles']}: ${Msg['FileNotExist']}`)
       return
     }
     DOM.prototypeDownload(filename.substring(1), obj.script)
@@ -1158,7 +1157,7 @@ class ProjectFiles {
     let obj = this.objByName(path)
 
     if (obj === true || obj.script == undefined) {
-      console.error('Files: File do not exist')
+      console.error(`${Msg['PageFiles']}: ${Msg['FileNotExist']}`)
       return
     }
 
@@ -1171,7 +1170,7 @@ class ProjectFiles {
     ])
   }
   _execedOnTarget (str, cmd, tabUID){
-    notification.send('Script finished executing!')
+    notification.send(`${Msg['PageFiles']}: ${Msg['ScriptFinishedExecuting']}`)
   }
   /**
    * Build the file tree
@@ -1189,7 +1188,7 @@ class ProjectFiles {
             if (item.files[0].hasOwnProperty('empty')) {
               doms[doms.length - 1]._dom.open = true
               doms[doms.length - 1].append(
-                new DOM('span', {innerText:'(Empty)', className:'emptyDir'})
+                new DOM('span', {innerText:`(${Msg['Empty']})`, className:'emptyDir'})
               )
             } else
             _iterate (item.files, doms[doms.length - 1], path)
@@ -1246,22 +1245,22 @@ class ProjectFiles {
               this.contextMenu.open([
                 {
                   id:'add',
-                  innerText:'New folder',
+                  innerText:Msg['NewFolder'],
                   fun:this.newFolder,
                   args:[path]
                 }, {
                   id:'script',
-                  innerText:'New script',
+                  innerText:Msg['NewFile'],
                   fun:this.newScript,
                   args:[path]
                 }, {
                   id:'upload',
-                  innerText:'Upload file',
+                  innerText:Msg['UploadFile'],
                   fun:this.uploadFile,
                   args:[path]
                 }, {
                   id:'remove',
-                  innerText:'Remove folder',
+                  innerText:Msg['RemoveFolder'],
                   fun:this.remove,
                   args:[path]
                 }
@@ -1283,17 +1282,17 @@ class ProjectFiles {
           this.contextMenu.open([
             {
               id:'run',
-              innerText:'Execute script',
+              innerText:Msg['ExecuteScript'],
               fun:this.execOnTarget,
               args:[_path]
             }, {
               id:'download',
-              innerText:'Download',
+              innerText:Msg['Download'],
               fun:this.download,
               args:[_path]
             }, {
               id:'remove',
-              innerText:'Remove',
+              innerText:Msg['Remove'],
               fun:this.remove,
               args:[_path]
             },
@@ -1359,7 +1358,7 @@ class ProjectFiles {
     })
 
     if (found.includes(false)){
-      console.error("Files: some directory don't exist or haven't been mapped!")
+      notification.send(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
       return true
     }
     return ref
