@@ -69,6 +69,7 @@ umd-deps:
 	@codemirror/lang-python \
 	@codemirror/lang-markdown \
 	@codemirror/theme-one-dark
+	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 xterm:
 	@printf "[3/6] Fetching $(PURPLE)xterm$(NC).\n"
@@ -78,6 +79,7 @@ blockly:
 	@printf "[4/6] Fetching $(PURPLE)blockly$(NC).\n"
 	@git clone https://github.com/google/blockly.git --depth 1
 	@cp blockly/blockly_compressed.js static/libs/blockly/blockly.umd.js
+	@mkdir -p static/libs/blockly/blocks
 	@cp blockly/blocks_compressed.js static/libs/blockly/blocks/logic.umd.js
 	@mkdir -p static/libs/blockly/msg
 	@cp blockly/msg/js/en.js static/libs/blockly/msg/en.js
