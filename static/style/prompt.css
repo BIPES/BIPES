@@ -22,7 +22,7 @@ section#prompt .wrapper {
   padding: 0.5em 0.5em 0.5em 0.5em;
 }
 body.light section#prompt .wrapper {
-  background: #000;
+  background: #fff;
 }
 section#prompt .quick-actions {
   border-top: 1px solid #666;
@@ -40,6 +40,7 @@ section#prompt .quick-actions > span {
   white-space: nowrap;
   cursor: pointer;
 }
+
 /**
  * Copyright (c) 2014 The xterm.js authors. All rights reserved.
  * Copyright (c) 2012-2013, Christopher Jeffrey (MIT License)
@@ -117,10 +118,15 @@ section#prompt .quick-actions > span {
     resize: none;
 }
 
-.xterm .composition-view {
-    /* TODO: Composition position got messed up somewhere */
+body.light .xterm .composition-view {
+    background: #fff;
+    color: #000;
+}
+body.dark .xterm .composition-view {
     background: #000;
-    color: #FFF;
+    color: #fff;
+}
+.xterm .composition-view {
     display: none;
     position: absolute;
     white-space: nowrap;
@@ -131,9 +137,13 @@ section#prompt .quick-actions > span {
     display: block;
 }
 
-.xterm .xterm-viewport {
-    /* On OS X this is required in order for the scroll bar to appear fully opaque */
+body.dark .xterm .xterm-viewport {
     background-color: #000;
+}
+body.light .xterm .xterm-viewport {
+    background-color: #fff;
+}
+.xterm .xterm-viewport {
     overflow-y: scroll;
     cursor: default;
     position: absolute;

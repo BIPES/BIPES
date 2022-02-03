@@ -10,7 +10,7 @@ SUSE_DEPS = python python3-pip npm17 mosquitto
 NPM_DEPS = jsdoc
 
 
-all: yn-dependencies umd-deps xterm blockly flask database yn-mosquitto clean greeting run
+all: yn-dependencies umd-deps xterm blockly pip database yn-mosquitto clean greeting run
 
 yn-dependencies:
 	@printf "$(NC)[1/6] The dependencies $(PURPLE)$(DEPS) $(NPM_DEPS)$(NC) are needed.\n"
@@ -88,17 +88,17 @@ blockly:
 	@cp blockly/media/* static/media/blocks/
 	@rm -rf blockly
 
-flask:
-	@printf "[5/6] Creating enviroment and installing $(PURPLE)flask$(NC), \
-	$(PURPLE)sphinx$(NC), $(PURPLE)sphinx-js$(NC) and $(PURPLE)furo$(NC).\n"
+pip:
+	@printf "[5/6] Creating enviroment and installing $(PURPLE)flask flask-mqtt paho \
+	sphinx sphinx-js furo$(NC).\n"
 	@python3 -m venv venv
 	@. venv/bin/activate && \
-	pip install Flask sphinx sphinx-js furo && \
+	pip install Flask flask-mqtt sphinx sphinx-js furo && \
 	exit
 
 database:
 	@. venv/bin/activate && \
-	cd server && python -c "import database; database.make()" && \
+	python -c "import server.api; server.api.make()" && \
 	exit
 
 yn-mosquitto:
@@ -117,14 +117,12 @@ MOSQ_BIPES_CONF = /etc/mosquitto/conf.d/bipes.conf
 mosquitto:
 	@read -s -p "New password (mosquitto): " pwd;\
 	printf "\n" ; \
-	sudo mosquitto_passwd -c -b /etc/mosquitto/passwd bipes $$pwd ; \
-	echo  "$$pwd" > server/mosquitto.txt
-	@if [ ! -e $(MOSQ_BIPES_CONF) ]; then \
-	sudo bash -c 'echo  "allow_anonymus false\npasswod_file /etc/mosquitto/passwd" >> $(MOSQ_BIPES_CONF)' ; \
-	fi
+	sudo mosquitto_passwd -c -b /etc/mosquitto/conf.d/passwd bipes $$pwd ; \
+	echo  "$$pwd" > server/mosquitto.txt ; \
+	sudo bash -c 'printf  "allow_anonymous false\npassword_file /etc/mosquitto/conf.d/passwd \n" > $(MOSQ_BIPES_CONF)'
 	@sudo systemctl restart mosquitto
 	@. venv/bin/activate && \
-	cd server && python -c "import mosquitto; mosquitto.make()" && \
+	python -c "import server.mosquitto; server.mosquitto.make()" && \
 	exit
 	@printf "\n"
 	@read -p "Enable mosquitto service? (Starts with the OS) [y/N]: " mos2 ; \

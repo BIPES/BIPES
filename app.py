@@ -8,6 +8,7 @@ import struct
 import re
 import sqlite3
 
+
 app_name = 'BIPES'
 app_version = 'v0.01'
 
@@ -40,7 +41,8 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_mapping(
       SECRET_KEY = 'dev',
-      DATABASE = os.path.join(app.root_path, 'server/database.db')
+      API = os.path.join(app.root_path, 'server/api.db'),
+      MOSQUITTO = os.path.join(app.root_path, 'server/mosquitto.db')
     )
     if test_config is None:
         app.config.from_pyfile('server/config.py', silent=True)
@@ -48,8 +50,8 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
     
     
-    from server import database, mosquitto
-    app.register_blueprint(database.bp)
+    from server import api, mosquitto
+    app.register_blueprint(api.bp)
     app.register_blueprint(mosquitto.bp)
  
     # Return "compiled" html file.
@@ -92,9 +94,17 @@ def create_app(test_config=None):
     def go_to_ide():
         return redirect("/ide", code=302)   
     
-
+    # init mqtt subscriber
+    try:
+        mosquitto.listen(app)
+    except ConnectionRefusedError:
+        print('Could not connect to the MQTT broker, is mosquitto running?')
+      
     return app
     
+
+
+
 # Build BIPES static release
 def build_release():
     # Build styles

@@ -1,14 +1,13 @@
 drop table if exists mqtt;
 
 create table mqtt (
-  stamp datetime not null default(cast((julianday('now') - 2440587.5)*86400000 as integer)),
-  sid varchar(25) not null,
-  time varchar(6) primary key,
+  lastEdited datetime not null default(cast((julianday('now') - 2440587.5)*86400000 as integer)) primary key,
+  session varchar(18) not null,
   topic varchar(18) not null,
-  message real not null,
+  data text not null
 );
 
-create trigger stamped update of sid, time, topic, message
+create trigger stamped update of session, topic, data on mqtt
 begin
-  update mqtt set stamp = cast((julianday('now') - 2440587.5)*86400000 as integer) where stamp = old.stamp;
+  update mqtt set lastEdited = cast((julianday('now') - 2440587.5)*86400000 as integer) where lastEdited = old.lastEdited;
 end;
