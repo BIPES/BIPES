@@ -8,7 +8,7 @@ Blockly.Msg["VARIABLES"] = "Variables";
 Blockly.Msg["FUNCTIONS"] = "Functions";
 
 Msg = {
-  'PageBliocks':'Blocks',
+  'PageBlocks':'Blocks',
   'PageDevice':'Device',
   'PageFiles':'Files',
   'PageNotification':'Messages',

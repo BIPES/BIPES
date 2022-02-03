@@ -221,7 +221,7 @@ class DeviceFiles {
       })
     })
     if (found.includes(false)){
-      notification.send(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
+      console.error(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
       return true
     }
     ref.length = 0 // clear reference pointer to update with files
@@ -916,7 +916,7 @@ class ProjectFiles {
   newFolder (path){
     this.contextMenu.oninput({
       title:Msg['NewFolderName'],
-      placeholder:`${Msg['eg']}:${Msg['my_examples']}`
+      placeholder:`${Msg['eg']}: ${Msg['my_examples']}`
     }, (input, ev) => {
       ev.preventDefault()
       let folder = input.value.replaceAll('.', '-')
@@ -1358,7 +1358,7 @@ class ProjectFiles {
     })
 
     if (found.includes(false)){
-      notification.send(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
+      console.error(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
       return true
     }
     return ref

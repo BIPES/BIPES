@@ -7,11 +7,13 @@ NC=\033[0m
 
 DEPS = python pip npm mosquitto
 SUSE_DEPS = python python3-pip npm17 mosquitto
+NPM_DEPS = jsdoc
 
-all: yn-dependencies codemirror xterm blockly flask clean database yn-mosquitto greeting run
+
+all: yn-dependencies umd-deps xterm blockly flask database yn-mosquitto clean greeting run
 
 yn-dependencies:
-	@printf "$(NC)[1/6] The dependencies $(PURPLE)$(DEPS)$(NC) are needed.\n"
+	@printf "$(NC)[1/6] The dependencies $(PURPLE)$(DEPS) $(NPM_DEPS)$(NC) are needed.\n"
 	@read -p "Install dependencies? (requires sudo) [y/N]: " dep ; \
 	if [ "$$dep" = 'y' ] || [ "$$dep" = 'Y' ] ; \
 	then \
@@ -23,26 +25,28 @@ yn-dependencies:
 dependencies:
 	@if [ -n "$$(command -v dnf)" ] ; \
 	then \
-	printf "$(BLUE)Installing with dnf.$(NC)\n" ; \
+	printf "$(BLUE)Installing $(DEPS) with dnf.$(NC)\n" ; \
 	sudo dnf install $(DEPS) ; \
 	elif [ -n "$$(command -v apt)" ] ; \
 	then \
-	printf "$(BLUE)Installing with apt.$(NC)\n" ; \
+	printf "$(BLUE)Installing $(DEPS) with apt.$(NC)\n" ; \
 	sudo apt install $(DEPS) ; \
 	elif [ -n "$$(command -v zypper)" ] ; \
 	then \
-	printf "$(BLUE)Installing with zypper.$(NC)\n" ; \
+	printf "$(BLUE)Installing $(DEPS) with zypper.$(NC)\n" ; \
 	sudo zypper install $(SUSE_DEPS) ; \
 	else \
 	printf "$(RED)No package installed! Neither dnf, apt or zypper package \
 	managers have been found.$(NC)" ; \
 	fi
+	@printf "$(BLUE)Installing $(NPM_DEPS) with npm.$(NC)\n"
+	@sudo npm install -g $(NPM_DEPS)
 
 greeting:
 	@printf "😄 $(NC)Thanks for giving $(PURPLE)BIPES$(NC) a try!\n"
 
-codemirror:
-	@printf "[2/6] Fetching and building $(PURPLE)rollup$(NC) and \
+umd-deps:
+	@printf "[2/6] Fetching and building $(PURPLE)rollup$(NC) amd \
 	$(PURPLE)codemirror$(NC) with npm.\n"
 	@npm install rollup \
 	rollup-plugin-terser \
@@ -65,7 +69,6 @@ codemirror:
 	@codemirror/lang-python \
 	@codemirror/lang-markdown \
 	@codemirror/theme-one-dark
-	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 xterm:
 	@printf "[3/6] Fetching $(PURPLE)xterm$(NC).\n"
@@ -87,10 +90,10 @@ blockly:
 
 flask:
 	@printf "[5/6] Creating enviroment and installing $(PURPLE)flask$(NC), \
-	$(PURPLE)sphinx$(NC) and $(PURPLE)sphinx-js$(NC).\n"
+	$(PURPLE)sphinx$(NC), $(PURPLE)sphinx-js$(NC) and $(PURPLE)furo$(NC).\n"
 	@python3 -m venv venv
 	@. venv/bin/activate && \
-	pip install Flask sphinx sphinx-js && \
+	pip install Flask sphinx sphinx-js furo && \
 	exit
 
 database:
@@ -113,6 +116,7 @@ MOSQ_BIPES_CONF = /etc/mosquitto/conf.d/bipes.conf
 
 mosquitto:
 	@read -s -p "New password (mosquitto): " pwd;\
+	printf "\n" ; \
 	sudo mosquitto_passwd -c -b /etc/mosquitto/passwd bipes $$pwd ; \
 	echo  "$$pwd" > server/mosquitto.txt
 	@if [ ! -e $(MOSQ_BIPES_CONF) ]; then \
@@ -140,7 +144,7 @@ run:
 	flask run --port=5001 --host=0.0.0.0
 
 
-release: build-release zip clean
+release: build-release zip build-clean
 	@printf "😄 $(PURPLE)BIPES$(NC) release is ready!\n"
 
 build-release:
@@ -157,21 +161,17 @@ zip:
 	@cp ide-*.html .BIPES/
 	@cd .BIPES && ln -s ide-$(lang).html ide.html
 	@mkdir -p .BIPES/static/libs/blockly
-	@cp static/libs/* .BIPES/static/
-	@cp static/libs/blockly/* .BIPES/static/blockly
+	@cp static/libs/*.js .BIPES/static/libs
+	@cp static/libs/blockly/*.js .BIPES/static/libs/blockly
+	@cp -r static/libs/blockly/msg .BIPES/static/libs/blockly
 	@cp -r static/media .BIPES/static/
 	@cp -r static/msg .BIPES/static/
-	@cp static/style.css .BIPES/static/
+	@cp static/style.css .BIPES/static
 	@cd .BIPES && zip -y -q -r BIPES.zip * && \
 	mv BIPES.zip ../BIPES.zip
+
+build-clean:
 	@rm -rf .BIPES
-
-
-clean:
-	@rm -rf node_modules
-	@rm -rf blockly
-	@rm -rf package-lock.json
-	@rm -rf package.json
 	@rm -rf templates/libs/bipes.temp.js
 	@rm -f  ide-*.html
 	@rm -f  static/style.css
@@ -179,8 +179,16 @@ clean:
 	@rm -f  static/libs/blockly/toolbox.umd.js
 	@rm -f  static/libs/blockly/blocks.js
 	@rm -f  static/libs/blockly/pythonic.js
+
+clean: build-clean
+	@rm -rf node_modules
+	@rm -rf package-lock.json
+	@rm -rf package.json
 	@printf "$(BLUE)Build files cleared.$(NC)\n"
 
+doc:
+	@. venv/bin/activate && \
+	cd docs && make html  
 
 help:
 	@printf "$(NC)Usage: make [options] $(PURPLE)[params]$(NC) ...\n"
