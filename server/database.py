@@ -32,61 +32,78 @@ def close(e=None):
     if db is not None:
         db.close()
 
+# Exec sql
+def exec(__db, sql):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
+    data = db.execute(sql)
+    db.commit()
+    return 
+
+# Check if has table
+def has_table(__db, table_name):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
+    sql = 'select count(name) from sqlite_master where type="table" and name = ?'    
+    data = db.execute(sql, table_name).fetchone()
+    
+    exist = False
+    if data[0] == 1:
+      exist = True
+    return exist
 
 # Get data from database
-def select(database, table_name, columns, *args):
-    db = connect(database)
+def select(__db, table_name, columns, *args):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
 
     str_c = ', '.join(columns)
 
-    exec = f'select {str_c} from {table_name}'
+    sql = f'select {str_c} from {table_name}'
     if len(args) == 2:
-        exec += f' where lastEdited < ?'
-    exec += ' order by lastEdited desc'
+        sql += f' where lastEdited < ?'
+    sql += ' order by lastEdited desc'
     if len(args) == 2:
-        exec += f' limit ?'
-        data = db.execute(exec, (args[0], args[1])).fetchall() 
+        sql += f' limit ?'
+        data = db.execute(sql, (args[0], args[1])).fetchall() 
     else:
-        data = db.execute(exec).fetchall()
+        data = db.execute(sql).fetchall()
  
     db.close()
 
     return (table_name, columns, data)
 
 # Fetch data from database
-def fetch(database, table_name, columns, where):
-    db = connect(database)
+def fetch(__db, table_name, columns, where):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
 
     str_c = ', '.join(columns)
-    exec = f'select {str_c} from {table_name} where {where[0]} = ?'
-    data = db.execute(exec, (where[1],)).fetchone() 
+    sql = f'select {str_c} from {table_name} where {where[0]} = ?'
+    data = db.execute(sql, (where[1],)).fetchone() 
     db.close()
 
     return (table_name, columns, data)
 
 # Insert new data to database
-def insert(database, table_name, columns, values):
-    db = connect(database)
+def insert(__db, table_name, columns, values):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
 
     str_c = ', '.join(columns) 
     q_mark = ', '.join('?' for c in columns)
 
-    exec = f'insert into {table_name} ({str_c}) values ({q_mark})' 
-    db.execute(exec, values)
+    sql = f'insert into {table_name} ({str_c}) values ({q_mark})' 
+    db.execute(sql, values)
     db.commit()
     db.close()
     
     return (table_name, columns)
 
 # Remove data if values match
-def delete(database, table_name, columns, values):
-    db = connect(database)
+def delete(__db, table_name, columns, values):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
     
     str_c = ', '.join(columns)
     q_mark = ', '.join('?' for c in columns)
     
-    exec = f'delete from {table_name} where ({str_c}) = ({q_mark})'
-    db.execute(exec, values)
+    sql = f'delete from {table_name} where ({str_c}) = ({q_mark})'
+    db.execute(sql, values)
     
     db.commit()
     db.close()
@@ -94,16 +111,15 @@ def delete(database, table_name, columns, values):
     return (table_name, columns)
 
 # Update data to database
-def update(database, table_name, columns, values):
-    db = connect(database)
+def update(__db, table_name, columns, values):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
     
     str_c1 = ', '.join(columns[-2:])
     q_mark1 = ', '.join('?' for c in columns[-2:])
     str_c2 = ', '.join(columns[:-2])
     q_mark2 = ', '.join('?' for c in columns[:-2])
-    exec = f'update {table_name} set ({str_c2}) = ({q_mark2}) where ({str_c1}) = ({q_mark1})'
-    print (exec)
-    db.execute(exec, values)
+    sql = f'update {table_name} set ({str_c2}) = ({q_mark2}) where ({str_c1}) = ({q_mark1})'
+    db.execute(sql, values)
     db.commit()
     db.close()
     
@@ -127,5 +143,4 @@ def rows_to_json(data, single=False):
         json_list.append(json_dict) 
         
     return json_output 
-
 

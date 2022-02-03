@@ -1,26 +1,22 @@
 import sqlite3
 
-import click
 from flask import (
       Blueprint, g, request, current_app
   )
 from flask.cli import with_appcontext
 from flask_mqtt import Mqtt
-import functools
-import uuid
 import re
 import json
 
 from server import database as dbase
-
+#------------------------------------------------------------------------
+# SQL Macro to create new table
+sql_macro_table = "create table {} (lastEdited datetime not null default(cast((julianday('now') - 2440587.5)*86400000 as integer)) primary key, topic varchar(18) not null, data text not null)"
 
 #------------------------------------------------------------------------
 # Generate the database the first time, call only from the Makefile
 def make():
     db = sqlite3.connect('server/mosquitto.db')
-  
-    with open('server/mosquitto.sql') as f:
-        db.executescript(f.read())
     db.commit()
     db.close()
 
@@ -32,10 +28,18 @@ _db = 'MOSQUITTO'
 #---------------------------------------------------------------------------
 
 def listen(app):
+    passwd = ''
+    try:
+        with open('server/mosquitto.txt') as f:
+            passwd = f.read()
+    except:
+        print( "No password provided, skipping mqtt.")
+        return
+
     app.config['MQTT_BROKER_URL'] = '127.0.0.1'
     app.config['MQTT_BROKER_PORT'] = 1883
     app.config['MQTT_USERNAME'] = 'bipes'
-    app.config['MQTT_PASSWORD'] = '123'
+    app.config['MQTT_PASSWORD'] = passwd.strip()
     app.config['MQTT_KEEPALIVE'] = 5
     app.config['MQTT_TLS_ENABLED'] = False
     
@@ -54,9 +58,12 @@ def listen(app):
         data = msg.payload.decode()
     
         with app.app_context():
-            dbase.insert(_db, 'mqtt',
-                ['session','topic','data'],
-                (session, topic, json.dumps(data)))
+            db = dbase.connect(_db)
+            if not dbase.has_table(db, (session,)):
+              dbase.exec(db, sql_macro_table.format(session))
+            dbase.insert(db, session,
+                ['topic','data'],
+                (topic, data))
         
         print("Session:", session, "Topic:", topic, "Data:", data)
         
@@ -70,14 +77,16 @@ def listen(app):
     return
 
 # Get shared projects
-@bp.route('/ls', methods=('POST', 'GET'))
-def mosquitto_ls():
+@bp.route('/<session>/ls', methods=('POST', 'GET'))
+def mosquitto_ls(session):
     obj = request.json
-    cols = ['session','topic','data']
-    if obj != None and 'from' in obj and 'limit' in obj:
-        return dbase.rows_to_json(dbase.select(_db,'mqtt', cols, obj['from'], obj['limit']))
-    else:
-        return dbase.rows_to_json(dbase.select(_db,'mqtt', cols))
-        
-    
+    cols = ['topic','data']
 
+    db = dbase.connect(_db)
+    if not dbase.has_table(db, (session,)):
+        return {session:[]}
+
+    if obj != None and 'from' in obj and 'limit' in obj:
+        return dbase.rows_to_json(dbase.select(db, session, cols, obj['from'], obj['limit']))
+    else:
+        return dbase.rows_to_json(dbase.select(db, session, cols))

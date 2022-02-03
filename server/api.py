@@ -26,7 +26,7 @@ def make():
 #--------------------------------------------------------------------------
 # Blueprint
 bp = Blueprint('api', __name__, url_prefix='/api')
-database = 'API'
+_db = 'API'
 
 #---------------------------------------------------------------------------
 # Generic handlers
@@ -38,9 +38,9 @@ def project_ls():
     cols = ['uid','author','name','lastEdited']
 
     if obj != None and 'from' in obj and 'limit' in obj:
-        return dbase.rows_to_json(dbase.select('projects', cols, obj['from'], obj['limit']))
+        return dbase.rows_to_json(dbase.select(_db, 'projects', cols, obj['from'], obj['limit']))
     else:
-        return dbase.rows_to_json(dbase.select('projects', cols))
+        return dbase.rows_to_json(dbase.select(_db, 'projects', cols))
 
 
 
@@ -51,7 +51,7 @@ def project_o():
     cols = ['uid','auth','author','name','lastEdited', 'data']
       
     if 'uid' in obj:
-      _fetch = dbase.fetch('projects', cols, ['uid', obj['uid']])
+      _fetch = dbase.fetch(_db, 'projects', cols, ['uid', obj['uid']])
       return {} if _fetch[2] is None else dbase.rows_to_json(_fetch, single=True)
 
 
@@ -66,7 +66,7 @@ def project_cp():
     token = dbase.uid(6)
     auth = token + obj['cors_token']
     
-    dbase.insert('projects',
+    dbase.insert(_db, 'projects',
         ['uid','auth','author','name','data'],
         (uid, auth, author, name, json.dumps(obj['data'])))
    
@@ -79,7 +79,7 @@ def project_rm():
     uid = obj['uid']
     auth = obj['token'] + obj['cors_token']
   
-    dbase.delete('projects', ['uid', 'auth'], [uid, auth])
+    dbase.delete(_db, 'projects', ['uid', 'auth'], [uid, auth])
   
     return {'uid':uid}
 
@@ -96,7 +96,7 @@ def project_w():
     obj['data']['project']['shared']['uid'] = ''
     obj['data']['project']['shared']['token'] = ''
     
-    dbase.update('projects',
+    dbase.update(_db, 'projects',
         ['author','name','data','uid','auth'],
         (author, name, json.dumps(obj['data']), uid, auth)) 
   
