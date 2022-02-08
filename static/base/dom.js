@@ -185,14 +185,15 @@ class DOM {
     return (typeof b == 'object') ? b.querySelectorAll(a) : get(b).querySelectorAll(a)
   }
   /**
-  * Include or remove a class to a DOM Node.
+  * Include or remove a class to a DOM.
   */
-  static switchState (dom, _class){
+  static switchState (b, _class){
+    b = b instanceof DOM ? b._dom : b
     let cn = _class != undefined ? _class : `on`
-    if (dom.classList.contains(cn))
-      dom.classList.remove(cn)
+    if (b.classList.contains(cn))
+      b.classList.remove(cn)
     else
-      dom.classList.add(cn)
+      b.classList.add(cn)
   }
   /**
   * Generate a unique identifier.

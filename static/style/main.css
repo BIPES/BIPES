@@ -355,6 +355,9 @@ button#scan:before {
 .listy.more-button div:before {
 	background-position: left calc(-1.5rem*35) top;
 }
+button#code:before {
+  background-position: left calc(-1.5rem*17) top;
+}
 nav #app-version {
   text-align: center;
   font-weight: normal;

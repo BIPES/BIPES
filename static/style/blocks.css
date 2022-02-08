@@ -17,3 +17,80 @@ section#blocks {
 section#blocks.on {
   visibility: visible;
 }
+
+section#blocks #code, 
+section#blocks #run {
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
+  right: calc(30vw + 13.125rem);
+  transition: .25s ease border-radius, .25s ease background-color, .25s ease right, .25s ease bottom;
+}
+
+section#blocks #code:before, 
+section#blocks #run:before {
+  margin: 0.45rem;
+}
+section#blocks #run {
+  bottom: 6.5rem;
+  border-radius: 0 0 1.5rem 1.5rem;
+}
+section#blocks #code { 
+  border-radius: 1.5rem 1.5rem 0 0 ;
+  bottom: 9.5rem;
+}
+section#blocks #code, 
+section#blocks #run {
+  background: rgba(125,125,125,.5)
+}
+section#blocks #blocks-code.on #code, 
+section#blocks #blocks-code.on #run {
+  border-radius: 1.5rem;
+  right: 1.125rem;
+}
+section#blocks #blocks-code.on #code {
+  bottom: 4.75rem;
+}
+body.light section#blocks #blocks-code.on #code {
+  background-color: #fff;
+}
+body.dark section#blocks #blocks-code.on #code {
+  background-color: #282c34;
+}
+section#blocks #blocks-code.on #code:before {
+  background-position: left calc(-1.5rem*0) bottom;
+}
+section#blocks #blocks-code #codemirror {
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 1rem;
+}
+section#blocks #blocks-code #codemirror .cm-editor{
+  padding-bottom: 8rem;
+}
+section#blocks #blocks-code.on #run {
+  bottom: 1.5rem;
+}
+section#blocks #blocks-code.on #run {
+  background-color: rgba(84,190,255,.5);
+  box-shadow: 0 0.25rem .5rem rgba(0,0,0,.25);
+}
+body.light section#blocks #blocks-code {
+  background-color: #fff;
+}
+body.dark section#blocks #blocks-code {
+  background-color: #282c34;
+}
+section#blocks #blocks-code {
+  width: calc(30vw + 10rem);
+  top: 1rem;
+  bottom: 1rem;
+  transition: right ease .25s;
+  right: calc(-30vw - 11rem);
+  position: absolute;
+  border-radius: 1rem;
+  box-shadow: 0 0 .5rem rgba(0,0,0,.25);
+}
+section#blocks #blocks-code.on {
+  right: 1rem;
+}

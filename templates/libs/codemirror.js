@@ -14,10 +14,21 @@ let setTheme = (theme) => {
     return []
 }
 
-export default function CodeMirror6 (dom, theme){
+export default function CodeMirror6 (dom, theme, props){
+  let _props = []
+  if (props instanceof Object){
+    for (const key in props){
+      switch (key){
+        case 'contenteditable':
+          _props.push(EditorView.contentAttributes.of({ contenteditable: props[key] }))
+          break
+      }
+    }
+  }
   return new EditorView({
     state: EditorState.create({
       extensions: [
+        ..._props,
         genericImports,
         keymap.of([indentWithTab]),
         indentUnit.of('\t'),
