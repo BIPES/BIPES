@@ -358,6 +358,9 @@ button#scan:before {
 button#code:before {
   background-position: left calc(-1.5rem*17) top;
 }
+button#copy:before {
+  background-position: left calc(-1.5rem*36) top;
+}
 nav #app-version {
   text-align: center;
   font-weight: normal;
@@ -380,6 +383,7 @@ nav.on #app-version {
 }
 
 section {
+  overflow: hidden;
 	position: absolute;
 	display: none;
 	left: -1em;

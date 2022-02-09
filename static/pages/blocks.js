@@ -6,6 +6,7 @@ import {Tool} from '../base/tool.js'
 import {command} from '../base/command.js'
 import {channel} from '../base/channel.js'
 import {notification} from './notification.js'
+import {files} from './files.js'
 
 /* Code visually, uses Google Blockly as visual language library. */
 class Blocks {
@@ -162,17 +163,19 @@ class BlocksCode {
       title:Msg['ViewBlocksCode'],
       id:'code',
       className:'icon'
-    }).append([
-      new DOM('div')
-    ]).onevent('click', this, this.show)
+    }).onevent('click', this, this.show)
     $.runButton = new DOM('button', {
       title:Msg['RunBlocks'],
       className:'icon',
       id:'run'
-    }).append([
-      new DOM('div')
-    ]).onevent('click', this, this.exec)
+    }).onevent('click', this, this.exec)
+    $.editAsFileButton = new DOM('button', {
+      innerText:Msg['BlocksEditAsFile'],
+      className:'icon text',
+      id:'copy'
+    }).onevent('click', this, this.copyEdit)
     $.codemirror = new DOM('div', {id:'codemirror'})
+      .append([$.editAsFileButton])
     $.container = new DOM('div', {id:'blocks-code'})
       .append([$.codemirror, $.codeButton, $.runButton])
     dom.append([$.container])
@@ -223,6 +226,19 @@ class BlocksCode {
     notification.send(`${Msg['PageFiles']}: ${Msg['ScriptFinishedExecuting']}`)
   }
 
+  /*
+   * Generate code from blocks, copy, create script and open in the editor.
+   */
+  copyEdit (){
+    let script = Blockly.Python.workspaceToCode(this.parent.workspace) 
+    
+    files._dom.filename._dom.value = `/${Msg['BlocksPy']}`
+    files.codemirror.dispatch({
+      changes: {from:0, to:files.codemirror.state.doc.length, insert:script}
+    })
+    document.title = `${Msg['BlocksPy']} - BIPES`
+    files.nav.click()
+  }
 } 
 
 /* Dark blockly theme*/

@@ -643,7 +643,7 @@ class DeviceFiles {
       placeholder:`${Msg['eg']}: ${Msg['my_script']}.py`
     }, (input, ev) => {
       ev.preventDefault()
-      let filename = input.value.replaceAll(' ','_'),
+      let filename = input.value,
           script = `${Tool.format(Msg['CreateScriptHere'], filename)}`
 
       this.contextMenu.close()

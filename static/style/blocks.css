@@ -70,19 +70,22 @@ section#blocks #blocks-code #codemirror .cm-editor{
 }
 section#blocks #blocks-code.on #run {
   bottom: 1.5rem;
+  z-index: 2;
 }
 section#blocks #blocks-code.on #run {
   background-color: rgba(84,190,255,.5);
   box-shadow: 0 0.25rem .5rem rgba(0,0,0,.25);
 }
-body.light section#blocks #blocks-code {
+body.light section#blocks #blocks-code,
+body.light section#blocks #codemirror button#copy {
   background-color: #fff;
 }
-body.dark section#blocks #blocks-code {
+body.dark section#blocks #blocks-code,
+body.dark section#blocks #codemirror button#copy {
   background-color: #282c34;
 }
 section#blocks #blocks-code {
-  width: calc(30vw + 10rem);
+  width: calc(30% + 10rem);
   top: 1rem;
   bottom: 1rem;
   transition: right ease .25s;
@@ -93,4 +96,10 @@ section#blocks #blocks-code {
 }
 section#blocks #blocks-code.on {
   right: 1rem;
+}
+section#blocks #codemirror button#copy {
+  position: absolute;
+  bottom: 1.5rem;
+  margin-left: 1.5em;
+  z-index: 1;
 }

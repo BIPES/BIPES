@@ -45,6 +45,11 @@ Msg = {
   'DeviceFiles':'Device files',
   'CouldNotRemoveFolder':'Could not remove folder "{0}/{1}".',
   'FolderNotEmpty':'Folder "{0}/{1}" not empty, can\'t be removed.',
-  'CreateScriptHere':'# Create your "{0}" script here'
+  'CreateScriptHere':'# Create your "{0}" script here',
+
+  'ViewBlocksCode':'View/hide blocks\' generated code',
+  'BlocksEditAsFile':'Copy script and edit',
+  'RunBlocks':'Run blocks in the device.',
+  'BlocksPy':'blocks.py'
 }
 

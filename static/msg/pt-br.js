@@ -46,5 +46,10 @@ Msg = {
   'DeviceFiles':'Arquivos no dispositivo',
   'CouldNotRemoveFolder':'Não foi possível remover a pasta "{0}/{1}".',
   'FolderNotEmpty':'Pasta "{0}/{1}" não está vazia e não pode ser removida.',
-  'CreateScriptHere':'# Crie o seu script "{0}" aqui.'
+  'CreateScriptHere':'# Crie o seu script "{0}" aqui.',
+  
+  'ViewBlocksCode':'Ver/esconder código gerado pelos blocos.',
+  'BlocksEditAsFile':'Copiar código e editar',
+  'RunBlocks':'Executar blocos no dispositivo.',
+  'BlocksPy':'blocos.py'
 }
