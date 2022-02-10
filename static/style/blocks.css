@@ -76,6 +76,12 @@ section#blocks #blocks-code.on #run {
   background-color: rgba(84,190,255,.5);
   box-shadow: 0 0.25rem .5rem rgba(0,0,0,.25);
 }
+section#blocks #blocks-code #run:before {
+  transition: ease .125s background-position;
+}
+section#blocks #blocks-code #run.on:before {
+  background-position: left calc(-1.5rem*18) bottom;
+}
 body.light section#blocks #blocks-code,
 body.light section#blocks #codemirror button#copy {
   background-color: #fff;

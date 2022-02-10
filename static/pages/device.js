@@ -466,7 +466,7 @@ class WebSocketSetup {
     })
     $.info = new DOM('span', {
       className:'icon text warnings',
-      innerText:"ws don't work in https, only wss."
+      innerText:"ws does not work in https, only wss."
     })
     $.wrapper = new DOM('div')
       .append([$.title, $.info]);

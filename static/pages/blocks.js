@@ -155,7 +155,8 @@ class BlocksCode {
     this.generating = false // is generating code
     this.parent = parent
 
-    this.interval           // store watcher interval
+    this.interval           // store watcher interval.
+    this.executing          // store if is executing code.
 
     let $ = this._dom = {}
   
@@ -202,6 +203,15 @@ class BlocksCode {
     DOM.switchState(this._dom.container)
   }
   watcher (){
+    // Handle executing change without triggering DOM change everytime.
+    // ::TODO:: Make channel block mirror master tab state.
+    if (channel.lock && !this.executing){
+      this.executing = true
+      this._dom.runButton._dom.classList.add('on')
+    } else if (!channel.lock && this.executing){
+      this.executing = false
+      this._dom.runButton._dom.classList.remove('on')
+    }    
     if (!this.generating)
       return
     
@@ -212,6 +222,15 @@ class BlocksCode {
     })
   }
   exec (){
+    // If already executing, stop.
+    if (this.executing){
+      command.dispatch(channel, 'push', [
+        '\x03',
+        channel.targetDevice, [], command.tabUID
+      ]) 
+      return
+    }
+
     let script = Blockly.Python.workspaceToCode(this.parent.workspace) 
    
     let cmd = channel.pasteMode(script)
@@ -223,7 +242,8 @@ class BlocksCode {
     ])
   }
   _execedOnTarget (str, cmd, tabUID){
-    notification.send(`${Msg['PageFiles']}: ${Msg['ScriptFinishedExecuting']}`)
+    this._dom.runButton._dom.classList.remove('on')
+    notification.send(`${Msg['PageBlocks']}:${Msg['ScriptFinishedExecuting']}`)
   }
 
   /*

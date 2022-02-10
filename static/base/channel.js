@@ -20,6 +20,7 @@ class Channel {
     this.input = []   // Input to be sent to a device
     this.output = ''  // Output from the last command run in the decide
     this.watcher      // Store the interval to send data to a device
+    // ::TODO:: Ping this.lock across tabs to sync the terminal state
     this.lock = false // If the terminal is free to send new data
     this.dirty = false// If the terminal has input (user raw input or timers)
     this.callbacks = []
