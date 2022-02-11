@@ -19,3 +19,4 @@ static/media/blocks/
 BIPES
 
 server/*.txt
+static/import/*

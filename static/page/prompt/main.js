@@ -1,9 +1,9 @@
 
 "use strict";
 
-import {DOM, Animate} from '../base/dom.js'
-import {command} from '../base/command.js'
-import {channel} from '../base/channel.js'
+import {DOM, Animate} from '../../base/dom.js'
+import {command} from '../../base/command.js'
+import {channel} from '../../base/channel.js'
 
 class Prompt {
   constructor (){

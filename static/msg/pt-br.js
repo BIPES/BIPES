@@ -15,6 +15,7 @@ Msg = {
   'PageNotification': 'Mensagens',
   'PageProject': 'Projetos',
   'PagePrompt': 'Console',
+  'PageDashboard':'Painel',
   
   'Download':'Baixar',
   'Remove':'Remover',

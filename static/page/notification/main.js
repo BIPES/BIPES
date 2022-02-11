@@ -1,8 +1,8 @@
 "use strict";
 
-import {DOM, Animate} from '../base/dom.js'
-import {command} from '../base/command.js'
-import {storage} from '../base/storage.js'
+import {DOM, Animate} from '../../base/dom.js'
+import {command} from '../../base/command.js'
+import {storage} from '../../base/storage.js'
 
 
 class Notification {

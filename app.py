@@ -20,7 +20,7 @@ available_lang = ['en','pt-br','de','es']
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
 
 # Preferred order in the navigation bar
-pref_order = ['blocks', 'device', 'files', 'prompt', 'project', 'notification']
+pref_order = ['blocks', 'dashboard', 'device', 'prompt', 'files', 'notification', 'project']
 def preferred_page_order(page):
     _page = []
     for elem in pref_order:
@@ -75,7 +75,10 @@ def create_app(test_config=None):
     # Return concatanate styles.
     @app.route("/static/style.css")
     def style():
-        return Response(concat_files("static/style/*.css"), mimetype='text/css')
+        return Response(
+            concat_files("static/style/*.css") + \
+            concat_files("static/page/*/style.css"),
+            mimetype='text/css')
     
     # Return "compiled" toolboxes xml embedded in a js file.
     @app.route("/static/libs/blockly/toolbox.umd.js")
@@ -104,7 +107,7 @@ def create_app(test_config=None):
     
     @app.route('/')
     def go_to_ide():
-        return redirect("/ide", code=302)   
+        return redirect("/ide", code=302)
     
     # init mqtt subscriber
     try:
@@ -148,7 +151,7 @@ def ide(lang=None, import_type='module'):
     lang = default_lang if lang == None else lang
 
     lang_imports = render_lang(lang)
-    page = get_files_names("static/pages/*.js", r"^static/pages/(.*).js")
+    page = get_files_names("static/page/*", r"^static/page/(.*)")
     imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js") + explicit_imports
     
     page = preferred_page_order(page)
@@ -238,8 +241,8 @@ def blockly_toolbox_generator ():
 def bipes_imports(import_type='module'):
     base = get_files_names("static/base/*.js", r"^static/base/(.*).js")
     base.remove('dom'); base.remove('tool')
-    page = get_files_names("static/pages/*.js", r"^static/pages/(.*).js")
+    page = get_files_names("static/page/*", r"^static/page/(.*)")
+
     return render_template('libs/bipes.js', base=base,
-                           page=page,
-                           import_type=import_type)
+                           page=page, import_type=import_type)
 

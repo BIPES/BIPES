@@ -1,12 +1,12 @@
 "use strict";
 
-import {DOM, Animate} from '../base/dom.js'
-import {command} from '../base/command.js'
-import {storage} from '../base/storage.js'
-import {channel} from '../base/channel.js'
-import {rosetta} from '../base/rosetta.js'
+import {DOM, Animate} from '../../base/dom.js'
+import {command} from '../../base/command.js'
+import {storage} from '../../base/storage.js'
+import {channel} from '../../base/channel.js'
+import {rosetta} from '../../base/rosetta.js'
 
-import {notification} from './notification.js'
+import {notification} from '../notification/main.js'
 
 class Device {
   constructor (){
@@ -111,7 +111,7 @@ class Device {
       .append([$.container._dom])
     $.section._dom.classList.add('default')
     $.nav = new DOM(DOM.get('a#device'))
-    
+
     $.webSocketSetup = new DOM('div')
     this.webSocketSetup = new WebSocketSetup($.webSocketSetup, this)
     $.buttonWebSocket.onclick(this.webSocketSetup, this.webSocketSetup.open)
@@ -129,7 +129,7 @@ class Device {
   }
   /*
    * Trigger WebSerial connection to a device.
-   */  
+   */
   connectWebSerial (){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
@@ -147,7 +147,7 @@ class Device {
   }
   /*
    * Trigger WebBluetooth connection to a device.
-   */  
+   */
   connectWebBluetooth (){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
@@ -482,7 +482,7 @@ class WebSocketSetup {
           $.buttonScan, $.buttonConnect
         ])
       ])
-    
+
     $.webSocketSetup.append($.wrapper)
   }
   /**
@@ -527,23 +527,23 @@ class WebSocketScan {
     this.count = 0              // Increment for every error or connect
     this.found = 0              // How many have been found.
     this.scanning = false       // Is currently scanning?
-    
+
     let $ = this._dom = {}
     $.label = new DOM('h4', {
-      innerText:'Scan network for addresses like:'  
-    }) 
+      innerText:'Scan network for addresses like:'
+    })
     $.inputProtocol = new DOM('input', {
       value: 'ws',
       placeholder: 'xx'
-    }) 
+    })
     $.inputPrefix = new DOM('input', {
       value: '192.168.0',
       placeholder: '000.000.0'
-    }) 
+    })
     $.inputPort = new DOM('input', {
       value: '8266,8261',
       placeholder: '0000'
-    }) 
+    })
     $.buttonScan = new DOM('button', {
       innerText:'Start scan',
       className:'noicon text',
@@ -582,10 +582,10 @@ class WebSocketScan {
         prefix = $.inputPrefix._dom.value.replaceAll(' ','').split(','),
         ports = $.inputPort._dom.value.replaceAll(' ','').split(','),
         last = 0
-    
+
     if (!protocol.every(this._checkIPAddress)) {
       notification.send('Device: Invalid network prefix.')
-      return  
+      return
     }
     this.multiplier = protocol.length * prefix.length * ports.length
     this.scanning = true
@@ -600,11 +600,11 @@ class WebSocketScan {
             ws.start = performance.now
             ws.port = por
             ws.onerror = () => {
-              this.progress() 
+              this.progress()
             }
             ws.onopen = () => {
               this.include(ws.url)
-              this.progress() 
+              this.progress()
               ws.close()
             }
           }
@@ -616,10 +616,10 @@ class WebSocketScan {
    * Update process status.
    */
   progress (){
-    this._dom.status._dom.innerText = `Scanned ${this.count} of ${this.last*this.multiplier} IPs, found ${this.found}:` 
-    
+    this._dom.status._dom.innerText = `Scanned ${this.count} of ${this.last*this.multiplier} IPs, found ${this.found}:`
+
     if (this.count == (this.last) * this.multiplier){
-      this._dom.status._dom.innerText = `Done scanning ${this.last*this.multiplier} IPs, found ${this.found}:` 
+      this._dom.status._dom.innerText = `Done scanning ${this.last*this.multiplier} IPs, found ${this.found}:`
       this.scanning = false
       this.multiplier = 0
       this.count = 0

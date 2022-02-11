@@ -1,12 +1,12 @@
 
 "use strict";
 
-import {DOM, Animate} from '../base/dom.js'
-import {Tool} from '../base/tool.js'
-import {command} from '../base/command.js'
-import {channel} from '../base/channel.js'
-import {notification} from './notification.js'
-import {files} from './files.js'
+import {DOM, Animate} from '../../base/dom.js'
+import {Tool} from '../../base/tool.js'
+import {command} from '../../base/command.js'
+import {channel} from '../../base/channel.js'
+import {notification} from '../notification/main.js'
+import {files} from '../files/main.js'
 
 /* Code visually, uses Google Blockly as visual language library. */
 class Blocks {
@@ -58,7 +58,7 @@ class Blocks {
     }
 
     // Init code generation and viewer module.
-    this.code = new BlocksCode(this, $.section) 
+    this.code = new BlocksCode(this, $.section)
   }
   /*
    * On display, initiates the page.
@@ -159,7 +159,7 @@ class BlocksCode {
     this.executing          // store if is executing code.
 
     let $ = this._dom = {}
-  
+
     $.codeButton = new DOM('button', {
       title:Msg['ViewBlocksCode'],
       id:'code',
@@ -180,11 +180,11 @@ class BlocksCode {
     $.container = new DOM('div', {id:'blocks-code'})
       .append([$.codemirror, $.codeButton, $.runButton])
     dom.append([$.container])
-    
+
 
     this.codemirror = CodeMirror($.codemirror._dom, Tool.fromUrl('theme'),
       {contenteditable:false})
-    
+
     command.add([this.parent, this], {
       execedOnTarget: this._execedOnTarget,
     })
@@ -211,10 +211,10 @@ class BlocksCode {
     } else if (!channel.lock && this.executing){
       this.executing = false
       this._dom.runButton._dom.classList.remove('on')
-    }    
+    }
     if (!this.generating)
       return
-    
+
     this.codemirror.dispatch({
       changes: {from:0, to:this.codemirror.state.doc.length,
         insert:Blockly.Python.workspaceToCode(this.parent.workspace)
@@ -227,12 +227,12 @@ class BlocksCode {
       command.dispatch(channel, 'push', [
         '\x03',
         channel.targetDevice, [], command.tabUID
-      ]) 
+      ])
       return
     }
 
-    let script = Blockly.Python.workspaceToCode(this.parent.workspace) 
-   
+    let script = Blockly.Python.workspaceToCode(this.parent.workspace)
+
     let cmd = channel.pasteMode(script)
     command.dispatch(channel, 'push', [
       cmd,
@@ -250,8 +250,8 @@ class BlocksCode {
    * Generate code from blocks, copy, create script and open in the editor.
    */
   copyEdit (){
-    let script = Blockly.Python.workspaceToCode(this.parent.workspace) 
-    
+    let script = Blockly.Python.workspaceToCode(this.parent.workspace)
+
     files._dom.filename._dom.value = `/${Msg['BlocksPy']}`
     files.codemirror.dispatch({
       changes: {from:0, to:files.codemirror.state.doc.length, insert:script}
@@ -259,7 +259,7 @@ class BlocksCode {
     document.title = `${Msg['BlocksPy']} - BIPES`
     files.nav.click()
   }
-} 
+}
 
 /* Dark blockly theme*/
 Blockly.Themes.Dark = Blockly.Theme.defineTheme('dark', {

@@ -1,12 +1,12 @@
 "use strict"
 
-import {Tool, API} from '../base/tool.js'
-import {DOM, Animate, ContextMenu} from '../base/dom.js'
-import {command} from '../base/command.js'
-import {storage} from '../base/storage.js'
-import {navigation} from '../base/navigation.js'
+import {Tool, API} from '../../base/tool.js'
+import {DOM, Animate, ContextMenu} from '../../base/dom.js'
+import {command} from '../../base/command.js'
+import {storage} from '../../base/storage.js'
+import {navigation} from '../../base/navigation.js'
 
-import {notification} from './notification.js'
+import {notification} from '../notification/main.js'
 
 class Project {
   constructor (){
@@ -18,7 +18,7 @@ class Project {
     this.cors_token = storage.has('cors_token') ?
                       storage.fetch('cors_token') :
                       storage.set('cors_token', Tool.UID().substring(0,12))
-    
+
     this.username = storage.has('username') ?
                     storage.fetch('username') :
                     storage.set('username', 'a user')
@@ -78,10 +78,10 @@ class Project {
         console.error(e)
       }
     })
-    
+
     if (Object.keys(this.projects).length == 0)
       this.new()
-    
+
     // Init shared projects if server mode
     if (!navigation.isLocal)
       this.shared = new SharedProject(this, $.wrapper)
@@ -234,7 +234,7 @@ class Project {
       DOM.get('#name', child).disabled = false
     }
     if (this.hasOwnProperty('shared'))
-      this.shared.init()    
+      this.shared.init()
 
     this.inited = true
   }
@@ -337,7 +337,7 @@ class Project {
            })
          }
          this.contextMenu.open(actions, ev)
-       }) 
+       })
   }
   /*
    * Write project from current scope to localStorage.
@@ -365,10 +365,10 @@ class Project {
 
       if (name == undefined || name == '')
         return
-      
+
       let obj = {...this.projects[uid].project}
       obj.name = name
-      
+
       this.update({project:obj}, uid)
     })
   }
@@ -456,15 +456,15 @@ class Project {
 
     API.do('project/cp', {
       cors_token:this.cors_token,
-      data:this.projects[uid] 
+      data:this.projects[uid]
     }).then(obj => {
       let proj = {...this.projects[uid].project}
       proj.shared = {
         uid:obj.uid,
         token:obj.token
       }
-      
-      this.update({project:proj}, uid) 
+
+      this.update({project:proj}, uid)
       this.shared._dom.projects._dom.insertBefore(
         this.shared._domCard({
           uid:obj.uid,
@@ -525,7 +525,7 @@ class Project {
           uid:'',
           token:''
         }
-        this.update({project:_proj}, uid)      
+        this.update({project:_proj}, uid)
       } catch(e){}
       let dom = DOM.get(`[data-uid='${obj.uid}']`, this.shared._dom.projects)
       if (dom !== null)
@@ -556,7 +556,7 @@ class SharedProject {
     // This is a lazy object and is not in sync with the DOM list.
     this.projects = []
     this.inited = false
-    this.firstInited = false    
+    this.firstInited = false
 
     let $ = this._dom = {}
 
@@ -577,7 +577,7 @@ class SharedProject {
                   .onclick(this, this.fetchAutoFrom)
               ])
         ])
-    ]) 
+    ])
   }
   init (){
     if (!this.firstInited) {
@@ -607,7 +607,7 @@ class SharedProject {
    */
   async fetchSome (args, notify){
     API.do('project/ls', args)
-      .then(obj => { 
+      .then(obj => {
         let doms = []
         // Push unique values and also return an array of these unique
         Tool.pushUnique(this.projects, obj.projects, 'uid')
@@ -629,7 +629,7 @@ class SharedProject {
         this.parent.new(undefined, obj.projects[0].data)
       else
         notification.send('Project: Shared project does not exist anymore.')
-    }) 
+    })
     .catch(e => {console.error(e)})
   }
   /*
@@ -637,7 +637,7 @@ class SharedProject {
    */
   fetchAutoFrom (){
     // Get oldest edited project
-    let obj = Tool.getMin(this.projects, 'lastEdited') 
+    let obj = Tool.getMin(this.projects, 'lastEdited')
     if (obj !== null)
       this.fetchSome({from:obj.lastEdited, limit:10}, true)
     else
@@ -670,7 +670,7 @@ class SharedProject {
           })
         ])
       ])
-      .onclick(this, this.clone, [item.uid]) 
+      .onclick(this, this.clone, [item.uid])
   }
 }
 

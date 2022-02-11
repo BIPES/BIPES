@@ -3,7 +3,7 @@ import { {{item}} } from '../../static/base/{{item}}.js'
 {% endfor %}
 
 {% for item in page -%}
-import { {{item}} } from '../../static/pages/{{item}}.js'
+import { {{item}} } from '../../static/page/{{item}}/main.js'
 {% endfor %}
 
 export default function Bipes (){

@@ -1,13 +1,13 @@
 "use strict";
 
-import {DOM, ContextMenu, Animate} from '../base/dom.js'
-import {Tool} from '../base/tool.js'
-import {command} from '../base/command.js'
-import {rosetta} from '../base/rosetta.js'
-import {channel} from '../base/channel.js'
+import {DOM, ContextMenu, Animate} from '../../base/dom.js'
+import {Tool} from '../../base/tool.js'
+import {command} from '../../base/command.js'
+import {rosetta} from '../../base/rosetta.js'
+import {channel} from '../../base/channel.js'
 
-import {notification} from './notification.js'
-import {project} from './project.js'
+import {notification} from '../notification/main.js'
+import {project} from '../project/main.js'
 
 class Files {
   constructor (){
