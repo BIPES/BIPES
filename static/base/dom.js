@@ -21,10 +21,11 @@ class DOM {
     case 'summary':
     case 'details':
     case 'hr':
+    case 'a':
     case '':
         this._dom = document.createElement (dom);
         if (typeof tags == 'object') for (const tag in tags) {
-          if (['innerText', 'className', 'id', 'title', 'innerText', 'value', 'tabIndex', 'role', 'ariaPressed'].includes(tag))
+          if (['innerText', 'className', 'id', 'title', 'innerText', 'value', 'tabIndex', 'role', 'href', 'ariaPressed'].includes(tag))
            this._dom[tag] = tags[tag]
           else
             this._dom.dataset[tag] = tags[tag]

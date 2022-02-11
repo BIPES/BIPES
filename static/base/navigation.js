@@ -136,7 +136,7 @@ function handleResize (){
       setTimeout(() => {window.bipes.page[item].resize()}, 125)
   })
 }
-
+/* Build the events on the navigation bar. */
 class Navigation {
   constructor (){
     this.current = ['','','']
@@ -144,9 +144,9 @@ class Navigation {
     this.isLocal = 'file:' == window.location.protocol
 
     let $ = this._dom = {}
-    $.nav = DOM.get ('nav')
-    $.menu = DOM.get ('#menu', $.nav)
-    $.panels = DOM.getAll ('a', $.nav)
+    $.nav = DOM.get('nav')
+    $.menu = DOM.get('#menu', $.nav)
+    $.panels = DOM.get('#panels', $.nav)
     $.menu.onclick = () => {
       DOM.switchState (this._dom.nav)
     }
@@ -155,11 +155,10 @@ class Navigation {
     document.body.className = Tool.fromUrl('theme')
   }
   init (){
-    for (let module in window.bipes.page) {
-      window.bipes.page[module].nav = DOM.get(`a#${module}`, this._dom.nav)
-      window.bipes.page[module].nav.innerText = Msg[`Page${Tool.firstUpper(module)}`]
-      window.bipes.page[module].section = DOM.get(`section#${module}`)
-      window.bipes.page[module].nav.onauxclick = (ev) => {
+    for (let module in bipes.page) {
+      let a = DOM.get(`a#${module}`, this._dom.panels)
+      a.innerText = Msg[`Page${Tool.firstUpper(module)}`]
+      a.onauxclick = (ev) => {
         ev.preventDefault()
         // Return on right click
         if (ev.which !== 2)
@@ -167,22 +166,24 @@ class Navigation {
 
         let _url = new URL(location.href)
         _url.searchParams.set('page', ev.target.id)
-        window.open(_url, '_blank').focus()
+        open(_url, '_blank').focus()
+        
       }
-      window.bipes.page[module].nav.onclick = (ev) => {
+      a.onclick = (ev) => {
         ev.preventDefault()
-        handleLink.apply(window.bipes.page[module], [this, 1, window.bipes.page, module, true])
+        handleLink.apply(window.bipes.page[module], [this, 1, bipes.page, module, true])
       }
-      window.bipes.page[module].nav.addEventListener('contextmenu', (ev) => {
+      a.addEventListener('contextmenu', (ev) => {
         ev.preventDefault()
-        handleLink.apply(window.bipes.page[module], [this, 2, window.bipes.page, module, true])
+        handleLink.apply(window.bipes.page[module], [this, 2, bipes.page, module, true])
       })
+      bipes.page[module].section = DOM.get(`section#${module}`)
+      bipes.page[module].nav = a
     }
-    window.onpopstate = () => {interpretLink(true, window.bipes.page)}
-    window.onresize = () => {handleResize()}
+    onpopstate = () => {interpretLink(true, bipes.page)}
+    onresize = () => {handleResize()}
 
-    interpretLink(false, window.bipes.page)
-
+    interpretLink(false, bipes.page)
   }
 }
 

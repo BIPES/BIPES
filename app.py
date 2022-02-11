@@ -19,6 +19,18 @@ default_lang = 'en'
 available_lang = ['en','pt-br','de','es']
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
 
+# Preferred order in the navigation bar
+pref_order = ['blocks', 'device', 'files', 'prompt', 'project', 'notification']
+def preferred_page_order(page):
+    _page = []
+    for elem in pref_order:
+        if elem in page:
+            _page.append(elem)
+            page.remove(elem)
+
+    _page.extend(page)
+    return _page
+
 # Libraries explicit set.
 # Probably create a */package.json for directories, to it would be super easy to 
 # implement complex plugins.
@@ -139,6 +151,8 @@ def ide(lang=None, import_type='module'):
     page = get_files_names("static/pages/*.js", r"^static/pages/(.*).js")
     imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js") + explicit_imports
     
+    page = preferred_page_order(page)
+  
     return render_template('ide.html', app_name=app_name, app_version=app_version,
                            page=page, imports=imports,
                            lang_imports=lang_imports, import_type=import_type)
