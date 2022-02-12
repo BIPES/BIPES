@@ -9,52 +9,24 @@ class DOM {
       this._dom = dom
       return
     }
-    switch (dom) {
-    case 'button':
-    case 'h2':
-    case 'h3':
-    case 'h4':
-    case 'span':
-    case 'div':
-    case 'select':
-    case 'option':
-    case 'summary':
-    case 'details':
-    case 'hr':
-    case 'a':
-    case '':
-        this._dom = document.createElement (dom);
-        if (typeof tags == 'object') for (const tag in tags) {
-          if (['innerText', 'className', 'id', 'title', 'innerText', 'value', 'tabIndex', 'role', 'href', 'ariaPressed'].includes(tag))
-           this._dom[tag] = tags[tag]
-          else
-            this._dom.dataset[tag] = tags[tag]
-        }
-        break
-    case 'video':
-    case 'img':
-        this._dom = document.createElement (dom);
-        if (typeof tags == 'object') for (const tag in tags) {
-          if (['preload', 'controls', 'autoplay', 'src', 'id', 'className'].includes(tag))
-           this._dom[tag] = tags[tag]
-        }
-        break
-    case 'form':
-    case 'input':
-    case 'label':
-    case 'textarea':
-        this._dom = document.createElement (dom);
-        if (typeof tags == 'object') for (const tag in tags) {
-          if (['value', 'className', 'id', 'placeholder', 'htmlFor', 'type', 'autocomplete', 'innerText', 'name', 'accept', 'disabled'].includes(tag))
-           this._dom[tag] = tags[tag]
-        }
-        break
+    let known_tags = [
+      'innerText', 'className', 'id', 'title', 'innerText',
+      'value', 'tabIndex', 'role', 'href', 'ariaPressed', 'preload', 'controls',
+      'autoplay', 'src', 'placeholder', 'htmlFor', 'type', 'autocomplete',
+      'name', 'accept', 'disabled'
+    ]
+    this._dom = document.createElement (dom);
+    if (typeof tags == 'object') for (const tag in tags) {
+      if (known_tags.includes(tag))
+       this._dom[tag] = tags[tag]
+      else
+        this._dom.dataset[tag] = tags[tag]
     }
   }
   /**
-  * Append a ``onchange`` event.
-  * @param {function} ev - Function to be executed on click.
-  */
+   * Append a ``onchange`` event.
+   * @param {function} ev - Function to be executed on click.
+   */
   onchange (self, ev, args){
     this._dom.onchange = (e) => {
       if (typeof args == 'undefined')
@@ -67,9 +39,9 @@ class DOM {
   return this
   }
   /**
-  * Append a ``onclick`` event.
-  * @param {function} ev - Function to be executed on click.
-  */
+   * Append a ``onclick`` event.
+   * @param {function} ev - Function to be executed on click.
+   */
   onclick (self, ev, args){
     this._dom.onclick = (e) => {
       if (typeof args == 'undefined')
@@ -82,9 +54,9 @@ class DOM {
   return this
   }
   /**
-  * Append a ``mouseup`` and ``touchup`` event.
-  * @param {function} ev - Function to be executed on up.
-  */
+   * Append a ``mouseup`` and ``touchup`` event.
+   * @param {function} ev - Function to be executed on up.
+   */
   onup (self, ev, args){
     this._dom.addEventListener('mouseup', (e) => {
       if (typeof args == 'undefined')
@@ -97,9 +69,9 @@ class DOM {
   return this
   }
   /**
-  * Append a ``mousedown`` and ``touchdown`` event.
-  * @param {function} ev - Function to be executed on down.
-  */
+   * Append a ``mousedown`` and ``touchdown`` event.
+   * @param {function} ev - Function to be executed on down.
+   */
   ondown (self, ev, args){
     this._dom.addEventListener('mousedown', (e) => {
       if (typeof args == 'undefined')
@@ -112,9 +84,9 @@ class DOM {
   return this
   }
   /**
-  * Append a ``mousemove`` and ``touchmove`` event.
-  * @param {function} ev - Function to be executed on move.
-  */
+   * Append a ``mousemove`` and ``touchmove`` event.
+   * @param {function} ev - Function to be executed on move.
+   */
   onmove (self, ev, args){
     this._dom.addEventListener('mousemove', (e) => {
       if (typeof args == 'undefined')
@@ -127,11 +99,11 @@ class DOM {
   return this
   }
   /**
-  * Append a event listener.
-  * @param {string} event - Event listener name.
-  * @param {function} fun - Function to be executed on move.
-  * @param {function} args - Arguments to be applied to the function.
-  */
+   * Append a event listener.
+   * @param {string} event - Event listener name.
+   * @param {function} fun - Function to be executed on move.
+   * @param {function} args - Arguments to be applied to the function.
+   */
   onevent (event, self, fun, args){
     this._dom.addEventListener(event, (e) => {
       if (typeof args == 'undefined')
@@ -144,9 +116,9 @@ class DOM {
   return this
   }
   /**
-  * Appends others :js:func:`DOM`.
-  * @param {Object[]} DOMS - Array of :js:func:`DOM` or/and direct DOM Nodes.
-  */
+   * Appends others :js:func:`DOM`.
+   * @param {Object[]} DOMS - Array of :js:func:`DOM` or/and direct DOM Nodes.
+   */
   append (DOMS){
     if (DOMS.constructor != Array)
       DOMS = [DOMS]
@@ -161,9 +133,16 @@ class DOM {
     return this
   }
   /**
-  * Remove childs from :js:func:`DOM` object.
-  */
-  removeChilds () {
+   * Delete object.
+   */
+  delete (){
+    this._dom.remove()
+    delete this
+  }
+  /**
+   * Remove childs from :js:func:`DOM` object.
+   */
+  removeChilds (){
     let child = this._dom.lastElementChild
     while (child) {
       this._dom.removeChild(child)
@@ -172,22 +151,28 @@ class DOM {
     return this
   }
   /**
-  * Get DOM Node element.
-  */
+   * Get DOM Node element.
+   * @param {string} a - Target object query selector.
+   * @param {Object} b - Optional parent DOM.
+   */
   static get (a, b){
     b = b instanceof DOM ? b._dom : b
     return (typeof b == 'undefined') ? document.querySelector (a) : b.querySelector(a)
   }
   /**
-  * Get all DOM Node elements.
-  */
+   * Get all DOM Node elements.
+   * @param {string} a - Target object query selector.
+   * @param {Object} b - Parent DOM.
+   */
   static getAll(a, b){
     b = b instanceof DOM ? b._dom : b
     return (typeof b == 'object') ? b.querySelectorAll(a) : get(b).querySelectorAll(a)
   }
   /**
-  * Include or remove a class to a DOM.
-  */
+   * Include or remove a class to a DOM.
+   * @param {Object} b - Target DOM.
+   * @param {string} _class - Optional class, defaults to `on`.
+   */
   static switchState (b, _class){
     b = b instanceof DOM ? b._dom : b
     let cn = _class != undefined ? _class : `on`
@@ -203,13 +188,13 @@ class DOM {
     return (+new Date).toString(36) + Math.random().toString(36).substr(2)
   }
   /**
-  * Prototype a DOM composed by details, sumamary and a h2 title with optional
-  * onclick event.
-  * @param {Object} str - id, title and onclick function of the DOM element.
-  * @param {string} str.id - Id of the DOM element.
-  * @param {string} str.title - Title of the DOM element.
-  * @param {Object} str.onclick - Onclick function of the DOM element.
-  */
+   * Prototype a DOM composed by details, sumamary and a h2 title with optional
+   * onclick event.
+   * @param {Object} str - id, title and onclick function of the DOM element.
+   * @param {string} str.id - Id of the DOM element.
+   * @param {string} str.title - Title of the DOM element.
+   * @param {Object} str.onclick - Onclick function of the DOM element.
+   */
   static prototypeDetails (str){
     let summary = new DOM('summary', {innerText:str.innerText})
     let details = new DOM('details', {id:str.id, name:str.id})
@@ -229,12 +214,12 @@ class DOM {
     return details
   }
   /**
-  * Prototype a DOM composed by input(file type) and label.
-  * @param {Object} str - id and className of the DOM element.
-  * @param {string} str.id - Id of the DOM element.
-  * @param {string} str.className - ClassName of the DOM element.
-  * @param {string} str.innerText - Inner text of the DOM element.
-  */
+   * Prototype a DOM composed by input(file type) and label.
+   * @param {Object} str - id and className of the DOM element.
+   * @param {string} str.id - Id of the DOM element.
+   * @param {string} str.className - ClassName of the DOM element.
+   * @param {string} str.innerText - Inner text of the DOM element.
+   */
   static prototypeInputFile (str){
     return new DOM('label', {
       htmlFor:`${str.id}_input`,
@@ -246,10 +231,10 @@ class DOM {
       )
   }
   /**
-  * Prototype a DOM that allows data to be downloded on its creation.
-  * @param {string} filename - name of the file.
-  * @param {string} file - file content.
-  */
+   * Prototype a DOM that allows data to be downloded on its creation.
+   * @param {string} filename - name of the file.
+   * @param {string} file - file content.
+   */
   static prototypeDownload (filename, file){
     let data,
         reg = /.*\.(py|xml|csv|json)$/

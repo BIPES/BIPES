@@ -66,17 +66,13 @@ class Project {
     command.add(this, {
       new: this._new,
       remove: this._remove,
-      update: this._update
+      update: this._update,
+      lazyUpdate: this._lazyUpdate
     })
 
     let keys = storage.keys(/project-(.*)/)
     keys.forEach((key) => {
-      let proj = storage.fetch(`project-${key}`)
-      try {
-       this.projects[key] = JSON.parse(proj)
-      } catch (e) {
-        console.error(e)
-      }
+      this.projects[key] = undefined
     })
 
     if (Object.keys(this.projects).length == 0)
@@ -87,10 +83,13 @@ class Project {
       this.shared = new SharedProject(this, $.wrapper)
   }
   _init (){
-    // Get most recent project
-    let uid = this._mostRecent()
+    let key
+    if (storage.has('current_project'))
+      key = storage.fetch('current_project')
+    else
+      key = Object.keys(this.projects)[0]
 
-    this.select(uid)
+    this.select(key)
   }
   save (uid){
     if (uid == undefined)
@@ -113,9 +112,10 @@ class Project {
         project = obj == undefined ? this._emptyProject() :
                   obj instanceof Object ? obj : JSON.parse(obj)
 
-    command.dispatch(this, 'new', [uid, project])
-    // Update localStorage once
     storage.set(`project-${uid}`, JSON.stringify(project))
+    command.dispatch(this, 'new', [uid, project])
+    // Select brand new project
+    this.select(uid)
 
     return uid
   }
@@ -125,13 +125,13 @@ class Project {
    * @param {Object} project - The project.
    */
   _new (uid, project){
-    this.projects[uid] = project
+    this.projects[uid] = undefined // unloaded instance
 
     if (!this.inited)
       return
 
     this._dom.projects._dom.insertBefore(
-      this._domCard(uid, this.projects[uid])._dom,
+      this._domCard(uid)._dom,
       this._dom.projects._dom.firstChild
     )
   }
@@ -140,15 +140,15 @@ class Project {
     if (Object.keys(this.projects).length == 1)
       this.select(this.new())
 
+    let obj = this.projects[uid]
     // Unshare if shared
-    let shared = this.projects[uid].project.shared
+    let shared = obj.project.shared
     if (shared.hasOwnProperty('uid') && shared.uid !== '')
-      this.unshare(uid)
+      this.unshare(uid, true)
 
     command.dispatch(this, 'remove', [uid])
     // Update localStorage once
     storage.remove(`project-${uid}`)
-
 
     this.contextMenu.close()
   }
@@ -165,21 +165,24 @@ class Project {
     if (uid == this.currentUID) {
       this.currentUID = undefined
       if ((Object.keys(this.projects).length > 0)){
-        this.select(this._mostRecent())
+        this.select(Object.keys(this.projects)[0])
       }
     }
   }
   load (uid){
     this.currentUID = uid
-
     for (const key in window.bipes.page) {
-      if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
-        window.bipes.page[key].load(this.projects[uid][key])
+      if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project') {
+        if (this.projects[uid][key] == undefined)
+          this.projects[uid][key] = bipes.page[key].empty()
+        bipes.page[key].load(this.projects[uid][key])
+      }
     }
     return uid
   }
   unload (uid){
-
+    this.projects[uid] = undefined
+    this.currentUID = undefined
   }
   set (obj, uid){
     if (uid == undefined)
@@ -223,7 +226,7 @@ class Project {
 
     let project = []
     for (const key in this.projects) {
-      project.unshift(this._domCard(key, this.projects[key]))
+      project.unshift(this._domCard(key))
     }
     this._dom.projects.append(project)
 
@@ -243,15 +246,18 @@ class Project {
       return
 
     if (this.currentUID != undefined){
-      this.unload(uid)
       if (this.inited) {
-        let old_uid = this.currentUID
-        let child = DOM.get(`[data-uid=${old_uid}]`, this._dom.projects._dom)
+        let child = DOM.get(`[data-uid=${this.currentUID}]`, this._dom.projects._dom)
         child.classList.remove('on')
         DOM.get('#name', child).disabled = true
       }
+      this.unload(uid)
     }
-    this.load(uid)
+
+    let proj = storage.fetch(`project-${uid}`)
+    this.projects[uid] = JSON.parse(proj)
+
+    storage.set('current_project', this.load(uid))
 
     if (this.inited){
       let child2 = DOM.get(`[data-uid=${this.currentUID}]`, this._dom.projects._dom)
@@ -267,9 +273,13 @@ class Project {
       this.shared.deinit()
   }
   /*
-   * Creates a DOM project card
+   * Creates a DOM project card from temporary instance, just to read some
+   * properties.
+   * @param {string} uid - Project UID.
    */
-  _domCard (uid, item){
+  _domCard (uid){
+    let item = JSON.parse(storage.fetch(`project-${uid}`))
+
     let _shared_class = item.project.shared.uid != '' ? 'shared' : ''
 
     return new DOM('button', {className:_shared_class, uid: uid})
@@ -296,45 +306,49 @@ class Project {
        ev.preventDefault()
        let actions = [
          {
-           id:'rename',
-           innerText:'Rename',
-           fun:this.rename,
-           args:[uid, item.project.name]
-         },
-         {
            id:'download',
            innerText:'Download',
            fun:this.download,
            args:[uid]
+         }
+       ]
+       if (uid == this.currentUID) {
+         let obj = this.projects[uid]
+         actions.unshift({
+           id:'rename',
+           innerText:'Rename',
+           fun:this.rename,
+           args:[uid, obj.project.name]
          },
          {
            id:'remove',
            innerText:'Delete',
            fun:this.remove,
            args:[uid]
-         }
-       ]
-       if (!navigation.isLocal) {
-         if (item.project.shared.hasOwnProperty('uid') && item.project.shared.uid !== '')
-           actions.unshift({
-             id:'share',
-             innerText:'Update shared',
-             fun:this.updateShared,
-             args:[uid]
-           },
-           {
-             id:'unshare',
-             innerText:'Unshare',
-             fun:this.unshare,
-             args:[uid]
-           })
-         else
-           actions.unshift({
-             id:'share',
-             innerText:'Share',
-             fun:this.share,
-             args:[uid]
-           })
+         })
+
+         if (!navigation.isLocal) {
+           if (obj.project.shared.hasOwnProperty('uid') && obj.project.shared.uid !== '')
+             actions.unshift({
+               id:'share',
+               innerText:'Update shared',
+               fun:this.updateShared,
+               args:[uid]
+             },
+             {
+               id:'unshare',
+               innerText:'Unshare',
+               fun:this.unshare,
+               args:[uid]
+             })
+           else
+             actions.unshift({
+               id:'share',
+               innerText:'Share',
+               fun:this.share,
+               args:[uid]
+             })
+           }
          }
          this.contextMenu.open(actions, ev)
        })
@@ -365,17 +379,37 @@ class Project {
 
       if (name == undefined || name == '')
         return
-
       let obj = {...this.projects[uid].project}
       obj.name = name
 
+      // Update outside the update context, since soft affects the project list
+      let item = {name:obj.name, shared:obj.shared, lastEdited:obj.lastEdited}
+      command.dispatch(this, 'lazyUpdate', [uid, item])
+      // Now send actual update action
       this.update({project:obj}, uid)
     })
   }
   /*
-   * Update project data on all tabs then from current scope write to localStorage
-   * @param {Object} data - changed project data
-   * @param {String} uid - project's uid
+   * Lazy upodate project DOM card with name, lastEdited and shared status.
+   * @param {string} uid - Project's uid
+   * @param {string} obj - Object with name, lastEdited and shared.
+   */
+  _lazyUpdate (uid, obj){
+    DOM.lazyUpdate(this._dom.projects._dom, uid, {
+      name: obj.name,
+      lastEdited: Tool.prettyEditedAt(obj.lastEdited),
+      sharedUID: obj.shared.uid
+    })
+    let _dom = DOM.get(`[data-uid='${uid}']`, this._dom.projects)
+    if (obj.shared.uid != '')
+     _dom.classList.add('shared')
+    else
+     _dom.classList.remove('shared')
+  }
+  /*
+   * Update project data on all tabs then from current scope write to localStorage.
+   * @param {Object} data - Changed project data
+   * @param {string} uid - Project's uid
    */
   update (data, uid){
     uid = uid == undefined ? this.currentUID : uid
@@ -388,7 +422,17 @@ class Project {
     // Update localStorage once
     storage.set(`project-${uid}`, JSON.stringify(this.projects[uid]))
   }
+  /*
+   * Update project data if the current one is the same as the dispatched change.
+   * @param {string} uid - Project's uid
+   * @param {string} data - Changed project data
+   * @param {string} tabUID - Source tab UID.
+   */
   _update (uid, data, tabUID){
+    // Update only the current project, since the others are not in memory.
+    if (uid !== this.currentUID)
+      return
+
     for (const key in data){
       if (key != 'load')
         this.projects[uid][key] = data[key]
@@ -398,25 +442,11 @@ class Project {
     for (const key in data){
       switch (key) {
         case 'project':
-          if (this.inited) {
-            DOM.lazyUpdate(this._dom.projects._dom, uid, {
-              name: data[key].name,
-              lastEdited: Tool.prettyEditedAt(data[key].lastEdited),
-              sharedUID: data[key].shared.uid
-            })
-            let _dom = DOM.get(`[data-uid='${uid}']`, this._dom.projects)
-            if (data[key].shared.uid != '')
-             _dom.classList.add('shared')
-            else
-             _dom.classList.remove('shared')
-          }
           break
         default:
-          if (uid == this.currentUID){
-            for (const key in data){
-              if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
-                window.bipes.page[key].load(data[key], tabUID)
-          }
+          for (const key in data){
+            if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project')
+              window.bipes.page[key].load(data[key], tabUID)
         }
       }
     }
@@ -439,10 +469,12 @@ class Project {
    * @param {string} uid - Project uid
    */
   download (uid){
-    let proj = JSON.stringify(this.projects[uid])
+    let proj = storage.fetch(`project-${uid}`)
     // Strip shared metadata.
     proj = proj.replace(/("shared":{"uid":")(.*?)(","token":")(.*?)("})/g,'$1$3$5')
-    DOM.prototypeDownload(`${this.projects[uid].project.name}.bipes.json`,proj)
+    // Get name
+    let name = proj.match(/{"project":{"name":"(.*?)"/)[1]
+    DOM.prototypeDownload(`${name}.bipes.json`,proj)
     this.contextMenu.close()
   }
   /**
@@ -454,16 +486,20 @@ class Project {
     if (!this.hasOwnProperty('shared'))
       return
 
+    let item = this.projects[uid]
     API.do('project/cp', {
       cors_token:this.cors_token,
-      data:this.projects[uid]
-    }).then(obj => {
-      let proj = {...this.projects[uid].project}
+      data:item
+      }).then(obj => {
+      let proj = {...item.project}
       proj.shared = {
         uid:obj.uid,
         token:obj.token
       }
-
+      // Update outside the update context, since soft affects the project list
+      let _obj = {name:proj.name, shared:proj.shared, lastEdited:proj.lastEdited}
+      command.dispatch(this, 'lazyUpdate', [uid, _obj])
+      // Now send actual update action
       this.update({project:proj}, uid)
       this.shared._dom.projects._dom.insertBefore(
         this.shared._domCard({
@@ -478,37 +514,37 @@ class Project {
   }
   /**
    * Update a shared project with the local project.
-   * @param {string} uid - Project uid
+   * @param {string} uid - Project UID.
    */
   updateShared (uid){
     this.contextMenu.close()
-    let proj = this.projects[uid].project
+    let item = this.projects[uid]
+    let proj = item.project
     if (!this.hasOwnProperty('shared'))
       return
 
     API.do('project/w', {
       cors_token:this.cors_token,
-      data:this.projects[uid]
+      data:item
     }).then(obj => {
       // Server returns uid
       if (obj.uid !== proj.shared.uid)
         return
-      // Update DOM in the shared list if fetched
-      DOM.lazyUpdate(this.shared._dom.projects,
-        proj.shared.uid, {
-        name: proj.name,
-        author: `By ${proj.author}`,
-        lastEdited: Tool.prettyEditedAt(proj.lastEdited)
-      })
+      // Update outside the update context, since soft affects the project list
+      let _obj = {name:proj.name, shared:proj.shared, lastEdited:proj.lastEdited}
+      command.dispatch(this, 'lazyUpdate', [uid, _obj])
+      // Now send actual update action
+      this.update({project:proj}, uid)
     }).catch(e => {console.error(e)})
   }
   /**
    * Unshare a local project.
-   * @param {string} uid - Project uid
+   * @param {string} uid - Project UID.
    */
   unshare (uid){
     this.contextMenu.close()
-    let proj = this.projects[uid].project
+    let item = this.projects[uid]
+    let proj = item.project
     if (!this.hasOwnProperty('shared'))
       return
     API.do('project/rm', {
@@ -520,11 +556,15 @@ class Project {
       if (obj.uid !== proj.shared.uid)
         return
       try {
-        let _proj = {...this.projects[uid].project}
+        let _proj = {...item.project}
         _proj.shared = {
           uid:'',
           token:''
         }
+        // Update outside the update context, since soft affects the project list
+        let _obj = {name:_proj.name, shared:_proj.shared, lastEdited:_proj.lastEdited}
+        command.dispatch(this, 'lazyUpdate', [uid, _obj])
+        // Now send actual update action
         this.update({project:_proj}, uid)
       } catch(e){}
       let dom = DOM.get(`[data-uid='${obj.uid}']`, this.shared._dom.projects)

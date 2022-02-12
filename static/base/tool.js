@@ -97,6 +97,21 @@ class Tool {
     })) || null;
   }
   /**
+   * Get highest value from object array.
+   * @param {Object[]} as - Object array.
+   * @param {string} prop - Property to be used as unique key/uid.
+   * @param {bool} toNumber - Id property is stored as string and should be parsed.
+   * @return {Object} Object with the smallest value.
+   */
+  static getMax (as, prop, toNumber){
+    return (as.length && as.reduce(function(prev, curr){
+      if (toNumber)
+        return parseFloat(prev[prop]) > parseFloat(curr[prop]) ? prev : curr;
+      else
+        return prev[prop] > curr[prop] ? prev : curr;
+    })) || null;
+  }
+  /**
    * Return a pretty edited at string.
    * @param {string} value - Value.
    */

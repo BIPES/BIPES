@@ -942,12 +942,9 @@ class ProjectFiles {
    * @param {string} projectUID - UID of the project with a new folder.
    */
   _newFolder (path, folder, projectUID){
-    let obj
-    if (projectUID === project.currentUID)
-      obj = this.objByName(path)
-    else
-      obj = this.objByName(path, projectUID)
-
+    if (projectUID !== project.currentUID)
+      return
+    let obj = this.objByName(path)
 
     if (obj === true || obj.files == undefined)
       return
@@ -993,29 +990,22 @@ class ProjectFiles {
   /**
    * Remove folder or path.
    * @param {string} path - Path to new folder.
-   * @param {string} projectUID - UID of the project with a new folder.
+   * @param {string} projectUID - UID of the project.
    */
   _remove (path, projectUID){
     // Remove DOM Node
-    if (this.parent.inited && projectUID === project.currentUID) {
-      let obj
-      if (projectUID === project.currentUID)
-        obj = this.objByName(path)
+    if (projectUID !== project.currentUID)
+      return
 
+    let obj = this.objByName(path)
+    if (this.parent.inited)
       obj.dom._dom.remove()
-    }
 
     // Get parent object
     let ar = path.split('/')
     let toRemoval = ar[ar.length - 1]
     ar.shift()
     ar.pop()
-
-    let obj
-    if (projectUID === project.currentUID)
-      obj = this.objByName(ar)
-    else
-      obj = this.objByName(ar, projectUID)
 
     if (obj === true || obj.files == undefined)
       return
@@ -1063,11 +1053,10 @@ class ProjectFiles {
    * @param {string} projectUID - UID of the project with a new file
    */
   _newScript (path, filename, file, projectUID){
-    let obj
-    if (projectUID === project.currentUID)
-      obj = this.objByName(path)
-    else
-      obj = this.objByName(path, projectUID)
+    if (projectUID !== project.currentUID)
+      return
+
+    let obj = this.objByName(path)
 
     if (obj === true || obj.files == undefined)
       return
@@ -1087,7 +1076,7 @@ class ProjectFiles {
       map.shift()
     obj.files.push(item)
 
-    if (!this.parent.inited || projectUID !== project.currentUID)
+    if (!this.parent.inited)
       return
 
     item.dom = this._domSpan(item, map, true)
