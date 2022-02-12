@@ -6128,3 +6128,35 @@ Blockly.Python['http_get_content'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+//BMP180
+Blockly.Python['bmp180_init'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_bmp180'] = 'from bmp180 import BMP180';
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+
+	var code = 'bus=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '), freq=100000)\n';
+	code += 'bmp180 = BMP180(bus)\n';
+	code += 'bmp180.oversample_sett = 2\n';
+	code += 'bmp180.baseline = 101325\n\n';
+
+	return code;
+};
+
+Blockly.Python['bmp180_temperature'] = function(block) {
+	var code = 'bmp180.temperature';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['bmp180_pressure'] = function(block) {
+	var code = 'bmp180.pressure';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['bmp180_altitude'] = function(block) {
+	var code = 'bmp180.altitude';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+

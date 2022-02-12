@@ -105,6 +105,12 @@ var MSG = {
   dht_humi: "umidade do DHT11/22",
   type: "modelo",
 
+//BMP180
+  pressure: "pressão",
+  temperature: "temperatura",
+  altitude: "altura",
+  bmp180_init: "Iniciar BMP180",
+
 //Network
   net_http_get: "Requisição HTTP GET",
   net_http_get_status: "Status da resposta HTTP",
@@ -134,6 +140,7 @@ Blockly.Msg['CAT_DISPLAYS'] = "Displays";
 Blockly.Msg['CAT_SENSORS'] = "Sensores";
 Blockly.Msg['CAT_OUTPUTS'] = "Saidas e atuadores";
 Blockly.Msg['CAT_COMM'] = "Comunicação";
+Blockly.Msg['CAT_PRESS'] = "Pressão";
 Blockly.Msg['CAT_FILES'] = "Arquivos";
 Blockly.Msg['CAT_NET'] = "Rede e Internet";
 Blockly.Msg['CAT_CONTROL'] = "Controle";

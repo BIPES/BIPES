@@ -11559,6 +11559,59 @@ Blockly.Blocks['http_get_content'] = {
   }
 };
 
+//BMP180
+Blockly.Blocks['bmp180_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(MSG["bmp180_init"]);
 
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
 
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['bmp180_temperature'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(MSG["temperature"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Temperature from the BMP180 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['bmp180_pressure'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(MSG["pressure"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Pressure from the BMP180 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['bmp180_altitude'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(MSG["altitude"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Altitude from the BMP180 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
