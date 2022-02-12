@@ -609,10 +609,40 @@ Code.init = function() {
 	var lib = button.text_.split(" ")[1];
 	console.log(button.text_);
 	console.log(lib)
-        alert("This will automatic download and install the library on the connected board: " + lib + ". Internet is required for this operation. Install results will be shown on console tab.");
+
+	var c = Channel.mux.currentChannel;
+
+        alert("This will automatic download and install the library on the connected board: " + lib + ". Internet is required for this operation. Install results will be shown on console tab: " + c);
+	UI ['notify'].send('Installing library, check console: ' + c)
+
+	var msg = "Lib will be installed using: " + c;
+	console.log(msg);
+	
+	if (c == 'webserial') {
+		console.log('serial install');
+
+		//Download file
+		const xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+		  if (this.readyState == 4 && this.status == 200) {
+		    const installFileContent = this.responseText;
+		    console.log(installFileContent);
+		    Files.editor.getDoc().setValue(installFileContent);
+	            UI ['workspace'].file.value = lib + '.py';
+
+		    Files.file_save_as.className = 'py';
+		    Files.files_save_as();
+		    Files.listFiles();
+		    Files.listFiles();
 
 
-	UI ['notify'].send('Installing library, check console')
+		  }
+		};
+		console.log("Getting /beta2/ui/pylibs/" + lib + '.py');
+		xmlhttp.open('GET', '/beta2/ui/pylibs/' + lib + '.py');
+		xmlhttp.send();
+	} else {
+
 
 	var installCmd = `
 def bipesInstall(url, lib):
@@ -666,6 +696,7 @@ print('Install done.')
 `;
  
      Tool.runPython(copyCmd);
+	}
 
 
       });
@@ -677,6 +708,7 @@ print('Install done.')
 	var lib = tmp.replace(/\s/g,'');
 
         var msgCon = "This will load Example: " + lib + ". Internet is required for this operation. Important: all blocks on workspace will be lost and replaced by the example blocks. Do you want to continue?";
+	
 
 	if (confirm(msgCon)) {
 		//console.log('Thing was saved to the database.');
