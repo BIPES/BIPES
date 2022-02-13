@@ -158,6 +158,7 @@ class Navigation {
     for (let module in bipes.page) {
       let a = DOM.get(`a#${module}`, this._dom.panels)
       a.innerText = Msg[`Page${Tool.firstUpper(module)}`]
+      a.title = Msg[`Page${Tool.firstUpper(module)}`]
       a.onauxclick = (ev) => {
         ev.preventDefault()
         // Return on right click

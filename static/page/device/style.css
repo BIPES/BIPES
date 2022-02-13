@@ -23,6 +23,9 @@ section#device #new-connection #WebBluetooth:not(.unsupported) > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) -200%, rgba(123,73,173,1) 100%);
 
 }
+section#device button.unsupported {
+  user-select: none;
+}
 body.dark section#device button.unsupported > div {
   border: 1px solid #fff;
 }
@@ -100,7 +103,7 @@ body.dark section#device #devices button.on h4 {
   color: #222;
 }
 body.light section#device #devices button.on > div {
-  background-color: #111;
+  background-color: #444;
   color: #eee;
 }
 body.light section#device #devices button.on h4 {
@@ -223,6 +226,11 @@ section#device #webSocketSetup #addressConf #scan {
   padding: .25rem .5rem;
   margin: .5rem;
   border-radius: 1rem;
+  transition: background-color .25s ease;
+}
+
+section#device #webSocketSetup #addressConf #scan:focus {
+  background-color: rgba(68,153,204,.5);
 }
 body.light section#device #webSocketSetup #addressConf #scan {
   border: 1px solid #000;
@@ -257,4 +265,17 @@ section#device #webSocketSetup #addressFound .listy {
 }
 section#device #webSocketSetup #addressFound .listy button > div {
   display: block;
+}
+div#status-bar button#device:before {
+  background-position: left calc(-1.25rem*21) top;
+}
+div#status-bar button#device.on:before {
+  background-position: left calc(-1.25rem*21) bottom;
+}
+div#status-bar button#target:before {
+  background-position: left calc(-1.25rem*37) top;
+}
+div#status-bar button#firmware:before {
+  background: none;
+  width: 0;
 }

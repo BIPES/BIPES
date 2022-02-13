@@ -199,10 +199,10 @@ section#files #fileOnProject summary::before, section#files .listedFile:before {
 	flex-shrink: 0;
 }
 section#files #fileOnTarget > summary::before {
-	background-position: left calc(1.25rem*18) bottom !important;
+	background-position: left calc(1.25rem*21) bottom !important;
 }
 section#files #fileOnProject > summary::before {
-	background-position: left calc(1.25rem*8) top !important;
+	background-position: left calc(1.25rem*11) top !important;
 }
 section#files #fileOnTarget summary::before,
 section#files #fileOnProject summary::before {
@@ -221,10 +221,10 @@ section#files #fileOnProject details[open] summary:before {
 
 section#files .cm-scroller {
   overflow: auto;
-  min-height: calc(100vh - 3.5rem);
 }
+section#files .cm-scrollers,
 section#files .cm-content, section#files .cm-gutter {
-  min-height: calc(100vh - 3.5rem) !important;
+  min-height: calc(100vh - 4.25rem) !important;
 }
 section#files .cm-gutters { margin: 1px; }
 section#files .cm-scroller { overflow: auto; }

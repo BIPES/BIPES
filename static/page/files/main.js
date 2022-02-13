@@ -721,6 +721,10 @@ class DeviceFiles {
 
     this.fetchFile('download', filename)
   }
+  /*
+   * Create a new folder.
+   * @param {string} path - Folder path.
+   */
   newFolder (path){
     this.contextMenu.oninput({
       title:Msg['NewFolderName'],
@@ -746,8 +750,8 @@ class DeviceFiles {
   }
   /*
    * After command execution callback to the :js:func:`newFolder` command.
-   * @param {string} str - Sent command
-   * @param {string} cmd - Repplied back command plus output
+   * @param {string} str - Sent command.
+   * @param {string} cmd - Repplied back command plus output.
    * @param {string} tabUID - UID from the origin tab.
    */
   _addedFolderOnTarget (str, cmd, tabUID){
@@ -903,7 +907,7 @@ class ProjectFiles {
       obj = this.objByName(path, projectUID)
 
     if (obj === true || obj.script == undefined) {
-      bipes.page.notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['CreatePathFileBeforeSaving'], filename)}`)
+      notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['CreatePathFileBeforeSaving'], filename)}`)
       return
     }
     obj.script = file

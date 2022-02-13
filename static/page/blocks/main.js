@@ -7,6 +7,7 @@ import {command} from '../../base/command.js'
 import {channel} from '../../base/channel.js'
 import {notification} from '../notification/main.js'
 import {files} from '../files/main.js'
+import {prompt} from '../prompt/main.js'
 
 /* Code visually, uses Google Blockly as visual language library. */
 class Blocks {
@@ -204,12 +205,9 @@ class BlocksCode {
   }
   watcher (){
     // Handle executing change without triggering DOM change everytime.
-    // ::TODO:: Make channel block mirror master tab state.
-    if (channel.lock && !this.executing){
-      this.executing = true
+    if (prompt.locked){
       this._dom.runButton._dom.classList.add('on')
-    } else if (!channel.lock && this.executing){
-      this.executing = false
+    } else if (!prompt.locked){
       this._dom.runButton._dom.classList.remove('on')
     }
     if (!this.generating)
@@ -223,7 +221,7 @@ class BlocksCode {
   }
   exec (){
     // If already executing, stop.
-    if (this.executing){
+    if (prompt.locked){
       command.dispatch(channel, 'push', [
         '\x03',
         channel.targetDevice, [], command.tabUID

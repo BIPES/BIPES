@@ -36,6 +36,10 @@
   <section id="{{ item }}"></section>
 {% endfor %}
 
+<div id='status-bar'>
+  <div id='globals'></div>
+</div>
+
 <script type="{{import_type}}" src="./static/libs/bipes.umd.js"></script>
 {% if import_type == "text/javascript" -%}
 <script>

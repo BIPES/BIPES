@@ -24,6 +24,31 @@ class DOM {
     }
   }
   /**
+   * Set DOM innerText.
+   * @param {string} str - Text to apply.
+   */
+  set innerText(str){
+    this._dom.innerText = str
+  }
+  /**
+   * Get DOM innerText.
+   */
+   get innerText(){
+    return this._dom.innerText
+  }
+  /**
+   * Focus on DOM.
+   */
+  focus (){
+    this._dom.focus()
+  }
+  /**
+   * Get DOM classList object.
+   */
+  get classList(){
+    return this._dom.classList
+  }
+  /**
    * Append a ``onchange`` event.
    * @param {function} ev - Function to be executed on click.
    */

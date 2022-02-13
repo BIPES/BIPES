@@ -118,8 +118,8 @@ class Channel {
     this.watcher = setInterval(
       this.current.watch.bind(this.current),
       50);
-    window.bipes.page.prompt.on()
-    window.bipes.page.prompt.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
+    bipes.page.prompt.on()
+    bipes.page.prompt.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
     this.push('\r\n', this.targetDevice)
     if (typeof callback == 'object' && typeof callback[1] == 'function')
       callback[1].apply(callback[0])
@@ -140,9 +140,9 @@ class Channel {
         currentProtocol = this.currentProtocol
     this.currentProtocol = ''
     this.targetDevice = undefined
-    window.bipes.page.device.unuse(uid)
-    window.bipes.page.prompt.off()
-    window.bipes.page.prompt.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
+    bipes.page.device.unuse(uid)
+    bipes.page.prompt.off()
+    bipes.page.prompt.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it

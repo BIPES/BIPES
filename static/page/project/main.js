@@ -21,30 +21,30 @@ class Project {
 
     this.username = storage.has('username') ?
                     storage.fetch('username') :
-                    storage.set('username', 'a user')
+                    storage.set('username', Msg['AUser'])
 
     let $ = this._dom = {}
 
     $.projects = new DOM('span', {className:'listy'})
 
-    $.h2 = new DOM('h2', {innerText:"Projects"})
+    $.h2 = new DOM('h2', {innerText:Msg['PageProject']})
     $.wrapper = new DOM('span', {className: "projects"})
       .append([
         new DOM('div', {id:'user-projects'})
         .append([
           new DOM('div', {className:'header'})
             .append([
-              new DOM('h3', {innerText:'Your projects'}),
+              new DOM('h3', {innerText:Msg['YourProjects']}),
               new DOM('span').append([
                 DOM.prototypeInputFile({
                   id:'upload',
                   className:'icon',
-                  innerText: "Upload"
+                  innerText: Msg['Import']
                 }).onevent('change', this, this.upload),
                 new DOM('button', {
                   id:'add',
                   className:'icon text',
-                  innerText: "New"
+                  innerText: Msg['New']
                 }).onclick(this, this.new)
               ])
             ]),
@@ -75,14 +75,15 @@ class Project {
       this.projects[key] = undefined
     })
 
-    if (Object.keys(this.projects).length == 0)
-      this.new()
-
     // Init shared projects if server mode
     if (!navigation.isLocal)
       this.shared = new SharedProject(this, $.wrapper)
   }
   _init (){
+    if (Object.keys(this.projects).length == 0){
+      this.new()
+      return
+    }
     let key
     if (storage.has('current_project'))
       key = storage.fetch('current_project')
@@ -91,13 +92,15 @@ class Project {
 
     this.select(key)
   }
+  /*
+   * Save project to localStorage.
+   * @param {string} uid - Project's UID.
+   */
   save (uid){
     if (uid == undefined)
       uid = this.currentUID
     this.projects[uid].lastEdited = +new Date()
-    let json = JSON.stringify(this.projects[uid])
-
-    storage.set(`project-${uid}`, json)
+    this.write(uid)
   }
   /*
    * Create a new project in the platform. If an existing project is provided,
@@ -171,7 +174,7 @@ class Project {
   }
   load (uid){
     this.currentUID = uid
-    for (const key in window.bipes.page) {
+    for (const key in bipes.page) {
       if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project') {
         if (this.projects[uid][key] == undefined)
           this.projects[uid][key] = bipes.page[key].empty()
@@ -203,13 +206,13 @@ class Project {
         tree:{
           name:'',
           files:[{
-            name:'script.py',
-            script:"# Create your script here"
+            name:`${Msg['my_script']}.py`,
+            script:Tool.format([Msg['CreateScriptHere'],`${Msg['my_script']}.py`])
           }]
         }
       },
       project:{
-        name: 'Empty project',
+        name: Msg['EmptyProject'],
         author: this.username,
         shared:{
           uid:'',
@@ -307,7 +310,7 @@ class Project {
        let actions = [
          {
            id:'download',
-           innerText:'Download',
+           innerText:Msg['Download'],
            fun:this.download,
            args:[uid]
          }
@@ -316,13 +319,13 @@ class Project {
          let obj = this.projects[uid]
          actions.unshift({
            id:'rename',
-           innerText:'Rename',
+           innerText:Msg['Rename'],
            fun:this.rename,
            args:[uid, obj.project.name]
          },
          {
            id:'remove',
-           innerText:'Delete',
+           innerText:Msg['Delete'],
            fun:this.remove,
            args:[uid]
          })
@@ -331,20 +334,20 @@ class Project {
            if (obj.project.shared.hasOwnProperty('uid') && obj.project.shared.uid !== '')
              actions.unshift({
                id:'share',
-               innerText:'Update shared',
+               innerText:Msg['UpdateShared'],
                fun:this.updateShared,
                args:[uid]
              },
              {
                id:'unshare',
-               innerText:'Unshare',
+               innerText:Msg['Unshare'],
                fun:this.unshare,
                args:[uid]
              })
            else
              actions.unshift({
                id:'share',
-               innerText:'Share',
+               innerText:Msg['Share'],
                fun:this.share,
                args:[uid]
              })
@@ -368,7 +371,7 @@ class Project {
    */
   rename (uid, name){
     this.contextMenu.oninput({
-      title:"Project's name",
+      title:Msg['ProjectName'],
       placeholder:name,
       value:name
     }, (input, ev) => {
@@ -420,7 +423,7 @@ class Project {
 
     command.dispatch(this, 'update', [uid, data, command.tabUID])
     // Update localStorage once
-    storage.set(`project-${uid}`, JSON.stringify(this.projects[uid]))
+    this.write(uid)
   }
   /*
    * Update project data if the current one is the same as the dispatched change.
@@ -607,12 +610,12 @@ class SharedProject {
         .append([
           new DOM('div', {className:'header'})
             .append([
-              new DOM('h3', {innerText:'Shared projects'})
+              new DOM('h3', {innerText:Msg['SharedProjects']})
             ]),
             $.projects,
             new DOM('span', {className:'listy more-button'})
               .append([
-                new DOM('button', {title:'Load more'})
+                new DOM('button', {title:Msg['LoadMore']})
                   .append([new DOM('div', {className:'button icon'})])
                   .onclick(this, this.fetchAutoFrom)
               ])
@@ -654,7 +657,7 @@ class SharedProject {
           .forEach(unique => doms.unshift(this._domCard(unique)))
         this._dom.projects.append(doms)
         if (doms.length == 0 && notify === true)
-          notification.send('Project: No older shared projects.')
+          notification.send(`${Msg['PageProject']}: ${Msg['NoOlderProjects']}.`)
       })
       .catch(e => {console.error(e)})
   }
@@ -668,7 +671,7 @@ class SharedProject {
       if (obj.hasOwnProperty('projects'))
         this.parent.new(undefined, obj.projects[0].data)
       else
-        notification.send('Project: Shared project does not exist anymore.')
+        notification.send(`${Msg['PageProject']}: ${Msg['SharedDoesNotExist']}.`)
     })
     .catch(e => {console.error(e)})
   }
@@ -702,7 +705,7 @@ class SharedProject {
         new DOM('div', {className:'row'}).append([
           new DOM('span', {
             id:'author',
-            innerText: `By ${item.author}`
+            innerText: `${Msg['By']} ${item.author}`
           }),
           new DOM('div', {
             id:'lastEdited',

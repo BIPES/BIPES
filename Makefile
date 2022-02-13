@@ -10,7 +10,7 @@ SUSE_DEPS = python python3-pip npm17 mosquitto
 NPM_DEPS = jsdoc
 
 
-all: yn-dependencies umd-deps xterm blockly pip database yn-mosquitto clean greeting run
+all: yn-dependencies umd-deps unpkg blockly pip database yn-mosquitto clean greeting run
 
 yn-dependencies:
 	@printf "$(NC)[1/6] The dependencies $(PURPLE)$(DEPS) $(NPM_DEPS)$(NC) are needed.\n"
@@ -71,9 +71,12 @@ umd-deps:
 	@codemirror/theme-one-dark
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
-xterm:
-	@printf "[3/6] Fetching $(PURPLE)xterm$(NC).\n"
+unpkg:
+	@printf "[3/6] Fetching $(PURPLE)xterm chart.js murri dash.js $(NC).\n"
 	@wget -O static/libs/xterm.umd.js https://unpkg.com/xterm@4.15.0/lib/xterm.js
+	@wget -O static/libs/chart.umd.js https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js
+	@wget -O static/libs/muuri.umd.js https://raw.githubusercontent.com/haltu/muuri/master/dist/muuri.js
+	@wget -O static/libs/dash.umd.js  http://cdn.dashjs.org/latest/dash.all.min.js
 
 blockly:
 	@printf "[4/6] Fetching $(PURPLE)blockly$(NC).\n"

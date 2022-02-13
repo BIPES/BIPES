@@ -116,7 +116,7 @@ class Tool {
    * @param {string} value - Value.
    */
   static prettyEditedAt (value){
-    return `Edited at ${new Date(value).toLocaleString()}`
+    return `${Msg['EditedAt']} ${new Date(value).toLocaleString()}`
   }
   /**
    * Return the first character in upper case.
@@ -133,8 +133,8 @@ class Tool {
    * @return {string} Formated string.
    */
   static format (str){
-    let args = Array.prototype.slice.call(arguments, 1)
-    return str.replace(/{(\d+)}/g, (match, number) => { 
+    let args = Array.prototype.slice.call(str, 1)
+    return str[0].replace(/{(\d+)}/g, (match, number) => {
       return typeof args[number] != 'undefined' ? args[number] : match
     })
   }

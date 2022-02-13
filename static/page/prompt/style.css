@@ -11,36 +11,52 @@ section#prompt.ani{
   justify-content: center;
 }
 section#prompt .container {
-  overflow: hidden;
-  border: 1px solid #666;
   overscroll-behavior: none;
-}
-body.dark section#prompt .container {
-  background: #000;
 }
 section#prompt .wrapper {
   padding: 0.5em 0.5em 0.5em 0.5em;
+  border-radius: 1em;
+  overflow: hidden;
+  box-shadow: 0 .25em 0.5rem rgba(0,0,0,.25);
 }
-body.light section#prompt .wrapper {
-  background: #fff;
+section#prompt .wrapper {
+  background: #000;
 }
 section#prompt .quick-actions {
-  border-top: 1px solid #666;
   display: flex;
   overflow-x: auto;
   padding: 0 .25rem;
   font-size: 0.9em;
 }
-section#prompt .quick-actions > span {
-  border: 1px solid #666;
-  border-radius: .25rem;
-  padding: .25rem;
+section#prompt .quick-actions > button {
+  border: 1px solid #7d7d7d;
+  border-radius: 1rem;
+  padding: .25rem .5rem;
   margin: .5rem .25rem .5em .25rem;
   display: inline-block;
   white-space: nowrap;
   cursor: pointer;
+  transition: background-color ease .25s;
 }
-
+section#prompt .quick-actions > button:hover,
+section#prompt .quick-actions > button:focus {
+  background-color: rgba(68,153,204,.5);
+}
+div#status-bar button#tasks:before {
+  background-position: left calc(-1.25rem*38) top;
+}
+div#status-bar button#tasks.working:before {
+  background-position: left calc(-1.25rem*38) bottom;
+}
+div#status-bar button#tasks.dirty:before {
+  background-position: left calc(-1.25rem*39) top;
+}
+div#status-bar button#tasks {
+  display: none;
+}
+div#status-bar button#tasks.on {
+  display: inline-flex;
+}
 /**
  * Copyright (c) 2014 The xterm.js authors. All rights reserved.
  * Copyright (c) 2012-2013, Christopher Jeffrey (MIT License)
