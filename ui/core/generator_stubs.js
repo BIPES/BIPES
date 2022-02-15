@@ -6205,3 +6205,34 @@ Blockly.Python['bmp280_sleep'] = function(block) {
 };
 
 
+//MCP23017
+Blockly.Python['mcp23017_init'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_mcp23017'] = 'import mcp23017';
+	var code = 'mcpIO = mcp23017.MCP23017()\n';
+	return code;
+};
+
+Blockly.Python['mcp23017_setup'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+	var code = 'mcpIO.setup(' + value_pin + ',' + value_value + ')\n';
+	return code;
+};
+
+Blockly.Python['mcp23017_output'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+	var code = 'mcpIO.output(' + value_pin + ',' + value_value + ')\n';
+	return code;
+
+};
+
+Blockly.Python['mcp23017_input'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var code = 'mcpIO.input(' + value_pin + ')';
+
+	return [code, Blockly.Python.ORDER_NONE];
+};
+

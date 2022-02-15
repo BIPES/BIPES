@@ -11695,3 +11695,84 @@ Blockly.Blocks['bmp280_sleep'] = {
   }
 };
 
+//MCP23017
+Blockly.Blocks['mcp23017_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init MCP23017");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['mcp23017_setup'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("MCP23017 direction setup (IN/OUT)");
+        //.appendField(MSG["setpin"]);//i18n
+    this.appendValueInput("value")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        //.appendField("to");
+        .appendField(MSG["to"]); //i18n
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("MCP23017 directin setup");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['mcp23017_output'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("MCP23017 set pin");
+        //.appendField(MSG["setpin"]);//i18n
+    this.appendValueInput("value")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        //.appendField("to");
+        .appendField(MSG["to"]); //i18n
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("MCP23017 Write to GPIO digital pin");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['mcp23017_input'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .appendField("MCP23017 input pin");//original
+        //.appendField(MSG["read_digital_pin"]);
+    this.appendValueInput("pullup")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pull-up");
+
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("MCP23017 Read digital pin");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
