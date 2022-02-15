@@ -1169,6 +1169,30 @@
     <block type="bmp180_temperature"> </block>
     <block type="bmp180_pressure"> </block>
     <block type="bmp180_altitude"> </block>
+
+    <label text="BMP280"></label>
+   <label text="Library: "></label>
+        <button text="Install bmp280 library (BMP280)" callbackKey="installPyLib"></button>
+
+    <block type="bmp280_init">
+      <value name="scl">
+        <shadow type="math_number">
+          <field name="NUM">22</field>
+        </shadow>
+      </value>
+      <value name="sda">
+        <shadow type="math_number">
+          <field name="NUM">21</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="bmp280_measure"> </block>
+    <block type="bmp280_sleep"> </block>
+    <block type="bmp280_temperature"> </block>
+    <block type="bmp280_pressure"> </block>
+
+
   </category>
 
 
@@ -1328,6 +1352,13 @@
         </value>
       </block>
     </category>
+
+    <category name="I/O Expander">
+	    <label text="I/O Expander"></label>
+	    <label text="MCP23017"></label>
+            <button text="Install mcp23017 library" callbackKey="installPyLib"></button>
+    </category>
+
 
   <category name="RC Servo Motor">
       <label text="Hobby RC Servo Motor"></label>

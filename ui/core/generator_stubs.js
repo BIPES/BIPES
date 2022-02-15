@@ -4846,9 +4846,12 @@ Blockly.Python['net_wiznet5k_init'] = function(block) {
   var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
   var rst = Blockly.Python.valueToCode(block, 'rst', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_network'] = 'import utime';
+  //Working nicely with RPI Pico. Before modifying, remmeber that this is workign with RIP Pico
+  Blockly.Python.definitions_['import_Pin_SPI'] = 'from machine import Pin,SPI';
+  Blockly.Python.definitions_['import_network'] = 'import network';
 
-  var code = 'nic = network.WIZNET5K(' + spi + ',' + cs + ',' + rst + '\n';
+  var code = 'spi' + spi + '=SPI(' + spi + ',2_000_000, mosi=Pin(19),miso=Pin(16),sck=Pin(18))\n';
+  code += 'nic = network.WIZNET5K(spi' + spi + ',Pin(' + cs + '),Pin(' + rst + '))\n';
 
   return code;
 
@@ -4857,7 +4860,7 @@ Blockly.Python['net_wiznet5k_init'] = function(block) {
 
 Blockly.Python['net_wiznet5k_isconnected'] = function(block) {
 
-  var code = 'WIZNET5K.isconnected()';
+  var code = 'nic.isconnected()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -4865,7 +4868,7 @@ Blockly.Python['net_wiznet5k_isconnected'] = function(block) {
 
 Blockly.Python['net_wiznet5k_regs'] = function(block) {
 
-  var code = 'WIZNET5K.regs()';
+  var code = 'nic.regs()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -6157,6 +6160,48 @@ Blockly.Python['bmp180_pressure'] = function(block) {
 Blockly.Python['bmp180_altitude'] = function(block) {
 	var code = 'bmp180.altitude';
 	return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+//BMP280
+Blockly.Python['bmp280_init'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_bmp280'] = 'from bmp280 import *';
+
+	var code = 'bus=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	code += 'bmp280 = BMP280(bus)\n';
+	code += 'bmp280.use_case(BMP280_CASE_WEATHER)\n';
+	code += 'bmp280.oversample(BMP280_OS_HIGH)\n';
+
+	return code;
+};
+
+Blockly.Python['bmp280_temperature'] = function(block) {
+	var code = 'bmp280.temperature';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['bmp280_pressure'] = function(block) {
+	var code = 'bmp280.pressure';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['bmp280_altitude'] = function(block) {
+	var code = 'bmp280.altitude';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['bmp280_measure'] = function(block) {
+	var code = 'bmp280.normal_measure()\n';
+	return code;
+};
+
+Blockly.Python['bmp280_sleep'] = function(block) {
+	var code = 'bmp280.sleep()\n';
+	return code;
 };
 
 

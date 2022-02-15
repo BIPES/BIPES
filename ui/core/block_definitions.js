@@ -11615,3 +11615,83 @@ Blockly.Blocks['bmp180_altitude'] = {
   }
 };
 
+//BMP280
+Blockly.Blocks['bmp280_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init BMP280");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['bmp280_temperature'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(MSG["temperature"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Temperature from the BMP280 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['bmp280_pressure'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(MSG["pressure"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Pressure from the BMP280 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['bmp280_altitude'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(MSG["altitude"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Altitude from the BMP280 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['bmp280_measure'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("BMP280 Measure");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['bmp280_sleep'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("BMP280 Sleep");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
