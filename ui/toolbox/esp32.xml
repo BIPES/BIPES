@@ -1195,6 +1195,28 @@
 
   </category>
 
+  <category name="Air Quality">
+      <label text="CCS811"></label>
+   <label text="Library: https://github.com/Notthemarsian/CCS811"></label>
+        <button text="Install CCS811 library" callbackKey="installPyLib"></button>
+
+    <block type="ccs811_init">
+      <value name="scl">
+        <shadow type="math_number">
+          <field name="NUM">22</field>
+        </shadow>
+      </value>
+      <value name="sda">
+        <shadow type="math_number">
+          <field name="NUM">21</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="ccs811_data_ready"> </block>
+    <block type="ccs811_eCO2"> </block>
+    <block type="ccs811_tVOC"> </block>
+  </category>
 
   <category name="Inertial Measurement">
       <label text="MPU6050 IMU"></label>

@@ -11776,3 +11776,59 @@ Blockly.Blocks['mcp23017_input'] = {
   }
 };
 
+//CCS811 Air Quality Sensor
+Blockly.Blocks['ccs811_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init CCS811");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['ccs811_data_ready'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("CCS811 Data Ready");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Air Quality Sensor CCS811 Data Ready");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['ccs811_eCO2'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("CCS811 CO2");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Air Quality Sensor CCS811 CO2 reading");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['ccs811_tVOC'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("CCS811 tVOC");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Air Quality Sensor CCS811 VOC reading");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+

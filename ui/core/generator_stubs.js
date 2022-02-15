@@ -6236,3 +6236,31 @@ Blockly.Python['mcp23017_input'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
 };
 
+//CCS811
+Blockly.Python['ccs811_init'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_ccs811'] = 'import CCS811';
+
+	var code = 'bus=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	code += 'sCCS811 = CCS811.CCS811(i2c=bus, addr=90)\n';
+
+	return code;
+};
+
+Blockly.Python['ccs811_data_ready'] = function(block) {
+	var code = 'sCCS811.data_ready()';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['ccs811_eCO2'] = function(block) {
+	var code = 'sCCS811.eCO2';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['ccs811_tVOC'] = function(block) {
+	var code = 'sCCS811.tVOC';
+	return [code, Blockly.Python.ORDER_NONE];
+};
