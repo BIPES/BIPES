@@ -155,6 +155,7 @@ class BlocksCode {
   constructor (parent, dom) {
     this.generating = false // is generating code
     this.parent = parent
+    this.name = 'code'
 
     this.interval           // store watcher interval.
     this.executing          // store if is executing code.

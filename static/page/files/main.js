@@ -882,7 +882,8 @@ class ProjectFiles {
     // Apply to all tabs
     command.dispatch([this.parent, this], 'save', [
       filename, script,
-      project.currentUID
+      project.currentUID,
+      command.tabUID
     ])
     // Changed by reference, just write to localStorage
     project.write()
@@ -892,8 +893,9 @@ class ProjectFiles {
    * @param{string} filename - Full path to file
    * @param{string} file - Name of the new folder
    * @param{string} projectUID - UID of the project with a new folder
+   * @param{string} tabUID - UID of the tab
    */
-  _save (filename, file, projectUID){
+  _save (filename, file, projectUID, tabUID){
     let path = filename.split('/')
     path.shift()
 
@@ -905,9 +907,9 @@ class ProjectFiles {
       obj = this.objByName(path)
     else
       obj = this.objByName(path, projectUID)
-
-    if (obj === true || obj.script == undefined) {
-      notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['CreatePathFileBeforeSaving'], filename)}`)
+    if ((obj === true || obj.script == undefined)) {
+      if (tabUID === command.tabUID)
+        notification.send(`${Msg['PageFiles']}: ${Tool.format([Msg['CreatePathFileBeforeSaving'], filename])}`)
       return
     }
     obj.script = file

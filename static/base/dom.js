@@ -36,17 +36,35 @@ class DOM {
    get innerText(){
     return this._dom.innerText
   }
+  /** Get DOM offset height */
+  get height (){
+    return this._dom.offsetHeight
+  }
+  /** Get DOM offset width */
+  get width (){
+    return this._dom.offsetWidth
+  }
+  /** Get DOM id */
+  get id (){
+    return this._dom.id
+  }
+  /** set DOM id */
+  set id (str){
+    this._dom.id = str
+  }
   /**
    * Focus on DOM.
    */
   focus (){
     this._dom.focus()
   }
-  /**
-   * Get DOM classList object.
-   */
+  /** Get DOM classList object. */
   get classList(){
     return this._dom.classList
+  }
+  /** Get DOM style object. */
+  get style(){
+    return this._dom.style
   }
   /**
    * Append a ``onchange`` event.

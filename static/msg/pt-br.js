@@ -77,6 +77,10 @@ Msg = {
   'TargetDevice':'Dispositivo alvo do projeto.',
   'TargetFirmware':'Firmware alvo do projeto.',
   'ConnectedDevices':'Dispositivos conectados',
+  'UsingThisDevice':'Usando esse dispositivo',
+  'OnThisTab':'Nessa aba',
+  'OnOtherTab':'Em outra aba',
+
   'StatusOngoingInput':'Recebendo comandos',
   'StatusReady':'Pronto',
   'StatusWorking':'Fazendo {0} tarefas',

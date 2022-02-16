@@ -76,6 +76,10 @@ Msg = {
   'TargetDevice':'Project\'s target device',
   'TargetFirmware':'Project\'s target firmware',
   'ConnectedDevices':'Connected devices',
+  'UsingThisDevice':'Using this device',
+  'OnThisTab':'On this tab',
+  'OnOtherTab':'On other tab',
+
   'StatusOngoingInput':'Ongoing input',
   'StatusReady':'Ready',
   'StatusWorking':'Doing {0} tasks',
@@ -109,7 +113,5 @@ Msg = {
   'StopExecution':'Stop execution',
   'StopTimers':'Stop timers',
   'DeviceInfo':'Device info',
-  '':'',
-}
 }
 

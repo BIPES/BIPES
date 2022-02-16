@@ -145,9 +145,9 @@ class Prompt {
       if (obj.callback == 1)
         this._dom.statusTasks.innerText = Msg['StatusWorkingOne']
       else
-        this._dom.statusTasks.innerText = Tool.format(
+        this._dom.statusTasks.innerText = Tool.format([
           Msg['StatusWorking'], obj.callback
-        )
+        ])
       this.locked = true
     } else {
       this.locked = false

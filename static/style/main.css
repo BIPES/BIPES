@@ -298,7 +298,7 @@ button#remove:before {
 button#lower:before, button#discard:before {
 	background-position: left calc(-1.5rem*8) top;
 }
-.button#edit:before {
+button#edit:before, .button#edit:before {
 	background-position: left calc(-1.5rem*9) top;
 }
 div#dashboard.on .button#edit:before {

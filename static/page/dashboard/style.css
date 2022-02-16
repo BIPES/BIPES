@@ -1,0 +1,361 @@
+section#dashboard #dashboard {
+  width: 100%;
+  height: 100%;
+}
+section#dashboard #header {
+  width: 100%;
+  height: 2.5rem;
+  border-bottom: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 .25em rgba(0,0,0,.25);
+}
+section#dashboard #header > span {
+  height: 2.5rem;
+  border-left: 1px solid #7d7d7d;
+}
+section#dashboard #header > span button:hover,
+section#dashboard #header > span button:focus {
+	background-color: rgba(68,153,204,.5);
+}
+section#dashboard #header > span button {
+	background-color: rgba(68,153,204,0);
+	border-radius: 0;
+	border: none;
+  transition: background-color ease .125s;
+  padding: 0.5rem;
+}
+section#dashboard #dashboard.on #edit {
+	background-color: rgba(68,153,204,.25);
+}
+section#dashboard #dashboard.on #edit:before {
+	background-position: left calc(-1.5rem*9) bottom !important;
+}
+section#dashboard #header > div {
+  display: flex;
+  max-width: calc(100% - 4.5rem);
+  overflow-x: auto;
+}
+section#dashboard #header > div > span {
+  display: flex;
+}
+section#dashboard #tabs h3 {
+  white-space: nowrap;
+}
+section#dashboard #tabs {
+  padding-left: .5rem;
+}
+section#dashboard #tabs > button {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  background-color: rgba(84,190,255,0);
+  transition: .125s ease background-color;
+  box-sizing: border-box;
+  min-width: 5rem;
+  text-align: center;
+  border-radius: 1rem;
+  margin: 0.25rem .125rem;
+}
+section#dashboard #tabs > button:hover,
+section#dashboard #tabs > button:focus {
+  background-color: rgba(84,190,255,0.5);
+}
+section#dashboard #tabs > button.on {
+  background-color: rgba(84,190,255,0.25);
+}
+section#dashboard #header #add {
+  margin-top: .25rem;
+  height: 2.125rem;
+}
+section#dashboard #grid {
+  width: 100%;
+  height: calc(100% - 2.5rem);
+}
+section#dashboard #grid #add {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  background-image: linear-gradient(90deg,rgba(110,84,255,.5),rgba(110,84,255,.5));
+  box-shadow: 0 0.25rem .5rem rgba(0,0,0,.25);
+  width: 3rem;
+  height: 3rem;
+}
+section#dashboard #grid #add:before {
+  margin: 0.45rem;
+}
+
+section#dashboard #grid #edit:before {
+  margin: 0;
+}
+
+section#dashboard #addMenu > div {
+  max-width: 14rem;
+  padding: 0.5rem;
+  margin-right: .75rem;
+  display: flex;
+  justify-content: space-around;
+  margin-left: auto;
+}
+section#dashboard #addMenu.on > div {
+  margin-top: calc(100vh - 7.5rem);
+}
+section#dashboard #addMenu button {
+  padding: .5em;
+  border-radius: 0.5em;
+  display: block;
+}
+#storageManager{
+  display: none;
+}
+@media screen and (max-width:39.99rem) {
+  section#dashboard #addMenu.on > div {
+    margin-top: calc(100vh - 6.5rem - 3rem);
+  }
+}
+@media screen and (min-width:40rem) and (orientation:portrait) {
+  section#dashboard.pos1 #addMenu.on > div {
+    margin-top: calc(50vh - 7rem);
+  }
+}
+@media screen and (max-width:39.99rem) and (orientation:portrait) {
+  section#dashboard.pos1 #addMenu.on > div {
+    margin-top: calc(50vh - 8rem);
+  }
+}
+@media screen and (orientation:landscape) {
+  section#dashboard.pos1 #addMenu > div {
+    margin-right: calc(50vw - 1em) !important;
+  }
+}
+
+/* Grid */
+
+section#dashboard .muuri {
+  position: relative;
+}
+section#dashboard .muuri-item {
+  padding: 0.5rem;
+  box-sizing: border-box;
+  position: absolute;
+}
+
+section#dashboard .muuri-item > div {
+  border-radius: 1em;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  transition: box-shadow ease .25s;
+}
+section#dashboard .muuri-item-dragging > div {
+  box-shadow: 0 .25rem 1.5rem rgba(0,0,0,.2);
+}
+section#dashboard .muuri-item-dragging,
+section#dashboard .muuri-item-releasing {
+  z-index: 5;
+}
+section#dashboard #grid {
+  scrollbar-gutter: stable;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+section#dashboard #grid.on {
+  overflow-y: hidden;
+}
+section#dashboard .muuri-item .silk,
+section#dashboard #grid #silk,
+section#dashboard .muuri #grab {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+section#dashboard #grid:not(.on):not(.ani) #silk {
+  display: none;
+}
+section#dashboard #grid #silk {
+  transition: background-color ease .125s;
+  background: rgba(0,0,0,0);
+  z-index: 1;
+}
+body.dark section#dashboard #grid.on #silk {
+  background: rgba(0,0,0,.4);
+}
+body.light section#dashboard #grid.on #silk {
+  background: rgba(225,225,225,.5);
+}
+section#dashboard .muuri-item.chart > div {
+  background-image: linear-gradient(90deg, rgba(84,190,255,0.05),rgba(84,190,255,0.05));
+}
+body.light section#dashboard .muuri-item.chart > div,
+body.light section#dashboard #grid #add {
+  background-color: #fff;
+}
+body.dark section#dashboard .muuri-item.chart > div,
+body.dark section#dashboard #grid #add {
+  background-color: #222;
+}
+section#dashboard .muuri #dismiss {
+	position: absolute;
+	padding: .125em;
+	margin: -.5em;
+	transition: .25s ease background-color;
+	background: #999;
+	display: none;
+	height: 1.8rem;
+}
+section#dashboard .muuri #dismiss:hover {
+	background: #000 !important;
+  border-color: transparent !important;
+}
+section#dashboard .muuri #dismiss:before {
+	background-position: left calc(-1.5rem*8) top ;
+}
+section#dashboard .muuri #grab {
+	cursor: grab;
+	display: none;
+}
+section#dashboard #dashboard.on .muuri > div:not(#editing) button#dismiss,
+section#dashboard #dashboard.on #grid:not(.on) #grab {
+	display: block;
+}
+section#dashboard #dashboard.on #grid.on .muuri-item .silk {
+  display: none;
+}
+
+/* actions */
+
+#grid #actions > span {
+	display: block;
+	padding: 0 0.5rem 0.5rem 0.5rem;
+	box-sizing:border-box;
+	display: flex;
+  flex-direction: column;
+
+	overflow-x: hidden;
+  overflow-y: auto;
+	scrollbar-width: none;
+}
+
+section#dashboard #grid #actions.wide .silk {
+  display: none;
+}
+section#dashboard #grid #actions.wide {
+  position: absolute;
+  transition: .25s ease right;
+  box-sizing: border-box;
+  height: calc(100% - 6.5rem);
+  width: 14rem;
+  right: -15rem;
+  top: 4.75em;
+  z-index: 1;
+  overflow-y: overlay;
+  border-radius: 1rem;
+  overflow-x: hidden;
+  box-shadow: 1rem 0 2rem rgba(0,0,0,0.2);
+  transition-delay: .25s;
+}
+section#dashboard #grid #actions.wide > span {
+  min-height: 100%;
+  border-radius: 1rem;
+}
+section#dashboard #grid.on #actions.wide {
+  right: 1rem;
+}
+#grid #actions.wide > span {
+	width: 14rem;
+}
+
+
+section#dashboard #grid #actions.tall .silk {
+  height: calc(90% - 8rem);
+}
+section#dashboard #grid #actions.tall {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 2.5rem);
+  z-index: 2;
+
+  transition: .25s ease top;
+  transition-delay: .25s;
+  box-sizing: border-box;
+  top: 100%;
+
+  overflow-y: overlay;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+section#dashboard #grid #actions.tall > span {
+  min-height: 100%;
+}
+section#dashboard #grid.on #actions.tall {
+  top: 2.5rem;
+}
+#grid #actions.tall > span {
+	width: 100%;
+}
+
+body.dark section#dashboard #grid #actions > span {
+  background: #222;
+  color: #aaa;
+}
+body.light section#dashboard #grid #actions > span {
+  background: #fff;
+  color: #666;
+}
+
+section#dashboard #grid #actions button.noicon{
+	margin: 0;
+	width: 100%;
+	background: transparent !important;
+}
+section#dashboard #grid #actions > span > div {
+  font-size: 0.9em;
+	border-radius: .5em;
+	margin: .125em 0 .125em 0;
+	width: 100%;
+	padding: .5em 0;
+}
+section#dashboard #grid #actions .button, #grid #actions .switch {
+    transition: box-shadow ease .125s, .125s ease background-color, margin ease .125s;
+}
+section#dashboard #actions .switch {
+	border: 1px solid #7d7d7d;
+}
+section#dashboard #actions .range button {
+	margin: 0.5em 0.25em 0 0.25em !important;
+}
+section#dashboard #actions .range button:hover {
+	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.5);
+}
+section#dashboard #actions .range button:active {
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+section#dashboard #grid #actions .button:hover, #grid #actions .switch:hover {
+  margin: 0 0 0.25em 0;
+  box-shadow: 0 .125em .125em rgba(0, 0, 0, 0.5);
+}
+section#dashboard #grid #actions .switch.on {
+	background: #3298dc;
+}
+section#dashboard #grid #actions .switch.on button {
+	color: #fff
+}
+section#dashboard #grid #actions .range {
+  width: 100%;
+	display: block;
+	padding: .5em;
+	text-align: center;
+	box-sizing: border-box;
+}
+section#dashboard #grid #actions input {
+	border: none;
+	border-bottom: 1px solid #7d7d7d;
+  width: 100%;
+  padding: 0.25em 0;
+}
+section#dashboard #actions select {
+  border-radius: .4rem;
+  display: inherit;
+  width: 100%;
+  padding: 0.5rem;
+}

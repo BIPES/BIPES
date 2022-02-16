@@ -73,7 +73,7 @@ class Device {
     let targets = []
     for (const key in this.deviceInfo) {
       targets.push(
-        new DOM('option', {innerText:key, value:key})
+        new DOM('option', {innerText:this.deviceInfo[key].name, value:key})
       )
     }
     $.targetDropdown = new DOM('select')
@@ -307,7 +307,7 @@ class Device {
       window.bipes.page.blocks.toolbox(obj.target)
 
     // Update status bar
-    this._dom.statusDevice.innerText = obj.target
+    this._dom.statusDevice.innerText = this.deviceInfo[obj.target].name
     this._dom.statusFirmware.innerText = obj.firmware
 
     if (!this.inited)
@@ -331,7 +331,7 @@ class Device {
       }
     })
     // Update status bar
-    this._dom.statusDevice.innerText = target
+    this._dom.statusDevice.innerText = this.deviceInfo[target].name
     this._dom.statusFirmware.innerText = firmware
   }
 
@@ -343,7 +343,7 @@ class Device {
   // Creates a DOM notificaton card
   _domCard (item){
     let about = item.tab == command.tabUID ? Msg['OnThisTab'] : Msg['OnOtherTab']
-    let using = "Using this device"
+    let using = Msg['UsingThisDevice']
     return new DOM('button', {uid: item.uid})
       .append([
         new DOM('div').append([
