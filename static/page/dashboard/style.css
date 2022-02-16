@@ -183,6 +183,25 @@ body.dark section#dashboard #grid.on #silk {
 body.light section#dashboard #grid.on #silk {
   background: rgba(225,225,225,.5);
 }
+section#dashboard #grid .muuri-item.switch button.press {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border-radius: 1rem;
+  background: rgba(84,190,255,0.05);
+  transition: .125s ease transform, .25s ease background-color;
+  cursor:pointer;
+  overflow: hidden;
+}
+section#dashboard #grid .muuri-item.switch button.press.on {
+  background-color: rgba(84,190,255,0.5);
+}
+section#dashboard #grid .muuri-item.switch button.press:hover {
+    transform: scale(1.02);
+}
+section#dashboard #grid .muuri-item.switch button.press:active {
+    transform: scale(0.98);
+}
 section#dashboard .muuri-item.chart > div {
   background-image: linear-gradient(90deg, rgba(84,190,255,0.05),rgba(84,190,255,0.05));
 }
@@ -359,3 +378,4 @@ section#dashboard #actions select {
   width: 100%;
   padding: 0.5rem;
 }
+

@@ -13,7 +13,7 @@ class Charts {
 		let data2 = dataStorage.chartData(data.setup.dataset, data);
 
 		let options = {
-                maintainAspectRatio: false, // ::TODO:: Is causing memory leak...
+                maintainAspectRatio: false,
 		            plugins: {
 		                legend: {
 		                  position: 'top'
@@ -40,7 +40,7 @@ class Charts {
 		else
 		  options.scales.y = {beginAtZero: true}
 
-    let _chart = new Chart(dom, {
+    let _chart = new Chart(dom._dom, {
 		        type: data.setup.chartType,
 		        data: data2,
 		        options: options
@@ -73,7 +73,6 @@ class Charts {
 class Streams {
   constructor (){}
   static stream (sid, dom) {
-    let data = JSON.parse(localStorage[`stream:${sid}`])
     switch (data.setup.source) {
       case 'DASH':
         let _stream1 = dashjs.MediaPlayer().create()
@@ -145,11 +144,11 @@ class Streams {
 }
 
 class Switches {
-  constructor (sid, dom, onUrl, offUrl){
-    this.sid = sid
+  constructor (data, dom){
+    this.sid = data.sid
     this.dom = dom
-    this.onUrl = onUrl
-    this.offUrl = offUrl
+    this.onUrl = data.setup.onUrl
+    this.offUrl = data.setup.offUrl
     this.state = false
   }
   destroy () {
@@ -161,6 +160,7 @@ class Switches {
     delete this
   }
   command () {
+    console.log('hi')
     if (!this.state)
       Get.request(this.onUrl, () => {
         this.dom._dom.classList.add('on')
@@ -172,29 +172,23 @@ class Switches {
         this.state = false
       })
   }
-  static switch (sid, dom) {
-    let data = JSON.parse(localStorage[`stream:${sid}`])
-
-    let _Switches = new Switches (sid, dom, data.setup.onUrl, data.setup.offUrl)
-
+  static switch (data, dom) {
+    let _Switches = new Switches (data, dom)
     let title = new DOM('h2', {innerText: data.setup.title}),
-     subtitle = new DOM('h3', {innerText: data.setup.subtitle}),
-       button = new DOM ('div', {id: 'switchPlugin', tabIndex: 0})
-        .onclick(_Switches, _Switches.command)
+     subtitle = new DOM('h3', {innerText: data.setup.subtitle})
+   dom.onclick(_Switches, _Switches.command)
 
     dom.append ([
       title,
-      button,
       subtitle
       ])
-
     return _Switches
   }
-  static regen (obj, sid, dom) {
+  static regen (obj, data) {
     for (const index in obj.switches) {
-      if (obj.switches[index].sid == sid) {
+      if (obj.switches[index].sid == data.sid) {
         obj.switches[index].destroy ()
-        obj.switches[index] = Switches.switch(sid, dom)
+        obj.switches[index] = Switches.switch(data, data.target)
       }
     }
   }

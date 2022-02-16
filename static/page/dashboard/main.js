@@ -506,7 +506,7 @@ class DashboardGrid {
 
 		    this.muuri.add(container1._dom)
 
-		    this.charts.push(Charts.chart(data, data.target._dom))
+		    this.charts.push(Charts.chart(data, data.target))
 
 	      silk.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent._dom.dashboard)})
         grab.onclick(this, this.edit, [data, container1])
@@ -517,11 +517,11 @@ class DashboardGrid {
 		    let content2 = new DOM('div')
 			    .append([
 			      silk,
+				    grab,
 				    remove,
-				    video,
-				    drag
+				    this.target,
 			    ])
-			  let container2 = new DOM('div', {sid:data.sid, className:'stream'})
+			  let container2 = new DOM('div', {sid:data.sid, className:'stream square'})
 			    .append(content2)
 
 		    this.muuri.add(container2._dom)
@@ -529,24 +529,28 @@ class DashboardGrid {
 		    this.players.push (Streams.stream(data.sid, data.target._dom))
 
         data.target.onclick(this, this.edit, [data.sid, container2]);
+
+	      silk.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent._dom.dashboard)})
+        grab.onclick(this, this.edit, [data, container3])
 		    break
 		  case 'switch':
-		    data.target = new DOM('span')
+		    data.target = new DOM('button', {className:'press'})
 		    let content3 = new DOM('div')
 			    .append([
+			      //silk,
+			      grab,
 				    remove,
-				    _switch,
-				    drag
+				    data.target,
 			    ])
-			  let container3 = new DOM('div', {sid:data.sid, className:'switch'})
+			  let container3 = new DOM('div', {sid:data.sid, className:'switch tiny'})
 			    .append(content3)
-
 
 		    this.muuri.add(container3._dom)
 
-		    this.switches.push(Switches.switch(data.sid, data.target))
+		    this.switches.push(Switches.switch(data, data.target))
 
-        _switch.onclick(this, this.edit, [data.sid, container3]);
+        data.target.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent._dom.dashboard)})
+        grab.onclick(this, this.edit, [data, container3])
 		    break
 		  }
   }
@@ -616,20 +620,7 @@ class DashboardGrid {
 
 	  let w0 = container.width,
 	      h0 = container.height
-    let w, h, x, y
-    if (this._dom.grid.width / 16 > 40){
-      w = this._dom.grid.width - (2 + 15)*16,
-      h = this._dom.grid.height - 3*16
-      x = (this.parent._dom.section.width - w - 15*16) / 2,
-      y = (this.parent._dom.section.height - h) / 2 +
-          this._dom.grid._dom.scrollTop - (1*16)
-    } else {
-      w = this._dom.grid.width - (2)*16,
-      h = this._dom.grid.height - (3 + 12)*16,
-      x = (this.parent._dom.section.width - w) / 2 ,
-      y = (this.parent._dom.section.height - h) / 2 +
-          this._dom.grid._dom.scrollTop - (1 + 14/2)*16
-    }
+    let [x, y, w, h] = this._computeEditorSize(obj.type, [w0, h0])
 
     let t = 0;
     container.style.zIndex = '2'
@@ -661,6 +652,42 @@ class DashboardGrid {
 	  }
 
 	  this.isGrabbing = false
+	}
+	/** Compute editor size */
+	_computeEditorSize(type, size){
+	  let x, y, w, h
+    if (type == 'chart')
+      if (this._dom.grid.width / 16 > 40)
+        w = this._dom.grid.width - (2 + 15)*16,
+        h = this._dom.grid.height - 3*16
+      else
+        w = this._dom.grid.width - (2)*16,
+        h = this._dom.grid.height - (3 + 12)*16
+    else
+      w = size[0],
+      h = size[1]
+    if (this._dom.grid.width / 16 > 40)
+      x = (this.parent._dom.section.width - w - 15*16) / 2,
+      y = (this.parent._dom.section.height - h) / 2 +
+          this._dom.grid._dom.scrollTop - (1*16)
+    else
+      x = (this.parent._dom.section.width - w) / 2 ,
+      y = (this.parent._dom.section.height - h) / 2 +
+          this._dom.grid._dom.scrollTop - (1 + 14/2)*16
+
+    return [x, y, w, h]
+	}
+	/** Refresh editor size */
+	_refreshEditorSize (){
+	  let o = this.editingProp
+    let [x, y, w, h] = this._computeEditorSize(
+      this.editing.type, o.size_from
+    )
+	  o.container.style.transform = `translateX(${x}px) translateY(${y}px)`
+	  o.container.style.width = `${w}px`
+	  o.container.style.height = `${h}px`
+	  o.to = [x, y]
+	  o.size_to = [w, h]
 	}
 	/** Closes the editor */
 	closeEditor (){
@@ -697,7 +724,16 @@ class DashboardGrid {
 	}
 	/** On resize event, compute plugin resize widths and set actions mode (tall/wide). */
 	resize (){
+    if (this._dom.grid.width / 16 > 40){
+      this._dom.actions.classList.add('wide')
+      this._dom.actions.classList.remove('tall')
+    } else {
+      this._dom.actions.classList.add('tall')
+      this._dom.actions.classList.remove('wide')
+    }
+
 	  if (this.editing) {
+	    this._refreshEditorSize()
       return
     }
 
@@ -729,14 +765,6 @@ class DashboardGrid {
     this.css.muuriTiny.style.width = `${c[i][2][0] - 1}px`
     this.css.muuriTiny.style.height = `${c[i][2][1]}px`
 
-    if (this._dom.grid.width / 16 > 40){
-      this._dom.actions.classList.add('wide')
-      this._dom.actions.classList.remove('tall')
-    } else {
-      this._dom.actions.classList.add('tall')
-      this._dom.actions.classList.remove('wide')
-    }
-
 
     this.muuri.refreshItems().layout()
   }
@@ -756,12 +784,17 @@ class DashboardGrid {
     let pos = current.map((item) => {
       return item.getElement().dataset.sid
     })
-    let layout = []
+    let layout = [],
+        noLayout = []
     let i = 0, j = 0
     this.ref.forEach((item, index) => {
-      layout[item.pos] = current[pos.indexOf(item.sid)]
+      if (item.pos == undefined)
+        noLayout.push(current[pos.indexOf(item.sid)])
+      else
+        layout[item.pos] = current[pos.indexOf(item.sid)]
     })
     layout = layout.filter(n => n) // Remove undefined items
+    layout.push(...noLayout)
     this.muuri.sort(layout, {layout:'instant'})
   }
 }
