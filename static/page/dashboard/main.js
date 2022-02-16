@@ -352,6 +352,7 @@ class DashboardGrid {
 		this.muuri = new Muuri($.container._dom, {
 		  layoutOnResize: false,
 		  dragEnabled: true,
+		  layoutOnInit: false,
 		  dragHandle: '#grab',
 		  dragStartPredicate: (item, e) => {
 		    if (this.parent._dom.dashboard.classList.contains('on')){
@@ -365,23 +366,23 @@ class DashboardGrid {
 		  /*layout: {
 		    alignRight: true
 		  }*/
-		})
-		this.muuri.on('dragInit', (item) => {
+		}).on('dragInit', (item) => {
 		  item._element.classList.add('grabbing')
-    });
-		this.muuri.on('dragReleaseEnd', (item) => {
+    }).on('dragReleaseEnd', (item) => {
 		  item._element.classList.remove('grabbing')
 		  if (+new Date () - this.isGrabbing < 150) {
-		      this.isGrabbing = false
-		      let obj
-		      this.ref.forEach(p =>{
-		        if (p.sid === item._element.dataset.sid)
-		          obj = p
-		      })
-		      this.edit(obj, new DOM(item._element))
-		  } else
-		    this.isGrabbing = false
-    });
+        this.isGrabbing = false
+        let obj
+        this.ref.forEach(p =>{
+          if (p.sid === item._element.dataset.sid)
+            obj = p
+        })
+        this.edit(obj, new DOM(item._element))
+    } else
+      this.isGrabbing = false
+    }).on('move', () => {
+	    this.storeLayout()
+    })
 
     // Set & get CSS rule nodes
     document.styleSheets[0].insertRule('section#dashboard .muuri .muuri-item.wide {}', 0)
@@ -430,6 +431,7 @@ class DashboardGrid {
     this.ref.forEach (item => {
       this.include(item)
     })
+    this.restoreLayout()
 	}
 	/**
 	 * Update and refresh grid on change on other tab.
@@ -738,6 +740,30 @@ class DashboardGrid {
 
     this.muuri.refreshItems().layout()
   }
+  /** Store current muuri positions to project */
+  storeLayout (){
+    let pos = this.muuri.getItems().map((item) => {
+      return item.getElement().dataset.sid
+    })
+    this.ref.forEach((item, index) => {
+      item.pos = pos.indexOf(item.sid)
+    })
+    this.parent.commit()
+  }
+  /** Restore layout */
+  restoreLayout (){
+    let current = this.muuri.getItems()
+    let pos = current.map((item) => {
+      return item.getElement().dataset.sid
+    })
+    let layout = []
+    let i = 0, j = 0
+    this.ref.forEach((item, index) => {
+      layout[item.pos] = current[pos.indexOf(item.sid)]
+    })
+    layout = layout.filter(n => n) // Remove undefined items
+    this.muuri.sort(layout, {layout:'instant'})
+  }
 }
 
 
@@ -775,10 +801,7 @@ class DashboardAddMenu {
       Animate.off(this._dom.addMenu._dom)
   }
   open (){
-    this.restore ()
     Animate.on(this._dom.addMenu._dom)
-  }
-  restore() {
   }
 }
 
