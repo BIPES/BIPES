@@ -479,7 +479,13 @@ class files {
 
         files.update_file_status(`Sending raw (USB) ${this.put_file_name}...`);
 
-        let decoderUint8 =  new TextDecoder().decode(this.put_file_data).replaceAll(/(\r\n|\r|\n)/g, '\\r').replaceAll(/'/g, "\\'").replaceAll(/"/g, '\\"').replaceAll(/\t/g, '    ');
+        let decoderUint8 =  new TextDecoder().decode(this.put_file_data)
+          .replaceAll(/\\/g, '\\\\')
+          .replaceAll(/(\r\n|\r|\n)/g, '\\r')
+          .replaceAll(/'/g, "\\'")
+          .replaceAll(/"/g, '\\"')
+          .replaceAll(/\t/g, '    ');
+
         UI ['progress'].start(parseInt(decoderUint8.length/Channel ['webserial'].packetSize) + 1);
 
         //ctrl-C twice: interrupt any running program
