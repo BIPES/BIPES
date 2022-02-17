@@ -6264,3 +6264,29 @@ Blockly.Python['ccs811_tVOC'] = function(block) {
 	var code = 'sCCS811.tVOC';
 	return [code, Blockly.Python.ORDER_NONE];
 };
+
+//SHT20
+Blockly.Python['sht20_init'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_time_'] = 'import time';
+	Blockly.Python.definitions_['def_sht20_temperature'] = 'def sht20_temperature():\n\ti2c.writeto(0x40,b\'\\xf3\')\n\ttime.sleep_ms(70)\n\tt=i2c.readfrom(0x40, 2)\n\treturn -46.86+175.72*(t[0]*256+t[1])/65535\n';
+	Blockly.Python.definitions_['def_sht20_humidity'] = 'def sht20_humidity():\n\ti2c.writeto(0x40,b\'\\xf5\')\n\ttime.sleep_ms(70)\n\tt=i2c.readfrom(0x40, 2)\n\treturn -6+125*(t[0]*256+t[1])/65535';
+
+	var code = 'i2c=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+
+	return code;
+};
+
+Blockly.Python['sht20_temperature'] = function(block) {
+	var code = 'sht20_temperature()';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['sht20_humidity'] = function(block) {
+	var code = 'sht20_humidity()';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+

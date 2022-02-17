@@ -111,6 +111,10 @@ var MSG = {
   altitude: "altura",
   bmp180_init: "Iniciar BMP180",
 
+//SHT20
+  init_sht20: "Iniciar o SHT20",
+  humidity: "umidade",
+
 //Network
   net_http_get: "Requisição HTTP GET",
   net_http_get_status: "Status da resposta HTTP",
@@ -140,6 +144,7 @@ Blockly.Msg['CAT_DISPLAYS'] = "Displays";
 Blockly.Msg['CAT_SENSORS'] = "Sensores";
 Blockly.Msg['CAT_OUTPUTS'] = "Saidas e atuadores";
 Blockly.Msg['CAT_COMM'] = "Comunicação";
+Blockly.Msg['CAT_TEMP_HUMI'] = "Temperatura e Umidade";
 Blockly.Msg['CAT_PRESS'] = "Pressão";
 Blockly.Msg['CAT_FILES'] = "Arquivos";
 Blockly.Msg['CAT_NET'] = "Rede e Internet";

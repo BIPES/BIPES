@@ -1012,7 +1012,8 @@
   </category>
 
   <category name="%{BKY_CAT_SENSORS}">
-    <category name="DHT11/22 Sensor">
+
+    <category name="%{BKY_CAT_TEMP_HUMI}">
       <label text="DHT11/22 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
@@ -1025,7 +1026,28 @@
       <block type="dht_measure"></block>
       <block type="dht_read_temp"></block>
       <block type="dht_read_humidity"></block>
+
+      <label text="SHT20 I2C Temperature and Humidity Sensor"></label>
+
+      <block type="sht20_init">
+	      <value name="scl">
+		<shadow type="math_number">
+		  <field name="NUM">22</field>
+		</shadow>
+	      </value>
+	      <value name="sda">
+		<shadow type="math_number">
+		  <field name="NUM">21</field>
+		</shadow>
+	      </value>
+      </block>
+
+    <block type="sht20_temperature"> </block>
+    <block type="sht20_humidity"> </block>
+
     </category>
+
+
 <!--Adicionando os blocos do Anenmômetro-->
     <category name="Anemômetro">
     <label text="Anenômetro"></label>

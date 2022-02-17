@@ -11832,3 +11832,49 @@ Blockly.Blocks['ccs811_tVOC'] = {
   }
 };
 
+//SHT20
+Blockly.Blocks['sht20_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(MSG["init_sht20"]);
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['sht20_temperature'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("SHT20 " + MSG["temperature"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Temperature from the SHT20 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['sht20_humidity'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("SHT20 " + MSG["humidity"]);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Humidity from the SHT20 sensor");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
