@@ -1217,7 +1217,7 @@
 
   </category>
 
-  <category name="Air Quality">
+  <category name="%{BKY_CAT_AIR}">
       <label text="CCS811"></label>
    <label text="Library: https://github.com/Notthemarsian/CCS811"></label>
         <button text="Install CCS811 library" callbackKey="installPyLib"></button>
@@ -1240,7 +1240,7 @@
     <block type="ccs811_tVOC"> </block>
   </category>
 
-  <category name="Inertial Measurement">
+  <category name="%{BKY_CAT_IMU}">
       <label text="MPU6050 IMU"></label>
    <label text="Library: https://github.com/"></label>
         <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>

@@ -148,4 +148,6 @@ Blockly.Msg['CAT_PRESS'] = "Pressure";
 Blockly.Msg['CAT_FILES'] = "Files";
 Blockly.Msg['CAT_NET'] = "Network and Internet";
 Blockly.Msg['CAT_CONTROL'] = "Control";
+Blockly.Msg['CAT_IMU'] = "Inertial Measurement";
+Blockly.Msg['CAT_AIR'] = "Air Quality";
 
