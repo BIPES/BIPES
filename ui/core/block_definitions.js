@@ -8165,7 +8165,49 @@ Blockly.Blocks["sd_mount"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
  this.setTooltip("Mount SD Card on the specified folder");
- this.setHelpUrl("https://docs.micropython.org/en/latest/library/uos.html");
+ this.setHelpUrl("https://docs.micropython.org/en/latest/library/machine.SDCard.html");
+  }
+};
+
+Blockly.Blocks["sd_mount_custom"] = {
+  init: function() {
+
+   this.appendDummyInput()
+        .appendField("Mount SD Card (Custom Pins)");
+
+  this.appendValueInput("slot")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("slot");
+
+  this.appendValueInput("sck")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("sck");
+
+  this.appendValueInput("miso")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("miso");
+
+  this.appendValueInput("mosi")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("mosi");
+
+  this.appendValueInput("cs")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("cs");
+
+  this.appendValueInput("freq")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("freq");
+
+  this.appendValueInput("pIn")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("mount point");
+
+        this.setColour(0);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+ this.setTooltip("Mount SD Card on the specified folder Custom Pins)");
+ this.setHelpUrl("https://docs.micropython.org/en/latest/library/machine.SDCard.html");
   }
 };
 

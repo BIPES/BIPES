@@ -1807,13 +1807,52 @@ _
 
       <label text="SD Card"></label>
 
-<block type="sd_mount">
-  <value name="pIn">
+    <block type="sd_mount">
+      <value name="pIn">
         <shadow type="text">
 		<field name="TEXT">/sd</field>
         </shadow>
       </value>
-</block>
+    </block>
+
+    <block type="sd_mount_custom">
+      <value name="slot">
+        <shadow type="math_number">
+          <field name="NUM">2</field>
+        </shadow>
+      </value>
+      <value name="sck">
+        <shadow type="math_number">
+          <field name="NUM">18</field>
+        </shadow>
+      </value>
+      <value name="miso">
+        <shadow type="math_number">
+          <field name="NUM">19</field>
+        </shadow>
+      </value>
+      <value name="mosi">
+        <shadow type="math_number">
+          <field name="NUM">23</field>
+        </shadow>
+      </value>
+      <value name="cs">
+        <shadow type="math_number">
+          <field name="NUM">15</field>
+        </shadow>
+      </value>
+      <value name="freq">
+        <shadow type="math_number">
+          <field name="NUM">20000000</field>
+        </shadow>
+      </value>
+      <value name="pIn">
+        <shadow type="text">
+		<field name="TEXT">/sd</field>
+        </shadow>
+      </value>
+    </block>
+
 
 <block type="uos_listdir">
   <value name="pIn">

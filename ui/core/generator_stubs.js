@@ -3052,7 +3052,33 @@ Blockly.Python["sd_mount"] = function(block) {
 	return code;
 };
 
+Blockly.Python["sd_mount_custom"] = function(block) {
+	/*
+	 * 
+>>> import machine
+>>> from machine import Pin
+>>> s=machine.SDCard(slot=2, width=1, cd=None, wp=None, sck=Pin(18), miso=Pin(19), mosi=Pin(23), cs=Pin(15), freq=20000000)
+>>> import os
+>>> os.mount(s,'/sd')
+>>> os.listdir('/sd')
+*/
+	Blockly.Python.definitions_['import_os'] = 'import os';
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 
+	var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
+	var slot = Blockly.Python.valueToCode(block, 'slot', Blockly.Python.ORDER_ATOMIC);
+	var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);
+	var miso = Blockly.Python.valueToCode(block, 'miso', Blockly.Python.ORDER_ATOMIC);
+	var mosi = Blockly.Python.valueToCode(block, 'mosi', Blockly.Python.ORDER_ATOMIC);
+	var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
+	var freq = Blockly.Python.valueToCode(block, 'freq', Blockly.Python.ORDER_ATOMIC);
+
+	var code = "sdcard=machine.SDCard(slot=" + slot + ', width=1, cd=None, wp=None, sck=Pin(' + sck + '), miso=Pin(' + miso + '), mosi=Pin(' + mosi + '), cs=Pin(' + cs + '), freq=' + freq + ')\n';
+	code += "os.mount(sdcard, " + value_pIn + ")\n"; 
+
+	return code;
+};
 
 Blockly.Python["uos_remove"] = function(block) {
 		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
