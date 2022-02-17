@@ -1241,39 +1241,55 @@
   </category>
 
   <category name="%{BKY_CAT_IMU}">
-      <label text="MPU6050 IMU"></label>
-   <label text="Library: https://github.com/"></label>
-        <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
+	<label text="MPU6050 IMU"></label>
+	<label text="Library: https://github.com/"></label>
+	<button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
+	<button text="Load example: mpu6050" callbackKey="loadExample"></button>
+	<button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
 
-        <button text="Load example: mpu6050" callbackKey="loadExample"></button>
-        <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
+	<block type="init_mpu6050">
+		<value name="scl">
+		<shadow type="math_number">
+		<field name="NUM">5</field>
+		</shadow>
+		</value>
+		<value name="sda">
+		<shadow type="math_number">
+		<field name="NUM">4</field>
+		</shadow>
+		</value>
+	</block>
 
+	<block type="mpu6050_read_acc_x"> </block>
+	<block type="mpu6050_read_acc_y"> </block>
+	<block type="mpu6050_read_acc_z"> </block>
 
+	<block type="mpu6050_read_gyro_x"> </block>
+	<block type="mpu6050_read_gyro_y"> </block>
+	<block type="mpu6050_read_gyro_z"> </block>
 
-    <block type="init_mpu6050">
+	<label text="MPU9250 IMU"></label>
+	<button text="Install mpu9250 library" callbackKey="installPyLib"></button>
+	<button text="Install mpu6500 library" callbackKey="installPyLib"></button>
+	<button text="Install ak8963 library" callbackKey="installPyLib"></button>
 
- <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">5</field>
-        </shadow>
-      </value>
+	<block type="mpu9250_init">
+		<value name="scl">
+		<shadow type="math_number">
+		<field name="NUM">22</field>
+		</shadow>
+		</value>
+		<value name="sda">
+		<shadow type="math_number">
+		<field name="NUM">21</field>
+		</shadow>
+		</value>
+	</block>
 
- <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">4</field>
-        </shadow>
-      </value>
-
-    </block>
-
-    <block type="mpu6050_read_acc_x"> </block>
-    <block type="mpu6050_read_acc_y"> </block>
-    <block type="mpu6050_read_acc_z"> </block>
-
-    <block type="mpu6050_read_gyro_x"> </block>
-    <block type="mpu6050_read_gyro_y"> </block>
-    <block type="mpu6050_read_gyro_z"> </block>
-
+	<block type="mpu9250_acc"> </block>
+	<block type="mpu9250_gyro"> </block>
+	<block type="mpu9250_mag"> </block>
+	<block type="mpu9250_temp"> </block>
 
   </category>
 

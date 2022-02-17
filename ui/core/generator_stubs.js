@@ -6290,3 +6290,39 @@ Blockly.Python['sht20_humidity'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
 };
 
+//MPU9250
+Blockly.Python['mpu9250_init'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_mpu9250'] = 'from mpu9250 import MPU9250';
+
+	var code =  'i2c=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	    code += 'mpu9250s = MPU9250(i2c)\n';
+
+	return code;
+};
+
+Blockly.Python['mpu9250_acc'] = function(block) {
+	var code = 'mpu9250s.acceleration';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['mpu9250_mag'] = function(block) {
+	var code = 'mpu9250s.magnetic';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['mpu9250_gyro'] = function(block) {
+	var code = 'mpu9250s.gyro';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['mpu9250_temp'] = function(block) {
+	var code = 'mpu9250s.temperature';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+

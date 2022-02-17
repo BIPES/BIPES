@@ -11877,4 +11877,67 @@ Blockly.Blocks['sht20_humidity'] = {
   }
 };
 
+//MPU9250
+Blockly.Blocks['mpu9250_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init MPU9250");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['mpu9250_acc'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("MPU9250 Acceleration");
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['mpu9250_gyro'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("MPU9250 Gyro rate");
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['mpu9250_mag'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("MPU9250 Magnetometer");
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['mpu9250_temp'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("MPU9250 Temperature");
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setHelpUrl("");
+  }
+};
+
 
