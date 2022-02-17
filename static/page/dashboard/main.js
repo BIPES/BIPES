@@ -6,8 +6,7 @@ import {command} from '../../base/command.js'
 import {storage} from '../../base/storage.js'
 
 import {project} from '../project/main.js'
-import {Actions, Action} from './action.js'
-import {DataStorage, DataStorageManager} from './datastorage.js'
+import {Actions} from './action.js'
 import {Charts, Streams, Switches} from './plugins.js'
 
 import {dataStorage} from './datastorage.js'
@@ -50,12 +49,6 @@ class Dashboard {
 			id:'storage',
 			title:Msg['EditData']
 		  })
-		$.gridView = new DOM('button', {
-			className:'icon',
-			id:'gridView',
-			title:Msg['SwitchViewType']
-		  })
-		  .onclick(this, this.gridView)
 		$.addPlugin = new DOM('button', {
 			className:'icon',
 			id:'add',
@@ -76,12 +69,11 @@ class Dashboard {
 
 		$.tabs = new DOM('span', {id:'tabs'})
 		$.wrapper = new DOM('div').append([$.tabs, $.add])
-		$.wrapper2 = new DOM('span').append([$.edit, $.gridView, $.storage])
+		$.wrapper2 = new DOM('span').append([$.edit, $.storage])
 		$.header.append([$.wrapper, $.wrapper2])
 
 		this.grid = new DashboardGrid($.grid, this)
 		$.grid.append([$.addPlugin])
-		dataStorage.init(this.grid) // ::TODO:: Organize this
 
 		this.storageManager = new DataStorageManager($.storageManager, this.grid, $.storage)
 
@@ -108,10 +100,9 @@ class Dashboard {
       this.add()
     this.restore()
     this.select(Object.keys(this.tree)[0])
+
+		dataStorage.init(this.grid)
     this.inited = true
-  }
-  write (chunk){
-    dataStorage.write(chunk)
   }
   /*
    * On page hidden, deinit the page.
@@ -122,7 +113,16 @@ class Dashboard {
 
     this.unselect()
     this._dom.tabs.removeChilds()
+
+		dataStorage.deinit(this.grid)
     this.inited = false
+  }
+  /*
+   * On chunck receive, write to datastorage, then will refresh the charts.
+   * @param {string} chunk - Uncoming data.
+   */
+  write (chunk){
+    dataStorage.write(chunk)
   }
   /*
    * On load a project, load the page's scope of the project.
@@ -806,6 +806,37 @@ class DashboardGrid {
     layout.push(...noLayout)
     this.muuri.sort(layout, {layout:'instant'})
   }
+  /** Push data to current charts */
+  chartsPush (dataset, data, coordinates, coorLength) {
+      this.charts.forEach ((chart) => {
+        if (chart.dataset == dataset) {
+          if (data.length == 5) {
+            this.ref.forEach(plugin => {
+              if (plugin.sid === chart.sid)
+                Charts.regen(this.charts, plugin)
+            })
+          } else if (coorLength[dataset] < coordinates.length) {
+            coorLength[dataset] = coordinates.length
+            this.ref.forEach(plugin => {
+              if (plugin.sid === chart.sid)
+                Charts.regen(this.charts, plugin)
+            })
+          } else {
+            chart.data.labels.push(coordinates[0])
+            chart.data.datasets.forEach((dataset, index) => {
+              dataset.data.push(coordinates[index + 1])
+            })
+            if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
+              chart.data.labels.splice (0,1)
+              chart.data.datasets.forEach((dataset, index) => {
+                dataset.data.splice (0,1)
+              })
+            }
+            chart.update()
+          }
+        }
+      })
+    }
 }
 
 
@@ -844,6 +875,191 @@ class DashboardAddMenu {
   }
   open (){
     Animate.on(this._dom.addMenu._dom)
+  }
+}
+
+
+class DataStorageManager {
+  constructor (dom, grid_ref){
+    this.datalake = []
+
+    let $ = this._dom = {}
+    $.storageManager = dom
+    $.storageManager.onclick (this, this.close)
+		$.upload = new DOM('input', {
+		    id:'uploadCSV',
+		    type:'file',
+		    accept:'.csv'
+		  })
+			.onchange(this, this.uploadCSV)
+    $.uploadLabel = new DOM('label', {
+			  className:'button icon notext',
+			  id:'upload',
+			  title:'Upload CSV',
+			  htmlFor:'uploadCSV'
+		  })
+    $.h2 = new DOM ('h2',   {innerText: 'localStorage'})
+    $.title = new DOM ('div', {className: 'header'})
+      .append([
+        $.h2,
+        $.upload,
+        $.uploadLabel
+      ])
+    $.container = new DOM ('span')
+    $.wrapper = new DOM('div')
+      .append([
+        $.title,
+        $.container
+      ])
+    $.storageManager.append($.wrapper)
+
+    this.ref = grid_ref
+  }
+  close (e) {
+    if (e.target.id == 'storageManager')
+      Animate.off(this._dom.storageManager._dom, ()=>{this.deinit()})
+  }
+  open (){
+    this.restore ()
+    Animate.on(this._dom.storageManager._dom)
+  }
+  restore(){
+		storage.keys(/datastorage:(.*)/)
+		  .forEach(key => {this.include(key)})
+  }
+  include (uid){
+		let remove = new DOM('button', {
+			  className:'icon notext',
+			  id:'remove',
+			  title:'Delete data'
+			})
+		let download = new DOM('button', {
+		    className: 'icon notext',
+		    id:'download',
+		    title:'Download CSV'
+		  })
+		  .onclick(this, this.download, [uid])
+		let wrapper = new DOM('div').append([
+		    download,
+		    remove
+		  ])
+		let data = new DOM('div', {
+		    id:uid,
+		    innerText:uid}
+		  )
+			.append([
+				wrapper
+			])
+		this.datalake.push(data)
+
+		remove.onclick(this, this.remove, [uid, data])
+
+		let $ = this._dom
+		$.container.append (data)
+  }
+  deinit (){
+    this.datalake.forEach ((item) => {
+      item._dom.remove()
+    })
+    this.datalake = []
+  }
+  remove (uid, dom) {
+    dom._dom.remove()
+		this.datalake.forEach((item, index) => {
+			if (item._dom.id == uid) {
+				item._dom.remove()
+				this.datalake.splice(index,1)
+			}
+		});
+		storage.remove(`datastorage:${uid}`)
+
+		dataStorage.remove(uid)
+
+    if (this.ref != undefined) {
+      this.ref.charts.forEach ((chart) => {
+        if (chart.dataset == uid) {
+          this.ref.ref.forEach(plugin => {
+            if (plugin.sid === chart.sid)
+              Charts.regen(this.ref, plugin)
+          })
+        }
+      })
+    }
+  }
+  exportCSV (uid) {
+    return storage.fetch(`datastorage:${uid}`)
+      .replaceAll('],[','\r\n')
+      .replace(']]','')
+      .replace('[[',`"BIPES","Databoard"\r\n"Data:","${uid}"\r\n"Timestamp:","${String(+new Date())}"\r\n`)
+  }
+  download (uid){
+    let csv = this.exportCSV(uid)
+    let data = "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
+	  let element = document.createElement('a')
+	  element.setAttribute('href', data)
+	  element.setAttribute('download', `${uid}.bipes.csv`)
+	  element.style.display = 'none'
+	  document.body.appendChild(element)
+	  element.click ()
+	  document.body.removeChild(element)
+  }
+  uploadCSV (){
+    let _upload = this._dom.upload._dom
+    if  (_upload.files [0] != undefined) {
+      let file = _upload.files [0]
+      console.log(file.type)
+      if (/.csv$/.test(file.name) && file.type == 'text/csv'){
+        let reader = new FileReader ()
+        reader.readAsText(file,'UTF-8')
+        let self = this;
+        reader.onload = readerEvent => {
+          let csv = readerEvent.target.result
+          let lines = csv.split(/\r\n|\n/)
+          let dataname;
+          if (/^"BIPES","Databoard"/.test(lines[0])) {
+            if (/^"Data:","(.*)"/.test(lines[1])) {
+              dataname = lines[1].match(/"Data:","(.*)"/m)[1]
+            }
+            lines.splice(0,3)
+          } else {
+            dataname = file.name.replace('.csv', '')
+          }
+
+          lines.forEach ((coord, index) => {
+            lines[index] = lines[index].split(',')
+
+            lines[index].forEach ((point, index2) => {
+              if (!lines[index][index2].includes('"'))
+                lines[index][index2] = parseFloat(lines[index][index2])
+              else
+                lines[index][index2] = lines[index][index2].replaceAll('"', '')
+            })
+          })
+          // remove empty lines or with only one column
+          lines = lines.filter((line) => {
+              return line.length > 1
+          });
+
+          if (!storage.has(`datastorage:${dataname}`))
+            storage.set(`datastorage:${dataname}`, JSON.stringify(lines))
+          else {
+            let success = false,
+                index = 1
+            while(!success) {
+              if (!storage.has(`datastorage:${dataname}_${index}`)) {
+                storage.set(`datastorage:${dataname}_${index}`, JSON.stringify(lines))
+                success = true
+              } else
+                index++
+            }
+          }
+          this.deinit()
+          this.restore()
+
+          _upload = ''
+        }
+      }
+    }
   }
 }
 

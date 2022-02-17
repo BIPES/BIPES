@@ -52,17 +52,11 @@ class Charts {
 
     return _chart
   }
-  static colors (i) {
-    let bgc = ['rgba(106,168,251,0.5)', 'rgba(123,73,173,0.5)', 'rgba(106,251,116,0.5)', 'rgba(251,106,106,0.5', 'rgba(56,95,70,0.5)', 'rgba(318,95,70,0.5)']
-    let bdc = ['rgba(0,0,255,1.0)', 'rgba(155,0,155,1.0)', 'rgba(0,255,0,1.0)', 'rgba(255,0,0,1.0)', 'rgba(56,95,70,1.0)', 'rgba(318,95,70,1.0)']
-
-    return [bdc[i], bgc[i]]
-  }
   static regen (obj, data) {
-    for (const index in obj.charts) {
-      if (obj.charts[index].sid == data.sid) {
-        obj.charts[index].destroy()
-        obj.charts[index] = Charts.chart(data, data.target)
+    for (const index in obj) {
+      if (obj[index].sid == data.sid) {
+        obj[index].destroy()
+        obj[index] = Charts.chart(data, data.target)
       }
     }
   }

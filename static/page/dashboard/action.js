@@ -186,7 +186,7 @@ class Action {
 			    switch (this.key){
 			      case 'timeseries':
 			        bipes.page.dashboard.commit()
-          		Charts.regen(obj, data)
+          		Charts.regen(obj.charts, data)
           		break
           }
       }
@@ -203,7 +203,7 @@ class Action {
 			      case 'yLabel':
 			      case 'limitPoints':
               data.setup[this.key] = str
-          		Charts.regen(obj, data)
+          		Charts.regen(obj.charts, data)
               bipes.page.dashboard.commit()
 			        break
 			    break
@@ -237,12 +237,12 @@ class Action {
 		    switch (this.key){
 		      case 'source':
             data.setup.source = str,
-        		Charts.regen(obj, data)
+        		Charts.regen(obj.charts, data)
             bipes.page.dashboard.commit()
         		break
 		      case 'chartType':
             data.setup.chartType = str
-        		Charts.regen(obj, data)
+        		Charts.regen(obj.charts, data)
             bipes.page.dashboard.commit()
 		        break
    		}

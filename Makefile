@@ -75,6 +75,7 @@ unpkg:
 	@printf "[3/6] Fetching $(PURPLE)xterm chart.js murri dash.js $(NC).\n"
 	@wget -O static/libs/xterm.umd.js https://unpkg.com/xterm@4.15.0/lib/xterm.js
 	@wget -O static/libs/chart.umd.js https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js
+	@wget -O static/libs/chart-adapter-date-fns.bundle.umd.js https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js
 	@wget -O static/libs/muuri.umd.js https://raw.githubusercontent.com/haltu/muuri/master/dist/muuri.js
 	@wget -O static/libs/dash.umd.js  http://cdn.dashjs.org/latest/dash.all.min.js
 

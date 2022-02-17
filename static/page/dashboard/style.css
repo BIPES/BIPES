@@ -10,6 +10,8 @@ section#dashboard #header {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 0 .25em rgba(0,0,0,.25);
+  position: absolute;
+  top: 0;
 }
 section#dashboard #header > span {
   height: 2.5rem;
@@ -147,10 +149,10 @@ section#dashboard .muuri-item > div {
   transition: box-shadow ease .25s;
 }
 body.light section#dashboard .muuri-item > div {
-  background: #fff;
+  background: #eee;
 }
-body.light section#dashboard .muuri-item > div {
-  background: #222;
+body.dark section#dashboard .muuri-item > div {
+  background: #333;
 }
 section#dashboard .muuri-item-dragging > div {
   box-shadow: 0 .25rem 1.5rem rgba(0,0,0,.2);
@@ -163,6 +165,10 @@ section#dashboard #grid {
   scrollbar-gutter: stable;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-top: 2.5rem;
+}
+body.light section#dashboard #grid {
+  background: #fff;
 }
 section#dashboard #grid.on {
   overflow-y: hidden;
@@ -216,7 +222,7 @@ body.light section#dashboard #grid #add {
 }
 body.dark section#dashboard .muuri-item.chart > div,
 body.dark section#dashboard #grid #add {
-  background-color: #222;
+  background-color: #333;
 }
 section#dashboard .muuri #dismiss {
 	position: absolute;

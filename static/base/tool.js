@@ -126,7 +126,6 @@ class Tool {
   static firstUpper (str){
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
-
   /**
    * Format a string.
    * @param {string[]} str - Array of strings, first is the on to format.
@@ -137,6 +136,13 @@ class Tool {
     return str[0].replace(/{(\d+)}/g, (match, number) => {
       return typeof args[number] != 'undefined' ? args[number] : match
     })
+  }
+  /** Get some RGBA colors. */
+  static colors (i) {
+    let bgc = ['rgba(106,168,251,0.5)', 'rgba(123,73,173,0.5)', 'rgba(106,251,116,0.5)', 'rgba(251,106,106,0.5', 'rgba(56,95,70,0.5)', 'rgba(318,95,70,0.5)']
+    let bdc = ['rgba(0,0,255,1.0)', 'rgba(155,0,155,1.0)', 'rgba(0,255,0,1.0)', 'rgba(255,0,0,1.0)', 'rgba(56,95,70,1.0)', 'rgba(318,95,70,1.0)']
+
+    return [bdc[i], bgc[i]]
   }
 }
 /**
