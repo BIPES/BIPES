@@ -1,7 +1,6 @@
 "use strict";
 
 import {DOM} from '../../base/dom.js'
-import {Get} from './action.js'
 export {Charts, Streams, Switches}
 
 import {dataStorage} from './datastorage.js'
@@ -63,7 +62,7 @@ class Charts {
     for (const index in obj.charts) {
       if (obj.charts[index].sid == data.sid) {
         obj.charts[index].destroy()
-        obj.charts[index] = Charts.chart(data, data.target._dom)
+        obj.charts[index] = Charts.chart(data, data.target)
       }
     }
   }
@@ -160,7 +159,6 @@ class Switches {
     delete this
   }
   command () {
-    console.log('hi')
     if (!this.state)
       Get.request(this.onUrl, () => {
         this.dom._dom.classList.add('on')
@@ -192,4 +190,32 @@ class Switches {
       }
     }
   }
+}
+
+class Get {
+  constructor (){}
+
+  static request(request_, callback, json){
+		let request = new Request (request_)
+
+    if (json) {
+		  fetch(request)
+			  .then(response => response.json())
+			  .then(data => {
+				  if (!data.hasOwnProperty('response'))
+					  return
+				  if (typeof callback != 'undefined' && data.response != -1)
+					  callback(data.response)
+			  })
+			  .catch(
+			    console.error
+			  )
+		} else {
+				fetch(request)
+			  .then(callback())
+			  .catch(
+			    console.error
+			  )
+		}
+	}
 }

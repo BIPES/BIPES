@@ -2,6 +2,7 @@
 
 import {Tool} from './tool.js'
 import {command} from './command.js'
+import {Pipes} from './navigation.js'
 
 // Commom MicroPython outputs
 const BACKSPACE = '[K' // Backspace character
@@ -15,6 +16,7 @@ class Channel {
   constructor (){
     this.name = 'channel'
     this.current
+    this.pipe = {}
 
     this.currentProtocol // Just a string with the current connected protocol
     this.input = []   // Input to be sent to a device
@@ -51,6 +53,22 @@ class Channel {
       if (this.ping.on === false)
         window.bipes.page.device.unresponsive(this.targetDevice)
       }, 2000)
+  }
+  /** Setup the pipes for pages, if don't exist, sink. */
+  _init (){
+    this.pipe = Pipes({
+      prompt:{
+        write:(chunk) => {bipes.page.prompt.write(chunk)},
+        on:() => {bipes.page.prompt.on()},
+        off:() => {bipes.page.prompt.off()},
+      },
+      dashboard:{
+        write:(chunk) => {bipes.page.dashboard.write(chunk)}
+      },
+      device:{
+        unuse:(uid) => {bipes.page.device.unuse(uid)}
+      }
+    })
   }
   /*
   @param {String, Uint8Array} cmd - String or uint8 array.
@@ -118,8 +136,8 @@ class Channel {
     this.watcher = setInterval(
       this.current.watch.bind(this.current),
       50);
-    bipes.page.prompt.on()
-    bipes.page.prompt.write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
+    this.pipe.prompt_on()
+    this.pipe.prompt_write(`\r\n\x1b[31mConnected with ${this.currentProtocol}!\x1b[m\r\n`);
     this.push('\r\n', this.targetDevice)
     if (typeof callback == 'object' && typeof callback[1] == 'function')
       callback[1].apply(callback[0])
@@ -140,9 +158,9 @@ class Channel {
         currentProtocol = this.currentProtocol
     this.currentProtocol = ''
     this.targetDevice = undefined
-    bipes.page.device.unuse(uid)
-    bipes.page.prompt.off()
-    bipes.page.prompt.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
+    this.pipe.device_unuse(uid)
+    this.pipe.prompt_off()
+    this.pipe.prompt_off.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it
@@ -219,7 +237,6 @@ class Channel {
   inArrayBuffer (buffer){
     let uint8 = new Uint8Array(buffer)
 
-    console.log(uint8)
     if (this.callbacks.length > 0){
       let call = this.callbacks[0]
       if (uint8.length == 2){
@@ -231,7 +248,6 @@ class Channel {
           return
         }
       }
-      console.log(call, uint8, call.cmd, call.uid)
       try {
         if (call.uid) {
           call.fun.apply(
@@ -252,7 +268,10 @@ class Channel {
   inString (chunk){
     //data comes in chunks, keep last 4 chars to check MicroPython REPL string
     this.output += chunk
-    window.bipes.page.prompt.write(chunk)
+
+    this.pipe.prompt_write(chunk)
+    this.pipe.dashboard_write(chunk)
+
     this.ping.on = true
     if (this.output.substring(this.output.length - 4) == ">>> "){
       this.output = this.output.substring(0, this.output.length - 4)

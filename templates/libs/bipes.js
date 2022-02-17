@@ -8,23 +8,24 @@ import { {{item}} } from '../../static/page/{{item}}/main.js'
 
 export default function Bipes (){
   window.bipes = {}
-  window.bipes.theme = '{{ theme }}'
-  window.bipes.lang = '{{ lang }}'
-  window.bipes.page = {}
+  bipes.theme = '{{ theme }}'
+  bipes.lang = '{{ lang }}'
+  bipes.page = {}
 
   // Make bipes enviroment acessible
   {% for item in base -%}
-  window.bipes.{{item}} = {{item}}
+  bipes.{{item}} = {{item}}
   {% endfor %}
 
   {% for item in page -%}
-  window.bipes.page.{{item}} = {{item}}
+  bipes.page.{{item}} = {{item}}
   {% endfor %}
 
-  window.bipes.navigation = navigation
+  bipes.channel._init()
+  bipes.navigation = navigation
 
-  window.bipes.page.project._init()
-  window.bipes.navigation.init()
+  bipes.page.project._init()
+  bipes.navigation.init()
 }
 
 {% if import_type == "module" -%}

@@ -3,6 +3,29 @@
 import {DOM, Animate} from './dom.js'
 import {Tool} from './tool.js'
 
+export {Pipes}
+
+/**
+  * Setup the pipes for pages, if don't exist, sink.
+  * This is useful to make connections between pages that not necessarly are
+  * available in all bipes (modularity).
+  * @param {Object} - Structured objects, in the form
+  *                   {page:{function:()=>{page.function(args)},...},...}
+  *
+  */
+function Pipes (obj){
+  let pipes = {}
+  for (let page in obj){
+    for (let fun in obj[page]){
+      if (bipes.page.hasOwnProperty(page))
+        pipes[`${page}_${fun}`] = obj[page][fun]
+      else
+        pipes[`${page}_${fun}`] = () => {}
+    }
+  }
+  return pipes
+}
+
 function handleLink (_navigation, _pos, root, _name, push){
   let _pos0 = _pos == 2 ? 1 : 2
   let crt = _navigation.current
@@ -34,6 +57,8 @@ function handleLink (_navigation, _pos, root, _name, push){
       }
 
     handleResize()
+
+    document.title = `${Tool.firstUpper(elem)} - BIPES`
   }
 
   // Interpreting link

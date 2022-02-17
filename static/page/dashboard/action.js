@@ -2,10 +2,9 @@
 
 import {DOM} from '../../base/dom.js'
 import {Charts, Streams, Switches} from './plugins.js'
-export {Actions, Action, Get}
-import {project} from '../project/main.js'
+export {Actions, Action}
 
-import {dashboard} from './main.js'
+import {project} from '../project/main.js'
 
 class Actions {
 	constructor (dom){
@@ -186,7 +185,7 @@ class Action {
 			  case 'chart':
 			    switch (this.key){
 			      case 'timeseries':
-			        dashboard.commit()
+			        bipes.page.dashboard.commit()
           		Charts.regen(obj, data)
           		break
           }
@@ -205,7 +204,7 @@ class Action {
 			      case 'limitPoints':
               data.setup[this.key] = str
           		Charts.regen(obj, data)
-              dashboard.commit()
+              bipes.page.dashboard.commit()
 			        break
 			    break
 			  }
@@ -214,7 +213,7 @@ class Action {
 			      case 'manifest':
               data.setup.manifest = str
           		Streams.manifest(obj, data)
-              dashboard.commit()
+              bipes.page.dashboard.commit()
               break
 		    }
 	      case 'switch':
@@ -225,7 +224,7 @@ class Action {
 			      case 'offUrl':
               data.setup[this.key] = str
           		Switches.regen(obj, data)
-              dashboard.commit()
+              bipes.page.dashboard.commit()
 			        break
 			    break
 			  }
@@ -239,12 +238,12 @@ class Action {
 		      case 'source':
             data.setup.source = str,
         		Charts.regen(obj, data)
-            dashboard.commit()
+            bipes.page.dashboard.commit()
         		break
 		      case 'chartType':
             data.setup.chartType = str
         		Charts.regen(obj, data)
-            dashboard.commit()
+            bipes.page.dashboard.commit()
 		        break
    		}
    		case 'stream':
@@ -252,7 +251,7 @@ class Action {
    		    case 'source':
             data.setup.source = str
             Streams.regen(obj, data)
-            dashboard.commit()
+            bipes.page.dashboard.commit()
             break
    		  }
     }
@@ -261,33 +260,5 @@ class Action {
 	switchState (request) {
 		let switch_ = this.currentValue == 1 ? 0 : 1
 
-	}
-}
-
-class Get {
-  constructor (){}
-
-  static request(request_, callback, json){
-		let request = new Request (request_)
-
-    if (json) {
-		  fetch(request)
-			  .then(response => response.json())
-			  .then(data => {
-				  if (!data.hasOwnProperty('response'))
-					  return
-				  if (typeof callback != 'undefined' && data.response != -1)
-					  callback(data.response)
-			  })
-			  .catch(
-			    console.error
-			  )
-		} else {
-				fetch(request)
-			  .then(callback())
-			  .catch(
-			    console.error
-			  )
-		}
 	}
 }

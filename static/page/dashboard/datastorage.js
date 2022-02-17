@@ -6,16 +6,34 @@ import {DOM, Animate} from '../../base/dom.js'
 import {Charts, Streams} from './plugins.js'
 export {DataStorage, DataStorageManager}
 
+/** Store incoming data in localStorage */
 class DataStorage {
   constructor (){
     this._data = []
     this._keys = []
     this._coorLength = {}
-    this.gridObj
+    this.buffer = ''        // Incoming lines
+    this.ref   // Reference the grid object
   }
-  init (gridObj) {
-    this.gridObj = gridObj
+  /** Init datastorage referencing the grid object */
+  init (ref){
+    this.ref = ref
   }
+  /** Checks the income data for useful chuncks, like ``$BIPES-DATA:`` for plotting */
+  write (chunk){
+    this.buffer += chunk
+    let re = /\r\n\$(.*):(.*)\r\n/
+    let match_
+    if (re.test(this.buffer)) {
+      match_ = this.buffer.match(re)
+      if (match_.length == 3) {
+        let coordinates = match_ [2].split(',').map((item)=>item = parseFloat(item))
+        this.push(match_[1],coordinates)
+      }
+    }
+    this.buffer = this.buffer.replace(re, '\r\n') //purge received string out
+  }
+  /** Push identified dataset and coordinates to localStorage */
   push (dataset, coordinates) {
     if (coordinates.constructor.name != 'Array')
       return
@@ -27,9 +45,13 @@ class DataStorage {
     this._data[dataset].push(coordinates)
 
     storage.set(`datastorage:${dataset}`, JSON.stringify(this._data[dataset]))
-
+    // Push to charts
     this.chartPush (dataset, coordinates)
   }
+  /**
+   * Remove topic from localStorage
+   * @param {string} uid - Topic's uid.
+   */
   remove (uid) {
 		this._keys.forEach((dataset, index) => {
 		  if (dataset == uid)
@@ -37,6 +59,7 @@ class DataStorage {
 		})
 		delete this._data[uid]
   }
+  /** Move  to plugins.js */
   chartData (dataset, opt) {
     if (!this._keys.includes(dataset)) {
       this._keys.push (dataset)
@@ -108,14 +131,20 @@ class DataStorage {
   }
 
   chartPush (dataset, coordinates) {
-    if (this.gridObj != undefined) {
-      this.gridObj.charts.forEach ((chart) => {
+    if (this.ref != undefined) {
+      this.ref.charts.forEach ((chart) => {
         if (chart.dataset == dataset) {
           if (this._data[dataset].length == 3) {
-            Charts.regen(this.gridObj, dataset, chart.uid, chart.canvas)
+            this.ref.ref.forEach(plugin => {
+              if (plugin.sid === chart.sid)
+                Charts.regen(this.ref, plugin)
+            })
           } else if (this._coorLength[dataset] < coordinates.length) {
             this._coorLength[dataset] = coordinates.length
-            Charts.regen(this.gridObj, dataset, chart.uid, chart.canvas)
+            this.ref.ref.forEach(plugin => {
+              if (plugin.sid === chart.sid)
+                Charts.regen(this.ref, plugin)
+            })
           } else {
             chart.data.labels.push(coordinates[0])
             chart.data.datasets.forEach((dataset, index) => {
@@ -171,7 +200,7 @@ class DataStorageManager {
       ])
     $.storageManager.append($.wrapper)
 
-    this.gridObj = grid_ref
+    this.ref = grid_ref
   }
   close (e) {
     if (e.target.id == 'storageManager')
@@ -231,12 +260,15 @@ class DataStorageManager {
 		});
 		storage.remove(`datastorage:${uid}`)
 
-		modules.DataStorage.remove(uid)
+		dataStorage.remove(uid)
 
-    if (this.gridObj != undefined) {
-      this.gridObj.charts.forEach ((chart) => {
+    if (this.ref != undefined) {
+      this.ref.charts.forEach ((chart) => {
         if (chart.dataset == uid) {
-          Charts.regen(this.gridObj, uid, chart.uid, chart.canvas)
+          this.ref.ref.forEach(plugin => {
+            if (plugin.sid === chart.sid)
+              Charts.regen(this.ref, plugin)
+          })
         }
       })
     }

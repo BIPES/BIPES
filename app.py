@@ -124,7 +124,10 @@ def create_app(test_config=None):
 def build_release():
     # Build styles
     with open("static/style.css",'w') as f:
-        f.write(concat_files("static/style/*.css"))
+        f.write(
+            concat_files("static/style/*.css") + \
+            concat_files("static/page/*/style.css")
+            )
     # Build blockly toolboxes
     with open("static/libs/blockly/toolbox.umd.js",'w') as f:
         f.write(blockly_toolbox_generator())

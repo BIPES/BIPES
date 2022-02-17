@@ -10,7 +10,9 @@ import {Actions, Action} from './action.js'
 import {DataStorage, DataStorageManager} from './datastorage.js'
 import {Charts, Streams, Switches} from './plugins.js'
 
-/* Create dashboard with graphs, streams and buttons */
+import {dataStorage} from './datastorage.js'
+
+/* Create dashboard with graphs, plugins and buttons */
 class Dashboard {
   /* Construct the object, is executed on load of the window. */
   constructor (){
@@ -79,6 +81,7 @@ class Dashboard {
 
 		this.grid = new DashboardGrid($.grid, this)
 		$.grid.append([$.addPlugin])
+		dataStorage.init(this.grid) // ::TODO:: Organize this
 
 		this.storageManager = new DataStorageManager($.storageManager, this.grid, $.storage)
 
@@ -106,6 +109,9 @@ class Dashboard {
     this.restore()
     this.select(Object.keys(this.tree)[0])
     this.inited = true
+  }
+  write (chunk){
+    dataStorage.write(chunk)
   }
   /*
    * On page hidden, deinit the page.
@@ -384,14 +390,17 @@ class DashboardGrid {
 	    this.storeLayout()
     })
 
-    // Set & get CSS rule nodes
-    document.styleSheets[0].insertRule('section#dashboard .muuri .muuri-item.wide {}', 0)
-    document.styleSheets[0].insertRule('section#dashboard .muuri .muuri-item.square {}', 0)
-    document.styleSheets[0].insertRule('section#dashboard .muuri .muuri-item.tiny {}', 0)
+    // Set & get CSS rule nodes (don't work locally...)
+    this._css = document.createElement('style')
+    this._css.type = 'text/css'
+    document.getElementsByTagName('head')[0].append(this._css)
+    this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.wide {}', 0)
+    this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.square {}', 0)
+    this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.tiny {}', 0)
     this.css = {}
-    this.css.muuriWide = document.styleSheets[0].rules[2]
-    this.css.muuriSquare = document.styleSheets[0].rules[1]
-    this.css.muuriTiny = document.styleSheets[0].rules[0]
+    this.css.muuriWide = this._css.sheet.rules[2]
+    this.css.muuriSquare = this._css.sheet.rules[1]
+    this.css.muuriTiny = this._css.sheet.rules[0]
 
     command.add([this.parent, this], {
       update: this._update
@@ -409,7 +418,7 @@ class DashboardGrid {
    */
 	deinit (){
 		this._dom.grid._dom.classList.remove('on')
-		this.editingStream = '';
+		this.editingPlugin = '';
 		setTimeout(() => {this.actions.deinit()},250)
 
     this.players.forEach((player) => {
@@ -512,7 +521,7 @@ class DashboardGrid {
         grab.onclick(this, this.edit, [data, container1])
 
 		    break
-	    case 'stream':
+	    case 'plugin':
 		    data.target = new DOM('video', {'preload':'auto','controls':'','autoplay':''})
 		    let content2 = new DOM('div')
 			    .append([
@@ -521,12 +530,12 @@ class DashboardGrid {
 				    remove,
 				    this.target,
 			    ])
-			  let container2 = new DOM('div', {sid:data.sid, className:'stream square'})
+			  let container2 = new DOM('div', {sid:data.sid, className:'plugin square'})
 			    .append(content2)
 
 		    this.muuri.add(container2._dom)
 
-		    this.players.push (Streams.stream(data.sid, data.target._dom))
+		    this.players.push (Streams.plugin(data.sid, data.target._dom))
 
         data.target.onclick(this, this.edit, [data.sid, container2]);
 
@@ -563,7 +572,7 @@ class DashboardGrid {
 
 
 		switch (data.type) {
-		  case 'stream':
+		  case 'plugin':
 		    this.players.forEach((player, index) => {
 			    if (player.sid == data.sid) {
 				      if (player.source = 'DASH')
@@ -582,9 +591,9 @@ class DashboardGrid {
 		    break
 		}
 
-		if (this.editingStream == data.sid) {
+		if (this.editingPlugin == data.sid) {
 			this._dom.grid._dom.classList.remove('on')
-			this.editingStream = '';
+			this.editingPlugin = '';
 			setTimeout(() => {this.actions.deinit}, 250)
 		}
 
@@ -638,7 +647,7 @@ class DashboardGrid {
         this.animating = false
     }, 15)
 
-	  console.log(`Editing stream ${obj.sid}`)
+	  console.log(`Editing plugin ${obj.sid}`)
 
 	  this.actions.show(obj, this)
 
