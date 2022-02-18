@@ -6,13 +6,13 @@
   <link rel="icon" sizes="192x192" href="./static/media/icon/icon-192x192.png">
   <link rel="stylesheet" href='./static/style.css'/>
   {% for item in imports -%}
-  <script type="text/javascript" src="./static/libs/{{ item }}.js"></script>
+  <script type="text/javascript" src="./static/libs/{{ item }}.js?{{ app_version }}"></script>
   {% endfor %}
   {% for item in explicit_imports -%}
-  <script type="text/javascript" src="./static/{{ item }}.js"></script>
+  <script type="text/javascript" src="./static/{{ item }}.js?{{ app_version }}"></script>
   {% endfor %}
   {% for plugin in lang_imports -%}
-  <script type="text/javascript" src="{{ plugin }}"></script>
+  <script type="text/javascript" src="{{ plugin }}?{{ app_version }}"></script>
   {% endfor %}
 </head>
 

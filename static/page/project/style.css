@@ -23,18 +23,6 @@ section#project #user-projects button h4 {
 section#project #user-projects button:not(.shared) #sharedUID {
   display:none;
 }
-section#project #shared-projects .listy div.row {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-section#project #shared-projects .listy div.row {
-  padding: .5rem .5rem 0 .5rem
-}
-section#project #shared-projects .listy div.row:last-child {
-  padding-bottom: .5rem !important;
-}
 section#project #user-projects .listy #sharedUID,
 section#project #shared-projects .listy #uid {
   border: #7d7d7d 1px solid;

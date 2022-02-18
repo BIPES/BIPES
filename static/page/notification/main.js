@@ -4,6 +4,7 @@ import {DOM, Animate} from '../../base/dom.js'
 import {command} from '../../base/command.js'
 import {storage} from '../../base/storage.js'
 
+import {Tool} from '../../base/tool.js'
 
 class Notification {
   constructor (){
@@ -15,7 +16,7 @@ class Notification {
 
     let $ = this._dom = {}
     $.h2 = new DOM('h2', {innerText:'Notifications'})
-    $.wrapper = new DOM('span', {className: 'cards'})
+    $.wrapper = new DOM('span', {className: 'listy'})
     $.container = new DOM('div', {className:'container'})
       .append([$.h2, $.wrapper])
 
@@ -99,12 +100,14 @@ class Notification {
   // Creates a DOM notificaton card
   _domCard (item){
     return new DOM('span', {uid: item.uid}).append([
-      new DOM('span').append([
-        new DOM('h3', {
+      new DOM('div', {className:'row'}).append([
+        new DOM('h4', {
           innerText: item.message
-          }),
+          })
+        ]),
+      new DOM('div', {className:'row'}).append([
         new DOM('div', {
-          innerText: new Date(item.timestamp)
+          innerText: new Date(item.timestamp).toLocaleString()
           }),
         ]),
       new DOM('button', {

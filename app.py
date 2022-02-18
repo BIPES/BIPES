@@ -10,7 +10,7 @@ import sqlite3
 
 
 app_name = 'BIPES'
-app_version = 'v0.01'
+app_version = '3.0'
 
 # Default language on server mode
 # Note: this is overwritten by the Makefile's lang arg on the "make release" command.

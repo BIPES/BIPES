@@ -656,6 +656,7 @@ body.dark .cards > span > span > div {
 .cards h3 {
   font-weight: normal;
   word-break: break-word;
+  padding: 0 !important;
 }
 #contextMenu > div {
   display: inline-block;
@@ -749,16 +750,22 @@ body.light .listy {
   cursor: pointer;
   padding: 0;
 }
-body.dark .listy button {
+.listy > span {
+  width: 100%
+}
+body.dark .listy > button,
+body.dark .listy > span {
   border-bottom: 1px solid #111;
 }
-body.light .listy button {
+body.light .listy > button,
+body.light .listy > span {
   border-bottom: 1px solid #aaa;
 }
-.listy button, .funky > span {
+.listy > button, .funky > span {
   width: 100%;
 }
-.listy button > div {
+.listy > button > div,
+.listy > span > div {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
@@ -768,22 +775,22 @@ body.light .listy button {
   text-align: right;
   transition: .125s ease transform;
 }
-.listy button:active > div {
+.listy > button:active > div {
   transform: scale(0.98);
 }
-.listy button {
+.listy > button {
   transition: .25s ease background-color;
 }
-.listy button.on:active > div {
+.listy > button.on:active > div {
   transform: scale(1) !important;
 }
-.listy button.on {
+.listy > button.on {
   background-color: rgba(68,153,204,.25);
 }
-.listy button:hover, .listy button:focus {
+.listy > button:hover, .listy > button:focus {
   background-color: rgba(68,153,204,.5);
 }
-.listy button.on {
+.listy > button.on {
   cursor: default;
 }
 .listy.more-button {
@@ -795,6 +802,17 @@ body.light .listy button {
   width: 2.5rem;
   height: 2.5rem;
   display: inline-block;
+}
+.listy div.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.listy div.row {
+  padding: .5rem .5rem 0 .5rem
+}
+.listy div.row:last-child {
+  padding-bottom: .5rem !important;
 }
 .warnings, .tips {
   display: inline-flex;
