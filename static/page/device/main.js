@@ -8,6 +8,7 @@ import {channel} from '../../base/channel.js'
 import {rosetta} from '../../base/rosetta.js'
 
 import {notification} from '../notification/main.js'
+import {project} from '../project/main.js'
 import {prompt} from '../prompt/main.js'
 
 class Device {
@@ -21,11 +22,11 @@ class Device {
 
     this.inited = false
     this.deviceInfo = {
-      arduino:{
+      Arduino:{
         nodename:'arduino',
         name:'Arduino'
       },
-      esp32:{
+      ESP32:{
         nodename:'esp32',
         name:'ESP32'
       }
@@ -81,7 +82,7 @@ class Device {
       .onevent('change', this, this.setProjectTarget)
 
     let targetFirmware = [];
-    ['MicroPython','CircuitPython'].forEach(key =>{
+    rosetta.languages.forEach(key =>{
       targetFirmware.push(
         new DOM('option', {innerText:key, value:key})
       )
@@ -183,6 +184,26 @@ class Device {
     })
 
     this.checkAPISupport()
+  }
+  load (obj){
+    // Set/check language and check target
+    obj.language = rosetta.language(obj.target)
+    obj.target = Object.keys(this.deviceInfo).includes(obj.target) ? obj.target : 'ESP32'
+
+    // Trigger blocks because blocks might be inited
+    if (obj.hasOwnProperty('target'))
+      bipes.page.blocks.toolbox(obj.target)
+
+    // Update status bar
+    this._dom.statusDevice.innerText = this.deviceInfo[obj.target].name
+    this._dom.statusFirmware.innerText = obj.firmware
+
+    if (!this.inited)
+      return
+    if (obj.hasOwnProperty('target')){
+      DOM.setSelected(this._dom.targetDropdown, obj.target),
+      this._dom.pinout._dom.src = `./static/page/device/media/${obj.target}.svg`
+    }
   }
   /*
    * Trigger WebSerial connection to a device.
@@ -297,25 +318,9 @@ class Device {
     }
 
     this.inited = true
-    let obj = window.bipes.page.project.projects[window.bipes.page.project.currentUID]
+    let obj = project.projects[project.currentUID]
     if (obj.hasOwnProperty('device'))
       this.load(obj.device)
-  }
-  load (obj){
-    // Trigger blocks because blocks might be inited
-    if (obj.hasOwnProperty('target'))
-      window.bipes.page.blocks.toolbox(obj.target)
-
-    // Update status bar
-    this._dom.statusDevice.innerText = this.deviceInfo[obj.target].name
-    this._dom.statusFirmware.innerText = obj.firmware
-
-    if (!this.inited)
-      return
-    if (obj.hasOwnProperty('target')){
-      DOM.setSelected(this._dom.targetDropdown, obj.target),
-      this._dom.pinout._dom.src = `./static/media/devices/${obj.target}.svg`
-    }
   }
   /*
    * On dropdown change, set the new target.
@@ -324,7 +329,7 @@ class Device {
     let target = this._dom.targetDropdown._dom.value
     let firmware = this._dom.targetFirmwareDropdown._dom.value
 
-    window.bipes.page.project.update({
+    project.update({
       device:{
         target:target,
         firmware:firmware

@@ -35,7 +35,7 @@ class Blocks {
         colour: Tool.fromUrl('theme') === 'dark' ? '#444' : '#ccc',
         snap: true
       },
-      media: './static/media/blocks/',
+      media: './static/page/blocks/media/',
       oneBasedIndex: false,
       zoom: {
         controls: false,

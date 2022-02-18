@@ -35,17 +35,16 @@ def preferred_page_order(page):
 # Probably create a */package.json for directories, to it would be super easy to 
 # implement complex plugins.
 explicit_imports = [
-    'blockly/blockly.umd',
-    'blockly/blocks',
-    'blockly/pythonic',
-    'blockly/toolbox.umd'
+    'page/blocks/blocks.umd',
+    'page/blocks/pythonic.umd',
+    'page/blocks/toolbox.umd'
 ]
 # Language strings
 lang_str = [
     # Global
     './static/msg/{{ lang }}.js',
     # Blockly
-    './static/libs/blockly/msg/{{ lang }}.js'
+    './static/page/blocks/msg/{{ lang }}.js'
 ]
 
 # Create app for developemnt mode
@@ -81,19 +80,19 @@ def create_app(test_config=None):
             mimetype='text/css')
     
     # Return "compiled" toolboxes xml embedded in a js file.
-    @app.route("/static/libs/blockly/toolbox.umd.js")
+    @app.route("/static/page/blocks/toolbox.umd.js")
     def blockly_toolbox():
         return Response(blockly_toolbox_generator(), mimetype='application/javascript')
         
     # Return concatanate blocks.
-    @app.route("/static/libs/blockly/blocks.js")
+    @app.route("/static/page/blocks/blocks.umd.js")
     def blockly_blocks():
-        return Response(concat_files("static/libs/blockly/blocks/*.js"), mimetype='application/javascript')
+        return Response(concat_files("static/page/blocks/blocks/*.js"), mimetype='application/javascript')
         
     # Return concatanate pythonic generators.
-    @app.route("/static/libs/blockly/pythonic.js")
+    @app.route("/static/page/blocks/pythonic.umd.js")
     def blockly_pythonic():
-        return Response(concat_files("static/libs/blockly/pythonic/*.js"), mimetype='application/javascript')
+        return Response(concat_files("static/page/blocks/pythonic/*.js"), mimetype='application/javascript')
     
     @app.route("/static/libs/bipes.umd.js")
     def bipes():
@@ -129,13 +128,13 @@ def build_release():
             concat_files("static/page/*/style.css")
             )
     # Build blockly toolboxes
-    with open("static/libs/blockly/toolbox.umd.js",'w') as f:
+    with open("static/page/blocks/toolbox.umd.js",'w') as f:
         f.write(blockly_toolbox_generator())
     # Build blockly blocks and generator
-    with open("static/libs/blockly/blocks.js",'w') as f:
-        f.write(concat_files("static/libs/blockly/blocks/*.js"))
-    with open("static/libs/blockly/pythonic.js",'w') as f:
-        f.write(concat_files("static/libs/blockly/pythonic/*.js"))
+    with open("static/page/blocks/blocks.umd.js",'w') as f:
+        f.write(concat_files("static/page/blocks/blocks/*.js"))
+    with open("static/page/blocks/pythonic.umd.js",'w') as f:
+        f.write(concat_files("static/page/blocks/pythonic/*.js"))
     
     app = create_app()
     # "Compile" ide template as ide/index.html (default filename for servers)
@@ -155,12 +154,12 @@ def ide(lang=None, import_type='module'):
 
     lang_imports = render_lang(lang)
     page = get_files_names("static/page/*", r"^static/page/(.*)")
-    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js") + explicit_imports
+    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
     
     page = preferred_page_order(page)
   
     return render_template('ide.html', app_name=app_name, app_version=app_version,
-                           page=page, imports=imports,
+                           page=page, imports=imports, explicit_imports=explicit_imports,
                            lang_imports=lang_imports, import_type=import_type)
 
 
@@ -196,8 +195,8 @@ def get_files_names (bash, reg):
 # Generates the toolboxes per device
 def blockly_toolbox_generator ():
     # Fetch definitions and blocks per device
-    definitions = glob.glob("templates/libs/blockly/definitions/*.md")
-    devices = glob.glob("templates/libs/blockly/devices/*.md")
+    definitions = glob.glob("templates/page/blocks/definitions/*.md")
+    devices = glob.glob("templates/page/blocks/devices/*.md")
 
     # Definitions dictionary
     dict = {}
@@ -226,7 +225,7 @@ def blockly_toolbox_generator ():
 
     # Build the toolboxes per device
     for dev in devices:
-        match = re.match(r"^templates/libs/blockly/devices/(.*).md", dev)
+        match = re.match(r"^templates/page/blocks/devices/(.*).md", dev)
         dev_name = match.group(1)
 
         with open (dev) as f:

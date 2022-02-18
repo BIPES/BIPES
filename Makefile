@@ -82,16 +82,15 @@ unpkg:
 blockly:
 	@printf "[4/6] Fetching $(PURPLE)blockly$(NC).\n"
 	@git clone https://github.com/google/blockly.git --depth 1
-	@cp blockly/blockly_compressed.js static/libs/blockly/blockly.umd.js
-	@mkdir -p static/libs/blockly/blocks
-	@cp blockly/blocks_compressed.js static/libs/blockly/blocks/logic.umd.js
-	@mkdir -p static/libs/blockly/msg
-	@cp blockly/msg/js/en.js static/libs/blockly/msg/en.js
-	@cp blockly/msg/js/de.js static/libs/blockly/msg/de.js
-	@cp blockly/msg/js/pt-br.js static/libs/blockly/msg/pt-br.js
-	@cp blockly/msg/js/es.js static/libs/blockly/msg/es.js
-	@mkdir -p static/media/blocks
-	@cp blockly/media/* static/media/blocks/
+	@cp blockly/blockly_compressed.js static/libs/blockly.umd.js
+	@cp blockly/blocks_compressed.js static/page/blocks/blocks/logic.umd.js
+	@mkdir -p static/page/blocks/msg
+	@cp blockly/msg/js/en.js static/page/blocks/msg/en.js
+	@cp blockly/msg/js/de.js static/page/blocks/msg/de.js
+	@cp blockly/msg/js/pt-br.js static/page/blocks/msg/pt-br.js
+	@cp blockly/msg/js/es.js static/page/blocks/msg/es.js
+	@mkdir -p static/page/blocks/media
+	@cp blockly/media/* static/page/blocks/media
 	@rm -rf blockly
 
 pip:
@@ -164,10 +163,14 @@ zip:
 	@mkdir -p .BIPES
 	@cp ide-*.html .BIPES/
 	@cd .BIPES && ln -s ide-$(lang).html ide.html
-	@mkdir -p .BIPES/static/libs/blockly
+	@mkdir -p .BIPES/static/libs
+	@mkdir -p .BIPES/static/page/blocks
+	@mkdir -p .BIPES/static/page/device
 	@cp static/libs/*.js .BIPES/static/libs
-	@cp static/libs/blockly/*.js .BIPES/static/libs/blockly
-	@cp -r static/libs/blockly/msg .BIPES/static/libs/blockly
+	@cp static/page/blocks/*.umd.js .BIPES/static/page/blocks
+	@cp -r static/page/blocks/msg .BIPES/static/page/blocks
+	@cp -r static/page/blocks/media .BIPES/static/page/blocks
+	@cp -r static/page/device/media .BIPES/static/page/device
 	@cp -r static/media .BIPES/static/
 	@cp -r static/msg .BIPES/static/
 	@cp static/style.css .BIPES/static
@@ -180,9 +183,9 @@ build-clean:
 	@rm -f  ide-*.html
 	@rm -f  static/style.css
 	@rm -rf static/libs/bipes.umd.js
-	@rm -f  static/libs/blockly/toolbox.umd.js
-	@rm -f  static/libs/blockly/blocks.js
-	@rm -f  static/libs/blockly/pythonic.js
+	@rm -f  static/page/blocks/toolbox.umd.js
+	@rm -f  static/page/blocks/blocks.js
+	@rm -f  static/page/blocks/pythonic.js
 
 clean: build-clean
 	@rm -rf node_modules

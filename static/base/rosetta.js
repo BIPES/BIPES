@@ -1,12 +1,5 @@
 "use strict"
 
-let Rosetta = (mode) => {
-  switch (mode) {
-    case 'MicroPython':
-      return MicroPython
-  }
-}
-
 let MicroPython = {
   mkdir:{
     cmd: (path, folder) => `import os; os.mkdir("${path}/${folder}")\r`,
@@ -53,4 +46,51 @@ let MicroPython = {
   }
 }
 
-export let rosetta = Rosetta('MicroPython')
+export let rosetta = {
+  map:{
+    MicroPython:MicroPython
+  },
+  get languages (){
+    return Object.keys(this.map)
+  },
+  current:undefined,
+  language (str){
+    for (let key in this.map){
+      if (str == key){
+        this.current = this.map[key]
+        return str
+      }
+    }
+    // If not found, return default
+    this.current = this.map.MicroPython
+    return 'MicroPython'
+  },
+  get mkdir (){
+    return this.current.mkdir
+  },
+  get exec (){
+    return this.current.exec
+  },
+  get rm (){
+    return this.current.rm
+  },
+  get write (){
+    return this.current.write
+  },
+  get preopen (){
+    return this.current.preopen
+  },
+  get open (){
+    return this.current.open
+  },
+  get ls (){
+    return this.current.ls
+  },
+  get uname (){
+    return this.current.uname
+  },
+  get error (){
+    return this.current.error
+  }
+}
+

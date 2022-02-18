@@ -8,6 +8,9 @@
   {% for item in imports -%}
   <script type="text/javascript" src="./static/libs/{{ item }}.js"></script>
   {% endfor %}
+  {% for item in explicit_imports -%}
+  <script type="text/javascript" src="./static/{{ item }}.js"></script>
+  {% endfor %}
   {% for plugin in lang_imports -%}
   <script type="text/javascript" src="{{ plugin }}"></script>
   {% endfor %}

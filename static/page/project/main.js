@@ -197,7 +197,8 @@ class Project {
   _emptyProject (){
     return {
       device: {
-        target:'esp32'
+        target:'ESP32',
+        language:'MicroPython'
       },
       blocks: {
         xml:'<xml xmlns="https://bipes.net.br/ide"></xml>'

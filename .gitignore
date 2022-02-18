@@ -12,9 +12,9 @@ node_modules/
 *.db
 *.swp
 
-static/libs/blockly/msg
+static/page/blocks/msg
+static/page/blocks/media
 
-static/media/blocks/
 /ide.html
 BIPES
 
