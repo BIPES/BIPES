@@ -143,6 +143,15 @@ class Blocks {
     this.workspace.updateToolbox(blockly_toolbox[target])
     this.workspace.scrollCenter()
   }
+  /**
+   * Create this page empty object
+   * @return {Object} This page scope in the project file.
+   */
+  empty (){
+    return {
+      xml:'<xml xmlns="https://bipes.net.br/ide"></xml>'
+    }
+  }
 }
 
 /* Code generator and viewer. */

@@ -144,6 +144,27 @@ section#device button.unsupported:active > div{
   transform: scale(1) !important;
 }
 
+@media screen and (min-width:80em) {
+  section#device:not(.pos1):not(.pos2) .container {
+    display:flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    justify-content:center;
+  }
+  section#device:not(.pos1):not(.pos2) .container > h2 {
+    max-width: 90%;
+  }
+  section#device:not(.pos1):not(.pos2) .container .device-connect,
+  section#device:not(.pos1):not(.pos2) .container .device-current {
+    width: 45%;
+  }
+}
+
+section#device #target-device {
+  background-color: rgba(84,190,255,0.05);
+  border-radius: 1.5rem;
+  padding-top: 1rem;
+}
 section#device #target-device > div {
   text-align: center;
 }

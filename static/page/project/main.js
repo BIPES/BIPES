@@ -176,6 +176,7 @@ class Project {
     this.currentUID = uid
     for (const key in bipes.page) {
       if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project') {
+        // If don't exist, create empty
         if (this.projects[uid][key] == undefined)
           this.projects[uid][key] = bipes.page[key].empty()
         bipes.page[key].load(this.projects[uid][key])
@@ -196,22 +197,6 @@ class Project {
   }
   _emptyProject (){
     return {
-      device: {
-        target:'ESP32',
-        language:'MicroPython'
-      },
-      blocks: {
-        xml:'<xml xmlns="https://bipes.net.br/ide"></xml>'
-      },
-      files:{
-        tree:{
-          name:'',
-          files:[{
-            name:`${Msg['my_script']}.py`,
-            script:Tool.format([Msg['CreateScriptHere'],`${Msg['my_script']}.py`])
-          }]
-        }
-      },
       project:{
         name: Msg['EmptyProject'],
         author: this.username,

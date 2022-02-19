@@ -88,8 +88,22 @@ class Files {
     this.inited = false
   }
   load (obj){
-    if (obj.hasOwnProperty('tree')){
+    if (obj.hasOwnProperty('tree'))
       this.project.load(obj)
+  }
+  /**
+    * Create this page empty object
+    * @return {Object} This page scope in the project file.
+    */
+  empty (){
+    return {
+      tree:{
+        name:'',
+        files:[{
+          name:`${Msg['my_script']}.py`,
+          script:Tool.format([Msg['CreateScriptHere'],`${Msg['my_script']}.py`])
+        }]
+      }
     }
   }
 }
@@ -1013,6 +1027,7 @@ class ProjectFiles {
     ar.shift()
     ar.pop()
 
+    obj = this.objByName(ar)
     if (obj === true || obj.files == undefined)
       return
 

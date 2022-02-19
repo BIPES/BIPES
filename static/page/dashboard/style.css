@@ -462,7 +462,7 @@ section#dashboard #storageManager span > div {
 }
 
 section#dashboard #storageManager span > div:last-child {
-	border-bottom: none;
+	border-bottom: none !important;
 }
 
 div#status-bar button#mqtt:before {

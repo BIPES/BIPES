@@ -913,7 +913,7 @@ class DataStorageManager {
 
     $.mqttH2 = new DOM('h2', {innerText: 'easyMQTT'})
     $.mqttInput = new DOM('input', {
-      placeholder:Msg['session'],
+      placeholder:Msg['Session'],
       id:'mqttSession',
       value:easyMQTT.session
     }).onevent('change', this, this.changeMQTTSession)

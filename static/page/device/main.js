@@ -31,7 +31,6 @@ class Device {
         name:'ESP32'
       }
     }
-    this.default = 'esp32'
 
     let $ = this._dom = {}
 
@@ -96,7 +95,6 @@ class Device {
       .append([
         new DOM('div', {id:'target-device'})
         .append([
-          new DOM('hr'),
           new DOM('div', {className:'header'})
             .append([
               new DOM('h3', {innerText:Msg['ProjectTarget']}),
@@ -185,9 +183,19 @@ class Device {
 
     this.checkAPISupport()
   }
+  /**
+   * Create this page empty object
+   * @return {Object} This page scope in the project file.
+   */
+  empty (){
+    return {
+      firmware:rosetta.language(''),
+      target:'ESP32'
+    }
+  }
   load (obj){
     // Set/check language and check target
-    obj.language = rosetta.language(obj.target)
+    obj.firmware = rosetta.language(obj.firmware)
     obj.target = Object.keys(this.deviceInfo).includes(obj.target) ? obj.target : 'ESP32'
 
     // Trigger blocks because blocks might be inited
