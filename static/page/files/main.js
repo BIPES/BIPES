@@ -658,7 +658,7 @@ class DeviceFiles {
     }, (input, ev) => {
       ev.preventDefault()
       let filename = input.value,
-          script = `${Tool.format(Msg['CreateScriptHere'], filename)}`
+          script = `${Tool.format([Msg['CreateScriptHere'], filename])}`
 
       this.contextMenu.close()
 
@@ -698,10 +698,10 @@ class DeviceFiles {
       let error = str.match(reg_oserror)[1]
       switch (error) {
         case '39':
-          notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['FolderNotEmpty']), path[1], path[2]}`)
+          notification.send(`${Msg['PageFiles']}: ${Tool.format([Msg['FolderNotEmpty'], path[1], path[2]])}`)
           break
         default:
-          notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['CouldNotRemoveFolder']), path[1], path[2]}`)
+          notification.send(`${Msg['PageFiles']}: ${Tool.format([Msg['CouldNotRemoveFolder'], path[1], path[2]])}`)
           break;
       }
     }
@@ -975,7 +975,7 @@ class ProjectFiles {
 
     // Search if already exist
     if  (!obj.files.every(item => item.name !== folder)){
-      console.log(`${Msg['PageFiles']}: ${Tool.format(Msg['FolderAlreadyExist'], folder, path)}"`)
+      console.log(`${Msg['PageFiles']}: ${Tool.format([Msg['FolderAlreadyExist'], folder, path])}"`)
       return
     }
 
@@ -1083,12 +1083,12 @@ class ProjectFiles {
       return
     let item = {
       name:filename,
-      script: file == undefined ? `${Tool.format(Msg['CreateScriptHere'], filename)}` : file
+      script: file == undefined ? `${Tool.format([Msg['CreateScriptHere'], filename])}` : file
     }
 
     // Search if already exist
     if  (!obj.files.every(item => item.name !== filename)){
-      notification.send(`${Msg['PageFiles']}: ${Tool.format(Msg['FileAlreadyExist'], filename, path)}`)
+      notification.send(`${Msg['PageFiles']}: ${Tool.format([Msg['FileAlreadyExist'], filename, path])}`)
       return
     }
 
