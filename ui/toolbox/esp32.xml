@@ -1129,9 +1129,9 @@
   </category>
 
   <category name="GPS">
-      <label text="Global Positioning System sensor"></label>
-   <label text="Library: https://github.com/"></label>
-        <button text="Install GPS library" callbackKey="installPyLib"></button>
+      <label text="Global Positioning System (GPS) sensor"></label>
+      <label text="Library: https://github.com/rafaelaroca/mini_micropyGPS"></label>
+      <button text="Install mini_micropyGPS library" callbackKey="installPyLib"></button>
 
 	<block type="gps_init">
       </block>
