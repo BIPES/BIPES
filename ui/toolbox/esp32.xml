@@ -1133,20 +1133,35 @@
       <label text="Library: https://github.com/rafaelaroca/mini_micropyGPS"></label>
       <button text="Install mini_micropyGPS library" callbackKey="installPyLib"></button>
 
-	<block type="gps_init">
+      <block type="gps_init">
+      <value name="uart">
+        <shadow type="math_number">
+          <field name="NUM">2</field>
+        </shadow>
+      </value>
+      <value name="tx">
+        <shadow type="math_number">
+          <field name="NUM">17</field>
+        </shadow>
+      </value>
+      <value name="rx">
+        <shadow type="math_number">
+          <field name="NUM">16</field>
+        </shadow>
+      </value>
+      <value name="bps">
+        <shadow type="math_number">
+          <field name="NUM">38400</field>
+        </shadow>
+      </value>
       </block>
-	<block type="gps_update">
-      </block>
-	<block type="gps_get_lat">
-      </block>
-	<block type="gps_get_long">
-      </block>
-	<block type="gps_get_height">
-      </block>
-	<block type="gps_get_speed">
-      </block>
-	<block type="gps_get_datetime">
-      </block>
+	<block type="gps_update"> </block>
+	<block type="gps_get_lat"> </block>
+	<block type="gps_get_long"> </block>
+	<block type="gps_get_height"> </block>
+	<block type="gps_get_speed"> </block>
+	<block type="gps_get_date"> </block>
+	<block type="gps_get_time"> </block>
 
 
   </category>

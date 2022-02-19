@@ -10218,6 +10218,11 @@ Blockly.Blocks['gps_init'] = {
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
 
+    this.appendValueInput("uart")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("UART");
+
     this.appendValueInput("tx")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -10301,17 +10306,30 @@ Blockly.Blocks['gps_get_speed'] = {
   }
 };
 
-Blockly.Blocks['gps_get_datetime'] = {
+Blockly.Blocks['gps_get_date'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
-        .appendField("GPS Date and Time");
+        .appendField("GPS Date");
 
     this.setOutput(true);
 
     this.setTooltip('');
   }
 };
+
+Blockly.Blocks['gps_get_time'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("GPS Timestamp");
+
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
 
 //Rotatory Encoder
 Blockly.Blocks['encoder_init'] = {

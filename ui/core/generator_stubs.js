@@ -5258,32 +5258,39 @@ Blockly.Python['max30100_ir'] = function(block) {
 
 //GPS Module
 Blockly.Python['gps_init'] = function(block) {
-  var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
-  var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
-  var bps = Blockly.Python.valueToCode(block, 'bps', Blockly.Python.ORDER_ATOMIC);
+	var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
+	var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
+	var bps = Blockly.Python.valueToCode(block, 'bps', Blockly.Python.ORDER_ATOMIC);
+	var uart = Blockly.Python.valueToCode(block, 'uart', Blockly.Python.ORDER_ATOMIC);
 
-  var code = '#TODO: init GPS\n';
+	Blockly.Python.definitions_['import_uart'] = 'from machine import UART';
+	Blockly.Python.definitions_['import_micropyGPS'] = 'from mini_micropyGPS import MicropyGPS';
 
-  return code;
+	var code =  'uartGPS = UART(' + uart + ', tx=' + tx + ', rx=' + rx + ')\n';
+	    code += 'uartGPS.init(' + bps + ', bits=8, parity=None, stop=1)\n';
+	    code += 'gps = MicropyGPS()\n';
+	return code;
 };
 
 Blockly.Python['gps_update'] = function(block) {
 
-  var code = '#update gps \n';
+	var code =  'if uartGPS.any():\n';
+	    code += '\tc=int.from_bytes(uartGPS.read(1), "big")\n';
+	    code += '\tstat = gps.update(chr(c))\n';
 
-  return code;
+	return code;
 };
 
 Blockly.Python['gps_get_lat'] = function(block) {
 
-  var code = 'gps_lat';
+  var code = 'gps.latitude';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['gps_get_long'] = function(block) {
 
-  var code = 'gps_long';
+  var code = 'gps.longitude';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5291,7 +5298,7 @@ Blockly.Python['gps_get_long'] = function(block) {
 
 Blockly.Python['gps_get_height'] = function(block) {
 
-  var code = 'gps_speed';
+  var code = 'gps.altitude';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5299,18 +5306,26 @@ Blockly.Python['gps_get_height'] = function(block) {
 
 Blockly.Python['gps_get_speed'] = function(block) {
 
-  var code = 'gps_speed';
+  var code = 'gps.speed';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
-Blockly.Python['gps_get_datetime'] = function(block) {
+Blockly.Python['gps_get_date'] = function(block) {
 
-  var code = 'gps_datetime';
+  var code = 'gps.date';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+Blockly.Python['gps_get_time'] = function(block) {
+
+  var code = 'gps.timestamp';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
 
 //Optical Encoder
 Blockly.Python['encoder_init'] = function(block) {
