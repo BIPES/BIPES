@@ -304,9 +304,6 @@ button#edit:before, .button#edit:before {
 div#dashboard.on .button#edit:before {
 	background-position: left calc(-1.5rem*9) bottom;
 }
-button#streamButton:before {
-	background-position: left calc(-1.5rem*10) top;
-}
 nav #admin::before {
 	background-position: left calc(-1.5rem*11) top;
 }
@@ -363,6 +360,21 @@ button#code:before {
 }
 button#copy:before {
   background-position: left calc(-1.5rem*36) top;
+}
+button#mqtt:before {
+  background-position: left calc(-1.5rem*40) top;
+}
+button#stream:before {
+  background-position: left calc(-1.5rem*42) top;
+}
+button#storage:before {
+  background-position: left calc(-1.5rem*41) top;
+}
+button#chart:before {
+  background-position: left calc(-1.5rem*43) top;
+}
+button#switch:before {
+  background-position: left calc(-1.5rem*44) top;
 }
 nav #app-version {
   text-align: center;

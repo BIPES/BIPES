@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="984"
+   width="1224"
    height="48"
-   viewBox="0 0 260.35 12.7"
+   viewBox="0 0 323.85 12.7"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
@@ -41,15 +41,15 @@
      units="px"
      width="432px"
      height="24px"
-     inkscape:zoom="2"
-     inkscape:cx="585"
-     inkscape:cy="94.25"
+     inkscape:zoom="1"
+     inkscape:cx="398"
+     inkscape:cy="92.5"
      inkscape:window-width="2560"
      inkscape:window-height="1018"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1145"
+     inkscape:current-layer="layer1"
      showguides="false">
     <inkscape:grid
        type="xygrid"
@@ -749,7 +749,7 @@
              d="m 3,21 h 8 V 13 H 3 Z m 2,-6 h 4 v 4 H 5 Z"
              id="path451" />
           <polygon
-             points="18,13 16,13 16,16 13,16 13,18 16,18 16,21 18,21 18,18 21,18 21,16 18,16 "
+             points="16,13 16,16 13,16 13,18 16,18 16,21 18,21 18,18 21,18 21,16 18,16 18,13 "
              id="polygon453" />
         </g>
       </g>
@@ -1360,26 +1360,22 @@
          id="path1229"
          style="fill:#ffffff;fill-opacity:1" />
     </g>
-    <g
-       style="fill:#000000"
-       id="g1145"
-       transform="matrix(0.26458333,0,0,0.26458333,234.95,-1.1333333e-7)">
-      <path
-         d="M 0,0 H 24 V 24 H 0 Z"
-         fill="none"
-         id="path1133" />
-      <path
-         d="M 20.94,11 C 20.48,6.83 17.17,3.52 13,3.06 V 1 H 11 V 3.06 C 6.83,3.52 3.52,6.83 3.06,11 H 1 v 2 h 2.06 c 0.46,4.17 3.77,7.48 7.94,7.94 V 23 h 2 V 20.94 C 17.17,20.48 20.48,17.17 20.94,13 H 23 V 11 Z M 12,19 C 8.13,19 5,15.87 5,12 5,8.13 8.13,5 12,5 c 3.87,0 7,3.13 7,7 0,3.87 -3.13,7 -7,7 z"
-         id="path1135"
-         style="fill:#ffffff;fill-opacity:1"
-         sodipodi:nodetypes="cccccccccccccccccsssss" />
-      <circle
-         style="fill:#ffffff;stroke-width:1.95684"
-         id="path1265"
-         cx="12"
-         cy="12"
-         r="3" />
-    </g>
+    <path
+       d="m 234.95,-1.1333333e-7 h 6.35 V 6.3499998 h -6.35 z"
+       fill="none"
+       id="path1133"
+       style="stroke-width:0.264583" />
+    <path
+       d="M 240.49037,2.9104165 C 240.36867,1.807104 239.4929,0.93133321 238.38958,0.80962488 V 0.26458322 h -0.52916 v 0.54504166 c -1.10332,0.12170833 -1.97909,0.99747912 -2.1008,2.10079162 h -0.54504 v 0.5291667 h 0.54504 c 0.12171,1.1033125 0.99748,1.9790833 2.1008,2.1007916 v 0.5450417 h 0.52916 V 5.5403748 c 1.10332,-0.1217083 1.97909,-0.9974791 2.10079,-2.1007916 h 0.54505 V 2.9104165 Z M 238.125,5.0270832 c -1.02394,0 -1.85208,-0.8281459 -1.85208,-1.8520834 0,-1.0239374 0.82814,-1.8520833 1.85208,-1.8520833 1.02394,0 1.85208,0.8281459 1.85208,1.8520833 0,1.0239375 -0.82814,1.8520834 -1.85208,1.8520834 z"
+       id="path1135"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       sodipodi:nodetypes="cccccccccccccccccsssss" />
+    <circle
+       style="fill:#ffffff;stroke-width:0.517747"
+       id="path1265"
+       cx="238.125"
+       cy="3.175"
+       r="0.79374999" />
     <g
        style="fill:#000000"
        id="g1159"
@@ -1444,6 +1440,108 @@
          id="rect1147-6-9"
          x="0"
          y="0" />
+    </g>
+    <g
+       id="g2323"
+       transform="translate(-12.40234,-3.1584637)">
+      <g
+         style="fill:#000000"
+         id="g1159-36"
+         transform="matrix(0.26458333,0,0,0.26458333,266.40234,1.2567709)">
+        <rect
+           fill="none"
+           height="24"
+           width="24"
+           id="rect1147-7"
+           x="0"
+           y="7.1875" />
+        <g
+           style="overflow:visible;fill:#000000"
+           id="g1198"
+           transform="matrix(0.09857072,0,0,0.09857072,-2.5243956,4.8306746)">
+          <g
+             id="black_bg"
+             display="none" />
+          <g
+             id="logos">
+            <g
+               id="g1160" />
+            <path
+               fill="#660066"
+               d="m 46.5,159.2 c -0.2,0 -0.4,0 -0.6,0 v 77.6 c 0,5.6 4.6,10.2 10.2,10.2 H 136 C 135.3,198.5 95.5,159.2 46.5,159.2 Z"
+               id="path1168"
+               style="fill:#ffffff" />
+            <path
+               fill="#660066"
+               d="m 46.5,95.2 c -0.2,0 -0.4,0 -0.6,0 v 33 c 65.9,0.3 119.5,53.3 120.2,118.8 h 34.2 C 199.7,163.2 131,95.2 46.5,95.2 Z"
+               id="path1170"
+               style="fill:#ffffff" />
+            <path
+               fill="#660066"
+               d="M 248.8,236.9 V 166.8 C 225.6,110 178.9,65.1 120.8,44.2 H 56.1 c -5.6,0 -10.2,4.6 -10.2,10.2 v 9.9 c 101.4,0.3 183.9,82 184.5,182.8 h 8.2 c 5.7,-0.1 10.2,-4.6 10.2,-10.2 z"
+               id="path1172"
+               style="fill:#ffffff" />
+            <path
+               fill="#660066"
+               d="m 222.1,72.5 c 9.4,9.4 19,21.3 26.7,31.8 v -50 c 0,-5.6 -4.5,-10.1 -10.1,-10.1 h -51.5 c 12,8.3 24.4,17.8 34.9,28.3 z"
+               id="path1174"
+               style="fill:#ffffff" />
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+       style="fill:#000000"
+       id="g1052"
+       transform="matrix(0.26458333,0,0,0.26458333,260.35,-2e-8)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path1040" />
+      <path
+         d="M 2,20 H 22 V 16 H 2 Z m 2,-3 h 2 v 2 H 4 Z M 2,4 V 8 H 22 V 4 Z M 6,7 H 4 V 5 H 6 Z M 2,14 H 22 V 10 H 2 Z m 2,-3 h 2 v 2 H 4 Z"
+         id="path1042-3"
+         style="fill:#ffffff;fill-opacity:1" />
+    </g>
+    <g
+       style="fill:#000000"
+       id="g1130"
+       transform="matrix(0.26458333,0,0,0.26458333,266.7,-2e-8)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path1118" />
+      <path
+         d="M 21,4 H 3 C 1.9,4 1,4.89 1,6 v 12 c 0,1.1 0.9,2 2,2 h 18 c 1.1,0 2,-0.9 2,-2 V 6 C 23,4.89 22.1,4 21,4 Z m 0,14 H 3 V 6 H 21 Z M 9,8 v 8 l 7,-4 z"
+         id="path1120"
+         sodipodi:nodetypes="ccsssssscccccccccc"
+         style="fill:#ffffff;fill-opacity:1" />
+    </g>
+    <g
+       style="fill:#000000"
+       id="g2143"
+       transform="matrix(0.26458333,0,0,0.26458333,273.05,-2e-8)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path2131" />
+      <path
+         d="M 22,6.92 20.59,5.51 17.74,8.72 C 15.68,6.4 12.83,5 9.61,5 6.72,5 4.07,6.16 2,8 L 3.42,9.42 C 5.12,7.93 7.27,7 9.61,7 c 2.74,0 5.09,1.26 6.77,3.24 l -2.88,3.24 -4,-4 -7.5,7.51 1.5,1.5 6,-6.01 4,4 4.05,-4.55 c 0.75,1.35 1.25,2.9 1.44,4.55 H 21 c -0.22,-2.3 -0.95,-4.39 -2.04,-6.14 z"
+         id="path2133"
+         style="fill:#ffffff;fill-opacity:1" />
+    </g>
+    <g
+       style="fill:#000000"
+       id="g1189"
+       transform="matrix(0.26458333,0,0,0.26458333,279.4,-2e-8)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path1177" />
+      <path
+         d="M 17,6 H 7 c -3.31,0 -6,2.69 -6,6 0,3.31 2.69,6 6,6 h 10 c 3.31,0 6,-2.69 6,-6 0,-3.31 -2.69,-6 -6,-6 z m 0,10 H 7 C 4.79,16 3,14.21 3,12 3,9.79 4.79,8 7,8 h 10 c 2.21,0 4,1.79 4,4 0,2.21 -1.79,4 -4,4 z m 0,-7 c -1.66,0 -3,1.34 -3,3 0,1.66 1.34,3 3,3 1.66,0 3,-1.34 3,-3 0,-1.66 -1.34,-3 -3,-3 z"
+         id="path1179"
+         style="fill:#ffffff;fill-opacity:1" />
     </g>
   </g>
 </svg>

@@ -10,6 +10,7 @@ import {Actions} from './action.js'
 import {Charts, Streams, Switches} from './plugins.js'
 
 import {dataStorage} from './datastorage.js'
+import {easyMQTT} from './easymqtt.js'
 
 /* Create dashboard with graphs, plugins and buttons */
 class Dashboard {
@@ -23,7 +24,7 @@ class Dashboard {
 		$.dashboard = new DOM('div', {id:'dashboard'})
 		$.grid = new DOM('div', {id:'grid'})
 		$.header = new DOM('div', {id:'header'})
-		$.storageManager = new DOM('div', {id:'storageManager'})
+		$.storageManager = new DOM('div', {id:'storageManager', className:'popup'})
 		$.addMenu = new DOM('div', {id:'addMenu', className:'popup'})
 
 		$.dashboard.append([
@@ -41,7 +42,7 @@ class Dashboard {
 		$.add = new DOM('button', {
 			className:'icon',
 			id:'add',
-			title:['NewDashboard']
+			title:Msg['NewDashboard']
 			})
 			.onclick(this, this.add, [true]);
 		$.storage = new DOM('button', {
@@ -75,7 +76,8 @@ class Dashboard {
 		this.grid = new DashboardGrid($.grid, this)
 		$.grid.append([$.addPlugin])
 
-		this.storageManager = new DataStorageManager($.storageManager, this.grid, $.storage)
+		this.storagemanager = new DataStorageManager($.storageManager,
+		  this.grid, $.storage, this)
 
 		this.addMenu = new DashboardAddMenu($.addMenu, this.grid, $.addPlugin)
 
@@ -494,7 +496,7 @@ class DashboardGrid {
     let remove = new DOM('button', {
       className:'button icon notext',
       id:'dismiss',
-      title:'Dismiss plugin'
+      title:Msg['DismissPlugin']
     }).onclick(this, this.remove, [data]);
 
     let silk = new DOM('div', {className:'silk'})
@@ -856,7 +858,7 @@ class DashboardAddMenu {
     for (const plugin in this.plugins) {
       $.plugins.push(new DOM('button', {
           value: plugin,
-          id:`${plugin}Button`,
+          id:`${plugin}`,
           className:'icon',
           innerText: this.plugins[plugin]
         })
@@ -880,8 +882,10 @@ class DashboardAddMenu {
 
 
 class DataStorageManager {
-  constructor (dom, grid_ref){
+  constructor (dom, grid_ref, button, parent){
     this.datalake = []
+    this.parent = parent
+	  this.name = 'storagemanager'
 
     let $ = this._dom = {}
     $.storageManager = dom
@@ -906,53 +910,114 @@ class DataStorageManager {
         $.uploadLabel
       ])
     $.container = new DOM ('span')
+
+    $.mqttH2 = new DOM('h2', {innerText: 'easyMQTT'})
+    $.mqttInput = new DOM('input', {
+      placeholder:Msg['session'],
+      id:'mqttSession',
+      value:easyMQTT.session
+    }).onevent('change', this, this.changeMQTTSession)
+    $.mqttTitle = new DOM ('div', {className: 'header'})
+      .append([
+        $.mqttH2,
+        $.mqttInput
+      ])
+
     $.wrapper = new DOM('div')
       .append([
         $.title,
-        $.container
+        $.container,
+        $.mqttTitle
       ])
-    $.storageManager.append($.wrapper)
 
+    $.storageManager.append($.wrapper)
     this.ref = grid_ref
+
+
+
+    // Status shortcut
+    $.statusMQTT = new DOM('div')
+    $.statusMQTT.innerText = easyMQTT.session
+    $.statusMQTTButton = new DOM('button', {
+        className:'status-icon',
+        id:'mqtt',
+        title:Msg['MQTTSession']
+      })
+      .append($.statusMQTT)
+      .onclick(this, () => {
+        this.parent.nav.click()
+        this.open()
+        $.mqttInput._dom.focus()
+      })
+
+    new DOM(DOM.get('div#status-bar #globals')).append([
+      $.statusMQTTButton
+    ])
+
+    command.add([this.parent, this], {
+      changedMQTTSession: this._changedMQTTSession
+    })
+    button.onclick(this, this.open)
+  }
+  /** Change easyMQTT session*/
+  changeMQTTSession (){
+    let session = this._dom.mqttInput.value
+    command.dispatch([this.parent, this], 'changedMQTTSession', [session])
+    storage.set('mqtt_session', session)
+  }
+  /** Changed easyMQTT session*/
+  _changedMQTTSession (session){
+    session = session == '' ? Tool.SID() : session
+
+    easyMQTT.session = session
+    this._dom.statusMQTT.innerText = easyMQTT.session
+    this._dom.mqttInput.value = easyMQTT.session
   }
   close (e) {
-    if (e.target.id == 'storageManager')
+    if (e.target.id == 'storageManager'){
+     this._dom.wrapper.style.marginTop = '110vh'
       Animate.off(this._dom.storageManager._dom, ()=>{this.deinit()})
+    }
   }
   open (){
     this.restore ()
-    Animate.on(this._dom.storageManager._dom)
+
+    let $ = this._dom
+    setTimeout(() =>{
+      $.wrapper.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 20.5rem)`
+      },125)
+    Animate.on($.storageManager._dom, 125)
   }
   restore(){
 		storage.keys(/datastorage:(.*)/)
 		  .forEach(key => {this.include(key)})
   }
-  include (uid){
+  include (sid){
 		let remove = new DOM('button', {
 			  className:'icon notext',
 			  id:'remove',
-			  title:'Delete data'
+			  title:Msg['DeleteData']
 			})
 		let download = new DOM('button', {
 		    className: 'icon notext',
 		    id:'download',
-		    title:'Download CSV'
+		    title:Msg['DownloadCSV']
 		  })
-		  .onclick(this, this.download, [uid])
+		  .onclick(this, this.download, [sid])
 		let wrapper = new DOM('div').append([
 		    download,
 		    remove
 		  ])
 		let data = new DOM('div', {
-		    id:uid,
-		    innerText:uid}
+		    id:sid,
+		    innerText:sid}
 		  )
 			.append([
 				wrapper
 			])
 		this.datalake.push(data)
 
-		remove.onclick(this, this.remove, [uid, data])
+		remove.onclick(this, this.remove, [sid, data])
 
 		let $ = this._dom
 		$.container.append (data)
@@ -963,41 +1028,41 @@ class DataStorageManager {
     })
     this.datalake = []
   }
-  remove (uid, dom) {
+  remove (id, dom) {
     dom._dom.remove()
 		this.datalake.forEach((item, index) => {
-			if (item._dom.id == uid) {
+			if (item._dom.id == id) {
 				item._dom.remove()
 				this.datalake.splice(index,1)
 			}
 		});
-		storage.remove(`datastorage:${uid}`)
+		storage.remove(`datastorage:${id}`)
 
-		dataStorage.remove(uid)
-
+		dataStorage.remove(id)
     if (this.ref != undefined) {
       this.ref.charts.forEach ((chart) => {
-        if (chart.dataset == uid) {
+        if (chart.dataset == id) {
+          console.log(this.ref.ref)
           this.ref.ref.forEach(plugin => {
             if (plugin.sid === chart.sid)
-              Charts.regen(this.ref, plugin)
+              Charts.regen(this.ref.charts, plugin)
           })
         }
       })
     }
   }
-  exportCSV (uid) {
-    return storage.fetch(`datastorage:${uid}`)
+  exportCSV (sid) {
+    return storage.fetch(`datastorage:${sid}`)
       .replaceAll('],[','\r\n')
       .replace(']]','')
-      .replace('[[',`"BIPES","Databoard"\r\n"Data:","${uid}"\r\n"Timestamp:","${String(+new Date())}"\r\n`)
+      .replace('[[',`"BIPES","Databoard"\r\n"Data:","${sid}"\r\n"Timestamp:","${String(+new Date())}"\r\n`)
   }
-  download (uid){
-    let csv = this.exportCSV(uid)
+  download (sid){
+    let csv = this.exportCSV(sid)
     let data = "data:text/csv;charset=utf-8," + encodeURIComponent(csv)
 	  let element = document.createElement('a')
 	  element.setAttribute('href', data)
-	  element.setAttribute('download', `${uid}.bipes.csv`)
+	  element.setAttribute('download', `${sid}.bipes.csv`)
 	  element.style.display = 'none'
 	  document.body.appendChild(element)
 	  element.click ()

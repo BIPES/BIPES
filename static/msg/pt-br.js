@@ -113,5 +113,15 @@ Msg = {
   'StopExecution':'Parar execução',
   'StopTimers':'Parar timers',
   'DeviceInfo':'Info. do dispositivo',
-  '':'',
+
+  'Session':'Sessão',
+  'MQTTSession':'Sessão MQTT',
+  'NewDashboard':'Novo painel',
+  'EditData':'Editar dados',
+  'AddWidget':'Adicionar widget',
+  'EditDashboard':'Editar painel',
+  'DashboardName':'Nome do painel',
+  'DismissPlugin':'Remover widget',
+  'DeleteData':'Apagar dados',
+  'DownloadCSV':'Baixar CSV'
 }

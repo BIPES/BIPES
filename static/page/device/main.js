@@ -587,7 +587,7 @@ class WebSocketSetup {
       ev.preventDefault()
     if (ev == undefined || ev.target.id == 'webSocketSetup'){
       if (+new Date - this.mdTimestamp < 150 || ev == undefined){
-        this._dom.wrapper._dom.style.marginTop = '110vh'
+        this._dom.wrapper.style.marginTop = '110vh'
         Animate.off(this._dom.webSocketSetup._dom, undefined, 125)
       }
     }
@@ -598,7 +598,7 @@ class WebSocketSetup {
   open (){
     let $ = this._dom
     setTimeout(() =>{
-      $.wrapper._dom.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 20.5rem)`
+      $.wrapper.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 20.5rem)`
       },125)
     setTimeout(() => {this._dom.urlInput._dom.focus()}, 125)
     Animate.on($.webSocketSetup._dom, 125)

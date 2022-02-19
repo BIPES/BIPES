@@ -113,5 +113,16 @@ Msg = {
   'StopExecution':'Stop execution',
   'StopTimers':'Stop timers',
   'DeviceInfo':'Device info',
+
+  'Session':'Session',
+  'MQTTSession':'MQTT session',
+  'NewDashboard':'New dashboard',
+  'EditData':'Edit data',
+  'AddWidget':'Add widget',
+  'EditDashboard':'Edit dashboard',
+  'DashboardName':'Dashboard\'s name',
+  'DismissPlugin':'Dismiss widget',
+  'DeleteData':'Deleta data',
+  'DownloadCSV':'Download CSV'
 }
 

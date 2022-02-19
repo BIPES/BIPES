@@ -63,7 +63,6 @@ class CommandBroker {
             self = self[item]
           })
         }
-
         args.shift()
         this.map[_key].callback.apply(self, args)
         localStorage.removeItem(key)

@@ -107,9 +107,6 @@ section#dashboard #addMenu button {
   border-radius: 0.5em;
   display: block;
 }
-#storageManager{
-  display: none;
-}
 @media screen and (max-width:39.99rem) {
   section#dashboard #addMenu.on > div {
     margin-top: calc(100vh - 6.5rem - 3rem);
@@ -390,3 +387,84 @@ section#dashboard #actions select {
   padding: 0.5rem;
 }
 
+
+
+
+
+
+section#dashboard #storageManager.on {
+  overflow-y: auto;
+}
+section#dashboard #storageManager > div {
+  max-width: 30rem;
+  padding: 0 1rem;
+  min-height: 20rem;
+  margin: 110vh auto 0 auto;
+  overflow: hidden;
+  text-align: center;
+}
+@media screen and (max-width: 30rem){
+  section#dashboard #storageManager > div {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+}
+section#dashboard #storageManager h3 {
+  padding-top: 1rem;
+}
+section#dashboard #storageManager h4 {
+  text-align: left;
+  padding: 1rem 0 0 0;
+}
+section#dashboard #storageManager #mqttSession {
+  width: 8em;
+  padding: .5rem 0;
+  border: 1px solid rgba(84,190,255,0.25);
+  border-radius: 1.5rem;
+  text-align: center;
+  font-family: monospace;
+  font-size:1rem;
+  transition: .25s ease background-color;
+}
+section#dashboard #storageManager #mqttSession:focus {
+  background: rgba(84,190,255,0.25);
+}
+section#dashboard #storageManager > div > div {
+  text-align: right;
+  padding-top: 1em;
+}
+body.light section#dashboard #storageManager span {
+	border: 1px solid #aaa;
+}
+body.dark section#dashboard #storageManager span {
+	border: 1px solid #444;
+}
+body.light section#dashboard #storageManager span > div {
+	border-bottom: 1px solid #aaa;
+}
+body.dark section#dashboard #storageManager span > div {
+	border-bottom: 1px solid #444;
+}
+section#dashboard #storageManager span {
+	display: block;
+	padding: 0 .5em;
+	border-radius: 1em;
+}
+
+section#dashboard #storageManager span > div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.25em 0;
+	user-select: text;
+}
+
+section#dashboard #storageManager span > div:last-child {
+	border-bottom: none;
+}
+
+div#status-bar button#mqtt:before {
+  background-position: left calc(-1.25rem*40) top;
+}

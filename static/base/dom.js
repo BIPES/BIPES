@@ -48,10 +48,19 @@ class DOM {
   get id (){
     return this._dom.id
   }
-  /** set DOM id */
+  /** Set DOM id */
   set id (str){
-    this._dom.id = str
+    this._dom.id= str
   }
+  /** Get DOM value */
+  get value (){
+    return this._dom.value
+  }
+  /** Set DOM value */
+  set value (str){
+    this._dom.value = str
+  }
+  /**
   /**
    * Focus on DOM.
    */
