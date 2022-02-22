@@ -64,6 +64,7 @@ Msg = {
   'RunBlocks':'Run blocks in the device.',
   'BlocksPy':'blocks.py',
 
+  'Unknown':'unknown',
   'ConnectedDevice':'Connected device',
   'NotConnected':'not connected',
   'NoConnectedLong':'No connected device, connect below!',
@@ -79,7 +80,9 @@ Msg = {
   'UsingThisDevice':'Using this device',
   'OnThisTab':'On this tab',
   'OnOtherTab':'On other tab',
+  'DeviceUnresponsive':'Device {0} version {1} is unresponsive, consider resetting it.',
 
+  'TasksRunning':'Tasks running',
   'StatusOngoingInput':'Ongoing input',
   'StatusReady':'Ready',
   'StatusWorking':'Doing {0} tasks',
@@ -123,6 +126,7 @@ Msg = {
   'DashboardName':'Dashboard\'s name',
   'DismissPlugin':'Dismiss widget',
   'DeleteData':'Deleta data',
-  'DownloadCSV':'Download CSV'
+  'DownloadCSV':'Download CSV',
+  'DragMe':'Drag me',
 }
 

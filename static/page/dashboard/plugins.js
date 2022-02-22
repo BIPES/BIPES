@@ -1,51 +1,70 @@
 "use strict";
 
 import {DOM} from '../../base/dom.js'
+import {Tool} from '../../base/tool.js'
 export {Charts, Streams, Switches}
 
 import {dataStorage} from './datastorage.js'
+import {easyMQTT, databaseMQTT} from './easymqtt.js'
 
 /** Chart plugin, powered by chart.js */
 class Charts {
   constructor (){}
   static chart (data, dom) {
-		let data2 = dataStorage.chartData(data.setup.dataset, data);
+    let data2
+    switch (data.setup.source) {
+      case 'localStorage':
+		    data2 = dataStorage.chartData(data.setup.dataset, data)
+		    break
+		  case 'easyMQTT':
+		    // Include dummy if not exist
+		    if (!databaseMQTT._inited)
+		      return {
+		        sid:data.sid,
+            dataset:data.setup.dataset,
+            source:data.setup.source,
+            destroy:()=>{}
+          }
+        data2 = databaseMQTT.chartData(data.setup.dataset, data)
+        break
+	    }
 
-		let options = {
+
+    let options = {
                 maintainAspectRatio: false,
-		            plugins: {
-		                legend: {
-		                  position: 'top'
-		                }
-		              },
-                scales: {
+                plugins: {
+                    legend: {
+                      position: 'top'
+                    }
                   },
+                scales: {},
                 animation: {
                   duration: 0
                 },
                 resizeDelay: 125
               }
 
-		if (data.setup.title != '')
-		  options.plugins.title = {display: true, text: data.setup.title, font: {size: 14}}
+    if (data.setup.title != '')
+      options.plugins.title = {display: true, text: data.setup.title, font: {size: 14}}
 
     if (data.setup.timeseries)
-		  options.scales.xAxes = {type: 'time', distribution: 'linear'}
+      options.scales.xAxes = {type: 'time', distribution: 'linear'}
 
-		if (data.setup.xLabel != '')
-		  options.scales.x = {display: true, title:{display: true, text: data.setup.xLabel}}
-		if (data.setup.yLabel != '')
-		  options.scales.y = {beginAtZero: true, display: true, title:{display: true, text: data.setup.yLabel}}
-		else
-		  options.scales.y = {beginAtZero: true}
+    if (data.setup.xLabel != '')
+      options.scales.x = {display: true, title:{display: true, text: data.setup.xLabel}}
+    if (data.setup.yLabel != '')
+      options.scales.y = {beginAtZero: true, display: true, title:{display: true, text: data.setup.yLabel}}
+    else
+      options.scales.y = {beginAtZero: true}
 
     let _chart = new Chart(dom._dom, {
-		        type: data.setup.chartType,
-		        data: data2,
-		        options: options
-		  })
+            type: data.setup.chartType,
+            data: data2,
+            options: options,
+      })
     _chart.sid = data.sid
     _chart.dataset = data.setup.dataset
+    _chart.source = data.setup.source
     let limitPoints = parseInt(data.setup.limitPoints)
     if (!isNaN(limitPoints))
         _chart.limitPoints = limitPoints

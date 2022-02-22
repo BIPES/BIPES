@@ -201,9 +201,10 @@ class Prompt {
     if(!this.inited)
       return
 
-    let cols = (this._dom.section._dom.offsetWidth - 5*8)/8,
-        rows = (this._dom.section._dom.offsetHeight - 6*16)/16.5
+    let cols = (this._dom.section.width - 5*16)/7,
+        rows = (this._dom.section.height/17 - 4*16/14)
 
+  console.log(cols)
     this.prompt.resize(parseInt(cols), parseInt(rows))
   }
 }

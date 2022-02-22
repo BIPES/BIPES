@@ -119,7 +119,7 @@ section#device button#disconnect {
 }
 section#device button#fetch {
   float: left;
-  width: 7em;
+  width: 7.5em;
   min-width: 7em;
   margin-top: -4em;
   margin-left: -1.75rem;

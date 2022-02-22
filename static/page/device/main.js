@@ -248,7 +248,7 @@ class Device {
     }
     let str = {
         protocol: channel.currentProtocol,
-        nodename: 'unknown',
+        nodename: Msg['Unknown'],
         version: '-'
       }
     command.dispatch(this, 'use', [
@@ -502,7 +502,7 @@ class Device {
   unresponsive (uid){
     this.devices.forEach((item, index) => {
       if (item.uid == uid) {
-        notification.send(`Device ${item.nodename} version ${item.version} is unresponsive, consider resetting it.`)
+        notification.send(Tool.format([Msg['DeviceUnresponsive'], item.nodename, item.version]))
       }
     })
   }

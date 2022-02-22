@@ -70,6 +70,48 @@ def select(__db, table_name, columns, *args):
 
     return (table_name, columns, data)
 
+
+# Get data from database
+def select_where(__db, table_name, where, columns, *args):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
+
+    str_c = ', '.join(columns)
+
+    sql = f'select {str_c} from {table_name} where {where[0]} = ?'
+    if len(args) == 2:
+        sql += f' where lastEdited < ?'
+    sql += ' order by lastEdited desc'
+    if len(args) == 2:
+        sql += f' limit ?'
+        data = db.execute(sql, (where[1], args[0], args[1])).fetchall()
+    else:
+        data = db.execute(sql, (where[1],)).fetchall()
+
+    db.close()
+
+    return (table_name, columns, data)
+
+
+# Get data from database
+def select_distinct(__db, table_name, columns, *args):
+    db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)
+
+    str_c = ', '.join(columns)
+
+    sql = f'select distinct {str_c} from {table_name}'
+    if len(args) == 2:
+        sql += f' where lastEdited < ?'
+    sql += ' order by lastEdited desc'
+    if len(args) == 2:
+        sql += f' limit ?'
+        data = db.execute(sql, (args[0], args[1])).fetchall()
+    else:
+        data = db.execute(sql).fetchall()
+
+    db.close()
+
+    return (table_name, columns, data)
+
 # Fetch data from database
 def fetch(__db, table_name, columns, where):
     db = __db if isinstance(__db, sqlite3.Connection) else connect(__db)

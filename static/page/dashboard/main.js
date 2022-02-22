@@ -11,6 +11,7 @@ import {Charts, Streams, Switches} from './plugins.js'
 
 import {dataStorage} from './datastorage.js'
 import {easyMQTT} from './easymqtt.js'
+import {databaseMQTT} from './easymqtt.js'
 
 /* Create dashboard with graphs, plugins and buttons */
 class Dashboard {
@@ -81,6 +82,14 @@ class Dashboard {
 
 		this.addMenu = new DashboardAddMenu($.addMenu, this.grid, $.addPlugin)
 
+		// Setup chart.js defaults
+	  if (Tool.fromUrl('theme') === 'dark'){
+      Chart.defaults.color = '#eee'
+      Chart.defaults.borderColor = 'rgba(255,255,255,0.1)'
+    } else {
+      Chart.defaults.color = '#222'
+    }
+
     command.add(this, {
       add: this._add,
       remove: this._remove,
@@ -104,6 +113,7 @@ class Dashboard {
     this.select(Object.keys(this.tree)[0])
 
 		dataStorage.init(this.grid)
+		databaseMQTT.init(this.grid)
     this.inited = true
   }
   /*
@@ -116,7 +126,8 @@ class Dashboard {
     this.unselect()
     this._dom.tabs.removeChilds()
 
-		dataStorage.deinit(this.grid)
+		dataStorage.deinit()
+		databaseMQTT.deinit()
     this.inited = false
   }
   /*
@@ -884,6 +895,7 @@ class DashboardAddMenu {
 class DataStorageManager {
   constructor (dom, grid_ref, button, parent){
     this.datalake = []
+    this.datalakeMQTT = []
     this.parent = parent
 	  this.name = 'storagemanager'
 
@@ -922,12 +934,14 @@ class DataStorageManager {
         $.mqttH2,
         $.mqttInput
       ])
+    $.containerMQTT = new DOM ('span')
 
     $.wrapper = new DOM('div')
       .append([
+        $.mqttTitle,
+        $.containerMQTT,
         $.title,
-        $.container,
-        $.mqttTitle
+        $.container
       ])
 
     $.storageManager.append($.wrapper)
@@ -972,6 +986,10 @@ class DataStorageManager {
     easyMQTT.session = session
     this._dom.statusMQTT.innerText = easyMQTT.session
     this._dom.mqttInput.value = easyMQTT.session
+
+    databaseMQTT.reinit()
+    this.deinit()
+    this.restore()
   }
   close (e) {
     if (e.target.id == 'storageManager'){
@@ -991,6 +1009,14 @@ class DataStorageManager {
   restore(){
 		storage.keys(/datastorage:(.*)/)
 		  .forEach(key => {this.include(key)})
+
+		databaseMQTT.do(`${easyMQTT.session}/ls`)
+		  .then(obj => {
+		    if (obj.hasOwnProperty(easyMQTT.session))
+		      obj[easyMQTT.session].forEach(topic => {
+		        this.includeMQTT(topic.topic)
+		      })
+		  })
   }
   include (sid){
 		let remove = new DOM('button', {
@@ -1022,11 +1048,45 @@ class DataStorageManager {
 		let $ = this._dom
 		$.container.append (data)
   }
+  includeMQTT (topic){
+		let remove = new DOM('button', {
+			  className:'icon notext',
+			  id:'remove',
+			  title:Msg['DeleteData']
+			})
+		let download = new DOM('button', {
+		    className: 'icon notext',
+		    id:'download',
+		    title:Msg['DownloadCSV']
+		  })
+		  .onclick(this, this.downloadMQTT, [topic])
+		let wrapper = new DOM('div').append([
+		    download,
+		    remove
+		  ])
+		let data = new DOM('div', {
+		    id:topic,
+		    innerText:topic}
+		  )
+			.append([
+				wrapper
+			])
+		this.datalakeMQTT.push(data)
+
+		remove.onclick(this, this.removeMQTT, [topic, data])
+
+		let $ = this._dom
+		$.containerMQTT.append (data)
+  }
   deinit (){
     this.datalake.forEach ((item) => {
       item._dom.remove()
     })
     this.datalake = []
+    this.datalakeMQTT.forEach ((item) => {
+      item._dom.remove()
+    })
+    this.datalakeMQTT = []
   }
   remove (id, dom) {
     dom._dom.remove()
@@ -1035,14 +1095,13 @@ class DataStorageManager {
 				item._dom.remove()
 				this.datalake.splice(index,1)
 			}
-		});
+		})
 		storage.remove(`datastorage:${id}`)
 
 		dataStorage.remove(id)
     if (this.ref != undefined) {
       this.ref.charts.forEach ((chart) => {
-        if (chart.dataset == id) {
-          console.log(this.ref.ref)
+        if (chart.dataset == id && chart.source == 'localStorage') {
           this.ref.ref.forEach(plugin => {
             if (plugin.sid === chart.sid)
               Charts.regen(this.ref.charts, plugin)
@@ -1051,11 +1110,67 @@ class DataStorageManager {
       })
     }
   }
-  exportCSV (sid) {
+  removeMQTT (topic){
+		databaseMQTT.do(`${easyMQTT.session}/${topic.replaceAll('/','$')}/rm`)
+	  .then(obj => {
+	    if (obj.hasOwnProperty(easyMQTT.session)){
+
+		    this.datalakeMQTT.forEach((item, index) => {
+		      databaseMQTT.remove(topic)
+			    if (item._dom.id == topic) {
+				    item._dom.remove()
+				    this.datalakeMQTT.splice(index,1)
+			    }
+		    })
+        if (this.ref != undefined) {
+          this.ref.charts.forEach ((chart) => {
+            if (chart.dataset == topic && chart.source == 'easyMQTT') {
+              this.ref.ref.forEach(plugin => {
+                if (plugin.sid === chart.sid)
+                  Charts.regen(this.ref.charts, plugin)
+              })
+            }
+          })
+        }
+	    }
+	  })
+  }
+  exportCSV (sid){
     return storage.fetch(`datastorage:${sid}`)
       .replaceAll('],[','\r\n')
       .replace(']]','')
-      .replace('[[',`"BIPES","Databoard"\r\n"Data:","${sid}"\r\n"Timestamp:","${String(+new Date())}"\r\n`)
+      .replace('[[',`"BIPES","Dashboard"\r\n"Data:","${sid}"\r\n"Timestamp:","${String(+new Date())}"\r\n`)
+  }
+  organizeJSON (session, topic, obj){
+    let data = [],
+      json = {}
+    json.session = {
+      name:session,
+      timestamp:+new Date()
+    }
+    obj.forEach(item => {data.push(item.data)})
+    json.session.topic = {
+      name:topic,
+      data:data
+    }
+    return JSON.stringify(json, null, 2)
+  }
+  downloadMQTT (topic){
+    databaseMQTT.do(`${easyMQTT.session}/${topic.replaceAll('/','$')}/grep`)
+      .then(obj => {
+		    if (obj.hasOwnProperty(easyMQTT.session)){
+          let json = this.organizeJSON(easyMQTT.session, topic, obj[easyMQTT.session])
+          let data = "data:application/json;charset=utf-8," +
+            encodeURIComponent(json)
+          let element = document.createElement('a')
+          element.setAttribute('href', data)
+          element.setAttribute('download', `${easyMQTT.session}_${topic}.bipes.json`)
+          element.style.display = 'none'
+          document.body.appendChild(element)
+          element.click ()
+          document.body.removeChild(element)
+        }
+      })
   }
   download (sid){
     let csv = this.exportCSV(sid)

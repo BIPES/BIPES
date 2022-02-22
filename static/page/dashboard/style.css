@@ -387,17 +387,12 @@ section#dashboard #actions select {
   padding: 0.5rem;
 }
 
-
-
-
-
-
 section#dashboard #storageManager.on {
   overflow-y: auto;
 }
 section#dashboard #storageManager > div {
   max-width: 30rem;
-  padding: 0 1rem;
+  padding: 0 1rem 1rem 1rem;
   min-height: 20rem;
   margin: 110vh auto 0 auto;
   overflow: hidden;
@@ -420,7 +415,8 @@ section#dashboard #storageManager h4 {
 }
 section#dashboard #storageManager #mqttSession {
   width: 8em;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
+  margin: 0 0 0.5rem 0;
   border: 1px solid rgba(84,190,255,0.25);
   border-radius: 1.5rem;
   text-align: center;

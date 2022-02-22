@@ -49,8 +49,9 @@ class DataStorage {
 
     storage.set(`datastorage:${dataset}`, JSON.stringify(this._data[dataset]))
     // Push to charts
-    if (!this.ref !== undefined)
+    if (this.ref !== undefined){
       this.ref.chartsPush(dataset, this._data[dataset], coordinates, this._coorLength)
+    }
   }
   /**
    * Remove topic from localStorage

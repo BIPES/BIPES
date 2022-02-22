@@ -65,6 +65,7 @@ Msg = {
   'RunBlocks':'Executar blocos no dispositivo.',
   'BlocksPy':'blocos.py',
 
+  'Unknown':'desconhecido',
   'ConnectedDevice':'Dispositivo conectado.',
   'NotConnected':'não conectado',
   'NoConnectedLong':'Nenhum dispositivo conectado, conecte abaixo!',
@@ -80,7 +81,9 @@ Msg = {
   'UsingThisDevice':'Usando esse dispositivo',
   'OnThisTab':'Nessa aba',
   'OnOtherTab':'Em outra aba',
+  'DeviceUnresponsive':'Dispositivo {0} versão {1} não está respondendo, considere resetá-lo.',
 
+  'TasksRunning':'Tarefas em execução',
   'StatusOngoingInput':'Recebendo comandos',
   'StatusReady':'Pronto',
   'StatusWorking':'Fazendo {0} tarefas',
@@ -123,5 +126,6 @@ Msg = {
   'DashboardName':'Nome do painel',
   'DismissPlugin':'Remover widget',
   'DeleteData':'Apagar dados',
-  'DownloadCSV':'Baixar CSV'
+  'DownloadCSV':'Baixar CSV',
+  'DragMe':'Me arraste',
 }

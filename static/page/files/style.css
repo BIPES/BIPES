@@ -55,7 +55,6 @@ section#files #pane {
   width: 15rem;
   flex-shrink: 0;
   box-sizing: border-box;
-  padding-top: .75em;
 }
 section#files.hidePane #pane {
   width: 0rem;
@@ -137,12 +136,9 @@ section#files #sidebar, section#file #pane .header {
 }
 section#files #sidebar {
   overflow-y: auto;
-  height: calc(100% - 2.5rem);
-}
-@media screen and (orientation: portrait){
-  section#files.pos1 #sidebar, section#files.pos2 #sidebar {
-    height: calc(100% - 2.5rem);
-  }
+  height: 100%;
+  padding-top: 0.75em;
+  box-sizing: border-box;
 }
 section#files #sidebar > details {
   padding: 0.5rem 0 0.25rem 0;

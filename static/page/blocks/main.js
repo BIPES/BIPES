@@ -65,6 +65,9 @@ class Blocks {
    * On display, initiates the page.
    */
   init (){
+    if (this.inited)
+      return
+
     this.workspace.setVisible(true)
     this.code.init()
     this.inited = true
@@ -80,6 +83,9 @@ class Blocks {
    * On hidden, deinitiate the page.
    */
   deinit(){
+    if (!this.inited)
+      return
+
     this.workspace.removeChangeListener(this.update)
     this.workspace.clear()
     this.workspace.setVisible(false)

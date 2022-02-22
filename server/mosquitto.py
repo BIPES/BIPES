@@ -33,7 +33,7 @@ def listen(app):
         with open('server/mosquitto.txt') as f:
             passwd = f.read()
     except:
-        print( "No password provided, skipping mqtt.")
+        print("No password provided, skipping mqtt.")
         return
 
     app.config['MQTT_BROKER_URL'] = '127.0.0.1'
@@ -45,6 +45,8 @@ def listen(app):
     
     mqtt = Mqtt()
     
+    print(" * Mosquitto bridge initiated.")
+
     @mqtt.on_message()
     def handle_mqtt_message(client, userdata, msg):
         full_topic = msg.topic.split("/", 1)
@@ -76,9 +78,9 @@ def listen(app):
     mqtt.init_app(app)
     return
 
-# Get shared projects
-@bp.route('/<session>/ls', methods=('POST', 'GET'))
-def mosquitto_ls(session):
+# Get all data
+@bp.route('/<session>/grep', methods=('POST', 'GET'))
+def mosquitto_select(session):
     obj = request.json
     cols = ['topic','data']
 
@@ -90,3 +92,51 @@ def mosquitto_ls(session):
         return dbase.rows_to_json(dbase.select(db, session, cols, obj['from'], obj['limit']))
     else:
         return dbase.rows_to_json(dbase.select(db, session, cols))
+
+
+# List topics
+@bp.route('/<session>/ls', methods=('POST', 'GET'))
+def mosquitto_select_distinct(session):
+    obj = request.json
+    cols = ['topic']
+
+    db = dbase.connect(_db)
+    if not dbase.has_table(db, (session,)):
+        return {session:[]}
+
+    if obj != None and 'from' in obj and 'limit' in obj:
+        return dbase.rows_to_json(dbase.select_distinct(db, session, cols, obj['from'], obj['limit']))
+    else:
+        return dbase.rows_to_json(dbase.select_distinct(db, session, cols))
+
+
+# Get data from topic
+@bp.route('/<session>/<topic>/grep', methods=('POST', 'GET'))
+def mosquitto_select_topic(session, topic):
+    obj = request.json
+    cols = ['data']
+    db = dbase.connect(_db)
+    topic = topic.replace('$','/')
+
+    if not dbase.has_table(db, (session,)):
+        return {session:[]}
+
+    if obj != None and 'from' in obj and 'limit' in obj:
+        return dbase.rows_to_json(dbase.select_where(db, session, ['topic', topic], cols, obj['from'], obj['limit']))
+    else:
+        return dbase.rows_to_json(dbase.select_where(db, session, ['topic', topic],  cols))
+
+
+# Remove  topic
+@bp.route('/<session>/<topic>/rm', methods=('POST', 'GET'))
+def mosquitto_delete(session, topic):
+    obj = request.json
+    db = dbase.connect(_db)
+    topic = topic.replace('$','/')
+
+    if not dbase.has_table(db, (session,)):
+        return {session:[]}
+
+    dbase.delete(db, session, ['topic'], [topic])
+
+    return {session:[]}

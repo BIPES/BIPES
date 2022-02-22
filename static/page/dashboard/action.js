@@ -107,7 +107,7 @@ class Actions {
 	      dataset: 'Topic',
 	      chartType: ['Chart type', ['line','scatter','bar','pie','radar']],
 	      title: 'Title',
-	      source: ["Database", ["localStorage"]],
+	      source: ["Database", ["localStorage","easyMQTT"]],
 	      labels: 'Labels',
 	      timeseries: 'Is Unix timestamp',
 	      limitPoints: 'Limit to last datapoints',
