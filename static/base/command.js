@@ -53,11 +53,11 @@ class CommandBroker {
       this.map[_key] = {}
       this.map[_key].fun = (key, args) => {
 
-        let self = window.bipes.page
+        let self = bipes.page
         if (args[0] == 'channel') {
-          self = window.bipes.channel
+          self = bipes.channel
         } else if (args[0] == 'command') {
-          self = window.bipes.command
+          self = bipes.command
         } else {
           args[0].forEach((item) => {
             self = self[item]

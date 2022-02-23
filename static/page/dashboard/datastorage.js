@@ -27,6 +27,7 @@ class DataStorage {
     this.buffer += chunk
     let re = /\r\n\$(.*):(.*)\r\n/
     let match_
+
     if (re.test(this.buffer)) {
       match_ = this.buffer.match(re)
       if (match_.length == 3) {

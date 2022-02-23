@@ -29,6 +29,8 @@ class Charts {
         break
 	    }
 
+	    console.log(data2)
+
 
     let options = {
                 maintainAspectRatio: false,

@@ -72,12 +72,13 @@ umd-deps:
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 unpkg:
-	@printf "[3/6] Fetching $(PURPLE)xterm chart.js murri dash.js $(NC).\n"
+	@printf "[3/6] Fetching $(PURPLE)xterm chart.js murri dash.js paho-mqtt$(NC).\n"
 	@wget -O static/libs/xterm.umd.js https://unpkg.com/xterm@4.15.0/lib/xterm.js
 	@wget -O static/libs/chart.umd.js https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js
 	@wget -O static/libs/chart-adapter-date-fns.bundle.umd.js https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js
 	@wget -O static/libs/muuri.umd.js https://raw.githubusercontent.com/haltu/muuri/master/dist/muuri.js
 	@wget -O static/libs/dash.umd.js  http://cdn.dashjs.org/latest/dash.all.min.js
+	@wget -O static/libs/paho-mqtt.umd.js  https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js
 
 blockly:
 	@printf "[4/6] Fetching $(PURPLE)blockly$(NC).\n"
@@ -124,7 +125,7 @@ mosquitto:
 	printf "\n" ; \
 	sudo mosquitto_passwd -c -b /etc/mosquitto/conf.d/passwd bipes $$pwd ; \
 	echo  "$$pwd" > server/mosquitto.txt ; \
-	sudo bash -c 'printf  "allow_anonymous false\npassword_file /etc/mosquitto/conf.d/passwd \n" > $(MOSQ_BIPES_CONF)'
+	sudo bash -c 'printf  "listener 1883\n\nlistener 9001\nprotocol websockets\nallow_anonymous true\npassword_file /etc/mosquitto/conf.d/passwd\n" > $(MOSQ_BIPES_CONF)'
 	@sudo systemctl restart mosquitto
 	@. venv/bin/activate && \
 	python -c "import server.mosquitto; server.mosquitto.make()" && \

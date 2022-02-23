@@ -165,7 +165,7 @@ section#dashboard #grid {
   margin-top: 2.5rem;
 }
 body.light section#dashboard #grid {
-  background: #fff;
+  background: rgba(84,100,155,0.05);
 }
 section#dashboard #grid.on {
   overflow-y: hidden;

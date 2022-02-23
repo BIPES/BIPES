@@ -4,6 +4,7 @@ import {DOM, Animate, ContextMenu} from '../../base/dom.js'
 import {Tool} from '../../base/tool.js'
 import {command} from '../../base/command.js'
 import {storage} from '../../base/storage.js'
+import {navigation} from '../../base/navigation.js'
 
 import {project} from '../project/main.js'
 import {Actions} from './action.js'
@@ -821,35 +822,36 @@ class DashboardGrid {
   }
   /** Push data to current charts */
   chartsPush (dataset, data, coordinates, coorLength) {
-      this.charts.forEach ((chart) => {
-        if (chart.dataset == dataset) {
-          if (data.length == 5) {
-            this.ref.forEach(plugin => {
-              if (plugin.sid === chart.sid)
-                Charts.regen(this.charts, plugin)
-            })
-          } else if (coorLength[dataset] < coordinates.length) {
-            coorLength[dataset] = coordinates.length
-            this.ref.forEach(plugin => {
-              if (plugin.sid === chart.sid)
-                Charts.regen(this.charts, plugin)
-            })
-          } else {
-            chart.data.labels.push(coordinates[0])
-            chart.data.datasets.forEach((dataset, index) => {
-              dataset.data.push(coordinates[index + 1])
-            })
-            if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
-              chart.data.labels.splice (0,1)
-              chart.data.datasets.forEach((dataset, index) => {
-                dataset.data.splice (0,1)
-              })
+    this.charts.forEach ((chart) => {
+      if (chart.dataset == dataset) {
+        if (parseInt(coorLength[dataset]) < parseInt(coordinates.length) || coorLength[dataset] === -Infinity) {
+          coorLength[dataset] = coordinates.length
+          this.ref.forEach(plugin => {
+            if (plugin.sid === chart.sid){
+              Charts.regen(this.charts, plugin)
             }
-            chart.update()
+          })
+        } else if (data.length == 5) {
+          this.ref.forEach(plugin => {
+            if (plugin.sid === chart.sid)
+              Charts.regen(this.charts, plugin)
+          })
+        } else {
+          chart.data.labels.push(coordinates[0])
+          chart.data.datasets.forEach((dataset, index) => {
+            dataset.data.push(coordinates[index + 1])
+          })
+          if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
+            chart.data.labels.splice (0,1)
+            chart.data.datasets.forEach((dataset, index) => {
+              dataset.data.splice (0,1)
+            })
           }
+          chart.update()
         }
-      })
-    }
+      }
+    })
+  }
 }
 
 

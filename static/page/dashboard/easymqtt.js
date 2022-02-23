@@ -1,12 +1,13 @@
 import {Tool} from '../../base/tool.js'
 
 import {storage} from '../../base/storage.js'
+import {navigation} from '../../base/navigation.js'
+
+import {Charts} from './plugins.js'
 
 export let easyMQTT = {
   session: storage.has('mqtt_session') ?
            storage.fetch('mqtt_session') : storage.set('mqtt_session', Tool.SID())
-
-
 }
 /**
  * Handle MQTT database requests, return JSON on success and true on error.
@@ -18,11 +19,28 @@ class MQTTDatabase {
     this._coorLength = {}
     this.ref   // Reference the grid object
     this._inited = false
-    this._fetching = false
+    // Handle topics
+    this.topics = {
+      //toSubscribe:[],
+      //subscribed:[],
+      session:false,
+      fetching:false
+    }
+    this.isConnected = false // If the MQTT broker is connected
+
+    if (!navigation.isLocal){
+      // Port 9001 for WebSockets
+      this.client = new Paho.MQTT.Client(location.hostname, 9001, 'bipes')
+      this.client.onConnectionLost = () => {this.onConnectionLost()}
+      this.client.onMessageArrived = (message) => {this.onMessageArrived(message)}
+      this.client.connect({
+        //useSSL:true,
+        onSuccess:() => {this.onConnect()}
+      })
+    }
   }
   /** Init databaseMQTT referencing the grid object */
   init (ref){
-    // ::TODO::Inlcude subscribe to topic
     this.ref = ref
 
     if (!this._inited){
@@ -30,13 +48,19 @@ class MQTTDatabase {
         .then(obj => {
           if (obj.hasOwnProperty(easyMQTT.session)){
             if(obj[easyMQTT.session].length === 0){
-              this.ref.deinit()
-              this.ref.init()
+              this.ref.charts.forEach ((chart) => {
+                this.ref.ref.forEach(plugin => {
+                  if (plugin.sid === chart.sid && plugin.setup.source == 'easyMQTT')
+                    Charts.regen(this.ref.charts, plugin)
+                })
+              })
               return
             }
-            this._fetching = []  // watch fetch resolve
+            this.topics.fetching = []  // watch fetch resolve
             obj[easyMQTT.session].forEach(topic => {
-              this._fetching.push(topic.topic)
+              this.topics.fetching.push(topic.topic)
+              //this.topics.toSubscribe.push(topic.topic)
+
               this.do(`${easyMQTT.session}/${topic.topic.replaceAll('/','$')}/grep`)
                 .then(obj => {
                   if (obj.hasOwnProperty(easyMQTT.session))
@@ -46,10 +70,14 @@ class MQTTDatabase {
                       this.write(topic.topic, data.data)
                     })
 
-                    this._fetching.splice(this._fetching.indexOf(topic.topic), 1)
-                    if (this._fetching.length === 0){
-                      this.ref.deinit()
-                      this.ref.init()
+                    this.topics.fetching.splice(this.topics.fetching.indexOf(topic.topic), 1)
+                    if (this.topics.fetching.length === 0){
+                      this.ref.charts.forEach ((chart) => {
+                        this.ref.ref.forEach(plugin => {
+                          if (plugin.sid === chart.sid && plugin.setup.source == 'easyMQTT')
+                            Charts.regen(this.ref.charts, plugin)
+                        })
+                      })
                     }
                 })
             })
@@ -68,8 +96,11 @@ class MQTTDatabase {
     this._keys = []
     this._coorLength = {}
     this._inited = false
-    this._fetching = false
+    this.topics.fetching = false
+    //this.topics.toSubscribe = []
 
+    this.unsubscribe()
+    this.subscribe()
     this.init(this.ref)
   }
   async do (url){
@@ -99,8 +130,13 @@ class MQTTDatabase {
     if (coordinates.constructor.name != 'Array')
       return
 
-    this._data[dataset].push(coordinates)
+    if (!this._data.hasOwnProperty(dataset)){
+      this._keys.push(dataset)
+      this._data[dataset] = []
+      this._coorLength[dataset] = 0
+    }
 
+    this._data[dataset].push(coordinates)
     // Push to charts
     if (this.ref !== undefined && chartsPush === true){
       this.ref.chartsPush(dataset, this._data[dataset], coordinates, this._coorLength)
@@ -119,11 +155,13 @@ class MQTTDatabase {
   }
   chartData (dataset, opt) {
     let data
+    console.log(this._keys, dataset, '-----------')
     if (this._keys.includes(dataset))
       data = this._data[dataset]
     else
       data = []
 
+    console.log(data)
 
     const map1 = data.map(c => c.length)
     const max1 = Math.max(...map1)
@@ -182,6 +220,39 @@ class MQTTDatabase {
 
     return [`rgba(${a},${b}.${c},0.8)`,`rgba(${a},${b}.${c},1.0)`]
 
+  }
+  /** Triggered when MQTT connection is established */
+  onConnect (){
+    console.log('Dashboard: MQTT connection established.')
+    this.isConnected = true
+    this.subscribe()
+  }
+  /** Triggered when MQTT connection lost */
+  onConnectionLost (){
+    console.log('Dashboard: MQTT connection lost.')
+    this.isConnected = false
+    this.topics.subscribed = []
+
+  }
+  /** Triggered when MQTT message received */
+  onMessageArrived (message){
+    let destination = Array(...message.destinationName.split('/'))
+    let payload = String(message.payloadString)
+    let session = destination[0]
+    destination.shift()
+    this.write(destination.join('/'), payload, true)
+  }
+  /** Subscribe to topics listed */
+  subscribe (){
+    // Subscribe to all topics
+    this.client.subscribe(`${easyMQTT.session}/#`)
+    // Cache current session
+    this.topics.session = easyMQTT.session
+  }
+  /** Unsubscribe to all subscribed topics */
+  unsubscribe (){
+    this.client.unsubscribe(`${this.topics.session}/#`)
+    this.topics.session = false
   }
 }
 
