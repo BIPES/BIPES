@@ -1,9 +1,4 @@
-.. BIPES documentation master file, created by
-   sphinx-quickstart on Sat Aug 21 19:47:34 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-BIPES Developer Center
+BIPES Help&Development
 =================================
 
 .. toctree::
@@ -35,7 +30,7 @@ BIPES Developer Center
    core/utils
    core/code
 
-Welcome to BIPES Developer Center, here is all information about the BIPES code base,
+Welcome to BIPES Help&Development, here is all information about the BIPES code base,
 alongside with tutorials to get started!
 
 

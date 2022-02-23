@@ -55,7 +55,7 @@ html_static_path = ['_static']
 
 # -- JavaScript settings -----------------------------------------------------
 # Sets the root for js files in the ui/core
-js_source_path = '../ui/core'
+js_source_path = '../static/base'
 # Sets JavaScript as the primary language
 primary_domain = 'js'
 
@@ -66,4 +66,4 @@ source_suffix = '.rst'
 html_css_files = ["custom.css"]
 
 # Include favicon
-html_favicon = "../ui/media/icon/favicon-32x32.png"
+html_favicon = "../static/media/icon/favicon-32x32.png"
