@@ -6,14 +6,18 @@ import {command} from '../../base/command.js'
 import {storage} from '../../base/storage.js'
 import {channel} from '../../base/channel.js'
 import {rosetta} from '../../base/rosetta.js'
+import {Pipes} from '../../base/navigation.js'
 
 import {notification} from '../notification/main.js'
 import {project} from '../project/main.js'
 import {prompt} from '../prompt/main.js'
 
+import {deviceSpecifications} from './devices.js'
+
 class Device {
   constructor (){
     this.name = 'device'
+    this.pipe = {}
     this.devices = storage.has('device') && storage.fetch('device') != '[]' ?
                     JSON.parse(storage.fetch('device')) : []
 
@@ -21,16 +25,7 @@ class Device {
       storage.set('device')
 
     this.inited = false
-    this.deviceInfo = {
-      Arduino:{
-        nodename:'arduino',
-        name:'Arduino'
-      },
-      ESP32:{
-        nodename:'esp32',
-        name:'ESP32'
-      }
-    }
+    this.deviceInfo = deviceSpecifications
 
     let $ = this._dom = {}
 
@@ -182,6 +177,15 @@ class Device {
     })
 
     this.checkAPISupport()
+  }
+
+  /** Setup the pipes for pages, if don't exist, sink. */
+  connectPipes (){
+    this.pipe = Pipes({
+      blocks:{
+        deviceTarget:(name) => {bipes.page.blocks.deviceTarget(name)}
+      }
+    })
   }
   /**
    * Create this page empty object
@@ -336,6 +340,9 @@ class Device {
   setProjectTarget (){
     let target = this._dom.targetDropdown._dom.value
     let firmware = this._dom.targetFirmwareDropdown._dom.value
+
+    if (target != project.current.device.target)
+      this.pipe.blocks_deviceTarget(target)
 
     project.update({
       device:{

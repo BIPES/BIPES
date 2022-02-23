@@ -210,6 +210,14 @@ class Navigation {
     onresize = () => {handleResize()}
 
     interpretLink(false, bipes.page)
+
+    // Init pipes
+    bipes.channel.connectPipes()
+    for (let module in bipes.page) {
+      if (typeof bipes.page[module].connectPipes === "function") {
+        bipes.page[module].connectPipes()
+      }
+    }
   }
 }
 

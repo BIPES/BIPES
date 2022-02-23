@@ -21,7 +21,6 @@ export default function Bipes (){
   bipes.page.{{item}} = {{item}}
   {% endfor %}
 
-  bipes.channel._init()
   bipes.navigation = navigation
 
   bipes.page.project._init()

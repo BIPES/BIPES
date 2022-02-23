@@ -55,7 +55,7 @@ class Channel {
       }, 2000)
   }
   /** Setup the pipes for pages, if don't exist, sink. */
-  _init (){
+  connectPipes (){
     this.pipe = Pipes({
       prompt:{
         write:(chunk) => {bipes.page.prompt.write(chunk)},

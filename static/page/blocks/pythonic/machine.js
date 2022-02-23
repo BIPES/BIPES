@@ -9,8 +9,8 @@ Blockly.Python['gpio_set'] = function(block) {
 	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
 
 	 var value_pin2 = value_pin.replace('(','').replace(')','');
-	//For ESP32s2 with Circuit Python
-	if (UI ['workspace'].selector.value == "ESP32S2") {
+	//For Circuit Python
+	if (bipes.page.project.current.device.firmware == "CircuitPython"){
 
 		Blockly.Python.definitions_['import_board'] = 'import board';
 		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction, Pull';
@@ -41,8 +41,8 @@ Blockly.Python['gpio_get'] = function(block) {
 		pUpDown = '';
 	}
 
-	//For ESP32s2 with Circuit Python
-	if (UI ['workspace'].selector.value == "ESP32S2") {
+	//For Circuit Python
+	if (bipes.page.project.current.device.firmware == "CircuitPython"){
 
 		Blockly.Python.definitions_['import_board'] = 'import board';
 		Blockly.Python.definitions_['import_digitalio_dir'] = 'from digitalio import DigitalInOut, Direction, Pull';
@@ -134,7 +134,7 @@ Blockly.Python['adc_esp32'] = function(block) {
 
 	var x = value_pin.replace('(','').replace(')','');
 	//For Circuit Python
-	if (UI ['workspace'].selector.value == "ESP32S2") {
+	if (bipes.page.project.current.device.firmware == "CircuitPython"){
 		Blockly.Python.definitions_['import_board'] = 'import board';
 		Blockly.Python.definitions_['import_analogio'] = 'from analogio import AnalogIn';
 		Blockly.Python.definitions_['analogIn' + x] = 'try:\n\tanalogIn' + x + '.deinit()\nexcept:\n\tpass\nanalogIn' + x + '=AnalogIn(board.IO' + x + ')\n';

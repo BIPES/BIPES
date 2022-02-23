@@ -9,8 +9,8 @@ Blockly.Python['delay'] = function(block) {
 
 Blockly.Python['utime.vars'] = function(block) {
 
-	//For Circuit Python
-	if (UI ['workspace'].selector.value == "ESP32S2") {
+	// For CircuitPython
+	if (bipes.page.project.current.device.firmware == "CircuitPython"){
 		Blockly.Python.definitions_['import_time'] = 'import time';
 		var code = "time.monotonic()";
 	} else {
@@ -48,7 +48,7 @@ Blockly.Python['utime.deadline'] = function(block) {
   return code;
 };
 
-Blockly.Python['esp32_get_rtc'] = function(block) {
+Blockly.Python['get_rtc_esp32'] = function(block) {
   Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
   Blockly.Python.definitions_['import_rtc_def'] = 'rtc = RTC()';
 
@@ -56,7 +56,7 @@ Blockly.Python['esp32_get_rtc'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['esp8266_get_rtc'] = function(block) {
+Blockly.Python['get_rtc_esp8266'] = function(block) {
   Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
   Blockly.Python.definitions_['import_rtc_def'] = 'rtc = RTC()';
 
@@ -64,7 +64,7 @@ Blockly.Python['esp8266_get_rtc'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['esp32_set_rtc'] = function(block) {
+Blockly.Python['set_rtc_esp32'] = function(block) {
   //var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
 
   Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';
@@ -82,7 +82,7 @@ Blockly.Python['esp32_set_rtc'] = function(block) {
 };
 
 
-Blockly.Python['esp8266_set_rtc'] = function(block) {
+Blockly.Python['set_rtc_esp8266'] = function(block) {
   //var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
 
   Blockly.Python.definitions_['import_rtc'] = 'from machine import RTC';

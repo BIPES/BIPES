@@ -12,6 +12,7 @@ class Project {
   constructor (){
     this.name = 'project'
     this.currentUID = undefined
+    this.current = undefined      // Reference current project
     this.projects = {}
     this.inited = false
 
@@ -167,6 +168,7 @@ class Project {
 
     if (uid == this.currentUID) {
       this.currentUID = undefined
+      this.current = undefined
       if ((Object.keys(this.projects).length > 0)){
         this.select(Object.keys(this.projects)[0])
       }
@@ -174,8 +176,9 @@ class Project {
   }
   load (uid){
     this.currentUID = uid
+    this.current = this.projects[uid]
     for (const key in bipes.page) {
-      if (typeof window.bipes.page[key].load == 'function' && this.projects.hasOwnProperty(uid) && key != 'project') {
+      if (typeof window.bipes.page[key].load === "function" && this.projects.hasOwnProperty(uid) && key != 'project') {
         // If don't exist, create empty
         if (this.projects[uid][key] == undefined)
           this.projects[uid][key] = bipes.page[key].empty()
@@ -187,6 +190,7 @@ class Project {
   unload (uid){
     this.projects[uid] = undefined
     this.currentUID = undefined
+    this.current = undefined
   }
   set (obj, uid){
     if (uid == undefined)

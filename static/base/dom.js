@@ -1,7 +1,7 @@
 "use strict";
 export {DOM, ContextMenu, Animate}
 
-/** Make DOM Node element*/
+/** Make DOM element*/
 class DOM {
   constructor (dom, tags){
     this._dom
@@ -60,7 +60,6 @@ class DOM {
   set value (str){
     this._dom.value = str
   }
-  /**
   /**
    * Focus on DOM.
    */

@@ -17,17 +17,17 @@ Blockly.Blocks['pinout'] = {
       this.first_load = this.first_load - 1; // function is triggered twice on load due to setting values
     }
     this.setTooltip(device_ + " Pins");
-    let devices = UI ['workspace'].devices
+    let devices = bipes.page.device.deviceInfo
 
     if (device_  in  devices && 'pinout' in devices [device_]){
       return devices [device_].pinout;
     } else {
-      return [[MSG["notDefined"],"None"]];
+      return [[Msg["notDefined"],"None"]];
     }
   },
-  refresh: function() {
-    this.device_init = document.querySelector ('#device_selector').value
-    this.update_list(false);
+  refresh: function(target) {
+    this.device_init = target
+    this.update_list(false)
   },
   device_init: '',
   options: [],
@@ -37,10 +37,10 @@ Blockly.Blocks['pinout'] = {
     /*
     "this.getField('DEVICE').SERIALIZABLE = true;" could be used instead of FieldLabelSerializable
     */
-    this.device_init = document.querySelector ('#device_selector').value;
+    this.device_init = bipes.page.project.current.device.target
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabelSerializable(this.device_init), 'DEVICE') // will use device_init if new block or no device specification on XML.
-        .appendField(MSG["pin"])
+        .appendField(Msg["pin"])
         //.appendField('pin')
         .appendField(new Blockly.FieldDropdown(() => { return this.update_list(true);}), 'PIN');
     this.getField('DEVICE').setVisible(false);
@@ -57,12 +57,12 @@ Blockly.Blocks['gpio_set'] = {
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         //.appendField("set pin");
-        .appendField(MSG["setpin"]);//i18n
+        .appendField(Msg["setpin"]);//i18n
     this.appendValueInput("value")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
         //.appendField("to");
-        .appendField(MSG["to"]); //i18n
+        .appendField(Msg["to"]); //i18n
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -77,7 +77,7 @@ Blockly.Blocks['gpio_get'] = {
     this.appendValueInput("pin")
         .setCheck("Number")
         //.appendField("Read digital pin");//original
-        .appendField(MSG["read_digital_pin"]);
+        .appendField(Msg["read_digital_pin"]);
     this.appendValueInput("pullup")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -96,13 +96,63 @@ Blockly.Blocks['adc'] = {
     this.appendValueInput("pin")
         .setCheck("Number")
         //.appendField("Read ADC Input");
-        .appendField(MSG["read_analog_pin"]);
+        .appendField(Msg["read_analog_pin"]);
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Read ADC input of specified pin");
  this.setHelpUrl("http://www.bipes.net.br");
   }
 }
+
+
+Blockly.Blocks['adc_esp32'] = {
+  init: function() {
+	if (bipes.page.project.current.device.target == "ESP32S2") {
+		this.appendDummyInput()
+		.appendField("ESP32S2 Analog Input (ADC)");
+		this.appendValueInput("pin")
+		.setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+		.appendField("pin");
+		this.setOutput(true, null);
+		this.setTooltip("Read ESP32S2 Analog Input");
+	}
+	else {
+		this.appendDummyInput()
+		.appendField("ESP32 Analog Input (ADC)");
+		this.appendDummyInput()
+		.appendField("Attenuation: ")
+		.appendField(new Blockly.FieldDropdown([["ATTN_0DB","0"], ["ATTN_2_5DB","1"], ["ATTN_6DB","2"], ["ATTN_11DB","3"]]), "Attenuation");
+		this.appendDummyInput()
+		.appendField("Width: ")
+		.appendField(new Blockly.FieldDropdown([["WIDTH_9BIT","0"], ["WIDTH_10BIT","1"], ["WIDTH_11BIT","2"], ["WIDTH_12BIT","3"]]), "Width: ");
+		this.appendValueInput("pin")
+		.setCheck("Number")
+		.setAlign(Blockly.ALIGN_RIGHT)
+		.appendField("pin");
+		this.setOutput(true, null);
+		this.setColour(230);
+		this.setTooltip("Read ESP32 Analog Input");
+	}
+
+	this.setColour(230);
+  }
+};
+
+
+
+
+Blockly.Blocks['adc_pico'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .appendField("Read RPI Pico ADC Input");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Read ADC input of specified pin from Raspberry Pi Pico");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
 // PWM
 Blockly.Blocks['pwm'] = {

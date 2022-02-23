@@ -2,7 +2,7 @@ Blockly.Blocks['delay'] = {
   init: function() {
     this.appendValueInput("TIME")
         .setCheck(null)
-        .appendField(Msg["block_delay"]); //Ready for i18n (see dir msg/<lang>.js)
+        .appendField(Msg["block_delay"]); //Ready for i18n (see dir Msg/<lang>.js)
         //.appendField("delay"); //Original, fixed in english
     this.appendDummyInput()
         //.appendField(new Blockly.FieldDropdown([["seconds","sleep"], ["milliseconds","sleep_ms"], ["microseconds","sleep_us"]]), "SCALE"); //original
@@ -42,6 +42,180 @@ Blockly.Blocks['delay_us'] = {
  this.setHelpUrl("http://www.bipes.net.br/");
   }
 };
+
+
+Blockly.Blocks['utime.vars'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get")
+        .appendField(new Blockly.FieldDropdown([["seconds","time"], ["milliseconds","ticks_ms"], ["microseconds","ticks_us"], ["nanoseconds","time_ns"], ["cpu ticks","ticks_cpu"]]), "VARS")
+        .appendField("counter");
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("Returns a counter in the defined scale, only integer values.");
+   this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_ms");
+  }
+};
+
+Blockly.Blocks['utime.ticks_add'] = {
+  init: function() {
+    this.appendValueInput("TIME1")
+        .setCheck(null)
+        .appendField("sum time");
+    this.appendValueInput("TIME2")
+        .setCheck(null)
+        .appendField("by");
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("Offset ticks value by a given number, which can be either positive or negative. Must be same scale in milliseconds, microseconds or cpu ticks.");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_add");
+  }
+};
+Blockly.Blocks['utime.ticks_diff'] = {
+  init: function() {
+    this.appendValueInput("TIME1")
+        .setCheck(null)
+        .appendField("time difference from");
+    this.appendValueInput("TIME2")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("by");
+    this.setInputsInline(false);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("Measure ticks difference between values Must be same scale in milliseconds, microseconds or cpu ticks.");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_diff");
+  }
+};
+Blockly.Blocks['utime.deadline'] = {
+  init: function() {
+    this.appendValueInput("TIME")
+        .setCheck(null)
+        .appendField("until deadline #")
+        .appendField(new Blockly.FieldNumber(Math.floor(Math.random() * 10), 0, 9, 1), "ID")
+        .appendField("of");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["seconds","time"], ["milliseconds","ticks_ms"], ["microseconds","ticks_us"], ["nanoseconds","time_ns"], ["cpu ticks","ticks_cpu"]]), "SCALE");
+    this.appendStatementInput("DO")
+        .setCheck(null)
+        .appendField("do");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(135);
+    this.setTooltip("Creates a loop with deadline.");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/library/utime.html#utime.ticks_add");
+  }
+};
+
+
+Blockly.Blocks['set_rtc_esp32'] = {
+  init: function() {
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable("Set RTC Value (ESP32)"), "SET_RTC");
+    this.appendValueInput("year")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("year");
+
+    this.appendValueInput("month")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("month");
+
+    this.appendValueInput("day")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("day");
+
+    this.appendValueInput("hour")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("hour");
+
+    this.appendValueInput("minute")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("minute");
+
+    this.appendValueInput("second")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("second");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+   this.setTooltip("Set RTC value");
+   this.setHelpUrl("bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['set_rtc_esp8266'] = {
+  init: function() {
+   this.appendDummyInput().appendField(new Blockly.FieldLabelSerializable(Msg["set_rtc"]), "SET_RTC");
+    this.appendValueInput("year")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["year"]);
+
+    this.appendValueInput("month")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["month"]);
+
+    this.appendValueInput("day")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["day"]);
+
+    this.appendValueInput("hour")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["hour"]);
+
+    this.appendValueInput("minute")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["minute"]);
+
+    this.appendValueInput("second")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["second"]);
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+   this.setTooltip("Set RTC value");
+   this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['get_rtc_esp32'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable(Msg["get_rtc"]), "Msg_GET_RTC");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get RTC value");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['get_rtc_esp8266'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable(Msg["get_rtc"]), "Msg_GET_RTC");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get RTC value");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 
 Blockly.Blocks['ticks_ms'] = {
   init: function() {

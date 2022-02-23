@@ -81,8 +81,8 @@ delay
 utime.vars
 utime.ticks_add
 utime.ticks_diff
-esp32_set_rtc
-esp32_get_rtc
+set_rtc_esp32
+get_rtc_esp32
 timer
 utime.deadline
 stop_timer

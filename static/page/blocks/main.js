@@ -158,6 +158,19 @@ class Blocks {
       xml:'<xml xmlns="https://bipes.net.br/ide"></xml>'
     }
   }
+  /**
+   * Change target device.
+   * @param {string} target - Target device.
+   */
+  deviceTarget (target){
+    /* refreshes block pinout with device change */
+    let blocks = this.workspace.getBlocksByType('pinout')
+
+    blocks.forEach((block) => {
+      block.refresh(target)
+    })
+    if (blocks.length != 0) notification.send(`${Msg['PageBlocks']}: ${Msg['DeviceChangedCheckPins']}`)
+  }
 }
 
 /* Code generator and viewer. */

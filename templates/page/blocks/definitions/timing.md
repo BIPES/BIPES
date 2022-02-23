@@ -31,11 +31,17 @@
 # utime.ticks_diff
 <block type="utime.ticks_diff"></block>
 
-# esp32_set_rtc
-<block type="esp32_set_rtc"></block>
+# set_rtc_esp32
+<block type="set_rtc_esp32"></block>
 
-# esp32_get_rtc
-<block type="esp32_get_rtc"></block>
+# get_rtc_esp32
+<block type="get_rtc_esp32"></block>
+
+# set_rtc_esp8266
+<block type="set_rtc_esp8266"></block>
+
+# get_rtc_esp8266
+<block type="get_rtc_esp8266"></block>
 
 # timer
 <block type="timer"></block>
