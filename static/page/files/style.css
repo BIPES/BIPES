@@ -1,0 +1,240 @@
+nav #files::before {
+	background-position: left calc(-1.5rem*13) top;
+}
+nav #files.on::before {
+	background-position: left calc(-1.5rem*13) bottom;
+}
+section#files details {
+  overflow: hidden;
+  transition: .125s ease border;
+}
+section#files summary, section#files .listedFile {
+  -webkit-tap-highlight-color: transparent;
+  white-space: normal;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+section#files #fileOnProject > summary,
+section#files #fileOnTarget > summary {
+  font-weight: bold;
+}
+
+section#files #hidePane:before {
+  content: "\1433";
+  margin-right: .5rem;
+  transition: transform .125s ease;
+  display:inline-block;
+  font-weight: normal;
+  font-size: 0.8rem;
+  line-height: 1rem;
+}
+section#files #hidePane {
+  padding: .75rem 0.5rem;
+  cursor: pointer;
+}
+section#files #hidePane:before {
+  transform: rotateZ(180deg);
+  filter: invert(0) !important;
+  margin: 0 .25em;
+}
+section#files.hidePane #hidePane:before {
+  transform: rotateZ(0deg);
+}
+section#files > .container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(84,190,255,0.025);
+}
+section#files #pane, section#files #editor {
+  transition: .25s ease width;
+}
+section#files #pane {
+  overflow: hidden;
+  width: 15rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+section#files.hidePane #pane {
+  width: 0rem;
+}
+section#files #editor {
+  background: #282c34;
+  overflow: hidden;
+  border-radius: 1rem;
+  margin: 0.75rem;
+  box-shadow: 0 .25em 1rem rgba(0,0,0,.1);
+}
+body.dark section#files #editor {
+  background: #282c34;
+}
+body.light section#files #editor {
+  background: #fff;
+}
+@media screen and (min-width: 40rem) {
+  section#files #editor {
+    width: calc(100% - 15rem);
+  }
+}
+@media screen and (max-width: 39.99rem) {
+  section#files #editor {
+    width: 100%;
+    flex-shrink: 0;
+  }
+}
+section#files.hidePane #editor {
+  width: calc(100% - 1.5rem);
+}
+section#files #codemirror {
+  height: calc(100% - 2.5rem);
+  overflow-y: auto;
+}
+@media screen and (orientation: portrait){
+  section#files.pos1 #pane, section#files.pos2 #pane {
+    height: 100%;
+  }
+}
+section#files #filename {
+  border-left: 1px solid #666;
+  width: 100%;
+  padding-left: 0.5rem;
+}
+body.light section#files #pane,
+body.light section#files #filename {
+  border-color: #aaa
+}
+section#files input {
+}
+section#files #editor #header {
+  height: 2.5rem;
+  border-bottom: 1px solid #666;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 0 0;
+}
+section#files #pane .header {
+  white-space: nowrap;
+  padding: 0 0.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #666;
+
+  display: none;
+}
+body.light section#files #pane .header,
+body.light section#files #editor #header  {
+  border-color: #ccc;
+}
+section#files #pane .header h2 {
+  flex-grow: 2;
+  text-align: center;
+}
+section#files #sidebar, section#file #pane .header {
+  width: 15rem;
+}
+section#files #sidebar {
+  overflow-y: auto;
+  height: 100%;
+  padding-top: 0.75em;
+  box-sizing: border-box;
+}
+section#files #sidebar > details {
+  padding: 0.5rem 0 0.25rem 0;
+}
+
+section#files #fileOnTarget,
+section#files #fileOnProject {
+  padding-left: .5em !important;
+}
+section#files #fileOnTarget details,
+section#files #fileOnProject details {
+  padding-left: .25em;
+}
+section#files .listedFile {
+  width: 100%;
+}
+section#files .listedFile,
+section#files #fileOnTarget summary,
+section#files #fileOnProject summary {
+  cursor: pointer;
+  border-radius: .125rem;
+}
+section#files .listedFile {
+  padding: .25em 1rem .25em 1rem;
+}
+section#files #fileOnTarget summary,
+section#files #fileOnProject summary {
+  transition: .25s ease background-color;
+  padding: .25em 1rem 0em 1rem;
+  margin-left: -.25rem;
+}
+section#files #fileOnTarget summary:focus,
+section#files #fileOnProject summary:focus {
+  background: rgba(68,153,204,.25);
+}
+section#files #fileOnTarget details > summary {
+  margin-left: -.25em;
+}
+
+section#files .listedFile:hover,
+section#files #fileOnTarget summary:hover,
+section#files #fileOnProject summary:hover {
+  background: rgba(68,153,204,.5);
+}
+section#files .listedFile:focus,
+section#files #fileOnTarget summary:focus,
+section#files #fileOnProject summary:focus {
+  background: rgba(68,153,204,.25);
+}
+section#files .emptyDir {
+  color: #aaa;
+  font-style: italic;
+  padding-left: .75rem;
+}
+section#files #fileOnTarget > summary::before,
+section#files #fileOnTarget summary::before, section#files .listedFile:before,
+section#files #fileOnProject > summary::before,
+section#files #fileOnProject summary::before, section#files .listedFile:before {
+	display: block;
+	width: 1.25rem;
+	height: 1.25rem;
+	background: url('./media/icons.svg');
+	background-size: auto 2.5rem;
+	content: '';
+	margin: 0 .125rem 0 0;
+	flex-shrink: 0;
+}
+
+section#files #fileOnProject > summary::before {
+	background-position: right calc(1.25rem*31) top !important;
+}
+section#files #fileOnTarget > summary::before {
+	background-position: right calc(1.25rem*21) bottom !important;
+}
+section#files #fileOnTarget summary::before,
+section#files #fileOnProject summary::before {
+	background-position: left calc(-1.25rem*16) top;
+}
+section#files .listedFile:before {
+	background-position: left calc(-1.25rem*17) top;
+}
+section#files button#script:before {
+	background-position: left calc(-1.5rem*17) top;
+}
+section#files #fileOnProject details[open] summary:before,
+section#files #fileOnProject details[open] summary:before {
+	background-position: left calc(-1.25rem*16) bottom;
+}
+
+section#files .cm-scroller {
+  overflow: auto;
+}
+section#files .cm-scrollers,
+section#files .cm-content, section#files .cm-gutter {
+  min-height: calc(100vh - 7.75rem) !important;
+}
+section#files .cm-gutters { margin: 1px; }
+section#files .cm-scroller { overflow: auto; }
+section#files .cm-wrap { border: 1px solid silver }

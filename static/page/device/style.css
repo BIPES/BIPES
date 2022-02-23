@@ -1,0 +1,302 @@
+nav #device::before {
+	background-position: left calc(-1.5rem*20) top;
+}
+nav #device.using::before {
+	background-position: left calc(-1.5rem*20) bottom;
+}
+section#device #new-connection h3, section#device #devices, section#device #target-device {
+  margin-top: 0.75rem;
+}
+section#device button:not(.unsupported) > div.icon {
+  color: #fff !important;
+}
+section#device button:not(.unsupported) > div.icon::before {
+  filter: invert(0) !important;
+}
+section#device #new-connection #WebSerial:not(.unsupported) > div {
+  background: linear-gradient(130deg, rgba(106,168,251,1) 0%, rgba(123,73,173,1) 200%);
+}
+section#device #new-connection #WebSocket:not(.unsupported) > div {
+  background: linear-gradient(130deg, rgba(106,168,251,1) -100%, rgba(123,73,173,1) 200%);
+}
+section#device #new-connection #WebBluetooth:not(.unsupported) > div {
+  background: linear-gradient(130deg, rgba(106,168,251,1) -200%, rgba(123,73,173,1) 100%);
+
+}
+section#device button.unsupported {
+  user-select: none;
+}
+body.dark section#device button.unsupported > div {
+  border: 1px solid #fff;
+}
+body.light section#device button.unsupported > div {
+  border: 1px solid #000;
+}
+section#device #new-connection #WebSerial > div:before {
+	background-position: left calc(-1.5rem*23) top;
+}
+section#device #new-connection #WebSocket > div:before {
+	background-position: left calc(-1.5rem*24) top;
+}
+section#device #new-connection #WebBluetooth > div:before {
+	background-position: left calc(-1.5rem*25) top;
+}
+section#device #new-connection button div {
+  justify-content: flex-start;
+  padding-left: 1em;
+}
+section#device #new-connection button div:before {
+  margin: -6rem -1.5rem 0 0 !important;
+}
+section#device #devices button {
+  flex-shrink: 0;
+}
+section#device #devices button > div {
+  min-width: 15rem;
+}
+section#device #devices button > div {
+  transition: .25s ease background-color, .125s ease transform;
+  display: block;
+}
+body.dark section#device #devices button > div {
+  border: 1px solid #fff;
+}
+body.light section#device #devices button > div {
+  border: 1px solid #000;
+}
+section#device .device-connect.master button > div,
+section#device button.unsupported > div {
+  cursor: default !important;
+}
+section#device #devices .funky:not(.master) button {
+  cursor: pointer
+}
+section#device button:not(.unsupported) span {
+  display: none;
+}
+section#device button.unsupported span {
+  width: 0;
+  float: right;
+  font-size: 0.9rem;
+  margin-right: 7.75em;
+  margin-left: -7.75em;
+  margin-top: 0.25em;
+  font-weight: bold;
+}
+section#device #devices button > div > div.using-text {
+  float: right;
+  margin-top: -7.125rem;
+  margin-left: -1em;
+  visibility: hidden;
+}
+section#device #devices button.on > div > div.using-text {
+  visibility: visible;
+}
+section#device #devices button > div > div {
+  font-size: 0.9rem;
+}
+body.dark section#device #devices button.on > div {
+  background-color: #fff;
+  color: #222;
+}
+body.dark section#device #devices button.on h4 {
+  color: #222;
+}
+body.light section#device #devices button.on > div {
+  background-color: #444;
+  color: #eee;
+}
+body.light section#device #devices button.on h4 {
+  color: #eee;
+}
+section#device button#disconnect {
+  float: left;
+  width: 8em;
+  min-width: 8em;
+  margin-top: -2em;
+  margin-left: -1.75em;
+  display: none;
+}
+section#device button#fetch {
+  float: left;
+  width: 7.5em;
+  min-width: 7em;
+  margin-top: -4em;
+  margin-left: -1.75rem;
+  display: none;
+}
+section#device .device-connect #new-connection {
+  transition: .5s ease height, .25s ease opacity;
+  overflow: hidden;
+  height: 9rem;
+}
+section#device .device-connect.master #new-connection {
+  height: 0rem;
+  opacity: 0;
+}
+section#device .device-connect.master button.on button#disconnect,
+section#device .device-connect.master button.on button#fetch {
+  display: inline-flex;
+  filter: invert(1);
+}
+section#device .device-connect.master button:active > div,
+section#device button.unsupported:active > div{
+  transform: scale(1) !important;
+}
+
+@media screen and (min-width:80em) {
+  section#device:not(.pos1):not(.pos2) .container {
+    display:flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    justify-content:center;
+  }
+  section#device:not(.pos1):not(.pos2) .container > h2 {
+    max-width: 90%;
+  }
+  section#device:not(.pos1):not(.pos2) .container .device-connect,
+  section#device:not(.pos1):not(.pos2) .container .device-current {
+    width: 45%;
+  }
+}
+
+section#device #target-device {
+  background-color: rgba(84,190,255,0.05);
+  border-radius: 1.5rem;
+  padding-top: 1rem;
+}
+section#device #target-device > div {
+  text-align: center;
+}
+section#device #target-device select {
+  margin-right: 1rem;
+}
+section#device #target-device #pinout {
+  max-width: 40rem;
+  width: 100%;
+}
+
+section#device #webSocketSetup.on {
+  overflow-y: auto;
+}
+section#device #webSocketSetup > div {
+  max-width: 30rem;
+  padding: 0 1rem;
+  min-height: 20rem;
+  margin: 110vh auto 0 auto;
+  overflow: hidden;
+  text-align: center;
+}
+@media screen and (max-width: 30rem){
+  section#device #webSocketSetup > div {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+}
+ 
+section#device #webSocketSetup h3 {
+  padding-top: 1rem;
+}
+section#device #webSocketSetup h4 {
+  text-align: left;
+  padding: 1rem 0 0 0;
+}
+section#device #webSocketSetup input {
+  padding: .5rem 0;
+  border-bottom: 1px solid #666;
+}
+section#device #webSocketSetup > div > div {
+  text-align: right;
+  padding-top: 1em;
+} 
+section#device #webSocketSetup #connect {
+  margin-bottom: .5rem;
+  background: linear-gradient(130deg, rgba(106,168,251,1) -100%, rgba(123,73,173,1) 200%);
+  color: #fff !important;
+  padding: .5rem 1rem;
+  margin-left: .25rem;
+}
+section#device #webSocketSetup #addressConf {
+  transition: .25s ease height, .25s ease border-color;
+  height: 0rem;
+  overflow: hidden;
+  padding-top: 0;
+  border: 1px solid transparent;
+}
+section#device #webSocketSetup #addressConf {
+  margin-bottom: .5rem;
+}
+section#device #webSocketSetup #addressConf.on {
+  height: 8rem;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
+section#device #webSocketSetup #connect:before {
+  filter: invert(0) !important;
+}
+section#device #webSocketSetup #addressConf > div {
+  display: flex;
+}
+section#device #webSocketSetup #addressConf span {
+  margin: 0.5rem  0.25rem;
+  color: #666;
+}
+section#device #webSocketSetup #addressConf #scan {
+  padding: .25rem .5rem;
+  margin: .5rem;
+  border-radius: 1rem;
+  transition: background-color .25s ease;
+}
+
+section#device #webSocketSetup #addressConf #scan:focus {
+  background-color: rgba(68,153,204,.5);
+}
+body.light section#device #webSocketSetup #addressConf #scan {
+  border: 1px solid #000;
+}
+body.dark section#device #webSocketSetup #addressConf #scan {
+  border: 1px solid #fff;
+}
+section#device #webSocketSetup #addressConf input {
+  text-align: right;
+}
+section#device #webSocketSetup #addressConf input:first-child {
+  width: 6rem;
+}
+section#device #webSocketSetup #addressConf input:last-child {
+  text-align: left;
+}
+section#device #webSocketSetup #addressFound {
+  display: none;
+  padding-top: 0;
+}
+section#device #webSocketSetup #addressFound.on {
+  display: block;
+}
+section#device #webSocketSetup #addressFound > div {
+  margin: .75em 0 .5rem;
+}
+section#device #webSocketSetup #addressFound div {
+  text-align: left;
+}
+section#device #webSocketSetup #addressFound .listy {
+  margin: 0 0 .5rem 0;
+}
+section#device #webSocketSetup #addressFound .listy button > div {
+  display: block;
+}
+div#status-bar button#device:before {
+  background-position: left calc(-1.25rem*21) top;
+}
+div#status-bar button#device.on:before {
+  background-position: left calc(-1.25rem*21) bottom;
+}
+div#status-bar button#target:before {
+  background-position: left calc(-1.25rem*37) top;
+}
+div#status-bar button#firmware:before {
+  background: none;
+  width: 0;
+}

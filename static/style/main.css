@@ -1,0 +1,886 @@
+preview
+*{
+    -webkit-tap-highlight-color: transparent;
+}
+@font-face {
+        font-family: "OpenSans";
+        src: url("./media/OpenSans.ttf");
+}
+
+body, input{
+  font: 1em 'OpenSans', sans-serif;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+body {
+  user-select: none;
+}
+input {
+  user-select: text;
+}
+body.dark, body.dark input, body.dark textarea,
+body.dark select, body.dark button {
+  color: #fff;
+}
+body.light {
+  background: #fff;
+}
+body.dark {
+  background: #222;
+}
+input, textarea, select, button, summary {
+	background: none;
+	font: 1em 'OpenSans', sans-serif;
+	outline: none;
+	border: none;
+}
+input, textarea, .content h2, .content p {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+input[type="submit"] {
+  -webkit-appearance: none;
+	width: auto;
+	cursor: pointer;
+	padding: 0.5em;
+	border-radius: 2rem;
+	display: inline-block;
+}
+label {
+	cursor: pointer;
+}
+hr {
+  border: 1px solid #7d7d7d;
+  border-top: none;
+}
+body.dark select {
+  border: 1px solid #fff;
+}
+body.light select {
+  border: 1px solid #000;
+}
+select {
+  border-radius: 2rem;
+  padding: 0.25rem 0.5em;
+  transition: background-color ease .25s;
+}
+select:focus {
+  background-color: rgba(68,153,204,.5);
+}
+input[type="checkbox"]{
+	display: none;
+	width: 1em;
+}
+textarea {
+	resize: vertical;
+}
+input[type="file"] {
+	visibility: hidden;
+	width: 0;
+	height: 0;
+	box-sizing: border-box;
+}
+h1, h2, h3, h4 {
+	margin: 0;
+	box-sizing: border-box;
+}
+h1 {
+    cursor: default;
+	font-size: 1.25em;
+}
+h2 {
+	font-size: 1.125em;
+}
+h3, h4 {
+	font-size: 1em;
+}
+li {
+	line-height:1.25em;
+	padding: .25em 0;
+}
+pre {
+   font-family: "courier new", courier, monospace;
+   font-size: .95em;
+   -moz-tab-size: 3;
+   tab-size: 3;
+   white-space: pre-wrap;
+}
+a, span, button {
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+nav {
+	overflow-y: auto;
+	overflow-x: hidden;
+
+	position: absolute;
+	height:100vh;
+	width:3.5rem;
+
+	display: flex;
+	flex-flow: column;
+	justify-content: space-between;
+
+	z-index: 71;
+	transition: 0.25s ease width;
+
+	font-weight: bold;
+  box-shadow: 0 0 .5em rgba(0,0,0,.25);
+}
+body.dark nav, body.dark nav #menu::after {
+	background-color: #333;
+}
+body.light nav, body.light nav #menu::after {
+	background-color: #fff;
+}
+body.dark nav a:link, body.dark nav a:visited {
+	color: #fff;
+}
+body.light nav a:link, body.light nav a:visited {
+	color: #000;
+}
+nav a, nav span {
+	white-space: nowrap;
+	cursor: pointer;
+	transition: .125s ease border-color, .25s ease background-color, .25s ease width;
+	display: flex;
+	align-items: center;
+	border: 1px solid transparent;
+  margin: .25rem
+}
+nav a:before, nav span:before, button.icon:before, .button.icon:before,
+label.icon:before, span.icon:before {
+	display: inline-block;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: url('./media/icons.svg');
+	content: '';
+	margin: 0;
+	flex-shrink: 0;
+}
+body.light .icon:before, body.light nav a:before,
+body.light summary:before, body.light button:before,
+body.light nav #menu:before {
+  filter: invert(1);
+}
+nav a::before, nav span::before {
+  margin: 0.75rem 0.75rem 0.75rem 0.71rem;
+}
+nav a.on {
+  background-color: rgba(84,190,255,0.25);
+}
+body.light nav.on {
+  box-shadow: 0.25em 0em 0.5em rgb(0,0,0,0.125);
+}
+@media only screen and (min-width: 40rem) {
+  nav a, nav span {
+    justify-content: left;
+    width: 3rem;
+  }
+  nav.on, nav div {
+	  width: 13.5em;
+  }
+  nav.on a {
+    width: 13rem;
+  }
+}
+nav a, nav span {
+  border-radius: .5rem;
+  height: 3rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+@media only screen and (max-width: 39.99rem) {
+  nav {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 3.5rem;
+    overflow-y: hidden;
+  }
+  nav span#menu {
+    display: none;
+  }
+  nav #panels {
+    height: 3.5rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+    width: 100vw;
+  }
+  nav #extra {
+    display: none;
+  }
+  nav a, nav span {
+    flex-direction: column;
+    font-size: .7rem;
+    font-weight: normal;
+    overflow: hidden;
+    height: 2rem;
+    width: 3rem;
+    font-weight: bold;
+    overflow: visible;
+  }
+  nav a:before {
+    transition: margin ease .25s
+  }
+  nav a::before, nav span::before {
+    margin: 0.75rem;
+  }
+  nav a.on::before {
+    margin: 0.25rem 0.75rem;;
+  }
+  nav a:hover, nav span:hover {
+    border-color: transparent !important;
+  }
+}
+/* Logo */
+nav #menu {
+  font-size:1.5rem;
+  color: #4499cc;
+}
+nav #menu::after {
+	display: block;
+	width: 2rem;
+	height: 2rem;
+	margin-left: -8.25rem;
+	background: url('./media/icons.svg');
+	content: '';
+	flex-shrink: 0;
+  transition: .125s ease margin-left;
+	background-position: left calc(-2rem*22) top;
+	background-size: auto 4rem;
+	z-index: 1;
+}
+nav.on #menu {
+  width: 12rem;
+}
+nav.on #menu:after {
+  margin-left: -6.25rem;
+}
+/*Icons*/
+nav #menu::before {
+  transition: .125s ease background-position;
+	background-position: left calc(-1.5rem*0) bottom;
+	margin-right: 2.5rem
+}
+nav #settings::before {
+	background-position: left calc(-1.5rem*3) top;
+}
+nav #dashboard::before {
+	background-position: left calc(-1.5rem*1) top;
+}
+nav #dashboard.on::before {
+	background-position: left calc(-1.5rem*1) bottom;
+}
+nav #dashboard_edit::before {
+	background-position: left calc(-1.5rem*2) top;
+}
+nav #notification::before {
+	background-position: left calc(-1.5rem*4) top;
+}
+nav #notification.on::before {
+	background-position: left calc(-1.5rem*4) bottom;
+}
+nav #logout::before {
+	background-position: left calc(-1.5rem*5) top;
+}
+button#add:before, .button#add:before, button#raise:before {
+	background-position: left calc(-1.5rem*6) top;
+}
+button#remove:before {
+	background-position: left calc(-1.5rem*7) top;
+}
+button#lower:before, button#discard:before {
+	background-position: left calc(-1.5rem*8) top;
+}
+button#edit:before, .button#edit:before {
+	background-position: left calc(-1.5rem*9) top;
+}
+div#dashboard.on .button#edit:before {
+	background-position: left calc(-1.5rem*9) bottom;
+}
+nav #admin::before {
+	background-position: left calc(-1.5rem*11) top;
+}
+nav #admin.on::before {
+	background-position: left calc(-1.5rem*11) bottom;
+}
+button#upload::before, label#upload::before {
+	background-position: left calc(-1.5rem*15) top;
+}
+button#download:before {
+	background-position: left calc(-1.5rem*14) top;
+}
+button#run:before {
+	background-position: left calc(-1.5rem*18) top;
+}
+button#disconnect:before {
+	background-position: left calc(-1.5rem*20) top;
+}
+button#fetch:before {
+	background-position: left calc(-1.5rem*26) top;
+}
+span.tips:before {
+	background-position: left calc(-1.5rem*27) top;
+}
+button#share:before {
+	background-position: left calc(-1.5rem*29) top;
+}
+button#unshare:before {
+	background-position: left calc(-1.5rem*29) bottom;
+}
+button#write:before {
+	background-position: left calc(-1.5rem*32) top;
+}
+button#save:before {
+	background-position: left calc(-1.5rem*31) top;
+}
+button#rename:before {
+	background-position: left calc(-1.5rem*32) top;
+}
+span.warnings:before {
+	background-position: left calc(-1.5rem*33) top;
+}
+button#connect:before {
+	background-position: left calc(-1.5rem*21) top;
+}
+button#scan:before {
+	background-position: left calc(-1.5rem*34) top;
+}
+.listy.more-button div:before {
+	background-position: left calc(-1.5rem*35) top;
+}
+button#code:before {
+  background-position: left calc(-1.5rem*17) top;
+}
+button#copy:before {
+  background-position: left calc(-1.5rem*36) top;
+}
+button#mqtt:before {
+  background-position: left calc(-1.5rem*40) top;
+}
+button#stream:before {
+  background-position: left calc(-1.5rem*42) top;
+}
+button#storage:before {
+  background-position: left calc(-1.5rem*41) top;
+}
+button#chart:before {
+  background-position: left calc(-1.5rem*43) top;
+}
+button#switch:before {
+  background-position: left calc(-1.5rem*44) top;
+}
+nav #app-version {
+  text-align: center;
+  font-weight: normal;
+  font-size: 0.9rem;
+  width: 100%;
+  border-bottom: 1px solid #444;
+  border-top: 1px solid #444;
+  opacity: 0;
+  transition: .125s ease opacity;
+  transition-delay: .25s;
+}
+body.dark nav#app-version {
+  color: #aaa;
+}
+body.light nav#app-version {
+  color: #7d7d7d;
+}
+nav.on #app-version {
+  opacity: 1;
+}
+
+section {
+  overflow: hidden;
+	position: absolute;
+	display: none;
+	left: -1em;
+	opacity: 0;
+}
+@media only screen and (min-width: 40em) {
+  section{
+	  width: calc(100vw - 3.5rem);
+	  height: calc(100vh - 1.5rem);
+	  margin-left: 3.5rem;
+	}
+}
+
+@media only screen and (max-width: 39.99rem) {
+  section {
+    width: 100vw;
+    height: calc(100vh - 3.5rem);
+  }
+}
+section.ani {
+  display: block;
+}
+section.ani.on {
+  left: 0;
+  opacity: 1;
+}
+@media screen and (orientation:landscape){
+  section {
+  	transition: .125s ease left, .125s ease opacity;
+  }
+  section.pos2, section._pos2{
+    border-left: 1px solid #7d7d7d;
+  }
+}
+@media screen and (orientation:landscape) and (min-width: 40rem) {
+  section.pos1, section._pos1{
+    width: calc(50vw - 1.85rem);
+  }
+  section.pos2, section._pos2{
+    width: calc(50vw - 1.85rem);
+    left: calc(50vw - 1.85rem) !important;
+  }
+}
+@media screen and (orientation:landscape) and (max-width: 39.99rem) {
+  section.pos1, section._pos{
+    width: 50vw;
+  }
+  section.pos2, section._pos2{
+    width: 50vw;
+    left: 50vw !important;
+  }
+}
+@media screen and (orientation:portrait){
+  section {
+  	transition: .125s ease top, .125s ease opacity;
+  }
+  section.pos2, section._pos2{
+    border-top: 1px solid #7d7d7d;
+  }
+}
+@media screen and (orientation:portrait) and (min-width: 40rem) {
+  section.pos1, section._pos1{
+    height: calc(50vh - 0.75rem);
+    top: 0vh;
+  }
+  section.pos2, section._pos2{
+    height: calc(50vh - 0.75rem);
+    top: calc(50vh - 0.75rem);
+  }
+}
+@media screen and (orientation:portrait) and (max-width: 39.99rem) {
+  section.pos1, section._pos1{
+    height: calc(50vh - 1.85rem);
+    top: 0vh;
+  }
+  section.pos2, section._pos2{
+    height: calc(50vh - 1.85rem);
+    top: calc(50vh - 1.85rem);
+  }
+}
+.header {
+	display: flex;
+  justify-content: space-between;
+  align-items: center;
+	overflow: hidden;
+}
+button.icon, .button.icon {
+    cursor: pointer;
+}
+button.icon, label.icon {
+    border-radius: 2rem;
+    border: 1px solid transparent;
+    background-color: transparent;
+    padding: .25rem;
+    transition: border-color ease .125s;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-flex;
+}
+
+body.dark button.icon:hover, body.dark label.icon:hover,
+body.dark button.icon:focus, body.dark label.icon:focus {
+	border-color: #fff;
+}
+body.light button.icon:hover, body.light label.icon:hover,
+body.light button.icon:focus, body.light label.icon:focus-within {
+	border-color: #000;
+}
+nav a:hover, nav a:focus {
+  border-color: rgb(84,190,255);
+}
+button.noicon {
+	border: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+button.icon.text, label.icon.text {
+    align-items: center;
+    font-size: 1rem;
+    padding: 0.25em 0.5em;
+    white-space: nowrap;
+}
+.popup {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0);
+  z-index: 73;
+  transition: background-color ease .25s;
+  font-weight: bold;
+  top: 0;
+  left: 0;
+}
+.popup.on, .popup.ani{
+  display: block;
+}
+.popup.on{
+  background: rgba(0,0,0,.4);
+}
+body.light .popup > div {
+  background: #eee;
+}
+body.dark .popup > div {
+  background: #222;
+}
+.popup > div {
+  box-shadow: 0 .25em .5em rgba(0,0,0,0.5);
+  border-radius: 1em;
+  margin-top: 100vh;
+  opacity: 0;
+  transition: margin-top ease .25s, opacity ease .25s;
+  box-sizing: border-box;
+}
+.popup.on > div {
+  opacity: 1;
+}
+/* notifications */
+a#notification:after {
+  content: '';
+  display: block;
+  width: .5em;
+  height: .5em;
+  position: absolute;
+  background: rgba(255,0,0,0);
+  margin: -1rem 0 0 1.75rem;
+  border-radius: 100%;
+}
+a#notification.new:after {
+  background: #4499cc;
+}
+#notify {
+  z-index: 72;
+  font-size: 0.9rem;
+	left: -18rem;
+  top: 19.75rem;
+	padding: 0.75rem;
+	position: fixed;
+  box-shadow: 0 .5rem .5rem rgba(0,0,0,.125);
+  user-select: none;
+	transition: left ease .5s, bottom ease .5s, opacity ease .5s;
+  border-radius: 1.5rem;
+  opacity: 0;
+  box-sizing: border-box;
+}
+body.light #notify {
+  background: #d4efff;
+}
+body.dark #notify {
+  background: #3b5666;
+}
+#notify.on {
+	opacity: 1;
+	left: 3.25em;
+}
+#notify hr {
+  border: none;
+  height: 1px;
+  background-color: #fff;
+}
+@media screen and (max-width:39.99rem) {
+  a#notification:after {
+    margin: .75rem 0 0 1rem
+  }
+  #notify {
+    width: calc(100vw - 2em);
+    left: 0;
+    margin: 0 1em 1em 1em;
+    top: auto;
+    bottom: -3em;
+    text-align: center;
+  }
+  #notify.on {
+    left: 0;
+    bottom: 3.5em;
+  }
+}
+section.default {
+  overflow-y: auto;
+}
+body.light section.default {
+  background: #fff;
+}
+body.dark section.default {
+  background: #222;
+}
+section.default > .container {
+  max-width: 50em;
+  margin: 0 auto;
+  padding: 0 0 1em 0;
+}
+section.default > .container > h2 {
+  width: 100%;
+  max-width: 50rem;
+  top: 0;
+  padding: 0.75rem 1rem 0.5rem 1rem;
+  z-index: 2;
+}
+body.dark section.default > .container > h2 {
+  background: #222;
+}
+body.light section.default > .container > h2 {
+  background: #fff;
+}
+section.default > .container h3 {
+  padding: 0 1em;
+}
+.cards {
+  display: block;
+}
+.cards > span {
+  display: flex;
+  justify-content: space-between;
+  padding: .5em;
+  border: #444 1px solid;
+  border-radius: .25em;
+  margin: .25em;
+  align-items: center;
+  user-select: text;
+}
+.cards > span > span > div {
+  font-size: .9em;
+}
+body.dark .cards > span > span > div {
+  color: #aaa;
+}
+.cards h3 {
+  font-weight: normal;
+  word-break: break-word;
+  padding: 0 !important;
+}
+#contextMenu > div {
+  display: inline-block;
+  border-radius: .25rem;
+  transition: .125s ease opacity, .25s ease height;
+  overflow: hidden;
+  height: 0px;
+  max-width: 12rem;
+  position:absolute;
+  top: 0;
+  left: 0;
+}
+#contextMenu button, #contextMenu label {
+  font-size: 1em;
+  width: 100%;
+  border-radius: 0;
+  border: none;
+  font-weight: normal;
+  min-height: 2rem;
+  box-sizing: border-box;
+}
+#contextMenu button:before, #contextMenu label:before {
+  margin-right: .25rem;
+}
+#contextMenu button:hover, #contextMenu label:hover {
+  background: rgba(68,153,204,.5);
+}
+#contextMenu button:focus, #contextMenu label:focus-within {
+  background: rgba(68,153,204,.25);
+}
+#contextMenu h3 {
+  margin: .5rem .5rem .25rem .5rem;
+  font-size: 1rem;
+  font-weight: normal;
+}
+#contextMenu input {
+  padding: 0.5rem;
+}
+body.dark #contextMenu input {
+  background: #000;
+}
+body.light #contextMenu input {
+  background: #fff;
+}
+.funky {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 .5rem;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+.funky button, .funky > span {
+  padding: .5rem;
+  min-width: 11rem;
+  max-width: 18rem;
+}
+.funky button > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: .5rem;
+  padding: 4em .5em .5em 2em;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: right;
+  transition: .125s ease transform;
+}
+.funky button:focus > div {
+  transform: scale(0.98);
+}
+.listy {
+  display: flex;
+  justify-content: flex-start;
+  word-break: keep-all;
+  white-space: nowrap;
+  flex-wrap: wrap;
+  border-bottom: none !important;
+  margin: 0 .5em;
+}
+body.dark .listy {
+  background: #1c1c1c;
+  border: 1px solid #111;
+}
+body.light .listy {
+  background: #eee;
+  border: 1px solid #aaa;
+}
+
+.listy button {
+  cursor: pointer;
+  padding: 0;
+}
+.listy > span {
+  width: 100%
+}
+body.dark .listy > button,
+body.dark .listy > span {
+  border-bottom: 1px solid #111;
+}
+body.light .listy > button,
+body.light .listy > span {
+  border-bottom: 1px solid #aaa;
+}
+.listy > button, .funky > span {
+  width: 100%;
+}
+.listy > button > div,
+.listy > span > div {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: .5em;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: right;
+  transition: .125s ease transform;
+}
+.listy > button:active > div {
+  transform: scale(0.98);
+}
+.listy > button {
+  transition: .25s ease background-color;
+}
+.listy > button.on:active > div {
+  transform: scale(1) !important;
+}
+.listy > button.on {
+  background-color: rgba(68,153,204,.25);
+}
+.listy > button:hover, .listy > button:focus {
+  background-color: rgba(68,153,204,.5);
+}
+.listy > button.on {
+  cursor: default;
+}
+.listy.more-button {
+  border-top: none !important;
+}
+.listy.more-button button {
+}
+.listy.more-button div {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-block;
+}
+.listy div.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.listy div.row {
+  padding: .5rem .5rem 0 .5rem
+}
+.listy div.row:last-child {
+  padding-bottom: .5rem !important;
+}
+.warnings, .tips {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #7d7d7d;
+  padding: .5rem;
+  border-radius: 2rem;
+  opacity: 0.8;
+  margin: .5rem auto;
+  font-size: 0.9rem;
+}
+.warnings:before, .tips:before {
+  margin-right: .25rem !important;
+}
+/* Status bar */
+div#status-bar {
+  width: calc(100vw - 3.5rem);
+  height: 1.5rem;
+  font-size: 0.9rem;
+  position: absolute;
+  top: calc(100vh - 1.5rem);
+  right: 0;
+  text-align: right;
+  box-shadow: 0 0 .25em rgba(0,0,0,.25);
+}
+div#status-bar #globals {
+  display: inline-block;
+  min-width: 5rem;
+  height: 1.5rem;
+}
+div#status-bar button.status-icon {
+  padding: .125rem .25rem;
+  cursor: pointer;
+  transition: background-color ease .125s;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(68,153,204,0);
+}
+div#status-bar button.status-icon:before {
+	display: inline-block;
+	width: 1.25rem;
+	height: 1.25rem;
+	background: url('./media/icons.svg');
+	background-size: auto 2.5rem;
+	content: '';
+	margin: 0;
+	flex-shrink: 0;
+	margin-right: .125rem;
+}
+div#status-bar button.status-icon:hover,
+div#status-bar button.status-icon:focus {
+  background-color: rgba(68,153,204,.5);
+}
+
+@media screen and (max-width:39.99rem) {
+  div#status-bar {
+    display: none;
+  }
+}

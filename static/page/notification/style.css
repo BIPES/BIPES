@@ -1,0 +1,18 @@
+section#notification .listy div.row > div {
+  font-size: 0.8rem;
+  padding-bottom: .25rem;
+}
+section#notification .listy div.row {
+  padding-left: 2.5rem;
+}
+section#notification .listy #discard {
+  position: absolute;
+  margin-left: .25rem;
+  margin-top: -2.75rem;
+}
+section#notification .listy {
+  white-space: inherit;
+}
+section#notification .listy h4 {
+  text-align: left !important;
+}
