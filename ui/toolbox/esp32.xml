@@ -1156,14 +1156,13 @@
       </value>
       </block>
 	<block type="gps_update"> </block>
+	<block type="gps_coord_format"> </block>
 	<block type="gps_get_lat"> </block>
 	<block type="gps_get_long"> </block>
 	<block type="gps_get_height"> </block>
 	<block type="gps_get_speed"> </block>
 	<block type="gps_get_date"> </block>
 	<block type="gps_get_time"> </block>
-
-
   </category>
 
   <category name="Oximeter">
@@ -2090,6 +2089,7 @@ _
       <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
       <field name="NET_POST_REQUEST_DATA">Data</field>
     </block>
+    <block type="net_post_request_json"></block>
 
     </category>
 

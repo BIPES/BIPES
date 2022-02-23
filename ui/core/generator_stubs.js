@@ -529,11 +529,22 @@ Blockly.Python['net_get_request'] = function(block) {
 
 Blockly.Python['net_post_request'] = function(block) {
   var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
-  var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
+  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_urequests'] = 'import urequests';
-  var code = 'urequests.post(\"' + value_url + '\", data = \"' + value_url + '\")\n';
+  var code = 'urequests.post(' + value_url + ', data = ' + value_data + ')\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+Blockly.Python['net_post_request_json'] = function(block) {
+  var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
+  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_urequests'] = 'import urequests';
+
+  var value_data2 = value_data.replace('\'','').replace('\'','');
+  var code = 'urequests.post(' + value_url + ', json={' + value_data2 + '})\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
 
 Blockly.Python['net_ifconfig'] = function(block) {
 
@@ -5324,6 +5335,12 @@ Blockly.Python['gps_get_time'] = function(block) {
   var code = 'gps.timestamp';
 
   return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['gps_coord_format'] = function(block) {
+	var dropdown_format = block.getFieldValue('format');
+	var code = 'gps.coord_format=\'' + dropdown_format + '\'\n';
+	return code;
 };
 
 

@@ -1265,7 +1265,7 @@ Blockly.Blocks['net_post_request'] = {
     this.appendValueInput("URL")
         .setCheck("String")
         .appendField(new Blockly.FieldLabelSerializable("Make HTTP POST Request URL"), "NET_POST_REQUEST_URL");
-    this.appendValueInput("URL")
+    this.appendValueInput("data")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldLabelSerializable("Data"), "NET_POST_REQUEST_DATA");
@@ -1275,6 +1275,23 @@ Blockly.Blocks['net_post_request'] = {
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+
+Blockly.Blocks['net_post_request_json'] = {
+  init: function() {
+    this.appendValueInput("URL")
+        .setCheck("String")
+        .appendField(new Blockly.FieldLabelSerializable("Make HTTP POST Request URL"), "NET_POST_REQUEST_URL");
+    this.appendValueInput("data")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("JSON Data"), "NET_POST_REQUEST_DATA");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Make HTTP POST Request with JSON data");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 
 Blockly.Blocks['net_ifconfig'] = {
   init: function() {
@@ -10315,6 +10332,19 @@ Blockly.Blocks['gps_get_date'] = {
     this.setOutput(true);
 
     this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['gps_coord_format'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("GPS Coordinate Format ")
+        .appendField(new Blockly.FieldDropdown([["Decimal Degrees (DD)","dd"], ["Degree Minute Second (DMS)","dms"]]), "format");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
   }
 };
 
