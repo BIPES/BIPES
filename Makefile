@@ -185,8 +185,8 @@ build-clean:
 	@rm -f  static/style.css
 	@rm -rf static/libs/bipes.umd.js
 	@rm -f  static/page/blocks/toolbox.umd.js
-	@rm -f  static/page/blocks/blocks.js
-	@rm -f  static/page/blocks/pythonic.js
+	@rm -f  static/page/blocks/blocks.umd.js
+	@rm -f  static/page/blocks/pythonic.umd.js
 
 clean: build-clean
 	@rm -rf node_modules

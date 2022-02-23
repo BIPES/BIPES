@@ -1,0 +1,124 @@
+# %{MACHINE}
+<category name="%{MACHINE}">
+
+# inout_pins_label
+<category name="In/Out Pins">
+<label text="In/Out Pins"></label>
+
+# pinout
+<block type="pinout"></block>
+
+# gpio_set
+<block type="gpio_set">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+  <value name="value">
+    <shadow type="logic_boolean">
+      <field name="BOOL"></field>
+    </shadow>
+  </value>
+</block>
+
+# gpio_get
+<block type="gpio_get">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+  <value name="pullup">
+    <shadow type="logic_boolean">
+      <field name="BOOL"></field>
+    </shadow>
+  </value>
+</block>
+
+# adc
+<block type="adc">
+ <value name="pin">
+    <shadow type="math_number">
+      <field name="NUM">0</field>
+    </shadow>
+  </value>
+</block>
+
+# adc_pico
+<block type="adc_pico">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+</block>
+
+# adc_esp32
+<block type="adc_esp32">
+ <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+</block>
+
+# pwm
+<block type="pwm">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+  <value name="frequency">
+    <shadow type="math_number">
+      <field name="NUM">1000</field>
+    </shadow>
+  </value>
+  <value name="duty">
+    <shadow type="math_number">
+      <field name="NUM">50</field>
+    </shadow>
+  </value>
+</block>
+
+# pwm.freq
+<block type="pwm.freq">
+  <value name="frequency">
+    <shadow type="math_number">
+      <field name="NUM">1000</field>
+    </shadow>
+  </value>
+</block>
+
+# pwm.duty
+<block type="pwm.duty">
+  <value name="duty">
+    <shadow type="math_number">
+      <field name="NUM">50</field>
+    </shadow>
+  </value>
+</block>
+
+# pwm.init
+<block type="pwm.init">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+</block>
+
+# pwm.deinit
+<block type="pwm.deinit"></block>
+
+# gpio_interrupt
+<block type="gpio_interrupt">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+</block>
+
+# -
