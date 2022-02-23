@@ -106,6 +106,7 @@ section#dashboard #addMenu button {
   padding: .5em;
   border-radius: 0.5em;
   display: block;
+  max-width: 5em;
 }
 @media screen and (max-width:39.99rem) {
   section#dashboard #addMenu.on > div {

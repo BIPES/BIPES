@@ -90,7 +90,7 @@ class MQTTDatabase {
   deinit (){
     this.ref = undefined
   }
-  /** Reinit everything, called after the user changed the session. */
+  /** Reinit everything, called after the user changed the sessiodatan. */
   reinit (){
     this._data = []
     this._keys = []
@@ -117,29 +117,29 @@ class MQTTDatabase {
    * Checks the income MQTT topic for comma divided data.
    * @param {boolean} chartsPush - True to push data to current charts on grid.
    */
-  write (topic, chunk, chartsPush){
+  async write (topic, chunk, chartsPush){
     let coordinates = chunk.split(',').map((item)=>item = parseFloat(item))
     if (coordinates.every((item) => !isNaN(item)))
       this.push (topic, coordinates, chartsPush)
   }
   /**
-   * Push identified dataset and coordinates to memory.
+   * Push identified topic and coordinates to memory.
    * @param {boolean} chartsPush - True to push data to current charts on grid.
    */
-  push (dataset, coordinates, chartsPush) {
+  push (topic, coordinates, chartsPush) {
     if (coordinates.constructor.name != 'Array')
       return
 
-    if (!this._data.hasOwnProperty(dataset)){
-      this._keys.push(dataset)
-      this._data[dataset] = []
-      this._coorLength[dataset] = 0
+    if (!this._data.hasOwnProperty(topic)){
+      this._keys.push(topic)
+      this._data[topic] = []
+      this._coorLength[topic] = 0
     }
 
-    this._data[dataset].push(coordinates)
+    this._data[topic].push(coordinates)
     // Push to charts
     if (this.ref !== undefined && chartsPush === true){
-      this.ref.chartsPush(dataset, this._data[dataset], coordinates, this._coorLength)
+      this.ref.chartsPush(topic, this._data[topic], coordinates, this._coorLength)
     }
   }
   /**
@@ -147,25 +147,23 @@ class MQTTDatabase {
    * @param {string} uid - Topic's uid.
    */
   remove (uid) {
-		this._keys.forEach((dataset, index) => {
-		  if (dataset == uid)
+		this._keys.forEach((topic, index) => {
+		  if (topic == uid)
 			  this._keys.splice(index,1)
 		})
 		delete this._data[uid]
   }
-  chartData (dataset, opt) {
+  chartData (topic, opt) {
     let data
-    console.log(this._keys, dataset, '-----------')
-    if (this._keys.includes(dataset))
-      data = this._data[dataset]
+    if (this._keys.includes(topic))
+      data = this._data[topic]
     else
       data = []
 
-    console.log(data)
 
     const map1 = data.map(c => c.length)
     const max1 = Math.max(...map1)
-    this._coorLength[dataset] = max1
+    this._coorLength[topic] = max1
     let mat = data.map(function(arr) {
       return arr.slice();
     })

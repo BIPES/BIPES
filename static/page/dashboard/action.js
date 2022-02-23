@@ -46,7 +46,7 @@ class Actions {
 	      offUrl: 'input',
 	    },
 	    'chart': {
-	      dataset: 'input',
+	      topic: 'input',
 	      chartType: 'dropdown',
 	      title: 'input',
 	      source: 'dropdown',
@@ -82,7 +82,7 @@ class Actions {
 	    case 'chart':
         return {
           source: 'localStorage',
-          dataset:'data',
+          topic:'data',
           chartType: 'line',
           title: '',
           labels: 'Variable 1, Variable 2',
@@ -104,7 +104,7 @@ class Actions {
 	      offUrl: 'URL off',
 	    },
 	    'chart': {
-	      dataset: 'Topic',
+	      topic: 'Topic',
 	      chartType: ['Chart type', ['line','scatter','bar','pie','radar']],
 	      title: 'Title',
 	      source: ["Database", ["localStorage","easyMQTT"]],
@@ -196,7 +196,7 @@ class Action {
 			switch(this.plugin){
 			  case 'chart':
 			    switch (this.key){
-			      case 'dataset':
+			      case 'topic':
 			      case 'title':
 			      case 'labels':
 			      case 'xLabel':

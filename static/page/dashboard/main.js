@@ -8,7 +8,7 @@ import {navigation} from '../../base/navigation.js'
 
 import {project} from '../project/main.js'
 import {Actions} from './action.js'
-import {Charts, Streams, Switches} from './plugins.js'
+import {Charts, Switches} from './plugins.js'
 
 import {dataStorage} from './datastorage.js'
 import {easyMQTT} from './easymqtt.js'
@@ -514,7 +514,6 @@ class DashboardGrid {
     let silk = new DOM('div', {className:'silk'})
 	  switch (data.type) {
 	    case 'chart':
-	      console.log('Including chart.js')
 
 	      data.target = new DOM('canvas', {className:'chart'})
 		    let content1 = new DOM('div')
@@ -534,27 +533,6 @@ class DashboardGrid {
 	      silk.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent._dom.dashboard)})
         grab.onclick(this, this.edit, [data, container1])
 
-		    break
-	    case 'plugin':
-		    data.target = new DOM('video', {'preload':'auto','controls':'','autoplay':''})
-		    let content2 = new DOM('div')
-			    .append([
-			      silk,
-				    grab,
-				    remove,
-				    this.target,
-			    ])
-			  let container2 = new DOM('div', {sid:data.sid, className:'plugin square'})
-			    .append(content2)
-
-		    this.muuri.add(container2._dom)
-
-		    this.players.push (Streams.plugin(data.sid, data.target._dom))
-
-        data.target.onclick(this, this.edit, [data.sid, container2]);
-
-	      silk.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent._dom.dashboard)})
-        grab.onclick(this, this.edit, [data, container3])
 		    break
 		  case 'switch':
 		    data.target = new DOM('button', {className:'press'})
@@ -582,7 +560,6 @@ class DashboardGrid {
    * @param {Object} data - Plugin.
    */
 	remove (data){
-		console.log(`Removing ${data.sid}`)
 
 
 		switch (data.type) {
@@ -661,7 +638,6 @@ class DashboardGrid {
         this.animating = false
     }, 15)
 
-	  console.log(`Editing plugin ${obj.sid}`)
 
 	  this.actions.show(obj, this)
 
@@ -821,11 +797,11 @@ class DashboardGrid {
     this.muuri.sort(layout, {layout:'instant'})
   }
   /** Push data to current charts */
-  chartsPush (dataset, data, coordinates, coorLength) {
+  chartsPush (topic, data, coordinates, coorLength) {
     this.charts.forEach ((chart) => {
-      if (chart.dataset == dataset) {
-        if (parseInt(coorLength[dataset]) < parseInt(coordinates.length) || coorLength[dataset] === -Infinity) {
-          coorLength[dataset] = coordinates.length
+      if (chart.topic == topic) {
+        if (parseInt(coorLength[topic]) < parseInt(coordinates.length) || coorLength[topic] === -Infinity) {
+          coorLength[topic] = coordinates.length
           this.ref.forEach(plugin => {
             if (plugin.sid === chart.sid){
               Charts.regen(this.charts, plugin)
@@ -833,18 +809,19 @@ class DashboardGrid {
           })
         } else if (data.length == 5) {
           this.ref.forEach(plugin => {
-            if (plugin.sid === chart.sid)
+            if (plugin.sid === chart.sid){
               Charts.regen(this.charts, plugin)
+            }
           })
         } else {
           chart.data.labels.push(coordinates[0])
-          chart.data.datasets.forEach((dataset, index) => {
-            dataset.data.push(coordinates[index + 1])
+          chart.data.datasets.forEach((topic, index) => {
+            topic.data.push(coordinates[index + 1])
           })
           if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
             chart.data.labels.splice (0,1)
-            chart.data.datasets.forEach((dataset, index) => {
-              dataset.data.splice (0,1)
+            chart.data.datasets.forEach((topic, index) => {
+              topic.data.splice (0,1)
             })
           }
           chart.update()
@@ -860,7 +837,6 @@ class DashboardAddMenu {
     this.grid = grid
     this.plugins = {
       chart:'Chart',
-      stream:'Stream',
       switch: 'Switch'
     }
     let $ = this._dom = {}
@@ -1103,7 +1079,7 @@ class DataStorageManager {
 		dataStorage.remove(id)
     if (this.ref != undefined) {
       this.ref.charts.forEach ((chart) => {
-        if (chart.dataset == id && chart.source == 'localStorage') {
+        if (chart.topic == id && chart.source == 'localStorage') {
           this.ref.ref.forEach(plugin => {
             if (plugin.sid === chart.sid)
               Charts.regen(this.ref.charts, plugin)
@@ -1126,7 +1102,7 @@ class DataStorageManager {
 		    })
         if (this.ref != undefined) {
           this.ref.charts.forEach ((chart) => {
-            if (chart.dataset == topic && chart.source == 'easyMQTT') {
+            if (chart.topic == topic && chart.source == 'easyMQTT') {
               this.ref.ref.forEach(plugin => {
                 if (plugin.sid === chart.sid)
                   Charts.regen(this.ref.charts, plugin)
@@ -1189,7 +1165,6 @@ class DataStorageManager {
     let _upload = this._dom.upload._dom
     if  (_upload.files [0] != undefined) {
       let file = _upload.files [0]
-      console.log(file.type)
       if (/.csv$/.test(file.name) && file.type == 'text/csv'){
         let reader = new FileReader ()
         reader.readAsText(file,'UTF-8')

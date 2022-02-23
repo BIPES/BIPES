@@ -37,21 +37,21 @@ class DataStorage {
     }
     this.buffer = this.buffer.replace(re, '\r\n') //purge received string out
   }
-  /** Push identified dataset and coordinates to localStorage */
-  push (dataset, coordinates) {
+  /** Push identified topic and coordinates to localStorage */
+  push (topic, coordinates) {
     if (coordinates.constructor.name != 'Array')
       return
 
-    if (!this._keys.includes(dataset))
-      this._keys.push (dataset),
-      this._data[dataset] = []
+    if (!this._keys.includes(topic))
+      this._keys.push (topic),
+      this._data[topic] = []
 
-    this._data[dataset].push(coordinates)
+    this._data[topic].push(coordinates)
 
-    storage.set(`datastorage:${dataset}`, JSON.stringify(this._data[dataset]))
+    storage.set(`datastorage:${topic}`, JSON.stringify(this._data[topic]))
     // Push to charts
     if (this.ref !== undefined){
-      this.ref.chartsPush(dataset, this._data[dataset], coordinates, this._coorLength)
+      this.ref.chartsPush(topic, this._data[topic], coordinates, this._coorLength)
     }
   }
   /**
@@ -59,27 +59,27 @@ class DataStorage {
    * @param {string} uid - Topic's uid.
    */
   remove (uid) {
-		this._keys.forEach((dataset, index) => {
-		  if (dataset == uid)
+		this._keys.forEach((topic, index) => {
+		  if (topic == uid)
 			  this._keys.splice(index,1)
 		})
 		delete this._data[uid]
   }
-  chartData (dataset, opt) {
-    if (!this._keys.includes(dataset)) {
-      this._keys.push (dataset)
-      if (storage.has(`datastorage:${dataset}`)) {
-        this._data[dataset] = JSON.parse(storage.fetch(`datastorage:${dataset}`))
-        const map1 = this._data[dataset].map(c => c.length)
+  chartData (topic, opt) {
+    if (!this._keys.includes(topic)) {
+      this._keys.push (topic)
+      if (storage.has(`datastorage:${topic}`)) {
+        this._data[topic] = JSON.parse(storage.fetch(`datastorage:${topic}`))
+        const map1 = this._data[topic].map(c => c.length)
         const max1 = Math.max(...map1)
-        this._coorLength[dataset] = max1
+        this._coorLength[topic] = max1
      } else {
-        this._data[dataset] = []
-        this._coorLength[dataset] = 0
-        storage.set(`datastorage:${dataset}`, JSON.stringify(this._data[dataset]))
+        this._data[topic] = []
+        this._coorLength[topic] = 0
+        storage.set(`datastorage:${topic}`, JSON.stringify(this._data[topic]))
       }
     }
-    let mat = this._data[dataset].map(function(arr) {
+    let mat = this._data[topic].map(function(arr) {
       return arr.slice();
     });
 

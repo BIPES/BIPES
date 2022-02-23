@@ -14,22 +14,20 @@ class Charts {
     let data2
     switch (data.setup.source) {
       case 'localStorage':
-		    data2 = dataStorage.chartData(data.setup.dataset, data)
+		    data2 = dataStorage.chartData(data.setup.topic, data)
 		    break
 		  case 'easyMQTT':
 		    // Include dummy if not exist
 		    if (!databaseMQTT._inited)
 		      return {
 		        sid:data.sid,
-            dataset:data.setup.dataset,
+            topic:data.setup.topic,
             source:data.setup.source,
             destroy:()=>{}
           }
-        data2 = databaseMQTT.chartData(data.setup.dataset, data)
+        data2 = databaseMQTT.chartData(data.setup.topic, data)
         break
 	    }
-
-	    console.log(data2)
 
 
     let options = {
@@ -65,7 +63,7 @@ class Charts {
             options: options,
       })
     _chart.sid = data.sid
-    _chart.dataset = data.setup.dataset
+    _chart.topic = data.setup.topic
     _chart.source = data.setup.source
     let limitPoints = parseInt(data.setup.limitPoints)
     if (!isNaN(limitPoints))
