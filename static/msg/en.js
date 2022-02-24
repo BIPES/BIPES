@@ -9,6 +9,16 @@ Blockly.Msg["FUNCTIONS"] = "Functions";
 Blockly.Msg["TIMING"] = "Timing";
 Blockly.Msg["MACHINE"] = "Machine";
 Blockly.Msg["DISPLAYS"] = "Displays";
+Blockly.Msg['SENSORS'] = "Sensors";
+Blockly.Msg['OUTPUTS'] = "Outputs / Actuators";
+Blockly.Msg['COMM'] = "Communication";
+Blockly.Msg['TEMP_HUMI'] = "Temperature and Humidity";
+Blockly.Msg['PRESS'] = "Pressure";
+Blockly.Msg['FILES'] = "Files";
+Blockly.Msg['NET'] = "Network and Internet";
+Blockly.Msg['CONTROL'] = "Control";
+Blockly.Msg['IMU'] = "Inertial Measurement";
+Blockly.Msg['AIR'] = "Air Quality";
 
 Msg = {
   'PageBlocks':'Blocks',

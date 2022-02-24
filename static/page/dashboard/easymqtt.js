@@ -19,8 +19,6 @@ class MQTTDatabase {
     this._inited = false
     // Handle topics
     this.topics = {
-      //toSubscribe:[],
-      //subscribed:[],
       session:false,
       fetching:false
     }
@@ -41,7 +39,7 @@ class MQTTDatabase {
   init (ref){
     this.ref = ref
 
-    if (!this._inited){
+    if (!this._inited && !navigation.isLocal){
       this.do(`${easyMQTT.session}/ls`)
         .then(obj => {
           if (obj.hasOwnProperty(easyMQTT.session)){
@@ -52,7 +50,6 @@ class MQTTDatabase {
             this.topics.fetching = []  // watch fetch resolve
             obj[easyMQTT.session].forEach(topic => {
               this.topics.fetching.push(topic.topic)
-              //this.topics.toSubscribe.push(topic.topic)
 
               this.do(`${easyMQTT.session}/${topic.topic.replaceAll('/','$')}/grep`)
                 .then(obj => {
@@ -78,7 +75,7 @@ class MQTTDatabase {
   deinit (){
     this.ref = undefined
   }
-  /** Reinit everything, called after the user changed the sessiodatan. */
+  /** Reinit everything, called after the user changed the session. */
   reinit (){
     this._data = []
     this._keys = []

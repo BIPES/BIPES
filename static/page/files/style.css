@@ -227,7 +227,6 @@ section#files #fileOnProject details[open] summary:before,
 section#files #fileOnProject details[open] summary:before {
 	background-position: left calc(-1.25rem*16) bottom;
 }
-
 section#files .cm-scroller {
   overflow: auto;
 }

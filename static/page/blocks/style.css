@@ -65,9 +65,19 @@ section#blocks #blocks-code #codemirror {
   overflow-y: auto;
   border-radius: 1rem;
 }
-section#blocks #blocks-code #codemirror .cm-editor{
+section#blocks #blocks-code #codemirror .cm-content {
   padding-bottom: 8rem;
 }
+section#blocks .cm-scroller {
+  overflow: auto;
+}
+section#blocks .cm-scrollers,
+section#blocks .cm-content, section#files .cm-gutter {
+  min-height: calc(100vh - 4.25rem) !important;
+}
+section#blocks .cm-gutters { margin: 1px; }
+section#blocks .cm-scroller { overflow: auto; }
+section#blocks .cm-wrap { border: 1px solid silver }
 section#blocks #blocks-code.on #run {
   bottom: 1.5rem;
   z-index: 2;
@@ -108,4 +118,7 @@ section#blocks #codemirror button#copy {
   bottom: 1.5rem;
   margin-left: 1.5em;
   z-index: 1;
+}
+body.dark section#blocks .blocklyCommentTextarea {
+  background-color: #333 !important;
 }

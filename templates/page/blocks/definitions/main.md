@@ -374,4 +374,22 @@
 # %{FUNCTIONS}
 <category name="%{FUNCTIONS}" colour="%{PROCEDURES_HUE}" custom="PROCEDURE">
 
+# Oximeter
+<category name="Oximeter">
+<label text="MAX30100 pulse oximeter sensor"></label>
+<label text="Library: https://github.com/"></label>
+<button text="Install MAX30100 library" callbackKey="installPyLib"></button>
+
+# max30100_init
+<block type="max30100_init"></block>
+
+# max30100_read
+<block type="max30100_read"></block>
+
+# max30100_red
+<block type="max30100_red"></block>
+
+# max30100_ir
+<block type="max30100_ir"></block>
+
 # -

@@ -997,13 +997,15 @@ class DataStorageManager {
 		storage.keys(/datastorage:(.*)/)
 		  .forEach(key => {this.include(key)})
 
-		databaseMQTT.do(`${easyMQTT.session}/ls`)
-		  .then(obj => {
-		    if (obj.hasOwnProperty(easyMQTT.session))
-		      obj[easyMQTT.session].forEach(topic => {
-		        this.includeMQTT(topic.topic)
-		      })
-		  })
+    if (!navigation.isLocal) {
+		  databaseMQTT.do(`${easyMQTT.session}/ls`)
+		    .then(obj => {
+		      if (obj.hasOwnProperty(easyMQTT.session))
+		        obj[easyMQTT.session].forEach(topic => {
+		          this.includeMQTT(topic.topic)
+		        })
+		    })
+      }
   }
   include (sid){
 		let remove = new DOM('button', {

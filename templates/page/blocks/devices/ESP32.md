@@ -156,3 +156,99 @@ tm1640_num
 tm1640_custom
 end_category
 end_category
+
+%{SENSORS}
+%{TEMP_HUMI}
+DHT11/22 Temperature and Humidity Sensor
+dht_init
+dht_measure
+dht_read_temp
+dht_read_humidity
+SHT20 I2C Temperature and Humidity Sensor
+sht20_init
+sht20_temperature
+sht20_humidity
+end_category
+Ultrasound
+HCSR04 ultrasound distance sensor
+hcsr_init
+hcsr_read
+end_category
+GPS
+gps_init
+gps_update
+gps_coord_format
+gps_get_lat
+gps_get_long
+gps_get_height
+gps_get_speed
+gps_get_time
+end_category
+Oximeter
+MAX30100 pulse oximeter sensor
+max30100_init
+max30100_read
+max30100_red
+max30100_ir
+end_category
+%{PRESS}
+BMP180
+bmp180_init
+bmp180_temperature
+bmp180_pressure
+bmp180_altitude
+BMP280
+bmp280_init
+bmp280_measure
+bmp280_sleep
+bmp280_temperature
+bmp280_pressure
+end_category
+%{AIR}
+CCS811 Air Quality Sensor
+ccs811_init
+ccs811_data_ready
+ccs811_eCO2
+ccs811_tVOC
+end_category
+%{IMU}
+MPU6050 IMU
+init_mpu6050
+mpu6050_read_acc_x
+mpu6050_read_acc_y
+mpu6050_read_acc_z
+mpu6050_read_gyro_x
+mpu6050_read_gyro_y
+mpu6050_read_gyro_z
+MPU9250 IMU
+mpu9250_init
+mpu9250_acc
+mpu9250_gyro
+mpu9250_mag
+mpu9250_temp
+end_category
+OneWire
+onewire_ds18x20_init
+onewire_ds18x20_scan
+onewire_ds18x20_convert
+onewire_ds18x20_read_temp
+end_category
+RFID Reader
+rfid_rc522_init
+rfid_rc522_detect_card
+rfid_rc522_anticoll
+rfid_rc522_read_card
+rfid_rc522_write_card
+end_category
+Rotatory Encoder
+encoder_init
+encoder_reset
+encoder_read
+end_category
+Camera (ESP32CAM)
+esp32_cam_init
+esp32_cam_capture
+esp32_cam_red_led
+esp32_cam_white_led
+end_category
+end_category

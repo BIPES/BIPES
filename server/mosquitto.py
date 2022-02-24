@@ -44,8 +44,6 @@ def listen(app):
     app.config['MQTT_TLS_ENABLED'] = False
     
     mqtt = Mqtt()
-    
-    print(" * Mosquitto bridge initiated.")
 
     @mqtt.on_message()
     def handle_mqtt_message(client, userdata, msg):
