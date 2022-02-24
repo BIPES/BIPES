@@ -829,6 +829,15 @@ class DashboardGrid {
       }
     })
   }
+  /** Regen charts from source criteria */
+  regenCharts (source){
+    this.charts.forEach ((chart) => {
+      this.ref.forEach(plugin => {
+        if (plugin.sid === chart.sid && plugin.setup.source == source)
+          Charts.regen(this.charts, plugin)
+      })
+    })
+  }
 }
 
 

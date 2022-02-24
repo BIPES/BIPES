@@ -5,7 +5,7 @@ import {Tool} from '../../base/tool.js'
 export {Charts, Streams, Switches}
 
 import {dataStorage} from './datastorage.js'
-import {easyMQTT, databaseMQTT} from './easymqtt.js'
+import {databaseMQTT} from './easymqtt.js'
 
 /** Chart plugin, powered by chart.js */
 class Charts {

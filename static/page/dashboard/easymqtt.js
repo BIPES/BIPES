@@ -3,8 +3,6 @@ import {Tool} from '../../base/tool.js'
 import {storage} from '../../base/storage.js'
 import {navigation} from '../../base/navigation.js'
 
-import {Charts} from './plugins.js'
-
 export let easyMQTT = {
   session: storage.has('mqtt_session') ?
            storage.fetch('mqtt_session') : storage.set('mqtt_session', Tool.SID())
@@ -48,12 +46,7 @@ class MQTTDatabase {
         .then(obj => {
           if (obj.hasOwnProperty(easyMQTT.session)){
             if(obj[easyMQTT.session].length === 0){
-              this.ref.charts.forEach ((chart) => {
-                this.ref.ref.forEach(plugin => {
-                  if (plugin.sid === chart.sid && plugin.setup.source == 'easyMQTT')
-                    Charts.regen(this.ref.charts, plugin)
-                })
-              })
+              this.ref.regenCharts('easyMQTT')
               return
             }
             this.topics.fetching = []  // watch fetch resolve
@@ -72,12 +65,7 @@ class MQTTDatabase {
 
                     this.topics.fetching.splice(this.topics.fetching.indexOf(topic.topic), 1)
                     if (this.topics.fetching.length === 0){
-                      this.ref.charts.forEach ((chart) => {
-                        this.ref.ref.forEach(plugin => {
-                          if (plugin.sid === chart.sid && plugin.setup.source == 'easyMQTT')
-                            Charts.regen(this.ref.charts, plugin)
-                        })
-                      })
+                      this.ref.regenCharts('easyMQTT')
                     }
                 })
             })
