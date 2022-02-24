@@ -1,3 +1,117 @@
+// CPU ------------------------------------------------------------------------
+
+Blockly.Blocks['set_freq'] = {
+  init: function() {
+   this.appendDummyInput()
+        .appendField("Set CPU Clock Frequency");
+
+    this.appendValueInput("freq")
+        .setCheck("Number")
+        .appendField("Frequency (Hz)");
+    //this.setOutput(true, null);
+
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setColour(230);
+ this.setTooltip("Set ESP8266 CPU Clock Frequency");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['get_freq'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get CPU Clock Frequency");
+
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Get current CPU Clock Frequency");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks["machine_unique_id"] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(" unique_id");
+    this.setColour(0);
+
+    this.setOutput(true, null);
+
+ this.setTooltip(".. function:: unique_id() Returns a byte string with a unique identifier of a board/SoC. It will vary from a board/SoC instance to another, if underlying hardware allows. Length ");
+ this.setHelpUrl("https://docs.micropython.org/en/latest/library/machine.html");
+  }
+};
+
+
+Blockly.Blocks["machine_reset_cause"] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(" reset_cause");
+    this.setColour(0);
+    this.setOutput(true, null);
+ this.setTooltip(".. function:: reset_cause() Get the reset cause. See :ref:`constants <machine_constants>` for the possibl e return values. ");
+ this.setHelpUrl("https://docs.micropython.org/en/latest/library/machine.html");
+  }
+};
+
+Blockly.Blocks['reset'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("reset");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Reset Device");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['reset_cause_soft'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: soft reset");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['reset_cause_hard'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: hard reset");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['reset_cause_wdt'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: reset by watchdog timer");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['reset_cause_deep'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cause: woke up from deepsleep");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
+// In/Out Pins ----------------------------------------------------------------
 // Pinout
 Blockly.Blocks['pinout'] = {
   update_list: function(load_) {
@@ -8,7 +122,7 @@ Blockly.Blocks['pinout'] = {
     if (device_ !== device_init_)
       this.setColour(1);
     else if (device_ === device_init_)
-      this.setColour(230);  // this.setDisabled causes all modifiers to stop working at the workspace, using visual colour feedback instead.
+      this.setColour(230);
     if (this.first_load < 1 && load_) {
       device_ = device_init_;
       this.setColour(230);

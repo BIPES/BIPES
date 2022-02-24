@@ -90,6 +90,18 @@ deep_sleep8266
 end_category
 
 %{MACHINE}
+CPU
+ESP32 CPU
+get_freq
+set_freq
+reset
+machine_unique_id
+machine_reset_cause
+reset_cause_soft
+reset_cause_hard
+reset_cause_wdt
+reset_cause_deep
+end_category
 inout_pins_label
 pinout
 gpio_set
@@ -104,4 +116,43 @@ gpio_interrupt
 end_category
 end_category
 
-
+%{DISPLAYS}
+NeoPixel LED Strip
+neopixel_init
+HSL_to_RGB
+neopixel_color_numbers
+neopixel_color_colors
+neopixel_control
+neopixel_write
+end_category
+Character display
+char_lcd_init
+char_lcd_clear
+char_lcd_putstr
+char_lcd_moveto
+char_lcd_backlight
+char_lcd_display
+end_category
+ST7789 Display
+st7789_init
+st7789_bl_power
+st7789_color_numbers
+st7789_color_colors
+st7789_pixel
+st7789_line
+end_category
+OLED Display
+init_oled
+write_oled
+show_oled
+clear_oled
+fill_oled
+end_category
+LED Matrix
+tm1640_init
+tm1640_write
+tm1640_brig
+tm1640_num
+tm1640_custom
+end_category
+end_category

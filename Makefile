@@ -82,6 +82,7 @@ unpkg:
 
 blockly:
 	@printf "[4/6] Fetching $(PURPLE)blockly$(NC).\n"
+	@rm -rf blockly
 	@git clone https://github.com/google/blockly.git --depth 1
 	@cp blockly/blockly_compressed.js static/libs/blockly.umd.js
 	@cp blockly/blocks_compressed.js static/page/blocks/blocks/logic.umd.js
@@ -171,6 +172,7 @@ zip:
 	@cp static/page/blocks/*.umd.js .BIPES/static/page/blocks
 	@cp -r static/page/blocks/msg .BIPES/static/page/blocks
 	@cp -r static/page/blocks/media .BIPES/static/page/blocks
+	@cp -r static/page/blocks/images .BIPES/static/page/blocks
 	@cp -r static/page/device/media .BIPES/static/page/device
 	@cp -r static/media .BIPES/static/
 	@cp -r static/msg .BIPES/static/

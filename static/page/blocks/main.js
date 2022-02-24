@@ -18,6 +18,9 @@ class Blocks {
     this.inited = false
     this.loadedWorkspace = false
 
+    // Color converter for blocks
+    this.convertColor = blocksConvertColor
+
     let $ = this._dom = {}
 
     $.section = new DOM (DOM.get('section#blocks'))
@@ -306,5 +309,51 @@ Blockly.Themes.Dark = Blockly.Theme.defineTheme('dark', {
     'blackBackground': '#333',
   },
 })
+
+let blocksConvertColor = {
+  /** Converts RGB to HEX
+  * @param {number} r - Red color, from 0 to 255.
+  * @param {number} g - Green color, from 0 to 255.
+  * @param {number} b - Blue color, from 0 to 255.
+  * @returns {string} HEX code for the RGB color.
+  */
+  RGB2HEX:(r, g, b) => {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b)
+  },
+  /**Converts HEX to RGB
+  * @param {string} hex - HEX code
+  * @returns {(Object|null)} RGB code for the RGB color.
+  */
+  HEX2RGB:(hex) => {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  },
+  /**Converts HUE to HEX
+  * @param {number} h - Hue, from 0 to 360.
+  * @param {number} s - Saturation, from 0 to 100.
+  * @param {number} l - Lightness, from 0 to 100.
+  * @returns {string} HEX code for the HUE color.
+  */
+  HUE2HEX:(h,s,l) => {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+}
 
 export let blocks = new Blocks()

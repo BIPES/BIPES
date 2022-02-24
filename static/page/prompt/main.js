@@ -204,7 +204,6 @@ class Prompt {
     let cols = (this._dom.section.width - 5*16)/7,
         rows = (this._dom.section.height/17 - 4*16/14)
 
-  console.log(cols)
     this.prompt.resize(parseInt(cols), parseInt(rows))
   }
 }

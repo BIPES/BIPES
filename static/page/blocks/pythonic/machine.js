@@ -1,3 +1,64 @@
+// CPU ------------------------------------------------------------------------
+
+Blockly.Python['set_freq'] = function(block) {
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var value_command = Blockly.Python.valueToCode(block, 'freq', Blockly.Python.ORDER_ATOMIC);
+  var code = 'machine.freq(' + value_command + ')\n';
+  return code;
+};
+
+Blockly.Python['get_freq'] = function(block) {
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var code = 'machine.freq()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python["machine_unique_id"] = function(block) {
+		Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "machine.unique_id()\n";
+	return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+Blockly.Python["machine_reset_cause"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "machine.reset_cause()";
+	return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+
+Blockly.Python['reset'] = function(block) {
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  var code = 'machine.reset()\n';
+  return code;
+};
+
+Blockly.Python["reset_cause_soft"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "machine.SOFT_RESET";
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python["reset_cause_hard"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "machine.HARD_RESET";
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python["reset_cause_wdt"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "machine.WDT_RESET";
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python["reset_cause_deep"] = function(block) {
+	Blockly.Python.definitions_['import_machine'] = 'import machine';
+	var code = "machine.DEEPSLEEP_RESET";
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+// In/Out Pins ----------------------------------------------------------------
+
 Blockly.Python['pinout'] = function(block) {
   var pin = block.getFieldValue('PIN');
 

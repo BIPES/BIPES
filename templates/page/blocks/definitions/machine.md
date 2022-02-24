@@ -1,6 +1,45 @@
 # %{MACHINE}
 <category name="%{MACHINE}">
 
+# CPU
+<category name="CPU">
+
+# ESP32 CPU
+<label text="ESP32 CPU"></label>
+
+# get_freq
+<block type="get_freq"></block>
+    
+# set_freq
+<block type="set_freq">
+ <value name="freq">
+    <shadow type="math_number">
+      <field name="NUM">160000000</field>
+    </shadow>
+  </value>
+</block>
+
+# reset
+<block type="reset"></block>
+
+# machine_unique_id
+<block type="machine_unique_id"></block>
+
+# machine_reset_cause
+<block type="machine_reset_cause"></block>
+
+# reset_cause_soft
+<block type="reset_cause_soft"></block>
+
+# reset_cause_hard
+<block type="reset_cause_hard"></block>
+
+# reset_cause_wdt
+<block type="reset_cause_wdt"></block>
+
+# reset_cause_deep
+<block type="reset_cause_deep"></block>
+    
 # inout_pins_label
 <category name="In/Out Pins">
 <label text="In/Out Pins"></label>

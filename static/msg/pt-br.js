@@ -8,7 +8,7 @@ Blockly.Msg["VARIABLES"] = "Variáveis";
 Blockly.Msg["FUNCTIONS"] = "Funções";
 Blockly.Msg["TIMING"] = "Temporização";
 Blockly.Msg["MACHINE"] = "Máquina";
-
+Blockly.Msg["DISPLAYS"] = "Displays";
 
 Msg = {
   'PageBlocks': 'Blocos',
