@@ -20,3 +20,5 @@ BIPES
 
 server/*.txt
 static/import/*
+
+licenses/

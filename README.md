@@ -71,6 +71,7 @@ development server, these are:
  * Flask
  * sphinx
  * sphinx-js
+ * paho
 
 #### JavaScript libraries
 
@@ -80,7 +81,8 @@ The JavaScript libraries are:
  * xterm.js
  * blockly
  * rollup
-
+ * paho-mqtt
+ 
 which are directly fetched or "compiled" with `node.js`.
 
 

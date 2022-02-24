@@ -10,10 +10,10 @@ SUSE_DEPS = python python3-pip npm17 mosquitto
 NPM_DEPS = jsdoc
 
 
-all: yn-dependencies umd-deps unpkg blockly pip database yn-mosquitto clean greeting run
+all: yn-dependencies umd-deps unpkg blockly pip database yn-mosquitto licenses clean greeting run
 
 yn-dependencies:
-	@printf "$(NC)[1/6] The dependencies $(PURPLE)$(DEPS) $(NPM_DEPS)$(NC) are needed.\n"
+	@printf "$(NC)[1/7] The dependencies $(PURPLE)$(DEPS) $(NPM_DEPS)$(NC) are needed.\n"
 	@read -p "Install dependencies? (requires sudo) [y/N]: " dep ; \
 	if [ "$$dep" = 'y' ] || [ "$$dep" = 'Y' ] ; \
 	then \
@@ -46,7 +46,7 @@ greeting:
 	@printf "😄 $(NC)Thanks for giving $(PURPLE)BIPES$(NC) a try!\n"
 
 umd-deps:
-	@printf "[2/6] Fetching and building $(PURPLE)rollup$(NC) amd \
+	@printf "[2/7] Fetching and building $(PURPLE)rollup$(NC) amd \
 	$(PURPLE)codemirror$(NC) with npm.\n"
 	@npm install rollup \
 	rollup-plugin-terser \
@@ -72,7 +72,7 @@ umd-deps:
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 unpkg:
-	@printf "[3/6] Fetching $(PURPLE)xterm chart.js murri dash.js paho-mqtt$(NC).\n"
+	@printf "[3/7] Fetching $(PURPLE)xterm chart.js murri dash.js paho-mqtt$(NC).\n"
 	@wget -O static/libs/xterm.umd.js https://unpkg.com/xterm@4.15.0/lib/xterm.js
 	@wget -O static/libs/chart.umd.js https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js
 	@wget -O static/libs/chart-adapter-date-fns.bundle.umd.js https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js
@@ -81,7 +81,7 @@ unpkg:
 	@wget -O static/libs/paho-mqtt.umd.js  https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js
 
 blockly:
-	@printf "[4/6] Fetching $(PURPLE)blockly$(NC).\n"
+	@printf "[4/7] Fetching $(PURPLE)blockly$(NC).\n"
 	@rm -rf blockly
 	@git clone https://github.com/google/blockly.git --depth 1
 	@cp blockly/blockly_compressed.js static/libs/blockly.umd.js
@@ -96,7 +96,7 @@ blockly:
 	@rm -rf blockly
 
 pip:
-	@printf "[5/6] Creating enviroment and installing $(PURPLE)flask flask-mqtt paho \
+	@printf "[5/7] Creating enviroment and installing $(PURPLE)flask flask-mqtt paho \
 	sphinx sphinx-js furo$(NC).\n"
 	@python3 -m venv venv
 	@. venv/bin/activate && \
@@ -109,7 +109,7 @@ database:
 	exit
 
 yn-mosquitto:
-	@printf "[6/6] $(PURPLE)BIPES$(NC) uses a $(PURPLE)mosquitto$(NC) MQTT broker.\n"
+	@printf "[6/7] $(PURPLE)BIPES$(NC) uses a $(PURPLE)mosquitto$(NC) MQTT broker.\n"
 	@read -p "Setup mosquitto? (requires sudo) [y/N]: " mos ; \
 	if [ "$$mos" = 'y' ] || [ "$$mos" = 'Y' ] ; \
 	then \
@@ -140,6 +140,14 @@ mosquitto:
 	sudo systemctl disable mosquitto ; \
 	fi
 
+licenses:
+	@mkdir -p licenses
+	@wget -O licenses/xtermjs.xterm.js-LICENSE https://raw.githubusercontent.com/xtermjs/xterm.js/master/LICENSE
+	@wget -O licenses/chartjs.chart.js-LICENSE https://raw.githubusercontent.com/chartjs/Chart.js/master/LICENSE.md
+	@wget -O licenses/muuri.muuri.js-LICENSE https://raw.githubusercontent.com/haltu/muuri/master/LICENSE.md
+	@wget -O licenses/eclipse.mosquitto_paho-LICENSE https://raw.githubusercontent.com/eclipse/mosquitto/master/LICENSE.txt
+	@wget -O licenses/google.blockly-LICENSE https://raw.githubusercontent.com/google/blockly/master/LICENSE
+	@wget -O licenses/codemirror.codemirror6-LICENSE  https://raw.githubusercontent.com/codemirror/codemirror.next/master/LICENSE
 
 run:
 	@printf "Running $(PURPLE)BIPES$(NC) in development mode.\n"
