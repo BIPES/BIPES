@@ -2,13 +2,9 @@ preview
 *{
     -webkit-tap-highlight-color: transparent;
 }
-@font-face {
-        font-family: "OpenSans";
-        src: url("./media/OpenSans.ttf");
-}
 
 body, input{
-  font: 1em 'OpenSans', sans-serif;
+  font: 1em sans-serif;
   margin: 0;
   overflow: hidden;
   box-sizing: border-box;
