@@ -22,6 +22,8 @@ class Dashboard {
     this.inited = false
     this.tree               //  Reference to project dashboard tree
 
+    this.easyMQTT = easyMQTT // Alias to make acessible
+
     let $ = this._dom = {}
 		$.dashboard = new DOM('div', {id:'dashboard'})
 		$.grid = new DOM('div', {id:'grid'})
