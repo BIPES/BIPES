@@ -20,7 +20,8 @@ Blockly.Msg['CONTROL'] = "Controle";
 Blockly.Msg['IMU'] = "Medidas inerciais";
 Blockly.Msg['AIR'] = "Qualidade do ar";
 
-Msg = {
+var Msg = {
+  // Pages names
   'PageBlocks': 'Blocos',
   'PageDevice': 'Dispositivo',
   'PageFiles': 'Arquivos',
@@ -29,6 +30,7 @@ Msg = {
   'PagePrompt': 'Console',
   'PageDashboard':'Painel',
   
+  // Common actions and strings
   'Download':'Baixar',
   'Remove':'Remover',
   'Delete':'Deletar',
@@ -41,8 +43,10 @@ Msg = {
   'Unshare':'Descompartilhar',
   'Upload':'Enviar',
   'Import':'Importar',
-
   'Filename':'Nome do arquivo',
+  'eg':"ex",
+
+  // Page Files
   'FileManager':'Gerenciador de arquivos',
   'HideShowProjectTree':'Ocultar/mostrar árvore de projecto',
   'DirectoriesNotExistMapped':"Alguns diretórios não existem ou não foram mapeados.",
@@ -59,9 +63,6 @@ Msg = {
   'NewFilename':"Nome do arquivo novo",
   'NewFolderName':"Nome da pasta nova",
   'ProjectName':'Nome do projeto',
-  'DashboardName':'Nome do painel',
-  'Dashboard':'Painel',
-  'eg':"ex",
   'my_script':"meu_script",
   'my_examples':"meus_exemplos",
   'CreatePathFileBeforeSaving':'Crie a paste ou arquivo para "{0}" antes de salvar o projeto.',
@@ -72,11 +73,13 @@ Msg = {
   'FolderNotEmpty':'Pasta "{0}/{1}" não está vazia e não pode ser removida.',
   'CreateScriptHere':'# Crie o seu script "{0}" aqui.',
   
+  // Page Blocks
   'ViewBlocksCode':'Ver/esconder código gerado pelos blocos.',
   'BlocksEditAsFile':'Copiar código e editar',
   'RunBlocks':'Executar blocos no dispositivo.',
   'BlocksPy':'blocos.py',
 
+  // Page Device
   'Unknown':'desconhecido',
   'ConnectedDevice':'Dispositivo conectado.',
   'NotConnected':'não conectado',
@@ -95,6 +98,7 @@ Msg = {
   'OnOtherTab':'Em outra aba',
   'DeviceUnresponsive':'Dispositivo {0} versão {1} não está respondendo, considere resetá-lo.',
 
+  // Status bar
   'TasksRunning':'Tarefas em execução',
   'StatusOngoingInput':'Recebendo comandos',
   'StatusReady':'Pronto',
@@ -123,12 +127,16 @@ Msg = {
   'NoOlderProjects':'Não há projetos mais antigos',
   'SharedProjectDoesNotExist':'Projeto compartilhado não existe mais',
 
+  // Page Prompt
   'ClearConsole':'Limpar console',
   'ResetDevice':'Resetar aparelho',
   'StopExecution':'Parar execução',
   'StopTimers':'Parar timers',
   'DeviceInfo':'Info. do dispositivo',
 
+  // Page Dashboard
+  'DashboardName':'Nome do painel',
+  'Dashboard':'Painel',
   'Session':'Sessão',
   'MQTTSession':'Sessão MQTT',
   'NewDashboard':'Novo painel',
@@ -141,10 +149,9 @@ Msg = {
   'DownloadCSV':'Baixar CSV',
   'DragMe':'Me arraste',
 
-
-
+  //Blocos
+  //Pinout
   'DeviceChangedCheckPins':'Verifique os pinos, o aparelho alvo mudou!',
-//Blocos
   block_delay: "esperar",
   seconds: "segundos",
   milliseconds: "milisegundos",
@@ -203,18 +210,17 @@ Msg = {
   dht_humi: "umidade do DHT11/22",
   type: "modelo",
 
-
-//BMP180
+  //BMP180
   pressure: "pressão",
   temperature: "temperatura",
   altitude: "altura",
   bmp180_init: "Iniciar BMP180",
 
-//SHT20
+  //SHT20
   init_sht20: "Iniciar o SHT20",
   humidity: "umidade",
 
-//Network
+  //Network
   net_http_get: "Requisição HTTP GET",
   net_http_get_status: "Status da resposta HTTP",
   net_http_get_content: "Conteúdo da resposta HTTP",
@@ -225,11 +231,10 @@ Msg = {
   net_http_server_send_response: "Enviar resposta HTTP",
   net_http_server_send_html: "HTML",
 
-
-//Splash screen
+  //Splash screen
   splash_welcome: "Bem vindo ao BIPES!",
   splash_footer: "Não mostrar esta tela novamente",
   splash_close: "Fechar",
   splash_message: "<p><b>BIPES: Block based Integrated Platform for Embedded Systems</B> permite programar, usando texto ou blocos, diversos tipos de sistemas embarcados e módulos para Internet das Coisas usando MicroPython, CircuitPython, Linux ou Snek. Você pode conectar, programar, depurar e monitorar diversos tipos de placas usando rede, wifi, USB ou Bluetooth. Verifique a lista de placas suportadas <a href=https://bipes.net.br/wp/boards/>aqui</a>. Alguns exemplos de placas compatíveis são: STM32, ESP32, ESP8266, Raspberry Pi (incluindo a Pico) e até mesmo  Arduino. <p>O <b>BIPES</b> é totalmente <a href=https://bipes.net.br/wp/development/>aberto</a> e gratuito e funciona sem a necessidade de instalação de nenhum plugin ou software adicional,  além de funcionar offline, sem conexão com a Internet. Esperamos que o BIPES seja útil para você e que você possa aproveitá-lo. Se precisar de ajuda, temos o <a href=https://github.com/BIPES/BIPES/discussions>fórum de discussões</a>, onde <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>novidades também são anunciadas</a>. Sinta-se à vontade para participar e também deixar comentários e sugestões para o projeto!</p><p>Grave o MicroPython, a partir do navegador web, na ESP32 ou ESP8266 facilmente para usar o BIPES: <a href=https://bipes.net.br/flash/esp-web-tools/>https://bipes.net.br/flash/esp-web-tools/</a></p><p>Conheça o livro do BIPES:<a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>A equipe do projeto BIPES agradece o seu interesse!</p>"
-
 }
+

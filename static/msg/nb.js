@@ -7,29 +7,29 @@ Blockly.Msg["LISTS"] = "Lists";
 Blockly.Msg["VARIABLES"] = "Variables";
 Blockly.Msg["FUNCTIONS"] = "Functions";
 Blockly.Msg["TIMING"] = "Timing";
-Blockly.Msg["MACHINE"] = "Machine";
-Blockly.Msg["DISPLAYS"] = "Displays";
-Blockly.Msg['SENSORS'] = "Sensors";
-Blockly.Msg['OUTPUTS'] = "Outputs / Actuators";
-Blockly.Msg['COMM'] = "Communication";
-Blockly.Msg['TEMP_HUMI'] = "Temperature and Humidity";
-Blockly.Msg['PRESS'] = "Pressure";
-Blockly.Msg['FILES'] = "Files";
-Blockly.Msg['NET'] = "Network and Internet";
-Blockly.Msg['CONTROL'] = "Control";
-Blockly.Msg['IMU'] = "Inertial Measurement";
-Blockly.Msg['AIR'] = "Air Quality";
+Blockly.Msg["MACHINE"] = "Maskin";
+Blockly.Msg["DISPLAYS"] = "Skjermer";
+Blockly.Msg['SENSORS'] = "Sensorer";
+Blockly.Msg['OUTPUTS'] = "Ut-enheter / Aktuatorer";
+Blockly.Msg['COMM'] = "Kommunikasjon";
+Blockly.Msg['TEMP_HUMI'] = "Temperatur og fuktighet";
+Blockly.Msg['PRESS'] = "Trykk";
+Blockly.Msg['FILES'] = "Filer";
+Blockly.Msg['NET'] = "Nettverk og Internet";
+Blockly.Msg['CONTROL'] = "Kontroll";
+Blockly.Msg['IMU'] = "Treghetsmåling";
+Blockly.Msg['AIR'] = "Luftkvalitet";
 
 var Msg = {
   // Pages names
-  'PageBlocks':'Blocks',
-  'PageDevice':'Device',
-  'PageFiles':'Files',
+  'PageBlocks':'Blokker',
+  'PageDevice':'Enhet',
+  'PageFiles':'Filer',
   'PageNotification':'Messages',
   'PageProject':'Projects',
   'PagePrompt':'Console',
   'PageDashboard':'Dashboard',
-  
+
   // Common actions
   'Download':'Download',
   'Remove':'Remove',
@@ -151,90 +151,89 @@ var Msg = {
 
   //Blocks
   //Pinout
-  'DeviceChangedCheckPins':'Check pins, target device changed!',
-  block_delay: "delay",
-  seconds: "seconds",
-  milliseconds: "milliseconds",
-  microseconds: "microseconds",
-  to: "to",
-  setpin: "set output pin",
+  'DeviceChangedCheckPins':'Sjekk pinner, målenheten er endret!',
+  block_delay: "forsinkelse",
+  seconds: "sekunder",
+  milliseconds: "millisekunder",
+  microseconds: "mikrosekunder",
+  to: "til",
+  setpin: "sett output-pin",
   pin: "pin",
-  read_digital_pin: "read digital input",
-  read_analog_pin: "read analog input",
+  read_digital_pin: "les digital input",
+  read_analog_pin: "les analog input",
   show_iot: "show on IoT tab",
-  data: "value",
-  set_rtc: "set date and time",
-  get_rtc: "get date and time",
-  year: "year",
-  month: "month",
-  day: "day",
-  hour: "hour",
-  minute: "minute",
-  second: "second",
-  wifi_scan: "scan wifi networks",
-  wifi_connect: "connect to wifi network",
-  wifi_name: "network name",
-  wifi_key: "key/password",
+  data: "verdi",
+  set_rtc: "Sett tid og dato",
+  get_rtc: "Hent tid og dato",
+  year: "år",
+  month: "måned",
+  day: "dag",
+  hour: "time",
+  minute: "minutt",
+  second: "sekund",
+  wifi_scan: "Søk etter wifi nettverk",
+  wifi_connect: "koble til wifi nettverk",
+  wifi_name: "nettverksnavn",
+  wifi_key: "nøkkel/passord",
   easymqtt_start: "EasyMQTT Start",
-  easymqtt_publish: "EasyMQTT Publish Data",
-  topic: "topic",
-  session_id: "session ID",
-  file_open: "open File",
-  file_name: "file name",
-  file_mode: "mode",
-  file_binary: "open in binary mode",
-  file_close: "close file",
-  file_write_line: "write line to file",
-  file_line: "line",
-  try1: "try",
-  exp1: "except",
-  ntp_sync: "sync date and time with NTP",
-  timezone: "timezone",
-  project_info: "Project Info",
-  project_info_author: "Author",
-  project_info_desc: "Description",
-  easymqtt_subscribe: "EasyMQTT subscribe to topic",
-  when: "when",
-  data_received: "is received",
-  easymqtt_receive: "EasyMQTT receive data",
-  relay: "relay",
-  on: "turn on",
-  off: "turn off",
-  relay_on: "relay on pin",
-  yes: "yes",
-  no: "no",
-  wait_for_data: "wait for data",
+  easymqtt_publish: "EasyMQTT Publisere data",
+  topic: "emne",
+  session_id: "sesjonsID",
+  file_open: "Åpne fil",
+  file_name: "filnavn",
+  file_mode: "modus",
+  file_binary: "åpne i binært modus",
+  file_close: "lukke fil",
+  file_write_line: "skriv linje til fil",
+  file_line: "linje",
+  try1: "prøv",
+  exp1: "unntatt",
+  ntp_sync: "synkroniser tid og dato med NTP",
+  timezone: "tidssone",
+  project_info: "Prosjektinfo",
+  project_info_author: "Forfatter",
+  project_info_desc: "Beskrivelse",
+  easymqtt_subscribe: "EasyMQTT abonnere til emne",
+  when: "når",
+  data_received: "er motatt",
+  easymqtt_receive: "EasyMQTT motta data",
+  relay: "rele",
+  on: "slå på",
+  off: "slå av",
+  relay_on: "rele på pin",
+  yes: "ja",
+  no: "nei",
+  wait_for_data: "vent på data",
   dht_start: "Start DHT Sensor",
-  dht_measure: "update DHT11/22 sensor reading",
-  dht_temp: "get DHT11/22 temperature",
-  dht_humi: "get DHT11/22 humidity",
+  dht_measure: "oppdatere DHT11/22 sensor-innlesning",
+  dht_temp: "hent DHT11/22 temperatur",
+  dht_humi: "hent DHT11/22 luftfuktighet",
   type: "type",
 
   //BMP180
-  pressure: "pressure",
-  temperature: "temperature",
-  altitude: "altitude",
-  bmp180_init: "Init BMP180",
+  pressure: "trykk",
+  temperature: "temperatur",
+  altitude: "høyde",
+  bmp180_init: "Initiere BMP180",
 
   //SHT20
-  init_sht20: "Init SHT20",
-  humidity: "humidity",
+  init_sht20: "Initiere SHT20",
+  humidity: "luftfuktighet",
 
   //Network
-  net_http_get: "HTTP GET Request",
-  net_http_get_status: "HTTP Status code",
-  net_http_get_content: "HTTP Response content",
+  net_http_get: "HTTP GET forespørsel",
+  net_http_get_status: "HTTP Statuskode",
+  net_http_get_content: "HTTP svarinnhold",
   net_http_server_start: "Start HTTP Web Server",
   net_http_server_start_port: "Port",
-  net_http_server_wait: "Wait for HTTP Client",
-  net_http_server_requested_page: "Requested Web Page",
-  net_http_server_send_response: "Send HTTP Response",
+  net_http_server_wait: "Vent på HTTP Client",
+  net_http_server_requested_page: "Forespurt webside",
+  net_http_server_send_response: "Send HTTP svar",
   net_http_server_send_html: "HTML",
 
   //Splash screen
-  splash_welcome: "Welcome to BIPES!",
-  splash_footer: "Do not show this screen again",
-  splash_close: "Close",
-  splash_message: "<p><b>BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.  <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about BIPES</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p><p>Now you can easily load MicroPython on your ESP32 or ESP8226 to use with BIPES: <a href=https://bipes.net.br/flash/esp-web-tools/>https://bipes.net.br/flash/esp-web-tools/</a></p><p>Checkout BIPES Book at <a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>Thank you from the BIPES Team!</p>"
-}
-
+  splash_welcome: "Velkommen til BIPES!",
+  splash_footer: "Ikke vise denne skjermen igjen",
+  splash_close: "Lukk",
+  splash_message: "<p><b>BIPES: Blokkbasert Integrasjon for koblede systemer</B> Tillater tekst og blokkbasert programmering på forskjellige typer koblede systemer og IoT (Internet of Things)-moduler ved hjelp av MicroPython, CircuitPython, Python eller Snek. You kan koble, programmer, feilsøke og monitorere forskjellige kretskort via nettverk, USB eller Bluetooth. Sjekk listen over <a href=https://bipes.net.br/wp/boards/>kompatible kort her</a>. Kompatible kort inkluderer STM32, ESP32, ESP8266, Raspberry Pi Pico og til og med Arduino.  <p><b>BIPES</b> er fullstendig <a href=https://bipes.net.br/wp/development/>open source</a> og basert på HTML og JavaScript, så man trenger ikke installere eller konfigurere noe. Du kan også bruke det offline! Vi håper BIPES er nyttig for deg, og at du vil like og bruke BIPES. Hvis du trenger hjelp, så har vi et <a href=https://github.com/BIPES/BIPES/discussions>diskusjonsforum</a>, der vi også poster <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>nye funksjoner og kunngjøringer for BIPES</a>. Ta en kikk!Vi inviterer deg også til å bruke forumet til å legge igjen feedback og forslag for BIPES!</p><p>Nå kan du lett laste inn MicroPython på din ESP32 eller ESP8226 for å bruke med BIPES: <a href=https://bipes.net.br/flash/esp-web-tools/>https://bipes.net.br/flash/esp-web-tools/</a></p><p>Sjekk BIPES-boken her <a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>Takk fra BIPES Teamet!</p>"
+};

@@ -91,6 +91,11 @@ blockly:
 	@cp blockly/msg/js/de.js static/page/blocks/msg/de.js
 	@cp blockly/msg/js/pt-br.js static/page/blocks/msg/pt-br.js
 	@cp blockly/msg/js/es.js static/page/blocks/msg/es.js
+	@cp blockly/msg/js/fr.js static/page/blocks/msg/fr.js
+	@cp blockly/msg/js/it.js static/page/blocks/msg/it.js
+	@cp blockly/msg/js/nb.js static/page/blocks/msg/nb.js
+	@cp blockly/msg/js/zh-hans.js static/page/blocks/msg/zh-hans.js
+	@cp blockly/msg/js/zh-hant.js static/page/blocks/msg/zh-hant.js
 	@mkdir -p static/page/blocks/media
 	@cp blockly/media/* static/page/blocks/media
 	@rm -rf blockly

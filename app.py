@@ -16,7 +16,7 @@ app_version = '3.0'
 # Note: this is overwritten by the Makefile's lang arg on the "make release" command.
 default_lang = 'en'
 # Languages available, used in the templates generators.
-available_lang = ['en','pt-br','de','es']
+available_lang = ['en','pt-br','de','es','fr','it','nb','zh-hans','zh-hant']
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
 
 # Preferred order in the navigation bar
