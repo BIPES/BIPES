@@ -117,6 +117,8 @@ var Msg = {
   'ScanningInfo':'Verificado {0} de {1} IPs, encontrado {2}:',
   'DoneScanning':'{0} IPs verificados, encontrado {1}:',
   'NewWebSocket':'Nova conexão via WebSocket',
+
+  // Page Project
   'YourProjects':'Seus projetos',
   'SharedProjects':'Projetos compartilhados',
   'By':'Por',
@@ -126,6 +128,10 @@ var Msg = {
   'LoadMore':'Carregar mais',
   'NoOlderProjects':'Não há projetos mais antigos',
   'SharedProjectDoesNotExist':'Projeto compartilhado não existe mais',
+  'Language':'Idioma',
+
+  // Page Notification
+  'Forum':'Fórum',
 
   // Page Prompt
   'ClearConsole':'Limpar console',

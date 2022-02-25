@@ -41,11 +41,11 @@
      units="px"
      width="432px"
      height="24px"
-     inkscape:zoom="1"
-     inkscape:cx="398"
-     inkscape:cy="92.5"
+     inkscape:zoom="2"
+     inkscape:cx="862.5"
+     inkscape:cy="68.25"
      inkscape:window-width="2560"
-     inkscape:window-height="1018"
+     inkscape:window-height="1014"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -163,7 +163,7 @@
     <g
        style="fill:#ffffff"
        id="g907"
-       transform="matrix(0.26458333,0,0,0.26458333,82.774776,30.546808)">
+       transform="matrix(0.26458333,0,0,0.26458333,285.75,-1.9999999e-8)">
       <path
          d="M 0,0 H 24 V 24 H 0 Z"
          fill="none"
@@ -316,7 +316,7 @@
     <g
        style="fill:#ffffff"
        id="g1533-2"
-       transform="matrix(0.26458333,0,0,0.26458333,49.866443,30.546808)">
+       transform="matrix(0.26458333,0,0,0.26458333,292.1,-2e-8)">
       <path
          d="M 0,0 H 24 V 24 H 0 Z M 0,0 H 24 V 24 H 0 Z"
          fill="none"

@@ -322,9 +322,9 @@ class DOM {
     document.body.removeChild(element)
   }
   /**
-   * Set a option of a select list by its value.
+   * Set a option of a select list by its innerText.
    * @param {Object} dom - Node of the select list.
-   * @param {string} value - Value of the target option.
+   * @param {string} value - Inner text of the target option.
    */
   static setSelected (dom, value){
     for (var i = 0; i < dom._dom.options.length; i++){

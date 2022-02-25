@@ -116,6 +116,8 @@ var Msg = {
   'InvalidPrefix':'Invalid network prefix',
   'ScanningInfo':'Scanned {0} of {1} IPs, found {2}:',
   'DoneScanning':'Done scanning {0} IPs, found {1}:',
+
+  // Page Project
   'NewWebSocket':'New WebSocket connection',
   'YourProjects':'Your projects',
   'SharedProjects':'Shared projects',
@@ -126,6 +128,10 @@ var Msg = {
   'LoadMore':'Load more',
   'NoOlderProjects':'No older shared projects',
   'SharedProjectDoesNotExist':'Shared project does not exist anymore',
+  'Language':'Language',
+
+  // Page Notification
+  'Forum':'Forum',
 
   // Page Prompt
   'ClearConsole':'Clear console',

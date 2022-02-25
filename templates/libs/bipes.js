@@ -6,6 +6,11 @@ import { {{item}} } from '../../static/base/{{item}}.js'
 import { {{item}} } from '../../static/page/{{item}}/main.js'
 {% endfor %}
 
+let languages = {}
+{% for key, value in available_lang.items() -%}
+languages['{{ key }}'] = "{{ value }}"
+{% endfor %}
+
 export default function Bipes (){
   window.bipes = {}
   bipes.theme = '{{ theme }}'
@@ -24,7 +29,8 @@ export default function Bipes (){
   bipes.navigation = navigation
 
   bipes.page.project._init()
-  bipes.navigation.init()
+
+  bipes.navigation.init(languages)
 }
 
 {% if import_type == "module" -%}

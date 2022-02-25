@@ -1,5 +1,5 @@
 <!doctype html>
-
+<html  lang='{{ lang }}'>
 <head>
   <title>{{ app_name }}</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
@@ -40,6 +40,7 @@
 {% endfor %}
 
 <div id='status-bar'>
+  <div id='extra'></div>
   <div id='globals'></div>
 </div>
 
@@ -51,3 +52,4 @@
 {% endif %}
 
 </body>
+</html>

@@ -844,13 +844,24 @@ div#status-bar {
   right: 0;
   text-align: right;
   box-shadow: 0 0 .25em rgba(0,0,0,.25);
+  display: flex;
+  justify-content: space-between;
 }
 div#status-bar #globals {
   display: inline-block;
   min-width: 5rem;
   height: 1.5rem;
 }
-div#status-bar button.status-icon {
+div#status-bar select  {
+  border-radius: 0;
+  padding: 0;
+  border: none;
+  opacity: 0;
+  width: 6rem;
+  position: absolute;
+}
+div#status-bar button.status-icon,
+div#status-bar span.status-icon  {
   padding: .125rem .25rem;
   cursor: pointer;
   transition: background-color ease .125s;
@@ -859,7 +870,8 @@ div#status-bar button.status-icon {
   align-items: center;
   background-color: rgba(68,153,204,0);
 }
-div#status-bar button.status-icon:before {
+div#status-bar button.status-icon:before,
+div#status-bar span.status-icon:before {
 	display: inline-block;
 	width: 1.25rem;
 	height: 1.25rem;
@@ -870,9 +882,28 @@ div#status-bar button.status-icon:before {
 	flex-shrink: 0;
 	margin-right: .125rem;
 }
+div#status-bar #extra button,
+div#status-bar #extra span {
+  opacity: 0.8;
+}
+div#status-bar #extra button:hover,
+div#status-bar #extra span:hover {
+  opacity: 1;
+}
+div#status-bar span.status-icon:hover,
+div#status-bar span.status-icon:focus,
 div#status-bar button.status-icon:hover,
 div#status-bar button.status-icon:focus {
   background-color: rgba(68,153,204,.5);
+}
+div#status-bar span#language select {
+  cursor: pointer;
+}
+div#status-bar span#language:before {
+  background-position: left calc(-1.25rem*46) top;
+}
+body.light div#status-bar span#language:before {
+  filter: invert(1);
 }
 
 @media screen and (max-width:39.99rem) {

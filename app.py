@@ -16,7 +16,17 @@ app_version = '3.0'
 # Note: this is overwritten by the Makefile's lang arg on the "make release" command.
 default_lang = 'en'
 # Languages available, used in the templates generators.
-available_lang = ['en','pt-br','de','es','fr','it','nb','zh-hans','zh-hant']
+available_lang = {
+    'en':'English',
+    'pt-br':'Brazilian Portuguese',
+    'de':'German',
+    'es':'Spanish',
+    'fr':'French',
+    'it':'Italian',
+    'nb':'Norwegian',
+    'zh-hans':'Chinese (simplified)',
+    'zh-hant':'Chinese (traditional)'
+}
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
 
 # Preferred order in the navigation bar
@@ -160,7 +170,8 @@ def ide(lang=None, import_type='module'):
   
     return render_template('ide.html', app_name=app_name, app_version=app_version,
                            page=page, imports=imports, explicit_imports=explicit_imports,
-                           lang_imports=lang_imports, import_type=import_type)
+                           lang_imports=lang_imports, lang=lang,
+                           import_type=import_type)
 
 
 # Render language string imports
@@ -246,5 +257,6 @@ def bipes_imports(import_type='module'):
     page = get_files_names("static/page/*", r"^static/page/(.*)")
 
     return render_template('libs/bipes.js', base=base,
-                           page=page, import_type=import_type)
+                           page=page, import_type=import_type,
+                           available_lang=available_lang)
 

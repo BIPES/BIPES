@@ -24,6 +24,18 @@ class Notification {
       .append($.container._dom)
     $.section._dom.classList.add('default')
 
+    // Add Forum button to status
+    new DOM(DOM.get('div#status-bar #extra')).append([
+      new DOM('button', {
+        className:'status-icon',
+        id:'forum',
+        innerText:Msg['Forum'],
+        title:Msg['Forum']
+      }).onclick(this, () => {
+        open('https://github.com/BIPES/BIPES/discussions', '_blank').focus()
+      })
+    ])
+
     // Cross tabs event handler on sending and deleting messages
     command.add(this, {
         send: this._send,

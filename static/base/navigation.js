@@ -174,12 +174,17 @@ class Navigation {
     $.panels = DOM.get('#panels', $.nav)
     $.menu.onclick = () => {
       DOM.switchState (this._dom.nav)
+    $.langugeDropdown
     }
 
     // Set theme from url
     document.body.className = Tool.fromUrl('theme')
   }
-  init (){
+  /**
+   * Init pages and add language switcher.
+   * @{Object} languages - Languages to show in the switcher
+   */
+  init (languages){
     for (let module in bipes.page) {
       let a = DOM.get(`a#${module}`, this._dom.panels)
       a.innerText = Msg[`Page${Tool.firstUpper(module)}`]
@@ -218,6 +223,30 @@ class Navigation {
         bipes.page[module].connectPipes()
       }
     }
+
+    // Add Language dropdown button to status
+    let _languages = []
+    for (const key in languages){
+      _languages.push(
+        new DOM('option', {innerText:languages[key], value:key})
+      )
+    }
+    this._dom.languageDropdown = new DOM('select', {
+      title:Msg['Language']
+    })
+    .append(_languages)
+    .onevent('change', this, () => {
+      location.href = `${location.origin}/ide-${this._dom.languageDropdown.value}`
+    })
+    new DOM(DOM.get('div#status-bar #extra')).append([
+     new DOM('span', {
+      innerText:Msg['Language'],
+      className:'status-icon',
+      id:'language'
+      }).append(this._dom.languageDropdown)
+    ])
+    // Select current language
+    this._dom.languageDropdown._dom.value = document.documentElement.lang
   }
 }
 
