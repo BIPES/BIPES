@@ -24,12 +24,6 @@ BIPES Help&Development
    :hidden:
    :caption: In depth
 
-   core/ui
-   core/channel
-   core/storage
-   core/utils
-   core/code
-
 Welcome to BIPES Help&Development, here is all information about the BIPES code base,
 alongside with tutorials to get started!
 

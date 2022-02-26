@@ -174,13 +174,18 @@ build-release:
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.bipes.js
 
 zip:
-	@rm -rf BIPES.zip
+	@rm -rf BIPES.zip && rm -rf .BIPES
 	@mkdir -p .BIPES
-	@cp ide-*.html .BIPES/
+	@mv ide-*.html .BIPES/
 	@cd .BIPES && ln -s ide-$(lang).html ide.html
+	@mkdir -p .BIPES/docs
+	@mkdir -p .BIPES/server
 	@mkdir -p .BIPES/static/libs
 	@mkdir -p .BIPES/static/page/blocks
 	@mkdir -p .BIPES/static/page/device
+	@cp -r server/*.py .BIPES/server/
+	@cp server/conf/release.py .BIPES/app.py
+	@cp server/conf/app.wsgi .BIPES/app.wsgi
 	@cp static/libs/*.js .BIPES/static/libs
 	@cp static/page/blocks/*.umd.js .BIPES/static/page/blocks
 	@cp -r static/page/blocks/msg .BIPES/static/page/blocks
@@ -189,6 +194,7 @@ zip:
 	@cp -r static/page/device/media .BIPES/static/page/device
 	@cp -r static/media .BIPES/static/
 	@cp -r static/msg .BIPES/static/
+	@cp -r docs/_build .BIPES/docs/ 2>/dev/null || :
 	@cp static/style.css .BIPES/static
 	@cd .BIPES && zip -y -q -r BIPES.zip * && \
 	mv BIPES.zip ../BIPES.zip
@@ -211,20 +217,52 @@ clean: build-clean
 
 doc:
 	@. venv/bin/activate && \
-	cd docs && make html  
+	cd docs && make html
+	@printf "Documentation generated successfully.\n"
+
+path ?= /srv/www/bipes3
+path_venv = $(path)/venv
+
+deploy:  build-release zip deploy-move build-clean | $(path_venv)
+
+deploy-move:
+	@sudo rm -rf $(path)/static
+	@sudo rm -rf $(path)/server
+	@sudo rm -rf $(path)/docs
+	@sudo rm -rf $(path)/*.html
+	@sudo mkdir -p $(path)
+	@sudo mv ./.BIPES/* $(path)
+	@sudo mkdir -p $(path)/logs
+	@sudo chown -R wwwrun:www $(path)
+
+$(path_venv):
+	@echo "Creating enviroment..."
+	@cd $(path) && \
+	sudo python3 -m venv venv && \
+	. venv/bin/activate && \
+	sudo pip install Flask flask-mqtt sphinx sphinx-js furo && \
+	exit
+
 
 help:
 	@printf "$(NC)Usage: make [options] $(PURPLE)[params]$(NC) ...\n"
 	@printf "Options:\n\
-	 all			Build BIPES from source ${BLUE}[default]${NC}.\n\
-	 			Will use either dnf or apt to install the \n\
-	 			dependencies, depending on what's available\n\
-	 			on your system.\n\
-	 release $(PURPLE)lang=LANG$(NC)	Build release, a static, server/serverless \n\
-	 			version of BIPES. Use the $(PURPLE)lang$(NC) param to setup \n\
-	 			a default language.\n\
-	 run                    Run in development mode.\n\
-	 clean			Clean all build files.\n\
-	 doc                    Render the documentation into HTML.\n\
-	 mosquitto              Setup mosquitto MQTT broker.\n"
+	  all                    Build BIPES from source ${BLUE}[default]${NC}.\n\
+	                         Will use either dnf or apt to install the \n\
+	                         dependencies, depending on what's available\n\
+	                         on your system.\n\
+	  release $(PURPLE)lang=LANG$(NC)      Build release, a static, server/serverless \n\
+	                         version of BIPES. Use the $(PURPLE)lang$(NC) param to setup \n\
+	                         a default language.\n\
+	  run                    Run in development mode.\n\
+	  clean                  Clean all build files.\n\
+	  doc                    Render the documentation into HTML.\n\
+	  mosquitto              Setup mosquitto MQTT broker.\n\
+	\n\
+	Deployment options:\n\
+	  deploy $(PURPLE)path=PATH$(NC)       Deploy release to mod_wsgi (Apache).\n\
+	                         The $(PURPLE)path$(NC) param sets the deployed version\'s\n\
+	                         absolute path.\n\
+	                         Make sure to configure Apache beforehand by\n\
+	                         following flask\'s deploying mod_wsgi tutorial.\n"
 	 

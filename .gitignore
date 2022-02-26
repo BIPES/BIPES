@@ -22,3 +22,4 @@ server/*.txt
 static/import/*
 
 licenses/
+docs/_build

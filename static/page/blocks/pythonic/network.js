@@ -126,7 +126,7 @@ Blockly.Python['mqtt_disconnect'] = function(block) {
 // EasyMQTT --------------------------------------------------------------------
 /// EasyMQTT Init
 Blockly.Python['easymqtt_init'] = function(block) {
-  var server = '"bipes.net.br"';
+  var server = `"${location.hostname}"`;
   var port = '1883';
   var user = '"bipes"';
   var pass = '"1234"'; // ::TODO:: Remove (allow anonymus) or template it.
