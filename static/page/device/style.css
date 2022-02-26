@@ -68,8 +68,18 @@ section#device .device-connect.master button > div,
 section#device button.unsupported > div {
   cursor: default !important;
 }
-section#device #devices .funky:not(.master) button {
+section#device #devices .device-connect:not(.master) button {
   cursor: pointer
+}
+section#device .device-connect.master .silk {
+  display: none;
+}
+section#device .device-connect:not(.master) .silk {
+  position: absolute;
+  width: 15rem;
+  height: 9em;
+  margin-top: -4rem;
+  margin-left: -2rem;
 }
 section#device button:not(.unsupported) span {
   display: none;
@@ -139,6 +149,7 @@ section#device .device-connect.master button.on button#fetch {
   display: inline-flex;
   filter: invert(1);
 }
+section#device .device-connect.master button:focus > div,
 section#device .device-connect.master button:active > div,
 section#device button.unsupported:active > div{
   transform: scale(1) !important;

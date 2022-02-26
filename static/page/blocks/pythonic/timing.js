@@ -135,6 +135,41 @@ Blockly.Python['ticks_diff'] = function(block) {
 
 };
 
+Blockly.Python['timer'] = function(block) {
+
+  var interval = block.getFieldValue('interval');
+  var timerNumber = block.getFieldValue('timerNumber');
+  var statements_name = Blockly.Python.statementToCode(block, 'statements');
+  var dropdown_mode = block.getFieldValue('MODE');
+
+  // Fix for global variables inside callback
+  // Piece of code from generators/python/procedures.js
+  // Define a procedure with a return value.
+  // First, add a 'global' statement for every variable that is not shadowed by
+  // a local parameter.
+  var globals = [];
+  var workspace = block.workspace;
+  var variables = Blockly.Variables.allUsedVarModels(workspace) || [];
+  for (var i = 0, variable; (variable = variables[i]); i++) {
+    var varName = variable.name;
+    if (block.getVars().indexOf(varName) == -1) {
+      globals.push(Blockly.Python.nameDB_.getName(varName,
+          Blockly.VARIABLE_CATEGORY_NAME));
+    }
+  }
+  globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') + '\n' : '';
+
+  Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
+  Blockly.Python.definitions_[`import_timer_start${timerNumber}`] = `tim${timerNumber} = Timer(${timerNumber})`;
+
+  Blockly.Python.definitions_[`import_timer_callback${timerNumber}`] = `\n#Timer Function Callback\ndef timerFunc${timerNumber}(t):\n${globals}${statements_name}\n\n`;
+
+  var code = `tim${timerNumber}.init(period=${interval}, mode=Timer.${dropdown_mode}, callback=timerFunc${timerNumber})\n`;
+
+  return code
+};
+
+
 Blockly.Python['stop_timer'] = function(block) {
   Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
 

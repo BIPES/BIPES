@@ -367,6 +367,8 @@ class Device {
     return new DOM('button', {uid: item.uid})
       .append([
         new DOM('div').append([
+          new DOM('div', {className:'silk'})
+            .onclick(this, this.select, [item.uid]),
           new DOM('h4', {id:'nodename', innerText: item.nodename}),
           new DOM('div', {id:'version', innerText: `${item.version}`}),
           new DOM('div', {innerText: about}),
@@ -382,7 +384,6 @@ class Device {
             innerText:Msg['Disconnect']
           }).onclick(channel, channel.disconnect, [])
         ])
-        .onclick(this, this.select, [item.uid])
       ])
   }
   deinit (){
@@ -397,8 +398,19 @@ class Device {
     if (channel.current != undefined)
       return
 
+    let unselect = () => {
+      this._dom.nav._dom.classList.remove('using')
+      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
+      if (child != null)
+        child.classList.remove('on')
+      channel.targetDevice = undefined
+      channel.currentProtocol = undefined
+      this._statusNotConnected()
+    }
     if (uid != channel.targetDevice){
       // Only on a slave tab
+      if (channel.targetDevice != undefined)
+        unselect()
       channel.targetDevice = uid
       this.devices.forEach((device) => {
         if (device.uid == uid) {
@@ -413,15 +425,8 @@ class Device {
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
       if (child != null)
         child.classList.add('on')
-    } else {
-      this._dom.nav._dom.classList.remove('using')
-      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
-      if (child != null)
-        child.classList.remove('on')
-      channel.targetDevice = undefined
-      channel.currentProtocol = undefined
-      this._statusNotConnected()
-    }
+    } else
+      unselect()
   }
   fetchInfo (uid){
     let cmd = rosetta.uname.cmd()

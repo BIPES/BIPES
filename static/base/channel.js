@@ -22,7 +22,6 @@ class Channel {
     this.input = []   // Input to be sent to a device
     this.output = ''  // Output from the last command run in the decide
     this.watcher      // Store the interval to send data to a device
-    // ::TODO:: Ping this.lock across tabs to sync the terminal state
     this.lock = false // If the terminal is free to send new data
     this.dirty = false// If the terminal has input (user raw input or timers)
     this.callbacks = []
@@ -157,10 +156,10 @@ class Channel {
     let uid = this.targetDevice,
         currentProtocol = this.currentProtocol
     this.currentProtocol = ''
-    this.targetDevice = undefined
     this.pipe.device_unuse(uid)
     this.pipe.prompt_off()
-    this.pipe.prompt_off.write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`);
+    this.pipe.prompt_write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`)
+    this.targetDevice = undefined
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it
