@@ -8,8 +8,8 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_mapping(
       SECRET_KEY = 'dev',
-      API = os.path.join(app.root_path, 'api.db'),
-      MOSQUITTO = os.path.join(app.root_path, 'mosquitto.db')
+      API = os.path.join(app.root_path, 'server/api.db'),
+      MOSQUITTO = os.path.join(app.root_path, 'server/mosquitto.db')
     )
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)
@@ -26,9 +26,9 @@ def create_app(test_config=None):
     @app.route("/ide-<lang>")
     def call_ide(lang=None, import_type='module'):
         if lang is None:
-            return send_from_directory('', 'ide.html')
+            return send_from_directory('', 'ide/ide.html')
         else:
-            return send_from_directory('', 'ide-' + lang + '.html')
+            return send_from_directory('', 'ide/ide-' + lang + '.html')
 
     @app.route('/')
     def go_to_ide():

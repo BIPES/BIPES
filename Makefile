@@ -1,4 +1,5 @@
 lang ?= "en"
+path ?= /srv/www/bipes3
 
 BLUE=\033[0;34m
 PURPLE=\033[0;35m
@@ -179,13 +180,9 @@ zip:
 	@mv ide-*.html .BIPES/
 	@cd .BIPES && ln -s ide-$(lang).html ide.html
 	@mkdir -p .BIPES/docs
-	@mkdir -p .BIPES/server
 	@mkdir -p .BIPES/static/libs
 	@mkdir -p .BIPES/static/page/blocks
 	@mkdir -p .BIPES/static/page/device
-	@cp -r server/*.py .BIPES/server/
-	@cp server/conf/release.py .BIPES/app.py
-	@cp server/conf/app.wsgi .BIPES/app.wsgi
 	@cp static/libs/*.js .BIPES/static/libs
 	@cp static/page/blocks/*.umd.js .BIPES/static/page/blocks
 	@cp -r static/page/blocks/msg .BIPES/static/page/blocks
@@ -196,6 +193,10 @@ zip:
 	@cp -r static/msg .BIPES/static/
 	@cp -r docs/_build .BIPES/docs/ 2>/dev/null || :
 	@cp static/style.css .BIPES/static
+	@mkdir -p .BIPES/server
+	@cp -r server/*.py .BIPES/server/
+	@cp server/conf/release.py .BIPES/app.py
+	@bash -c 'printf  "import sys\nsys.path.insert(0, \"$(path)\")\n\nfrom app import create_app\n\napplication = create_app()\n" > ./.BIPES/app.wsgi'
 	@cd .BIPES && zip -y -q -r BIPES.zip * && \
 	mv BIPES.zip ../BIPES.zip
 
@@ -220,21 +221,18 @@ doc:
 	cd docs && make html
 	@printf "Documentation generated successfully.\n"
 
-path ?= /srv/www/bipes3
-path_venv = $(path)/venv
-
 deploy:  build-release zip deploy-move build-clean | $(path_venv)
 
 deploy-move:
-	@sudo rm -rf $(path)/static
-	@sudo rm -rf $(path)/server
-	@sudo rm -rf $(path)/docs
-	@sudo rm -rf $(path)/*.html
+	@sudo rm -rf $(path)/ide $(path)/static $(path)/server $(path)/docs
 	@sudo mkdir -p $(path)
+	@sudo mkdir -p ./.BIPES/ide
+	@sudo mv ./.BIPES/*.html ./.BIPES/ide
 	@sudo mv ./.BIPES/* $(path)
 	@sudo mkdir -p $(path)/logs
 	@sudo chown -R wwwrun:www $(path)
 
+path_venv = $(path)/venv
 $(path_venv):
 	@echo "Creating enviroment..."
 	@cd $(path) && \
