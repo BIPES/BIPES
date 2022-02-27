@@ -278,6 +278,7 @@ class Channel {
     this.ping.on = true
     if (this.output.substring(this.output.length - 4) == ">>> "){
       this.output = this.output.substring(0, this.output.length - 4)
+      this.dirty = false
       //After all code was executed
       if (this.callbacks.length > 0)
         this.handleCallback(this.output)
@@ -384,7 +385,8 @@ function _WebSerial (parent){
       data = [data]
 
     let dataArrayBuffer = undefined
-    for (const [pack, index] of data.entries()){
+
+    for (const [index, pack] of data.entries()){
       switch (pack.constructor.name) {
         case 'Uint8Array':
           dataArrayBuffer = pack
