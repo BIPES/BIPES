@@ -132,7 +132,7 @@ mosquitto:
 	printf "\n" ; \
 	sudo mosquitto_passwd -c -b /etc/mosquitto/conf.d/passwd bipes $$pwd ; \
 	echo  "$$pwd" > server/mosquitto.txt ; \
-	sudo bash -c 'printf  "listener 1883\n\nlistener 9001\nprotocol websockets\nallow_anonymous true\npassword_file /etc/mosquitto/conf.d/passwd\n" > $(MOSQ_BIPES_CONF)'
+	sudo bash -c 'printf  "listener 1883\n\nlistener 9001\nprotocol websockets\npassword_file /etc/mosquitto/conf.d/passwd\npersistence true\npersistence_location /var/lib/mosquitto/\n\nlog_dest file /var/log/mosquitto/mosquitto.log" > $(MOSQ_BIPES_CONF)'
 	@sudo systemctl restart mosquitto
 	@. venv/bin/activate && \
 	python -c "import server.mosquitto; server.mosquitto.make()" && \
