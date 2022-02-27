@@ -45,6 +45,7 @@ var Msg = {
   'Import':'Import',
   'Filename':'Filename',
   'eg':"eg.",
+  Copy:'Copia',
 
   // Page Files
   'FileManager':'File manager',

@@ -72,6 +72,12 @@ class Files {
 
     // Codemirror
     this.codemirror = CodeMirror($.codemirror._dom, Tool.fromUrl('theme'))
+
+    $.contextMenu = new DOM('div')
+    this.contextMenu = new ContextMenu($.contextMenu, this)
+    $.section.append($.contextMenu)
+
+    $.codemirror.onevent('contextmenu', this, this.showContextMenu)
   }
   init (){
     if (this.inited)
@@ -105,6 +111,25 @@ class Files {
         }]
       }
     }
+  }
+  /** Create a context menu for codemirror */
+  showContextMenu (ev){
+    let str = '',
+        doc = this.codemirror.state.doc.toString()
+    for (const range of this.codemirror.state.selection.ranges){
+      str += doc.substring(range.from, range.to)
+    }
+    this.contextMenu.open([
+    {
+      id:'copy',
+      innerText:Msg['Copy'],
+      fun:() => {
+        if (str != '')
+	        navigator.clipboard.writeText(str)
+	      this.contextMenu.close()
+      }
+    }
+    ], ev)
   }
 }
 
@@ -141,7 +166,6 @@ class DeviceFiles {
       }, {
         event:'contextmenu',
         fun: (path, dom, ev) => {
-          ev.preventDefault()
           this.contextMenu.open([
             {
               id:'add',

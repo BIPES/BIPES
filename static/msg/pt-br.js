@@ -45,6 +45,7 @@ var Msg = {
   'Import':'Importar',
   'Filename':'Nome do arquivo',
   'eg':"ex",
+  Copy:'Copiar',
 
   // Page Files
   'FileManager':'Gerenciador de arquivos',
