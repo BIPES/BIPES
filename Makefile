@@ -7,6 +7,8 @@ RED=\033[0;31m
 NC=\033[0m
 
 DEPS = python pip npm mosquitto
+UBUNTU_DEPS = python python3-pip npm mosquitto
+FEDORA_DEPS = python3 python3-pip npm mosquitto
 SUSE_DEPS = python python3-pip npm17 mosquitto
 NPM_DEPS = jsdoc
 
@@ -27,11 +29,11 @@ dependencies:
 	@if [ -n "$$(command -v dnf)" ] ; \
 	then \
 	printf "$(BLUE)Installing $(DEPS) with dnf.$(NC)\n" ; \
-	sudo dnf install $(DEPS) ; \
+	sudo dnf install $(FEDORA_DEPS) ; \
 	elif [ -n "$$(command -v apt)" ] ; \
 	then \
 	printf "$(BLUE)Installing $(DEPS) with apt.$(NC)\n" ; \
-	sudo apt install $(DEPS) ; \
+	sudo apt install $(UBUNTU_DEPS) ; \
 	elif [ -n "$$(command -v zypper)" ] ; \
 	then \
 	printf "$(BLUE)Installing $(DEPS) with zypper.$(NC)\n" ; \

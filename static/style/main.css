@@ -243,7 +243,8 @@ nav #menu::after {
 	display: block;
 	width: 2rem;
 	height: 2rem;
-	margin-left: -8.25rem;
+	margin-left: 0.4rem;
+	position: absolute;
 	background: url('./media/icons.svg');
 	content: '';
 	flex-shrink: 0;
@@ -256,7 +257,7 @@ nav.on #menu {
   width: 12rem;
 }
 nav.on #menu:after {
-  margin-left: -6.25rem;
+  margin-left: 2.7rem;
 }
 /*Icons*/
 nav #menu::before {
