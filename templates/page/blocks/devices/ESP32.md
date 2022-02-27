@@ -278,3 +278,24 @@ bluetooth_repl_setup
 bluetooth_repl_start
 end_category
 end_category
+
+%{CONTROL}
+PID
+control_pid.__init__
+control_pid.compute
+control_pid.compute_not_realtime
+control_pid.tunings
+control_pid.setpoint
+control_pid.auto_mode
+control_pid.output_limits
+control_pid.vars
+control-pid-reset
+end_category
+%{SIMULATE}
+Realtime simulation:
+simulate_water_boiler
+Non realtime simulation:
+simulate_dcmotor.sim
+simulate_dcmotor.vars
+end_category
+end_category

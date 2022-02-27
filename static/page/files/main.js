@@ -577,6 +577,7 @@ class DeviceFiles {
    * @param{string/ArrayBuffer} script - File to be saved
    */
   writeToTarget (filename, script){
+    notification.send(`${Msg['PageFiles']}: ${Tool.format([Msg['WritingFile'], filename])}`)
     switch (channel.currentProtocol) {
       case 'WebSocket':
         script = script

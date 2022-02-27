@@ -17,8 +17,12 @@ Blockly.Msg['PRESS'] = "Pressão";
 Blockly.Msg['FILES'] = "Arquivos";
 Blockly.Msg['NET'] = "Rede e Internet";
 Blockly.Msg['CONTROL'] = "Controle";
+Blockly.Msg['SIMULATE'] = "Simulação";
 Blockly.Msg['IMU'] = "Medidas inerciais";
 Blockly.Msg['AIR'] = "Qualidade do ar";
+Blockly.Msg['INSTALL_LIBRARY'] = "Instalar biblioteca";
+Blockly.Msg['DOCUMENTATION'] = "Documentação";
+Blockly.Msg['LOAD_EXAMPLE'] = "Carregar exemplo";
 
 var Msg = {
   // Pages names
@@ -73,12 +77,15 @@ var Msg = {
   'CouldNotRemoveFolder':'Não foi possível remover a pasta "{0}/{1}".',
   'FolderNotEmpty':'Pasta "{0}/{1}" não está vazia e não pode ser removida.',
   'CreateScriptHere':'# Crie o seu script "{0}" aqui.',
+  WritingFile:'Escrevendo "{0}" no dispositivo.',
   
   // Page Blocks
   'ViewBlocksCode':'Ver/esconder código gerado pelos blocos.',
   'BlocksEditAsFile':'Copiar código e editar',
   'RunBlocks':'Executar blocos no dispositivo.',
   'BlocksPy':'blocos.py',
+  FetchingLib:'Obtendo biblioteca {0}...',
+  FetchingExample:'Obtendo exemplo {0}...',
 
   // Page Device
   'Unknown':'desconhecido',

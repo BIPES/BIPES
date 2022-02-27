@@ -55,7 +55,7 @@
 # HCSR04 ultrasound distance sensor
 <label text="HCSR04 ultrasound distance sensor"></label>
 <label text="Library: https://github.com/rsc1975/micropython-hcsr04"></label>
-<button text="Install HCSR04 library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: HCSR04" callbackKey="installPyLib"></button>
 
 # hcsr_init
 <block type="hcsr_init">
@@ -84,7 +84,7 @@
 <category name="GPS">
 <label text="Global Positioning System (GPS) sensor"></label>
 <label text="Library: https://github.com/rafaelaroca/mini_micropyGPS"></label>
-<button text="Install mini_micropyGPS library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: mini_micropyGPS" callbackKey="installPyLib"></button>
 
 # gps_init
 <block type="gps_init">
@@ -140,7 +140,7 @@
 # MAX30100 pulse oximeter sensor
 <label text="MAX30100 pulse oximeter sensor"></label>
 <label text="Library: https://github.com/"></label>
-<button text="Install MAX30100 library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: MAX30100" callbackKey="installPyLib"></button>
 
 # max30100_init
 <block type="max30100_init"></block>
@@ -160,7 +160,7 @@
 # BMP180
 <label text="BMP180"></label>
 <label text="Library: https://github.com/micropython-IMU/micropython-bmp180"></label>
-<button text="Install bmp180 library (BMP180)" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: BMP180" callbackKey="installPyLib"></button>
 
 # bmp180_init
 <block type="bmp180_init">
@@ -188,7 +188,7 @@
 # BMP280
 <label text="BMP280"></label>
 <label text="Library: "></label>
-<button text="Install bmp280 library (BMP280)" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: BMP280" callbackKey="installPyLib"></button>
 
 # bmp280_init
 <block type="bmp280_init">
@@ -222,7 +222,7 @@
 # CCS811 Air Quality Sensor
 <label text="CCS811 Air Quality Sensor"></label>
 <label text="Library: https://github.com/Notthemarsian/CCS811"></label>
-<button text="Install CCS811 library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: CCS811" callbackKey="installPyLib"></button>
 
 # ccs811_init
 <block type="ccs811_init">
@@ -253,8 +253,8 @@
 # MPU6050 IMU
 <label text="MPU6050 IMU"></label>
 <label text="Library: https://github.com/"></label>
-<button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
-<button text="Load example: mpu6050" callbackKey="loadExample"></button>
+<button text="%{INSTALL_LIBRARY}: MPU6050" callbackKey="installPyLib"></button>
+<button text="%{LOAD_EXAMPLE}: MPU6050" callbackKey="loadExample"></button>
 <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
 
 # init_mpu6050
@@ -291,9 +291,9 @@
 
 # MPU9250 IMU
 <label text="MPU9250 IMU"></label>
-<button text="Install mpu9250 library" callbackKey="installPyLib"></button>
-<button text="Install mpu6500 library" callbackKey="installPyLib"></button>
-<button text="Install ak8963 library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: MPU9250" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: MPU6500" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: AK8963" callbackKey="installPyLib"></button>
 
 # mpu9250_init
 <block type="mpu9250_init">
@@ -355,8 +355,8 @@
 <category name="RFID Reader">
 <label text="RC522 13.56MHz RFID Reader"></label>
 <label text="Library: https://github.com/wendlers/micropython-mfrc522"></label>
-<button text="Install mfrc522 library" callbackKey="installPyLib"></button>
-<button text="Load example: mfrc522" callbackKey="loadExample"></button>
+<button text="%{INSTALL_LIBRARY}: MFRC522" callbackKey="installPyLib"></button>
+<button text="%{LOAD_EXAMPLE}: MFRC522" callbackKey="loadExample"></button>
 <button text="Documentation and how to connect: mfrc522" callbackKey="loadDoc"></button>
 
 # rfid_rc522_init
@@ -403,8 +403,8 @@
 # Rotatory Encoder
 <category name="Rotatory Encoder">
 <label text="Rotatory Incremental Encoder"></label>
-<button text="Load example: encoder" callbackKey="loadExample"></button>
-<button text="Documentation and how to connect: encoder" callbackKey="loadDoc"></button>
+<button text="%{LOAD_EXAMPLE}: encoder" callbackKey="loadExample"></button>
+<button text="%{DOCUMENTATION}: encoder" callbackKey="loadDoc"></button>
 
 # encoder_init
 <block type="encoder_init">
@@ -429,7 +429,7 @@
 # Camera (ESP32CAM)
 <category name="Camera (ESP32CAM)">
 <label text="OV2640 Camera on ESP32-CAM Board"></label>
-<button text="Load example: esp32cam" callbackKey="loadExample"></button>
+<button text="%{LOAD_EXAMPLE}: esp32cam" callbackKey="loadExample"></button>
 <label text="More info: https://rafaelaroca.wordpress.com/2021/07/15/esp32-camera-micropython-and-no-esptool/"></label>
 
 # esp32_cam_init

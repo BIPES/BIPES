@@ -17,8 +17,12 @@ Blockly.Msg['PRESS'] = "Pressure";
 Blockly.Msg['FILES'] = "Files";
 Blockly.Msg['NET'] = "Network and Internet";
 Blockly.Msg['CONTROL'] = "Control";
+Blockly.Msg['SIMULATE'] = "Simulate";
 Blockly.Msg['IMU'] = "Inertial Measurement";
 Blockly.Msg['AIR'] = "Air Quality";
+Blockly.Msg['INSTALL_LIBRARY'] = "Install library";
+Blockly.Msg['DOCUMENTATION'] = "Documentation";
+Blockly.Msg['LOAD_EXAMPLE'] = "Load example";
 
 var Msg = {
   // Pages names
@@ -73,12 +77,15 @@ var Msg = {
   'CouldNotRemoveFolder':'Ordner "{0}/{1} konnte nicht entfernt werden ".',
   'FolderNotEmpty':'Ordner "{0}/{1}" ist nicht leer, kann nicht entfernt werden.',
   'CreateScriptHere':'# Erstellen Sie hier Ihr "{0}"-Skript',
+  WritingFile:'Writing file "{0}" to device.',
 
   // Page Blocks
   'ViewBlocksCode':'View/hide blocks\' generated code',
   'BlocksEditAsFile':'Skript kopieren und bearbeiten',
   'RunBlocks':'Blöcke im Gerät ausführen.',
   'BlocksPy':'blocke.py',
+  FetchingLib:'Installing {0} library...',
+  FetchingExample:'Fetching example {0}...',
 
   // Page Device
   'Unknown':'unknown',

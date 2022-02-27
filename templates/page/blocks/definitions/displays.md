@@ -4,7 +4,7 @@
 # NeoPixel LED Strip
 <category name="NeoPixel LED Strip">
 <label text="NeoPixel RGB LED Strip"></label>
-<button text="Documentation and how to connect: neopixel" callbackKey="loadDoc"></button>
+<button text="%{DOCUMENTATION}: neopixel" callbackKey="loadDoc"></button>
 
 # neopixel_init
 <block type="neopixel_init">
@@ -82,7 +82,7 @@
 <category name="Character display">
 <label text="PCF8574 Display controller"></label>
 <label text="Library: https://github.com/dhylands/python_lcd"></label>
-<button text="Install I2CLCD library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: I2CLCD" callbackKey="installPyLib"></button>
 
 # char_lcd_init
 <block type="char_lcd_init">
@@ -127,7 +127,7 @@
 <category name="ST7789 Display">
 <label text="ST7789 Display"></label>
 <label text="Library: https://github.com/devbis/st7789py_mpy"></label>
-<button text="Install st7789py library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: ST7789" callbackKey="installPyLib"></button>
 
 # st7789_init
 <block type="st7789_init">
@@ -267,7 +267,7 @@
 # OLED Display
 <category name="OLED Display">
 <label text="SSD1306 OLED I2C Display"></label>
-<button text="Install ssd1306 library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: SSD1306" callbackKey="installPyLib"></button>
 
 # init_oled
 <block type="init_oled">
@@ -320,9 +320,9 @@
 <category name="LED Matrix">
 <label text="TM1640 LED Matrix"></label>
 <label text="Library: https://github.com/mcauser/micropython-tm1640"></label>
-<button text="Install tm1640 library" callbackKey="installPyLib"></button>
-<button text="Load example: tm1640" callbackKey="loadExample"></button>
-<button text="Documentation and how to connect: tm1640" callbackKey="loadDoc"></button>
+<button text="%{INSTALL_LIBRARY}: TM1640" callbackKey="installPyLib"></button>
+<button text="%{LOAD_EXAMPLE}: TM1640" callbackKey="loadExample"></button>
+<button text="%{DOCUMENTATION}: TM1640" callbackKey="loadDoc"></button>
 
 # tm1640_init
 <block type="tm1640_init">

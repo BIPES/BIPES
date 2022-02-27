@@ -102,7 +102,7 @@ def create_app(test_config=None):
     # Return concatanate pythonic generators.
     @app.route("/static/page/blocks/pythonic.umd.js")
     def blockly_pythonic():
-        return Response(concat_files("static/page/blocks/pythonic/*.js"), mimetype='application/javascript')
+        return Response(concat_files("static/page/blocks/pythonic/*.js","basic.js"), mimetype='application/javascript')
     
     @app.route("/static/libs/bipes.umd.js")
     def bipes():
@@ -180,15 +180,24 @@ def render_lang (lang):
     
     
 # Concatanate files
-def concat_files (rule):
+def concat_files (rule, first=None):
     # Fetch files
     files = glob.glob(rule)
     _str = ""
+    if first is not None:
+        for _file in files:
+            if _file.find(first) != -1:
+                with open (_file) as f:
+                    for line in f:
+                        _str += line
+                files.remove(_file)
+
     # Concatanate
     for _file in files:
-        with open (_file) as f:
-            for line in f:
-                _str += line
+        if _file is not first:
+            with open (_file) as f:
+                for line in f:
+                    _str += line
 
     return _str
 

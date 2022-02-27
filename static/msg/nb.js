@@ -17,8 +17,12 @@ Blockly.Msg['PRESS'] = "Trykk";
 Blockly.Msg['FILES'] = "Filer";
 Blockly.Msg['NET'] = "Nettverk og Internet";
 Blockly.Msg['CONTROL'] = "Kontroll";
+Blockly.Msg['SIMULATE'] = "Simulate";
 Blockly.Msg['IMU'] = "Treghetsmåling";
 Blockly.Msg['AIR'] = "Luftkvalitet";
+Blockly.Msg['INSTALL_LIBRARY'] = "Install library";
+Blockly.Msg['DOCUMENTATION'] = "Documentation";
+Blockly.Msg['LOAD_EXAMPLE'] = "Load example";
 
 var Msg = {
   // Pages names
@@ -73,12 +77,15 @@ var Msg = {
   'CouldNotRemoveFolder':'Could not remove folder "{0}/{1}".',
   'FolderNotEmpty':'Folder "{0}/{1}" not empty, can\'t be removed.',
   'CreateScriptHere':'# Create your "{0}" script here',
+  WritingFile:'Writing file "{0}" to device.',
 
   // Page Blocks
   'ViewBlocksCode':'View/hide blocks\' generated code',
   'BlocksEditAsFile':'Copy script and edit',
   'RunBlocks':'Run blocks in the device.',
   'BlocksPy':'blocks.py',
+  FetchingLib:'Installing {0} library...',
+  FetchingExample:'Fetching example {0}...',
 
   // Page Device
   'Unknown':'unknown',
