@@ -60,6 +60,25 @@ class Prompt {
         $.quickActions
       ])
 
+    this.prompt.attachCustomKeyEventHandler((arg) => {
+        if (arg.ctrlKey && arg.altKey && arg.code === "KeyC" && arg.type === "keydown"){
+	        const selection = this.prompt.getSelection()
+	        if (selection){
+		        navigator.clipboard.writeText(selection)
+		        return false
+	        }
+        } else if (arg.ctrlKey && arg.altKey && arg.code === "KeyV" && arg.type === "keydown"){
+          navigator.clipboard.readText()
+            .then(text => {
+              command.dispatch(channel, 'push', [
+                channel.pasteMode(text),
+                channel.targetDevice, [], command.tabUID
+              ])
+            })
+          return false
+        }
+        return true
+    })
     this.prompt.open($.promptXterm._dom)
     this.prompt.setOption('fontSize',14)
     this.prompt.onData((data) => {

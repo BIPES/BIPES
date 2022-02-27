@@ -177,7 +177,7 @@ class Channel {
 
       if (out.substring(0, call.cmd.length) != call.cmd) {
         console.error("Channel: callback's commands checkup failed")
-        this.callbacks = []
+        this.callbacks = []asdsad
         this.output = ''
         this.lock = false
         return true
@@ -219,7 +219,7 @@ class Channel {
   emulatePasteMode (cmd) {
     // Remove paste mode chars
     cmd = cmd.substring(1,cmd.length -1)
-    return `\r\n${PASTEMODE}\r\n=== ${cmd.replaceAll(/\r/g,'\r\n=== ')}`
+    return `\r\n${PASTEMODE}\r\n=== ${cmd.replaceAll(/\n/g,'\r\n=== ').replaceAll(/\t/g,'    ')}`
   }
   /*
    * Return a command with paste mode enclosing
