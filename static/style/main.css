@@ -426,7 +426,7 @@ section.ani.on {
   	transition: .125s ease left, .125s ease opacity;
   }
   section.pos2, section._pos2{
-    border-left: 1px solid #7d7d7d;
+    border-left: 1px solid rgba(125,125,125,0.25);
   }
 }
 @media screen and (orientation:landscape) and (min-width: 40rem) {

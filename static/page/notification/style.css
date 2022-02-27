@@ -16,6 +16,9 @@ section#notification .listy {
 section#notification .listy h4 {
   text-align: left !important;
 }
+section#notification .listy > span {
+  padding: .5rem;
+}
 div#status-bar button#forum:before {
   background-position: left calc(-1.25rem*45) top;
 }

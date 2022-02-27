@@ -416,7 +416,7 @@ function _WebSocket (parent){
   this.encoder = new TextEncoder()
 
   this.config = {
-    packetSize:20
+    packetSize:10
   }  /**
    * Connect using websocket protocol.
    */

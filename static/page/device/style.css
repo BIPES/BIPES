@@ -68,7 +68,7 @@ section#device .device-connect.master button > div,
 section#device button.unsupported > div {
   cursor: default !important;
 }
-section#device #devices .device-connect:not(.master) button {
+section#device .device-connect:not(.master) button {
   cursor: pointer
 }
 section#device .device-connect.master .silk {
@@ -95,7 +95,7 @@ section#device button.unsupported span {
 }
 section#device #devices button > div > div.using-text {
   float: right;
-  margin-top: -7.125rem;
+  margin-top: -6.125rem;
   margin-left: -1em;
   visibility: hidden;
 }

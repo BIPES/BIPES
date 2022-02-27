@@ -138,11 +138,15 @@ mosquitto:
 	python -c "import server.mosquitto; server.mosquitto.make()" && \
 	exit
 	@printf "\n"
-	@read -p "Enable mosquitto service? (Starts with the OS) [y/N]: " mos2 ; \
+	@read -p "Enable mosquitto service? (Open port 1883 and start with the OS) [y/N]: " mos2 ; \
 	if [ "$$mos2" = 'y' ] || [ "$$mos2" = 'Y' ] ; \
 	then \
+	sudo sudo firewall-cmd --zone=public --add-port=1883/tcp && \
+	sudo firewall-cmd --runtime-to-permanent && \
 	sudo systemctl enable mosquitto ; \
 	else \
+	sudo sudo firewall-cmd --zone=public --remove-port=1883/tcp && \
+	sudo firewall-cmd --runtime-to-permanent && \
 	sudo systemctl disable mosquitto ; \
 	fi
 
