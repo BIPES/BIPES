@@ -53,6 +53,26 @@ div#status-bar button#tasks {
 div#status-bar button#tasks.on {
   display: inline-flex;
 }
+#prompt.progress-bar.on {
+  height: .3em;
+}
+#prompt.progress-bar {
+  z-index: 500;
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 0;
+  transition: .125s ease height;
+  top: 0;
+}
+#prompt.progress-bar  div {
+  transition: .125s linear width;
+  content: '';
+  position: absolute;
+  height: 100%;
+  background: #3298dc;
+}
 /**
  * Copyright (c) 2014 The xterm.js authors. All rights reserved.
  * Copyright (c) 2012-2013, Christopher Jeffrey (MIT License)

@@ -60,6 +60,8 @@ class Channel {
         write:(chunk) => {bipes.page.prompt.write(chunk)},
         on:() => {bipes.page.prompt.on()},
         off:() => {bipes.page.prompt.off()},
+        setLoading:(a,b) => {bipes.page.prompt.setLoading(a,b)},
+        endLoading:() => {bipes.page.prompt.endLoading()}
       },
       dashboard:{
         write:(chunk) => {bipes.page.dashboard.write(chunk)}
@@ -77,15 +79,17 @@ class Channel {
       return
 
     this.renewPing()
-
     if (cmd.constructor.name == 'Uint8Array') {
       this.input.push([cmd])
-    } else if (typeof cmd == 'string') {
+    } else if (typeof cmd == 'string' && this.current.config.packetSize != 0) {
       let reg = new RegExp(`(.|[\r]){1,${this.current.config.packetSize}}`, 'g')
       cmd = cmd.replaceAll('\t',"    ").replaceAll(/\r\n|\n/gm, '\r')
       this.input.push([...cmd.match(reg)])
+      console.log([...cmd.match(reg)])
+    } else {
+      this.input.push(cmd.replaceAll('\t',"    ").replaceAll(/\r\n|\n/gm, '\r'))
     }
-    // Build callback function
+        // Build callback function
     if (callback != undefined && callback.constructor.name == 'Array') {
       let self = window.bipes.page,
           fun
@@ -290,7 +294,7 @@ function _WebSerial (parent){
   this.port
   this.config = {
     baudrate:115200,
-    packetSize:100
+    packetSize:0
   }
   this.encoder = new TextEncoder()
   this.parent = parent
@@ -380,7 +384,7 @@ function _WebSerial (parent){
       data = [data]
 
     let dataArrayBuffer = undefined
-    for (const pack of data){
+    for (const [pack, index] of data.entries()){
       switch (pack.constructor.name) {
         case 'Uint8Array':
           dataArrayBuffer = pack
@@ -396,10 +400,12 @@ function _WebSerial (parent){
         let response = await writer.write(dataArrayBuffer)
         writer.releaseLock()
       }
+      this.parent.pipe.prompt_setLoading(index, data.length - 1)
     }
     // If no callback expected, release lock
     if (this.parent.callbacks.length == 0)
       this.parent.lock = false
+    this.parent.pipe.prompt_endLoading()
   }
 }
 
@@ -408,10 +414,10 @@ function _WebSocket (parent){
   this.parent = parent
   this.ws
   this.encoder = new TextEncoder()
+
   this.config = {
-    packetSize:100
-  }
-  /**
+    packetSize:20
+  }  /**
    * Connect using websocket protocol.
    */
   this.connect = (callback, conf) => {
@@ -453,14 +459,13 @@ function _WebSocket (parent){
    * Runs every 50ms to check if there is code to be sent in the :js:attr:`channel#input` (appended with :js:func:`this.parent.push()`)
    */
   this.watch = () => {
-    if (this.ws.bufferedAmount == 0) {
+    if (this.ws.bufferedAmount == 0 && this.parent.lock == false) {
       if (this.parent.input.length > 0) {
         if (this.parent.isDirty())
           return
         try {
           this.parent.lock = true
-          this.write (this.parent.input[0]);
-          this.parent.input.shift();
+          this.write (this.parent.input[0])
         } catch (e) {
           console.error(e);
         }
@@ -469,22 +474,38 @@ function _WebSocket (parent){
   }
   /**
    * Directly send code via websocket, normally called by this.watch()
+   * Since await ws.send() don't wait bufferedAmount to zero, watch manually.
    * @param {(Uint8Array|string|number)} data - code to be sent via websocket
    */
   this.write = async (data) => {
     if (data.constructor.name != 'Array')
       data = [data]
 
-    let dataArrayBuffer = undefined
-    for (const pack of data){
-      if (this.ws.bufferedAmount == 0) {
-        if (['Uint8Array', 'String', 'Number'].includes(pack.constructor.name))
-          await this.ws.send(pack)
+    let interval, totalLen = data.length
+    if (data.length === 0)
+      return
+
+    interval = setInterval(() => {
+      if (this.ws.bufferedAmount === 0 && data[0] !== undefined){
+        if (data[0].constructor.name === 'Uint8Array') {
+          this.ws.send(data[0])
+          data.shift()
+          this.parent.lock = false
+        } else if (['String', 'Number'].includes(data[0].constructor.name)){
+          this.ws.send(data[0])
+          data.shift()
+        }
       }
-    }
-    // If no callback expected, release lock
-    if (this.parent.callbacks.length == 0)
-      this.parent.lock = false
+      this.parent.pipe.prompt_setLoading(totalLen - data.length, totalLen)
+      if (data.length === 0){
+        clearInterval(interval)
+        this.parent.input.shift()
+        // If no callback expected, release lock
+        if (this.parent.callbacks.length == 0)
+          this.parent.lock = false
+        this.parent.pipe.prompt_endLoading()
+      }
+    }, 50)
   }
 }
 
@@ -504,6 +525,7 @@ function _WebBluetooth (parent){
     ServiceUUID: '6e400001-b5a3-f393-e0a9-e50e24dcca9e',
     RXUUID: '6e400002-b5a3-f393-e0a9-e50e24dcca9e',
     TXUUID: '6e400003-b5a3-f393-e0a9-e50e24dcca9e',
+    packetSize:0
   }
   /**
    * Connect using webbluetooth protocol.
@@ -591,7 +613,7 @@ function _WebBluetooth (parent){
    */
   this.watch = () => {
     if (this.bleDevice && this.bleDevice.gatt.connected) {
-      if (this.parent.input.length > 0 && !this.streaming) {
+      if (this.parent.input.length > 0 && !this.streaming  && this.parent.lock == false) {
         if (this.parent.isDirty())
           return
         try {

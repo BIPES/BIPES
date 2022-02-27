@@ -88,6 +88,8 @@ class Prompt {
       $.statusTasksButton
     ])
 
+    this.progress = new PromptProgress()
+
     // Cross tabs event handler on muxing prompt
     command.add(this, {
       write: this._write
@@ -206,6 +208,48 @@ class Prompt {
 
     this.prompt.resize(parseInt(cols), parseInt(rows))
   }
+  /*
+   * Show progress bar.
+   * @param {number} a - Loaded.
+   * @param {number} b - Total.
+   */
+   setLoading (a, b){
+      this.progress.load(a, b)
+   }
+   /** Hide progress bar */
+   endLoading (){
+      this.progress.end()
+   }
+}
+
+/** Creates a progress bar. */
+class PromptProgress {
+  // DOM node element for the progress bar.*/
+  constructor (){
+    this.div = new DOM('div')
+    this.dom = new DOM('div', {
+      id:'prompt',
+      className:'progress-bar'
+    }).append(this.div)
+
+    document.body.append(this.dom._dom)
+  }
+	/**
+   * Sets the progress bar width by the loaded and total to load, e.g. loaded=256, total=1024 equals 75%.
+   * @param {number} loaded - How much has been loaded.
+   * @param {number} total - Total to load.
+   */
+	load (loaded, total) {
+	  if (!this.dom.classList.contains('on'))
+	    this.dom.classList.add('on')
+
+		let percent = (loaded * 100 / total)
+		this.div.style.width = percent + '%'
+	}
+	end () {
+	  this.dom.classList.remove('on')
+    this.div.style.width = '0%'
+	}
 }
 
 export let prompt = new Prompt()
