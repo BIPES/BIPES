@@ -177,7 +177,7 @@ class Channel {
 
       if (out.substring(0, call.cmd.length) != call.cmd) {
         console.error("Channel: callback's commands checkup failed")
-        this.callbacks = []asdsad
+        this.callbacks = []
         this.output = ''
         this.lock = false
         return true
