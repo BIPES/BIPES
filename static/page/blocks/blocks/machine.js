@@ -293,7 +293,7 @@ Blockly.Blocks['pwm'] = {
     this.setFieldValue(id_, "ID")
   },
   check (values, id) {
-    Tool.warningIfTrue (this, [
+    bipes.page.blocks.warningIfTrue (this, [
       [() => (!isNaN(parseFloat(values [0])) && parseFloat(values [0]) % 1 != 0), `Cannot convert float to int directly.`],
       [() => (!isNaN(parseFloat(values [1])) && parseFloat(values [1]) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
@@ -316,7 +316,7 @@ Blockly.Blocks['pwm.freq'] = {
     this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#pwm-pulse-width-modulation");
   },
   check (value, id) {
-    Tool.warningIfTrue (this, [
+    bipes.page.blocks.warningIfTrue (this, [
       [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
   }
@@ -338,7 +338,7 @@ Blockly.Blocks['pwm.duty'] = {
     this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#pwm-pulse-width-modulation");
   },
   check (value, id) {
-    Tool.warningIfTrue (this, [
+    bipes.page.blocks.warningIfTrue (this, [
       [() => (!isNaN(parseFloat(value)) && parseFloat(value) % 1 != 0), `Cannot convert float to int directly.`]
     ]);
   }

@@ -288,7 +288,7 @@ class DOM {
    */
   static prototypeDownload (filename, file){
     let data,
-        reg = /.*\.(py|xml|csv|json)$/
+        reg = /.*\.(py|xml|csv|json|svg|png)$/
     if (!reg.test(filename))
       return
 
@@ -310,6 +310,12 @@ class DOM {
         break
       case 'csv':
         data = "data:text/csv;charset=utf-8," + encodeURIComponent(file);
+        break
+      case 'svg':
+        data = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(file);
+        break
+      case 'png':
+        data = file; // Expect already in blob
         break
     }
     let element = document.createElement('a')

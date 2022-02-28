@@ -427,6 +427,39 @@ Blockly.Python['mpu9250_temp'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
 };
 
+
+// OneWire ---------------------------------------------------------------------
+// DS1820 ----------------------------------------------------------------------
+Blockly.Python['onewire_ds18x20_init'] = function(block) {
+  var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+  Blockly.Python.definitions_['import_onewire'] = 'import onewire,ds18x20';
+
+  var code = 'onewire_pin = Pin(' + pin + ')\n';
+      code += 'ds = ds18x20.DS18X20(onewire.OneWire(onewire_pin))\n';
+
+  return code;
+};
+
+
+Blockly.Python['onewire_ds18x20_scan'] = function(block) {
+  var code = 'ds.scan()';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['onewire_ds18x20_convert'] = function(block) {
+  var code = 'ds.convert_temp()\n';
+  return code;
+};
+
+Blockly.Python['onewire_ds18x20_read_temp'] = function(block) {
+  var rom = Blockly.Python.valueToCode(block, 'rom', Blockly.Python.ORDER_ATOMIC);
+  var code = 'ds.read_temp(' + rom + ')';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
 // RC522 RFID Reader -----------------------------------------------------------
 Blockly.Python['rfid_rc522_init'] = function(block) {
   var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);

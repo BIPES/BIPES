@@ -12,7 +12,7 @@ Blockly.Python['control_pid.__init__'] = function(block) {
 
   this.check([number_kp,number_ki,number_kd], number_sample_time);
 
-  Blockly.Python.definitions_['import_pid'] = 'from control import PID';
+  Blockly.Python.definitions_['import_pid'] = 'from PID import PID';
 
   let code = `pid${number_id} = PID(${number_kp}, ${number_ki}, ${number_kd}, setpoint=${value_setpoint}, scale='${dropdown_scale}'`;
   code = number_sample_time != 0 ? `${code}, sample_time=${number_sample_time})\n` : `${code})\n`;
