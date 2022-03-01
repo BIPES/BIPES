@@ -1,4 +1,5 @@
 export let deviceSpecifications = {
+/*
 	"ESP8266" : {
     nodename:'esp8266',
     name:'ESP8266',
@@ -112,7 +113,7 @@ export let deviceSpecifications = {
 			["CTS1 / SPI_CLK / GPIO06", "6"]
 		],
 		"serial_packet_size":"500"
-	},
+	},*/
 	"ESP32": {
     nodename:'esp32',
     name:'ESP32',
@@ -157,7 +158,7 @@ export let deviceSpecifications = {
 			["CTS1 / SPI_CLK / GPIO06", "6"]
 		],
 		"serial_packet_size":"500"
-	},
+	},/*
 	"RPIPico": {
     nodename:'rpipico',
     name:'RPIPico',
@@ -432,6 +433,6 @@ export let deviceSpecifications = {
 		],
 
 		"serial_packet_size":"10"
-	}
+	}*/
 }
 

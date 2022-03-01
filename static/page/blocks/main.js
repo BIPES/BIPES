@@ -553,10 +553,10 @@ let blocksExport = {
    * Create an SVG of the blocks on the workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The workspace.
    * @param {!Function} callback Callback.
-   * @param {boolean} svg - True to export as svg, false png.
+   * @param {boolean} _svg - True to export as svg, false png.
    * @param {string=} customCss Custom CSS to append to the SVG.
    */
-  workspaceToSvg_: function (workspace, callback, svg, customCss) {
+  workspaceToSvg_: function (workspace, callback, _svg, customCss) {
     // Go through all text areas and set their value.
     var textAreas = document.getElementsByTagName("textarea");
     for (var i = 0; i < textAreas.length; i++) {
@@ -597,7 +597,7 @@ let blocksExport = {
     var svgAsXML = (new XMLSerializer).serializeToString(svg);
     svgAsXML = svgAsXML.replace(/&nbsp/g, '&#160');
 
-    if (svg === true){
+    if (_svg === true){
       DOM.prototypeDownload('workspace.bipes.svg', svgAsXML)
       return
     } else {
@@ -612,7 +612,7 @@ let blocksExport = {
    * Download a png screenshot of the blocks on a Blockly workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
    */
-  downloadPng: function () {
+  png: function () {
     this.workspaceToSvg_(bipes.page.blocks.workspace, (datauri) => {
     })
   },
@@ -620,7 +620,7 @@ let blocksExport = {
    * Download a svg screenshot of the blocks on a Blockly workspace.
    * @param {!Blockly.WorkspaceSvg} workspace The Blockly workspace.
    */
-  downloadSvg: function () {
+  svg: function () {
     this.workspaceToSvg_(bipes.page.blocks.workspace, (datauri) => {
     }, true)
   }
