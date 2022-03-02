@@ -76,7 +76,6 @@ localstorage_store
 end_category
 
 %{TIMING}
-label_%{TIMING}
 delay
 utime.vars
 utime.ticks_add
@@ -102,7 +101,7 @@ reset_cause_hard
 reset_cause_wdt
 reset_cause_deep
 end_category
-inout_pins_label
+In/Out Pins
 pinout
 gpio_set
 gpio_get

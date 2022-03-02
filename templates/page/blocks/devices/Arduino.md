@@ -48,3 +48,16 @@ text_prompt_ext
 text_to_str
 end_category
 
+%{TIMING}
+snek_delay
+snek_uptime
+end_category
+In/Out Pins
+Snek GPIO Pins
+pinout
+snek_gpio_set
+snek_gpio_get
+snek_adc
+snek_setpower
+end_category
+

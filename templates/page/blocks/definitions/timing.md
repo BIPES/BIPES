@@ -1,7 +1,5 @@
 # %{TIMING}
 <category name="%{TIMING}">
-
-# label_%{TIMING}
 <label text="%{TIMING}"></label>
 
 # delay
@@ -33,7 +31,7 @@
 
 # set_rtc_esp32
 <block type="set_rtc_esp32"></block>
-
+'%(Timing)'
 # get_rtc_esp32
 <block type="get_rtc_esp32"></block>
 
@@ -96,5 +94,19 @@
     </shadow>
   </value>
 </block>
+
+# snek_delay
+<!-- Snek Related -->
+<block type="snek_delay">
+   <value name="time">
+    <shadow type="math_number">
+      <field name="NUM">1</field>
+    </shadow>
+  </value>
+</block>
+
+# snek_uptime
+<block type="snek_uptime"></block>
+<!-- Snek Related End -->
 
 # -

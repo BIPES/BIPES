@@ -40,7 +40,7 @@
 # reset_cause_deep
 <block type="reset_cause_deep"></block>
     
-# inout_pins_label
+# In/Out Pins
 <category name="In/Out Pins">
 <label text="In/Out Pins"></label>
 
@@ -159,5 +159,62 @@
     </shadow>
   </value>
 </block>
+
+
+# Snek GPIO Pins
+<!-- Snek Related -->
+<label text="Snek GPIO Pins"></label>
+
+# snek_gpio_set
+<block type="snek_gpio_set">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+  <value name="value">
+    <shadow type="logic_boolean">
+      <field name="BOOL"></field>
+    </shadow>
+  </value>
+</block>
+
+# snek_gpio_get
+<block type="snek_gpio_get">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+</block>
+
+# snek_adc
+<block type="snek_adc">
+ <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+</block>
+
+# snek_setpower
+<block type="snek_setpower">
+  <value name="pin">
+    <shadow type="pinout">
+      <field name="PIN"></field>
+    </shadow>
+  </value>
+  <value name="frequency">
+    <shadow type="math_number">
+      <field name="NUM">1000</field>
+    </shadow>
+  </value>
+  <value name="duty">
+    <shadow type="math_number">
+      <field name="NUM">50</field>
+    </shadow>
+  </value>
+</block>
+<!-- Snek Related End -->
 
 # -

@@ -92,11 +92,14 @@ let CircuitPython = {
     reg: /OSError: ([0-9]{1,})/
   }
 }
+// ::TODO::
+let Snek = MicroPython
 
 export let rosetta = {
   map:{
     MicroPython:MicroPython,
-    CircuitPython:CircuitPython
+    CircuitPython:CircuitPython,
+    Snek:Snek
   },
   get languages (){
     return Object.keys(this.map)

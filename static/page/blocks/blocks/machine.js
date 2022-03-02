@@ -416,3 +416,79 @@ Blockly.Blocks['gpio_interrupt_off'] = {
  this.setHelpUrl("bipes.net.br");
   }
 }
+
+
+// Snek Related ----------------------------------------------------------------
+//Fri Aug  6 23:23:55 -03 2021
+//Snek
+
+/*
+snek_delay
+snek_uptime
+snek_gpio_set
+snek_gpio_get
+*/
+
+Blockly.Blocks['snek_gpio_set'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        //.appendField("set pin"); //original
+        .appendField(MSG["setpin"]);//i18n
+    this.appendValueInput("value")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT)
+        //.appendField("to"); original
+        .appendField(MSG["to"]); //i18n
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Write to GPIO digital pin");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['snek_gpio_get'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .appendField("Snek: Read digital pin");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Read digital pin");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
+Blockly.Blocks['snek_adc'] = {
+  init: function() {
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .appendField("Snek: Read analog Input");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Read ADC input of specified pin");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['snek_setpower'] = {
+  init: function(){
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Snek: Set power"), "MSG_GET_MS");
+    this.appendValueInput("pin")
+        .setCheck(null)
+	.appendField("Pin");
+    this.appendValueInput("duty")
+        .setCheck(null)
+	  .appendField("Power (0-1)");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Snek Set Power");
+ this.setHelpUrl("http://www.bipes.net.br");
+ }
+};

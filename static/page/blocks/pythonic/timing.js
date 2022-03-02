@@ -188,3 +188,14 @@ Blockly.Python['deep_sleep8266'] = function(block) {
 	code += 'machine.deepsleep()\n';
 	return code;
 };
+// Snek Related ----------------------------------------------------------------
+//Fri Aug  6 23:23:55 -03 2021
+//Snek
+
+/*
+snek_delay
+snek_uptime
+snek_gpio_set
+snek_gpio_get
+*/
+

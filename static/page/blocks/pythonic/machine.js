@@ -286,3 +286,78 @@ Blockly.Python['pwm.deinit'] = function(block) {
   var code = `pwm${number_id}.deinit()\n`;
   return code;
 };
+
+// Snek Related ----------------------------------------------------------------
+//Fri Aug  6 23:23:55 -03 2021
+//Snek
+
+/*
+snek_delay
+snek_uptime
+snek_gpio_set
+snek_gpio_get
+*/
+
+Blockly.Python["snek_uptime"] = function(block) {
+  var code = "time.monotonic()";
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['snek_delay'] = function(block) {
+  var value_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
+  var code = 'time.sleep(' + value_time + ')\n';
+  return code;
+};
+
+Blockly.Python['snek_adc'] = function(block) {
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+  var x = value_pin.replace('(','').replace(')','');
+
+  var code = 'read(' + x + ')';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['snek_setpower'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_duty = Blockly.Python.valueToCode(block, 'duty', Blockly.Python.ORDER_ATOMIC);
+
+	var x = value_pin.replace('(','').replace(')','');
+
+	if (value_duty>1)
+		value_duty=1;
+	if (value_duty<0)
+		value_duty=0;
+
+	var code = 'talkto(' + x + ')\n';
+	    code += 'setpower(' + value_duty + ')\n';
+
+	return code;
+};
+
+Blockly.Python['snek_gpio_set'] = function(block) {
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+  var value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+
+  var x = value_pin.replace('(','').replace(')','');
+
+  var code = 'talkto(' + x + ')\n';
+  if (value == 'True')
+      code += 'on()\n';
+  if (value == 'False')
+      code += 'off()\n';
+
+  return code;
+
+};
+
+Blockly.Python['snek_gpio_get'] = function(block) {
+  var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+  var x = value_pin.replace('(','').replace(')','');
+
+  var code = 'read(' + x + ')';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+

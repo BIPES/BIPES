@@ -117,10 +117,9 @@ export let deviceSpecifications = {
 	"ESP32": {
     nodename:'esp32',
     name:'ESP32',
+		"languages":['MicroPython','CircuitPython'],
+		"img":"ESP32.svg",
 		"title":"<b>ESP32</b><br>",
-		"speed":"115200",
-		"boardID":"ESP32",
-		"img":"devinfo/media/ESP32-Pinout.jpg",
 		"description":"",
 		"toolbox":"esp32.xml",
 		"pinout": [
@@ -365,14 +364,13 @@ export let deviceSpecifications = {
 		"description":"Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>",
 		"toolbox":"esp32.xml",
 		"serial_packet_size":"1"
-	},
+	},*/
 	"Arduino": {
     nodename:'arduino',
     name:'Arduino',
+		"languages":['Snek'],
+		"img":"Arduino.svg",
 		"title":"<b>Arduino UNO and Arduino MEGA. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
-		"speed":"38400",
-		"boardID":"Snek",
-		"img":"https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png",
 		"description":"",
 		"toolbox":"arduino.xml",
 		"pinout": [
@@ -399,7 +397,7 @@ export let deviceSpecifications = {
 		],
 
 		"serial_packet_size":"10"
-	},
+	},/*
 	"ArduinoUno2": {
     nodename:'arduino',
     name:'ArduinoUno2',

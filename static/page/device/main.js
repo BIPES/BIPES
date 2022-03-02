@@ -214,7 +214,7 @@ class Device {
       return
     if (obj.hasOwnProperty('target')){
       DOM.setSelected(this._dom.targetDropdown, obj.target),
-      this._dom.pinout._dom.src = `./static/page/device/media/${obj.target}.svg`
+      this._dom.pinout._dom.src = `./static/page/device/media/${this.deviceInfo[obj.target].img}`
     }
   }
   /*
