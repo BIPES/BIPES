@@ -530,15 +530,14 @@ Blockly.Python['mqtt_disconnect'] = function(block) {
 // EasyMQTT --------------------------------------------------------------------
 /// EasyMQTT Init
 Blockly.Python['easymqtt_init'] = function(block) {
-  var server = `"${location.hostname}"`;
+  var server = location.hostname;
   var port = '1883';
-  var user = '"bipes"';
-  var pass = '"1234"'; // ::TODO:: Remove (allow anonymus) or template it.
-  var session =
-  window.easyMQTT_session = bipes.page.dashboard.easyMQTT.session;
+  var user = 'bipes';
+  var pass = bipes.page.dashboard.easyMQTT.passwd; // ::TODO:: Remove (allow anonymus) or template it.
+  var session = bipes.page.dashboard.easyMQTT.session;
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
-  var code = 'easymqtt_session = "' + session + '"; \neasymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = ' + server + ', port = ' + port + ', user = ' + user + ', password = ' + pass + '); \neasymqtt_client.connect()\nprint("EasyMQTT connected")\n'
+  var code = `easymqtt_session = "${session}"; \neasymqtt_client = umqtt.robust.MQTTClient("umqtt_client", server = "${server}", port = "${port}", user = "${user}", password = "${pass}"); \neasymqtt_client.connect()\nprint("EasyMQTT connected")\n`
   return code;
 };
 
@@ -597,10 +596,11 @@ Blockly.Python['easymqtt_subscribe'] = function(block) {
   var function_name = Blockly.Python.provideFunction_(
     'easymqtt'+name,
     ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '('+var_name+'):',globals,funct_code]);
+  var session = bipes.page.dashboard.easyMQTT.session;
 
   Blockly.Python.definitions_['easymqtt_callback'] = 'easymqtt_callback_list = {}\ndef easymqtt_callback(topic_,msg_):\n  topic_=topic_.decode();msg_=msg_.decode()\n  if topic_ in easymqtt_callback_list: easymqtt_callback_list[topic_](float(msg_))';
 
-  var code = "easymqtt_client.set_callback(easymqtt_callback)\neasymqtt_callback_list['"+window.easyMQTT_session+"/' + "+topic+"]="+function_name+"\neasymqtt_client.subscribe('"+window.easyMQTT_session+"/' + "+topic+")\n"
+  var code = "easymqtt_client.set_callback(easymqtt_callback)\neasymqtt_callback_list['"+session+"/' + "+topic+"]="+function_name+"\neasymqtt_client.subscribe('"+session+"/' + "+topic+")\n"
   return code;
 };
 

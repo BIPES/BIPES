@@ -4,6 +4,7 @@ import {storage} from '../../base/storage.js'
 import {navigation} from '../../base/navigation.js'
 
 export let easyMQTT = {
+  passwd: undefined,
   session: storage.has('mqtt_session') ?
            storage.fetch('mqtt_session') : storage.set('mqtt_session', Tool.SID())
 }
@@ -25,13 +26,22 @@ class MQTTDatabase {
     this.isConnected = false // If the MQTT broker is connected
 
     if (!navigation.isLocal){
-      // Port 9001 for WebSockets
-      this.client = new Paho.MQTT.Client(location.hostname, 9001, 'bipes')
-      this.client.onConnectionLost = () => {this.onConnectionLost()}
-      this.client.onMessageArrived = (message) => {this.onMessageArrived(message)}
-      this.client.connect({
-        //useSSL:true,
-        onSuccess:() => {this.onConnect()}
+      this.do(`passwd`)
+        .then(obj => {
+          if (obj.easyMQTT.passwd === false)
+            return
+          easyMQTT.passwd = obj.easyMQTT.passwd
+          // Port 9001 for WebSockets
+          console.log(this.passwd)
+          this.client = new Paho.MQTT.Client(location.hostname, 9001, `bipes${new Date()}`)
+          this.client.onConnectionLost = () => {this.onConnectionLost()}
+          this.client.onMessageArrived = (message) => {this.onMessageArrived(message)}
+          this.client.connect({
+            //useSSL:true,
+            userName : "bipes",
+            password : easyMQTT.passwd,
+            onSuccess:() => {this.onConnect()}
+          })
       })
     }
   }

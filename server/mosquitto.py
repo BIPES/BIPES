@@ -64,9 +64,7 @@ def listen(app):
             dbase.insert(db, session,
                 ['topic','data'],
                 (topic, data))
-        
-        print("Session:", session, "Topic:", topic, "Data:", data)
-        
+
         return
     
     @mqtt.on_connect()
@@ -75,6 +73,16 @@ def listen(app):
    
     mqtt.init_app(app)
     return
+
+# Get current password
+@bp.route('/passwd', methods=('POST', 'GET'))
+def mosquitto_password():
+    passwd = ''
+    try:
+        with open('server/mosquitto.txt') as f:
+            return {'easyMQTT':{'passwd':f.read().strip()}}
+    except:
+        return {'easyMQTT':{'passwd':False}}
 
 # Get all data
 @bp.route('/<session>/grep', methods=('POST', 'GET'))
