@@ -161,7 +161,7 @@ def ide(lang=None, import_type='module'):
     lang = default_lang if lang == None else lang
 
     lang_imports = render_lang(lang)
-    page = get_files_names("static/page/*", r"^static/page/(.*)")
+    page = get_files_names("static/page/*/main.js", r"^static/page/(.*)/main.js")
     imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
     
     page = preferred_page_order(page)
@@ -199,7 +199,6 @@ def concat_files (rule, first=None):
 
     return _str
 
-# Get file names
 def get_files_names (bash, reg):
     files = glob.glob(bash)
     names = []
@@ -261,7 +260,7 @@ def blockly_toolbox_generator ():
 def bipes_imports(import_type='module'):
     base = get_files_names("static/base/*.js", r"^static/base/(.*).js")
     base.remove('dom'); base.remove('tool')
-    page = get_files_names("static/page/*", r"^static/page/(.*)")
+    page = get_files_names("static/page/*/main.js", r"^static/page/(.*)/main.js")
 
     return render_template('libs/bipes.js', base=base,
                            page=page, import_type=import_type,
