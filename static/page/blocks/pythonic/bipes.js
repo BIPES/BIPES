@@ -10,21 +10,6 @@ Blockly.Python['project_metadata'] = function(block) {
   return code;
 };
 
-//::REMOVE::
-Blockly.Python['bipes_plot'] = function(block) {
-   var x = Blockly.Python.valueToCode(block, 'values', Blockly.Python.ORDER_NONE) || '\'\'';
-   var id = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_NONE) || '\'\'';
-
-/*
-  let q = new Queue('BipesDataSources');
-  q.enqueue(id);
-*/
-
-  var code = `print('$BIPES-DATA:',${id},',',${x})\n`;
-
-  return code;
-};
-
 Blockly.Python['localstorage_store'] = function(block) {
   var topic = block.getFieldValue('topic');
   var elements = new Array(block.itemCount_);
@@ -33,5 +18,14 @@ Blockly.Python['localstorage_store'] = function(block) {
         Blockly.Python.ORDER_NONE) || 'None';
   }
   var code = `print('$${topic}:',${elements.join(",',',")})\n`;
+  return code;
+};
+
+// Try catch
+Blockly.Python['try_catch'] = function(block) {
+  var statements_main_code = Blockly.Python.statementToCode(block, 'main_code');
+  var statements_catch_code = Blockly.Python.statementToCode(block, 'catch_code');
+  // TODO: Assemble Python into code variable.
+  var code = 'try:\n' + statements_main_code + '\nexcept:\n' + statements_catch_code;
   return code;
 };

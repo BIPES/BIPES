@@ -21,15 +21,8 @@
   </value>
 </block>
 
-# bipes_plot
-<block type="bipes_plot">
-  <field name="NAME">Plot</field>
-  <value name="values">
-    <shadow type="text">
-      <field name="TEXT"></field>
-    </shadow>
-  </value>
-</block>
+# try_catch
+<block type="try_catch"></block>
 
 # localstorage_store
 <block type="localstorage_store">

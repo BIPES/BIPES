@@ -494,4 +494,68 @@
   </value>
 </block>
 
+# WebREPL
+<category name="WebREPL">
+<label text="WebREPL"></label>
+
+# webrepl_setup
+<block type="webrepl_setup"></block>
+      
+# webrepl_start
+<block type="webrepl_start"></block>
+
+# CAN Bus
+<category name="CAN Bus">
+<label text="Controller Area Network (CAN)"></label>
+<label text="Requires specific firmware"></label>
+<label text="Compatible with: https://github.com/micropython/micropython/issues/5087#issuecomment-538779410"></label>
+<button text="Load example: esp32_can" callbackKey="loadExample"></button>
+<button text="Documentation: esp32_can" callbackKey="loadDoc"></button>
+
+# esp32_can_init
+<block type="esp32_can_init"></block>
+
+# esp32_can_filter
+<block type="esp32_can_filter"></block>
+
+# esp32_can_send
+<block type="esp32_can_send"></block>
+
+# esp32_can_recv
+<block type="esp32_can_recv"></block>
+
+# Google Sheets
+<category name="Google Sheets">
+<label text="Send files to a Google Spreadsheet"></label>
+<label text="Library: https://gist.github.com/SpotlightKid/8637c685626b334e5c0ec341dd269c44"></label>
+<button text="install prequests library" callbackKey="installPyLib"></button>
+
+# google_spreadsheet
+<block type="google_spreadsheet">
+  <field name="sheet_num">1</field>
+  <value name="deploy_code">
+    <shadow type="text">
+      <field name="TEXT">Deploy code</field>
+    </shadow>
+  </value>
+  <statement name="cells_values">
+    <block type="cell_value">
+      <value name="value">
+        <shadow type="text">
+          <field name="TEXT">Content</field>
+        </shadow>
+      </value>
+    </block>
+  </statement>
+</block>
+
+# cell_value
+<block type="cell_value">
+  <value name="value">
+    <shadow type="text">
+      <field name="TEXT">content</field>
+    </shadow>
+  </value>
+</block>
+
 # -

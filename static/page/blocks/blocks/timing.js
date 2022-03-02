@@ -311,7 +311,7 @@ snek_gpio_get
 Blockly.Blocks['snek_uptime'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Sneck: time counter"), "MSG_GET_MS");
+        .appendField(new Blockly.FieldLabelSerializable("Sneck: time counter"), "Msg_GET_MS");
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Get monotonic time counter");

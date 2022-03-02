@@ -792,3 +792,150 @@ Blockly.Blocks['bluetooth_repl_start'] = {
  this.setHelpUrl("www.bipes.net.br");
   }
 };
+
+// WebREPL ---------------------------------------------------------------------
+
+Blockly.Blocks['webrepl_setup'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("WebREPL Setup");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Configure WebREPL");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['webrepl_start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Start WebREPL");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(0);
+ this.setTooltip("Start WebREPL Server");
+ this.setHelpUrl("www.bipes.net.br");
+  }
+};
+// CAN Bus ---------------------------------------------------------------------
+//https://github.com/nos86/micropython/blob/esp32-can-driver-v3/docs/library/machine.CAN.rst
+Blockly.Blocks['esp32_can_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init ESP32 CAN Bus Controller");
+
+    this.appendValueInput("mode")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Mode");
+
+    this.appendValueInput("baudrate")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Baud Rate");
+
+    this.appendValueInput("extframe")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Extended CAN Frame");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks['esp32_can_filter'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Set CAN Filter");
+
+    this.appendValueInput("filter")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Frame Filter");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['esp32_can_send'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Send CAN Frame");
+
+    this.appendValueInput("id")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("ID");
+
+    this.appendValueInput("data")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Frame Data");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['esp32_can_recv'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Receive CAN Frame");
+
+    this.setOutput(true);
+
+    this.setTooltip('');
+  }
+};
+
+// Google Sheets ---------------------------------------------------------------
+Blockly.Blocks['google_spreadsheet'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Send data to a Google spreadsheet")
+        .appendField("#")
+        .appendField(new Blockly.FieldNumber(1, 1, 9, 1), "sheet_num");
+    this.appendValueInput("deploy_code")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Deployment Code");
+    this.appendStatementInput("cells_values")
+        .setCheck(null)
+        .appendField("Cells");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(120);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['cell_value'] = {
+  init: function() {
+    this.appendValueInput("value")
+        .setCheck(null)
+        .appendField("Cell");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};

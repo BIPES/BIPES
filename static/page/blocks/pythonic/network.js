@@ -641,3 +641,92 @@ Blockly.Python['bluetooth_repl_start'] = function(block) {
   return code;
 };
 
+
+// WebREPL ---------------------------------------------------------------------
+Blockly.Python['webrepl_start'] = function(block) {
+  Blockly.Python.definitions_['import_webrepl'] = 'import webrepl';
+  var code = 'webrepl.start()\n';
+  return code;
+};
+
+Blockly.Python['webrepl_setup'] = function(block) {
+  var code = 'import webrepl_setup\n';
+  return code;
+};
+
+// CAN Bus ---------------------------------------------------------------------
+//https://github.com/nos86/micropython/blob/esp32-can-driver-v3/docs/library/machine.CAN.rst
+Blockly.Python['esp32_can_init'] = function(block) {
+  var mode = Blockly.Python.valueToCode(block, 'mode', Blockly.Python.ORDER_ATOMIC);
+  var baudrate = Blockly.Python.valueToCode(block, 'baudrate', Blockly.Python.ORDER_ATOMIC);
+  var extframe = Blockly.Python.valueToCode(block, 'extframe', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_can'] = 'from machine import CAN';
+
+  //BAUDRATE_500k = 500
+  var code = 'can = CAN(0, extframe=True, mode=CAN.LOOPBACK, baudrate=500)\n';
+
+  return code;
+};
+
+Blockly.Python['esp32_can_filter'] = function(block) {
+  var filter = Blockly.Python.valueToCode(block, 'filter', Blockly.Python.ORDER_ATOMIC);
+
+  //dev.setfilter(0, CAN.FILTER_ADDRESS, [0x102, 0])  # set a filter to receive messages with id = 0x102
+  var code = 'can.setfilter(0, CAN.FILTER_ADDRESS, [0x102, 0]) \n';
+
+  return code;
+};
+
+Blockly.Python['esp32_can_send'] = function(block) {
+  var id = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_ATOMIC);
+  var data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'can.send([1,2,3], 0x102) \n';
+
+  return code;
+};
+
+Blockly.Python['esp32_can_recv'] = function(block) {
+
+  var code = 'can.recv()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+// Google Sheets ---------------------------------------------------------------
+
+Blockly.Python['google_spreadsheet'] = function(block) {
+  Blockly.Python.definitions_['import_prequests'] = 'import prequests';
+  Blockly.Python.definitions_['import_ujson'] = 'import ujson';
+
+  var number_sheet_num = block.getFieldValue('sheet_num');
+  var value_deploy_code = Blockly.Python.valueToCode(block, 'deploy_code', Blockly.Python.ORDER_ATOMIC);
+  var cells_blocks = block.getInputTargetBlock('cells_values');
+
+  // TODO: Assemble Python into code variable.
+  Blockly.Python.definitions_['post_data'] = 'def post_data(row_data, deployment_code):\n  request_data = ujson.dumps({"parameters": row_data})\n  r = prequests.post("https://script.google.com/macros/s/" + deployment_code + "/exec", headers = {"content-type": "application/json"}, data = request_data)\n  r.close()';
+  Blockly.Python.definitions_['deployment_code' + number_sheet_num] = 'deployment_code' + number_sheet_num + '= ' + value_deploy_code;
+  Blockly.Python.definitions_['row_data_' + number_sheet_num] = 'row_data' + number_sheet_num +' = {}';
+
+  if(cells_blocks)
+  var num_cell = 0;
+  var row_data_def = '';
+    do{
+      var cell_value = Blockly.Python.blockToCode(cells_blocks, 'Cell');
+      row_data_def += ' row_data' + number_sheet_num +'["var' + num_cell+ '"] = ' + cell_value+'\n';
+      num_cell ++;
+    }while (cells_blocks = cells_blocks.getNextBlock());
+
+    Blockly.Python.definitions_['row_data_cell'+ number_sheet_num] = 'def update_row_data'+ number_sheet_num+'():\n' + row_data_def;
+
+  var code = 'update_row_data'+ number_sheet_num+'()\npost_data(row_data' + number_sheet_num+',deployment_code' + number_sheet_num+')\n';
+  return code;
+};
+
+Blockly.Python['cell_value'] = function(block) {
+  var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+  // TODO: Assemble Python into code variable.
+  var code = value_value;
+  return code;
+};

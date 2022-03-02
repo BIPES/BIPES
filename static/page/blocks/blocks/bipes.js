@@ -21,34 +21,6 @@ Blockly.Blocks['project_metadata'] = {
   }
 }
 
-// Bipes plot ::REMOVE::
-Blockly.Blocks['bipes_plot'] = {
-  init: function() {
-    this.appendDummyInput()
-//        .appendField("Show data on IOT tab (freeboard)"); //original
-        .appendField(Msg["show_iot"]); //i18n
-//    this.appendDummyInput()
-//        .appendField("(ideal for USB port or bluetooth)");
-
-    this.appendValueInput("id")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("ID");
-
-    this.appendValueInput("values")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(Msg["data"]);
-
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
-
- this.setTooltip("BIPES Plot");
- this.setHelpUrl("http://www.bipes.net.br");
-  }
-};
-
 // Store data in the browser's localStorage
 Blockly.Blocks['localstorage_store'] = {
     init: function () {
@@ -131,4 +103,21 @@ Blockly.Blocks['localstorage_store_item'] = {
         this.setTooltip("Add axis to the dataset (x, y1, y2, ...).");
         this.contextMenu = !1;
     },
+};
+
+// Try catch
+Blockly.Blocks['try_catch'] = {
+  init: function() {
+    this.appendStatementInput("main_code")
+        .setCheck(null)
+        .appendField(Msg["try1"]);
+    this.appendStatementInput("catch_code")
+        .setCheck(null)
+        .appendField(Msg["exp1"]);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
 };

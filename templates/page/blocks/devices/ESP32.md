@@ -72,6 +72,7 @@ sep
 
 BIPES
 project_metadata
+try_catch
 localstorage_store
 end_category
 
@@ -361,7 +362,6 @@ uos_ioctl
 end_category
 
 %{NET}
-
 Status&Configure
 wifi_client_connect
 wifi_client_scan_networks
@@ -372,7 +372,6 @@ net_wiznet5k_isconnected
 net_wiznet5k_regs
 net_wiznet5k_ifconfig
 end_category
-
 HTTP Client
 net_get_request
 net_get_request&text
@@ -426,6 +425,20 @@ end_category
 Bluetooth REPL
 bluetooth_repl_setup
 bluetooth_repl_start
+end_category
+WebREPL
+webrepl_setup
+webrepl_start
+end_category
+CAN Bus
+esp32_can_init
+esp32_can_filter
+esp32_can_send
+esp32_can_recv
+end_category
+Google Sheets
+google_spreadsheet
+cell_value
 end_category
 end_category
 

@@ -435,12 +435,12 @@ Blockly.Blocks['snek_gpio_set'] = {
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         //.appendField("set pin"); //original
-        .appendField(MSG["setpin"]);//i18n
+        .appendField(Msg["setpin"]);//i18n
     this.appendValueInput("value")
         .setCheck(null)
         .setAlign(Blockly.ALIGN_RIGHT)
         //.appendField("to"); original
-        .appendField(MSG["to"]); //i18n
+        .appendField(Msg["to"]); //i18n
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -478,7 +478,7 @@ Blockly.Blocks['snek_adc'] = {
 Blockly.Blocks['snek_setpower'] = {
   init: function(){
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Snek: Set power"), "MSG_GET_MS");
+        .appendField(new Blockly.FieldLabelSerializable("Snek: Set power"), "Msg_GET_MS");
     this.appendValueInput("pin")
         .setCheck(null)
 	.appendField("Pin");
