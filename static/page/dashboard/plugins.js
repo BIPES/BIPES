@@ -57,7 +57,7 @@ class Charts {
     else
       options.scales.y = {beginAtZero: true}
 
-    let _chart = new Chart(dom._dom, {
+    let _chart = new Chart(dom.$, {
             type: data.setup.chartType,
             data: data2,
             options: options,
@@ -174,12 +174,12 @@ class Switches {
   command () {
     if (!this.state)
       Get.request(this.onUrl, () => {
-        this.dom._dom.classList.add('on')
+        this.dom.$.classList.add('on')
         this.state = true
       })
     else
       Get.request(this.offUrl, () => {
-        this.dom._dom.classList.remove('on')
+        this.dom.$.classList.remove('on')
         this.state = false
       })
   }

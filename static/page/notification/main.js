@@ -14,15 +14,15 @@ class Notification {
 
     this.inited = false
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.h2 = new DOM('h2', {innerText:'Notifications'})
     $.wrapper = new DOM('span', {className: 'listy'})
     $.container = new DOM('div', {className:'container'})
       .append([$.h2, $.wrapper])
 
     $.section = new DOM(DOM.get('section#notification'))
-      .append($.container._dom)
-    $.section._dom.classList.add('default')
+      .append($.container.$)
+    $.section.$.classList.add('default')
 
     // Add Forum button to status
     new DOM(DOM.get('div#status-bar #extra')).append([
@@ -79,11 +79,11 @@ class Notification {
     this._messagePush(uid, timestamp, str, strlong)
 
     if (this.messages.length == 1) {
-      this._dom.wrapper.removeChilds()
+      this.$.wrapper.removeChilds()
     }
-    this._dom.wrapper._dom.insertBefore(
-      this._domCard(this.messages[this.messages.length - 1])._dom,
-      this._dom.wrapper._dom.firstChild
+    this.$.wrapper.$.insertBefore(
+      this.$Card(this.messages[this.messages.length - 1]).$,
+      this.$.wrapper.$.firstChild
     )
   }
   init (){
@@ -95,9 +95,9 @@ class Notification {
       this.messages = JSON.parse(storage.fetch('notification'))
       let msgs = []
       this.messages.forEach (item => {
-        msgs.unshift(this._domCard(item))
+        msgs.unshift(this.$Card(item))
       })
-      this._dom.wrapper.append(msgs)
+      this.$.wrapper.append(msgs)
     } else {
       storage.set('notification')
       this._noNotification()
@@ -105,12 +105,12 @@ class Notification {
     this.inited = true
   }
   _noNotification (){
-    this._dom.wrapper.append(
+    this.$.wrapper.append(
       new DOM('span', {innerText:'There is no notifications.'})
     )
   }
   // Creates a DOM notificaton card
-  _domCard (item){
+  $Card (item){
     return new DOM('span', {uid: item.uid}).append([
       new DOM('div', {className:'row'}).append([
         new DOM('h4', {
@@ -132,7 +132,7 @@ class Notification {
   deinit (){
     if(!this.inited)
       return
-    this._dom.wrapper.removeChilds()
+    this.$.wrapper.removeChilds()
     this.messages = []
     this.inited = false
   }
@@ -155,9 +155,9 @@ class Notification {
       }
     })
     // Must find child to work between tabs
-    let child = DOM.get(`[data-uid=${uid}]`, this._dom.wrapper._dom)
-    this._dom.wrapper._dom.removeChild(child)
-    if (this._dom.wrapper._dom.childElementCount == 0)
+    let child = DOM.get(`[data-uid=${uid}]`, this.$.wrapper.$)
+    this.$.wrapper.$.removeChild(child)
+    if (this.$.wrapper.$.childElementCount == 0)
       this._noNotification()
   }
 }
@@ -167,10 +167,10 @@ class Notification {
  */
 class Notify {
   constructor () {
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.container = new DOM('div', {id: 'notify'})
 
-    document.querySelector('body').append($.container._dom)
+    document.querySelector('body').append($.container.$)
 
     this.lastMessage = []
     this.bufferCount = 0
@@ -184,7 +184,7 @@ class Notify {
  */
 Notify.prototype.send = function (message) {
   console.log (`Notify: ${message}`);
-  let container = this._dom.container._dom
+  let container = this.$.container.$
 
   if (this.lastMessage == message){
       this.bufferCount++

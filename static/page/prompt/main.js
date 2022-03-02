@@ -13,7 +13,7 @@ class Prompt {
     this.prompt = new Terminal ()
     this.locked = false // Soft mirror from channel status
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.section = new DOM(DOM.get('section#prompt'))
     $.promptXterm = new DOM('div', {className:"xterm"})
     $.stopProgramButton = new DOM('button', {
@@ -79,7 +79,7 @@ class Prompt {
         }
         return true
     })
-    this.prompt.open($.promptXterm._dom)
+    this.prompt.open($.promptXterm.$)
     this.prompt.setOption('fontSize',14)
     this.prompt.onData((data) => {
       // If tab is master, write directly to reduce delay
@@ -89,7 +89,7 @@ class Prompt {
         command.dispatch(channel, 'rawPush', [data, channel.targetDevice])
     });
 
-    DOM.get('section#prompt').append($.container._dom)
+    DOM.get('section#prompt').append($.container.$)
 
     $.statusTasks = new DOM('div')
     $.statusTasksButton = new DOM('button', {
@@ -100,7 +100,7 @@ class Prompt {
       .append($.statusTasks)
       .onclick(this, () => {
         this.nav.click()
-        this._dom.stopProgramButton.focus()
+        this.$.stopProgramButton.focus()
       })
 
     new DOM(DOM.get('div#status-bar #globals')).append([
@@ -158,28 +158,28 @@ class Prompt {
       return
 
     if (obj.dirty || (!obj.lock && obj.callback > 0)) {
-      this._dom.statusTasksButton.classList.add('dirty')
-      this._dom.statusTasks.innerText = Msg['StatusOngoingInput']
+      this.$.statusTasksButton.classList.add('dirty')
+      this.$.statusTasks.innerText = Msg['StatusOngoingInput']
       this.locked = true
     } else if(obj.lock && obj.callback > 0) {
-      this._dom.statusTasksButton.classList.add('working')
+      this.$.statusTasksButton.classList.add('working')
       if (obj.callback == 1)
-        this._dom.statusTasks.innerText = Msg['StatusWorkingOne']
+        this.$.statusTasks.innerText = Msg['StatusWorkingOne']
       else
-        this._dom.statusTasks.innerText = Tool.format([
+        this.$.statusTasks.innerText = Tool.format([
           Msg['StatusWorking'], obj.callback
         ])
       this.locked = true
     } else {
       this.locked = false
-      this._dom.statusTasksButton.classList.remove('dirty')
-      this._dom.statusTasksButton.classList.remove('working')
-      this._dom.statusTasks.innerText = Msg['StatusReady']
+      this.$.statusTasksButton.classList.remove('dirty')
+      this.$.statusTasksButton.classList.remove('working')
+      this.$.statusTasks.innerText = Msg['StatusReady']
     }
   }
   /** Enable the prompt. **/
   on (){
-    this._dom.statusTasksButton.classList.add('on')
+    this.$.statusTasksButton.classList.add('on')
 
     if(!this.inited)
       return
@@ -189,7 +189,7 @@ class Prompt {
   }
   /** Disable the prompt. */
   off (){
-    this._dom.statusTasksButton.classList.remove('on')
+    this.$.statusTasksButton.classList.remove('on')
 
     if(!this.inited)
       return
@@ -222,8 +222,8 @@ class Prompt {
     if(!this.inited)
       return
 
-    let cols = (this._dom.section.width - 5*16)/7,
-        rows = (this._dom.section.height/17 - 4*16/14)
+    let cols = (this.$.section.width - 5*16)/7,
+        rows = (this.$.section.height/17 - 4*16/14)
 
     this.prompt.resize(parseInt(cols), parseInt(rows))
   }
@@ -251,7 +251,7 @@ class PromptProgress {
       className:'progress-bar'
     }).append(this.div)
 
-    document.body.append(this.dom._dom)
+    document.body.append(this.dom.$)
   }
 	/**
    * Sets the progress bar width by the loaded and total to load, e.g. loaded=256, total=1024 equals 75%.

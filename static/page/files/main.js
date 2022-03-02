@@ -13,7 +13,7 @@ class Files {
   constructor (){
     this.name = 'files'
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.section = new DOM(DOM.get('section#files'))
 
@@ -33,14 +33,14 @@ class Files {
       autocomplete:'off',
       placeholder:Msg['Filename']}
     ).onchange(this, () => {
-      let _dom = $.filename._dom
-      let str = _dom.value
+      let _$ = $.filename.$
+      let str = $.value
 
       str = str [0] != '/' && str.length > 1 ?
                    '/' + str : str
       str += str.indexOf('.') == -1 ? '.py' : ''
       str = str
-      _dom.value = str
+      _$.value = str
       document.title = `${str} - BIPES`
     })
 
@@ -52,7 +52,7 @@ class Files {
             id:'hidePane',
             title:Msg['HideShowProjectTree']
           }).onclick(this, () => {
-            DOM.switchState($.section._dom, 'hidePane')
+            DOM.switchState($.section.$, 'hidePane')
           }),
           $.filename
         ])
@@ -71,7 +71,7 @@ class Files {
     this.device = new DeviceFiles(this)
 
     // Codemirror
-    this.codemirror = CodeMirror($.codemirror._dom, Tool.fromUrl('theme'))
+    this.codemirror = CodeMirror($.codemirror.$, Tool.fromUrl('theme'))
 
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)
@@ -148,11 +148,11 @@ class DeviceFiles {
     this.arrayBufferTarget                   // After fetch, download or show
     this.arrayBufferPos                      // Position on the current file being sent
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)
-    this.parent._dom.section.append($.contextMenu)
+    this.parent.$.section.append($.contextMenu)
 
     $.fileOnTarget = new DOM('span')
     $.detailsFileOnTarget = DOM.prototypeDetails({
@@ -198,8 +198,8 @@ class DeviceFiles {
       title:Msg['WriteToDevice']
     }).onclick(this, this._fromEditor)
 
-    this.parent._dom.sidebar.append($.detailsFileOnTarget)
-    this.parent._dom.header.append($.saveToTarget)
+    this.parent.$.sidebar.append($.detailsFileOnTarget)
+    this.parent.$.header.append($.saveToTarget)
 
     command.add([this.parent, this], {
       buildFileTree: this._buildFileTree,
@@ -342,9 +342,9 @@ class DeviceFiles {
             })
           )
           if (item.files.length > 0) {
-            doms[doms.length - 1]._dom.open = true
+            doms[doms.length - 1].$.open = true
             if (item.files[0].hasOwnProperty('empty')) {
-              doms[doms.length - 1]._dom.open = true
+              doms[doms.length - 1].$.open = true
               doms[doms.length - 1].append(
                 new DOM('span', {innerText:'(Empty)', className:'emptyDir'})
               )
@@ -391,10 +391,10 @@ class DeviceFiles {
     },
     path = []
 
-    this._dom.fileOnTarget.removeChilds()
-    _iterate(this.fileOnTarget[0].files, this._dom.fileOnTarget,path)
+    this.$.fileOnTarget.removeChilds()
+    _iterate(this.fileOnTarget[0].files, this.$.fileOnTarget,path)
 
-    this._dom.detailsFileOnTarget._dom.open = true
+    this.$.detailsFileOnTarget.$.open = true
   }
   /**
    * Fetch file from a device
@@ -543,7 +543,7 @@ class DeviceFiles {
     if (command.tabUID != tabUID)
       return
 
-    this.parent._dom.filename._dom.value = filename
+    this.parent.$.filename.$.value = filename
     this.parent.codemirror.dispatch({
       changes: {from:0, to:this.parent.codemirror.state.doc.length, insert:script}
     })
@@ -566,7 +566,7 @@ class DeviceFiles {
   _fromEditor (){
     //For codemirror
       let script = this.parent.codemirror.state.doc.toString(),
-        filename = this.parent._dom.filename._dom.value
+        filename = this.parent.$.filename.$.value
     //let uint8Array = new Uint8Array([...script].map(s => s.charCodeAt(0)))
 
     this.writeToTarget (filename, script)
@@ -831,11 +831,11 @@ class ProjectFiles {
 
     this.tree               //  Reference to project file tree
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)
-    this.parent._dom.section.append($.contextMenu)
+    this.parent.$.section.append($.contextMenu)
 
     $.section = new DOM(DOM.get('section#files'))
     $.detailsFileOnProject = DOM.prototypeDetails({
@@ -876,8 +876,8 @@ class ProjectFiles {
       title:Msg['SaveToProject']
     }).onclick(this, this._fromEditor)
 
-    this.parent._dom.sidebar.append($.detailsFileOnProject)
-    this.parent._dom.header.append($.saveToLocal)
+    this.parent.$.sidebar.append($.detailsFileOnProject)
+    this.parent.$.header.append($.saveToLocal)
 
 
     command.add([this.parent, this], {
@@ -916,7 +916,7 @@ class ProjectFiles {
     // From codemirror
     let script = this.parent.codemirror.state.doc.toString()
       .replaceAll(/\t/g, '    '),
-      filename = this.parent._dom.filename._dom.value
+      filename = this.parent.$.filename.$.value
 
     // Apply to all tabs
     command.dispatch([this.parent, this], 'save', [
@@ -1012,10 +1012,10 @@ class ProjectFiles {
     if (!this.parent.inited || projectUID !== project.currentUID)
       return
 
-    item.dom = this._domSpan(item, map, false)
-    obj.dom._dom.append(item.dom._dom)
+    item.dom = this.$Span(item, map, false)
+    obj.dom.$.append(item.dom.$)
 
-    obj.dom._dom.open = true
+    obj.dom.$.open = true
   }
   /**
    * Remove folder or file, dispatch command and update project by reference.
@@ -1044,7 +1044,7 @@ class ProjectFiles {
 
     let obj = this.objByName(path)
     if (this.parent.inited)
-      obj.dom._dom.remove()
+      obj.dom.$.remove()
 
     // Get parent object
     let ar = path.split('/')
@@ -1125,10 +1125,10 @@ class ProjectFiles {
     if (!this.parent.inited)
       return
 
-    item.dom = this._domSpan(item, map, true)
-    obj.dom._dom.append(item.dom._dom)
+    item.dom = this.$Span(item, map, true)
+    obj.dom.$.append(item.dom.$)
 
-    obj.dom._dom.open = true
+    obj.dom.$.open = true
   }
   /*
    * Upload a file from the operation system's file picker to the project.
@@ -1217,11 +1217,11 @@ class ProjectFiles {
       obj.forEach(item => {
         if (item.files != undefined) {
           path.push(item.name)
-          doms.push(item.dom = this._domSpan(item, path, false))
+          doms.push(item.dom = this.$Span(item, path, false))
           if (item.files.length > 0) {
-            doms[doms.length - 1]._dom.open = true
+            doms[doms.length - 1].$.open = true
             if (item.files[0].hasOwnProperty('empty')) {
-              doms[doms.length - 1]._dom.open = true
+              doms[doms.length - 1].$.open = true
               doms[doms.length - 1].append(
                 new DOM('span', {innerText:`(${Msg['Empty']})`, className:'emptyDir'})
               )
@@ -1232,7 +1232,7 @@ class ProjectFiles {
         } else {
           let _path = path.length == 0 ? '' : `/${path.join('/')}`
 
-          doms.push(item.dom = this._domSpan(item, path, true))
+          doms.push(item.dom = this.$Span(item, path, true))
         }
       })
       dom.append(doms)
@@ -1240,25 +1240,25 @@ class ProjectFiles {
       return
     },
     path = []
-    _iterate(this.tree.files, this._dom.detailsFileOnProject, path)
+    _iterate(this.tree.files, this.$.detailsFileOnProject, path)
 
     this.tree.dom = {}
-    this.tree.dom._dom = this._dom.detailsFileOnProject._dom
-    this._dom.detailsFileOnProject._dom.open = true
+    this.tree.dom.$ = this.$.detailsFileOnProject.$
+    this.$.detailsFileOnProject.$.open = true
 
   }
   /**
    * Destroy the file tree, triggered by ::js::fun::Files::devinit.
    */
   _destroyFileTree () {
-    let _dom = this._dom.detailsFileOnProject._dom
+    let $ = this.$.detailsFileOnProject.$
 
-    let child = _dom.lastElementChild
+    let child = $.lastElementChild
     while (child) {
       if (child.nodeName === 'SUMMARY')
         return
-      _dom.removeChild(child)
-      child = _dom.lastElementChild
+      $.removeChild(child)
+      child = $.lastElementChild
     }
   }
   /*
@@ -1267,7 +1267,7 @@ class ProjectFiles {
    * @param {Array} path - array path to folder/file object.
    * @param {bool} type - false equals folder and true a file.
    */
-  _domSpan (item, path, type){
+  $Span (item, path, type){
     switch (type) {
       case false:
         return DOM.prototypeDetails({
@@ -1344,7 +1344,7 @@ class ProjectFiles {
     if (file === true)
       return
 
-    this.parent._dom.filename._dom.value = path
+    this.parent.$.filename.$.value = path
     this.parent.codemirror.dispatch({
       changes: {from:0, to:this.parent.codemirror.state.doc.length, insert:file.script}
     })

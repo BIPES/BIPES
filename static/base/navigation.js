@@ -168,12 +168,12 @@ class Navigation {
     this.portrait = false
     this.isLocal = 'file:' == window.location.protocol
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.nav = DOM.get('nav')
     $.menu = DOM.get('#menu', $.nav)
     $.panels = DOM.get('#panels', $.nav)
     $.menu.onclick = () => {
-      DOM.switchState (this._dom.nav)
+      DOM.switchState (this.$.nav)
     $.langugeDropdown
     }
 
@@ -186,7 +186,7 @@ class Navigation {
    */
   init (languages){
     for (let module in bipes.page) {
-      let a = DOM.get(`a#${module}`, this._dom.panels)
+      let a = DOM.get(`a#${module}`, this.$.panels)
       a.innerText = Msg[`Page${Tool.firstUpper(module)}`]
       a.title = Msg[`Page${Tool.firstUpper(module)}`]
       a.onauxclick = (ev) => {
@@ -231,22 +231,22 @@ class Navigation {
         new DOM('option', {innerText:languages[key], value:key})
       )
     }
-    this._dom.languageDropdown = new DOM('select', {
+    this.$.languageDropdown = new DOM('select', {
       title:Msg['Language']
     })
     .append(_languages)
     .onevent('change', this, () => {
-      location.href = `${location.origin}/ide-${this._dom.languageDropdown.value}`
+      location.href = `${location.origin}/ide-${this.$.languageDropdown.value}`
     })
     new DOM(DOM.get('div#status-bar #extra')).append([
      new DOM('span', {
       innerText:Msg['Language'],
       className:'status-icon',
       id:'language'
-      }).append(this._dom.languageDropdown)
+      }).append(this.$.languageDropdown)
     ])
     // Select current language
-    this._dom.languageDropdown._dom.value = document.documentElement.lang
+    this.$.languageDropdown.$.value = document.documentElement.lang
   }
 }
 

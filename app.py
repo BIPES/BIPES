@@ -28,7 +28,8 @@ available_lang = {
 # Note: Default theme is in the static/base/tool.js urlDefaults function.
 
 # Preferred order in the navigation bar
-pref_order = ['blocks', 'dashboard', 'device', 'prompt', 'files', 'notification', 'project']
+pref_order = ['blocks', 'dashboard', 'device', 'prompt', 'files', 'notification']
+last_in_order = 'project'
 def preferred_page_order(page):
     _page = []
     for elem in pref_order:
@@ -37,6 +38,11 @@ def preferred_page_order(page):
             page.remove(elem)
 
     _page.extend(page)
+
+    if last_in_order in page:
+        _page.remove(last_in_order)
+        _page.append(last_in_order)
+
     return _page
 
 # Libraries explicit set.

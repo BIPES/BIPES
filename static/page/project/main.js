@@ -24,7 +24,7 @@ class Project {
                     storage.fetch('username') :
                     storage.set('username', Msg['AUser'])
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.projects = new DOM('span', {className:'listy'})
 
@@ -61,7 +61,7 @@ class Project {
 
     $.section = new DOM(DOM.get('section#project'))
       .append([$.container, $.contextMenu])
-    $.section._dom.classList.add('default')
+    $.section.$.classList.add('default')
 
     // Cross tabs event handler on connecting and disconnecting device
     command.add(this, {
@@ -134,9 +134,9 @@ class Project {
     if (!this.inited)
       return
 
-    this._dom.projects._dom.insertBefore(
-      this._domCard(uid)._dom,
-      this._dom.projects._dom.firstChild
+    this.$.projects.$.insertBefore(
+      this.$Card(uid).$,
+      this.$.projects.$.firstChild
     )
   }
   remove (uid){
@@ -163,8 +163,8 @@ class Project {
       return
 
     // Must find child to work between tabs
-    let child = DOM.get(`[data-uid=${uid}]`, this._dom.projects._dom)
-    this._dom.projects._dom.removeChild(child)
+    let child = DOM.get(`[data-uid=${uid}]`, this.$.projects.$)
+    this.$.projects.$.removeChild(child)
 
     if (uid == this.currentUID) {
       this.currentUID = undefined
@@ -219,13 +219,13 @@ class Project {
 
     let project = []
     for (const key in this.projects) {
-      project.unshift(this._domCard(key))
+      project.unshift(this.$Card(key))
     }
-    this._dom.projects.append(project)
+    this.$.projects.append(project)
 
     // Only on a slave tab
     if (this.currentUID != undefined) {
-      let child = DOM.get(`[data-uid=${this.currentUID}]`, this._dom.projects._dom)
+      let child = DOM.get(`[data-uid=${this.currentUID}]`, this.$.projects.$)
       child.classList.add('on')
       DOM.get('#name', child).disabled = false
     }
@@ -240,7 +240,7 @@ class Project {
 
     if (this.currentUID != undefined){
       if (this.inited) {
-        let child = DOM.get(`[data-uid=${this.currentUID}]`, this._dom.projects._dom)
+        let child = DOM.get(`[data-uid=${this.currentUID}]`, this.$.projects.$)
         child.classList.remove('on')
         DOM.get('#name', child).disabled = true
       }
@@ -253,7 +253,7 @@ class Project {
     storage.set('current_project', this.load(uid))
 
     if (this.inited){
-      let child2 = DOM.get(`[data-uid=${this.currentUID}]`, this._dom.projects._dom)
+      let child2 = DOM.get(`[data-uid=${this.currentUID}]`, this.$.projects.$)
       child2.classList.add('on')
       DOM.get('#name', child2).disabled = false
     }
@@ -270,7 +270,7 @@ class Project {
    * properties.
    * @param {string} uid - Project UID.
    */
-  _domCard (uid){
+  $Card (uid){
     let item = JSON.parse(storage.fetch(`project-${uid}`))
 
     let _shared_class = item.project.shared.uid != '' ? 'shared' : ''
@@ -388,16 +388,16 @@ class Project {
    * @param {string} obj - Object with name, lastEdited and shared.
    */
   _lazyUpdate (uid, obj){
-    DOM.lazyUpdate(this._dom.projects._dom, uid, {
+    DOM.lazyUpdate(this.$.projects.$, uid, {
       name: obj.name,
       lastEdited: Tool.prettyEditedAt(obj.lastEdited),
       sharedUID: obj.shared.uid
     })
-    let _dom = DOM.get(`[data-uid='${uid}']`, this._dom.projects)
+    let $ = DOM.get(`[data-uid='${uid}']`, this.$.projects)
     if (obj.shared.uid != '')
-     _dom.classList.add('shared')
+     $.classList.add('shared')
     else
-     _dom.classList.remove('shared')
+     $.classList.remove('shared')
   }
   /*
    * Update project data on all tabs then from current scope write to localStorage.
@@ -494,14 +494,14 @@ class Project {
       command.dispatch(this, 'lazyUpdate', [uid, _obj])
       // Now send actual update action
       this.update({project:proj}, uid)
-      this.shared._dom.projects._dom.insertBefore(
-        this.shared._domCard({
+      this.shared.$.projects.$.insertBefore(
+        this.shared.$Card({
           uid:obj.uid,
           name:proj.name,
           author:proj.author,
           lastEdited:proj.lastEdited,
-        })._dom,
-        this.shared._dom.projects._dom.firstChild
+        }).$,
+        this.shared.$.projects.$.firstChild
       )
      }).catch(e => {console.error(e)})
   }
@@ -560,7 +560,7 @@ class Project {
         // Now send actual update action
         this.update({project:_proj}, uid)
       } catch(e){}
-      let dom = DOM.get(`[data-uid='${obj.uid}']`, this.shared._dom.projects)
+      let dom = DOM.get(`[data-uid='${obj.uid}']`, this.shared.$.projects)
       if (dom !== null)
         dom.remove()
     }).catch(e => {console.error(e)})
@@ -591,7 +591,7 @@ class SharedProject {
     this.inited = false
     this.firstInited = false
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.projects = new DOM('span', {className:'listy'})
 
@@ -621,8 +621,8 @@ class SharedProject {
       return
 
     let doms = []
-    this.projects.forEach(proj => doms.unshift(this._domCard(proj)))
-    this._dom.projects.append(doms)
+    this.projects.forEach(proj => doms.unshift(this.$Card(proj)))
+    this.$.projects.append(doms)
 
     this.inited = true
   }
@@ -644,8 +644,8 @@ class SharedProject {
         let doms = []
         // Push unique values and also return an array of these unique
         Tool.pushUnique(this.projects, obj.projects, 'uid')
-          .forEach(unique => doms.unshift(this._domCard(unique)))
-        this._dom.projects.append(doms)
+          .forEach(unique => doms.unshift(this.$Card(unique)))
+        this.$.projects.append(doms)
         if (doms.length == 0 && notify === true)
           notification.send(`${Msg['PageProject']}: ${Msg['NoOlderProjects']}.`)
       })
@@ -679,7 +679,7 @@ class SharedProject {
   /*
    * Creates a DOM shared project card
    */
-  _domCard (item){
+  $Card (item){
     return new DOM('button', {uid: item.uid})
       .append([
         new DOM('div', {className:'row'}).append([

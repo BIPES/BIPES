@@ -24,7 +24,7 @@ class Dashboard {
 
     this.easyMQTT = easyMQTT // Alias to make acessible
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 		$.dashboard = new DOM('div', {id:'dashboard'})
 		$.grid = new DOM('div', {id:'grid'})
 		$.header = new DOM('div', {id:'header'})
@@ -127,7 +127,7 @@ class Dashboard {
       return
 
     this.unselect()
-    this._dom.tabs.removeChilds()
+    this.$.tabs.removeChilds()
 
 		dataStorage.deinit()
 		databaseMQTT.deinit()
@@ -203,7 +203,7 @@ class Dashboard {
         ], ev)
       }).onclick(this, this.select, [sid])
 
-    let $ = this._dom
+    let $ = this.$
     $.tabs.append(obj.dom)
 	}
 	/** Save to project and refresh tabs with the same dashboard open */
@@ -275,7 +275,7 @@ class Dashboard {
           this.add()
       }
 
-      DOM.get(`[data-sid='${sid}']`, this._dom.tabs).remove()
+      DOM.get(`[data-sid='${sid}']`, this.$.tabs).remove()
     }
     delete this.tree[sid]
 
@@ -318,7 +318,7 @@ class Dashboard {
       return
 
     if (this.inited) {
-      DOM.get(`[data-sid='${sid}'] h3`, this._dom.tabs).innerText = name
+      DOM.get(`[data-sid='${sid}'] h3`, this.$.tabs).innerText = name
     }
     this.tree[sid].name = name
   }
@@ -332,14 +332,14 @@ class Dashboard {
     }
     this.currentSID = sid
     this.grid.init()
-    DOM.get(`[data-sid='${sid}']`, this._dom.tabs).classList.add('on')
+    DOM.get(`[data-sid='${sid}']`, this.$.tabs).classList.add('on')
   }
   /*
    * Unselect the dashboard and deinit grid.
    */
   unselect (){
     this.grid.deinit()
-    DOM.get(`[data-sid='${this.currentSID}']`, this._dom.tabs).classList.remove('on')
+    DOM.get(`[data-sid='${this.currentSID}']`, this.$.tabs).classList.remove('on')
     this.currentSID = undefined
   }
 }
@@ -357,7 +357,7 @@ class DashboardGrid {
 		this.editingProp  // Store original position and current from plugin(string)
 		this.isGrabbing = false;
 
-		let $ = this._dom = {}
+		let $ = this.$ = {}
 		$.grid = dom
 		$.actions = new DOM('div', {id:'actions'}).append([
 		    new DOM('div', {className:'silk'})
@@ -371,13 +371,13 @@ class DashboardGrid {
 
 		this.actions = new Actions($.actions)
 
-		this.muuri = new Muuri($.container._dom, {
+		this.muuri = new Muuri($.container.$, {
 		  layoutOnResize: false,
 		  dragEnabled: true,
 		  layoutOnInit: false,
 		  dragHandle: '#grab',
 		  dragStartPredicate: (item, e) => {
-		    if (this.parent._dom.dashboard.classList.contains('on')){
+		    if (this.parent.$.dashboard.classList.contains('on')){
 		      this.isGrabbing = +new Date()
 		      return true
 		    }
@@ -433,7 +433,7 @@ class DashboardGrid {
    * Deinit grid.
    */
 	deinit (){
-		this._dom.grid._dom.classList.remove('on')
+		this.$.grid.$.classList.remove('on')
 		this.editingPlugin = '';
 		setTimeout(() => {this.actions.deinit()},250)
 
@@ -503,8 +503,8 @@ class DashboardGrid {
       title:Msg['DragMe']
     })
     .onevent('contextmenu', this, ()=>{
-      if (!this.parent._dom.dashboard.classList.contains('on'))
-        this.parent._dom.dashboard.classList.add('on')
+      if (!this.parent.$.dashboard.classList.contains('on'))
+        this.parent.$.dashboard.classList.add('on')
     })
 
     let remove = new DOM('button', {
@@ -528,11 +528,11 @@ class DashboardGrid {
 			  let container1 = new DOM('div', {sid:data.sid, className:'chart wide'})
 			    .append(content1)
 
-		    this.muuri.add(container1._dom)
+		    this.muuri.add(container1.$)
 
 		    this.charts.push(Charts.chart(data, data.target))
 
-	      silk.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent._dom.dashboard)})
+	      silk.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent.$.dashboard)})
         grab.onclick(this, this.edit, [data, container1])
 
 		    break
@@ -548,11 +548,11 @@ class DashboardGrid {
 			  let container3 = new DOM('div', {sid:data.sid, className:'switch tiny'})
 			    .append(content3)
 
-		    this.muuri.add(container3._dom)
+		    this.muuri.add(container3.$)
 
 		    this.switches.push(Switches.switch(data, data.target))
 
-        data.target.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent._dom.dashboard)})
+        data.target.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent.$.dashboard)})
         grab.onclick(this, this.edit, [data, container3])
 		    break
 		  }
@@ -585,7 +585,7 @@ class DashboardGrid {
 		}
 
 		if (this.editingPlugin == data.sid) {
-			this._dom.grid._dom.classList.remove('on')
+			this.$.grid.$.classList.remove('on')
 			this.editingPlugin = '';
 			setTimeout(() => {this.actions.deinit}, 250)
 		}
@@ -626,7 +626,7 @@ class DashboardGrid {
 
     let t = 0;
     container.style.zIndex = '2'
-    Animate.on(this._dom.grid, 125)
+    Animate.on(this.$.grid, 125)
     this.bezier = setInterval(() => {
       let _t = t/15.
       let _b = _t*_t*(3.-2.*_t)
@@ -658,23 +658,23 @@ class DashboardGrid {
 	_computeEditorSize(type, size){
 	  let x, y, w, h
     if (type == 'chart')
-      if (this._dom.grid.width / 16 > 40)
-        w = this._dom.grid.width - (2 + 15)*16,
-        h = this._dom.grid.height - 3*16
+      if (this.$.grid.width / 16 > 40)
+        w = this.$.grid.width - (2 + 15)*16,
+        h = this.$.grid.height - 3*16
       else
-        w = this._dom.grid.width - (2)*16,
-        h = this._dom.grid.height - (3 + 12)*16
+        w = this.$.grid.width - (2)*16,
+        h = this.$.grid.height - (3 + 12)*16
     else
       w = size[0],
       h = size[1]
-    if (this._dom.grid.width / 16 > 40)
-      x = (this.parent._dom.section.width - w - 15*16) / 2,
-      y = (this.parent._dom.section.height - h) / 2 +
-          this._dom.grid._dom.scrollTop - (1*16)
+    if (this.$.grid.width / 16 > 40)
+      x = (this.parent.$.section.width - w - 15*16) / 2,
+      y = (this.parent.$.section.height - h) / 2 +
+          this.$.grid.$.scrollTop - (1*16)
     else
-      x = (this.parent._dom.section.width - w) / 2 ,
-      y = (this.parent._dom.section.height - h) / 2 +
-          this._dom.grid._dom.scrollTop - (1 + 14/2)*16
+      x = (this.parent.$.section.width - w) / 2 ,
+      y = (this.parent.$.section.height - h) / 2 +
+          this.$.grid.$.scrollTop - (1 + 14/2)*16
 
     return [x, y, w, h]
 	}
@@ -715,7 +715,7 @@ class DashboardGrid {
       }
     }, 15)
 
-    Animate.off(this._dom.grid, ()=>{
+    Animate.off(this.$.grid, ()=>{
       o.container.style.zIndex = '0'
       o.container.id = ''
       this.editing = undefined
@@ -725,12 +725,12 @@ class DashboardGrid {
 	}
 	/** On resize event, compute plugin resize widths and set actions mode (tall/wide). */
 	resize (){
-    if (this._dom.grid.width / 16 > 40){
-      this._dom.actions.classList.add('wide')
-      this._dom.actions.classList.remove('tall')
+    if (this.$.grid.width / 16 > 40){
+      this.$.actions.classList.add('wide')
+      this.$.actions.classList.remove('tall')
     } else {
-      this._dom.actions.classList.add('tall')
-      this._dom.actions.classList.remove('wide')
+      this.$.actions.classList.add('tall')
+      this.$.actions.classList.remove('wide')
     }
 
 	  if (this.editing) {
@@ -738,9 +738,9 @@ class DashboardGrid {
       return
     }
 
-    let w = this._dom.container.width
+    let w = this.$.container.width
 
-    let width = this._dom.grid.width / 16
+    let width = this.$.grid.width / 16
     let c = [
       [[w/3,w/6],[w/6,w/6],[w/12,w/12]],
       [[w/2,w/4],[w/4,w/4],[w/8,w/8]],
@@ -850,7 +850,7 @@ class DashboardAddMenu {
       chart:'Chart',
       switch: 'Switch'
     }
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.addMenu = dom
     $.addMenu.onclick(this, this.close)
     $.plugins = []
@@ -873,10 +873,10 @@ class DashboardAddMenu {
   }
   close (e) {
     if (e.target.id == 'addMenu')
-      Animate.off(this._dom.addMenu._dom)
+      Animate.off(this.$.addMenu.$)
   }
   open (){
-    Animate.on(this._dom.addMenu._dom)
+    Animate.on(this.$.addMenu.$)
   }
 }
 
@@ -888,7 +888,7 @@ class DataStorageManager {
     this.parent = parent
 	  this.name = 'storagemanager'
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.storageManager = dom
     $.storageManager.onclick (this, this.close)
 		$.upload = new DOM('input', {
@@ -950,7 +950,7 @@ class DataStorageManager {
       .onclick(this, () => {
         this.parent.nav.click()
         this.open()
-        $.mqttInput._dom.focus()
+        $.mqttInput.$.focus()
       })
 
     new DOM(DOM.get('div#status-bar #globals')).append([
@@ -964,7 +964,7 @@ class DataStorageManager {
   }
   /** Change easyMQTT session*/
   changeMQTTSession (){
-    let session = this._dom.mqttInput.value
+    let session = this.$.mqttInput.value
     command.dispatch([this.parent, this], 'changedMQTTSession', [session])
     storage.set('mqtt_session', session)
   }
@@ -973,8 +973,8 @@ class DataStorageManager {
     session = session == '' ? Tool.SID() : session
 
     easyMQTT.session = session
-    this._dom.statusMQTT.innerText = easyMQTT.session
-    this._dom.mqttInput.value = easyMQTT.session
+    this.$.statusMQTT.innerText = easyMQTT.session
+    this.$.mqttInput.value = easyMQTT.session
 
     databaseMQTT.reinit()
     this.deinit()
@@ -982,18 +982,18 @@ class DataStorageManager {
   }
   close (e) {
     if (e.target.id == 'storageManager'){
-     this._dom.wrapper.style.marginTop = '110vh'
-      Animate.off(this._dom.storageManager._dom, ()=>{this.deinit()})
+     this.$.wrapper.style.marginTop = '110vh'
+      Animate.off(this.$.storageManager.$, ()=>{this.deinit()})
     }
   }
   open (){
     this.restore ()
 
-    let $ = this._dom
+    let $ = this.$
     setTimeout(() =>{
       $.wrapper.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 20.5rem)`
       },125)
-    Animate.on($.storageManager._dom, 125)
+    Animate.on($.storageManager.$, 125)
   }
   restore(){
 		storage.keys(/datastorage:(.*)/)
@@ -1036,7 +1036,7 @@ class DataStorageManager {
 
 		remove.onclick(this, this.remove, [sid, data])
 
-		let $ = this._dom
+		let $ = this.$
 		$.container.append (data)
   }
   includeMQTT (topic){
@@ -1066,24 +1066,24 @@ class DataStorageManager {
 
 		remove.onclick(this, this.removeMQTT, [topic, data])
 
-		let $ = this._dom
+		let $ = this.$
 		$.containerMQTT.append (data)
   }
   deinit (){
     this.datalake.forEach ((item) => {
-      item._dom.remove()
+      item.$.remove()
     })
     this.datalake = []
     this.datalakeMQTT.forEach ((item) => {
-      item._dom.remove()
+      item.$.remove()
     })
     this.datalakeMQTT = []
   }
   remove (id, dom) {
-    dom._dom.remove()
+    dom.$.remove()
 		this.datalake.forEach((item, index) => {
-			if (item._dom.id == id) {
-				item._dom.remove()
+			if (item.$.id == id) {
+				item.$.remove()
 				this.datalake.splice(index,1)
 			}
 		})
@@ -1108,8 +1108,8 @@ class DataStorageManager {
 
 		    this.datalakeMQTT.forEach((item, index) => {
 		      databaseMQTT.remove(topic)
-			    if (item._dom.id == topic) {
-				    item._dom.remove()
+			    if (item.$.id == topic) {
+				    item.$.remove()
 				    this.datalakeMQTT.splice(index,1)
 			    }
 		    })
@@ -1175,7 +1175,7 @@ class DataStorageManager {
 	  document.body.removeChild(element)
   }
   uploadCSV (){
-    let _upload = this._dom.upload._dom
+    let _upload = this.$.upload.$
     if  (_upload.files [0] != undefined) {
       let file = _upload.files [0]
       if (/.csv$/.test(file.name) && file.type == 'text/csv'){

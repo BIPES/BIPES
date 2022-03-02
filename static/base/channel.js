@@ -68,7 +68,7 @@ class Channel {
       },
       device:{
         unuse:(uid) => {bipes.page.device.unuse(uid)}
-      }
+      },
     })
   }
   /*

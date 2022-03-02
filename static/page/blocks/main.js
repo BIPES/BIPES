@@ -6,8 +6,10 @@ import {Tool} from '../../base/tool.js'
 import {command} from '../../base/command.js'
 import {channel} from '../../base/channel.js'
 import {notification} from '../notification/main.js'
+
 import {files} from '../files/main.js'
 import {prompt} from '../prompt/main.js'
+import {project} from '../project/main.js'
 
 /* Code visually, uses Google Blockly as visual language library. */
 class Blocks {
@@ -22,7 +24,7 @@ class Blocks {
     this.convertColor = blocksConvertColor
     this.warningIfTrue = blocksWarningIfTrue
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.section = new DOM (DOM.get('section#blocks'))
       .append(new DOM('div', {id:'blockly'}))
@@ -79,7 +81,7 @@ class Blocks {
     this.workspace.setVisible(true)
     this.code.init()
     this.inited = true
-    let obj = window.bipes.page.project.projects[window.bipes.page.project.currentUID]
+    let obj = project.projects[project.currentUID]
     if (obj.hasOwnProperty('blocks'))
       this.load(obj.blocks)
     if (obj.hasOwnProperty('device'))
@@ -140,7 +142,7 @@ class Blocks {
     let xml = Blockly.Xml.domToText(
       Blockly.Xml.workspaceToDom(blocks.workspace)
     )
-    window.bipes.page.project.update({
+    project.update({
       blocks:{
         xml:xml
       }
@@ -196,7 +198,7 @@ class BlocksCode {
     this.interval           // store watcher interval.
     this.executing          // store if is executing code.
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.codeButton = new DOM('button', {
       title:Msg['ViewBlocksCode'],
@@ -220,7 +222,7 @@ class BlocksCode {
     dom.append([$.container])
 
 
-    this.codemirror = CodeMirror($.codemirror._dom, Tool.fromUrl('theme'),
+    this.codemirror = CodeMirror($.codemirror.$, Tool.fromUrl('theme'),
       {contenteditable:false})
 
     command.add([this.parent, this], {
@@ -238,14 +240,14 @@ class BlocksCode {
    */
   show (){
     this.generating = !this.generating
-    DOM.switchState(this._dom.container)
+    DOM.switchState(this.$.container)
   }
   watcher (){
     // Handle executing change without triggering DOM change everytime.
     if (prompt.locked){
-      this._dom.runButton._dom.classList.add('on')
+      this.$.runButton.$.classList.add('on')
     } else if (!prompt.locked){
-      this._dom.runButton._dom.classList.remove('on')
+      this.$.runButton.$.classList.remove('on')
     }
     let code = Blockly.Python.workspaceToCode(this.parent.workspace)
 
@@ -279,7 +281,7 @@ class BlocksCode {
     ])
   }
   _execedOnTarget (str, cmd, tabUID){
-    this._dom.runButton._dom.classList.remove('on')
+    this.$.runButton.$.classList.remove('on')
     notification.send(`${Msg['PageBlocks']}:${Msg['ScriptFinishedExecuting']}`)
   }
 
@@ -289,7 +291,7 @@ class BlocksCode {
   copyEdit (){
     let script = Blockly.Python.workspaceToCode(this.parent.workspace)
 
-    files._dom.filename._dom.value = `/${Msg['BlocksPy']}`
+    files.$.filename.$.value = `/${Msg['BlocksPy']}`
     files.codemirror.dispatch({
       changes: {from:0, to:files.codemirror.state.doc.length, insert:script}
     })

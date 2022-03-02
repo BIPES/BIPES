@@ -33,6 +33,7 @@ var Msg = {
   'PageProject':'Projects',
   'PagePrompt':'Console',
   'PageDashboard':'Dashboard',
+  'PageFreeboard':'Freeboard',
 
   // Common actions
   'Download':'Download',

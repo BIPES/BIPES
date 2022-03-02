@@ -4,9 +4,9 @@ export {DOM, ContextMenu, Animate}
 /** Make DOM element*/
 class DOM {
   constructor (dom, tags){
-    this._dom
+    this.$
     if (typeof dom != 'string'){
-      this._dom = dom
+      this.$ = dom
       return
     }
     let known_tags = [
@@ -15,12 +15,12 @@ class DOM {
       'autoplay', 'src', 'placeholder', 'htmlFor', 'type', 'autocomplete',
       'name', 'accept', 'disabled'
     ]
-    this._dom = document.createElement (dom);
+    this.$ = document.createElement (dom);
     if (typeof tags == 'object') for (const tag in tags) {
       if (known_tags.includes(tag))
-       this._dom[tag] = tags[tag]
+       this.$[tag] = tags[tag]
       else
-        this._dom.dataset[tag] = tags[tag]
+        this.$.dataset[tag] = tags[tag]
     }
   }
   /**
@@ -28,58 +28,66 @@ class DOM {
    * @param {string} str - Text to apply.
    */
   set innerText(str){
-    this._dom.innerText = str
+    this.$.innerText = str
   }
   /**
    * Get DOM innerText.
    */
    get innerText(){
-    return this._dom.innerText
+    return this.$.innerText
   }
   /** Get DOM offset height */
   get height (){
-    return this._dom.offsetHeight
+    return this.$.offsetHeight
   }
   /** Get DOM offset width */
   get width (){
-    return this._dom.offsetWidth
+    return this.$.offsetWidth
   }
   /** Get DOM id */
   get id (){
-    return this._dom.id
+    return this.$.id
   }
   /** Set DOM id */
   set id (str){
-    this._dom.id= str
+    this.$.id= str
   }
   /** Get DOM value */
   get value (){
-    return this._dom.value
+    return this.$.value
   }
   /** Set DOM value */
   set value (str){
-    this._dom.value = str
+    this.$.value = str
+  }
+  /** Get DOM src */
+  get src (){
+    return this.$.src
+  }
+  /** Set DOM src */
+  set src (str){
+    this.$.src = str
   }
   /**
    * Focus on DOM.
    */
   focus (){
-    this._dom.focus()
+    this.$.focus()
   }
   /** Get DOM classList object. */
   get classList(){
-    return this._dom.classList
+    return this.$.classList
   }
   /** Get DOM style object. */
   get style(){
-    return this._dom.style
+    return this.$.style
   }
   /**
    * Append a ``onchange`` event.
    * @param {function} ev - Function to be executed on click.
    */
   onchange (self, ev, args){
-    this._dom.onchange = (e) => {
+    this.$.onchange = (e) => {
       if (typeof args == 'undefined')
         ev.apply(self, [e])
       else if (args.constructor == Array) {
@@ -94,7 +102,7 @@ class DOM {
    * @param {function} ev - Function to be executed on click.
    */
   onclick (self, ev, args){
-    this._dom.onclick = (e) => {
+    this.$.onclick = (e) => {
       if (typeof args == 'undefined')
         ev.apply(self, [e])
       else if (args.constructor == Array) {
@@ -109,7 +117,7 @@ class DOM {
    * @param {function} ev - Function to be executed on up.
    */
   onup (self, ev, args){
-    this._dom.addEventListener('mouseup', (e) => {
+    this.$.addEventListener('mouseup', (e) => {
       if (typeof args == 'undefined')
         ev.apply(self, [e])
       else if (args.constructor == Array) {
@@ -124,7 +132,7 @@ class DOM {
    * @param {function} ev - Function to be executed on down.
    */
   ondown (self, ev, args){
-    this._dom.addEventListener('mousedown', (e) => {
+    this.$.addEventListener('mousedown', (e) => {
       if (typeof args == 'undefined')
         ev.apply(self, [e])
       else if (args.constructor == Array) {
@@ -139,7 +147,7 @@ class DOM {
    * @param {function} ev - Function to be executed on move.
    */
   onmove (self, ev, args){
-    this._dom.addEventListener('mousemove', (e) => {
+    this.$.addEventListener('mousemove', (e) => {
       if (typeof args == 'undefined')
         ev.apply(self, [e])
       else if (args.constructor == Array) {
@@ -156,7 +164,7 @@ class DOM {
    * @param {function} args - Arguments to be applied to the function.
    */
   onevent (event, self, fun, args){
-    this._dom.addEventListener(event, (e) => {
+    this.$.addEventListener(event, (e) => {
       if (typeof args == 'undefined')
         fun.apply(self, [e])
       else if (args.constructor == Array) {
@@ -176,9 +184,9 @@ class DOM {
 
     DOMS.forEach ((item) => {
       if (/HTML(.*)Element/.test(item.constructor.name))
-        this._dom.appendChild(item)
-      else if (typeof item == 'object' && (/HTML(.*)Element/.test(item._dom)))
-        this._dom.appendChild(item._dom)
+        this.$.appendChild(item)
+      else if (typeof item == 'object' && (/HTML(.*)Element/.test(item.$)))
+        this.$.appendChild(item.$)
     })
 
     return this
@@ -187,17 +195,17 @@ class DOM {
    * Delete object.
    */
   delete (){
-    this._dom.remove()
+    this.$.remove()
     delete this
   }
   /**
    * Remove childs from :js:func:`DOM` object.
    */
   removeChilds (){
-    let child = this._dom.lastElementChild
+    let child = this.$.lastElementChild
     while (child) {
-      this._dom.removeChild(child)
-      child = this._dom.lastElementChild
+      this.$.removeChild(child)
+      child = this.$.lastElementChild
     }
     return this
   }
@@ -207,7 +215,7 @@ class DOM {
    * @param {Object} b - Optional parent DOM.
    */
   static get (a, b){
-    b = b instanceof DOM ? b._dom : b
+    b = b instanceof DOM ? b.$ : b
     return (typeof b == 'undefined') ? document.querySelector (a) : b.querySelector(a)
   }
   /**
@@ -216,7 +224,7 @@ class DOM {
    * @param {Object} b - Parent DOM.
    */
   static getAll(a, b){
-    b = b instanceof DOM ? b._dom : b
+    b = b instanceof DOM ? b.$ : b
     return (typeof b == 'object') ? b.querySelectorAll(a) : get(b).querySelectorAll(a)
   }
   /**
@@ -225,7 +233,7 @@ class DOM {
    * @param {string} _class - Optional class, defaults to `on`.
    */
   static switchState (b, _class){
-    b = b instanceof DOM ? b._dom : b
+    b = b instanceof DOM ? b.$ : b
     let cn = _class != undefined ? _class : `on`
     if (b.classList.contains(cn))
       b.classList.remove(cn)
@@ -253,7 +261,7 @@ class DOM {
 
     if (str.onevent != undefined) {
       str.onevent.forEach(event => {
-        event.args.push(details._dom)
+        event.args.push(details.$)
         summary.onevent(
           event.event,
           event.self,
@@ -333,9 +341,9 @@ class DOM {
    * @param {string} value - Inner text of the target option.
    */
   static setSelected (dom, value){
-    for (var i = 0; i < dom._dom.options.length; i++){
-      if (dom._dom.options[i].text == value){
-        dom._dom.options[i].selected = true
+    for (var i = 0; i < dom.$.options.length; i++){
+      if (dom.$.options[i].text == value){
+        dom.$.options[i].selected = true
         return
       }
     }
@@ -396,10 +404,10 @@ class ContextMenu {
 
     this.mdTimestamp  // A timestamp to differentiate click and selection drag.
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.contextMenu = dom
-    $.contextMenu._dom.id = 'contextMenu'
-    $.contextMenu._dom.classList.add('popup')
+    $.contextMenu.$.id = 'contextMenu'
+    $.contextMenu.$.classList.add('popup')
 
     $.contextMenu.onclick(this, this.close)
       .onevent('contextmenu', this, this.close)
@@ -418,9 +426,9 @@ class ContextMenu {
       ev.preventDefault()
     if (ev == undefined || ev.target.id == 'contextMenu'){
       if (+new Date - this.mdTimestamp < 150 || ev == undefined){
-        this._dom.wrapper._dom.style.height = '0px'
-        Animate.off(this._dom.contextMenu._dom, undefined, 125)
-        setTimeout(() => {this._dom.wrapper.removeChilds()}, 125)
+        this.$.wrapper.$.style.height = '0px'
+        Animate.off(this.$.contextMenu.$, undefined, 125)
+        setTimeout(() => {this.$.wrapper.removeChilds()}, 125)
       }
     }
   }
@@ -433,14 +441,14 @@ class ContextMenu {
   * @param {string} actions[].args - Arguments applied to the callback function.
   */
   open (actions, ev){
-    let $ = this._dom
+    let $ = this.$
     let y = window.innerHeight < (ev.y + (actions.length*2)*16) ?
             ev.y - (1 + (actions.length*2-1))*16 : ev.y-1*16
     let x = window.innerWidth < (ev.x + 10*16) ?
             ev.x - 11*16: ev.x - 1*16
-    $.wrapper._dom.style.margin = `${y}px auto auto ${x}px`
+    $.wrapper.$.style.margin = `${y}px auto auto ${x}px`
     setTimeout(() =>{
-      $.wrapper._dom.style.height = `${(actions.length*2 + .25)*16}px`
+      $.wrapper.$.style.height = `${(actions.length*2 + .25)*16}px`
       },125)
 
     $.wrapper.removeChilds()
@@ -449,14 +457,14 @@ class ContextMenu {
       switch (action.id) {
       case 'upload':
         let dom = new DOM('input', {type:'file', accept:action.accept})
-        action.args.push(dom._dom)
+        action.args.push(dom.$)
         dom.onevent('change', this.ref, action.fun, action.args)
         doms.push(new DOM('button', {
             className:'icon text',
             id:action.id,
             innerText:action.innerText,
           }).onclick(this.ref, () => {
-            dom._dom.click()
+            dom.$.click()
           }))
         break
       default:
@@ -469,8 +477,8 @@ class ContextMenu {
       }
     })
     $.wrapper.append(doms)
-    setTimeout(() => {doms[0]._dom.focus()}, 125)
-    Animate.on($.contextMenu._dom, 125)
+    setTimeout(() => {doms[0].$.focus()}, 125)
+    Animate.on($.contextMenu.$, 125)
   }
   /**
   * Sets the context menu to on input mode, to receive string data.
@@ -481,22 +489,22 @@ class ContextMenu {
   * @param {Object} fun - Callback function to when input changes.
   */
   oninput (str, fun){
-    let $ = this._dom
+    let $ = this.$
     $.wrapper.removeChilds()
-    $.wrapper._dom.style.height = `${4.75*16}px`
+    $.wrapper.$.style.height = `${4.75*16}px`
 
     let input = new DOM('input', {
         placeholder:str.placeholder,
         value:str.value == undefined ? '' : str.value
       })
     let form = new DOM('form')
-      .onevent('submit', this, fun, [input._dom])
+      .onevent('submit', this, fun, [input.$])
       .append(input)
 
     $.wrapper.append([
       new DOM('h3', {innerText: str.title}),
       form
     ])
-    input._dom.focus()
+    input.$.focus()
   }
 }

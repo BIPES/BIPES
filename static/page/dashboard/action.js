@@ -10,7 +10,7 @@ class Actions {
 	constructor (dom){
 		this.actions = []
 
-		let $ = this._dom = {}
+		let $ = this.$ = {}
 		$.container = new DOM('span')
 		dom.append($.container)
 	}
@@ -27,13 +27,13 @@ class Actions {
 		for (const key in data.setup) {
 			let _action = new Action(data.setup[key], data, key, obj)
 			this.actions.push(_action)
-			let $ = this._dom
-			$.container.append(_action._dom.action)
+			let $ = this.$
+			$.container.append(_action.$.action)
 		}
 	}
 	deinit (){
 		this.actions.forEach((action) => {
-			action._dom.action._dom.remove()
+			action.$.action.$.remove()
 		});
 		this.actions = []
 	}
@@ -129,7 +129,7 @@ class Action {
 	  this.sid = data.sid
 	  this.dom = data.target
 
-		let $ = this._dom = {}
+		let $ = this.$ = {}
 		switch (Actions._getType(data.type, key)) {
 			case 'button':
 				$.action = new DOM('div', {className:'button'})
@@ -173,13 +173,13 @@ class Action {
 		      $.dropdown.append(new DOM('option', {value:item, innerText:item}))
         })
 				$.action.append([$.span, $.dropdown])
-				$.dropdown._dom.selectedIndex = index
+				$.dropdown.$.selectedIndex = index
 				break
 		}
 	}
   switch (obj, data) {
       data.setup.timeseries = !data.setup.timeseries
-			this._dom.action._dom.className = data.setup.timeseries ? 'switch on' : 'switch'
+			this.$.action.$.className = data.setup.timeseries ? 'switch on' : 'switch'
 
 			switch(this.plugin){
 			  case 'chart':
@@ -192,7 +192,7 @@ class Action {
       }
   }
 	input (obj, data) {
-			let str = String(this._dom.input._dom.value)
+			let str = String(this.$.input.$.value)
 			switch(this.plugin){
 			  case 'chart':
 			    switch (this.key){
@@ -231,7 +231,7 @@ class Action {
 			}
 	}
 	dropdown (obj, data) {
-		let str = String(this._dom.dropdown._dom.value)
+		let str = String(this.$.dropdown.$.value)
 		switch(this.plugin){
 		  case 'chart':
 		    switch (this.key){

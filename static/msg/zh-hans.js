@@ -33,6 +33,7 @@ var Msg = {
   'PageProject':'项目',
   'PagePrompt':'安慰',
   'PageDashboard':'仪表板',
+  'PageFreeboard':'Freeboard',
 
   // Common actions
   'Download':'下载',

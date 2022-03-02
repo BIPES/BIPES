@@ -190,6 +190,11 @@ nav a, nav span {
   overflow: hidden;
   box-sizing: border-box;
 }
+@media only screen and (max-width: 26rem) {
+  nav #panels {
+    justify-content: space-between !important;
+  }
+}
 @media only screen and (max-width: 39.99rem) {
   nav {
     position: fixed;
@@ -207,6 +212,7 @@ nav a, nav span {
     display: flex;
     justify-content: space-around;
     width: 100vw;
+    overflow-x: auto;
   }
   nav #extra {
     display: none;

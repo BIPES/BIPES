@@ -27,7 +27,7 @@ class Device {
     this.inited = false
     this.deviceInfo = deviceSpecifications
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
 
     $.buttonWebSerial = new DOM('button', {id:'WebSerial'})
         .append([
@@ -117,8 +117,8 @@ class Device {
 
 
     $.section = new DOM(DOM.get('section#device'))
-      .append([$.container._dom])
-    $.section._dom.classList.add('default')
+      .append([$.container.$])
+    $.section.$.classList.add('default')
     $.nav = new DOM(DOM.get('a#device'))
 
     $.webSocketSetup = new DOM('div')
@@ -137,7 +137,7 @@ class Device {
       .append($.statusDevice)
       .onclick(this, () => {
         this.nav.click()
-        this._dom.targetDropdown.focus()
+        this.$.targetDropdown.focus()
       })
     $.statusFirmware = new DOM('div')
     $.statusFirmwareButton = new DOM('button', {
@@ -148,7 +148,7 @@ class Device {
       .append($.statusFirmware)
       .onclick(this, () => {
         this.nav.click()
-        this._dom.targetFirmwareDropdown.focus()
+        this.$.targetFirmwareDropdown.focus()
       })
     $.statusTarget = new DOM('div')
     $.statusTarget.innerText = Msg['NotConnected']
@@ -160,7 +160,7 @@ class Device {
       .append($.statusTarget)
       .onclick(this, () => {
         this.nav.click()
-        this._dom.buttonWebSerial.focus()
+        this.$.buttonWebSerial.focus()
       })
 
     new DOM(DOM.get('div#status-bar #globals')).append([
@@ -207,14 +207,14 @@ class Device {
       bipes.page.blocks.toolbox(obj.target)
 
     // Update status bar
-    this._dom.statusDevice.innerText = this.deviceInfo[obj.target].name
-    this._dom.statusFirmware.innerText = obj.firmware
+    this.$.statusDevice.innerText = this.deviceInfo[obj.target].name
+    this.$.statusFirmware.innerText = obj.firmware
 
     if (!this.inited)
       return
     if (obj.hasOwnProperty('target')){
-      DOM.setSelected(this._dom.targetDropdown, obj.target),
-      this._dom.pinout._dom.src = `./static/page/device/media/${this.deviceInfo[obj.target].img}`
+      DOM.setSelected(this.$.targetDropdown, obj.target),
+      this.$.pinout.$.src = `./static/page/device/media/${this.deviceInfo[obj.target].img}`
     }
   }
   /*
@@ -259,13 +259,13 @@ class Device {
       channel.targetDevice, timestamp, str, command.tabUID
     ])
     // Only on a master tab
-    this._dom.nav._dom.classList.add('using')
-    this._dom.wrapper._dom.classList.add('master')
-    let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
+    this.$.nav.$.classList.add('using')
+    this.$.wrapper.$.classList.add('master')
+    let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this.$.devices.$)
     child.classList.add('on')
     // Update status bar
-    this._dom.statusTarget.innerText = `${str.nodename} ${str.version}`
-    this._dom.statusTargetButton.classList.add('on')
+    this.$.statusTarget.innerText = `${str.nodename} ${str.version}`
+    this.$.statusTargetButton.classList.add('on')
 
     // If not inited, fill devices from StorageBroker (-->)
     if (!this.inited) {
@@ -302,11 +302,11 @@ class Device {
       return
 
     if (this.devices.length == 1) {
-      this._dom.devices.removeChilds()
+      this.$.devices.removeChilds()
     }
-    this._dom.devices._dom.insertBefore(
-      this._domCard(this.devices[this.devices.length - 1])._dom,
-      this._dom.devices._dom.firstChild
+    this.$.devices.$.insertBefore(
+      this.$Card(this.devices[this.devices.length - 1]).$,
+      this.$.devices.$.firstChild
     )
   }
   init (){
@@ -317,15 +317,15 @@ class Device {
     if (this.devices.length > 0) {
       let msgs = []
       this.devices.forEach (item => {
-        msgs.unshift(this._domCard(item))
+        msgs.unshift(this.$Card(item))
       })
-      this._dom.devices.append(msgs)
+      this.$.devices.append(msgs)
     } else
       this._noDevice()
 
     // Only on a slave tab
     if (channel.targetDevice != undefined) {
-      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
+      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this.$.devices.$)
       child.classList.add('on')
     }
 
@@ -338,8 +338,8 @@ class Device {
    * On dropdown change, set the new target.
    */
   setProjectTarget (){
-    let target = this._dom.targetDropdown._dom.value
-    let firmware = this._dom.targetFirmwareDropdown._dom.value
+    let target = this.$.targetDropdown.$.value
+    let firmware = this.$.targetFirmwareDropdown.$.value
 
     if (target != project.current.device.target)
       this.pipe.blocks_deviceTarget(target)
@@ -351,17 +351,17 @@ class Device {
       }
     })
     // Update status bar
-    this._dom.statusDevice.innerText = this.deviceInfo[target].name
-    this._dom.statusFirmware.innerText = firmware
+    this.$.statusDevice.innerText = this.deviceInfo[target].name
+    this.$.statusFirmware.innerText = firmware
   }
 
   _noDevice (){
-    this._dom.devices.append(
+    this.$.devices.append(
       new DOM('span', {innerText:Msg['NoConnectedLong']})
     )
   }
   // Creates a DOM notificaton card
-  _domCard (item){
+  $Card (item){
     let about = item.tab == command.tabUID ? Msg['OnThisTab'] : Msg['OnOtherTab']
     let using = Msg['UsingThisDevice']
     return new DOM('button', {uid: item.uid})
@@ -389,7 +389,7 @@ class Device {
   deinit (){
     if(!this.inited)
       return
-    this._dom.devices.removeChilds()
+    this.$.devices.removeChilds()
     this.inited = false
   }
   select (uid, ev){
@@ -399,8 +399,8 @@ class Device {
       return
 
     let unselect = () => {
-      this._dom.nav._dom.classList.remove('using')
-      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
+      this.$.nav.$.classList.remove('using')
+      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this.$.devices.$)
       if (child != null)
         child.classList.remove('on')
       channel.targetDevice = undefined
@@ -416,13 +416,13 @@ class Device {
         if (device.uid == uid) {
           channel.currentProtocol = device.protocol
           // Update status bar
-          this._dom.statusTarget.innerText = `${device.nodename} ${device.version}`
-          this._dom.statusTargetButton.classList.add('on')
-          prompt._dom.statusTasksButton.classList.add('on')
+          this.$.statusTarget.innerText = `${device.nodename} ${device.version}`
+          this.$.statusTargetButton.classList.add('on')
+          prompt.$.statusTasksButton.classList.add('on')
         }
       })
-      this._dom.nav._dom.classList.add('using')
-      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this._dom.devices._dom)
+      this.$.nav.$.classList.add('using')
+      let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this.$.devices.$)
       if (child != null)
         child.classList.add('on')
     } else
@@ -457,14 +457,14 @@ class Device {
         device.version = version
         if (channel.targetDevice === uid)
           // Update status bar
-          this._dom.statusTarget.innerText = `${device.nodename} ${device.version}`
+          this.$.statusTarget.innerText = `${device.nodename} ${device.version}`
       }
     })
     if (!this.inited)
       return
 
-    DOM.get(`[data-uid=${uid}] #nodename`, this._dom.devices._dom).innerText = nodename
-    DOM.get(`[data-uid=${uid}] #version`, this._dom.devices._dom).innerText = version
+    DOM.get(`[data-uid=${uid}] #nodename`, this.$.devices.$).innerText = nodename
+    DOM.get(`[data-uid=${uid}] #version`, this.$.devices.$).innerText = version
   }
   // Main instance call
   unuse (uid){
@@ -477,8 +477,8 @@ class Device {
     storage.set('device', JSON.stringify(this.devices))
 
     // Only on a master tab
-    this._dom.nav._dom.classList.remove('using')
-    this._dom.wrapper._dom.classList.remove('master')
+    this.$.nav.$.classList.remove('using')
+    this.$.wrapper.$.classList.remove('master')
     this._statusNotConnected()
 
     command.dispatch(this, 'unuse', [uid])
@@ -487,7 +487,7 @@ class Device {
   _unuse (uid){
     if (channel.targetDevice == uid){
       channel.targetDevice = undefined
-      this._dom.nav._dom.classList.remove('using')
+      this.$.nav.$.classList.remove('using')
       this._statusNotConnected()
     }
 
@@ -501,15 +501,15 @@ class Device {
       return
 
     // Must find child to work between tabs
-    let child = DOM.get(`[data-uid=${uid}]`, this._dom.devices._dom)
-    this._dom.devices._dom.removeChild(child)
-    if (this._dom.devices._dom.childElementCount == 0)
+    let child = DOM.get(`[data-uid=${uid}]`, this.$.devices.$)
+    this.$.devices.$.removeChild(child)
+    if (this.$.devices.$.childElementCount == 0)
       this._noDevice()
   }
   _statusNotConnected(){
-      this._dom.statusTarget.innerText = Msg['NotConnected']
-      this._dom.statusTargetButton.classList.remove('on')
-      prompt._dom.statusTasksButton.classList.remove('on')
+      this.$.statusTarget.innerText = Msg['NotConnected']
+      this.$.statusTargetButton.classList.remove('on')
+      prompt.$.statusTasksButton.classList.remove('on')
   }
   unresponsive (uid){
     this.devices.forEach((item, index) => {
@@ -524,17 +524,17 @@ class Device {
    */
   checkAPISupport (){
     if (window.location.protocol == 'https:')
-      this._dom.buttonWebSocket._dom.classList.add('unsupported')
+      this.$.buttonWebSocket.$.classList.add('unsupported')
 
     if (window.location.protocol == 'http:' && window.location.hostname != '127.0.0.1')
-      this._dom.buttonWebSerial._dom.classList.add('unsupported'),
-      this._dom.buttonWebBluetooth._dom.classList.add('unsupported')
+      this.$.buttonWebSerial.$.classList.add('unsupported'),
+      this.$.buttonWebBluetooth.$.classList.add('unsupported')
 
     if (navigator.serial == undefined)
-      this._dom.buttonWebSerial._dom.classList.add('unsupported')
+      this.$.buttonWebSerial.$.classList.add('unsupported')
 
     if (navigator.bluetooth == undefined)
-      this._dom.buttonWebBluetooth._dom.classList.add('unsupported')
+      this.$.buttonWebBluetooth.$.classList.add('unsupported')
   }
 }
 
@@ -544,10 +544,10 @@ class WebSocketSetup {
   constructor (dom, parent){
     this.mdTimestamp  // A timestamp to differentiate click and selection drag.
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.webSocketSetup = dom
-    $.webSocketSetup._dom.id = 'webSocketSetup'
-    $.webSocketSetup._dom.classList.add('popup')
+    $.webSocketSetup.$.id = 'webSocketSetup'
+    $.webSocketSetup.$.classList.add('popup')
 
     $.webSocketSetup.onclick(this, this.close)
       .onevent('contextmenu', this, this.close)
@@ -569,7 +569,7 @@ class WebSocketSetup {
       id:'connect'
     }).onclick(this, () => {
       this.close()
-      parent.connectWebSocket($.urlInput._dom.value, $.passwordInput._dom.value)
+      parent.connectWebSocket($.urlInput.$.value, $.passwordInput.$.value)
     })
     $.buttonScan = new DOM('button', {
       innerText:Msg['ScanDevices'],
@@ -584,8 +584,8 @@ class WebSocketSetup {
       .append([$.title, $.info]);
     this.webSocketScan = new WebSocketScan(this, $.wrapper)
     $.buttonScan.onclick (this, () => {
-      DOM.switchState(this.webSocketScan._dom.container._dom)
-      this.webSocketScan._dom.inputPrefix._dom.focus()
+      DOM.switchState(this.webSocketScan.$.container.$)
+      this.webSocketScan.$.inputPrefix.$.focus()
     })
     $.wrapper.append([
         $.urlLabel, $.urlInput,
@@ -607,8 +607,8 @@ class WebSocketSetup {
       ev.preventDefault()
     if (ev == undefined || ev.target.id == 'webSocketSetup'){
       if (+new Date - this.mdTimestamp < 150 || ev == undefined){
-        this._dom.wrapper.style.marginTop = '110vh'
-        Animate.off(this._dom.webSocketSetup._dom, undefined, 125)
+        this.$.wrapper.style.marginTop = '110vh'
+        Animate.off(this.$.webSocketSetup.$, undefined, 125)
       }
     }
   }
@@ -616,12 +616,12 @@ class WebSocketSetup {
   * Render the webSocketSetup and open it.
   */
   open (){
-    let $ = this._dom
+    let $ = this.$
     setTimeout(() =>{
       $.wrapper.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 20.5rem)`
       },125)
-    setTimeout(() => {this._dom.urlInput._dom.focus()}, 125)
-    Animate.on($.webSocketSetup._dom, 125)
+    setTimeout(() => {this.$.urlInput.$.focus()}, 125)
+    Animate.on($.webSocketSetup.$, 125)
   }
 }
 
@@ -641,7 +641,7 @@ class WebSocketScan {
     this.scanning = false       // Is currently scanning?
     this.done = false           // Should be done already? (Some IPs hangs)
 
-    let $ = this._dom = {}
+    let $ = this.$ = {}
     $.label = new DOM('h4', {
       innerText:Msg['ScanPattern']
     })
@@ -690,12 +690,12 @@ class WebSocketScan {
 
     this.done = false
 
-    this._dom.container._dom.classList.remove('on')
-    this._dom.addressFound._dom.classList.add('on')
-    let $ = this._dom
-    let protocol = $.inputProtocol._dom.value.replaceAll(' ','').split(','),
-        prefix = $.inputPrefix._dom.value.replaceAll(' ','').split(','),
-        ports = $.inputPort._dom.value.replaceAll(' ','').split(','),
+    this.$.container.$.classList.remove('on')
+    this.$.addressFound.$.classList.add('on')
+    let $ = this.$
+    let protocol = $.inputProtocol.$.value.replaceAll(' ','').split(','),
+        prefix = $.inputPrefix.$.value.replaceAll(' ','').split(','),
+        ports = $.inputPort.$.value.replaceAll(' ','').split(','),
         last = 0
 
     if (!protocol.every(this._checkIPAddress)) {
@@ -733,10 +733,10 @@ class WebSocketScan {
   progress (){
     if (this.done)
       return
-    this._dom.status._dom.innerText = Tool.format([Msg['ScanningInfo'],this.count, this.last*this.multiplier, this.found])
+    this.$.status.$.innerText = Tool.format([Msg['ScanningInfo'],this.count, this.last*this.multiplier, this.found])
 
     if (this.count + 1 == (this.last * this.multiplier)){
-      this._dom.status._dom.innerText = Tool.format([Msg['DoneScanning'],this.last*this.multiplier,this.found])
+      this.$.status.$.innerText = Tool.format([Msg['DoneScanning'],this.last*this.multiplier,this.found])
       this.done = true
       this.scanning = false
       this.multiplier = 0
@@ -752,7 +752,7 @@ class WebSocketScan {
   include (url){
     this.found++
     url = url.substring(0, url.length - 1)
-    this._dom.found.append(
+    this.$.found.append(
       new DOM('button', {
         className:'noicon text'
       }).append([new DOM('div', {innerText:url})])
@@ -764,14 +764,14 @@ class WebSocketScan {
    * @param{string} url - Reachable url to apply.
    */
   apply (url){
-    this.parent._dom.urlInput._dom.value = url
-    this.parent._dom.passwordInput._dom.focus()
+    this.parent.$.urlInput.$.value = url
+    this.parent.$.passwordInput.$.focus()
   }
   /*
    * Clear previous urls.
    */
   clear (){
-    this._dom.found.removeChilds()
+    this.$.found.removeChilds()
   }
   /*
    * Apply url to WebSocket setup.
