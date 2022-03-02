@@ -16,13 +16,13 @@ Blockly.Python['get_freq'] = function(block) {
 Blockly.Python["machine_unique_id"] = function(block) {
 		Blockly.Python.definitions_['import_machine'] = 'import machine';
 	var code = "machine.unique_id()\n";
-	return [code, Blockly.JavaScript.ORDER_NONE];
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python["machine_reset_cause"] = function(block) {
 	Blockly.Python.definitions_['import_machine'] = 'import machine';
 	var code = "machine.reset_cause()";
-	return [code, Blockly.JavaScript.ORDER_NONE];
+	return [code, Blockly.Python.ORDER_NONE];
 };
 
 

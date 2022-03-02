@@ -253,6 +253,113 @@ esp32_cam_white_led
 end_category
 end_category
 
+%{OUTPUTS}
+Relay
+relay_switch
+end_category
+I/O Expander
+mcp23017_init
+mcp23017_setup
+mcp23017_output
+mcp23017_input
+end_category
+RC Servo Motor
+init_servo
+move_servo
+end_category
+Stepper Motor
+stepper_init
+stepper_step
+end_category
+DC Motor
+dc_motor_init
+dc_motor_power
+dc_motor_direction
+dc_motor_stop
+end_category
+end_category
+
+%{COMM}
+UART
+uart_init
+uart_write
+uart_read
+uart_read_into
+uart_readline
+uart_read_all
+end_category
+SPI
+machine.SPI_SPI.init
+machine.SPI_SPI.deinit
+machine.SPI_SPI.read
+machine.SPI_SPI.readinto
+machine.SPI_SPI.write
+machine.SPI_SPI.write_readinto
+end_category
+GSM Modem
+gsm_modem_init
+gsm_modem_send_sms
+gsm_modem_send_at
+gsm_modem_http_get
+gsm_modem_response
+end_category
+I2C
+machine.I2C_I2C.init
+machine.I2C_I2C.deinit
+machine.I2C_I2C.scan
+machine.I2C_I2C.start
+machine.I2C_I2C.stop
+machine.I2C_I2C.readinto
+machine.I2C_I2C.write
+machine.I2C_I2C.readfrom
+machine.I2C_I2C.readfrom_into
+machine.I2C_I2C.writeto
+machine.I2C_I2C.writevto
+machine.I2C_I2C.readfrom_mem
+machine.I2C_I2C.readfrom_mem_into
+machine.I2C_I2C.writeto_mem
+end_category
+end_category
+
+%{FILES}
+file_open
+file_open_write
+file_open_read
+file_write
+file_write_line
+file_write_byte
+file_read
+file_close
+Disk file operations
+files_list
+uos_mkdir
+uos_remove
+SD Card
+sd_mount
+sd_mount_custom
+uos_listdir
+uos_umount
+Other file operations
+uos_listdir
+uos_uname
+uos_urandom
+uos_chdir
+uos_getcwd
+uos_ilistdir
+uos_rmdir
+uos_rename
+uos_stat
+uos_statvfs
+uos_sync
+uos_dupterm
+uos_mount
+uos_umount
+uos_readblocks
+uos_readblocks
+uos_writeblocks
+uos_writeblocks
+uos_ioctl
+end_category
 
 %{NET}
 MQTT

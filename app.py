@@ -4,9 +4,7 @@ from flask import render_template
 import os
 import glob
 import socket
-import struct
 import re
-import sqlite3
 
 
 app_name = 'BIPES'
