@@ -140,9 +140,9 @@ def build_release():
         f.write(blockly_toolbox_generator())
     # Build blockly blocks and generator
     with open("static/page/blocks/blocks.umd.js",'w') as f:
-        f.write(concat_files("static/page/blocks/blocks/*.js"))
+        f.write(concat_files("static/page/blocks/blocks/*.js", "micropython.js"))
     with open("static/page/blocks/pythonic.umd.js",'w') as f:
-        f.write(concat_files("static/page/blocks/pythonic/*.js"))
+        f.write(concat_files("static/page/blocks/pythonic/*.js", "micropython.js"))
     
     app = create_app()
     # "Compile" ide template as ide/index.html (default filename for servers)

@@ -450,3 +450,8 @@ simulate_dcmotor.sim
 simulate_dcmotor.vars
 end_category
 end_category
+
+micropython
+micropython_everyhing
+end_category
+end_category

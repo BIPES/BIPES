@@ -1,6 +1,5 @@
 # %{COMM}
 <category name="%{COMM}">
-<label text="%{COMM}"></label>
 
 # UART
 <category name="UART">
