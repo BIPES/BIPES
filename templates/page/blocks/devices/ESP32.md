@@ -362,6 +362,50 @@ uos_ioctl
 end_category
 
 %{NET}
+
+Status&Configure
+wifi_client_connect
+wifi_client_scan_networks
+net_ap_mode
+net_ifconfig
+net_wiznet5k_init
+net_wiznet5k_isconnected
+net_wiznet5k_regs
+net_wiznet5k_ifconfig
+end_category
+
+HTTP Client
+net_get_request
+net_get_request&text
+http_get_status
+http_get_content
+variables_set&net_get_request
+request&http_get_content
+POST Method
+net_post_request
+net_post_request_json
+end_category
+HTTP Server
+net_http_server_start
+net_http_server_accept
+net_http_server_requested_page
+net_http_server_send_response
+net_http_server_send_response_jpg
+net_http_server_close
+end_category
+EMAIL
+umail_init
+umail_send
+end_category
+NTP Time
+net_ntp_sync
+end_category
+TCP/IP Socket
+net_socket_connect
+net_socket_receive
+net_socket_send
+net_socket_close
+end_category
 MQTT
 mqtt_init
 mqtt_add_to_buffer

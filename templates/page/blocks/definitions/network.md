@@ -1,6 +1,331 @@
 # %{NET}
 <category name="%{NET}">
 
+# Status&Configure
+<category name="Status and Configure">
+
+# wifi_client_connect
+<block type="wifi_client_connect">
+  <value name="wifi_client_essid">
+    <shadow type="text">
+      <field name="TEXT"></field>
+    </shadow>
+  </value>
+  <value name="wifi_client_key">
+    <shadow type="text">
+      <field name="TEXT"></field>
+    </shadow>
+  </value>
+</block>
+
+# net_ap_mode
+<block type="net_ap_mode">
+  <field name="NAME">Configure Access Point Mode</field>
+  <value name="wifi_essid">
+    <shadow type="text">
+      <field name="TEXT"></field>
+    </shadow>
+  </value>
+  <value name="wifi_key">
+    <shadow type="text">
+      <field name="TEXT"></field>
+    </shadow>
+  </value>
+</block>
+
+# wifi_client_scan_networks
+<block type="wifi_client_scan_networks"></block>
+
+# net_ifconfig
+<block type="net_ifconfig">
+  <field name="NET_IFCONFIG">Wifi current IP</field>
+</block>
+
+# net_wiznet5k_init
+<block type="net_wiznet5k_init"></block>
+
+# net_wiznet5k_isconnected
+<block type="net_wiznet5k_isconnected"></block>
+
+# net_wiznet5k_regs
+<block type="net_wiznet5k_regs"></block>
+
+# net_wiznet5k_ifconfig
+<block type="net_wiznet5k_ifconfig"></block>
+
+# HTTP Client
+<category name="HTTP Client">
+<label text="HTTP (web) Client"></label>
+<label text="GET Method"></label>
+
+# net_get_request
+<block type="net_get_request"></block>
+
+# net_get_request&text
+<block type="net_get_request">
+  <value name="URL">
+    <block type="text">
+      <field name="TEXT">http://</field>
+    </block>
+  </value>
+</block>
+
+# http_get_status
+<block type="http_get_status"></block>
+
+# http_get_content
+<block type="http_get_content"></block>
+
+# variables_set&net_get_request
+<block type="variables_set" inline="false">
+  <field name="VAR">request</field>
+  <value name="VALUE">
+    <block type="net_get_request">
+      <value name="URL">
+        <block type="text">
+          <field name="TEXT">http://bipes.net.br/test.txt</field>
+        </block>
+      </value>
+    </block>
+  </value>
+</block>
+
+# request&http_get_content
+<variables>
+  <variable id="yFH}K(gY?bu!VLT9NYZ.">request</variable>
+</variables>
+<block type="variables_set" id="!1xIazB)h~sJ/!$o{Sm5" inline="false" x="-613" y="-737">
+  <field name="VAR" id="yFH}K(gY?bu!VLT9NYZ.">request</field>
+  <value name="VALUE">
+  <block type="net_get_request" id="5gsz(fK06Y^Uq!^eqfl^">
+  <value name="URL">
+  <block type="text" id="$YN]pq|;%B-%rxn[)aK}">
+  <field name="TEXT">http://bipes.net.br/test.txt</field>
+  </block>
+  </value>
+  </block>
+  </value>
+  <next>
+  <block type="controls_if" id="gXT.6iyw4xuE[DIT|DlZ">
+  <mutation else="1"/>
+  <value name="IF0">
+  <block type="logic_compare" id="MAl#oabnR*]}v{*w!UzM">
+  <field name="OP">EQ</field>
+  <value name="A">
+  <block type="http_get_status" id="wtKQnU[WC=}H%N;~w)2V">
+  <field name="request" id="yFH}K(gY?buUVLT9NYZ.">request</field>
+  </block>
+  </value>
+  <value name="B">
+  <block type="math_number" id="tOXrARcB78l}%us2,2?k">
+  <field name="NUM">200</field>
+  </block>
+  </value>
+  </block>
+  </value>
+  <statement name="DO0">
+  <block type="text_print" id="~f:U;)0R$FRjhp{cR]@E">
+  <value name="TEXT">
+  <shadow type="text" id="pr9Ux3[LuPqlVB$8Clx[">
+  <field name="TEXT">abc</field>
+  </shadow>
+  <block type="text_join" id="=(rN|1TYMR;Dm$,@i*q=">
+  <mutation items="2"/>
+  <value name="ADD0">
+  <block type="text" id="CqCB]Gb8.24=oZ!:4sB~">
+  <field name="TEXT">Success. Response content: </field>
+  </block>
+  </value>
+  <value name="ADD1">
+  <block type="http_get_content" id="EIZ(Vmcg-,^Dt/N7Xc@;">
+  <field name="request" id="yFH}K(gY?buUVLT9NYZ.">request</field>
+  </block>
+  </value>
+  </block>
+  </value>
+  </block>
+  </statement>
+  <statement name="ELSE">
+  <block type="text_print" id="RpdJo2g.#On;%,bM%LRs">
+  <value name="TEXT">
+  <shadow type="text">
+  <field name="TEXT">abc</field>
+  </shadow>
+  <block type="text_join" id="bazG!D4x;$0/d[t@aG7]">
+  <mutation items="2"/>
+  <value name="ADD0">
+  <block type="text" id="Gq9,.$(51,A0{y*siaQ~">
+  <field name="TEXT">Request Error. Status code = </field>
+  </block>
+  </value>
+  <value name="ADD1">
+  <block type="http_get_status" id="gZ+~#AOpOjdmdd=2F%e~">
+  <field name="request" id="yFH}K(gY?buUVLT9NYZ.">request</field>
+  </block>
+  </value>
+  </block>
+  </value>
+  </block>
+  </statement>
+  </block>
+  </next>
+</block>
+
+# POST Method
+<label text="POST Method"></label>
+
+# net_post_request
+<block type="net_post_request">
+  <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
+  <field name="NET_POST_REQUEST_DATA">Data</field>
+</block>
+
+# net_post_request_json
+<block type="net_post_request_json"></block>
+
+# HTTP Server
+<category name="HTTP Server">
+<label text="HTTP Web Server"></label>
+<button text="Load example: webserver" callbackKey="loadExample"></button>
+<button text="Documentation: webserver" callbackKey="loadDoc"></button>
+
+# net_http_server_start
+<block type="net_http_server_start">
+  <value name="port">
+    <shadow type="math_number">
+      <field name="NUM">80</field>
+    </shadow>
+  </value>
+</block>
+
+# net_http_server_accept
+<block type="net_http_server_accept"></block>
+
+# net_http_server_requested_page
+<block type="net_http_server_requested_page"></block>
+
+# net_http_server_send_response
+<block type="net_http_server_send_response">
+  <value name="html">
+    <shadow type="text">
+      <field name="TEXT">You reached BIPES WebServer!</field>
+    </shadow>
+  </value>
+</block>
+
+# net_http_server_send_response_jpg
+<block type="net_http_server_send_response_jpg"></block>
+
+# net_http_server_close
+<block type="net_http_server_close"></block>
+
+# EMAIL
+<category name="EMAIL">
+<label text="Email sender using uMail"></label>
+<label text="Library: https://github.com/shawwwn/uMail"></label>
+<button text="Install umail library" callbackKey="installPyLib"></button>
+<button text="Documentation: uMail" callbackKey="loadDoc"></button>
+
+# umail_init
+<block type="umail_init">
+  <value name="host">
+    <shadow type="text">
+     <field name="TEXT">smtp.gmail.com</field>
+    </shadow>
+  </value>
+  <value name="port">
+    <shadow type="math_number">
+      <field name="NUM">587</field>
+    </shadow>
+  </value>
+  <value name="username">
+    <shadow type="text">
+      <field name="TEXT">email@gmail.com</field>
+    </shadow>
+  </value>
+    <value name="password">
+    <shadow type="text">
+      <field name="TEXT">gmail_password</field>
+    </shadow>
+  </value>
+</block>
+
+# umail_send
+<block type="umail_send">
+<value name="to">
+    <shadow type="text">
+      <field name="TEXT">email@email.com</field>
+    </shadow>
+  </value>
+  <value name="subject">
+    <shadow type="text">
+      <field name="TEXT">Email from BIPES!</field>
+    </shadow>
+  </value>
+  <value name="contents">
+    <shadow type="text">
+      <field name="TEXT">BIPES is nice!</field>
+    </shadow>
+  </value>
+</block>
+
+# NTP Time
+<category name="NTP Time">
+<label text="Network Time Protocol (NTP)"></label>
+<label text="Adjusts RTC using Internet"></label>
+<button text="Load example: ntp" callbackKey="loadExample"></button>
+<button text="Documentation: ntp" callbackKey="loadDoc"></button>
+
+# net_ntp_sync
+<block type="net_ntp_sync">
+  <value name="tz">
+    <shadow type="math_number">
+     <field name="NUM">3</field>
+    </shadow>
+  </value>
+</block>
+
+# TCP/IP Socket
+<category name="TCP/IP Socket">
+<label text="TCP/IP Socket"></label>
+<button text="Load example: starwars" callbackKey="loadExample"></button>
+<button text="Documentation: sockets" callbackKey="loadDoc"></button>
+
+# net_socket_connect
+<block type="net_socket_connect">
+  <value name="host">
+    <shadow type="text">
+      <field name="TEXT">towel.blinkenlights.nl</field>
+    </shadow>
+  </value>
+  <value name="port">
+    <shadow type="math_number">
+      <field name="NUM">23</field>
+    </shadow>
+  </value>
+</block>
+
+# net_socket_receive
+<block type="net_socket_receive">
+	<value name="bytes">
+      <shadow type="math_number">
+        <field name="NUM">500</field>
+      </shadow>
+    </value>
+</block>
+
+# net_socket_send
+<block type="net_socket_send">
+ <value name="bytes">
+    <shadow type="text">
+      <field name="TEXT">Hello</field>
+    </shadow>
+  </value>
+</block>
+
+# net_socket_close
+<block type="net_socket_close"></block>
+
 # MQTT
 <category name="MQTT">
 <label text="MQTT (Message Queue Telemetry Transport)"></label>

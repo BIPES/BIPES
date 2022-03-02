@@ -1,4 +1,477 @@
 // Network ---------------------------------------------------------------------
+// Status&Configure ------------------------------------------------------------
+Blockly.Blocks['wifi_client_connect'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable(Msg["wifi_connect"]), "NAME");
+    this.appendValueInput("wifi_client_essid")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable(Msg["wifi_name"]), "WIFI_CLIENT_NET_NAME");
+    this.appendValueInput("wifi_client_key")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable(Msg["wifi_key"]), "WIFI_CLIENT_NET_KEY");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Connect to a Wifi network");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['wifi_client_scan_networks'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable(Msg["wifi_scan"]), "NET_SCAN_WIFI");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Scan wifi networks");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['net_ap_mode'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Configure Access Point Mode"), "NAME");
+    this.appendValueInput("wifi_essid")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("Network name"), "NET_NETWORK_NAME");
+    this.appendValueInput("wifi_key")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("Network password"), "NET_NETWORK_KEY");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Configure Access Point Mode");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['net_ifconfig'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Wifi current IP"), "NET_IFCONFIG");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Wifi current IP");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['net_wiznet5k_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init WizNet5000");
+
+    this.appendDummyInput()
+        .appendField("Ethernet Controller");
+
+    this.appendValueInput("spi")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SPI Bus:");
+
+    this.appendValueInput("cs")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("CS:");
+
+    this.appendValueInput("rst")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("RST:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_wiznet5k_isconnected'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Check if Ethernet is Connected");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks['net_wiznet5k_regs'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Dump Ethernet Registers");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_wiznet5k_ifconfig'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Configure WizNet5000");
+
+    this.appendDummyInput()
+        .appendField("Ethernet Controller");
+
+    this.appendValueInput("ip")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("IP:");
+
+    this.appendValueInput("subnet")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Subnet:");
+
+    this.appendValueInput("gw")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Gateway:");
+
+    this.appendValueInput("dns")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("DNS:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+// HTTP Client -----------------------------------------------------------------
+
+Blockly.Blocks['net_get_request'] = {
+  init: function() {
+
+    this.appendDummyInput()
+        .appendField(Msg["net_http_get"]);
+    this.appendValueInput("URL")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("String")
+        .appendField(new Blockly.FieldLabelSerializable("URL"), "BLOCK_NET_GET");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Make HTTP GET Request");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+Blockly.Blocks['http_get_status'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(Msg["net_http_get_status"])
+        .appendField(new Blockly.FieldVariable("request"), "request");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Status code of the HTTP GET request");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+
+Blockly.Blocks['http_get_content'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(Msg["net_http_get_content"])
+        .appendField(new Blockly.FieldVariable("request"), "request");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Content of HTTP GET request");
+ this.setHelpUrl("bipes.net.br");
+  }
+};
+// POST Method -----------------------------------------------------------------
+Blockly.Blocks['net_post_request'] = {
+  init: function() {
+    this.appendValueInput("URL")
+        .setCheck("String")
+        .appendField(new Blockly.FieldLabelSerializable("Make HTTP POST Request URL"), "NET_POST_REQUEST_URL");
+    this.appendValueInput("data")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("Data"), "NET_POST_REQUEST_DATA");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Make HTTP POST Request");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['net_post_request_json'] = {
+  init: function() {
+    this.appendValueInput("URL")
+        .setCheck("String")
+        .appendField(new Blockly.FieldLabelSerializable("Make HTTP POST Request URL"), "NET_POST_REQUEST_URL");
+    this.appendValueInput("data")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldLabelSerializable("JSON Data"), "NET_POST_REQUEST_DATA");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Make HTTP POST Request with JSON data");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+// HTTP Server -----------------------------------------------------------------
+
+Blockly.Blocks['net_http_server_start'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(Msg["net_http_server_start"]);
+
+    this.appendValueInput("port")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["net_http_server_start_port"]);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_http_server_accept'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(Msg["net_http_server_wait"]);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_http_server_requested_page'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(Msg["net_http_server_requested_page"]);
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_http_server_send_response'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(Msg["net_http_server_send_response"]);
+
+    this.appendValueInput("html")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["net_http_server_send_html"]);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['net_http_server_send_response_jpg'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(Msg["net_http_server_send_response"]);
+
+    this.appendValueInput("html")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("JPG Image");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+
+Blockly.Blocks['net_http_server_close'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Close HTTP Web Server");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+// EMAIL -----------------------------------------------------------------------
+Blockly.Blocks['umail_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init uMail Email Sender");
+
+    this.appendValueInput("host")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Host:");
+
+    this.appendValueInput("port")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Port:");
+
+    this.appendValueInput("username")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Username:");
+
+    this.appendValueInput("password")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Password:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['umail_send'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Send email");
+
+    this.appendValueInput("to")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("To email:");
+
+    this.appendValueInput("subject")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Subject:");
+
+    this.appendValueInput("contents")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Email message:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+// NTP Time --------------------------------------------------------------------
+Blockly.Blocks['net_ntp_sync'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField(Msg["ntp_sync"]);
+
+    this.appendDummyInput()
+        .appendField("NTP: Network Time Protocol");
+
+    this.appendValueInput("tz")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(Msg["timezone"]);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+// TCP/IP Socket ---------------------------------------------------------------
+Blockly.Blocks['net_socket_connect'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("TCP/IP Socket Connect");
+
+    this.appendValueInput("host")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Host:");
+
+    this.appendValueInput("port")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Port:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['net_socket_receive'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Socket Receive");
+
+    this.appendValueInput("bytes")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Bytes to receive:");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['net_socket_send'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Socket Send");
+
+    this.appendValueInput("bytes")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Data:");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['net_socket_close'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Socket Close");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
 // MQTT ------------------------------------------------------------------------
 /// Start MQTT Client
 Blockly.Blocks['mqtt_init'] = {
@@ -149,7 +622,7 @@ Blockly.Blocks['mqtt_set_callback'] = {
 Blockly.Blocks['mqtt_check_msg'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Check MQTT Server for pending messages"), "BLOCK_MQTT_CHECK_MSG");
+        .appendField(new Blockly.FieldLabelSerializable("Check MQTT Server for pending messages"), "BLOCK_MQTT_CHECK_Msg");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -162,7 +635,7 @@ Blockly.Blocks['mqtt_check_msg'] = {
 Blockly.Blocks['mqtt_wait_msg'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Wait for MQTT Server messages"), "BLOCK_MQTT_WAIT_MSG");
+        .appendField(new Blockly.FieldLabelSerializable("Wait for MQTT Server messages"), "BLOCK_MQTT_WAIT_Msg");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);

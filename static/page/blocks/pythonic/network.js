@@ -1,4 +1,408 @@
 // Network ---------------------------------------------------------------------
+// Status&Configure ------------------------------------------------------------
+
+Blockly.Python['wifi_client_connect'] = function(block) {
+	var value_wifi_client_essid = Blockly.Python.valueToCode(block, 'wifi_client_essid', Blockly.Python.ORDER_ATOMIC);
+	var value_wifi_client_key = Blockly.Python.valueToCode(block, 'wifi_client_key', Blockly.Python.ORDER_ATOMIC);
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		var code = 'print("Connecting to ' + value_wifi_client_essid + '")\n';
+		code+=     'wifi.radio.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ')\n';
+		code+=	   'print("Connected")\n';
+		code+=	   'print("My IP address is", wifi.radio.ipv4_address)\n\n';
+	} else {
+		Blockly.Python.definitions_['import_network'] = 'import network';
+		Blockly.Python.definitions_['import_time'] = 'import time';
+		var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \nsta_if.scan() \nsta_if.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ') \nprint("Waiting for Wifi connection")\nwhile not sta_if.isconnected(): time.sleep(1)\nprint("Connected")\n';
+	}
+	return code;
+};
+
+Blockly.Python['wifi_client_scan_networks'] = function(block) {
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		Blockly.Python.definitions_['import_scan_wifi'] = 'def scan_wifi():\n\tfor network in wifi.radio.start_scanning_networks():\n\t\tprint("\t%s\t\tRSSI: %d\tChannel: %d" % (str(network.ssid, "utf-8"), network.rssi, network.channel))\n\twifi.radio.stop_scanning_networks()\n';
+		var code = 'scan_wifi()';
+	} else {
+		Blockly.Python.definitions_['import_network'] = 'import network';
+		Blockly.Python.definitions_['import_network_sta_init'] = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \n';
+		var code = 'sta_if.scan()';
+	}
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['net_ap_mode'] = function(block) {
+  var value_wifi_essid = Blockly.Python.valueToCode(block, 'wifi_essid', Blockly.Python.ORDER_ATOMIC);
+  var value_wifi_key = Blockly.Python.valueToCode(block, 'wifi_key', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_network'] = 'import network';
+  var code = 'ap = network.WLAN(network.AP_IF) \nap.active(True) \nap.config(essid=' + value_wifi_essid + ', password=' + value_wifi_key + ') \n';
+
+  return code;
+};
+
+
+Blockly.Python['net_ifconfig'] = function(block) {
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		var code = 'wifi.radio.ipv4_address';
+	} else {
+		Blockly.Python.definitions_['import_network'] = 'import network';
+		Blockly.Python.definitions_['import_network_a'] = 'sta_if = network.WLAN(network.STA_IF)';
+		Blockly.Python.definitions_['import_network_b'] = 'sta_if.active(True)';
+		var code = 'sta_if.ifconfig()';
+	}
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+
+Blockly.Python['net_wiznet5k_init'] = function(block) {
+
+  //Reference: https://docs.micropython.org/en/latest/library/network.WIZNET5K.html
+
+  var spi = Blockly.Python.valueToCode(block, 'spi', Blockly.Python.ORDER_ATOMIC);
+  var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
+  var rst = Blockly.Python.valueToCode(block, 'rst', Blockly.Python.ORDER_ATOMIC);
+
+  //Working nicely with RPI Pico. Before modifying, remmeber that this is workign with RIP Pico
+  Blockly.Python.definitions_['import_Pin_SPI'] = 'from machine import Pin,SPI';
+  Blockly.Python.definitions_['import_network'] = 'import network';
+
+  var code = 'spi' + spi + '=SPI(' + spi + ',2_000_000, mosi=Pin(19),miso=Pin(16),sck=Pin(18))\n';
+  code += 'nic = network.WIZNET5K(spi' + spi + ',Pin(' + cs + '),Pin(' + rst + '))\n';
+
+  return code;
+
+};
+
+
+Blockly.Python['net_wiznet5k_isconnected'] = function(block) {
+
+  var code = 'nic.isconnected()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_wiznet5k_regs'] = function(block) {
+
+  var code = 'nic.regs()';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_wiznet5k_ifconfig'] = function(block) {
+  var ip = Blockly.Python.valueToCode(block, 'ip', Blockly.Python.ORDER_ATOMIC);
+  var subnet = Blockly.Python.valueToCode(block, 'subnet', Blockly.Python.ORDER_ATOMIC);
+  var gw = Blockly.Python.valueToCode(block, 'gw', Blockly.Python.ORDER_ATOMIC);
+  var dns = Blockly.Python.valueToCode(block, 'dns', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'nic.ifconfig((' + ip + ',' + subnet + ',' + gw + ',' + dns + '))\n';
+
+  return code;
+};
+
+
+// HTTP Client -----------------------------------------------------------------
+
+Blockly.Python['net_get_request'] = function(block) {
+	var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+		Blockly.Python.definitions_['import_http_get'] = 'def http_get(pHOST):\n\ttmp=pHOST.replace("http://", "")\n\tHOST=tmp.split("/", 1)[0]\n\tparams=tmp.split("/",1)[1]\n\tprint("Host: " + HOST)\n\tprint("Params = " + params)\n\tpool = socketpool.SocketPool(wifi.radio)\n\tserver_ipv4 = ipaddress.ip_address(pool.getaddrinfo(HOST, 80)[0][4][0])\n\tprint("Server ping", server_ipv4, wifi.radio.ping(server_ipv4), "ms")\n\tbuf = bytearray(500)\n\ts = pool.socket(pool.AF_INET, pool.SOCK_STREAM)\n\ts.settimeout(50)\n\tprint("Connecting")\n\ts.connect((HOST, 80))\n\tsize = s.send(bytes(\'GET /%s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n\' % (params, HOST), \'utf8\'))\n\tprint("Sent", size, "bytes")\n\tsize = s.recv_into(buf)\n\tprint(\'Received\', size, "bytes", buf[:size])\n\ts.close()\n\treturn buf[:size]\n';
+
+		var code = 'http_get(' + value_url + ')\n';
+	} else {
+		Blockly.Python.definitions_['import_urequests'] = 'import urequests';
+		var code = 'urequests.get(' + value_url + ')\n';
+	}
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['http_get_status'] = function(block) {
+  var variable_request = Blockly.Python.nameDB_.getName(block.getFieldValue('request'), Blockly.VARIABLE_CATEGORY_NAME);
+
+  var code = variable_request + '.status_code';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['http_get_content'] = function(block) {
+  var variable_request = Blockly.Python.nameDB_.getName(block.getFieldValue('request'), Blockly.VARIABLE_CATEGORY_NAME);
+
+  var code = 'str(' + variable_request + '.content)';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+// POST Method -----------------------------------------------------------------
+
+
+Blockly.Python['net_post_request'] = function(block) {
+  var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
+  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_urequests'] = 'import urequests';
+  var code = 'urequests.post(' + value_url + ', data = ' + value_data + ')\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['net_post_request_json'] = function(block) {
+  var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
+  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_urequests'] = 'import urequests';
+
+  var value_data2 = value_data.replace('\'','').replace('\'','');
+  var code = 'urequests.post(' + value_url + ', json={' + value_data2 + '})\n';
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+// HTTP Server -----------------------------------------------------------------
+
+Blockly.Python['net_http_server_start'] = function(block) {
+	var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		Blockly.Python.definitions_['import_ipaddress'] = 'import ipaddress';
+		Blockly.Python.definitions_['import_ssl'] = 'import ssl';
+		Blockly.Python.definitions_['import_wifi'] = 'import wifi';
+		Blockly.Python.definitions_['import_socketpool'] = 'import socketpool';
+
+		var code = "pool = socketpool.SocketPool(wifi.radio)\n";
+		code += "HOST = str(wifi.radio.ipv4_address)\n";
+		code += "s = pool.socket(pool.AF_INET, pool.SOCK_STREAM)\n";
+		//code += "s.settimeout(10)\n";
+		code += "s.settimeout(None)\n";
+		code += "s.bind((HOST, 80))\n";
+		code += "s.listen(5)\n";
+		code += "print('BIPES HTTP Server Listening on', HOST)\n";
+	} else {
+		Blockly.Python.definitions_['import_socket'] = 'import socket';
+
+		var code = "http_addr = socket.getaddrinfo('0.0.0.0'," + port + ")[0][-1]\n";
+		code += 's = socket.socket()\n';
+		code += 's.bind(http_addr)\n';
+		code += 's.listen(1)\n';
+		code += "print('BIPES HTTP Server Listening on', http_addr)\n";
+	}
+
+  return code;
+};
+
+
+Blockly.Python['net_http_server_accept'] = function(block) {
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		var code = "buf = bytearray(500)\n";
+		code += "while True:\n";
+		code += "\tconn, addr = s.accept()\n";
+		//code += "\tconn.settimeout(50)\n";
+		code += "\tprint(\"Accepted from\", addr)\n";
+		code += "\tsize = conn.recv_into(buf, 500)\n";
+		code += "\tprint(\"Received\", buf[:size], size, \"bytes\")\n";
+		code += "\tlineS = str(buf[:size], 'utf8')\n";
+		code += "\tprint(lineS)\n";
+		code += "\tif lineS.startswith('GET /'):\n";
+		code += "\t\thttp_request_page = (lineS.split('/')[1]).split(' ')[0]\n";
+		code += "\t\tprint('Request page = ' + http_request_page)\n";
+
+		code += "\tif size >= 20:\n";
+		code += "\t\tbreak\n";
+
+		//code += "\tconn.send(buf[:size])\n";
+		//code += "\tprint("Sent", buf[:size], size, "bytes")\n";
+	} else {
+	  var code = "cl, http_addr = s.accept()\n";
+	      code += "print('client connected from', http_addr)\n";
+	      code += "cl_file = cl.makefile('rwb', 0)\n";
+	      code += "while True:\n";
+	      code += "    line = cl_file.readline()\n";
+	      code += "    lineS = str(line, 'utf8')\n";
+	      code += "    print(line)\n";
+	      code += "    if lineS.startswith('GET /'):\n";
+	      code += "        http_request_page = (lineS.split('/')[1]).split(' ')[0]\n";
+	      code += "        print('Request page = ' + http_request_page)\n";
+	      code += "    if not line or line == b'\\r\\n':\n";
+	      code += "        break\n";
+	}
+
+  return code;
+};
+
+Blockly.Python['net_http_server_requested_page'] = function(block) {
+
+  var code = 'http_request_page';
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_http_server_send_response'] = function(block) {
+  var html = Blockly.Python.valueToCode(block, 'html', Blockly.Python.ORDER_ATOMIC);
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		var code = 'response = ' + html + '\n';
+		code += "conn.send('HTTP/1.0 200 OK\\r\\nContent-type: text/html\\r\\n\\r\\n')\n";
+		code += 'conn.send(response)\n';
+		code += 'conn.close()\n';
+	} else {
+		var code = 'response = ' + html + '\n';
+		code += "cl.send('HTTP/1.0 200 OK\\r\\nContent-type: text/html\\r\\n\\r\\n')\n";
+		code += 'cl.send(response)\n';
+		code += 'cl.close()\n';
+	}
+
+  return code;
+};
+
+Blockly.Python['net_http_server_send_response_jpg'] = function(block) {
+  var html = Blockly.Python.valueToCode(block, 'html', Blockly.Python.ORDER_ATOMIC);
+
+	if (bipes.page.project.current.device.firmware == "CircuitPython") {
+		var code = 'response = ' + html + '\n';
+		code += "conn.send('HTTP/1.0 200 OK\\r\\nContent-type: image/jpg\\r\\n\\r\\n')\n";
+		code += 'conn.send(response)\n';
+		code += 'conn.close()\n';
+	} else {
+		var code = 'response = ' + html + '\n';
+		code += "cl.send('HTTP/1.0 200 OK\\r\\nContent-type: image/jpg\\r\\n\\r\\n')\n";
+		code += 'cl.send(response)\n';
+		code += 'cl.close()\n';
+	}
+
+  return code;
+};
+
+
+Blockly.Python['net_http_server_close'] = function(block) {
+
+  var code = 'cl.close()\n';
+
+  return code;
+};
+// EMAIL -----------------------------------------------------------------------
+Blockly.Python['umail_init'] = function(block) {
+  var host = Blockly.Python.valueToCode(block, 'host', Blockly.Python.ORDER_ATOMIC);
+  var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+  var username = Blockly.Python.valueToCode(block, 'username', Blockly.Python.ORDER_ATOMIC);
+  var password = Blockly.Python.valueToCode(block, 'password', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_umail'] = 'import umail';
+
+  var code = 'smtp = umail.SMTP(' + host + ',' + port + ',' + 'username=' + username + ',' + 'password=' + password + ')\n';
+  return code;
+
+};
+
+Blockly.Python['umail_send'] = function(block) {
+  var to = Blockly.Python.valueToCode(block, 'to', Blockly.Python.ORDER_ATOMIC);
+  var subject = Blockly.Python.valueToCode(block, 'subject', Blockly.Python.ORDER_ATOMIC);
+  var contents = Blockly.Python.valueToCode(block, 'contents', Blockly.Python.ORDER_ATOMIC);
+
+  var s = subject.replace('\'','').replace('\'','');
+  var c = contents.replace('\'','').replace('\'','');
+  var msg = 'Subject: ' + s + '\\n\\n' + c;
+
+
+  var code = 'smtp.to(' + to + ')\n';
+	code += 'smtp.send(\'' + msg + '\')\n';
+	code += 'smtp.quit()\n';
+  return code;
+};
+
+// NTP Time --------------------------------------------------------------------
+
+Blockly.Python['net_ntp_sync'] = function(block) {
+//  var server = Blockly.Python.valueToCode(block, 'server', Blockly.Python.ORDER_ATOMIC);
+  var tz = Blockly.Python.valueToCode(block, 'tz', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_ntptime'] = 'import ntptime';
+  Blockly.Python.definitions_['import_machine'] = 'import machine';
+  Blockly.Python.definitions_['import_utime'] = 'import utime';
+
+  var code = 'ntptime.settime()\n';
+	code += 'rtc = machine.RTC()\n';
+	code += 'utc_shift=' + tz + '\n';
+	code += 'tm = utime.localtime(utime.mktime(utime.localtime()) + utc_shift*3600)\n';
+	code += 'tm = tm[0:3] + (0,) + tm[3:6] + (0,)\n';
+	code += 'rtc.datetime(tm)\n';
+	code += "rtc.datetime()\n";
+
+	/*Useful:
+	 * >>>from machine import RTC
+>>>(year, month, mday, week_of_year, hour, minute, second, milisecond)=RTC().datetime()
+>>>RTC().init((year, month, mday, week_of_year, hour+2, minute, second, milisecond)) # GMT correction. GMT+2
+>>>print ("Fecha/Hora (year, month, mday, week of year, hour, minute, second, milisecond):", RTC().datetime())
+>>>print ("{:02d}/{:02d}/{} {:02d}:{:02d}:{:02d}".format(RTC().datetime()[2],RTC().datetime()[1],RTC().datetime()[0],RTC().datetime()[4],RTC().datetime()[5],RTC
+*/
+  return code;
+
+};
+
+// TCP/IP Socket ---------------------------------------------------------------
+
+
+Blockly.Python['net_socket_connect'] = function(block) {
+  var host = Blockly.Python.valueToCode(block, 'host', Blockly.Python.ORDER_ATOMIC);
+  var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
+
+  Blockly.Python.definitions_['import_socket'] = 'import socket';
+
+  //var code = 'addr_info = socket.getaddrinfo("towel.blinkenlights.nl", 23)';
+  var code = 'addr_info = socket.getaddrinfo(' + host + ',' + port + ')\n';
+      code += 'addr = addr_info[0][-1]\n';
+      code += 's = socket.socket()\n';
+      code += 's.connect(addr)\n';
+
+  return code;
+};
+
+Blockly.Python['net_socket_receive'] = function(block) {
+  var bytes = Blockly.Python.valueToCode(block, 'bytes', Blockly.Python.ORDER_ATOMIC);
+
+  var code = "str(s.recv(" + bytes + "), 'utf8')";
+
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+
+Blockly.Python['net_socket_send'] = function(block) {
+  var bytes = Blockly.Python.valueToCode(block, 'bytes', Blockly.Python.ORDER_ATOMIC);
+
+  var code = "s.send(bytes(" + bytes + ", 'utf8'))\n";
+
+  return code;
+};
+
+
+Blockly.Python['net_socket_close'] = function(block) {
+
+  var code = 's.close()\n';
+
+  return code;
+};
+
+
 // MQTT ------------------------------------------------------------------------
 
 /// Start MQTT Client
