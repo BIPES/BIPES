@@ -155,7 +155,7 @@ class API {
    * @return {Object} obj - Object sent with the request.
   */
   static async do (url, obj){
-    const response = await fetch(`${window.location.origin}/api/${url}`, {
+    const response = await fetch(`${window.location.href.match('^(.*)/ide')[1]}/api/${url}`, {
       method:'Post',
       headers:{
         'Content-Type':'application/json'

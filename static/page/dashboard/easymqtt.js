@@ -32,7 +32,6 @@ class MQTTDatabase {
             return
           easyMQTT.passwd = obj.easyMQTT.passwd
           // Port 9001 for WebSockets
-          console.log(this.passwd)
           this.client = new Paho.MQTT.Client(location.hostname, 9001, `bipes${new Date()}`)
           this.client.onConnectionLost = () => {this.onConnectionLost()}
           this.client.onMessageArrived = (message) => {this.onMessageArrived(message)}
@@ -99,7 +98,7 @@ class MQTTDatabase {
     this.init(this.ref)
   }
   async do (url){
-    const response = await fetch(`${window.location.origin}/mqtt/${url}`, {
+    const response = await fetch(`${window.location.href.match('^(.*)/ide')[1]}/mqtt/${url}`, {
       method:'Get'
     })
 
