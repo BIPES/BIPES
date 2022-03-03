@@ -236,7 +236,7 @@ class Navigation {
     })
     .append(_languages)
     .onevent('change', this, () => {
-      location.href = `${location.origin}/ide-${this.$.languageDropdown.value}`
+      location.href = `${window.location.href.match('^(.*)/ide')[1]}/ide-${this.$.languageDropdown.value}`
     })
     new DOM(DOM.get('div#status-bar #extra')).append([
      new DOM('span', {
