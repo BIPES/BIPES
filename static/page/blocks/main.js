@@ -446,6 +446,18 @@ let blocksKnownLibs = {
     hostname:'http://bipes.net.br/ide/pylibs/',
     file:'mfrc522.py'
   },
+  ble_advertising:{
+    hostname:'http://bipes.net.br/ide/pylibs/',
+    file:'ble_advertising.py',
+  },
+  ble_uart_repl:{
+    hostname:'http://bipes.net.br/ide/pylibs/',
+    file:'ble_uart_repl.py',
+  },
+  ble_uart_peripheral:{
+    hostname:'http://bipes.net.br/ide/pylibs/',
+    file:'ble_uart_peripheral.py',
+  },
 }
 
 let blocksRegisterCallbacks = (workspace) => {
@@ -506,7 +518,7 @@ let blocksRegisterCallbacks = (workspace) => {
         Blockly.Events.disable()
         Blockly.Xml.clearWorkspaceAndLoadFromXml(
           Blockly.Xml.textToDom(response),
-          this.workspace
+          bipes.page.blocks.workspace
         )
         Blockly.Events.enable()
       })

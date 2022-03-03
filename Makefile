@@ -1,5 +1,5 @@
 lang ?= "en"
-path ?= /srv/www/bipes3
+path ?= /var/www/bipes3
 
 BLUE=\033[0;34m
 PURPLE=\033[0;35m

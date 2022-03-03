@@ -223,7 +223,7 @@
 <category name="EMAIL">
 <label text="Email sender using uMail"></label>
 <label text="Library: https://github.com/shawwwn/uMail"></label>
-<button text="Install umail library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: umail" callbackKey="installPyLib"></button>
 <button text="Documentation: uMail" callbackKey="loadDoc"></button>
 
 # umail_init
@@ -465,9 +465,9 @@
 <label text="This block allows terminal/console access using bluetooth."></label>
 <label text="Library: https://github.com/micropython/micropython/tree/master/examples/bluetooth"></label>
 <label text="You need to install 3 files to use:"></label>
-<button text="Install ble_advertising library" callbackKey="installPyLib"></button>
-<button text="Install ble_uart_peripheral library" callbackKey="installPyLib"></button>
-<button text="Install ble_uart_repl library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: ble_advertising" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: ble_uart_peripheral" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: ble_uart_repl" callbackKey="installPyLib"></button>
 <label text="Web Bluetooth REPL"></label>
 <label text="Usage:"></label>
 <label text="1. Install the 3 files above"></label>
@@ -528,7 +528,7 @@
 <category name="Google Sheets">
 <label text="Send files to a Google Spreadsheet"></label>
 <label text="Library: https://gist.github.com/SpotlightKid/8637c685626b334e5c0ec341dd269c44"></label>
-<button text="install prequests library" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: prequests" callbackKey="installPyLib"></button>
 
 # google_spreadsheet
 <block type="google_spreadsheet">
