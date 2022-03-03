@@ -105,10 +105,10 @@ blockly:
 
 pip:
 	@printf "[5/7] Creating enviroment and installing $(PURPLE)flask flask-mqtt paho \
-	sphinx sphinx-js furo$(NC).\n"
+	sphinx sphinx-js furo click$(NC).\n"
 	@python3 -m venv venv
 	@. venv/bin/activate && \
-	pip install Flask flask-mqtt sphinx sphinx-js furo && \
+	pip install Flask flask-mqtt sphinx sphinx-js furo click && \
 	exit
 
 database:
@@ -236,7 +236,7 @@ deploy-move:
 	@sudo mv ./.BIPES/*.html ./.BIPES/ide
 	@sudo mv ./.BIPES/* $(path)
 	@sudo mkdir -p $(path)/logs
-	@sudo chown -R wwwrun:www $(path)
+	@sudo chown -R www-data:www-data $(path)
 
 path_venv = $(path)/venv
 $(path_venv):
