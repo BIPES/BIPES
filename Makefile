@@ -189,6 +189,7 @@ zip:
 	@mkdir -p .BIPES/static/libs
 	@mkdir -p .BIPES/static/page/blocks
 	@mkdir -p .BIPES/static/page/device
+	@mv static/libs/serviceworker.temp.js .BIPES/static/libs/serviceworker.js
 	@cp static/libs/*.js .BIPES/static/libs
 	@cp static/page/blocks/*.umd.js .BIPES/static/page/blocks
 	@cp -r static/page/blocks/msg .BIPES/static/page/blocks
@@ -212,6 +213,7 @@ build-clean:
 	@rm -f  ide-*.html
 	@rm -f  static/style.css
 	@rm -rf static/libs/bipes.umd.js
+	@rm -f  static/libs/serviceworker.temp.js
 	@rm -f  static/page/blocks/toolbox.umd.js
 	@rm -f  static/page/blocks/blocks.umd.js
 	@rm -f  static/page/blocks/pythonic.umd.js

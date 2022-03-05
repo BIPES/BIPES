@@ -123,7 +123,7 @@ def create_app(test_config=None):
         return redirect("/ide", code=302)
 
     # Return serviceworker.
-    @app.route("/static/base/serviceworker.js")
+    @app.route("/static/libs/serviceworker.js")
     def service_worker():
         return Response(service_worker_imports(), mimetype='application/javascript')
     
@@ -154,7 +154,7 @@ def build_release():
         f.write(concat_files("static/page/blocks/blocks/*.js", "micropython.js"))
     with open("static/page/blocks/pythonic.umd.js",'w') as f:
         f.write(concat_files("static/page/blocks/pythonic/*.js", "basic.js"))
-    
+
     app = create_app()
     # "Compile" ide template as ide/index.html (default filename for servers)
     with app.app_context():
@@ -165,6 +165,10 @@ def build_release():
     with open("templates/libs/bipes.temp.js",'w') as f:
         with app.app_context():
             f.write(bipes_imports(import_type='text/javascript'))
+    # Build service worker
+    with open("static/libs/serviceworker.temp.js",'w') as f:
+        with app.app_context():
+            f.write(service_worker_imports())
 
 
 # Generate the ide html file
@@ -291,7 +295,7 @@ def service_worker_imports(lang=None):
 
     imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
 
-    return render_template('base/serviceworker.js', app_version=app_version,
+    return render_template('libs/serviceworker.js', app_version=app_version,
                            imports=imports, explicit_imports=explicit_imports,
                            lang_imports=lang_imports, static_images=static_images)
 
