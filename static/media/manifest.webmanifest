@@ -3,9 +3,9 @@
     "lang": "en",
     "name": "BIPES",
     "short_name": "BIPES",
-    "scope": "/beta2/ui/",
+    "scope": "/3/",
     "display": "standalone",
-    "start_url": "https://bipes.net.br/beta2/ui/",
+    "start_url": "https://bipes.net.br/3/ide",
     "background_color": "#fff",
     "theme_color": "#fff",
     "description": "Block based Integrated Platform for Embedded Systems",
@@ -14,25 +14,25 @@
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "media/icon/icon-maskable-192x192.png",
+            "src": "static/media/icon/icon-maskable-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
         },
         {
-            "src": "media/icon/icon-192x192.png",
+            "src": "static/media/icon/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "media/icon/icon-512x512.png",
+            "src": "static/media/icon/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         }
   ],
-    "url": "https://bipes.net.br/beta2/ui/#",
+    "url": "https://bipes.net.br/3/ide",
     "screenshots": []
 }
 

@@ -56,9 +56,9 @@ explicit_imports = [
 # Language strings
 lang_str = [
     # Global
-    './static/msg/{{ lang }}.js',
+    'msg/{{ lang }}.js',
     # Blockly
-    './static/page/blocks/msg/{{ lang }}.js'
+    'page/blocks/msg/{{ lang }}.js'
 ]
 
 # Create app for developemnt mode
@@ -92,7 +92,7 @@ def create_app(test_config=None):
             concat_files("static/style/*.css") + \
             concat_files("static/page/*/style.css"),
             mimetype='text/css')
-    
+
     # Return "compiled" toolboxes xml embedded in a js file.
     @app.route("/static/page/blocks/toolbox.umd.js")
     def blockly_toolbox():
@@ -121,6 +121,11 @@ def create_app(test_config=None):
     @app.route('/')
     def go_to_ide():
         return redirect("/ide", code=302)
+
+    # Return serviceworker.
+    @app.route("/static/base/serviceworker.js")
+    def service_worker():
+        return Response(service_worker_imports(), mimetype='application/javascript')
     
     # init mqtt subscriber
     try:
@@ -272,3 +277,37 @@ def bipes_imports(import_type='module'):
                            page=page, import_type=import_type,
                            available_lang=available_lang)
 
+# Return service worker imports.
+def service_worker_imports(lang=None):
+    lang_imports = []
+    for key in available_lang:
+        lang_imports += render_lang(key)
+
+    static_images = []
+    for item in ['static/page/device/media', 'static/page/blocks/images']:
+        _names = get_files_names(item+"/*", re.compile("^" + item + "/(.*)"))
+        _names = [item[7:] + "/" + _name for _name in _names]
+        static_images += _names
+
+    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
+
+    return render_template('base/serviceworker.js', app_version=app_version,
+                           imports=imports, explicit_imports=explicit_imports,
+                           lang_imports=lang_imports, static_images=static_images)
+
+
+
+# Generate the ide html file
+def ide(lang=None, import_type='module'):
+    lang = default_lang if lang == None else lang
+
+    lang_imports = render_lang(lang)
+    page = get_files_names("static/page/*/main.js", r"^static/page/(.*)/main.js")
+    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
+
+    page = preferred_page_order(page)
+
+    return render_template('ide.html', app_name=app_name, app_version=app_version,
+                           imports=imports, explicit_imports=explicit_imports,
+                           lang_imports=lang_imports, lang=lang,
+                           import_type=import_type, page=page)
