@@ -51,6 +51,7 @@ var Msg = {
   'Filename':'Dateiname',
   'eg':"zB.",
   Copy:'Kopieren',
+  ClearAll:'Alles löschen',
 
   // Page Files
   'FileManager':'Dateimanager',
@@ -106,6 +107,7 @@ var Msg = {
   'OnThisTab':'On this tab',
   'OnOtherTab':'On other tab',
   'DeviceUnresponsive':'Device {0} version {1} is unresponsive, consider resetting it.',
+  BaudRate:'Baud Rate',
 
   // Status bar
   'TasksRunning':'Tasks running',
@@ -138,9 +140,13 @@ var Msg = {
   'NoOlderProjects':'No older shared projects',
   'SharedProjectDoesNotExist':'Shared project does not exist anymore',
   'Language':'Sprache',
+  ProjectFromURL:'Shared project from link',
+  ClickToImport:'Tap to import to your projects',
 
   // Page Notification
   'Forum':'Forum',
+  NewsAndAbout:'Nachrichten und Informationen',
+  NoNotification:'Es erfolgt keine Meldung.',
 
   // Page Prompt
   'ClearConsole':'Clear console',

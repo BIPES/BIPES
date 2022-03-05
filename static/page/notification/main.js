@@ -15,10 +15,27 @@ class Notification {
     this.inited = false
 
     let $ = this.$ = {}
-    $.h2 = new DOM('h2', {innerText:'Notifications'})
+    $.header = new DOM('div', {className:'header'})
+      .append([
+        new DOM('h2', {innerText:Msg['PageNotification']}),
+        new DOM('button', {
+          innerText:Msg['ClearAll'],
+          className:'icon text',
+          id:'remove'
+        }).onclick(this, this.clearAll)
+      ])
     $.wrapper = new DOM('span', {className: 'listy'})
+
+    $.splashHeader = new DOM('h2', {
+      innerText:Msg['NewsAndAbout']
+    })
+    $.splash = new DOM('div', {id:'splash'}).append([
+      new DOM('h3', {innerText:Msg['splash_welcome']}),
+      new DOM('div', {innerHTML:Msg['splash_message']})
+    ])
+
     $.container = new DOM('div', {className:'container'})
-      .append([$.h2, $.wrapper])
+      .append([$.header, $.wrapper, $.splashHeader, $.splash])
 
     $.section = new DOM(DOM.get('section#notification'))
       .append($.container.$)
@@ -39,7 +56,8 @@ class Notification {
     // Cross tabs event handler on sending and deleting messages
     command.add(this, {
         send: this._send,
-        discard: this._discard
+        discard: this._discard,
+        clearAll: this._clearAll
       })
   }
   // Main instance call
@@ -106,7 +124,7 @@ class Notification {
   }
   _noNotification (){
     this.$.wrapper.append(
-      new DOM('span', {innerText:'There is no notifications.'})
+      new DOM('span', {innerText:Msg['NoNotification']})
     )
   }
   // Creates a DOM notificaton card
@@ -159,6 +177,29 @@ class Notification {
     this.$.wrapper.$.removeChild(child)
     if (this.$.wrapper.$.childElementCount == 0)
       this._noNotification()
+  }
+  /**
+   * Clear all notifications
+   */
+  clearAll (){
+    command.dispatch(this, 'clearAll', [])
+    // Update actual locaStorage
+    storage.set('notification', JSON.stringify(this.messages))
+  }
+  /**
+   * Clear all notifications
+   */
+  _clearAll (){
+    this.nav.classList.remove('new')
+
+    if (!this.inited)
+      return
+
+    this.messages = []
+
+    // Must find child to work between tabs
+    this.$.wrapper.removeChilds()
+    this._noNotification()
   }
 }
 

@@ -51,6 +51,7 @@ var Msg = {
   'Filename':'Nome do arquivo',
   'eg':"ex",
   Copy:'Copiar',
+  ClearAll:'Limpar todas',
 
   // Page Files
   'FileManager':'Gerenciador de arquivos',
@@ -106,6 +107,7 @@ var Msg = {
   'OnThisTab':'Nessa aba',
   'OnOtherTab':'Em outra aba',
   'DeviceUnresponsive':'Dispositivo {0} versão {1} não está respondendo, considere resetá-lo.',
+  BaudRate:'Baud Rate',
 
   // Status bar
   'TasksRunning':'Tarefas em execução',
@@ -126,6 +128,8 @@ var Msg = {
   'ScanningInfo':'Verificado {0} de {1} IPs, encontrado {2}:',
   'DoneScanning':'{0} IPs verificados, encontrado {1}:',
   'NewWebSocket':'Nova conexão via WebSocket',
+  ProjectFromURL:'Projeto compartilhado por link',
+  ClickToImport:'Toque para importar para os seus projetos',
 
   // Page Project
   'YourProjects':'Seus projetos',
@@ -141,6 +145,8 @@ var Msg = {
 
   // Page Notification
   'Forum':'Fórum',
+  NewsAndAbout:'Novidades e sobre',
+  NoNotification:'Não há notificações.',
 
   // Page Prompt
   'ClearConsole':'Limpar console',

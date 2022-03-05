@@ -51,6 +51,7 @@ var Msg = {
   'Filename':'文件名',
   'eg':"例如",
   Copy:'复制',
+  ClearAll:'全部清除',
 
   // Page Files
   'FileManager':'File manager',
@@ -104,6 +105,7 @@ var Msg = {
   'OnThisTab':'On this tab',
   'OnOtherTab':'On other tab',
   'DeviceUnresponsive':'Device {0} version {1} is unresponsive, consider resetting it.',
+  BaudRate:'Baud Rate',
 
   // Status bar
   'TasksRunning':'Tasks running',
@@ -136,9 +138,13 @@ var Msg = {
   'NoOlderProjects':'No older shared projects',
   'SharedProjectDoesNotExist':'Shared project does not exist anymore',
   'Language':'语言',
+  ProjectFromURL:'Shared project from link',
+  ClickToImport:'Tap to import to your projects',
 
   // Page Notification
   'Forum':'Forum',
+  NewsAndAbout:'News and about',
+  NoNotification:'There is no notifications',
 
   // Page Prompt
   'ClearConsole':'Clear console',

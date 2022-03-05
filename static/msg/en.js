@@ -51,6 +51,7 @@ var Msg = {
   'Filename':'Filename',
   'eg':"eg.",
   Copy:'Copy',
+  ClearAll:'Clear all',
 
   // Page Files
   'FileManager':'File manager',
@@ -106,6 +107,7 @@ var Msg = {
   'OnThisTab':'On this tab',
   'OnOtherTab':'On other tab',
   'DeviceUnresponsive':'Device {0} version {1} is unresponsive, consider resetting it.',
+  BaudRate:'Baud Rate',
 
   // Status bar
   'TasksRunning':'Tasks running',
@@ -143,6 +145,8 @@ var Msg = {
 
   // Page Notification
   'Forum':'Forum',
+  NewsAndAbout:'News and about',
+  NoNotification:'There is no notifications',
 
   // Page Prompt
   'ClearConsole':'Clear console',

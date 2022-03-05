@@ -13,7 +13,7 @@ class DOM {
       'innerText', 'className', 'id', 'title', 'innerText',
       'value', 'tabIndex', 'role', 'href', 'ariaPressed', 'preload', 'controls',
       'autoplay', 'src', 'placeholder', 'htmlFor', 'type', 'autocomplete',
-      'name', 'accept', 'disabled'
+      'name', 'accept', 'disabled', 'innerHTML'
     ]
     this.$ = document.createElement (dom);
     if (typeof tags == 'object') for (const tag in tags) {

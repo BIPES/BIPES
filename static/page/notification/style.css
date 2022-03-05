@@ -2,6 +2,9 @@ section#notification .listy div.row > div {
   font-size: 0.8rem;
   padding-bottom: .25rem;
 }
+section#notification .header   {
+  margin: 0.5rem .5rem 0.25rem 1rem;
+}
 section#notification .listy div.row {
   padding-left: 2.5rem;
 }
@@ -21,4 +24,16 @@ section#notification .listy > span {
 }
 div#status-bar button#forum:before {
   background-position: left calc(-1.25rem*45) top;
+}
+
+section#notification #splash {
+  background-color: rgba(84,190,255,0.05);
+  border-radius: 1.5rem;
+  padding: 1rem 1rem .25rem 1rem;
+}
+section#notification #splash h3 {
+  padding: 0
+}
+section#notification #splash div {
+  font-size: 0.9rem;
 }
