@@ -595,22 +595,40 @@ class SharedProject {
 
     $.projects = new DOM('span', {className:'listy'})
 
+    $.fromHash = new DOM('div', {id:'ask-shared-project'})
+    $.fromHashListy = new DOM('span', {className:'listy'})
+
     dom.append([
       new DOM('div', {id:'shared-projects'})
         .append([
           new DOM('div', {className:'header'})
             .append([
               new DOM('h3', {innerText:Msg['SharedProjects']})
+          ]),
+        $.projects,
+        new DOM('span', {className:'listy more-button'})
+          .append([
+            new DOM('button', {title:Msg['LoadMore']})
+              .append([new DOM('div', {className:'button icon'})])
+              .onclick(this, this.fetchAutoFrom)
+        ])
+      ]),
+      $.fromHash
+        .append([
+          new DOM('div', {className:'header'})
+            .append([
+              new DOM('h3', {innerText:Msg['ProjectFromURL']}),
+              new DOM('span', {innerText:Msg['ClickToImport']})
             ]),
-            $.projects,
-            new DOM('span', {className:'listy more-button'})
-              .append([
-                new DOM('button', {title:Msg['LoadMore']})
-                  .append([new DOM('div', {className:'button icon'})])
-                  .onclick(this, this.fetchAutoFrom)
-              ])
+          $.fromHashListy
         ])
     ])
+
+    // Check for project to import
+    if (window.location.hash){
+      this.fromHash(window.location.hash.substring(1))
+      window.location.hash = ''
+    }
   }
   init (){
     if (!this.firstInited) {
@@ -661,7 +679,7 @@ class SharedProject {
       if (obj.hasOwnProperty('projects'))
         this.parent.new(undefined, obj.projects[0].data)
       else
-        notification.send(`${Msg['PageProject']}: ${Msg['SharedDoesNotExist']}.`)
+        notification.send(`${Msg['PageProject']}: ${Msg['SharedProjectDoesNotExist']}.`)
     })
     .catch(e => {console.error(e)})
   }
@@ -676,7 +694,7 @@ class SharedProject {
     else
       this.fetchSome({from:+new Date(), limit:10}, true)
   }
-  /*
+  /**
    * Creates a DOM shared project card
    */
   $Card (item){
@@ -704,6 +722,24 @@ class SharedProject {
         ])
       ])
       .onclick(this, this.clone, [item.uid])
+  }
+  /**
+   * Import project using URL hash.
+   * @param{string} uid - shared project unique public id.
+   */
+  fromHash (uid){
+   API.do('project/o', {uid:uid})
+    .then(obj => {
+      if (obj.hasOwnProperty('projects')){
+        let dom = this.$Card(obj.projects[0])
+        this.$.fromHashListy.append(dom)
+        this.$.fromHash.classList.add('on')
+        this.parent.nav.click()
+        dom.focus()
+      } else
+        notification.send(`${Msg['PageProject']}: ${Msg['SharedProjectDoesNotExist']}.`)
+    })
+    .catch(e => {console.error(e)})
   }
 }
 

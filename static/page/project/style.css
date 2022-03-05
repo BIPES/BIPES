@@ -4,8 +4,7 @@ nav #project::before {
 nav #project.on::before {
 	background-position: left calc(-1.5rem*28) bottom;
 }
-section#project #user-projects .header,
-section#project #shared-projects .header {
+section#project .header {
   margin: 0.5rem 0 0.25rem 0;
 }
 section#project button#add {
@@ -24,17 +23,23 @@ section#project #user-projects button:not(.shared) #sharedUID {
   display:none;
 }
 section#project #user-projects .listy #sharedUID,
-section#project #shared-projects .listy #uid {
+section#project .listy #uid {
   border: #7d7d7d 1px solid;
   border-radius: 1em;
   padding: 0 .25em;
   background: rgba(125,125,125,.125); 
 }
 section#project #user-projects .listy #sharedUID:before,
-section#project #shared-projects .listy #uid:before {
+section#project .listy #uid:before {
   content:'#'
 }
 section#project .listy #author,
 section#project .listy #lastEdited {
   font-size: 0.8rem;
+}
+section#project #ask-shared-project .header > span {
+  margin-right: 1rem;
+}
+section#project #ask-shared-project:not(.on) {
+  display: none;
 }

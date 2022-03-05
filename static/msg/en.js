@@ -138,6 +138,8 @@ var Msg = {
   'NoOlderProjects':'No older shared projects',
   'SharedProjectDoesNotExist':'Shared project does not exist anymore',
   'Language':'Language',
+  ProjectFromURL:'Shared project from link',
+  ClickToImport:'Tap to import to your projects',
 
   // Page Notification
   'Forum':'Forum',
