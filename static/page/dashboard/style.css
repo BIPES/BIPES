@@ -177,6 +177,7 @@ section#dashboard .muuri #grab {
   height: 100%;
   width: 100%;
   position: absolute;
+  z-index: 1;
 }
 section#dashboard #grid:not(.on):not(.ani) #silk {
   display: none;

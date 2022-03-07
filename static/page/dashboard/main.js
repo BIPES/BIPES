@@ -501,8 +501,7 @@ class DashboardGrid {
     let grab  = new DOM('div', {
       id:'grab',
       title:Msg['DragMe']
-    })
-    .onevent('contextmenu', this, ()=>{
+    }).onevent('contextmenu', this, ()=>{
       if (!this.parent.$.dashboard.classList.contains('on'))
         this.parent.$.dashboard.classList.add('on')
     })
@@ -532,7 +531,9 @@ class DashboardGrid {
 
 		    this.charts.push(Charts.chart(data, data.target))
 
-	      silk.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent.$.dashboard)})
+	      silk.onevent('contextmenu', this, ()=>{
+	        DOM.switchState(this.parent.$.dashboard)
+	      })
         grab.onclick(this, this.edit, [data, container1])
 
 		    break
@@ -552,7 +553,9 @@ class DashboardGrid {
 
 		    this.switches.push(Switches.switch(data, data.target))
 
-        data.target.onevent('contextmenu', this, ()=>{DOM.switchState(this.parent.$.dashboard)})
+        data.target.onevent('contextmenu', this, ()=>{
+          DOM.switchState(this.parent.$.dashboard)
+        })
         grab.onclick(this, this.edit, [data, container3])
 		    break
 		  }
