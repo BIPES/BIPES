@@ -29,16 +29,28 @@ class Device {
 
     let $ = this.$ = {}
 
+    let baudRates = [];
+    [9600,19200,38400,57600,115200].forEach(key =>{
+      baudRates.push(
+        new DOM('option', {innerText:key, value:key})
+      )
+    })
+    $.baudRateDropdown = new DOM('select', {id:'baudrate'})
+            .append(baudRates)
     $.buttonWebSerial = new DOM('button', {id:'WebSerial'})
-        .append([
+      .append([
           new DOM('span', {innerText:Msg['NotSupported']}),
           new DOM('div', {innerText:'USB/Serial', className:'button icon'}),
-        ]).onclick(this, this.connectWebSerial),
+          $.baudRateDropdown,
+          new DOM('span', {className:'silk'})
+            .onclick(this, this.connectWebSerial)
+      ])
+    DOM.setSelected(this.$.baudRateDropdown, 115200),
     $.buttonWebSocket = new DOM('button', {id:'WebSocket'})
-          .append([
+      .append([
           new DOM('span', {innerText:Msg['NotSupported']}),
           new DOM('div', {innerText:'Wi-fi/Internet', className:'button icon'}),
-        ])
+      ])
     $.buttonWebBluetooth = new DOM('button', {id:'WebBluetooth'})
         .append([
           new DOM('span', {innerText:Msg['NotSupported']}),
@@ -223,7 +235,7 @@ class Device {
   connectWebSerial (){
     if (channel.targetDevice != undefined)
       this.select(channel.targetDevice)
-    channel.connect('webserial', [this, this.use])
+    channel.connect('webserial', [this, this.use], this.$.baudRateDropdown.$.value)
   }
   /*
    * Trigger WebSocket connection to a device.
@@ -558,7 +570,7 @@ class WebSocketSetup {
       placeholder:`${Msg['DeviceAddress']}, ${Msg['eg']}. [ws/wss]://192.168.0.35:8266`,
       value:'ws://192.168.0.35:8266'
     })
-    $.passwordLabel = new DOM('h4', {innerText:'Password:'})
+    $.passwordLabel = new DOM('h4', {innerText:`${Msg['Password']}:`})
     $.passwordInput = new DOM('input', {
       placeholder:Msg['DevicePassword'],
       type:'password'

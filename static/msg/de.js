@@ -74,7 +74,7 @@ var Msg = {
   'my_examples':"my_examples",
   'CreatePathFileBeforeSaving':'Create paths or file for "{0}" before saving to project.',
   'SaveToProject':'Save to project',
-  'ProjectFiles':'Projelkdateien',
+  'ProjectFiles':'Projektdateien',
   'DeviceFiles':'Gerätedateien',
   'CouldNotRemoveFolder':'Ordner "{0}/{1} konnte nicht entfernt werden ".',
   'FolderNotEmpty':'Ordner "{0}/{1}" ist nicht leer, kann nicht entfernt werden.',

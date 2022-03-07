@@ -126,6 +126,7 @@ class Channel {
   connect (channel, callback, conf){
     switch (channel){
       case 'websocket':
+      case 'webserial':
         this[channel].connect(callback, conf)
         break
       default:
@@ -294,21 +295,23 @@ function _WebSerial (parent){
   this.name = 'WebSerial'
   this.port
   this.config = {
-    baudrate:115200,
     packetSize:0
   }
   this.encoder = new TextEncoder()
   this.parent = parent
   /**
    * Connect using webserial protocol, will ask user permission for the serial port.
+   * @param {function} callback - Function to call on connect.
+   * @param {string|number} baudrate - Baud rate to establish the serial connection.
    */
-  this.connect = (callback) => {
+  this.connect = (callback, baudrate) => {
     if (navigator.serial == undefined)
       return false
 
+    baudrate = parseInt(baudrate)
     navigator.serial.requestPort().then((port) => {
       this.port = port
-      this.port.open({baudRate: [this.config.baudrate] }).then(() => {
+      this.port.open({baudRate: [baudrate] }).then(() => {
         const appendStream = new WritableStream({
           write(chunk) {
             if (typeof chunk == 'string') {

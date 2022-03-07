@@ -23,6 +23,23 @@ section#device #new-connection #WebBluetooth:not(.unsupported) > div {
   background: linear-gradient(130deg, rgba(106,168,251,1) -200%, rgba(123,73,173,1) 100%);
 
 }
+section#device #new-connection #WebSerial.unsupported .silk,
+section#device #new-connection #WebSerial.unsupported #baudrate {
+  display: none;
+}
+section#device #new-connection #WebSerial:not(.unsupported) #baudrate {
+  text-align:center;
+  position: absolute;
+  margin-top: -5em;
+  margin-left: -1.5em;
+}
+section#device #new-connection #WebSerial:not(.unsupported) .silk {
+  position:relative;
+  margin-top: -3rem;
+  width: 100%;
+  height: calc(100% - 2.75rem);
+  display: block;
+}
 section#device button.unsupported {
   user-select: none;
 }
@@ -71,10 +88,10 @@ section#device button.unsupported > div {
 section#device .device-connect:not(.master) button {
   cursor: pointer
 }
-section#device .device-connect.master .silk {
+section#device .device-connect.master #devices .silk {
   display: none;
 }
-section#device .device-connect:not(.master) .silk {
+section#device .device-connect:not(.master) #devices .silk {
   position: absolute;
   width: 15rem;
   height: 9em;
