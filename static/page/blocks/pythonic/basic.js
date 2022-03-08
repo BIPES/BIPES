@@ -402,8 +402,8 @@ let PythonicTemplates = {}
     $.Blockly.Python.math_number_property = function(a) {
         var b = $.Blockly.Python.valueToCode(a, "NUMBER_TO_CHECK", $.Blockly.Python.ORDER_MULTIPLICATIVE) || "0",
             c = a.getFieldValue("PROPERTY");
-        if ("PRIME" === c) return $.Blockly.Python.definitions_.import_math = "import math", $.Blockly.Python.definitions_.from_numbers_import_Number = "from numbers import Number", [$.Blockly.Python.provideFunction_("math_isPrime", ["def " + $.Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + "(n):", "  # https://en.wikipedia.org/wiki/Primality_test#Naive_methods",
-            "  # If n is not a number but a string, try parsing it.", "  if not isinstance(n, Number):", "    try:", "      n = float(n)", "    except:", "      return False", "  if n == 2 or n == 3:", "    return True", "  # False if n is negative, is 1, or not whole, or if n is divisible by 2 or 3.", "  if n <= 1 or n % 1 != 0 or n % 2 == 0 or n % 3 == 0:", "    return False", "  # Check all the numbers of form 6k +/- 1, up to sqrt(n).", "  for x in range(6, int(math.sqrt(n)) + 2, 6):", "    if n % (x - 1) == 0 or n % (x + 1) == 0:",
+        if ("PRIME" === c) return $.Blockly.Python.definitions_.import_math = "import math", $.Blockly.Python.definitions_.import_math="import math", [$.Blockly.Python.provideFunction_("math_isPrime", ["def " + $.Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + "(n):", "  # https://en.wikipedia.org/wiki/Primality_test#Naive_methods",
+            "  # If n is not a number but a string, try parsing it.", "  if not isinstance(n, int):", "    try:", "      n = float(n)", "    except:", "      return False", "  if n == 2 or n == 3:", "    return True", "  # False if n is negative, is 1, or not whole, or if n is divisible by 2 or 3.", "  if n <= 1 or n % 1 != 0 or n % 2 == 0 or n % 3 == 0:", "    return False", "  # Check all the numbers of form 6k +/- 1, up to sqrt(n).", "  for x in range(6, int(math.sqrt(n)) + 2, 6):", "    if n % (x - 1) == 0 or n % (x + 1) == 0:",
             "      return False", "  return True"
         ]) + "(" + b + ")", $.Blockly.Python.ORDER_FUNCTION_CALL];
         switch (c) {
@@ -430,10 +430,10 @@ let PythonicTemplates = {}
         return [d, $.Blockly.Python.ORDER_RELATIONAL]
     };
     $.Blockly.Python.math_change = function(a) {
-        $.Blockly.Python.definitions_.from_numbers_import_Number = "from numbers import Number";
+        $.Blockly.Python.definitions_.import_math="import math";
         var b = $.Blockly.Python.valueToCode(a, "DELTA", $.Blockly.Python.ORDER_ADDITIVE) || "0";
         a = $.Blockly.Python.nameDB_.getName(a.getFieldValue("VAR"), $.module$exports$Blockly$Names.NameType.VARIABLE);
-        return a + " = (" + a + " if isinstance(" + a + ", Number) else 0) + " + b + "\n"
+        return a + " = (" + a + " if isinstance(" + a + ", int) else 0) + " + b + "\n"
     };
     $.Blockly.Python.math_round = $.Blockly.Python.math_single;
     $.Blockly.Python.math_trig = $.Blockly.Python.math_single;
@@ -451,14 +451,14 @@ let PythonicTemplates = {}
                 b = "max(" + a + ")";
                 break;
             case "AVERAGE":
-                $.Blockly.Python.definitions_.from_numbers_import_Number = "from numbers import Number";
-                b = $.Blockly.Python.provideFunction_("math_mean", ["def " + $.Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + "(myList):", "  localList = [e for e in myList if isinstance(e, Number)]",
+                $.Blockly.Python.definitions_.import_math="import math";
+                b = $.Blockly.Python.provideFunction_("math_mean", ["def " + $.Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + "(myList):", "  localList = [e for e in myList if isinstance(e, int)]",
                     "  if not localList: return", "  return float(sum(localList)) / len(localList)"
                 ]) + "(" + a + ")";
                 break;
             case "MEDIAN":
-                $.Blockly.Python.definitions_.from_numbers_import_Number = "from numbers import Number";
-                b = $.Blockly.Python.provideFunction_("math_median", ["def " + $.Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + "(myList):", "  localList = sorted([e for e in myList if isinstance(e, Number)])", "  if not localList: return", "  if len(localList) % 2 == 0:", "    return (localList[len(localList) // 2 - 1] + localList[len(localList) // 2]) / 2.0",
+                $.Blockly.Python.definitions_.import_math="import math";
+                b = $.Blockly.Python.provideFunction_("math_median", ["def " + $.Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + "(myList):", "  localList = sorted([e for e in myList if isinstance(e, int)])", "  if not localList: return", "  if len(localList) % 2 == 0:", "    return (localList[len(localList) // 2 - 1] + localList[len(localList) // 2]) / 2.0",
                     "  else:", "    return localList[(len(localList) - 1) // 2]"
                 ]) + "(" + a + ")";
                 break;
