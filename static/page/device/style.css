@@ -40,6 +40,10 @@ section#device #new-connection #WebSerial:not(.unsupported) .silk {
   height: calc(100% - 2.75rem);
   display: block;
 }
+body.light #new-connection #WebSerial select {
+  border-color: #fff;
+  color: #fff;
+}
 section#device button.unsupported {
   user-select: none;
 }

@@ -21,7 +21,7 @@ class Prompt {
         className:'master'
       })
       .onclick(command, () => {
-        command.dispatch(channel, 'push', [
+        command.dispatch(channel, 'rawPush', [
             '\x03',
             channel.targetDevice, [], command.tabUID
           ])
@@ -32,7 +32,7 @@ class Prompt {
           .onclick(this, ()=>{this.prompt.clear()}),
         new DOM('button', {innerText:Msg['ResetDevice'], className:'master'})
           .onclick(command, () => {
-            command.dispatch(channel, 'push', [
+            command.dispatch(channel, 'rawPush', [
                 '\x04',
                 channel.targetDevice, [], command.tabUID
               ])

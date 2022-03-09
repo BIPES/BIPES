@@ -399,10 +399,17 @@ function _WebSerial (parent){
           dataArrayBuffer = this.encoder.encode(pack)
         break;
       }
+      const chunk = (arr, size) =>
+        Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+          arr.slice(i * size, i * size + size)
+      )
+      let subBuffer = chunk(dataArrayBuffer, 1) // encapsulate every byte
       if (this.port && this.port.writable && dataArrayBuffer != undefined) {
         const writer = this.port.writable.getWriter()
-        // Execution is paused until writer wrote dataArrayBuffer
-        let response = await writer.write(dataArrayBuffer)
+        for (const buffer of subBuffer){
+          // Execution is paused until writer wrote dataArrayBuffer
+          let response = await writer.write(buffer)
+        }
         writer.releaseLock()
       }
       this.parent.pipe.prompt_setLoading(index, data.length - 1)
