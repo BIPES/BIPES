@@ -535,8 +535,9 @@ class Device {
    * the APIs.
    */
   checkAPISupport (){
-    if (window.location.protocol == 'https:')
-      this.$.buttonWebSocket.$.classList.add('unsupported')
+    // Not using this rule, considering wss connection
+    //if (window.location.protocol == 'https:')
+    //  this.$.buttonWebSocket.$.classList.add('unsupported')
 
     if (window.location.protocol == 'http:' && window.location.hostname != '127.0.0.1')
       this.$.buttonWebSerial.$.classList.add('unsupported'),
