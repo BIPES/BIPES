@@ -266,7 +266,7 @@ class BlocksCode {
   exec (){
     // If already executing, stop.
     if (prompt.locked){
-      command.dispatch(channel, 'push', [
+      command.dispatch(channel, 'rawPush', [
         '\x03',
         channel.targetDevice, [], command.tabUID
       ])
