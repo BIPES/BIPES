@@ -58,7 +58,7 @@ function handleLink (_navigation, _pos, root, _name, push){
 
     handleResize()
 
-    document.title = `${Tool.firstUpper(elem)} - BIPES`
+    document.title = `${Msg['Page'+Tool.firstUpper(elem)]} - BIPES`
   }
 
   // Interpreting link

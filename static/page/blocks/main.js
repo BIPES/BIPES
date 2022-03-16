@@ -56,6 +56,9 @@ class Blocks {
         wheel: false
         }
     })
+    // Change Indent
+    Blockly.Python.INDENT = '\t'
+
     // RegisterCallbacks
     blocksRegisterCallbacks(this.workspace)
     // Enable export workspace screenshot tool

@@ -34,8 +34,7 @@ class Files {
       placeholder:Msg['Filename']}
     ).onchange(this, () => {
       let _$ = $.filename.$
-      let str = $.value
-
+      let str = _$.value
       str = str [0] != '/' && str.length > 1 ?
                    '/' + str : str
       str += str.indexOf('.') == -1 ? '.py' : ''
