@@ -231,6 +231,7 @@ section#dashboard .muuri #dismiss {
 	background: #999;
 	display: none;
 	height: 1.8rem;
+	z-index: 2;
 }
 section#dashboard .muuri #dismiss:hover {
 	background: #000 !important;

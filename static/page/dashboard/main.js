@@ -355,7 +355,11 @@ class DashboardGrid {
 		this.switches = []
 		this.editiding
 		this.editingProp  // Store original position and current from plugin(string)
-		this.isGrabbing = false;
+		this.isGrabbing = false
+
+    // Hold data points to push to charts.
+    this.chartBuffer
+    this.chartBufferInterval // Store chart buffer interval
 
 		let $ = this.$ = {}
 		$.grid = dom
@@ -426,6 +430,9 @@ class DashboardGrid {
    * Init grid.
    */
   init (){
+    this.chartBuffer = {}
+    this.chartBufferInverval = setInterval(()=>{this.chartWatcher()}, 250)
+
     this.ref = this.parent.tree[this.parent.currentSID].grid
     this.restore()
   }
@@ -433,6 +440,9 @@ class DashboardGrid {
    * Deinit grid.
    */
 	deinit (){
+	  clearInterval(this.chartBufferInverval)
+	  this.chartBuffer = undefined
+
 		this.$.grid.$.classList.remove('on')
 		this.editingPlugin = '';
 		setTimeout(() => {this.actions.deinit()},250)
@@ -801,38 +811,55 @@ class DashboardGrid {
     layout.push(...noLayout)
     this.muuri.sort(layout, {layout:'instant'})
   }
-  /** Push data to current charts */
-  chartsPush (topic, data, coordinates, coorLength) {
-    this.charts.forEach ((chart) => {
-      if (chart.topic == topic) {
-        if (parseInt(coorLength[topic]) < parseInt(coordinates.length) || coorLength[topic] === -Infinity) {
-          coorLength[topic] = coordinates.length
-          this.ref.forEach(plugin => {
-            if (plugin.sid === chart.sid){
-              Charts.regen(this.charts, plugin)
-            }
-          })
-        } else if (data.length == 5) {
-          this.ref.forEach(plugin => {
-            if (plugin.sid === chart.sid){
-              Charts.regen(this.charts, plugin)
-            }
-          })
-        } else {
-          chart.data.labels.push(coordinates[0])
-          chart.data.datasets.forEach((topic, index) => {
-            topic.data.push(coordinates[index + 1])
-          })
-          if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
-            chart.data.labels.splice (0,1)
-            chart.data.datasets.forEach((topic, index) => {
-              topic.data.splice (0,1)
+  /**
+   * Push data to current charts.
+   * @param{array} topic - Points' topic.
+   * @param{array} coordinates - Points coordinates.
+   * @param{bool} refresh - If chart should be regenerated.
+   */
+  chartsPush (topic, coordinates, refresh) {
+    if (!this.chartBuffer.hasOwnProperty(topic))
+      this.chartBuffer[topic] = {refresh:false, coord:[]}
+
+    this.chartBuffer[topic].coord.push(coordinates)
+    if (refresh)
+      this.chartBuffer[topic].refresh = true
+
+  }
+  /** Periodically update the charts with buffered data */
+  chartWatcher (){
+    if (this.chartBuffer === undefined)
+      return
+
+    for (const topic in this.chartBuffer){
+      this.charts.forEach ((chart) => {
+        if (chart.topic == topic) {
+          if (this.chartBuffer[topic].refresh)
+            this.ref.forEach(plugin => {
+              if (plugin.sid === chart.sid){
+                Charts.regen(this.charts, plugin)
+              }
             })
+          else {
+            this.chartBuffer[topic].coord.forEach(coordinates => {
+              chart.data.labels.push(coordinates[0])
+              chart.data.datasets.forEach((_topic, index) => {
+                _topic.data.push(coordinates[index + 1])
+              })
+            })
+            if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
+              chart.data.labels.splice (0, this.chartBuffer[topic].coord.length)
+              chart.data.datasets.forEach((_topic, index) => {
+                _topic.data.splice (0, this.chartBuffer[topic].coord.length)
+              })
+            }
+            chart.update()
           }
-          chart.update()
         }
-      }
-    })
+      })
+
+      delete this.chartBuffer[topic]
+    }
   }
   /** Regen charts from source criteria */
   regenCharts (source){

@@ -51,7 +51,13 @@ class DataStorage {
     storage.set(`datastorage:${topic}`, JSON.stringify(this._data[topic]))
     // Push to charts
     if (this.ref !== undefined){
-      this.ref.chartsPush(topic, this._data[topic], coordinates, this._coorLength)
+      let refresh = this._data[topic].length == 5 ? true : false
+
+      if (parseInt(this._coorLength[topic]) < parseInt(coordinates.length) || this._coorLength[topic] === -Infinity) {
+        this._coorLength[topic] = coordinates.length
+        refresh = true
+      }
+      this.ref.chartsPush(topic, coordinates, refresh)
     }
   }
   /**
