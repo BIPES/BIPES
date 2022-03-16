@@ -57,7 +57,7 @@ class Blocks {
         }
     })
     // Change Indent
-    Blockly.Python.INDENT = '\t'
+    Blockly.Python.INDENT = '    '
 
     // RegisterCallbacks
     blocksRegisterCallbacks(this.workspace)

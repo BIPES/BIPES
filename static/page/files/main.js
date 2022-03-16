@@ -480,7 +480,7 @@ class DeviceFiles {
       console.log('Files: Got file!')
       let str = new TextDecoder().decode(this.arrayBufferFile)
       // Converts MicroPython output \r into unix new line \n and 4 spaces to \t
-      let script = str.replaceAll(/\r/g,'\n').replaceAll(/    /g,'\t'),
+      let script = str
           filename = this.arrayBufferFilename,
           then = this.arrayBufferTarget
 
@@ -531,7 +531,7 @@ class DeviceFiles {
     }
 
     // Converts MicroPython output \r into unix new line \n and 4 spaces to \t
-    let script = str.substring(2).replaceAll(/\r/g,'\n').replaceAll(/    /g,'\t')
+    let script = str.substring(2)
 
     if (then == 'editor')
       command.dispatch([this.parent, this], 'editorSetValue', [filename, script, tabUID])
@@ -580,7 +580,6 @@ class DeviceFiles {
     switch (channel.currentProtocol) {
       case 'WebSocket':
         script = script
-          .replaceAll(/\t/g, '    ')
         command.dispatch([this.parent, this], 'putFileArrayBuffer', [
           filename,
           script,
@@ -597,7 +596,6 @@ class DeviceFiles {
           .replaceAll(/(\r\n|\r|\n)/g, '\\r')
           .replaceAll(/'/g, "\\'")
           .replaceAll(/"/g, '\\"')
-          .replaceAll(/\t/g, '    ')
         let cmd = channel.pasteMode(
           rosetta.write.cmd(filename, script)
         )
@@ -913,8 +911,7 @@ class ProjectFiles {
    */
   _fromEditor (){
     // From codemirror
-    let script = this.parent.codemirror.state.doc.toString()
-      .replaceAll(/\t/g, '    '),
+    let script = this.parent.codemirror.state.doc.toString(),
       filename = this.parent.$.filename.$.value
 
     // Apply to all tabs
@@ -945,9 +942,20 @@ class ProjectFiles {
       obj = this.objByName(path)
     else
       obj = this.objByName(path, projectUID)
-    if ((obj === true || obj.script == undefined)) {
+    if (obj === true){
       if (tabUID === command.tabUID)
         notification.send(`${Msg['PageFiles']}: ${Tool.format([Msg['CreatePathFileBeforeSaving'], filename])}`)
+      return
+    } else if (obj === false){
+      // Redirect to new file function
+      let filename = path[path.length - 1]
+      path.pop()
+      command.dispatch([this.parent, this], 'newScript', [
+        '/' + path.join('/'), filename, file,
+        project.currentUID
+      ])
+      // Changed by reference, just write to localStorage
+      project.write()
       return
     }
     obj.script = file
@@ -1354,6 +1362,8 @@ class ProjectFiles {
    * If projectUID is null, assume current project.
    * @param{string/array} path - array or string path.
    * @param{string} projectUID - UID of the project with the path.
+   * @return True for some directory not found, false does not exist or reference
+   *         if found.
    */
   objByName (path, projectUID) {
     let tree
@@ -1390,10 +1400,14 @@ class ProjectFiles {
         return true
       })
     })
-
     if (found.includes(false)){
-      console.error(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
-      return true
+      // Distinguish directory from file not found
+      let subfound = found.slice(0, found.length -  1)
+      if (subfound.includes(false) && subfound.length != 0){
+        console.error(`${Msg['PageFiles']}: ${Msg['DirectoriesNotExistMapped']}`)
+        return true
+      } else
+        return false
     }
     return ref
   }

@@ -31,7 +31,7 @@ export default function CodeMirror6 (dom, theme, props){
         ..._props,
         genericImports,
         keymap.of([indentWithTab]),
-        indentUnit.of('\t'),
+        indentUnit.of('    '),
         python(),
         markdown(),
         setTheme(theme)

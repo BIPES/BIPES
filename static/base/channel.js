@@ -79,17 +79,7 @@ class Channel {
       return
 
     this.renewPing()
-    if (cmd.constructor.name == 'Uint8Array') {
-      this.input.push([cmd])
-    } else if (typeof cmd == 'string' && this.current.config.packetSize != 0) {
-      let reg = new RegExp(`(.|[\r]){1,${this.current.config.packetSize}}`, 'g')
-      cmd = cmd.replaceAll('\t',"    ").replaceAll(/\r\n|\n/gm, '\r')
-      this.input.push([...cmd.match(reg)])
-      console.log([...cmd.match(reg)])
-    } else {
-      this.input.push(cmd.replaceAll('\t',"    ").replaceAll(/\r\n|\n/gm, '\r'))
-    }
-        // Build callback function
+    // Build callback function
     if (callback != undefined && callback.constructor.name == 'Array') {
       let self = window.bipes.page,
           fun
@@ -109,6 +99,15 @@ class Channel {
       })
       if (tabUID)
         this.callbacks[this.callbacks.length - 1].uid = tabUID
+    }
+    if (cmd.constructor.name == 'Uint8Array') {
+      this.input.push([cmd])
+    } else if (typeof cmd == 'string' && this.current.config.packetSize != 0) {
+      let reg = new RegExp(`(.|[\r]){1,${this.current.config.packetSize}}`, 'g')
+      this.input.push([...cmd.match(reg)])
+      console.log([...cmd.match(reg)])
+    } else {
+      this.input.push(cmd)
     }
   }
   rawPush (cmd, targetDevice){
@@ -168,10 +167,15 @@ class Channel {
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it
-    out = this.interpretBackspace(out)
+    out = this.interpretBackspace(
+            out.replaceAll('\t', '    ')
+          )
     let call = this.callbacks[0]
 
-    if (!call.hasOwnProperty('skip') && !/^[\x00-\x7F]{1}$/.test(call.cmd)) {
+    if (!call.hasOwnProperty('skip') && !/^[\x00-\x7F]{1}$/.test(call.cmd)){
+      console.log(call.cmd)
+      call.cmd = call.cmd
+          .replaceAll('\t', '    ')
       // Emulate command in paste mode
       if (call.cmd[0] == '\x05')
         call.cmd = this.emulatePasteMode(call.cmd)
@@ -220,7 +224,7 @@ class Channel {
   emulatePasteMode (cmd) {
     // Remove paste mode chars
     cmd = cmd.substring(1,cmd.length -1)
-    return `\r\n${PASTEMODE}\r\n=== ${cmd.replaceAll(/\n/g,'\r\n=== ').replaceAll(/\t/g,'    ')}`
+    return `\r\n${PASTEMODE}\r\n=== ${cmd.replaceAll(/\t/g,'    ')}`
   }
   /*
    * Return a command with paste mode enclosing
