@@ -177,7 +177,7 @@ def ide(lang=None, import_type='module'):
 
     lang_imports = render_lang(lang)
     page = get_files_names("static/page/*/main.js", r"^static/page/(.*)/main.js")
-    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
+    imports = get_files_names("static/libs/*.umd.js", r"^static/libs/(.*).js")
     
     page = preferred_page_order(page)
   
@@ -185,7 +185,6 @@ def ide(lang=None, import_type='module'):
                            page=page, imports=imports, explicit_imports=explicit_imports,
                            lang_imports=lang_imports, lang=lang,
                            import_type=import_type)
-
 
 # Render language string imports
 def render_lang (lang):
@@ -293,25 +292,10 @@ def service_worker_imports(lang=None):
         _names = [item[7:] + "/" + _name for _name in _names]
         static_images += _names
 
-    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
+    imports = get_files_names("static/libs/*.umd.js", r"^static/libs/(.*).js")
 
     return render_template('libs/serviceworker.js', app_version=app_version,
                            imports=imports, explicit_imports=explicit_imports,
                            lang_imports=lang_imports, static_images=static_images)
 
 
-
-# Generate the ide html file
-def ide(lang=None, import_type='module'):
-    lang = default_lang if lang == None else lang
-
-    lang_imports = render_lang(lang)
-    page = get_files_names("static/page/*/main.js", r"^static/page/(.*)/main.js")
-    imports = get_files_names("static/libs/*.js", r"^static/libs/(.*).js")
-
-    page = preferred_page_order(page)
-
-    return render_template('ide.html', app_name=app_name, app_version=app_version,
-                           imports=imports, explicit_imports=explicit_imports,
-                           lang_imports=lang_imports, lang=lang,
-                           import_type=import_type, page=page)

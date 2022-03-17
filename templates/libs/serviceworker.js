@@ -1,25 +1,29 @@
 const CACHE_NAME = 'v{{app_version}}';
 const urlsToCache = [
-  '../../',
-  '../style.css',
-  '../media/icons.svg',
+  'ide',
+  'static/style.css',
+  'static/media/icons.svg',
   {% for item in imports -%}
-  '../libs/{{ item }}.js',
+  'static/libs/{{ item }}.js',
   {% endfor %}
   {% for item in explicit_imports -%}
-  '../{{ item }}.js',
+  'static/{{ item }}.js',
   {% endfor %}
   {% for plugin in lang_imports -%}
-  '../{{ plugin }}',
+  'static/{{ plugin }}',
   {% endfor %}
   {% for img in static_images -%}
-  '../{{ img }}',
+  'static/{{ img }}',
   {% endfor %}
 ];
 
+prefix = '/3/'
+
+urlsToCacheAbsolute = urlsToCache.map(s => prefix + s)
+
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCacheAbsolute))
   );
 });
 

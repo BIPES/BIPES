@@ -4,12 +4,12 @@
   <title>{{ app_name }}</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <link rel="icon" sizes="192x192" href="./static/media/icon/icon-192x192.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./static/media/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./static/media/icon/apple-touch-icon.png">
   <link rel="manifest" href="static/media/manifest.webmanifest">
   <meta name="theme-color" content="#fff">
   <script>
     if ('serviceWorker' in navigator)
-      navigator.serviceWorker.register('static/libs/serviceworker.js')
+	navigator.serviceWorker.register('serviceworker.js', {scope: '/3/'})
   </script>
   <link rel="stylesheet" href='./static/style.css'/>
   {% for item in imports -%}

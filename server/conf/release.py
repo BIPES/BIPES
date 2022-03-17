@@ -1,6 +1,6 @@
 # This file generates BIPES server running with the release version (static).
 
-from flask import Flask, send_from_directory, redirect
+from flask import Flask, make_response, send_from_directory, redirect
 import os
 
 # Create app for developemnt mode
@@ -33,6 +33,13 @@ def create_app(test_config=None):
     @app.route('/')
     def go_to_ide():
         return redirect("ide", code=302)
+
+    @app.route('/serviceworker.js')
+    def service_worker():
+        response = make_response(send_from_directory('', 'static/libs/serviceworker.js'))
+        response.headers['Content-Type'] = 'application/javascript'
+        response.headers['Service-Worker-Allowed'] = '/'
+        return response
 
     try:
         mosquitto.listen(app)
