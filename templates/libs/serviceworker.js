@@ -3,6 +3,9 @@ const urlsToCache = [
   'ide',
   'static/style.css',
   'static/media/icons.svg',
+  'static/media/icon/icon-192x192.png',
+  'static/media/manifest.webmanifest',
+  'static/libs/bipes.umd.js',
   {% for item in imports -%}
   'static/libs/{{ item }}.js',
   {% endfor %}

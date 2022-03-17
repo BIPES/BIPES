@@ -287,7 +287,7 @@ def service_worker_imports(lang=None):
         lang_imports += render_lang(key)
 
     static_images = []
-    for item in ['static/page/device/media', 'static/page/blocks/images']:
+    for item in ['static/page/device/media', 'static/page/blocks/images', 'static/page/blocks/media']:
         _names = get_files_names(item+"/*", re.compile("^" + item + "/(.*)"))
         _names = [item[7:] + "/" + _name for _name in _names]
         static_images += _names
