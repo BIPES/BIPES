@@ -19,8 +19,7 @@ const urlsToCache = [
   'static/{{ img }}',
   {% endfor %}
 ];
-
-prefix = '/3/'
+prefix = self.location.pathname.replace('serviceworker.js', '')
 
 urlsToCacheAbsolute = urlsToCache.map(s => prefix + s)
 

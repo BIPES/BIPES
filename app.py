@@ -1,5 +1,5 @@
 from flask import Flask, Response, jsonify, render_template
-from flask import request, redirect
+from flask import request, redirect, make_response
 from flask import render_template
 import os
 import glob
@@ -123,9 +123,12 @@ def create_app(test_config=None):
         return redirect("/ide", code=302)
 
     # Return serviceworker.
-    @app.route("/static/libs/serviceworker.js")
+    @app.route("/serviceworker.js")
     def service_worker():
-        return Response(service_worker_imports(), mimetype='application/javascript')
+        response = make_response(service_worker_imports())
+        response.headers['Content-Type'] = 'application/javascript'
+        response.headers['Service-Worker-Allowed'] = '/'
+        return response
     
     # init mqtt subscriber
     try:
