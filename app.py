@@ -125,7 +125,7 @@ def create_app(test_config=None):
     # Return serviceworker.
     @app.route("/serviceworker.js")
     def service_worker():
-        response = make_response(service_worker_imports())
+        response = make_response(service_worker_imports(import_type='module'))
         response.headers['Content-Type'] = 'application/javascript'
         response.headers['Service-Worker-Allowed'] = '/'
         return response
@@ -171,7 +171,7 @@ def build_release():
     # Build service worker
     with open("static/libs/serviceworker.temp.js",'w') as f:
         with app.app_context():
-            f.write(service_worker_imports())
+            f.write(service_worker_imports(import_type='text/javascript'))
 
 
 # Generate the ide html file
@@ -284,7 +284,7 @@ def bipes_imports(import_type='module'):
                            available_lang=available_lang)
 
 # Return service worker imports.
-def service_worker_imports(lang=None):
+def service_worker_imports(lang=None, import_type='module'):
     lang_imports = []
     for key in available_lang:
         lang_imports += render_lang(key)
@@ -300,6 +300,6 @@ def service_worker_imports(lang=None):
     return render_template('libs/serviceworker.js', app_version=app_version,
                            imports=imports, explicit_imports=explicit_imports,
                            lang_imports=lang_imports, static_images=static_images,
-                           available_lang=available_lang)
+                           available_lang=available_lang, import_type=import_type)
 
 

@@ -22,9 +22,9 @@ const urlsToCache = [
   'static/{{ img }}',
   {% endfor %}
 ];
-prefix = self.location.pathname.replace('serviceworker.js', '')
+let prefix = self.location.pathname.replace('serviceworker.js', '')
 
-urlsToCacheAbsolute = urlsToCache.map(s => prefix + s)
+let urlsToCacheAbsolute = urlsToCache.map(s => prefix + s)
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -48,7 +48,10 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.url.includes(`${prefix}mqtt/`) || event.request.url.includes(`${prefix}api/`)) {
+{% if import_type == "text/javascript" -%}
+  if (event.request.url.includes(`${prefix}mqtt/`) ||
+      event.request.url.includes(`${prefix}api/`)  ||
+      ) {
     return false
   } else {
     event.respondWith(
@@ -64,10 +67,13 @@ self.addEventListener('fetch', event => {
               return response
             })
             .catch(response => {
-              console.log(`Fetch for "${event.request.url}" failed, sorry.`)
+              console.log(`ServiceWorker: Fetch for "${event.request.url}" failed.`)
             })
         );
       })
     );
   }
+{% else %}
+  return false
+{% endif %}
 });

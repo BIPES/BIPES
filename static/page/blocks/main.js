@@ -385,14 +385,19 @@ let blocksWarningIfTrue = (self, criteria) => {
   self.setWarningText(warnings.length > 0 ? warnings.join("\n") : null)
 }
 
+let defaultBlocksHostname = 'https://raw.githubusercontent.com/BIPES/examples-libraries/main/blocks-examples/'
 let blocksKnownExamples = {
   PID_water_boiler:{
-    hostname:'https://raw.githubusercontent.com/gastmaier/micropython-simple-pid/master/examples/bipes/',
-    file:'water_boiler.py'
+    hostname:defaultBlocksHostname,
+    file:'pid_dc_motor.xml'
   },
   PID_dc_motor:{
-    hostname:'https://raw.githubusercontent.com/gastmaier/micropython-simple-pid/master/examples/bipes/',
-    file:'dc_motor.py'
+    hostname:defaultBlocksHostname,
+    file:'pid_water_temp.xml'
+  },
+  TM1640:{
+    hostname:defaultBlocksHostname,
+    file:'tm1640.xml'
   }
 }
 
