@@ -395,6 +395,14 @@ let blocksKnownExamples = {
     hostname:defaultBlocksHostname,
     file:'pid_water_temp.xml'
   },
+  PID_dc_motor_interrupt:{
+    hostname:defaultBlocksHostname,
+    file:'pid_dc_motor_interrupt.xml'
+  },
+  PID_thermal_plant_ds1820:{
+    hostname:defaultBlocksHostname,
+    file:'pid_thermal_plant_ds1820.xml'
+  },
   TM1640:{
     hostname:defaultBlocksHostname,
     file:'tm1640.xml'
