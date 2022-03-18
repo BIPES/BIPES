@@ -1,4 +1,5 @@
-# This file generates BIPES server running with the release version (static).
+# Serve API and MQTT requests.
+# Replaces the app.py from dev mode in the release version.
 
 from flask import Flask, make_response, send_from_directory, redirect
 import os
