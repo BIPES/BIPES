@@ -47,23 +47,27 @@ self.addEventListener('activate', event => {
   );
 });
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request, {ignoreSearch: true}).then(response => {
-      if (response) {
-        return response;
-      }
-      return (
-        fetch(event.request)
-          .then(response => caches.open(CACHE_NAME))
-          .then(cache => {
-            cache.put(event.request, response.clone());
-            return response;
-          })
-          .catch(response => {
-            console.log('Fetch failed, sorry.');
-          })
-      );
-    })
-  );
+self.addEventListener('fetch', event => {
+  if (event.request.url.includes(`${prefix}mqtt/`) || event.request.url.includes(`${prefix}api/`)) {
+    return false
+  } else {
+    event.respondWith(
+      caches.match(event.request, {ignoreSearch: true}).then(response => {
+        if (response) {
+          return response
+        }
+        return (
+          fetch(event.request)
+            .then(response => caches.open(CACHE_NAME))
+            .then(cache => {
+              cache.put(event.request, response.clone())
+              return response
+            })
+            .catch(response => {
+              console.log(`Fetch for "${event.request.url}" failed, sorry.`)
+            })
+        );
+      })
+    );
+  }
 });
