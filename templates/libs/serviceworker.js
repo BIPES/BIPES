@@ -1,6 +1,9 @@
 const CACHE_NAME = 'v{{app_version}}';
 const urlsToCache = [
   'ide',
+  {% for key, value in available_lang.items() -%}
+  'ide-{{ key }}',
+  {% endfor %}
   'static/style.css',
   'static/media/icons.svg',
   'static/media/icon/icon-192x192.png',
@@ -46,7 +49,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request).then(response => {
+    caches.match(event.request, {ignoreSearch: true}).then(response => {
       if (response) {
         return response;
       }

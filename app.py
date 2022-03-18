@@ -8,7 +8,7 @@ import re
 
 
 app_name = 'BIPES'
-app_version = '3.0'
+app_version = '3.0.1'
 
 # Default language on server mode
 # Note: this is overwritten by the Makefile's lang arg on the "make release" command.
@@ -299,6 +299,7 @@ def service_worker_imports(lang=None):
 
     return render_template('libs/serviceworker.js', app_version=app_version,
                            imports=imports, explicit_imports=explicit_imports,
-                           lang_imports=lang_imports, static_images=static_images)
+                           lang_imports=lang_imports, static_images=static_images,
+                           available_lang=available_lang)
 
 

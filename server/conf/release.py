@@ -21,26 +21,6 @@ def create_app(test_config=None):
     app.register_blueprint(api.bp)
     app.register_blueprint(mosquitto.bp)
 
-    # Return "compiled" html file.
-    @app.route("/ide")
-    @app.route("/ide-<lang>")
-    def call_ide(lang=None, import_type='module'):
-        if lang is None:
-            return send_from_directory('', 'ide/ide.html')
-        else:
-            return send_from_directory('', 'ide/ide-' + lang + '.html')
-
-    @app.route('/')
-    def go_to_ide():
-        return redirect("ide", code=302)
-
-    @app.route('/serviceworker.js')
-    def service_worker():
-        response = make_response(send_from_directory('', 'static/libs/serviceworker.js'))
-        response.headers['Content-Type'] = 'application/javascript'
-        response.headers['Service-Worker-Allowed'] = '/'
-        return response
-
     try:
         mosquitto.listen(app)
     except ConnectionRefusedError:
