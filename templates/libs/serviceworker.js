@@ -51,6 +51,7 @@ self.addEventListener('fetch', event => {
 {% if import_type == "text/javascript" -%}
   if (event.request.url.includes(`${prefix}mqtt/`) ||
       event.request.url.includes(`${prefix}api/`)  ||
+      event.request.url.includes(`/wp`)  ||
       ) {
     return false
   } else {
