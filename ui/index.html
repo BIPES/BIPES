@@ -416,6 +416,8 @@ UI ['channel-panel'] = new channelPanel ('#channelButton','.channel-panel');
 UI ['toolbar'] = new panel ('#toolbarButton','.toolbar');
 UI ['workspace'] = new workspace ();
 
+bufferPush = mux.bufferPush;
+
 
 //Make sure we wont use data from last session (BIPES serial to freeboard bridge)
 Tool.clearQueue ();
