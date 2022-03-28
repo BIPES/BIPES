@@ -11,6 +11,7 @@ Blockly.Msg["MACHINE"] = "Máquina";
 Blockly.Msg["DISPLAYS"] = "Displays";
 Blockly.Msg['SENSORS'] = "Sensores";
 Blockly.Msg['OUTPUTS'] = "Saidas e atuadores";
+Blockly.Msg['SOUNDS'] = "Sons";
 Blockly.Msg['COMM'] = "Comunicação";
 Blockly.Msg['TEMP_HUMI'] = "Temperatura e Umidade";
 Blockly.Msg['PRESS'] = "Pressão";
@@ -22,6 +23,7 @@ Blockly.Msg['IMU'] = "Medidas inerciais";
 Blockly.Msg['AIR'] = "Qualidade do ar";
 Blockly.Msg['INSTALL_LIBRARY'] = "Instalar biblioteca";
 Blockly.Msg['DOCUMENTATION'] = "Documentação";
+Blockly.Msg['DOCUMENTATION_HOW'] = "Documentação e como conectar";
 Blockly.Msg['LOAD_EXAMPLE'] = "Carregar exemplo";
 
 var Msg = {

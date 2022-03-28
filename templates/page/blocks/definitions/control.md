@@ -6,6 +6,7 @@
 <button text="%{INSTALL_LIBRARY}: PID" callbackKey="installPyLib"></button>
 <label text="Proportional–integral–derivative Controller"></label>
 <label text="https://github.com/gastmaier/micropython-simple-pid"></label>
+<button text="%{DOCUMENTATION}: simple_pid" callbackKey="loadDoc"></button>
 <button text="%{LOAD_EXAMPLE}: PID_water_boiler" callbackKey="loadExample"></button>
 <button text="%{LOAD_EXAMPLE}: PID_thermal_plant_ds1820" callbackKey="loadExample"></button>
 <button text="%{LOAD_EXAMPLE}: PID_dc_motor_interrupt" callbackKey="loadExample"></button>

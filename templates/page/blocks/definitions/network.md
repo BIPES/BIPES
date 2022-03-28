@@ -186,8 +186,8 @@
 # HTTP Server
 <category name="HTTP Server">
 <label text="HTTP Web Server"></label>
-<button text="Load example: webserver" callbackKey="loadExample"></button>
-<button text="Documentation: webserver" callbackKey="loadDoc"></button>
+<button text="%{LOAD_EXAMPLE}: webserver" callbackKey="loadExample"></button>
+<button text="%{DOCUMENTATION}: webserver" callbackKey="loadDoc"></button>
 
 # net_http_server_start
 <block type="net_http_server_start">
@@ -224,7 +224,7 @@
 <label text="Email sender using uMail"></label>
 <label text="Library: https://github.com/shawwwn/uMail"></label>
 <button text="%{INSTALL_LIBRARY}: umail" callbackKey="installPyLib"></button>
-<button text="Documentation: uMail" callbackKey="loadDoc"></button>
+<button text="%{DOCUMENTATION}: uMail" callbackKey="loadDoc"></button>
 
 # umail_init
 <block type="umail_init">
@@ -274,7 +274,7 @@
 <label text="Network Time Protocol (NTP)"></label>
 <label text="Adjusts RTC using Internet"></label>
 <button text="Load example: ntp" callbackKey="loadExample"></button>
-<button text="Documentation: ntp" callbackKey="loadDoc"></button>
+<button text="%{DOCUMENTATION}: ntp" callbackKey="loadDoc"></button>
 
 # net_ntp_sync
 <block type="net_ntp_sync">
@@ -288,8 +288,8 @@
 # TCP/IP Socket
 <category name="TCP/IP Socket">
 <label text="TCP/IP Socket"></label>
-<button text="Load example: starwars" callbackKey="loadExample"></button>
-<button text="Documentation: sockets" callbackKey="loadDoc"></button>
+<button text="%{LOAD_EXAMPLE}: starwars" callbackKey="loadExample"></button>
+<button text="%{DOCUMENTATION}: sockets" callbackKey="loadDoc"></button>
 
 # net_socket_connect
 <block type="net_socket_connect">
@@ -509,8 +509,8 @@
 <label text="Controller Area Network (CAN)"></label>
 <label text="Requires specific firmware"></label>
 <label text="Compatible with: https://github.com/micropython/micropython/issues/5087#issuecomment-538779410"></label>
-<button text="Load example: esp32_can" callbackKey="loadExample"></button>
-<button text="Documentation: esp32_can" callbackKey="loadDoc"></button>
+<button text="%{LOAD_EXAMPLES}: esp32_can" callbackKey="loadExample"></button>
+<button text="%{DOCUMENTATION}: esp32_can" callbackKey="loadDoc"></button>
 
 # esp32_can_init
 <block type="esp32_can_init"></block>

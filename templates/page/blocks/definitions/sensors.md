@@ -255,7 +255,7 @@
 <label text="Library: https://github.com/"></label>
 <button text="%{INSTALL_LIBRARY}: MPU6050" callbackKey="installPyLib"></button>
 <button text="%{LOAD_EXAMPLE}: MPU6050" callbackKey="loadExample"></button>
-<button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
+<button text="%{DOCUMENTATION_HOW}: mpu6050" callbackKey="loadDoc"></button>
 
 # init_mpu6050
 <block type="init_mpu6050">
@@ -325,7 +325,7 @@
 <category name="OneWire">
 <label text="OneWire"></label>
 <button text="Load example: ds1820" callbackKey="loadExample"></button>
-<button text="Documentation and how to connect: ds1820" callbackKey="loadDoc"></button>
+<button text="%{DOCUMENTATION_HOW}: ds1820" callbackKey="loadDoc"></button>
 
 # onewire_ds18x20_init
 <block type="onewire_ds18x20_init">
@@ -357,7 +357,7 @@
 <label text="Library: https://github.com/wendlers/micropython-mfrc522"></label>
 <button text="%{INSTALL_LIBRARY}: MFRC522" callbackKey="installPyLib"></button>
 <button text="%{LOAD_EXAMPLE}: MFRC522" callbackKey="loadExample"></button>
-<button text="Documentation and how to connect: mfrc522" callbackKey="loadDoc"></button>
+<button text="%{DOCUMENTATION_HOW}: mfrc522" callbackKey="loadDoc"></button>
 
 # rfid_rc522_init
 <block type="rfid_rc522_init">
@@ -404,7 +404,7 @@
 <category name="Rotatory Encoder">
 <label text="Rotatory Incremental Encoder"></label>
 <button text="%{LOAD_EXAMPLE}: encoder" callbackKey="loadExample"></button>
-<button text="%{DOCUMENTATION}: encoder" callbackKey="loadDoc"></button>
+<button text="%{DOCUMENTATION_HOW}: encoder" callbackKey="loadDoc"></button>
 
 # encoder_init
 <block type="encoder_init">

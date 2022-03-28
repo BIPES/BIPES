@@ -164,3 +164,69 @@ Blockly.Python['dc_motor_stop'] = function(block) {
 
   return code;
 };
+
+
+// Sounds ----------------------------------------------------------------------
+
+Blockly.Python["rtttl_play"] = function(block) {
+	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var song = Blockly.Python.valueToCode(block, 'song', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_rtttl'] = 'import rtttl, songs';
+
+	var code = 'play = rtttl.play(Pin(' + pin + ', Pin.OUT), songs.find(' + song + ')) \n';
+	return code;
+};
+
+Blockly.Python['tone'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_frequency = Blockly.Python.valueToCode(block, 'frequency', Blockly.Python.ORDER_ATOMIC);
+	var d = Blockly.Python.valueToCode(block, 'duration', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+  	Blockly.Python.definitions_['import_time'] = 'import time';
+
+	var x = value_pin.replace('(','').replace(')','');
+
+	var code = 'pwm' + x + ' = PWM(Pin(' + x + '), freq=' + value_frequency + ', ' + ' duty=512)\n';
+
+	var d1=parseFloat(d);
+	if (d1==0)
+		code += '';
+	else
+		code += 'time.sleep(' + d + ')\npwm' + x + '.deinit()\n';
+
+	return code;
+  };
+
+
+Blockly.Python['note'] = function(block) {
+	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_frequency = Blockly.Python.valueToCode(block, 'note', Blockly.Python.ORDER_ATOMIC);
+	var d = Blockly.Python.valueToCode(block, 'duration', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+  Blockly.Python.definitions_['import_time'] = 'import time';
+
+	var x = value_pin.replace('(','').replace(')','');
+
+	var code = 'pwm' + x + ' = PWM(Pin(' + x + '), freq=' + value_frequency + ', ' + ' duty=512)\n';
+	var d1=parseFloat(d);
+	if (d1==0)
+		code += '';
+	else
+		code += 'time.sleep(' + d + ')\npwm' + x + '.deinit()\n';
+
+	return code;
+  };
+
+
+Blockly.Python['tone_type'] = function(block) {
+  var dropdown_tone = block.getFieldValue('tone');
+  var code = dropdown_tone;
+  return [code, Blockly.JavaScript.ORDER_NONE];
+};
+
+

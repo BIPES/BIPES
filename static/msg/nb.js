@@ -11,6 +11,7 @@ Blockly.Msg["MACHINE"] = "Maskin";
 Blockly.Msg["DISPLAYS"] = "Skjermer";
 Blockly.Msg['SENSORS'] = "Sensorer";
 Blockly.Msg['OUTPUTS'] = "Ut-enheter / Aktuatorer";
+Blockly.Msg['SOUNDS'] = "Lyder";
 Blockly.Msg['COMM'] = "Kommunikasjon";
 Blockly.Msg['TEMP_HUMI'] = "Temperatur og fuktighet";
 Blockly.Msg['PRESS'] = "Trykk";
@@ -22,6 +23,7 @@ Blockly.Msg['IMU'] = "Treghetsmåling";
 Blockly.Msg['AIR'] = "Luftkvalitet";
 Blockly.Msg['INSTALL_LIBRARY'] = "Install library";
 Blockly.Msg['DOCUMENTATION'] = "Documentation";
+Blockly.Msg['DOCUMENTATION_HOW'] = "Documentation and how to connect";
 Blockly.Msg['LOAD_EXAMPLE'] = "Load example";
 
 var Msg = {

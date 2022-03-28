@@ -1,4 +1,3 @@
-
 "use strict";
 
 import {DOM, Animate} from '../../base/dom.js'
@@ -10,6 +9,8 @@ import {notification} from '../notification/main.js'
 import {files} from '../files/main.js'
 import {prompt} from '../prompt/main.js'
 import {project} from '../project/main.js'
+
+import {knownDocs, knownExamples, knownLibs} from './external.js'
 
 /* Code visually, uses Google Blockly as visual language library. */
 class Blocks {
@@ -385,97 +386,7 @@ let blocksWarningIfTrue = (self, criteria) => {
   self.setWarningText(warnings.length > 0 ? warnings.join("\n") : null)
 }
 
-let defaultBlocksHostname = 'https://raw.githubusercontent.com/BIPES/examples-libraries/main/blocks-examples/'
-let blocksKnownExamples = {
-  PID_water_boiler:{
-    hostname:defaultBlocksHostname,
-    file:'pid_dc_motor.xml'
-  },
-  PID_dc_motor:{
-    hostname:defaultBlocksHostname,
-    file:'pid_water_temp.xml'
-  },
-  PID_dc_motor_interrupt:{
-    hostname:defaultBlocksHostname,
-    file:'pid_dc_motor_interrupt.xml'
-  },
-  PID_thermal_plant_ds1820:{
-    hostname:defaultBlocksHostname,
-    file:'pid_thermal_plant_ds1820.xml'
-  },
-  TM1640:{
-    hostname:defaultBlocksHostname,
-    file:'tm1640.xml'
-  }
-}
-
-let blocksKnownLibs = {
-  PID:{
-    hostname:'https://raw.githubusercontent.com/gastmaier/micropython-simple-pid/master/simple_pid',
-    file:'PID.py'
-  },
-  I2CLCD:{
-    hostname:'https://raw.githubusercontent.com/Bucknalla/micropython-i2c-lcd/master/lib/',
-    file:['i2c_lcd.py', 'i2c_lcd_backlight.py', 'i2c_lcd_screen.py']
-  },
-  ST7789:{
-    hostname:'https://github.com/devbis/st7789py_mpy/blob/master/',
-    file:'st7789py.py'
-  },
-  SSD1306:{
-    hostname:'https://raw.githubusercontent.com/adafruit/micropython-adafruit-ssd1306/master/',
-    file:'ssd1306.py'
-  },
-  TM1640:{
-    hostname:'https://raw.githubusercontent.com/mcauser/micropython-tm1640/master/',
-    file:'tm1640.py'
-  },
-  HCSR04:{
-    hostname:'https://raw.githubusercontent.com/rsc1975/micropython-hcsr04/master/',
-    file:'hcsr04.py'
-  },
-  mini_micropyGPS:{
-    hostname:'https://raw.githubusercontent.com/rafaelaroca/mini_micropyGPS/master/esp32/',
-    file:'mini_micropyGPS.py'
-  },
-  BMP180:{
-    hostname:'https://raw.githubusercontent.com/micropython-IMU/micropython-bmp180/master/',
-    file:'bmp180.py'
-  },
-  CCS811:{
-    hostname:'https://raw.githubusercontent.com/Notthemarsian/CCS811/master/',
-    file:'CCS811.py'
-  },
-  MPU9250:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
-    file:'mpu9250.py'
-  },
-  MPU6500:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
-    file:'mpu6500.py'
-  },
-  AK8963:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
-    file:'ak8963.py'
-  },
-  MFRC522:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
-    file:'mfrc522.py'
-  },
-  ble_advertising:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
-    file:'ble_advertising.py',
-  },
-  ble_uart_repl:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
-    file:'ble_uart_repl.py',
-  },
-  ble_uart_peripheral:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
-    file:'ble_uart_peripheral.py',
-  },
-}
-
+let moreInfo = 'is unknown, set at static/page/blocks/external.js'
 let blocksRegisterCallbacks = (workspace) => {
   workspace.registerButtonCallback('installPyLib', (button) => {
     if (!/: (.*)$/.test(button.text_)){
@@ -484,12 +395,12 @@ let blocksRegisterCallbacks = (workspace) => {
     }
     let id = button.text_.match(/: (.*)$/)[1]
 
-    if (!Object.keys(blocksKnownLibs).includes(id)) {
-      console.error(`Blocks: Blockly "${id}" library is unknown.`)
+    if (!Object.keys(knownLibs).includes(id)) {
+      console.error(`Blocks: Blockly "${id}" library ${moreInfo}.`)
       return
     }
     notification.send(`${Msg['PageBlocks']}: ${Tool.format([Msg['FetchingLib'], id])}`)
-    let lib = blocksKnownLibs[id]
+    let lib = knownLibs[id]
     let _toFetch
     if (typeof lib.file === "string")
       _toFetch = [lib.file]
@@ -515,17 +426,17 @@ let blocksRegisterCallbacks = (workspace) => {
     }
     let id = button.text_.match(/: (.*)$/)[1]
 
-    if (!Object.keys(blocksKnownExamples).includes(id)) {
-      console.error(`Blocks: Blockly "${id}" library is unknown.`)
+    if (!Object.keys(knownExamples).includes(id)) {
+      console.error(`Blocks: Blockly "${id}" example ${moreInfo}.`)
       return
     }
     notification.send(`${Msg['PageBlocks']}: ${Tool.format([Msg['FetchingExample'], id])}`)
-    let lib = blocksKnownExamples[id]
-    if (typeof lib.file !== "string")
+    let ex = knownExamples[id]
+    if (typeof ex.file !== "string")
       return
 
 
-    const response = fetch(`${lib.hostname}/${lib.file}`, {method:'Get'})
+    const response = fetch(`${ex.hostname}/${ex.file}`, {method:'Get'})
       .then((response) => {
         if (!response.ok)
           throw new Error(response.status)
@@ -538,6 +449,22 @@ let blocksRegisterCallbacks = (workspace) => {
         )
         Blockly.Events.enable()
       })
+  })
+
+
+  workspace.registerButtonCallback('loadDoc', (button) => {
+    if (!/: (.*)$/.test(button.text_)){
+      console.error(`Blocks: Blockly button "${button.text_}" is invalid.`)
+      return
+    }
+    let id = button.text_.match(/: (.*)$/)[1]
+
+    if (!Object.keys(knownDocs).includes(id)) {
+      console.error(`Blocks: Blockly "${id}" documentation ${moreInfo}.`)
+      return
+    }
+    let doc = knownDocs[id]
+    window.open(`${doc.hostname}/${doc.file}`, '_blank')
   })
 }
 

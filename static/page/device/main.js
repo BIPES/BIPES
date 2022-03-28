@@ -228,6 +228,10 @@ class Device {
       DOM.setSelected(this.$.targetDropdown, obj.target),
       this.$.pinout.$.src = `./static/page/device/media/${this.deviceInfo[obj.target].img}`
     }
+    if (obj.hasOwnProperty('firmware')){
+      console.log(this.$.targetFirmwareDropdown)
+      DOM.setSelected(this.$.targetFirmwareDropdown, obj.firmware)
+    }
   }
   /*
    * Trigger WebSerial connection to a device.

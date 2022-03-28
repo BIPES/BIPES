@@ -277,6 +277,13 @@ dc_motor_power
 dc_motor_direction
 dc_motor_stop
 end_category
+%{SOUNDS}
+tone
+note
+tone_type
+rtttl_play
+sounds_text_blocks
+end_category
 end_category
 
 %{COMM}
