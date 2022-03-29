@@ -49,11 +49,13 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
 {% if import_type == "text/javascript" -%}
-  if (event.request.url.includes(`${prefix}mqtt/`) ||
-      event.request.url.includes(`${prefix}api/`)) {
-    return false
-  } else {
-    event.respondWith(
+  let ogn = self.location.origin + prefix
+  let req = event.request.url
+  if (req.substring(0, ogn.length) === ogn &&
+      (urlsToCache.includes(req.substring(ogn.length)) ||
+       req.substring(ogn.length,ogn.length + 3) === 'ide')
+  ){
+   event.respondWith(
       caches.match(event.request, {ignoreSearch: true}).then(response => {
         if (response) {
           return response
@@ -68,10 +70,12 @@ self.addEventListener('fetch', event => {
             .catch(response => {
               console.log(`ServiceWorker: Fetch for "${event.request.url}" failed.`)
             })
-        );
+         )
       })
-    );
-  }
+    )
+  } else
+    return false
+
 {% else %}
   return false
 {% endif %}
