@@ -236,7 +236,9 @@ class Navigation {
     })
     .append(_languages)
     .onevent('change', this, () => {
-      location.href = `${window.location.href.match('^(.*)/ide')[1]}/ide-${this.$.languageDropdown.value}`
+      let _url = new URL(location.href)
+      _url.pathname = `${_url.pathname.match('^(.*)/ide')[1]}/ide-${this.$.languageDropdown.value}`
+      location.href = `${_url}`
     })
     new DOM(DOM.get('div#status-bar #extra')).append([
      new DOM('span', {
@@ -247,6 +249,19 @@ class Navigation {
     ])
     // Select current language
     this.$.languageDropdown.$.value = document.documentElement.lang
+
+    // Add dark/light theme swittcher to status
+    new DOM(DOM.get('div#status-bar #extra')).append([
+      new DOM('button', {
+        className: new URL(location.href).searchParams.get('theme') === 'dark' ? 'status-icon on' : 'status-icon',
+        id:'theme',
+        title:Msg['ChangeTheme']
+      }).onclick(this, () => {
+        let _url = new URL(location.href)
+        _url.searchParams.set('theme', _url.searchParams.get('theme') === 'dark' ? 'light' : 'dark')
+        location.href = _url
+      })
+    ])
   }
 }
 

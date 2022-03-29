@@ -108,13 +108,6 @@ var Msg = {
   'OnOtherTab':'On other tab',
   'DeviceUnresponsive':'Device {0} version {1} is unresponsive, consider resetting it.',
   BaudRate:'Baud Rate',
-
-  // Status bar
-  'TasksRunning':'Tasks running',
-  'StatusOngoingInput':'Ongoing input',
-  'StatusReady':'Ready',
-  'StatusWorking':'Doing {0} tasks',
-  'StatusWorkingOne':'Doing 1 task',
   'Address':'Address',
   'Password':'Password',
   'DevicePassword':'Device\'s password',
@@ -129,6 +122,15 @@ var Msg = {
   'DoneScanning':'Done scanning {0} IPs, found {1}:',
   'NewWebSocket':'New WebSocket connection',
 
+  // Status bar
+  'TasksRunning':'Tasks running',
+  'StatusOngoingInput':'Ongoing input',
+  'StatusReady':'Ready',
+  'StatusWorking':'Doing {0} tasks',
+  'StatusWorkingOne':'Doing 1 task',
+  ChangeTheme:'Change to dark/light theme',
+  'Language':'語言',
+
   // Page Project
   'YourProjects':'Your projects',
   'SharedProjects':'Shared projects',
@@ -139,7 +141,6 @@ var Msg = {
   'LoadMore':'Load more',
   'NoOlderProjects':'No older shared projects',
   'SharedProjectDoesNotExist':'Shared project does not exist anymore',
-  'Language':'語言',
   ProjectFromURL:'Shared project from link',
   ClickToImport:'Tap to import to your projects',
 

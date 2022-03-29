@@ -110,13 +110,6 @@ var Msg = {
   'OnOtherTab':'Em outra aba',
   'DeviceUnresponsive':'Dispositivo {0} versão {1} não está respondendo, considere resetá-lo.',
   BaudRate:'Baud Rate',
-
-  // Status bar
-  'TasksRunning':'Tarefas em execução',
-  'StatusOngoingInput':'Recebendo comandos',
-  'StatusReady':'Pronto',
-  'StatusWorking':'Fazendo {0} tarefas',
-  'StatusWorkingOne':'Fazendo 1 tarefa',
   'Address':'Endereço',
   'Password':'Senha',
   'DevicePassword':'Senha do dispositivo',
@@ -130,8 +123,15 @@ var Msg = {
   'ScanningInfo':'Verificado {0} de {1} IPs, encontrado {2}:',
   'DoneScanning':'{0} IPs verificados, encontrado {1}:',
   'NewWebSocket':'Nova conexão via WebSocket',
-  ProjectFromURL:'Projeto compartilhado por link',
-  ClickToImport:'Toque para importar para os seus projetos',
+
+  // Status bar
+  'TasksRunning':'Tarefas em execução',
+  'StatusOngoingInput':'Recebendo comandos',
+  'StatusReady':'Pronto',
+  'StatusWorking':'Fazendo {0} tarefas',
+  'StatusWorkingOne':'Fazendo 1 tarefa',
+  ChangeTheme:'Mudar para tema escuro/claro',
+  'Language':'Idioma',
 
   // Page Project
   'YourProjects':'Seus projetos',
@@ -143,7 +143,8 @@ var Msg = {
   'LoadMore':'Carregar mais',
   'NoOlderProjects':'Não há projetos mais antigos',
   'SharedProjectDoesNotExist':'Projeto compartilhado não existe mais',
-  'Language':'Idioma',
+  ProjectFromURL:'Projeto compartilhado por link',
+  ClickToImport:'Toque para importar para os seus projetos',
 
   // Page Notification
   'Forum':'Fórum',

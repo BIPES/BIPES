@@ -909,6 +909,12 @@ div#status-bar span#language select {
 div#status-bar span#language:before {
   background-position: left calc(-1.25rem*46) top;
 }
+button#theme:before {
+  background-position: left calc(-1.25rem*47) top !important;
+}
+button.on#theme:before {
+background-position: left calc(-1.25rem*47) bottom !important;
+}
 body.light div#status-bar span#language:before {
   filter: invert(1);
 }
