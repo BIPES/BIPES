@@ -224,6 +224,19 @@ class Navigation {
       }
     }
 
+    // Add dark/light theme swittcher to status
+    new DOM(DOM.get('div#status-bar #extra')).append([
+      new DOM('button', {
+        className: new URL(location.href).searchParams.get('theme') === 'dark' ? 'status-icon on' : 'status-icon',
+        id:'theme',
+        title:Msg['ChangeTheme']
+      }).onclick(this, () => {
+        let _url = new URL(location.href)
+        _url.searchParams.set('theme', _url.searchParams.get('theme') === 'dark' ? 'light' : 'dark')
+        location.href = _url
+      })
+    ])
+
     // Add Language dropdown button to status
     let _languages = []
     for (const key in languages){
@@ -250,18 +263,6 @@ class Navigation {
     // Select current language
     this.$.languageDropdown.$.value = document.documentElement.lang
 
-    // Add dark/light theme swittcher to status
-    new DOM(DOM.get('div#status-bar #extra')).append([
-      new DOM('button', {
-        className: new URL(location.href).searchParams.get('theme') === 'dark' ? 'status-icon on' : 'status-icon',
-        id:'theme',
-        title:Msg['ChangeTheme']
-      }).onclick(this, () => {
-        let _url = new URL(location.href)
-        _url.searchParams.set('theme', _url.searchParams.get('theme') === 'dark' ? 'light' : 'dark')
-        location.href = _url
-      })
-    ])
   }
 }
 
