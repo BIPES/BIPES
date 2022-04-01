@@ -1,11 +1,12 @@
 from flask import Flask, Response, jsonify, render_template
 from flask import request, redirect, make_response
 from flask import render_template
+
 import os
 import glob
 import socket
 import re
-
+from configparser import ConfigParser
 
 app_name = 'BIPES'
 app_version = '3.0.3'
@@ -62,23 +63,47 @@ lang_str = [
 ]
 
 # Create app for developemnt mode
-def create_app(test_config=None):
+def create_app(database="sqlite"):
+
     app = Flask(__name__)
+
+    # Parse config
+    config = ConfigParser()
+    config.read(os.path.join(app.root_path,'server/conf.ini'))
+    assert len(config) > 0,\
+        'Config file server/conf.ini does not exist, do make conf to generate it'
+    assert 'flask' in config and 'password' in config['flask'], \
+        'No flask password provided in server/conf.ini'
+
     app.config.from_mapping(
-      SECRET_KEY = 'dev',
-      API = os.path.join(app.root_path, 'server/api.db'),
-      MOSQUITTO = os.path.join(app.root_path, 'server/mosquitto.db')
+      SECRET_KEY = config['flask']['password']
     )
-    if test_config is None:
-        app.config.from_pyfile('server/config.py', silent=True)
+
+    if database == "postgresql":
+        assert 'postgresql' in config and \
+            set(['host','database','user','password']).issubset(set(config['postgresql'])), \
+            'No postgresql host, database, user or password provided in server/conf.ini'
+        app.config.from_mapping(
+          POSTGRESQL_HOST = config['postgresql']['host'],
+          POSTGRESQL_DATABASE = config['postgresql']['database'],
+          POSTGRESQL_USER = config['postgresql']['user'],
+          POSTGRESQL_PASSWORD = config['postgresql']['password'],
+          API = 'api',
+          MOSQUITTO = 'mosquitto'
+        )
+        from  server.postgresql import api, mosquitto
+        print(' * Database: postgresql')
     else:
-        app.config.from_mapping(test_config)
-    
-    
-    from server import api, mosquitto
+        app.config.from_mapping(
+          API = os.path.join(app.root_path, 'server/api.db'),
+          MOSQUITTO = os.path.join(app.root_path, 'server/mosquitto.db')
+        )
+        from server.sqlite  import api, mosquitto
+        print(' * Database: sqlite')
+
     app.register_blueprint(api.bp)
     app.register_blueprint(mosquitto.bp)
- 
+
     # Return "compiled" html file.
     @app.route("/ide")
     @app.route("/ide-<lang>")
@@ -131,10 +156,13 @@ def create_app(test_config=None):
         return response
     
     # init mqtt subscriber
-    try:
-        mosquitto.listen(app)
-    except ConnectionRefusedError:
-        print('Could not connect to the MQTT broker, is mosquitto running?')
+    if 'mosquitto' in config and 'password' in config['flask']:
+        try:
+            mosquitto.listen(app, config['mosquitto']['password'])
+        except ConnectionRefusedError:
+            app.logger.warning('Mosquitto refused to connect')
+    else:
+        app.logger.warning('No mosquitto password in server/config.ini, skipping')
       
     return app
     

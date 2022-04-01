@@ -1,5 +1,6 @@
 lang ?= "en"
-path ?= /var/www/bipes3
+path ?= "/var/www/bipes3"
+database ?= "sqlite"
 
 BLUE=\033[0;34m
 PURPLE=\033[0;35m
@@ -105,15 +106,15 @@ blockly:
 
 pip:
 	@printf "[5/7] Creating enviroment and installing $(PURPLE)flask flask-mqtt paho \
-	sphinx sphinx-js furo click$(NC).\n"
+	sphinx sphinx-js furo click pymongo$(NC).\n"
 	@python3 -m venv venv
 	@. venv/bin/activate && \
-	pip install Flask flask-mqtt sphinx sphinx-js furo click && \
+	pip install Flask flask-mqtt sphinx sphinx-js furo click psycopg&& \
 	exit
 
 database:
 	@. venv/bin/activate && \
-	python -c "import server.api; server.api.make()" && \
+	python -c "import server.sqlite.api; server.sqlite.api.make()" && \
 	exit
 
 yn-mosquitto:
@@ -165,7 +166,7 @@ run:
 	@printf "Running $(PURPLE)BIPES$(NC) in development mode.\n"
 	@. venv/bin/activate && \
 	export FLASK_ENV=development && \
-	export FLASK_APP=app && \
+	export FLASK_APP="app:create_app('$(database)')" && \
 	flask run --port=5001 --host=0.0.0.0
 
 
@@ -201,9 +202,10 @@ zip:
 	@cp -r docs/_build .BIPES/docs/ 2>/dev/null || :
 	@cp static/style.css .BIPES/static
 	@mkdir -p .BIPES/server
-	@cp -r server/*.py .BIPES/server/
-	@cp server/conf/release.py .BIPES/app.py
-	@bash -c 'printf  "import sys\nsys.path.insert(0, \"$(path)\")\n\nfrom app import create_app\n\napplication = create_app()\n" > ./.BIPES/app.wsgi'
+	@cp -r server/mongodb .BIPES/server/mongodb
+	@cp -r server/sqlite .BIPES/server/sqlite
+	@cp server/release.py .BIPES/app.py
+	@bash -c 'printf  "import sys\nsys.path.insert(0, \"$(path)\")\n\nfrom app import create_app\n\napplication = create_app(\"$(database)\")\n" > ./.BIPES/app.wsgi'
 	@cd .BIPES && zip -y -q -r BIPES.zip * && \
 	mv BIPES.zip ../BIPES.zip
 
@@ -228,6 +230,8 @@ doc:
 	@. venv/bin/activate && \
 	cd docs && make html
 	@printf "Documentation generated successfully.\n"
+
+DEPLOY-DEPS = postgresql postgresql-server postgresql-contrib postgresql-plpython
 
 deploy:  build-release zip deploy-move build-clean | $(path_venv)
 
@@ -258,17 +262,21 @@ help:
 	                         dependencies, depending on what's available\n\
 	                         on your system.\n\
 	  release $(PURPLE)lang=LANG$(NC)      Build release, a static, server/serverless \n\
-	                         version of BIPES. Use the $(PURPLE)lang$(NC) param to setup \n\
-	                         a default language.\n\
-	  run                    Run in development mode.\n\
+	                         version of the platform.\n\
+	  run $(PURPLE)database=DB$(NC)        Run in development mode.\n\
 	  clean                  Clean all build files.\n\
 	  doc                    Render the documentation into HTML.\n\
 	  mosquitto              Setup mosquitto MQTT broker.\n\
 	\n\
 	Deployment options:\n\
 	  deploy $(PURPLE)path=PATH$(NC)       Deploy release to mod_wsgi (Apache).\n\
-	                         The $(PURPLE)path$(NC) param sets the deployed version\'s\n\
-	                         absolute path.\n\
-	                         Make sure to configure Apache beforehand by\n\
-	                         following flask\'s deploying mod_wsgi tutorial.\n"
-	 
+	         $(PURPLE)database=DB$(NC)     Make sure to configure Apache beforehand by\n\
+	                         following flask\'s deploying mod_wsgi tutorial.\n\
+	\n\
+	Parameters:\n\
+	  path=PATH   	         The deployed version\'s absolute $(PURPLE)path$(NC),\n\
+	                         if not given, defaults to $(BLUE)/var/www/bipes3$(NC).\n\
+	  database=DB            The $(PURPLE)database$(NC) program to use: $(BLUE)sqlite$(NC) or $(BLUE)postgresql$(NC),\n\
+	                         if not given, defaults to $(BLUE)sqlite$(NC).\n\
+	  lang=LANG            	 The $(PURPLE)lang$(NC)uage to set the release start page,\n\
+	                         if not given, defaults to $(BLUE)en$(NC).\n"

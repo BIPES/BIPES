@@ -1,5 +1,3 @@
-import sqlite3
-
 from flask import (
       Blueprint, g, request, current_app
   )
@@ -8,17 +6,17 @@ from flask_mqtt import Mqtt
 import re
 import json
 
-from server import database as dbase
+from server.postgresql import database as dbase
 #------------------------------------------------------------------------
 # SQL Macro to create new table
-sql_macro_table = "create table {} (lastEdited datetime not null default(cast((julianday('now') - 2440587.5)*86400000 as integer)) primary key, topic varchar(18) not null, data text not null)"
+sql_macro_table = "create table {} (lastEdited datetime not null default(extract(epoch from current_timestamp::timestamp with time zone)::integer) primary key, topic varchar(18) not null, data text not null)"
 
 #------------------------------------------------------------------------
 # Generate the database the first time, call only from the Makefile
-def make():
-    db = sqlite3.connect('server/mosquitto.db')
-    db.commit()
-    db.close()
+#def make():
+    #db = sqlite3.connect('server/mosquitto.db')
+    #db.commit()
+    #db.close()
 
 #--------------------------------------------------------------------------
 # Blueprint
@@ -27,36 +25,32 @@ _db = 'MOSQUITTO'
 
 #---------------------------------------------------------------------------
 
-def listen(app):
-    passwd = ''
-    try:
-        with open('server/mosquitto.txt') as f:
-            passwd = f.read()
-    except:
+def listen(app, password):
+    if password is None:
         print("No password provided, skipping mqtt.")
         return
 
     app.config['MQTT_BROKER_URL'] = '127.0.0.1'
     app.config['MQTT_BROKER_PORT'] = 1883
     app.config['MQTT_USERNAME'] = 'bipes'
-    app.config['MQTT_PASSWORD'] = passwd.strip()
+    app.config['MQTT_PASSWORD'] = password.strip()
     app.config['MQTT_KEEPALIVE'] = 5
     app.config['MQTT_TLS_ENABLED'] = False
-    
+
     mqtt = Mqtt()
 
     @mqtt.on_message()
     def handle_mqtt_message(client, userdata, msg):
         full_topic = msg.topic.split("/", 1)
-    
+
         if len(full_topic) < 2:
             print("Invalid Topic")
             return
-    
+
         session = full_topic[0]
         topic = full_topic[1]
         data = msg.payload.decode()
-    
+
         with app.app_context():
             db = dbase.connect(_db)
             if not dbase.has_table(db, (session,)):
@@ -66,11 +60,11 @@ def listen(app):
                 (topic, data))
 
         return
-    
+
     @mqtt.on_connect()
     def handle_connect(client, userdata, flags, rc):
         mqtt.subscribe('#')
-   
+
     mqtt.init_app(app)
     return
 
@@ -146,3 +140,4 @@ def mosquitto_delete(session, topic):
     dbase.delete(db, session, ['topic'], [topic])
 
     return {session:[]}
+

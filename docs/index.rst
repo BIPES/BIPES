@@ -19,6 +19,11 @@ BIPES Help&Development
 
    block-tutorials/google-sheets-script
 
+.. toctree::
+   :hidden:
+   :caption: Block tutorials
+
+   deploy/setting-up
 
 .. toctree::
    :hidden:

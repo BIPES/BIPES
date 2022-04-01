@@ -11,6 +11,7 @@ node_modules/
 *.zip
 *.db
 *.swp
+*.ini
 
 static/page/blocks/msg
 static/page/blocks/media
