@@ -1,27 +1,16 @@
+
 from flask import (
-      Blueprint, g, request, current_app
-  )
-from flask.cli import with_appcontext
+      Blueprint, request, current_app
+)
 from flask_mqtt import Mqtt
-import re
 import json
 
-from server.postgresql import database as dbase
-#------------------------------------------------------------------------
-# SQL Macro to create new table
-sql_macro_table = "create table {} (lastEdited datetime not null default(extract(epoch from current_timestamp::timestamp with time zone)::integer) primary key, topic varchar(18) not null, data text not null)"
-
-#------------------------------------------------------------------------
-# Generate the database the first time, call only from the Makefile
-#def make():
-    #db = sqlite3.connect('server/mosquitto.db')
-    #db.commit()
-    #db.close()
+from server.common import database as dbase
 
 #--------------------------------------------------------------------------
 # Blueprint
 bp = Blueprint('mqtt', __name__, url_prefix='/mqtt')
-_db = 'MOSQUITTO'
+_db = 'MQTT'
 
 #---------------------------------------------------------------------------
 
@@ -51,14 +40,26 @@ def listen(app, password):
         topic = full_topic[1]
         data = msg.payload.decode()
 
+        if app.config['DATABASE'] == 'sqlite':
+            from server.sqlite.mqtt import sql_macro_table
+
+        elif app.config['DATABASE'] == 'postgresql':
+            from server.postgresql.mqtt import sql_macro_table
+
         with app.app_context():
             db = dbase.connect(_db)
             if not dbase.has_table(db, (session,)):
               dbase.exec(db, sql_macro_table.format(session))
-            dbase.insert(db, session,
-                ['topic','data'],
-                (topic, data))
 
+            if app.config['DATABASE'] == 'sqlite':
+                import uuid
+                dbase.insert(db, session,
+                    ['uuid','topic','data'],
+                    (uuid.uuid1().bytes, topic, data))
+            elif app.config['DATABASE'] == 'postgresql':
+                dbase.insert(db, session,
+                    ['topic','data'],
+                    (topic, data))
         return
 
     @mqtt.on_connect()
@@ -70,17 +71,16 @@ def listen(app, password):
 
 # Get current password
 @bp.route('/passwd', methods=('POST', 'GET'))
-def mosquitto_password():
+def mqtt_password():
     passwd = ''
-    try:
-        with open('server/mosquitto.txt') as f:
-            return {'easyMQTT':{'passwd':f.read().strip()}}
-    except:
+    if 'MQTT_PASSWORD' in current_app.config:
+        return {'easyMQTT':{'passwd':current_app.config['MQTT_PASSWORD']}}
+    else:
         return {'easyMQTT':{'passwd':False}}
 
 # Get all data
 @bp.route('/<session>/grep', methods=('POST', 'GET'))
-def mosquitto_select(session):
+def mqtt_select(session):
     obj = request.json
     cols = ['topic','data']
 
@@ -96,7 +96,7 @@ def mosquitto_select(session):
 
 # List topics
 @bp.route('/<session>/ls', methods=('POST', 'GET'))
-def mosquitto_select_distinct(session):
+def mqtt_select_distinct(session):
     obj = request.json
     cols = ['topic']
 
@@ -112,7 +112,7 @@ def mosquitto_select_distinct(session):
 
 # Get data from topic
 @bp.route('/<session>/<topic>/grep', methods=('POST', 'GET'))
-def mosquitto_select_topic(session, topic):
+def mqtt_select_topic(session, topic):
     obj = request.json
     cols = ['data']
     db = dbase.connect(_db)
@@ -129,7 +129,7 @@ def mosquitto_select_topic(session, topic):
 
 # Remove  topic
 @bp.route('/<session>/<topic>/rm', methods=('POST', 'GET'))
-def mosquitto_delete(session, topic):
+def mqtt_delete(session, topic):
     obj = request.json
     db = dbase.connect(_db)
     topic = topic.replace('$','/')
@@ -140,4 +140,3 @@ def mosquitto_delete(session, topic):
     dbase.delete(db, session, ['topic'], [topic])
 
     return {session:[]}
-

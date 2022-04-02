@@ -67,42 +67,46 @@ def create_app(database="sqlite"):
 
     app = Flask(__name__)
 
-    # Parse config
-    config = ConfigParser()
-    config.read(os.path.join(app.root_path,'server/conf.ini'))
-    assert len(config) > 0,\
+    # Parse server/conf.ini
+    conf = ConfigParser()
+    conf.read(os.path.join(app.root_path,'server/conf.ini'))
+    assert len(conf) > 0,\
         'Config file server/conf.ini does not exist, do make conf to generate it'
-    assert 'flask' in config and 'password' in config['flask'], \
+    assert 'flask' in conf and 'password' in conf['flask'], \
         'No flask password provided in server/conf.ini'
 
     app.config.from_mapping(
-      SECRET_KEY = config['flask']['password']
+      SECRET_KEY = conf['flask']['password']
     )
 
     if database == "postgresql":
-        assert 'postgresql' in config and \
-            set(['host','database','user','password']).issubset(set(config['postgresql'])), \
+        assert 'postgresql' in conf and \
+            set(['host','database_api','database_mqtt','user','password']) \
+                .issubset(set(conf['postgresql'])), \
             'No postgresql host, database, user or password provided in server/conf.ini'
         app.config.from_mapping(
-          POSTGRESQL_HOST = config['postgresql']['host'],
-          POSTGRESQL_DATABASE = config['postgresql']['database'],
-          POSTGRESQL_USER = config['postgresql']['user'],
-          POSTGRESQL_PASSWORD = config['postgresql']['password'],
+          DATABASE = 'postgresql',
+          POSTGRESQL_HOST = conf['postgresql']['host'],
+          POSTGRESQL_DATABASE_API = conf['postgresql']['database_api'],
+          POSTGRESQL_DATABASE_MQTT = conf['postgresql']['database_mqtt'],
+          POSTGRESQL_USER = conf['postgresql']['user'],
+          POSTGRESQL_PASSWORD = conf['postgresql']['password'],
           API = 'api',
-          MOSQUITTO = 'mosquitto'
+          MQTT = 'mqtt'
         )
-        from  server.postgresql import api, mosquitto
         print(' * Database: postgresql')
     else:
         app.config.from_mapping(
+          DATABASE = 'sqlite',
           API = os.path.join(app.root_path, 'server/api.db'),
-          MOSQUITTO = os.path.join(app.root_path, 'server/mosquitto.db')
+          MQTT = os.path.join(app.root_path, 'server/mqtt.db')
         )
-        from server.sqlite  import api, mosquitto
         print(' * Database: sqlite')
 
+    from server.common import api, mqtt
+
     app.register_blueprint(api.bp)
-    app.register_blueprint(mosquitto.bp)
+    app.register_blueprint(mqtt.bp)
 
     # Return "compiled" html file.
     @app.route("/ide")
@@ -155,19 +159,35 @@ def create_app(database="sqlite"):
         response.headers['Service-Worker-Allowed'] = '/'
         return response
     
-    # init mqtt subscriber
-    if 'mosquitto' in config and 'password' in config['flask']:
+    # Init mqtt subscriber
+    if 'mosquitto' in conf and 'password' in conf['mosquitto']:
         try:
-            mosquitto.listen(app, config['mosquitto']['password'])
+            mqtt.listen(app, conf['mosquitto']['password'])
         except ConnectionRefusedError:
             app.logger.warning('Mosquitto refused to connect')
     else:
-        app.logger.warning('No mosquitto password in server/config.ini, skipping')
+        app.logger.warning('No mosquitto password in server/conf.ini, skipping')
       
     return app
     
-
-
+# Generate server/conf.ini file
+def conf_ini(flask=None, mosquitto=None):
+    conf = ConfigParser()
+    conf.read('server/conf.ini')
+    # Setup file for the first time
+    if flask is not None:
+        conf['flask'] = {'password':flask}
+        conf['postgresql'] = {'host':'localhost',
+                                'database_api':'bipes_api',
+                                'database_mqtt':'bipes_mqtt',
+                                'user':'postgres',
+                                'password':''}
+        with open('server/conf.ini', 'w') as conf_file:
+            conf.write(conf_file)
+    if mosquitto is not None:
+        conf['mosquitto'] = {'password':mosquitto}
+        with open('server/conf.ini', 'w') as conf_file:
+            conf.write(conf_file)
 
 # Build BIPES static release
 def build_release():

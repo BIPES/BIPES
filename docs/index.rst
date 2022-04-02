@@ -21,7 +21,7 @@ BIPES Help&Development
 
 .. toctree::
    :hidden:
-   :caption: Block tutorials
+   :caption: Release and deploy
 
    deploy/setting-up
 

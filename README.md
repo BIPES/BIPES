@@ -72,6 +72,7 @@ development server, these are:
  * sphinx
  * sphinx-js
  * paho
+ * psycopg
 
 #### JavaScript libraries
 

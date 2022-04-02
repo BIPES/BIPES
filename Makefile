@@ -14,7 +14,7 @@ SUSE_DEPS = python python3-pip npm17 mosquitto
 NPM_DEPS = jsdoc
 
 
-all: yn-dependencies umd-deps unpkg blockly pip database yn-mosquitto licenses clean greeting run
+all: yn-dependencies umd-deps unpkg blockly pip database conf-ini yn-mosquitto licenses clean greeting run
 
 yn-dependencies:
 	@printf "$(NC)[1/7] The dependencies $(PURPLE)$(DEPS) $(NPM_DEPS)$(NC) are needed.\n"
@@ -105,16 +105,25 @@ blockly:
 	@rm -rf blockly
 
 pip:
-	@printf "[5/7] Creating enviroment and installing $(PURPLE)flask flask-mqtt paho \
-	sphinx sphinx-js furo click pymongo$(NC).\n"
+	@printf "[5/7] Creating enviroment and installing $(PURPLE)flask \
+	flask-mqtt paho psycopg sphinx sphinx-js furo$(NC).\n"
 	@python3 -m venv venv
 	@. venv/bin/activate && \
-	pip install Flask flask-mqtt sphinx sphinx-js furo click psycopg&& \
+	pip install Flask flask-mqtt paho sphinx sphinx-js furo && \
 	exit
 
 database:
 	@. venv/bin/activate && \
 	python -c "import server.sqlite.api; server.sqlite.api.make()" && \
+	exit
+	@. venv/bin/activate && \
+	python -c "import server.sqlite.mqtt; server.sqlite.mqtt.make()" && \
+	exit
+
+conf-ini:
+	@KEY=$$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 20) ; \
+	. venv/bin/activate && \
+	python -c "import app; app.conf_ini(flask='$$KEY')" && \
 	exit
 
 yn-mosquitto:
@@ -131,15 +140,14 @@ yn-mosquitto:
 MOSQ_BIPES_CONF = /etc/mosquitto/conf.d/bipes.conf
 
 mosquitto:
-	@read -s -p "New password (mosquitto): " pwd;\
+	@read -s -p "New password (mosquitto): " pwd ; \
 	printf "\n" ; \
 	sudo mosquitto_passwd -c -b /etc/mosquitto/conf.d/passwd bipes $$pwd ; \
-	echo  "$$pwd" > server/mosquitto.txt ; \
-	sudo bash -c 'printf  "allow_anonymous false\nlistener 1883\n\nlistener 9001\nprotocol websockets\npassword_file /etc/mosquitto/conf.d/passwd\npersistence true\npersistence_location /var/lib/mosquitto/\n\nlog_dest file /var/log/mosquitto/mosquitto.log" > $(MOSQ_BIPES_CONF)'
-	@sudo systemctl restart mosquitto
-	@. venv/bin/activate && \
-	python -c "import server.mosquitto; server.mosquitto.make()" && \
+	. venv/bin/activate && \
+	python -c "import app; app.conf_ini(mosquitto='$$pwd')" && \
 	exit
+	@sudo bash -c 'printf  "allow_anonymous false\nlistener 1883\n\nlistener 9001\nprotocol websockets\npassword_file /etc/mosquitto/conf.d/passwd\npersistence true\npersistence_location /var/lib/mosquitto/\n\nlog_dest file /var/log/mosquitto/mosquitto.log" > $(MOSQ_BIPES_CONF)'
+	@sudo systemctl restart mosquitto
 	@printf "\n"
 	@read -p "Enable mosquitto service? (Open port 1883 and start with the OS) [y/N]: " mos2 ; \
 	if [ "$$mos2" = 'y' ] || [ "$$mos2" = 'Y' ] ; \
@@ -202,7 +210,7 @@ zip:
 	@cp -r docs/_build .BIPES/docs/ 2>/dev/null || :
 	@cp static/style.css .BIPES/static
 	@mkdir -p .BIPES/server
-	@cp -r server/mongodb .BIPES/server/mongodb
+	@cp -r server/postgresql .BIPES/server/postgresql
 	@cp -r server/sqlite .BIPES/server/sqlite
 	@cp server/release.py .BIPES/app.py
 	@bash -c 'printf  "import sys\nsys.path.insert(0, \"$(path)\")\n\nfrom app import create_app\n\napplication = create_app(\"$(database)\")\n" > ./.BIPES/app.wsgi'
