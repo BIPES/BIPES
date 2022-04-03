@@ -95,7 +95,7 @@ def create_app(database="sqlite"):
           MQTT = 'mqtt'
         )
         print(' * Database: postgresql')
-    else:
+    elif database == 'sqlite':
         app.config.from_mapping(
           DATABASE = 'sqlite',
           API = os.path.join(app.root_path, 'server/api.db'),
@@ -103,10 +103,11 @@ def create_app(database="sqlite"):
         )
         print(' * Database: sqlite')
 
-    from server.common import api, mqtt
+    if database is not None:
+        from server.common import api, mqtt
 
-    app.register_blueprint(api.bp)
-    app.register_blueprint(mqtt.bp)
+        app.register_blueprint(api.bp)
+        app.register_blueprint(mqtt.bp)
 
     # Return "compiled" html file.
     @app.route("/ide")
@@ -158,7 +159,10 @@ def create_app(database="sqlite"):
         response.headers['Content-Type'] = 'application/javascript'
         response.headers['Service-Worker-Allowed'] = '/'
         return response
-    
+
+    if database is None:
+        return app
+
     # Init mqtt subscriber
     if 'mosquitto' in conf and 'password' in conf['mosquitto']:
         try:
@@ -206,7 +210,7 @@ def build_release():
     with open("static/page/blocks/pythonic.umd.js",'w') as f:
         f.write(concat_files("static/page/blocks/pythonic/*.js", "basic.js"))
 
-    app = create_app()
+    app = create_app(None)
     # "Compile" ide template as ide/index.html (default filename for servers)
     with app.app_context():
         for ln in available_lang:

@@ -44,10 +44,14 @@ def create_app(database="sqlite"):
           MQTT = os.path.join(app.root_path, 'server/mqtt.db')
         )
 
-    from server.common import api, mqtt
+    if database is not None:
+        from server.common import api, mqtt
 
-    app.register_blueprint(api.bp)
-    app.register_blueprint(mqtt.bp)
+        app.register_blueprint(api.bp)
+        app.register_blueprint(mqtt.bp)
+
+    if database is None:
+        return app
 
     # Init mqtt subscriber
     if 'mosquitto' in conf and 'password' in conf['mosquitto']:

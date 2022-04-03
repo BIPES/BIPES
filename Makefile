@@ -210,6 +210,7 @@ zip:
 	@cp -r docs/_build .BIPES/docs/ 2>/dev/null || :
 	@cp static/style.css .BIPES/static
 	@mkdir -p .BIPES/server
+	@cp -r server/common .BIPES/server/common
 	@cp -r server/postgresql .BIPES/server/postgresql
 	@cp -r server/sqlite .BIPES/server/sqlite
 	@cp server/release.py .BIPES/app.py
