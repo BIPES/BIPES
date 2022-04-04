@@ -16,7 +16,7 @@ To solve the first issue, the first step is to fork into your GitHub account, th
 
 .. code-block:: bash
 
-	git clone git@github.com:BIPES/BIPES.git
+	git clone git@github.com:YOUR_ACCOUNT/BIPES.git
 
 And include BIPES:master as the upstream source, so you can fetch new commits.
 

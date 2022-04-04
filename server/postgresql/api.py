@@ -21,7 +21,7 @@ begin
 end;
 $$ language plpgsql;
 
-create or replace trigger update_projects
+create trigger update_projects
 before update of author, name, data on projects
 for each row
 when (old.* is distinct from new.*)

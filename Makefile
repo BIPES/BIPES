@@ -1,5 +1,6 @@
 lang ?= "en"
 path ?= "/var/www/bipes3"
+chown ?= "www-data:www-data"
 database ?= "sqlite"
 
 BLUE=\033[0;34m
@@ -249,9 +250,10 @@ deploy-move:
 	@sudo mkdir -p $(path)
 	@sudo mkdir -p ./.BIPES/ide
 	@sudo mv ./.BIPES/*.html ./.BIPES/ide
+	@sudo rm -f $(path)/app.py $(path)/app.wsgi
 	@sudo mv ./.BIPES/* $(path)
 	@sudo mkdir -p $(path)/logs
-	@sudo chown -R www-data:www-data $(path)
+	@sudo chown -R $(chown) $(path)
 
 path_venv = $(path)/venv
 $(path_venv):
@@ -266,26 +268,28 @@ $(path_venv):
 help:
 	@printf "$(NC)Usage: make [options] $(PURPLE)[params]$(NC) ...\n"
 	@printf "Options:\n\
-	  all                    Build BIPES from source ${BLUE}[default]${NC}.\n\
-	                         Will use either dnf or apt to install the \n\
-	                         dependencies, depending on what's available\n\
-	                         on your system.\n\
-	  release $(PURPLE)lang=LANG$(NC)      Build release, a static, server/serverless \n\
-	                         version of the platform.\n\
-	  run $(PURPLE)database=DB$(NC)        Run in development mode.\n\
-	  clean                  Clean all build files.\n\
-	  doc                    Render the documentation into HTML.\n\
-	  mosquitto              Setup mosquitto MQTT broker.\n\
+	  all                     Build BIPES from source ${BLUE}[default]${NC}.\n\
+	                          Will use either dnf, apt or zypper to install \n\
+	                          the dependencies, depending on what's available\n\
+	                          on your system.\n\
+	  release $(PURPLE)lang=LANG$(NC)       Build release, a static, server/serverless \n\
+	                          version of the platform.\n\
+	  run $(PURPLE)database=DB$(NC)         Run in development mode.\n\
+	  clean                   Clean all build files.\n\
+	  doc                     Render the documentation into HTML.\n\
+	  mosquitto               Setup mosquitto MQTT broker.\n\
 	\n\
 	Deployment options:\n\
-	  deploy $(PURPLE)path=PATH$(NC)       Deploy release to mod_wsgi (Apache).\n\
-	         $(PURPLE)database=DB$(NC)     Make sure to configure Apache beforehand by\n\
-	                         following flask\'s deploying mod_wsgi tutorial.\n\
+	  deploy $(PURPLE)path=PATH$(NC)        Deploy release to mod_wsgi (Apache).\n\
+	         $(PURPLE)database=DB$(NC)      Make sure to configure Apache beforehand by\n\
+	         $(PURPLE)chown=USER:GROUP$(NC) following flask\'s deploying mod_wsgi tutorial.\n\
 	\n\
 	Parameters:\n\
-	  path=PATH   	         The deployed version\'s absolute $(PURPLE)path$(NC),\n\
-	                         if not given, defaults to $(BLUE)/var/www/bipes3$(NC).\n\
-	  database=DB            The $(PURPLE)database$(NC) program to use: $(BLUE)sqlite$(NC) or $(BLUE)postgresql$(NC),\n\
-	                         if not given, defaults to $(BLUE)sqlite$(NC).\n\
-	  lang=LANG            	 The $(PURPLE)lang$(NC)uage to set the release start page,\n\
-	                         if not given, defaults to $(BLUE)en$(NC).\n"
+	  path=PATH   	          The deployed version\'s absolute $(PURPLE)path$(NC),\n\
+	                          if not provided, defaults to $(BLUE)/var/www/bipes3$(NC).\n\
+	  chown=USER:GROUP        The user and group of the WSGI server, \n\
+	                          if not provided, defaults to $(BLUE)www-data:www-data$(NC).\n\
+	  database=DB             The $(PURPLE)database$(NC) program to use: $(BLUE)sqlite$(NC) or $(BLUE)postgresql$(NC),\n\
+	                          if not provided, defaults to $(BLUE)sqlite$(NC).\n\
+	  lang=LANG               The $(PURPLE)lang$(NC)uage to set the release start page,\n\
+	                          if not provided, defaults to $(BLUE)en$(NC).\n"

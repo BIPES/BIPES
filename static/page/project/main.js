@@ -100,7 +100,7 @@ class Project {
   save (uid){
     if (uid == undefined)
       uid = this.currentUID
-    this.projects[uid].lastEdited = +new Date()
+    this.projects[uid].lastEdited = +new Date()/1000
     this.write(uid)
   }
   /*
@@ -208,8 +208,8 @@ class Project {
           uid:'',
           token:''
         },
-        createdAt: +new Date(),
-        lastEdited: +new Date()
+        createdAt: +new Date()/1000,
+        lastEdited: +new Date()/1000
       }
     }
   }
@@ -409,7 +409,7 @@ class Project {
     // Update lastEdited
     if (!data.hasOwnProperty('project'))
       data.project = {...this.projects[uid].project}
-    data.project.lastEdited = +new Date()
+    data.project.lastEdited = +new Date()/1000
 
     command.dispatch(this, 'update', [uid, data, command.tabUID])
     // Update localStorage once
@@ -632,7 +632,7 @@ class SharedProject {
   }
   init (){
     if (!this.firstInited) {
-      this.fetchSome({from: +new Date(), limit:5})
+      this.fetchSome({from: +new Date()/1000, limit:5})
       this.firstInited = true
     }
     if (this.inited)
@@ -692,7 +692,7 @@ class SharedProject {
     if (obj !== null)
       this.fetchSome({from:obj.lastEdited, limit:10}, true)
     else
-      this.fetchSome({from:+new Date(), limit:10}, true)
+      this.fetchSome({from:+new Date()/1000, limit:10}, true)
   }
   /**
    * Creates a DOM shared project card

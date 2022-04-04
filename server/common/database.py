@@ -50,7 +50,6 @@ def connect(database):
                                 port=5432,\
                                 database=current_app.config['POSTGRESQL_DATABASE_' + database] \
                                 )
-            print(_url)
             g.db =  psycopg.connect(_url)
     return g.db
 

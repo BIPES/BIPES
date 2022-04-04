@@ -229,7 +229,6 @@ class Device {
       this.$.pinout.$.src = `./static/page/device/media/${this.deviceInfo[obj.target].img}`
     }
     if (obj.hasOwnProperty('firmware')){
-      console.log(this.$.targetFirmwareDropdown)
       DOM.setSelected(this.$.targetFirmwareDropdown, obj.firmware)
     }
   }
@@ -727,7 +726,6 @@ class WebSocketScan {
         ports.forEach (por => {
           for (let i = 1; i <= this.last; i++) {
             let addr = `${pro}://${pre}.${i}:${por}`
-            console.log(addr)
             let ws = new WebSocket(addr)
             ws.start = performance.now
             ws.port = por

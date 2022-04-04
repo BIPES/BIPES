@@ -36,7 +36,7 @@ class MQTTDatabase {
           this.client.onConnectionLost = () => {this.onConnectionLost()}
           this.client.onMessageArrived = (message) => {this.onMessageArrived(message)}
           this.client.connect({
-            //useSSL:true,
+            useSSL:location.protocol === 'https:' ? true : false,
             userName : "bipes",
             password : easyMQTT.passwd,
             onSuccess:() => {this.onConnect()}

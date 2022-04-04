@@ -114,8 +114,10 @@ class Tool {
   /**
    * Return a pretty edited at string.
    * @param {string} value - Value.
+   * @param {bool} milliseconds - True if unix timestamp has milliseconds precision.
    */
-  static prettyEditedAt (value){
+  static prettyEditedAt (value, milliseconds){
+    value = milliseconds ? value : value*1000
     return `${Msg['EditedAt']} ${new Date(value).toLocaleString()}`
   }
   /**
