@@ -246,12 +246,14 @@ DEPLOY-DEPS = postgresql postgresql-server postgresql-contrib postgresql-plpytho
 deploy:  build-release zip deploy-move build-clean | $(path_venv)
 
 deploy-move:
+	@[ -f $(path)/server/conf.ini ] && sudo mv $(path)/server/conf.ini $(path)/server_conf.ini || true
 	@sudo rm -rf $(path)/ide $(path)/static $(path)/server $(path)/docs
 	@sudo mkdir -p $(path)
 	@sudo mkdir -p ./.BIPES/ide
 	@sudo mv ./.BIPES/*.html ./.BIPES/ide
 	@sudo rm -f $(path)/app.py $(path)/app.wsgi
 	@sudo mv ./.BIPES/* $(path)
+	@[ -f $(path)/server_conf.ini ] && sudo mv $(path)/server_conf.ini $(path)/server/conf.ini || true
 	@sudo mkdir -p $(path)/logs
 	@sudo chown -R $(chown) $(path)
 

@@ -6,7 +6,7 @@ export const knownExamples = {
   },
   PID_dc_motor:{
     hostname:defaultExamplesHostname,
-    file:'pid_dc.xml'
+    file:'pid_dc_motor.xml'
   },
   PID_dc_motor_interrupt:{
     hostname:defaultExamplesHostname,
@@ -64,39 +64,39 @@ export const knownLibs = {
     file:'CCS811.py'
   },
   MPU9250:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'mpu9250.py'
   },
   MPU6500:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'mpu6500.py'
   },
   AK8963:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'ak8963.py'
   },
   MFRC522:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'mfrc522.py'
   },
   ble_advertising:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'ble_advertising.py',
   },
   ble_uart_repl:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'ble_uart_repl.py',
   },
   ble_uart_peripheral:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'ble_uart_peripheral.py',
   },
   rtttl:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'rtttl.py',
   },
   songs:{
-    hostname:'http://bipes.net.br/ide/pylibs/',
+    hostname:'https://bipes.net.br/ide/pylibs/',
     file:'songs.py',
   }
 }
