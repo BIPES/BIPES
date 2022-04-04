@@ -11466,6 +11466,39 @@ Blockly.Blocks['snek_setpower'] = {
  }
 };
 
+//Thu Mar 10 13:57:50 -03 2022
+
+Blockly.Blocks['snek_servo_move'] = {
+  init: function() {
+
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+          "media/servo.png",
+          55,
+          55,
+          "*"))
+        .appendField("Snek: RC Servo Motor");
+
+    this.appendValueInput("pin")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Pin");
+
+    this.appendValueInput("angle")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Angle");
+
+    this.setColour(230);
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setTooltip("Move RC servo motor to degrees");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['google_spreadsheet'] = {
   init: function() {
     this.appendDummyInput()

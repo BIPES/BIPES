@@ -481,10 +481,15 @@ class files {
 
         let decoderUint8 =  new TextDecoder().decode(this.put_file_data)
           .replaceAll(/\\/g, '\\\\')
-          .replaceAll(/(\r\n|\r|\n)/g, '\\r')
+          .replaceAll(/(\r\n|\r)/g, '\\r')
           .replaceAll(/'/g, "\\'")
           .replaceAll(/"/g, '\\"')
           .replaceAll(/\t/g, '    ');
+        
+        if (UI ['workspace'].selector.value != "UNO" &&
+            UI ['workspace'].selector.value != "UNO2") {
+              decoderUint8.replaceAll(/(\n)/g, '\\r');
+        }
 
         UI ['progress'].start(parseInt(decoderUint8.length/Channel ['webserial'].packetSize) + 1);
 
@@ -492,14 +497,23 @@ class files {
         mux.clearBuffer ();
         mux.bufferUnshift ('\r\x03\x03');
 
+        if (UI ['workspace'].selector.value == "UNO" ||
+            UI ['workspace'].selector.value == "UNO2") {
+          mux.bufferPush ("eeprom.write()\n");
+          mux.bufferPush (`${decoderUint8}\n`, () => {files.update_file_status(`Sent ${Files.put_file_data.length} bytes`)});
+          mux.bufferPush ('\n\x04\x04');
+          files.update_file_status(`File ${this.put_file_name} sent.`);
+          break;
+        }
+        
         mux.bufferPush ("import struct\r");
 
-	//Workaround for ESP32S2 using CircuitPython
-	//Needs to remount filesystem in write mode
-	if (UI ['workspace'].selector.value == "ESP32S2") {
-		mux.bufferPush ("import storage\r");
-		mux.bufferPush ("storage.remount(\"/\", False)\r");
-	} 
+        //Workaround for ESP32S2 using CircuitPython
+        //Needs to remount filesystem in write mode
+        if (UI ['workspace'].selector.value == "ESP32S2") {
+          mux.bufferPush ("import storage\r");
+          mux.bufferPush ("storage.remount(\"/\", False)\r");
+        } 
 
         mux.bufferPush (`f=open('${this.put_file_name}', 'w')\r`);
 
