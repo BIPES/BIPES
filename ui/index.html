@@ -24,6 +24,7 @@
 
 <script>
 
+
 function setCookie(cname, cvalue, cpassword_value, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -415,6 +416,8 @@ UI ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
 UI ['channel-panel'] = new channelPanel ('#channelButton','.channel-panel');
 UI ['toolbar'] = new panel ('#toolbarButton','.toolbar');
 UI ['workspace'] = new workspace ();
+
+bufferPush = mux.bufferPush;
 
 
 //Make sure we wont use data from last session (BIPES serial to freeboard bridge)
