@@ -6073,6 +6073,23 @@ Blockly.Python['snek_gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['snek_servo_move'] = function(block) {
+	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	var value_pin = pin.replace('(', '').replace(')','');
+	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+
+	var t_wait = "(" + value_angle + "/180)*0.002 + 0.0005";
+  
+	var code = 'talkto(' + value_pin + ')\n';
+	code += 'off()\n';
+	code += 'setpower(1)\n';
+	code += 'for turning in range(30) :\n';  // Give time to the servo reach it's angle
+	code += '  on()\n';
+	code += '  time.sleep(' + t_wait + ')\n';
+	code += '  off()\n';
+	code += '\n';
+	return code;
+};
 
 Blockly.Python['google_spreadsheet'] = function(block) {
   Blockly.Python.definitions_['import_prequests'] = 'import prequests';
