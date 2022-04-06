@@ -1,7 +1,8 @@
-Creating new blocks
+Create new blocks
 =================================
 
-This text presents basic instructions to create new blocks for BIPES. As it is known, BIPES uses Blockly as its block language, so the definitions follow Blockly rules. This requires editing some files from BIPES source code.
+This text presents basic instructions to create new blocks for BIPES.
+As it is known, BIPES uses Blockly as its block language, so the definitions follow Blockly rules. This requires editing some files from BIPES source code.
 
 If you don’t have access to the source code, you can download it in the `BIPES GitHub <https://github.com/BIPES/BIPES>`_.
 

@@ -5,6 +5,8 @@ Translating BIPES interface is essential to make the project more accessible.
 
 Even if you only have an hour here and there to contribute, you can help, every string translated makes a difference.
 
+.. _language-availability:
+
 Language availability
 -------------------------------------------------------
 
@@ -22,17 +24,29 @@ To start our journey  as a BIPES translator, check if the language is already av
      - Español
    * - pt-br
      - Português Brasileiro
-     
-If not, feel free to include it in the source code at 
+   * - de
+     - German
+   * - fr
+     - French
+   * - it
+     - Italian
+   * - nb
+     - Norwegian
+   * - zh-hans
+     - Chinese (simplified)
+   * - zh-hant
+     - Chinese (traditional)
+
+If not, feel free to include it in the source code at
 `ui/core/code.js#L23 <https://github.com/BIPES/BIPES/blob/c77d9554465c3186ec34f963059463cdfcb9ed47/ui/core/code.js#L23>`_
-and move the language file from `ui/msg/not_used <https://github.com/BIPES/BIPES/tree/master/ui/msg/not_used>`_ 
+and move the language file from `ui/msg/not_used <https://github.com/BIPES/BIPES/tree/master/ui/msg/not_used>`_
 to `ui/msg <https://github.com/BIPES/BIPES/tree/master/ui/msg>`_.
 
 
-How to translate 
+How to translate
 -------------------------------------------------------
 
-In the codebase, BIPES uses the global ``MSG`` JavaScript variable (available in every file) to store all strings of the user's preferred language, 
+In the codebase, BIPES uses the global ``MSG`` JavaScript variable (available in every file) to store all strings of the user's preferred language,
 so you have to just pass the string key as in this example:
 
 .. code-block:: javascript
@@ -54,13 +68,13 @@ as seen in this chunk of `ui/msg/pt-br.js <https://github.com/BIPES/BIPES/blob/m
     linkTooltip: "Salvar e ligar aos blocos.",
     httpRequestError: "Houve um problema com a requisição.",
    }
-   
+
 We are declaring the string key in `camel case <https://en.wikipedia.org/wiki/Camel_case>`_ and english, followed by it's translation.
 
-Thus, to include new translations, just create an string key, concatenating it for each language file inside ``ui/msg``, 
+Thus, to include new translations, just create an string key, concatenating it for each language file inside ``ui/msg``,
 and use it anywhere in the codebase as ``MSG['myStringKeyHere']``.
 
-Also, if the string already exists but was not included in your language, please check 
+Also, if the string already exists but was not included in your language, please check
 `the english translation <https://github.com/BIPES/BIPES/blob/master/ui/msg/en.js>`_ for coherense.
 
 If the file is a HTML file, we fill the field with ``...`` like this:
