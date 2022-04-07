@@ -1,41 +1,46 @@
 Create new blocks
 =================================
 
-This text presents basic instructions to create new blocks for BIPES.
-As it is known, BIPES uses Blockly as its block language, so the definitions follow Blockly rules. This requires editing some files from BIPES source code.
+To create new blocks for BIPES, it is necessary to modify a few files in the source
+code organized by category (displays, sensor, timings, etc), which defines:
 
-If you don’t have access to the source code, you can download it in the `BIPES GitHub <https://github.com/BIPES/BIPES>`_.
+* *static/page/blocks/blocks/\*.js* - the inputs, outputs, and appearance of each block (eg. *network.js*).
+* *static/page/blocks/pythonic/\*.js - the pythonic code generator for each block (eg. *network.js*).
+* *templates/page/blocks/definitions/\*.md - the XML of the blocks and others elements attached to an unique id (eg. *network.md*).
+* *templates/page/blocks/devices/\*.md - the unique ids of the XML elements in a list, per device (eg. *ESP32.md*).
 
-To create a new block, `three` files are involved as shown below:
+The pythonic code targets MicroPython, CircuitPython and Snek, with internal
+conditionals to switch the generated code per block.
 
-.. list-table:: Files involved with the blocks creation
-   :widths: 10 25
-   :header-rows: 1
+The elements in the block definitions are the blocks, titles, labels and buttons,
+identified by an unique id so they can be used in multiple devices in a different
+selection of elements, for example, a block in the network category might be available
+in the ESP32 and ESP8266 toolbox but not in the Arduino UNO toolbox.
 
-   * - File
-     - Description
-   * - core/block_definitions.js
-     - Defines the inputs, outputs, and appearance of each block.
-   * - core/generator_stubs.js
-     - Defines the generated code for each block.
-   * - toolbox/$$$.xml
-     - Refers to the blocks available to each device, for exemple, there is toolbox/esp32.xml and toolbox/esp8266.xml.
 
-To ilustrate, let’s create blocks for Neo Pixel RGB LED strip
+.. tip::
 
-Note that this example is “complete”, with 4 blocks and several features. You can start with simpler blocks!
+  The `Block Factory <https://blockly-demo.appspot.com/static/demos/blockfactory/index.html>`_
+  allows to create the necessary code visually!
+  Just make sure to output the block definition as ``Javascript`` and the generator
+  stub as ``Python``.
 
-Define the blocks
+To provide a guide on how to exactly include blocks, let’s create some for `Neo Pixel RGB LED strip <https://docs.micropython.org/en/latest/esp8266/tutorial/neopixel.html>`_
+
+Block definitions
 -------------------------------------------------------
 
-Open the file block_definitions.js and add the desired code at the end of the file. In the case of the Neo Pixel RGB LED strip, we will add 4 blocks:
+The four blocks we desire to implement are:
 
 #. Init neopixel
-#. Write / control neopixel
+#. Write/control neopixel
 #. Colors by number
 #. Colors by color
 
-That are defined in ``core/block_definitions.js`` as:
+And , from all the existing categories, the Neo Pixel RGB Led strip blocks seems to fit
+better inside the "Displays" category.
+
+So, at the end of *static/blocks/blocks/displays.md* include the desired block definitions:
 
 .. code-block:: javascript
 
@@ -125,24 +130,28 @@ That are defined in ``core/block_definitions.js`` as:
 	  }
 	};
 
-If you are not used to JavaScript or Blockly, the `Block Factory <https://blockly-demo.appspot.com/static/demos/blockfactory/index.html>`_ allows a quick and easy definition of “Blockly blocks using Blockly” 😄️. Simple dray your block and copy the code! Just make sure to output the *Block Definition* as ``Javascript`` and the *Generator stub* as ``Python``!
 
-So, we have 4 blocks defined:
+
+With this, we have 4 blocks defined with the names:
 
 #. neopixel_init
 #. neopixel_write
 #. neopixel_color_numbers
 #. neopixel_color_colors
 
-Please note that these block names are very important and will be needed and must be repeated exactly as they are in all files: ``core/generato_stubs.js``, ``toolbox/$$$.xml``, ``core/block_definitions.js``.
+.. note::
 
-Define the generated code
+  These block names are very important and must be the same in the other files.
+
+Generator stubs
 -------------------------------------------------------
 
-Now let's programm how Blockly will generate code, for that we will create some
-rules inside ``core/generato_stubs.js``.
+Now let's program how Blockly will generate code, for that we will create some
+rules inside *static/pages/blocks/pythonic/displays.js*.
 
-We can even add auxilar javascript functions to generate our Python code:
+.. admonition::
+
+  We can even add auxiliary JavaScript functions to generate our Python code:
 
 .. code-block:: javascript
 
@@ -200,105 +209,137 @@ We can even add auxilar javascript functions to generate our Python code:
 	  return code;
 	};
 
-Add to the desired boards/toolboxes
+Template definitions and devices
 -------------------------------------------------------
 
-Adding the created blocks to a toolbox can be as simply as the following code, which can be inserted in the most convenient part of the toolbox XML file:
+With the code ready, we need to add the XML representing the blocks to
+*templates/page/blocks/definitions/displays.md* and then include the blocks ids
+to the desired target devices' toolboxes in *templates/page/blocks/devices/\*.md*.
 
-.. code-block:: XML
+At *templates/page/blocks/definitions/displays.md*, include:
 
-	<block type="neopixel_init"></block>
-	<block type="neopixel_write"></block>
-	<block type="neopixel_color_numbers"></block>
+.. code-block:: markdown
+
+	# NeoPixel LED Strip
+	<category name="NeoPixel LED Strip">
+	<label text="NeoPixel RGB LED Strip"></label>
+	<button text="%{DOCUMENTATION}: neopixel" callbackKey="loadDoc"></button>
+
+	# neopixel_init
+	<block type="neopixel_init">
+	  <value name="pin">
+	    <shadow type="pinout">
+	      <field name="Pin"></field>
+	    </shadow>
+	  </value>
+	  <value name="number">
+	    <shadow type="math_number">
+	      <field name="NUM">8</field>
+	    </shadow>
+	  </value>
+	</block>
+
+	# neopixel_color_numbers
+	<block type="neopixel_color_numbers">
+	 <value name="red">
+	  <shadow type="math_number">
+	    <field name="NUM">50</field>
+	  </shadow>
+	 </value>
+	 <value name="green">
+	  <shadow type="math_number">
+	    <field name="NUM">152</field>
+	  </shadow>
+	 </value>
+	 <value name="blue">
+	  <shadow type="math_number">
+	    <field name="NUM">220</field>
+	  </shadow>
+	 </value>
+	</block>
+
+	# neopixel_color_colors
 	<block type="neopixel_color_colors"></block>
 
-However, it is interesting to create a special category just for NeoPixel devices. It is also interesting to have a more intuitive block connection to other blocks, with pre-inserted inputs. So, we could enhance the working, but simple code above to this one:
+	# HSL_to_RGB
+	<block type="HSL_to_RGB">
+	  <value name="hue">
+	  <shadow type="math_number">
+	    <field name="NUM">204</field>
+	  </shadow>
+	  </value>
+	  <value name="saturation">
+	  <shadow type="math_number">
+	    <field name="NUM">70.8</field>
+	  </shadow>
+	  </value>
+	  <value name="lightness">
+	  <shadow type="math_number">
+	    <field name="NUM">52.9</field>
+	  </shadow>
+	  </value>
+	</block>
 
-.. code-block:: XML
+	# neopixel_control
+	<block type="neopixel_control">
+	 <value name="address">
+	  <shadow type="math_number">
+	    <field name="NUM">0</field>
+	  </shadow>
+	 </value>
+	 <value name="color">
+	  <shadow type="neopixel_color_colors">
+	    <field name="PIN"></field>
+	  </shadow>
+	 </value>
+	</block>
 
-	<category name="Displays">
+	# neopixel_write
+	<block type="neopixel_write"></block>
 
-	<category name="NeoPixel LED Strip">
-		   <label text="NeoPixel RGB LED Strip"></label>
-		     <button text="Documentation and how to connect: neopixel" callbackKey="loadDoc"></button>
-		   <block type="neopixel_init">
-		    <value name="pin">
-		       <shadow type="pinout">
-		         <field name="Pin"></field>
-		       </shadow>
-		    </value>
-		    <value name="number">
-		     <shadow type="math_number">
-		       <field name="NUM">8</field>
-		     </shadow>
-		    </value>
-		   </block>
-		   <block type="neopixel_color_numbers">
-		    <value name="red">
-		     <shadow type="math_number">
-		       <field name="NUM">255</field>
-		     </shadow>
-		    </value>
-		    <value name="green">
-		     <shadow type="math_number">
-		       <field name="NUM">255</field>
-		     </shadow>
-		    </value>
-		    <value name="blue">
-		     <shadow type="math_number">
-		       <field name="NUM">255</field>
-		     </shadow>
-		    </value>
-		   </block>
-		   <block type="neopixel_color_colors"></block>
+Notice that there is an additional ``NeoPixel LED Strip`` id to define a title
+with label and a button to install a the neopixel documentation.
 
-		   <block type="neopixel_write">
-		    <value name="address">
-		     <shadow type="math_number">
-		       <field name="NUM">0</field>
-		     </shadow>
-		    </value>
+Finally, just include the defined ids to the desired devices' toolboxes, for example,
+this simplified section of *templates/page/blocks/devices/ESP32.md*:
 
-		    <value name="color">
-		     <shadow type="neopixel_color_colors">
-		       <field name="PIN"></field>
-		     </shadow>
-		    </value>
-		   </block>
-		   <block type="neopixel_write">
-		    <value name="address">
-		     <shadow type="math_number">
-		       <field name="NUM">0</field>
-		     </shadow>
-		    </value>
+.. code-block:: markdown
 
-		    <value name="color">
-		     <shadow type="neopixel_color_numbers">
-		       <field name="PIN"></field>
-		     </shadow>
-		    </value>
-		   </block>
-	</category>
-	...
-	Other blocks / subcategories for display continue here
-	...
-	</category>
+  %{DISPLAYS}
+  NeoPixel LED Strip
+  neopixel_init
+  HSL_to_RGB
+  neopixel_color_numbers
+  neopixel_color_colors
+  neopixel_control
+  neopixel_write
+  end_category
+  Character display
+  char_lcd_init
+  char_lcd_clear
+  char_lcd_putstr
+  end_category
+  end_category
 
+.. warning::
 
-Result and references
+  Remember to indirectly close any open `<category>` with `end_category`.
+  If not, the parsing of the XML will fail miserably.
+
+.. note::
+
+  You might have noticed along this example some tags in the format ``%{ID}``, these
+  are internationalization tags and they are replaced by translated strings in the set language,
+  for more information about internationalization in BIPES, see the :ref:`translating tutorial <translating>`.
+
+Result
 -------------------------------------------------------
 
-Here is the result:
+The expected toolbox:
 
 .. image:: https://bipes.net.br/wp/wp-content/uploads/2021/07/image.png
 
-And one simple example:
+And an example using the new blocks:
 
 .. image:: https://bipes.net.br/wp/wp-content/uploads/2021/07/image-1.png
-
-References:
-
-`docs.micropython.org/esp8266/tutorial/neopixel <https://docs.micropython.org/en/latest/esp8266/tutorial/neopixel.html>`_
-
-`github.com/BIPES/BIPES/issues/19 <https://github.com/rafaelaroca/BIPES_ui_testing/issues/19>`_
 

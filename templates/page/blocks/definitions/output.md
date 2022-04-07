@@ -18,7 +18,7 @@
 <category name="I/O Expander">
 <label text="I/O Expander"></label>
 <label text="MCP23017"></label>
-<button text="%{INSTALL_LIBRARY}:  MCP23017" callbackKey="installPyLib"></button>
+<button text="%{INSTALL_LIBRARY}: MCP23017" callbackKey="installPyLib"></button>
 <label text="Library source: https://github.com/ShrimpingIt/micropython-mcp230xx/blob/master/mcp.py"></label>
 
 # mcp23017_init

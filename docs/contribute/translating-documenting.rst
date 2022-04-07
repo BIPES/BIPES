@@ -1,3 +1,5 @@
+.. _translating:
+
 Translating
 =================================
 
@@ -12,7 +14,7 @@ Language availability
 
 To start our journey  as a BIPES translator, check if the language is already available:
 
-.. list-table:: Available languages
+.. list-table::
    :widths: 5 10
    :header-rows: 1
 

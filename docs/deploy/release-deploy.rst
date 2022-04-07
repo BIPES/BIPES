@@ -8,13 +8,15 @@ But  first, it is important to understand that the released and deployed source 
 are **exactly the same**, the only difference is how they are being served **in the browser**.
 
 This differences occurs due to `Cross-Origin Resource Sharing (CORS) <https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS>`_
-policies in modern browser and deeply limit BIPES features based on the context
+policies in modern browser and it deeply limits BIPES features based on the context
 of the main page.
 
 The following table better illustrates *what you get* at each CORS context, being "Locahost"
 when you access in the same host (like *http://127.0.0.1:5001/*) and "File" by
 opening the *ide.html* file directly from the file explorer (like *file://path/to/ide.html*):
 
++------------------+---------------------------------------+
+|                  | Protocol                              |
 +------------------+----------+---------+-----------+------+
 | Techology        | HTTPS    | HTTP    | Localhost | File |
 +==================+==========+=========+===========+======+
@@ -217,7 +219,7 @@ is preserved).
 
 .. tip::
 
-  You can automate this with an one liner like ``git pull && make deploy``
+  You can automate this with an one liner like ``git pull && make doc && make deploy``
   with an automation interface like Ansible or GitHub Actions.
 
 

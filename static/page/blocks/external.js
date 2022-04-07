@@ -98,6 +98,10 @@ export const knownLibs = {
   songs:{
     hostname:'https://bipes.net.br/ide/pylibs/',
     file:'songs.py',
+  },
+  MCP23017:{
+    hostname:'https://bipes.net.br/ide/pylibs/',
+    file:'mcp23017.py'
   }
 }
 
