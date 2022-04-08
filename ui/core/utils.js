@@ -481,16 +481,12 @@ class files {
 
         let decoderUint8 =  new TextDecoder().decode(this.put_file_data)
           .replaceAll(/\\/g, '\\\\')
-          .replaceAll(/(\r\n|\r)/g, '\\r')
+          .replaceAll(["UNO", "UNO2"].includes(UI ['workspace'].selector.value)
+            ? /(\r\n|\r)/g : /(\r\n|\r|\n)/g,  '\\r')
           .replaceAll(/'/g, "\\'")
           .replaceAll(/"/g, '\\"')
           .replaceAll(/\t/g, '    ');
-        
-        if (UI ['workspace'].selector.value != "UNO" &&
-            UI ['workspace'].selector.value != "UNO2") {
-              decoderUint8.replaceAll(/(\n)/g, '\\r');
-        }
-
+       
         UI ['progress'].start(parseInt(decoderUint8.length/Channel ['webserial'].packetSize) + 1);
 
         //ctrl-C twice: interrupt any running program
