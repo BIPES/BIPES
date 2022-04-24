@@ -498,48 +498,6 @@
 
   <category name="Displays">
 
-  <category name="Character display">
-      <label text="PCF8574 Display controller"></label>
-
-      <label text="Library: https://github.com/dhylands/python_lcd"></label>
-      <button text="Install I2CLCD library" callbackKey="installPyLib"></button>
-	<block type="char_lcd_init">
-        <value name="scl">
-          <shadow type="pinout">
-            <field name="SCL"></field>
-          </shadow>
-        </value>
-
-        <value name="sda">
-          <shadow type="pinout">
-            <field name="SDA"></field>
-          </shadow>
-        </value>
-
-	 <value name="lines">
-        <shadow type="math_number">
-          <field name="NUM">4</field>
-        </shadow>
-      </value>
-
-	 <value name="columns">
-        <shadow type="math_number">
-          <field name="NUM">20</field>
-        </shadow>
-      </value>
-
-
-
-
-	</block>
-	<block type="char_lcd_clear"></block>
-	<block type="char_lcd_putstr"></block>
-	<block type="char_lcd_moveto"></block>
-	<block type="char_lcd_backlight"></block>
-	<block type="char_lcd_display"></block>
-
-  </category>
-
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
       <button text="Install ssd1306 library" callbackKey="installPyLib"></button>
@@ -586,14 +544,247 @@
 
 
     </block>
+    <block type="line_oled">
+
+ <value name="x1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
+ <value name="y1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+ <value name="x2">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+
+ <value name="y2">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+
+
+
+    </block>
+<block type="rect_oled">
+
+ <value name="x1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
+ <value name="y1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+ <value name="x2">
+        <shadow type="math_number">
+          <field name="NUM">60</field>
+        </shadow>
+      </value>
+
+ <value name="y2">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="fill_rect_oled">
+      <value name="x1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>     
+      <value name="y1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="x2">
+        <shadow type="math_number">
+          <field name="NUM">60</field>
+        </shadow>
+      </value>
+     
+      <value name="y2">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+     
+    </block>     
+    <block type="scroll_oled">
+      <value name="x">
+        <shadow type="math_number">
+          <field name="NUM">5</field>
+        </shadow>
+      </value>     
+      <value name="y">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+    </block>     
+
     <block type="clear_oled"></block>
     <block type="fill_oled"></block>
-
-
-
-
-
     </category>
+
+    <category name="NeoPixel LED Strip">
+      <label text="NeoPixel RGB LED Strip"></label>
+
+        <button text="Documentation and how to connect: neopixel" callbackKey="loadDoc"></button>
+
+      <block type="neopixel_init">
+       <value name="pin">
+          <shadow type="pinout">
+            <field name="Pin"></field>
+          </shadow>
+       </value>
+
+       <value name="number">
+        <shadow type="math_number">
+          <field name="NUM">8</field>
+        </shadow>
+       </value>
+      </block>
+
+      <block type="neopixel_color_numbers">
+       <value name="red">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+       </value>
+       <value name="green">
+        <shadow type="math_number">
+          <field name="NUM">152</field>
+        </shadow>
+       </value>
+       <value name="blue">
+        <shadow type="math_number">
+          <field name="NUM">220</field>
+        </shadow>
+       </value>
+      </block>
+
+      <block type="neopixel_color_colors"></block>
+
+      <block type="HSL_to_RGB">
+        <value name="hue">
+        <shadow type="math_number">
+          <field name="NUM">204</field>
+        </shadow>
+        </value>
+        <value name="saturation">
+        <shadow type="math_number">
+          <field name="NUM">70.8</field>
+        </shadow>
+        </value>
+        <value name="lightness">
+        <shadow type="math_number">
+          <field name="NUM">52.9</field>
+        </shadow>
+        </value>
+      </block>
+
+      <block type="neopixel_control">
+       <value name="address">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+       </value>
+
+       <value name="color">
+        <shadow type="neopixel_color_colors">
+          <field name="PIN"></field>
+        </shadow>
+       </value>
+      </block>
+
+      <block type="neopixel_control">
+       <value name="address">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+       </value>
+
+       <value name="color">
+        <block type="neopixel_color_numbers">
+         <value name="red">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+         <value name="green">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+         <value name="blue">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+        </block>
+       </value>
+      </block>
+
+      <block type="neopixel_write"></block>
+      
+
+</category>
+
+
+
+  <category name="Character display">
+      <label text="PCF8574 Display controller"></label>
+
+      <label text="Library: https://github.com/dhylands/python_lcd"></label>
+      <button text="Install I2CLCD library" callbackKey="installPyLib"></button>
+	<block type="char_lcd_init">
+        <value name="scl">
+          <shadow type="pinout">
+            <field name="SCL"></field>
+          </shadow>
+        </value>
+
+        <value name="sda">
+          <shadow type="pinout">
+            <field name="SDA"></field>
+          </shadow>
+        </value>
+
+	 <value name="lines">
+        <shadow type="math_number">
+          <field name="NUM">4</field>
+        </shadow>
+      </value>
+
+	 <value name="columns">
+        <shadow type="math_number">
+          <field name="NUM">20</field>
+        </shadow>
+      </value>
+
+
+
+
+	</block>
+	<block type="char_lcd_clear"></block>
+	<block type="char_lcd_putstr"></block>
+	<block type="char_lcd_moveto"></block>
+	<block type="char_lcd_backlight"></block>
+	<block type="char_lcd_display"></block>
+
+  </category>
 
   <category name="LED Matrix">
       <label text="TM1640 LED Matrix"></label>
