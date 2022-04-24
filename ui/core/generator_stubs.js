@@ -436,13 +436,13 @@ Blockly.Python['init_oled'] = function(block) {
 };
 
 Blockly.Python['clear_oled'] = function(block) {
-  var code = 'oled.fill(0)\n';
+  var code = 'oled.fill(0)\noled.show()\n';
   return code;
 };
 
 Blockly.Python['fill_oled'] = function(block) {
   var v = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-  var code = 'oled.fill(' + v + ')\n';
+  var code = 'oled.fill(' + v + ')\noled.show()\n';
   return code;
 };
 
@@ -452,15 +452,53 @@ Blockly.Python['show_oled'] = function(block) {
 };
 
 Blockly.Python['write_oled'] = function(block) {
-  var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
-  var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
-  var t = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
-
-  var code = 'oled.text(' + t + ', ' + x + ', ' + y + ')\noled.show()\n';
-  return code;
-};
-
-Blockly.Python['init_tank'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var t = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'oled.text(' + t + ', ' + x + ', ' + y + ')\noled.show()\n';
+	return code;
+  };
+  
+  Blockly.Python['line_oled'] = function(block) {
+	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
+	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
+	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
+	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'oled.line(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\noled.show()\n';
+	return code;
+  };
+  
+  Blockly.Python['rect_oled'] = function(block) {
+	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
+	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
+	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
+	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'oled.rect(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\noled.show()\n';
+	return code;
+  };
+  
+  Blockly.Python['fill_rect_oled'] = function(block) {
+	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
+	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
+	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
+	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'oled.fill_rect(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\noled.show()\n';
+	return code;
+  };
+  
+  Blockly.Python['scroll_oled'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'oled.scroll(' + x + ', ' + y + ')\noled.show()\n';
+	return code;
+  };
+  
+  Blockly.Python['init_tank'] = function(block) {
   var Xpos = Blockly.Python.valueToCode(block, 'Xpos', Blockly.Python.ORDER_ATOMIC);
   var Ypos = Blockly.Python.valueToCode(block, 'Ypos', Blockly.Python.ORDER_ATOMIC);
   var Angle = Blockly.Python.valueToCode(block, 'Angle', Blockly.Python.ORDER_ATOMIC);
