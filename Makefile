@@ -237,6 +237,7 @@ clean: build-clean
 	@printf "$(BLUE)Build files cleared.$(NC)\n"
 
 doc:
+	rm -rf docs/_build
 	@. venv/bin/activate && \
 	cd docs && make html
 	@printf "Documentation generated successfully.\n"

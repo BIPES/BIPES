@@ -40,56 +40,91 @@ To start our journey  as a BIPES translator, check if the language is already av
      - Chinese (traditional)
 
 If not, feel free to include it in the source code at
-`ui/core/code.js#L23 <https://github.com/BIPES/BIPES/blob/c77d9554465c3186ec34f963059463cdfcb9ed47/ui/core/code.js#L23>`_
-and move the language file from `ui/msg/not_used <https://github.com/BIPES/BIPES/tree/master/ui/msg/not_used>`_
-to `ui/msg <https://github.com/BIPES/BIPES/tree/master/ui/msg>`_.
+`app.py#L18 <https://github.com/BIPES/BIPES/blob/b1dbadf8a8406f20c99a8f8dbe461f52fddb170c/app.py#L17>`_
+and create a copy of *en.js*  at
+`static/msg <https://github.com/BIPES/BIPES/tree/third/static/msg>`_
+named with the desired language code,
+for example, make a copy of *en.js* as *fr.js* for French.
+
+.. note::
+  By default, untranslated strings should be kept in English and not empty.
 
 
 How to translate
 -------------------------------------------------------
 
-In the codebase, BIPES uses the global ``MSG`` JavaScript variable (available in every file) to store all strings of the user's preferred language,
+
+BIPES uses the global ``Msg`` JavaScript variable (available in every file) to
+store all strings of the user's preferred language,
 so you have to just pass the string key as in this example:
 
 .. code-block:: javascript
 
   function language (button_, panel_) {
     panel.call (this, button_, panel_);
-    this.panel.appendChild(document.createTextNode(MSG['languageTooltip']));
+    this.panel.appendChild(document.createTextNode(Msg['languageTooltip']));
   }
 
-Where the string key is ``languageTooltip`` and ``MSG['languageTooltip']`` will automatically complete with the user prefered language.
+Where the string key is ``languageTooltip`` and ``Msg['languageTooltip']`` will
+automatically complete with the user prefered language.
 
-Also, like `i18n <https://www.npmjs.com/package/i18n>`_ , we use a JSON like structure to store strings,
-as seen in this chunk of `ui/msg/pt-br.js <https://github.com/BIPES/BIPES/blob/master/ui/msg/pt-br.js>`_:
+Also, like `i18n <https://www.npmjs.com/package/i18n>`_ ,
+a JSON like structure is used to store strings,
+as seen in this chunk of `static/msg/pt-br.js <https://github.com/BIPES/BIPES/blob/third/static/msg/pt-br.js>`_:
 
 .. code-block:: javascript
 
-  var MSG = {
-    blocks: "Blocos",
-    linkTooltip: "Salvar e ligar aos blocos.",
-    httpRequestError: "Houve um problema com a requisição.",
+  var Msg = {
+    blocks:'Blocos',
+    FileManager:'Gerenciador de arquivos',
+    HideShowProjectTree:'Ocultar/mostrar árvore de projecto',
    }
 
-We are declaring the string key in `camel case <https://en.wikipedia.org/wiki/Camel_case>`_ and english, followed by it's translation.
+The string key is declared in `camel case <https://en.wikipedia.org/wiki/Camel_case>`_
+and in English, followed by its translation.
+All langauge files inside  ``static/msg`` should be in sync, with the same string keys
+at the exact same position.
 
-Thus, to include new translations, just create an string key, concatenating it for each language file inside ``ui/msg``,
-and use it anywhere in the codebase as ``MSG['myStringKeyHere']``.
+Thus, to include new translations, just create the string key at every file
+inside ``static/msg``,
+and use it anywhere in the codebase as ``Msg['MyStringKeyHere']``.
 
-Also, if the string already exists but was not included in your language, please check
-`the english translation <https://github.com/BIPES/BIPES/blob/master/ui/msg/en.js>`_ for coherense.
+To make this repetitive process instantaneous, use `sed <https://www.gnu.org/software/sed/manual/sed.html>`_:
 
-If the file is a HTML file, we fill the field with ``...`` like this:
+.. code:: bash
 
-.. code-block:: HTML
+  sed -i 'N i\MY_LINE' static/msg/*.js
 
-  <div class="tabs">
-    <div id="tab_blocks" class="tabon">...</div>
-  </div>
+Replacing N with the line number you wish to append and MY_LINE with the line you want,
+for example:
 
-and then insert the translation on load:
+.. code:: bash
+
+  sed -i "30 i\  MyStringTest:'My string test'," static/msg/*.js
+
+Remember to indent with two space and include a comma in the end of the line.
+
+Google Blockly exception
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For the Google Blockly's :ref:`template definitions <template-definitions-and-devices>`,
+the strings are injected directly into the ``Blockly`` object and are declared at the top of
+the translation files in upper case instead of camel case, for example:
 
 .. code-block:: javascript
+  Blockly.Msg["DISPLAYS"] = "Displays";
+  Blockly.Msg["LOOPS"] = "Laços";
+   Blockly.Msg['DOCUMENTATION'] = "Documentação";
 
-  get('#tab_blocks').title = MSG['blocks'];
+ Then, at the template definition:
+
+.. code-block:: markdown
+
+	# NeoPixel LED Strip
+	<category name="NeoPixel LED Strip">
+	<label text="NeoPixel RGB LED Strip"></label>
+	<button text="%{DOCUMENTATION}: neopixel" callbackKey="loadDoc"></button>
+
+``%{DOCUMENTATION}`` will be replaced with *Documentation* in English and
+*Documentação* in Brazilian Portuguese.
 

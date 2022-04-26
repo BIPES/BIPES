@@ -25,10 +25,13 @@ in the ESP32 and ESP8266 toolbox but not in the Arduino UNO toolbox.
   Just make sure to output the block definition as ``Javascript`` and the generator
   stub as ``Python``.
 
+Full example
+-----------------
+
 To provide a guide on how to exactly include blocks, let’s create some for `Neo Pixel RGB LED strip <https://docs.micropython.org/en/latest/esp8266/tutorial/neopixel.html>`_
 
 Block definitions
--------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The four blocks we desire to implement are:
 
@@ -144,12 +147,12 @@ With this, we have 4 blocks defined with the names:
   These block names are very important and must be the same in the other files.
 
 Generator stubs
--------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now let's program how Blockly will generate code, for that we will create some
 rules inside *static/pages/blocks/pythonic/displays.js*.
 
-.. admonition::
+.. note::
 
   We can even add auxiliary JavaScript functions to generate our Python code:
 
@@ -209,8 +212,10 @@ rules inside *static/pages/blocks/pythonic/displays.js*.
 	  return code;
 	};
 
+.. _template-definitions-and-devices:
+
 Template definitions and devices
--------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 With the code ready, we need to add the XML representing the blocks to
 *templates/page/blocks/definitions/displays.md* and then include the blocks ids
@@ -333,7 +338,7 @@ this simplified section of *templates/page/blocks/devices/ESP32.md*:
   for more information about internationalization in BIPES, see the :ref:`translating tutorial <translating>`.
 
 Result
--------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The expected toolbox:
 
@@ -343,3 +348,78 @@ And an example using the new blocks:
 
 .. image:: https://bipes.net.br/wp/wp-content/uploads/2021/07/image-1.png
 
+Including new libraries, examples and documentation
+---------------------------------------------------------
+
+BIPES supports buttons in the toolbox which are used to install libraries to the
+device, load blocks examples and open external documentation.
+
+The example or library source file must be publicaly available.
+
+.. note::
+
+  You can store your library in the repository `github.com/BIPES/examples-libraries`,
+  then get the raw link file (`raw.githubusercontent.com/... <https://raw.githubusercontent.com/BIPES/examples-libraries/main/blocks-examples/pid_dc_motor.xml>`_).
+
+
+Including a library
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Include the library to `static/page/blocks/external.js#knownLibs <https://github.com/BIPES/BIPES/blob/b1dbadf8a8406f20c99a8f8dbe461f52fddb170c/static/page/blocks/external.js#L29>`_
+with the format:
+
+.. code-block:: json
+
+  MyLibrary:{
+    hostname:'https://PATH/TO/HOSTNAME/',
+    file:'FILENAME.py'
+  },
+
+And at the desired :ref:`template definition<template-definitions-and-devices>` include the button:
+.. code-block:: xml
+
+  <label text="https://url/to/the/library/source/code"></label>
+  <button text="%{INSTALL_LIBRARY}: MyLibrary" callbackKey="installPyLib"></button>
+
+.. note::
+  The label is included to provide the file's source, it is very important to
+  give credit to the developer!
+
+Including an example
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Include the library to `static/page/blocks/external.js#knownExamples <https://github.com/BIPES/BIPES/blob/b1dbadf8a8406f20c99a8f8dbe461f52fddb170c/static/page/blocks/external.js#L2>`_,
+with the format:
+
+.. code-block:: json
+
+  MyExample:{
+    hostname:'https://PATH/TO/HOSTNAME/',
+    file:'FILENAME.xml'
+  },
+
+And at the desired :ref:`template definition <template-definitions-and-devices>` include the button:
+
+.. code-block:: xml
+
+  <button text="%{LOAD_EXAMPLE}: MyExample" callbackKey="loadExample"></button>
+
+
+Including documentation
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Include the library to `static/page/blocks/external.js#knownDocs <https://github.com/BIPES/BIPES/blob/b1dbadf8a8406f20c99a8f8dbe461f52fddb170c/static/page/blocks/external.js#L108>`_,
+with the format:
+
+.. code-block:: json
+
+  MyDoc:{
+    hostname:'https://PATH/TO/HOSTNAME/',
+    file:'FILENAME.xml'
+  },
+
+And at the desired :ref:`template definition <template-definitions-and-devices>` include the button:
+
+.. code-block:: xml
+
+  <button text="%{DOCUMENTATION}: MyDoc" callbackKey="loadDoc"></button>

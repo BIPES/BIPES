@@ -210,16 +210,17 @@ that matches Apache2's:
 
 .. code:: bash
 
-  make deploy path=/var/www/bipes3 chown=www-data:www-data lang=en
+  make deploy path=/var/www/bipes3 chown=www-data:www-data lang=en database=postgresql
 
-Where **path** defauts to */var/www/bipes3/*, **chown** to *www-data:www-data*
-and **lang**-uage to *en*; all of them are optional. For new releases, this
+Where **path** defauts to */var/www/bipes3/*, **chown** to *www-data:www-data*,
+**lang**-uage to *en*, and **databse** to *sqlite*;
+all of them are optional. For new releases, this
 is the only command you need to do after a ``git pull`` (the configuration file
 is preserved).
 
 .. tip::
 
-  You can automate this with an one liner like ``git pull && make doc && make deploy``
+  You can automate this with an one liner like ``git pull && make doc && make deploy database=postgresql``
   with an automation interface like Ansible or GitHub Actions.
 
 

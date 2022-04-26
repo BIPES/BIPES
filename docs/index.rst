@@ -22,7 +22,6 @@ BIPES Help&Development
    contribute/forking
    contribute/translating-documenting
    contribute/create-block
-   contribute/libraries
 
 .. toctree::
    :hidden:
