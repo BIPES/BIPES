@@ -74,11 +74,12 @@ Setup and deploy
   These instructions are intended to provide an overview on how to deploy the
   platform and are nor complete or secure.
 
-To properly deploy your own BIPES version, you need to use a WSGI server and
-a database engine, improving the performance greatly.
+To properly deploy your own BIPES version, you need to use a WSGI server,
+a database engine and a MQTT broker, which will improve the performance greatly
+and enable all features.
 
-The instructions to achieve this using Apache2 as WSGI server and
-PostgreSQL as the data engine are provided below, then.
+The instructions to achieve this using Apache2 as WSGI server,
+PostgreSQL as the data engine and Mosquitto as the MQTT broker are provided below.
 
 .. _apache2_wsgi:
 
@@ -201,6 +202,50 @@ Restart the PostgreSQL service:
 For more information about the PostgreSQL and how to make it secure, refer to
 `PostgreSQL - Server Administration <https://www.postgresql.org/docs/current/admin.html>`_
 
+
+.. _mosquitto_mqtt:
+
+MQTT Broker (Mosquitto)
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Install Mosquitto and create (or modify [#f5]_) */etc/mosquitto/conf.d/bipes.conf* to use
+WebSocket over SSL at port 9001:
+
+.. code:: none
+
+  allow_anonymous false
+  listener 1883
+
+  listener 9001
+  protocol websockets
+  cafile /etc/mosquitto/certs/ca.crt
+  certfile /etc/mosquitto/certs/server.crt
+  keyfile /etc/mosquitto/certs/server.key
+  password_file /etc/mosquitto/conf.d/passwd
+  persistence true
+  persistence_location /var/lib/mosquitto/
+
+  log_dest file /var/log/mosquitto/mosquitto.log
+
+Notice the ``cafile``, ``keyfile``, and ``certfile``, these are the lines that
+enables SSL.
+
+.. warning::
+
+  Mosquitto never update listener settings when running, if the certificates
+  renews, you need to restart the broker.
+
+If you are using `Let's Encrypt <https://letsencrypt.org/>`_, change to these three
+lines to:
+
+.. code:: none
+
+  cafile /etc/ssl/certs/DST_Root_CA_X3.pem
+  certfile /etc/letsencrypt/live/example.com/fullchain.pem
+  keyfile /etc/letsencrypt/live/example.com/privkey.pem
+
+Replacing ``example.com`` with your domain.
+
 Deploy
 ^^^^^^^^^^^^^^^^^^
 
@@ -213,7 +258,7 @@ that matches Apache2's:
   make deploy path=/var/www/bipes3 chown=www-data:www-data lang=en database=postgresql
 
 Where **path** defauts to */var/www/bipes3/*, **chown** to *www-data:www-data*,
-**lang**-uage to *en*, and **databse** to *sqlite*;
+**lang**-uage to *en*, and **database** to *sqlite*;
 all of them are optional. For new releases, this
 is the only command you need to do after a ``git pull`` (the configuration file
 is preserved).
@@ -240,10 +285,11 @@ Create a configuration file *server/conf.ini* in the deployed directory:
 
   [mosquitto]
   password = PUBLIC_PASSWORD
+  ssl = true
 
-Replacing the flask password with a random string, mosquitto password with the
-Mosquitto server public password and PostgreSQL's password with the hashed
-(SHA256) version of its password.
+Replacing the flask password with a random string, PostgreSQL's password with the hashed
+(SHA256) version of its password, and  mosquitto password with the Mosquitto server public password.
+Also, notice that :ref:`Mosquitto is over SSL <mosquitto_mqtt>`.
 
 Then, set up tables and triggers in the database with with:
 
@@ -265,3 +311,4 @@ That's it, at this stage, BIPES should be fully functional.
 .. [#f2] ``libapache2-mod-wsgi-py3`` on Ubuntu/Debian and ``mod_wsgi`` on Fedora/OpenSUSE.
 .. [#f3] Configuration files are located in */etc/apache2* on Ubuntu/Debian/OpenSUSE and */etc/httpd* on Fedora.
 .. [#f4] Might be *sites-available/000-default.conf* or *default-server.conf*.
+.. [#f5] The Makefile' commands ``make`` and ``make mosquitto`` set up Mosquitto. 

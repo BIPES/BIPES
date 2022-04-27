@@ -24,13 +24,23 @@ make run
 In development mode, different languages are acessed by including the language 
 code to the link, e.g. http://127.0.0.1:5001/ide-de loads the IDE in german.
 
-For more information about the Makefile, the dependencies and libraries, check the Notes.
+## Documentation
 
+The documentation provides tutorials on how to implement new blocks, help
+with translation and even how to deploy your own version of BIPES.
+
+Access it live at [bipes.net.br/3/docs](https://bipes.net.br/3/docs) or
+build it from the clone with:
+
+```
+make doc
+```
+
+Note: requires [sphinx](https://www.sphinx-doc.org/en/master/), [sphinx-js](https://pypi.org/project/sphinx-js/) and [furo](https://github.com/pradyunsg/furo.
 
 ## Build release
 
-The release is a static version of BIPES than can be run both serverless or
-with a server.
+The release is a static version of BIPES than can be run serverless.
 
 BIPES serverless provides all functionalities that do not require a dynamic loading.
 
@@ -45,56 +55,6 @@ plus many *ide-\*.html* files, each linking to language, e.g. *ide-es.html*
 loads the spanish version.
 
 With this, extract anywhere and open the desired *ide-\*.html* file to use BIPES 
-serverless or include in a server to allow external requests 
-([CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) policies).
+serverless.
 
-## Notes
-
-### Additional Makefile information
-
-#### Dependencies
-
-BIPES has these packages as depedencies:
-
- * npm
- * python
- * pip
- * mosquitto
- 
-The Makefile will automatically use either `dnf` or `apt` to install these packages.
-
-#### Python packages
-
-Inside a virtual enviroment, some Python packages are installed to run the 
-development server, these are:
-
- * Flask
- * sphinx
- * sphinx-js
- * paho
- * psycopg
-
-#### JavaScript libraries
-
-The JavaScript libraries are:
-
- * Codemirror6
- * xterm.js
- * blockly
- * rollup
- * paho-mqtt
- 
-which are directly fetched or "compiled" with `node.js`.
-
-
-#### Setting up another default language to BIPES release
-
-By default, the main */ide.html* loads the english version, however, to link to another 
-language, like brazilian portuguese, do
-
-```
-make release lang=pt-br
-```
-
-On a server, its good to link *ide-\*.html* as *ide-\**, making the url
-friendlier.
+For more options, see the documentation.

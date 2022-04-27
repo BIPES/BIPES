@@ -32,11 +32,14 @@ class MQTTDatabase {
             return
           easyMQTT.passwd = obj.easyMQTT.passwd
           // Port 9001 for WebSockets
-          this.client = new Paho.MQTT.Client(location.hostname, 9001, `bipes${new Date()}`)
+          this.client = new Paho.MQTT.Client(
+            location.hostname,
+            9001,
+            `bipes${new Date()}`)
           this.client.onConnectionLost = () => {this.onConnectionLost()}
           this.client.onMessageArrived = (message) => {this.onMessageArrived(message)}
           this.client.connect({
-            useSSL:location.protocol === 'https:' ? true : false,
+            useSSL:easyMQTT.ssl,
             userName : "bipes",
             password : easyMQTT.passwd,
             onSuccess:() => {this.onConnect()}

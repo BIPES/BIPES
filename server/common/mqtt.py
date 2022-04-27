@@ -14,15 +14,19 @@ _db = 'MQTT'
 
 #---------------------------------------------------------------------------
 
-def listen(app, password):
-    if password is None:
+def listen(app, conf):
+    if conf['password'] is None:
         print("No password provided, skipping mqtt.")
         return
 
     app.config['MQTT_BROKER_URL'] = '127.0.0.1'
     app.config['MQTT_BROKER_PORT'] = 1883
     app.config['MQTT_USERNAME'] = 'bipes'
-    app.config['MQTT_PASSWORD'] = password.strip()
+    app.config['MQTT_PASSWORD'] = conf['password'].strip()
+    if 'ssl' in conf:
+        app.config['MQTT_SSL'] = True if conf['ssl'] == 'true' else False
+    else:
+        app.config['MQTT_SSL'] = False
     app.config['MQTT_KEEPALIVE'] = 5
     app.config['MQTT_TLS_ENABLED'] = False
 
@@ -74,7 +78,12 @@ def listen(app, password):
 def mqtt_password():
     passwd = ''
     if 'MQTT_PASSWORD' in current_app.config:
-        return {'easyMQTT':{'passwd':current_app.config['MQTT_PASSWORD']}}
+        return {
+            'easyMQTT':{
+                'passwd':current_app.config['MQTT_PASSWORD'],
+                'ssl':current_app.config['MQTT_SSL']
+            }
+        }
     else:
         return {'easyMQTT':{'passwd':False}}
 

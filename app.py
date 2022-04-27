@@ -166,14 +166,14 @@ def create_app(database="sqlite"):
     # Init mqtt subscriber
     if 'mosquitto' in conf and 'password' in conf['mosquitto']:
         try:
-            mqtt.listen(app, conf['mosquitto']['password'])
+            mqtt.listen(app, conf['mosquitto'])
         except ConnectionRefusedError:
             app.logger.warning('Mosquitto refused to connect')
     else:
         app.logger.warning('No mosquitto password in server/conf.ini, skipping')
       
     return app
-    
+
 # Generate server/conf.ini file
 def conf_ini(flask=None, mosquitto=None):
     conf = ConfigParser()
@@ -189,7 +189,10 @@ def conf_ini(flask=None, mosquitto=None):
         with open('server/conf.ini', 'w') as conf_file:
             conf.write(conf_file)
     if mosquitto is not None:
-        conf['mosquitto'] = {'password':mosquitto}
+        conf['mosquitto'] = {
+            'password':mosquitto,
+            'ssl':False
+        }
         with open('server/conf.ini', 'w') as conf_file:
             conf.write(conf_file)
 

@@ -56,7 +56,7 @@ def create_app(database="sqlite"):
     # Init mqtt subscriber
     if 'mosquitto' in conf and 'password' in conf['mosquitto']:
         try:
-            mqtt.listen(app, conf['mosquitto']['password'])
+            mqtt.listen(app, conf['mosquitto'])
         except ConnectionRefusedError:
             app.logger.warning('Mosquitto refused to connect')
     else:
