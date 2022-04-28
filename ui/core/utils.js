@@ -285,6 +285,26 @@ class Tool {
   * @param {string} pName - File name for a MicroPython library.
   */
   static getText (pName) {
+   console.log("Loading: " + pName);
+   
+   var reader = new FileReader();
+   
+   reader.addEventListener('load', (e) => {
+      var data = e.target.result;
+      var Textarea = document.getElementById('content_file_code');
+      Files.editor.getDoc().setValue(data);
+      Files.file_save_as.className = 'py';
+      var TextareaF = document.getElementById('content_file_name');
+      TextareaF.value = pName;
+   }
+   )
+   
+   if (pName == "main.py") {
+      reader.readAsText(mainBlob);
+   } else {
+      reader.readAsText(ssd1306Blob);
+   }
+   /**
     var request = new XMLHttpRequest();
         request.open('GET', '/beta2/ui/pylibs/' + pName, true);
         request.send(null);
@@ -300,6 +320,7 @@ class Tool {
         }
       }
     }
+    */
   }
   /**Makes a name for a Blockly project.
   * @param {string} code - Blockly generated code.
