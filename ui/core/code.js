@@ -642,7 +642,11 @@ Code.init = function() {
    
    if (lib == "ssd1306") {
       reader.readAsText(ssd1306Blob);
-   } else {
+    } else if (lib == "rtttl")  {
+      reader.readAsText(rtttlBlob);
+    } else if (lib == "songs")  {
+      reader.readAsText(songsBlob);
+   }  else {
       console.log("Blob file not available for: " + lib + " library.");
    }
 /**
