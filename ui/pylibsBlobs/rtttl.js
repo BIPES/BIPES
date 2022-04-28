@@ -132,14 +132,16 @@ var rtttlBlob = new Blob([
 "        outList.append((eval(value.upper()), length))\n" +
 "    return outList\n" +
 "\n" +
-"def play(pin, tune):\n" +
+"def play(pinOut, tune):\n" +
 "    tune = RTTTL(tune)\n" +
 "    if type(tune) is not list:\n" +
 "        return tune\n" +
 "    for freqc, msec in tune:\n" +
 "        msec = msec * 0.001\n" +
 "        if freqc > 0:\n" +
-"            pwm0 = PWM(pin, freq=freqc, duty=512)\n" +
+"            pwm0 = PWM(pinOut)\n" +
+"            pwm0.freq(freqc)\n" +
+"            pwm0.duty_u16(512)\n" +
 "        time.sleep(msec*0.9)\n" +
 "        if freqc > 0:\n" +
 "            pwm0.deinit()\n" +
