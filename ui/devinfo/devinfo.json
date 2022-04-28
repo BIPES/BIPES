@@ -315,7 +315,7 @@
 		    ["Pin 26 / ADC0 / GPIO26", "26"],
 		    ["Pin 27 / ADC1 / GPIO27", "27"],
 		    ["Pin 28 / ADC2 / GPIO28", "28"],
-		    ["Internal Temp Sensor / ADC3", "4"]
+		    ["Internal Temp Sensor / ADC3", "29"]
 			],
 			"serial_packet_size":"500"
 		},
@@ -330,7 +330,7 @@
 				["LED / GPIO25", "25"],
 		    ["Pin 1 / GPIO0", "0"],
 		    ["Pin 2 / GPIO1", "1"],
-		    ["Pin 4 / GPIO2", "4"],
+		    ["Pin 4 / GPIO2", "2"],
 		    ["Pin 5 / GPIO3", "3"],
 		    ["Pin 6 / GPIO4", "4"],
 		    ["Pin 7 / GPIO5", "5"],
@@ -354,7 +354,7 @@
 		    ["Pin 26 / ADC0 / GPIO26", "26"],
 		    ["Pin 27 / ADC1 / GPIO27", "27"],
 		    ["Pin 28 / ADC2 / GPIO28", "28"],
-		    ["Internal Temp Sensor / ADC3", "4"]
+		    ["Internal Temp Sensor / ADC3", "29"]
 			],
 			"serial_packet_size":"500"
 		},
