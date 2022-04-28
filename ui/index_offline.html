@@ -80,6 +80,8 @@ function checkCookie() {
   <script src="core/shortcut.js"></script>
   <script src="pylibsBlobs/main.js"></script>
   <script src="pylibsBlobs/ssd1306.js"></script>
+  <script src="pylibsBlobs/rtttl.js"></script>
+  <script src="pylibsBlobs/songs.js"></script>
 
 
   <!-- Custom Blocks for BIPES Project --> 
@@ -983,6 +985,7 @@ function eraseCookieModal(name) {
       <block type="lists_sort"></block>
     </category>
 
+
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
@@ -1100,6 +1103,99 @@ function eraseCookieModal(name) {
 
     </block>
   </category>
+
+  <category name="Sounds">
+        <label text="Sounds and RTTTL:"></label>
+        <label text="Ring Tone Text Transfer Language (RTTTL) "></label>
+        <label text="Library: "></label>
+        <button text="Install rtttl library" callbackKey="installPyLib"></button>
+        <button text="Install songs library" callbackKey="installPyLib"></button>
+        <button text="Documentation and how to connect: sound" callbackKey="loadDoc"></button>
+
+    <block type="tone"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+     <value name="frequency">
+        <shadow type="math_number">
+          <field name="NUM">1200</field>
+        </shadow>
+      </value>
+     <value name="duration">
+        <shadow type="math_number">
+          <field name="NUM">-1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="note"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+      <value name="note">
+        <shadow type="tone_type">
+          <field name="note"></field>
+        </shadow>
+      </value>
+     <value name="duration">
+        <shadow type="math_number">
+          <field name="NUM">-1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="tone_type"> </block>
+
+    <block type="rtttl_play"> 
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="pin"></field>
+        </shadow>
+      </value>
+      <value name="song">
+        <shadow type="text">
+          <field name="TEXT">Super Mario - Main Theme</field>
+        </shadow>
+      </value>
+    </block>
+
+    <label text="Songs:"></label>
+    <button text="Install songs library" callbackKey="installPyLib"></button>
+
+    <block type="text"> <field name="TEXT">Super Mario - Main Theme</field> </block>
+    <block type="text"> <field name="TEXT">Super Mario - Title Music</field> </block>
+    <block type="text"> <field name="TEXT">SMBtheme</field> </block>
+    <block type="text"> <field name="TEXT">SMBwater</field> </block>
+    <block type="text"> <field name="TEXT">SMBunderground</field> </block>
+    <block type="text"> <field name="TEXT">Picaxe</field> </block>
+    <block type="text"> <field name="TEXT">Simpsons</field> </block>
+    <block type="text"> <field name="TEXT">Indiana</field> </block>
+    <block type="text"> <field name="TEXT">TakeOnMe</field> </block>
+    <block type="text"> <field name="TEXT">Entertainer</field> </block>
+    <block type="text"> <field name="TEXT">Muppets</field> </block>
+    <block type="text"> <field name="TEXT">Xfiles</field> </block>
+    <block type="text"> <field name="TEXT">Looney</field> </block>
+    <block type="text"> <field name="TEXT">20thCenFox</field> </block>
+    <block type="text"> <field name="TEXT">Bond</field> </block>
+    <block type="text"> <field name="TEXT">MASH</field> </block>
+    <block type="text"> <field name="TEXT">StarWars</field> </block>
+    <block type="text"> <field name="TEXT">GoodBad</field> </block>
+    <block type="text"> <field name="TEXT">TopGun</field> </block>
+    <block type="text"> <field name="TEXT">A-Team</field> </block>
+    <block type="text"> <field name="TEXT">Flintstones</field> </block>
+    <block type="text"> <field name="TEXT">Jeopardy</field> </block>
+    <block type="text"> <field name="TEXT">Gadget</field> </block>
+    <block type="text"> <field name="TEXT">Smurfs</field> </block>
+    <block type="text"> <field name="TEXT">MahnaMahna</field> </block>
+    <block type="text"> <field name="TEXT">LeisureSuit</field> </block>
+    <block type="text"> <field name="TEXT">MissionImp</field> </block>
+
+  </category>
+
 
   <category name="%{BKY_CAT_MACHINE}">
       <label text="%{BKY_CAT_MACHINE}"></label>
@@ -1229,7 +1325,7 @@ function eraseCookieModal(name) {
 
     <block type="init_oled">
 
- <value name="scl">
+      <value name="scl">
         <shadow type="math_number">
           <field name="NUM">5</field>
         </shadow>
