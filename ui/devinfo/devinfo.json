@@ -291,7 +291,7 @@
 				["LED / GPIO25", "25"],
 		    ["Pin 1 / GPIO0", "0"],
 		    ["Pin 2 / GPIO1", "1"],
-		    ["Pin 4 / GPIO2", "4"],
+		    ["Pin 4 / GPIO2", "2"],
 		    ["Pin 5 / GPIO3", "3"],
 		    ["Pin 6 / GPIO4", "4"],
 		    ["Pin 7 / GPIO5", "5"],
