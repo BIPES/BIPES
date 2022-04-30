@@ -1325,15 +1325,21 @@ function eraseCookieModal(name) {
 
     <block type="init_oled">
 
+     <value name="i2c">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
       <value name="scl">
         <shadow type="math_number">
-          <field name="NUM">5</field>
+          <field name="NUM">1</field>
         </shadow>
       </value>
 
  <value name="sda">
         <shadow type="math_number">
-          <field name="NUM">4</field>
+          <field name="NUM">0</field>
         </shadow>
       </value>
 
