@@ -147,7 +147,24 @@ document.body.appendChild(el);
       </div>
       <div class="icon" id="deviceSelect">
         <select id="device_selector">
+          <option value="ESP8266">ESP8266</option>
+          <option value="ESP32S2">Franzininho Wifi (ESP32S2+CircuitPython)</option>
+          <option value="ESP8266">Wemos D1 mini</option>
+          <option value="ESP32">ESP32</option>
+          <option value="ESP32basic">ESP32 (Basic)</option>
+          <option value="M5STICK">m5stick (ESP32)</option>
+          <option value="Nucleo">ST Nucleo (mBed)</option>
+          <option value="BBBlack">Beagle Bone Black</option>
+          <option value="BBC">BBC Microbit</option>
+          <option value="RPI4">Raspberry Pi (any Linux)</option>
           <option value="RPI_Pico">Raspberry Pi Pico</option>
+          <option value="RPI_PicoETH">W5100S-EVB-Pico (RP2040)</option>
+          <option value="UNO">Arduino UNO or MEGA (Snek @ 38400)</option>
+          <option value="UNO2">Arduino UNO or MEGA (Snek @ 115200)</option>
+          <option value="EV3">Lego EV3</option>
+          <option value="pion_cansat">PION CanSat (ESP32)</option>
+          <option value="pion_cubesat">PION CubeSat (ESP32)</option>
+          <option value="vespa">RoboCore Vespa (ESP32)</option>
         </select>
         <button id="runButton" class="notext primary icon" title="..."></button>
       </div>
@@ -3892,7 +3909,7 @@ OFFLINE_devinfo_devinfo_json = `
 		    ["Pin 26 / ADC0 / GPIO26", "26"],
 		    ["Pin 27 / ADC1 / GPIO27", "27"],
 		    ["Pin 28 / ADC2 / GPIO28", "28"],
-		    ["Internal Temp Sensor / ADC3", "4"]
+		    ["Internal Temp Sensor / ADC3", "29"]
 			],
 			"serial_packet_size":"500"
 		},
@@ -3907,7 +3924,7 @@ OFFLINE_devinfo_devinfo_json = `
 				["LED / GPIO25", "25"],
 		    ["Pin 1 / GPIO0", "0"],
 		    ["Pin 2 / GPIO1", "1"],
-		    ["Pin 4 / GPIO2", "4"],
+		    ["Pin 4 / GPIO2", "2"],
 		    ["Pin 5 / GPIO3", "3"],
 		    ["Pin 6 / GPIO4", "4"],
 		    ["Pin 7 / GPIO5", "5"],
@@ -3931,7 +3948,7 @@ OFFLINE_devinfo_devinfo_json = `
 		    ["Pin 26 / ADC0 / GPIO26", "26"],
 		    ["Pin 27 / ADC1 / GPIO27", "27"],
 		    ["Pin 28 / ADC2 / GPIO28", "28"],
-		    ["Internal Temp Sensor / ADC3", "4"]
+		    ["Internal Temp Sensor / ADC3", "29"]
 			],
 			"serial_packet_size":"500"
 		},
@@ -4152,4 +4169,9 @@ OFFLINE_devinfo_devinfo_json = `
 }
 
 `;
+</script>
+<script>
+  function isOffline() {
+      return true;
+  }
 </script>
