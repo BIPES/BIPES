@@ -36,6 +36,8 @@ build it from the clone with:
 make doc
 ```
 
+Then open *docs/_build/html/index.html*.
+
 Note: requires [sphinx](https://www.sphinx-doc.org/en/master/), [sphinx-js](https://pypi.org/project/sphinx-js/) and [furo](https://github.com/pradyunsg/furo).
 
 ## Build release

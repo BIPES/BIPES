@@ -425,6 +425,7 @@ end_category
 EasyMQTT
 easymqtt_init
 easymqtt_publish_data
+easymqtt_publish_axis
 easymqtt_subscribe
 easymqtt_receive_data
 easymqtt_disconnect

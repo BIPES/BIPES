@@ -19,7 +19,14 @@ def listen(app, conf):
         print("No password provided, skipping mqtt.")
         return
 
-    app.config['MQTT_BROKER_URL'] = '127.0.0.1'
+    if 'host' in conf:
+        app.config['MQTT_BROKER_URL'] = conf['host']
+    else:
+        app.config['MQTT_BROKER_URL'] = '127.0.0.1'
+    if 'ws_port' in conf:
+        app.config['MQTT_BROKER_WS_PORT'] = int(conf['ws_port'])
+    else:
+        app.config['MQTT_BROKER_WS_PORT'] = 9001
     app.config['MQTT_BROKER_PORT'] = 1883
     app.config['MQTT_USERNAME'] = 'bipes'
     app.config['MQTT_PASSWORD'] = conf['password'].strip()
@@ -74,18 +81,20 @@ def listen(app, conf):
     return
 
 # Get current password
-@bp.route('/passwd', methods=('POST', 'GET'))
-def mqtt_password():
-    passwd = ''
+@bp.route('/public_conf', methods=('POST', 'GET'))
+def mqtt_public_conf():
+    password = ''
     if 'MQTT_PASSWORD' in current_app.config:
         return {
             'easyMQTT':{
-                'passwd':current_app.config['MQTT_PASSWORD'],
-                'ssl':current_app.config['MQTT_SSL']
+                'password':current_app.config['MQTT_PASSWORD'],
+                'ssl':current_app.config['MQTT_SSL'],
+                'host':current_app.config['MQTT_BROKER_URL'],
+                'ws_port':current_app.config['MQTT_BROKER_WS_PORT']
             }
         }
     else:
-        return {'easyMQTT':{'passwd':False}}
+        return {'easyMQTT':{'password':False}}
 
 # Get all data
 @bp.route('/<session>/grep', methods=('POST', 'GET'))

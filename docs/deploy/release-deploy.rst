@@ -285,6 +285,7 @@ Create a configuration file *server/conf.ini* in the deployed directory:
 
   [mosquitto]
   password = PUBLIC_PASSWORD
+  # Use SSL/TLS for WS
   ssl = true
 
 Replacing the flask password with a random string, PostgreSQL's password with the hashed
@@ -304,6 +305,21 @@ like shared projects, and the *bipes_mqtt* exclusively stores all received MQTT
 messages, to be accessed later (each session has its own table).
 
 That's it, at this stage, BIPES should be fully functional.
+
+Optional configuration parameters
+++++++++++++++++++++++++++++++++++++++++
+
+There is a few optional parameters that can be included to the *server/conf.ini*.
+Below, they are shown followed by its default parameters (value that they take
+when unset).
+
+.. code:: ini
+
+  [mosquitto]
+  # MQTT broker hostname
+  host = 127.0.0.1
+  # MQTT broker port for WS(S) connections
+  ws_port = 9001
 
 .. rubric:: Footnotes
 

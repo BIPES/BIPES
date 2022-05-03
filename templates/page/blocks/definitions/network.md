@@ -442,6 +442,15 @@
   </value>
 </block>
 
+# easymqtt_publish_axis
+<block type="easymqtt_publish_axis">
+  <value name="ADD0">
+    <shadow type="utime.vars">
+      <field name="VARS">ticks_ms</field>
+    </shadow>
+  </value>
+</block>
+
 # easymqtt_subscribe
 <block type="easymqtt_subscribe">
   <value name="topic">

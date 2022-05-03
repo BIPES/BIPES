@@ -530,10 +530,10 @@ Blockly.Python['mqtt_disconnect'] = function(block) {
 // EasyMQTT --------------------------------------------------------------------
 /// EasyMQTT Init
 Blockly.Python['easymqtt_init'] = function(block) {
-  var server = location.hostname;
+  var server = bipes.page.dashboard.easyMQTT.host;
   var port = '1883';
   var user = 'bipes';
-  var pass = bipes.page.dashboard.easyMQTT.passwd; // ::TODO:: Remove (allow anonymus) or template it.
+  var pass = bipes.page.dashboard.easyMQTT.password;
   var session = bipes.page.dashboard.easyMQTT.session;
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
@@ -548,7 +548,23 @@ Blockly.Python['easymqtt_publish_data'] = function(block) {
 
   Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
 
-  var code = 'easymqtt_client.publish(easymqtt_session + "/" + ' + topic + ', str(' + data + '))\nprint("EasyMQTT Publish - Session:",easymqtt_session,"Topic:",' + topic + ',"Value:",str(' + data + '))\n'
+  var code = `easymqtt_client.publish(easymqtt_session + "/" + ${topic}, str(${data}))\n`
+  return code;
+};
+
+/// EasyMQTT Axis Data
+Blockly.Python['easymqtt_publish_axis'] = function(block) {
+  var topic = block.getFieldValue('topic');
+  var elements = new Array(block.itemCount_);
+  for (var i = 0; i < block.itemCount_; i++) {
+    elements[i] = Blockly.Python.valueToCode(block, 'ADD' + i,
+        Blockly.Python.ORDER_NONE) || 'None';
+  }
+
+  Blockly.Python.definitions_['import_umqtt.robust'] = 'import umqtt.robust';
+
+  var code = `easymqtt_client.publish(easymqtt_session + "/${topic}", ','.join([str(${elements.join('), str(')})]))\n`
+
   return code;
 };
 

@@ -25,7 +25,7 @@ class DataStorage {
   /** Checks the income data for useful chuncks, like ``$BIPES-DATA:`` for plotting */
   write (chunk){
     this.buffer += chunk
-    let re = /\r\n\$(.*):(.*)\r\n/
+    let re = /\r\n(?:>>> )?\$(.*):(.*)\r\n/
     let match_
 
     if (re.test(this.buffer)) {
