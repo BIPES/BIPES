@@ -321,6 +321,10 @@ when unset).
   # MQTT broker port for WS(S) connections
   ws_port = 9001
 
+The mosquitto host parameter only affects the Mosquitto broker, therefore, the
+platform will still use the PostgreSQL's host to reach the messages history.
+
+
 .. rubric:: Footnotes
 
 .. [#f1] ``apache2`` on Ubuntu/Debian/OpenSUSE and ``httpd`` on Fedora.

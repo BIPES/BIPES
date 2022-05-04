@@ -24,11 +24,29 @@ class Actions {
 	 * @param {Object} obj - Grid object.
 	 */
 	init (data, obj){
+	  let defu = Actions.defaults(data.type)
+	  let defuKeys = Object.keys(defu),
+	      setupKeys = Object.keys(data.setup)
+	  // Create missing or new props with default values
+	  for (const key in defu){
+	    if (!setupKeys.includes(key))
+	      data.setup[key] = defu[key]
+	  }
+	  // Remove deprecated props
+	  for (const key in data.setup){
+	    if (!defuKeys.includes(key))
+	      delete data.setup[key]
+	  }
+	  // Generate setup panel
 		for (const key in data.setup) {
 			let _action = new Action(data.setup[key], data, key, obj)
-			this.actions.push(_action)
-			let $ = this.$
-			$.container.append(_action.$.action)
+			if (Object.keys(_action.$).length !== 0){
+			  this.actions.push(_action)
+			  let $ = this.$
+			  $.container.append(_action.$.action)
+			} else {
+			  console.log(`Dashboard: When opening setup panel, ${key} was ignored.`)
+			}
 		}
 	}
 	deinit (){
@@ -42,8 +60,10 @@ class Actions {
 	    'switch': {
 	      title: 'input',
 	      subtitle: 'input',
-	      onUrl: 'input',
-	      offUrl: 'input',
+	      target: 'dropdown',
+	      topic: 'input',
+	      messageOn: 'input',
+	      messageOff: 'input',
 	    },
 	    'chart': {
 	      topic: 'input',
@@ -67,10 +87,12 @@ class Actions {
 	  switch (plugin){
 	    case 'switch':
 	      return {
-	        title: 'My button',
+          target: 'easyMQTT',
+	        title: '',
 	        subtitle: '',
-	        onUrl: '',
-	        offUrl: ''
+	        topic: 'iot_button',
+	        messageOn: 'turn_on',
+	        messageOff: 'turn_off',
 	        }
 	      break
 	    case 'stream':
@@ -98,16 +120,18 @@ class Actions {
 	static dict (plugin, key){
 	  let _dict = {
 	    'switch': {
+	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
 	      title: 'Title',
 	      subtitle: 'Subtitle',
-	      onUrl: 'URL on',
-	      offUrl: 'URL off',
+	      topic: 'Topic',
+	      messageOn: 'Switch on message',
+	      messageOff: 'Switch off message',
 	    },
 	    'chart': {
 	      topic: 'Topic',
 	      chartType: ['Chart type', ['line','scatter','bar','pie','radar']],
 	      title: 'Title',
-	      source: ["Database", ["localStorage","easyMQTT"]],
+	      source: ["Target", ["localStorage","easyMQTT"]],
 	      labels: 'Labels',
 	      timeseries: 'Is Unix timestamp',
 	      limitPoints: 'Limit to last datapoints',
@@ -220,8 +244,9 @@ class Action {
 			    switch (this.key){
 			      case 'title':
 			      case 'subtitle':
-			      case 'onUrl':
-			      case 'offUrl':
+			      case 'topic':
+			      case 'messageOn':
+			      case 'messageOff':
               data.setup[this.key] = str
           		Switches.regen(obj, data)
               bipes.page.dashboard.commit()
@@ -245,6 +270,13 @@ class Action {
         		Charts.regen(obj.charts, data)
             bipes.page.dashboard.commit()
 		        break
+   		}
+		  case 'switch':
+		    switch (this.key){
+		      case 'target':
+            data.setup.target = str,
+            bipes.page.dashboard.commit()
+        		break
    		}
    		case 'stream':
    		  switch (this.key){

@@ -1261,6 +1261,20 @@ class DataStorageManager {
       }
     }
   }
+  /** Called when MQTT connection is established */
+  onConnect (){
+    this.$.statusMQTTButton.classList.add('on')
+    this.$.statusMQTTButton.classList.remove('off')
+    this.$.mqttH2.classList.add('on')
+    this.$.mqttH2.classList.remove('off')
+  }
+  /** Called when MQTT connection lost */
+  onConnectionLost (){
+    this.$.statusMQTTButton.classList.remove('on')
+    this.$.statusMQTTButton.classList.add('off')
+    this.$.mqttH2.classList.remove('on')
+    this.$.mqttH2.classList.add('off')
+  }
 }
 
 export let dashboard = new Dashboard()

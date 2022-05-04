@@ -220,13 +220,13 @@ class MQTTDatabase {
   }
   /** Triggered when MQTT connection is established */
   onConnect (){
-    console.log('Dashboard: MQTT connection established.')
+    bipes.page.dashboard.storagemanager.onConnect()
     this.isConnected = true
     this.subscribe()
   }
   /** Triggered when MQTT connection lost */
   onConnectionLost (){
-    console.log('Dashboard: MQTT connection lost.')
+    bipes.page.dashboard.storagemanager.onConnectionLost()
     this.isConnected = false
     this.topics.subscribed = []
 

@@ -188,10 +188,10 @@ section#dashboard #grid #silk {
   z-index: 1;
 }
 body.dark section#dashboard #grid.on #silk {
-  background: rgba(0,0,0,.4);
+  background: rgba(0,0,0,.5);
 }
 body.light section#dashboard #grid.on #silk {
-  background: rgba(225,225,225,.5);
+  background: rgba(125,125,125,.5);
 }
 section#dashboard #grid .muuri-item.switch button.press {
   height: 100%;
@@ -463,7 +463,23 @@ section#dashboard #storageManager span > div {
 section#dashboard #storageManager span > div:last-child {
 	border-bottom: none !important;
 }
-
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+div#status-bar button#mqtt:not(.on):not(.off){
+  animation: pulse 1s infinite;
+}
 div#status-bar button#mqtt:before {
   background-position: left calc(-1.25rem*40) top;
+}
+div#status-bar button#mqtt.off:before {
+  background-position: left calc(-1.25rem*40) bottom;
 }

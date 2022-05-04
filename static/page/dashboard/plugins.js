@@ -6,6 +6,7 @@ export {Charts, Streams, Switches}
 
 import {dataStorage} from './datastorage.js'
 import {databaseMQTT} from './easymqtt.js'
+import {easyMQTT} from './easymqtt.js'
 
 /** Chart plugin, powered by chart.js */
 class Charts {
@@ -159,29 +160,40 @@ class Switches {
   constructor (data, dom){
     this.sid = data.sid
     this.dom = dom
-    this.onUrl = data.setup.onUrl
-    this.offUrl = data.setup.offUrl
+    this.target = data.setup.target
+    this.topic = data.setup.topic
+    this.messageOn = data.setup.messageOn
+    this.messageOff = data.setup.messageOff
     this.state = false
   }
   destroy () {
-    this.onUrl = ''
-    this.offUrl = ''
+    this.target = undefined
+    this.topic = ''
+    this.messageOn = ''
+    this.messageOff = ''
     this.state = false
     this.dom.removeChilds()
 
     delete this
   }
   command () {
-    if (!this.state)
-      Get.request(this.onUrl, () => {
+    if (this.target == 'easyMQTT'){
+      if (!this.state)
+        databaseMQTT.client.send(`${easyMQTT.session}/${this.topic}`, this.messageOn, 0, false),
         this.dom.$.classList.add('on')
-        this.state = true
-      })
-    else
-      Get.request(this.offUrl, () => {
+      else
+        databaseMQTT.client.send(`${easyMQTT.session}/${this.topic}`, this.messageOff, 0, false),
         this.dom.$.classList.remove('on')
-        this.state = false
-      })
+      this.state = !this.state
+    } else if (this.target == 'REPL'){
+      if (!this.state)
+        databaseMQTT.client.send(`${easyMQTT.session}/${this.topic}`, this.messageOn, 0, false),
+        this.dom.$.classList.add('on')
+      else
+        databaseMQTT.client.send(`${easyMQTT.session}/${this.topic}`, this.messageOff, 0, false),
+        this.dom.$.classList.remove('on')
+      this.state = !this.state
+    }
   }
   static switch (data, dom) {
     let _Switches = new Switches (data, dom)
