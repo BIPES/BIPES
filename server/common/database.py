@@ -22,7 +22,6 @@ def _s(sql):
     else:
         return sql
 
-
 # Replace in time columns to return unix time
 def unixtime(cols):
   _cols = []
@@ -61,9 +60,17 @@ def close(e=None):
         db.close()
 
 # Exec sql
-def exec(__db, sql):
+def exec(__db, _sql, identifier = None):
     db = get_db(__db)
-    data = db.execute(_s(sql))
+    if identifier is None:
+        data = db.execute(_sql)
+    else:
+        if current_app.config['DATABASE'] == 'postgresql':
+            from psycopg import sql
+            data = db.execute(sql.SQL(_sql).format(sql.Identifier(identifier)))
+        else:
+            from psycopg import sql
+            data = db.execute(_sql.format(identifier))
     db.commit()
     return
 
@@ -71,11 +78,11 @@ def exec(__db, sql):
 def has_table(__db, table_name):
     db = get_db(__db)
     if current_app.config['DATABASE'] == 'sqlite':
-        sql = "select count(name) from sqlite_master where type='table' and name = %s"
+        _sql = "select count(name) from sqlite_master where type='table' and name = %s"
     elif current_app.config['DATABASE'] == 'postgresql':
-        sql = "select count(table_name) from information_schema.tables where table_schema like 'public' and table_type like 'BASE TABLE' and table_name = %s"
+        _sql = "select count(table_name) from information_schema.tables where table_schema like 'public' and table_type like 'BASE TABLE' and table_name = %s"
 
-    data = db.execute(_s(sql), table_name).fetchone()
+    data = db.execute(_s(_sql), table_name).fetchone()
 
     exist = False
     if data[0] == 1:
@@ -87,15 +94,21 @@ def select(__db, table_name, columns, *args):
     db = get_db(__db)
     str_c = ', '.join(columns)
 
-    sql = f'select {str_c} from {table_name}'
+    _sql = ' order by lastEdited desc'
     if len(args) == 2:
-        sql += f' where lastEdited < %s'
-    sql += ' order by lastEdited desc'
-    if len(args) == 2:
-        sql += f' limit %s'
-        data = db.execute(_s(sql), (args[0], args[1])).fetchall()
+        _sql = ' where lastEdited < %s' + _sql + ' limit %s'
+
+    if current_app.config['DATABASE'] == 'postgresql':
+        from psycopg import sql
+        _sql = f'select {str_c} from ' + '{} ' + _sql
+        _sql = sql.SQL(_sql).format(sql.Identifier(table_name))
     else:
-        data = db.execute(_s(sql)).fetchall()
+        _sql = f'select {str_c} from {table_name}' + _sql
+
+    if len(args) == 2:
+        data = db.execute(_s(_sql), (args[0], args[1])).fetchall()
+    else:
+        data = db.execute(_s(_sql)).fetchall()
 
     db.close()
 
@@ -108,15 +121,21 @@ def select_where(__db, table_name, where, columns, *args):
 
     str_c = ', '.join(columns)
 
-    sql = f'select {str_c} from {table_name} where {where[0]} = %s'
+    _sql = ' order by lastEdited desc'
     if len(args) == 2:
-        sql += f' where lastEdited < %s'
-    sql += ' order by lastEdited desc'
-    if len(args) == 2:
-        sql += f' limit %s'
-        data = db.execute(_s(sql), (where[1], args[0], args[1])).fetchall()
+        _sql = ' where lastEdited < %s' + _sql + ' limit %s'
+
+    if current_app.config['DATABASE'] == 'postgresql':
+        from psycopg import sql
+        _sql = f'select {str_c} from ' + '{}' + f' where {where[0]} = %s' + _sql
+        _sql = sql.SQL(_sql).format(sql.Identifier(table_name))
     else:
-        data = db.execute(_s(sql), (where[1],)).fetchall()
+        _sql = f'select {str_c} from {table_name} where {where[0]} = %s' + _sql
+
+    if len(args) == 2:
+        data = db.execute(_s(_sql), (where[1], args[0], args[1])).fetchall()
+    else:
+        data = db.execute(_s(_sql), (where[1],)).fetchall()
 
     db.close()
 
@@ -129,14 +148,19 @@ def select_distinct(__db, table_name, columns, *args):
 
     str_c = ', '.join(columns)
 
-    sql = f'select distinct {str_c} from {table_name}'
-    if len(args) == 2:
-        sql += f' where lastEdited < %s'
-    if len(args) == 2:
-        sql += f' limit %s'
-        data = db.execute(_s(sql), (args[0], args[1])).fetchall()
+    if current_app.config['DATABASE'] == 'postgresql':
+        from psycopg import sql
+        __sql = f'select distinct {str_c}' + ' from {}'
+        _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
     else:
-        data = db.execute(_s(sql)).fetchall()
+        _sql = f'select distinct {str_c} from {table_name}'
+    if len(args) == 2:
+        _sql += f' where lastEdited < %s'
+    if len(args) == 2:
+        _sql += f' limit %s'
+        data = db.execute(_s(_sql), (args[0], args[1])).fetchall()
+    else:
+        data = db.execute(_s(_sql)).fetchall()
 
     db.close()
 
@@ -147,8 +171,15 @@ def fetch(__db, table_name, columns, where):
     db = get_db(__db)
 
     str_c = ', '.join(columns)
-    sql = f'select {str_c} from {table_name} where {where[0]} = %s'
-    data = db.execute(_s(sql), (where[1],)).fetchone()
+
+    if current_app.config['DATABASE'] == 'postgresql':
+        from psycopg import sql
+        __sql = f'select {str_c} from ' + '{}' + ' where {where[0]} = %s'
+        _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
+    else:
+        _sql = f'select {str_c} from {table_name} where {where[0]} = %s'
+
+    data = db.execute(_s(_sql), (where[1],)).fetchone()
     db.close()
 
     return (table_name, columns, data)
@@ -160,8 +191,14 @@ def insert(__db, table_name, columns, values):
     str_c = ', '.join(columns)
     q_mark = ', '.join('%s' for c in columns)
 
-    sql = f'insert into {table_name} ({str_c}) values ({q_mark})'
-    db.execute(_s(sql), values)
+    if current_app.config['DATABASE'] == 'postgresql':
+        from psycopg import sql
+        __sql = 'insert into {}' + f' ({str_c}) values ({q_mark})'
+        _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
+    else:
+        _sql = f'insert into {table_name} ({str_c}) values ({q_mark})'
+
+    db.execute(_s(_sql), values)
     db.commit()
     db.close()
 
@@ -174,8 +211,14 @@ def delete(__db, table_name, columns, values):
     str_c = ', '.join(columns)
     q_mark = ', '.join('%s' for c in columns)
 
-    sql = f'delete from {table_name} where ({str_c}) = ({q_mark})'
-    db.execute(_s(sql), values)
+    if current_app.config['DATABASE'] == 'postgresql':
+        from psycopg import sql
+        __sql = 'delete from {}' + f' where ({str_c}) = ({q_mark})'
+        _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
+    else:
+        _sql = f'delete from {table_name} where ({str_c}) = ({q_mark})'
+
+    db.execute(_s(_sql), values)
 
     db.commit()
     db.close()

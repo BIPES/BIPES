@@ -995,12 +995,16 @@ class DataStorageManager {
   /** Change easyMQTT session*/
   changeMQTTSession (){
     let session = this.$.mqttInput.value
+    session = session == '' ? Tool.SID() : session
+    session = /[0-9]/.test(session[0]) ?
+      `${Tool.randomChar()}${session.substring(1)}` : session
+    session = session.substring(0,16)
+
     command.dispatch([this.parent, this], 'changedMQTTSession', [session])
     storage.set('mqtt_session', session)
   }
   /** Changed easyMQTT session*/
   _changedMQTTSession (session){
-    session = session == '' ? Tool.SID() : session
 
     easyMQTT.session = session
     this.$.statusMQTT.innerText = easyMQTT.session

@@ -11,13 +11,17 @@ class Tool {
   * Generate a unique identifier.
   */
   static UID (){
-    return (+new Date).toString(36) + Math.random().toString(36).substring(2)
+    return this.randomChar() + (+new Date).toString(36) + Math.random().toString(36).substring(3)
   }
  /**
   * Generate a small non-timed identifier.
   */
   static SID (){
-    return (Math.random()).toString(36).substring(2,8)
+    return this.randomChar() + (Math.random()).toString(36).substring(3,8)
+  }
+  static randomChar(){
+    const alphabet = "abcdefghijklmnopqrstuvwxyz"
+    return alphabet[Math.floor(Math.random() * alphabet.length)]
   }
   /**
    * Return param from url search parami, if unset, return the default.

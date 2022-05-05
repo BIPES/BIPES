@@ -60,7 +60,7 @@ def listen(app, conf):
         with app.app_context():
             db = dbase.connect(_db)
             if not dbase.has_table(db, (session,)):
-              dbase.exec(db, sql_macro_table.format(session))
+                dbase.exec(db, sql_macro_table, session)
 
             if app.config['DATABASE'] == 'sqlite':
                 import uuid
