@@ -174,7 +174,7 @@ def fetch(__db, table_name, columns, where):
 
     if current_app.config['DATABASE'] == 'postgresql':
         from psycopg import sql
-        __sql = f'select {str_c} from ' + '{}' + ' where {where[0]} = %s'
+        __sql = f'select {str_c} from ' + '{}' + f' where {where[0]} = %s'
         _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
     else:
         _sql = f'select {str_c} from {table_name} where {where[0]} = %s'
