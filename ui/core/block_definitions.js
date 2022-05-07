@@ -10796,7 +10796,102 @@ Blockly.Blocks['python_try_catch'] = {
   }
 };
 
+// Motors
+Blockly.Blocks['motor_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init Motors");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+          "media/motor.jpg",
+          55,
+          55,
+          "*"));
+    this.appendValueInput("right_forward")
+      .setCheck(null)
+      .appendField("Right Forward");
+    this.appendValueInput("right_reverse")
+      .setCheck(null)
+      .appendField("Right Reverse");                  
+    this.appendValueInput("left_forward")
+      .setCheck(null)
+      .appendField("Left Forward");
+    this.appendValueInput("left_reverse")
+      .setCheck(null)
+      .appendField("Left Reverse");                  
+  }
+}
 
+Blockly.Blocks['forward_fast'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Forward Quickly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['forward_slow'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Forward Slowly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['reverse_fast'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Backward Quickly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['reverse_slow'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Backward Slowly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['left'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Turn Left");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['right'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Turn Right");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['stop'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Stop!");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
 
 //neopixel
 Blockly.Blocks['neopixel_init'] = {
