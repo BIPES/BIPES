@@ -5620,7 +5620,99 @@ Blockly.Python['python_try_catch'] = function(block) {
   return code;
 };
 
+Blockly.Python['motor_init'] = function(block) {
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+  
+	var value_left_forward_pin = Blockly.Python.valueToCode(block, 'left_forward', Blockly.Python.ORDER_NONE);
+	var value_left_reverse_pin = Blockly.Python.valueToCode(block, 'left_reverse', Blockly.Python.ORDER_NONE);
+	var value_right_forward_pin = Blockly.Python.valueToCode(block, 'right_forward', Blockly.Python.ORDER_NONE);
+	var value_right_reverse_pin = Blockly.Python.valueToCode(block, 'right_reverse', Blockly.Python.ORDER_NONE);
+  
+	var code = 'FULL_POWER_LEVEL = 65024\n';
+	code = code + `right_forward = PWM(Pin(${value_right_forward_pin}))\n`;
+	code = code + `right_reverse = PWM(Pin(${value_right_reverse_pin}))\n`;
+	code = code + `left_forward = PWM(Pin(${value_left_forward_pin}))\n`;
+	code = code + `left_reverse = PWM(Pin(${value_left_reverse_pin}))\n`;
+	code = code + '\n';	
+	code = code + 'def forward():\n';	
+	code = code + '	right_reverse.duty_u16(0)\n';	
+	code = code + '	left_reverse.duty_u16(0)\n';
+	code = code + '	right_forward.duty_u16(FULL_POWER_LEVEL)\n';
+	code = code + '	left_forward.duty_u16(FULL_POWER_LEVEL)\n';
+	code = code + '\n';	
+	code = code + 'def forwardSlow():\n';	
+	code = code + '	right_reverse.duty_u16(0)\n';	
+	code = code + '	left_reverse.duty_u16(0)\n';
+	code = code + '	right_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
+	code = code + '	left_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
+	code = code + '\n';	
+	code = code + 'def reverse():\n';	
+	code = code + '	right_forward.duty_u16(0)\n';
+	code = code + '	left_forward.duty_u16(0)\n';
+	code = code + '	right_reverse.duty_u16(FULL_POWER_LEVEL)\n';	
+	code = code + '	left_reverse.duty_u16(FULL_POWER_LEVEL)\n';
+	code = code + '\n';	
+	code = code + 'def reverseSlow():\n';	
+	code = code + '	right_forward.duty_u16(0)\n';
+	code = code + '	left_forward.duty_u16(0)\n';
+	code = code + '	right_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';	
+	code = code + '	left_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';
+	code = code + '\n';	
+	code = code + 'def left():\n';	
+	code = code + '	left_forward.duty_u16(0)\n';
+	code = code + '	right_reverse.duty_u16(0)\n';
+	code = code + '	left_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';	
+	code = code + '	right_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
+	code = code + '\n';	
+	code = code + 'def right():\n';	
+	code = code + '	right_forward.duty_u16(0)\n';
+	code = code + '	left_reverse.duty_u16(0)\n';
+	code = code + '	right_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';	
+	code = code + '	left_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
+	code = code + '\n';	
+	code = code + 'def stop():\n';	
+	code = code + '	right_forward.duty_u16(0)\n';
+	code = code + '	left_forward.duty_u16(0)\n';
+	code = code + '	right_reverse.duty_u16(0)\n';	
+	code = code + '	left_reverse.duty_u16(0)\n';
+	return code;
+  };
+  
+Blockly.Python['forward_fast'] = function(block) {
+	var code = 'forward()\n';
+	return code;
+}
 
+Blockly.Python['forward_slow'] = function(block) {
+	var code = 'forwardSlow()\n';
+	return code;
+}
+
+Blockly.Python['reverse_fast'] = function(block) {
+	var code = 'reverse()\n';
+	return code;
+}
+
+Blockly.Python['reverse_slow'] = function(block) {
+	var code = 'reverseSlow()\n';
+	return code;
+}
+
+Blockly.Python['left'] = function(block) {
+	var code = 'left()\n';
+	return code;
+}
+
+Blockly.Python['right'] = function(block) {
+	var code = 'right()\n';
+	return code;
+}
+
+Blockly.Python['stop'] = function(block) {
+	var code = 'stop()\n';
+	return code;
+}
 
 Blockly.Python['neopixel_color_numbers'] = function(block) {
   var value_red = Blockly.Python.valueToCode(block, 'red', Blockly.Python.ORDER_ATOMIC);
