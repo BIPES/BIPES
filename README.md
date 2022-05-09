@@ -8,7 +8,7 @@ To build BIPES, run
 make
 ```
 
-and follow the prompts.
+in the repository's root directory and follow the prompts.
 
 It will install the dependencies, fetch and "compile" 
 some JavaScript libraries and run a development server on port 5001.
@@ -23,6 +23,13 @@ make run
 
 In development mode, different languages are acessed by including the language 
 code to the link, e.g. http://127.0.0.1:5001/ide-de loads the IDE in german.
+
+### Windows notes
+
+On Windows, please use [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install#install-wsl-command).
+
+Install the usual stuff like `make` and `git` in WSL, then proceed with `make` in the
+repository root directory.
 
 ## Documentation
 

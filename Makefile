@@ -9,11 +9,10 @@ RED=\033[0;31m
 NC=\033[0m
 
 DEPS = python pip npm mosquitto
-UBUNTU_DEPS = python python3-pip npm mosquitto
+UBUNTU_DEPS = python3 python3-pip python3-venv npm mosquitto
 FEDORA_DEPS = python3 python3-pip npm mosquitto
 SUSE_DEPS = python python3-pip npm17 mosquitto
 NPM_DEPS = jsdoc
-
 
 all: yn-dependencies umd-deps unpkg blockly pip database conf-ini yn-mosquitto licenses clean greeting run
 
@@ -110,7 +109,7 @@ pip:
 	flask-mqtt paho psycopg sphinx sphinx-js furo$(NC).\n"
 	@python3 -m venv venv
 	@. venv/bin/activate && \
-	pip install Flask flask-mqtt paho sphinx sphinx-js furo && \
+	pip install Flask flask-mqtt paho-mqtt sphinx sphinx-js furo && \
 	exit
 
 database:
@@ -141,26 +140,48 @@ yn-mosquitto:
 MOSQ_BIPES_CONF = /etc/mosquitto/conf.d/bipes.conf
 
 mosquitto:
+ifndef WSLENV
 	@read -s -p "New password (mosquitto): " pwd ; \
 	printf "\n" ; \
 	sudo mosquitto_passwd -c -b /etc/mosquitto/conf.d/passwd bipes $$pwd ; \
 	. venv/bin/activate && \
 	python -c "import app; app.conf_ini(mosquitto='$$pwd')" && \
 	exit
-	@sudo bash -c 'printf  "allow_anonymous false\nlistener 1883\n\nlistener 9001\nprotocol websockets\npassword_file /etc/mosquitto/conf.d/passwd\npersistence true\npersistence_location /var/lib/mosquitto/\n\nlog_dest file /var/log/mosquitto/mosquitto.log" > $(MOSQ_BIPES_CONF)'
-	@sudo systemctl restart mosquitto
+else
+	@echo "$(RED)Attention:$(NC) Please manually add a mosquitto password to server/conf.ini and /etc/mosquitto/conf.d/passwd on WSL2."
+endif
+	@sudo bash -c 'printf  "allow_anonymous false\nlistener 1883\n\nlistener 9001\nprotocol websockets\npassword_file /etc/mosquitto/conf.d/passwd" > $(MOSQ_BIPES_CONF)'
 	@printf "\n"
-	@read -p "Enable mosquitto service? (Open port 1883 and start with the OS) [y/N]: " mos2 ; \
+ifndef WSLENV
+	@read -p "Open port 1883 and 9001? (\"N\" will close them if already open) [y/N]: " mos2 ; \
 	if [ "$$mos2" = 'y' ] || [ "$$mos2" = 'Y' ] ; \
 	then \
 	sudo sudo firewall-cmd --zone=public --add-port=1883/tcp && \
-	sudo firewall-cmd --runtime-to-permanent && \
-	sudo systemctl enable mosquitto ; \
+	sudo sudo firewall-cmd --zone=public --add-port=9001/tcp && \
+	sudo firewall-cmd --runtime-to-permanent ; \
 	else \
 	sudo sudo firewall-cmd --zone=public --remove-port=1883/tcp && \
-	sudo firewall-cmd --runtime-to-permanent && \
+	sudo sudo firewall-cmd --zone=public --remove-port=9001/tcp && \
+	sudo firewall-cmd --runtime-to-permanent ; \
+	fi
+endif
+ifdef WSLENV
+	@read -p "Start mosquitto service? (\"N\" will stop it if already running) [y/N]: " mos3 ; \
+	if [ "$$mos3" = 'y' ] || [ "$$mos3" = 'Y' ] ; \
+	then \
+	sudo service mosquitto start; \
+	else \
+	sudo service mosquitto stop ; \
+	fi
+else
+	@read -p "Enable mosquitto service? (\"N\" will disable it if already enabled) [y/N]: " mos3 ; \
+	if [ "$$mos3" = 'y' ] || [ "$$mos3" = 'Y' ] ; \
+	then \
+	sudo systemctl enable mosquitto ; \
+	else \
 	sudo systemctl disable mosquitto ; \
 	fi
+endif
 
 licenses:
 	@mkdir -p licenses
