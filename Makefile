@@ -14,6 +14,8 @@ FEDORA_DEPS = python3 python3-pip npm mosquitto
 SUSE_DEPS = python python3-pip npm17 mosquitto
 NPM_DEPS = jsdoc
 
+BLOCKLY_VERSION = 7.20211209.4
+
 all: yn-dependencies umd-deps unpkg blockly pip database conf-ini yn-mosquitto licenses clean greeting run
 
 yn-dependencies:
@@ -52,27 +54,27 @@ greeting:
 umd-deps:
 	@printf "[2/7] Fetching and building $(PURPLE)rollup$(NC) amd \
 	$(PURPLE)codemirror$(NC) with npm.\n"
-	@npm install rollup \
-	rollup-plugin-terser \
-	@rollup/plugin-node-resolve \
-	@codemirror/view \
-	@codemirror/state \
-	@codemirror/history \
-	@codemirror/fold \
-	@codemirror/language \
-	@codemirror/gutter \
-	@codemirror/commands \
-	@codemirror/matchbrackets \
-	@codemirror/closebrackets \
-	@codemirror/search \
-	@codemirror/autocomplete \
-	@codemirror/comment \
-	@codemirror/rectangular-selection \
-	@codemirror/highlight \
-	@codemirror/lint \
-	@codemirror/lang-python \
-	@codemirror/lang-markdown \
-	@codemirror/theme-one-dark
+	@npm install rollup@2.70.1 \
+	rollup-plugin-terser@7.0.2 \
+	@rollup/plugin-node-resolve@13.1.3 \
+	@codemirror/view@0.19.47 \
+	@codemirror/state@0.19.9 \
+	@codemirror/history@0.19.2 \
+	@codemirror/fold@0.19.3 \
+	@codemirror/language@0.19.8 \
+	@codemirror/gutter@0.19.9 \
+	@codemirror/commands@0.19.8 \
+	@codemirror/matchbrackets@0.19.4 \
+	@codemirror/closebrackets@0.19.1 \
+	@codemirror/search@0.19.9 \
+	@codemirror/autocomplete@0.19.14 \
+	@codemirror/comment@0.19.1 \
+	@codemirror/rectangular-selection@0.19.1 \
+	@codemirror/highlight@0.19.7 \
+	@codemirror/lint@0.19.6 \
+	@codemirror/lang-python@0.19.4 \
+	@codemirror/lang-markdown@0.19.6 \
+	@codemirror/theme-one-dark@0.19.1
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 unpkg:
@@ -87,7 +89,7 @@ unpkg:
 blockly:
 	@printf "[4/7] Fetching $(PURPLE)blockly$(NC).\n"
 	@rm -rf blockly
-	@git clone https://github.com/google/blockly.git --depth 1
+	@git clone -b $(BLOCKLY_VERSION) https://github.com/google/blockly.git --depth 1
 	@cp blockly/blockly_compressed.js static/libs/blockly.umd.js
 	@cp blockly/blocks_compressed.js static/page/blocks/blocks/logic.umd.js
 	@mkdir -p static/page/blocks/msg
