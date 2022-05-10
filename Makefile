@@ -150,7 +150,12 @@ ifndef WSLENV
 	python -c "import app; app.conf_ini(mosquitto='$$pwd')" && \
 	exit
 else
-	@echo "$(RED)Attention:$(NC) Please manually add a mosquitto password to server/conf.ini and /etc/mosquitto/conf.d/passwd on WSL2."
+	@KEY2=$$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 10) ; \
+	echo "$(RED)Attention:$(NC) Password $$KEY2 auto set for Mosquitto under WSL2, you can change at server/conf.ini and /etc/mosquitto/conf.d/passwd." && \
+	sudo bash -c 'printf  "$$KEY2" > /etc/mosquitto/conf.d/passwd' && \
+	. venv/bin/activate && \
+	python -c "import app; app.conf_ini(mosquitto='$$KEY2')" && \
+	exit 
 endif
 	@sudo bash -c 'printf  "allow_anonymous false\nlistener 1883\n\nlistener 9001\nprotocol websockets\npassword_file /etc/mosquitto/conf.d/passwd" > $(MOSQ_BIPES_CONF)'
 	@printf "\n"
