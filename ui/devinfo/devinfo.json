@@ -937,7 +937,7 @@
 			"speed":"115200",
 			"boardID":"Maker Pi with RP2040", 
 			"img":"devinfo/media/MAKER-Pi-RP2040-Layout.png",
-			"description":"",
+			"description":"Maker Pi RP2040 used with the OptumBot",
 			"toolbox":"makerpi.xml",
 			"pinout": [
 		    ["Grove 1 / GPIO0", "0"],
@@ -957,6 +957,7 @@
 			["NeoPixel / GPIO18", "18"],
 		    ["Switch / GP20", "20"],
 		    ["Switch / GP21", "21"],
+			["Buzzer" / GP22, "22"],
 		    ["Motor 1 / GP8", "8"],
 		    ["Motor 1 / GP9", "9"],
 		    ["Motor 2 / GP10", "10"],
