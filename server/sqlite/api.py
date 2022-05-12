@@ -8,14 +8,14 @@ create table projects (
   auth varchar(18) not null,
   author varchar(25) not null,
   name varchar(100) not null,
-  createdAt datetime not null  default(cast((julianday('now') - 2440587.5)*86400 as integer)),
-  lastEdited datetime not null default(cast((julianday('now') - 2440587.5)*86400 as integer)),
+  createdAt  numeric(16,6) not null default(cast((julianday('now') - 2440587.5)*86400 as numeric(16,6))),
+  lastEdited numeric(16,6) not null default(cast((julianday('now') - 2440587.5)*86400 as numeric(16,6))),
   data text not null
 );
 
 create trigger update_projects update of author, name, data on projects
 begin
-  update projects set lastEdited = cast((julianday('now') - 2440587.5)*86400 as integer) where auth = old.auth;
+  update projects set lastEdited = cast((julianday('now') - 2440587.5)*86400 as numeric(16,6)) where auth = old.auth;
 end;
 """
 

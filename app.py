@@ -9,7 +9,7 @@ import re
 from configparser import ConfigParser
 
 app_name = 'BIPES'
-app_version = '3.0.5'
+app_version = '3.0.6'
 
 # Default language on server mode
 # Note: this is overwritten by the Makefile's lang arg on the "make release" command.
@@ -64,6 +64,7 @@ lang_str = [
 
 # Create app for developemnt mode
 def create_app(database="sqlite"):
+    assert database == "sqlite" or database == "postgresql", 'Invalid database engine "' + database + '"'
 
     app = Flask(__name__)
 
@@ -165,10 +166,12 @@ def create_app(database="sqlite"):
 
     # Init mqtt subscriber
     if 'mosquitto' in conf and 'password' in conf['mosquitto']:
-        try:
-            mqtt.listen(app, conf['mosquitto'])
-        except ConnectionRefusedError:
-            app.logger.warning('Mosquitto refused to connect')
+        # Run only in main process
+        if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+            try:
+                mqtt.listen(app, conf['mosquitto'])
+            except ConnectionRefusedError:
+                app.logger.warning('Mosquitto refused to connect')
     else:
         app.logger.warning('No mosquitto password in server/conf.ini, skipping')
       

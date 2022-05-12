@@ -8,6 +8,8 @@ import os
 
 # Create app for developemnt mode
 def create_app(database="sqlite"):
+    assert database == "sqlite" or database == "postgresql", 'Invalid database engine "' + database + '"'
+
     app = Flask(__name__)
 
     # Parse server/conf.ini
@@ -55,10 +57,12 @@ def create_app(database="sqlite"):
 
     # Init mqtt subscriber
     if 'mosquitto' in conf and 'password' in conf['mosquitto']:
-        try:
-            mqtt.listen(app, conf['mosquitto'])
-        except ConnectionRefusedError:
-            app.logger.warning('Mosquitto refused to connect')
+        # Run only in main process
+        if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+            try:
+                mqtt.listen(app, conf['mosquitto'])
+            except ConnectionRefusedError:
+                app.logger.warning('Mosquitto refused to connect')
     else:
         app.logger.warning('No mosquitto password in server/conf.ini, skipping')
 

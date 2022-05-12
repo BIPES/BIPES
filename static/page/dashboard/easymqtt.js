@@ -70,7 +70,7 @@ class MQTTDatabase {
                   if (obj.hasOwnProperty(easyMQTT.session))
                     this._data[topic.topic] = []
                     this._keys.push(topic.topic)
-                    obj[easyMQTT.session].forEach(data => {
+                    obj[easyMQTT.session].reverse().forEach(data => {
                       this.write(topic.topic, data.data)
                     })
 

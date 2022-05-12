@@ -2,7 +2,7 @@
 sql_macro_table = """
 create table {} (
   uuid uuid default uuid_generate_v4(),
-  lastEdited integer not null default(extract(epoch from current_timestamp::timestamp with time zone)::integer) not null,
+  lastEdited numeric(16,6) not null default(extract(epoch from current_timestamp::timestamp with time zone)::numeric(16,6)),
   topic varchar(18) not null,
   data text not null
 );"""
@@ -12,7 +12,7 @@ create extension if not exists "uuid-ossp"
 """
 
 #------------------------------------------------------------------------
-# Generate the database the first time, call only from the Makefile
+# Generate the database for the first time, only the Makefile should call it
 def make():
     from configparser import ConfigParser
     import psycopg

@@ -6,7 +6,6 @@ from flask_mqtt import Mqtt
 import json
 
 from server.common import database as dbase
-
 #--------------------------------------------------------------------------
 # Blueprint
 bp = Blueprint('mqtt', __name__, url_prefix='/mqtt')
@@ -44,7 +43,6 @@ def listen(app, conf):
         full_topic = msg.topic.split("/", 1)
 
         if len(full_topic) < 2:
-            print("Invalid Topic")
             return
 
         session = full_topic[0]
@@ -53,7 +51,6 @@ def listen(app, conf):
 
         if app.config['DATABASE'] == 'sqlite':
             from server.sqlite.mqtt import sql_macro_table
-
         elif app.config['DATABASE'] == 'postgresql':
             from server.postgresql.mqtt import sql_macro_table
 
@@ -132,7 +129,7 @@ def mqtt_select_distinct(session):
 @bp.route('/<session>/<topic>/grep', methods=('POST', 'GET'))
 def mqtt_select_topic(session, topic):
     obj = request.json
-    cols = ['data']
+    cols = ['lastEdited','data']
     db = dbase.connect(_db)
     topic = topic.replace('$','/')
 

@@ -8,15 +8,15 @@ create table projects (
   auth varchar(18) not null,
   author varchar(25) not null,
   name varchar(100) not null,
-  createdAt integer not null default(extract(epoch from current_timestamp::timestamp with time zone)::integer),
-  lastEdited integer not null default(extract(epoch from current_timestamp::timestamp with time zone)::integer),
+  createdAt numeric(16,6) not null default(extract(epoch from current_timestamp::timestamp with time zone)::numeric(16,6)),
+  lastEdited numeric(16,6) not null default(extract(epoch from current_timestamp::timestamp with time zone)::numeric(16,6)),
   data text not null
 );
 
 create or replace function update_epoch()
 returns trigger as $$
 begin
-  new.lastEdited = extract(epoch from current_timestamp::timestamp with time zone)::integer;
+  new.lastEdited = extract(epoch from current_timestamp::timestamp with time zone)::numeric(16,6);
   return new;
 end;
 $$ language plpgsql;

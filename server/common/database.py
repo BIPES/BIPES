@@ -54,10 +54,10 @@ def connect(database):
 
 # Close db
 def close(e=None):
-    db = g.pop('db', None)
+    if g.db is not None:
+        g.db.close()
 
-    if db is not None:
-        db.close()
+    g.pop('db', None)
 
 # Exec sql
 def exec(__db, _sql, identifier = None):
@@ -68,10 +68,11 @@ def exec(__db, _sql, identifier = None):
         if current_app.config['DATABASE'] == 'postgresql':
             from psycopg import sql
             data = db.execute(sql.SQL(_sql).format(sql.Identifier(identifier)))
-        else:
+        elif current_app.config['DATABASE'] == 'sqlite':
             from psycopg import sql
             data = db.execute(_sql.format(identifier))
     db.commit()
+    # Notice that exec does NOT close the database
     return
 
 # Check if has table
@@ -102,7 +103,7 @@ def select(__db, table_name, columns, *args):
         from psycopg import sql
         _sql = f'select {str_c} from ' + '{} ' + _sql
         _sql = sql.SQL(_sql).format(sql.Identifier(table_name))
-    else:
+    elif current_app.config['DATABASE'] == 'sqlite':
         _sql = f'select {str_c} from {table_name}' + _sql
 
     if len(args) == 2:
@@ -111,7 +112,6 @@ def select(__db, table_name, columns, *args):
         data = db.execute(_s(_sql)).fetchall()
 
     db.close()
-
     return (table_name, columns, data)
 
 
@@ -121,16 +121,16 @@ def select_where(__db, table_name, where, columns, *args):
 
     str_c = ', '.join(columns)
 
-    _sql = ' order by lastEdited desc'
+    __sql = ' order by lastEdited desc'
     if len(args) == 2:
-        _sql = ' where lastEdited < %s' + _sql + ' limit %s'
+        __sql = ' where lastEdited < %s' + __sql + ' limit %s'
 
     if current_app.config['DATABASE'] == 'postgresql':
         from psycopg import sql
-        _sql = f'select {str_c} from ' + '{}' + f' where {where[0]} = %s' + _sql
-        _sql = sql.SQL(_sql).format(sql.Identifier(table_name))
-    else:
-        _sql = f'select {str_c} from {table_name} where {where[0]} = %s' + _sql
+        __sql = f'select {str_c} from ' + '{}' + f' where {where[0]} = %s' + __sql
+        _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
+    elif current_app.config['DATABASE'] == 'sqlite':
+        _sql = f'select {str_c} from {table_name} where {where[0]} = %s' + __sql
 
     if len(args) == 2:
         data = db.execute(_s(_sql), (where[1], args[0], args[1])).fetchall()
@@ -152,7 +152,7 @@ def select_distinct(__db, table_name, columns, *args):
         from psycopg import sql
         __sql = f'select distinct {str_c}' + ' from {}'
         _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
-    else:
+    elif current_app.config['DATABASE'] == 'sqlite':
         _sql = f'select distinct {str_c} from {table_name}'
     if len(args) == 2:
         _sql += f' where lastEdited < %s'
@@ -176,7 +176,7 @@ def fetch(__db, table_name, columns, where):
         from psycopg import sql
         __sql = f'select {str_c} from ' + '{}' + f' where {where[0]} = %s'
         _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
-    else:
+    elif current_app.config['DATABASE'] == 'sqlite':
         _sql = f'select {str_c} from {table_name} where {where[0]} = %s'
 
     data = db.execute(_s(_sql), (where[1],)).fetchone()
@@ -195,7 +195,7 @@ def insert(__db, table_name, columns, values):
         from psycopg import sql
         __sql = 'insert into {}' + f' ({str_c}) values ({q_mark})'
         _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
-    else:
+    elif current_app.config['DATABASE'] == 'sqlite':
         _sql = f'insert into {table_name} ({str_c}) values ({q_mark})'
 
     db.execute(_s(_sql), values)
@@ -215,7 +215,7 @@ def delete(__db, table_name, columns, values):
         from psycopg import sql
         __sql = 'delete from {}' + f' where ({str_c}) = ({q_mark})'
         _sql = sql.SQL(__sql).format(sql.Identifier(table_name))
-    else:
+    elif current_app.config['DATABASE'] == 'sqlite':
         _sql = f'delete from {table_name} where ({str_c}) = ({q_mark})'
 
     db.execute(_s(_sql), values)
