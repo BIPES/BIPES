@@ -58,12 +58,10 @@ def create_app(database="sqlite"):
 
     # Init mqtt subscriber
     if 'mosquitto' in conf and 'password' in conf['mosquitto']:
-        # Run only in main process
-        if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-            try:
-                mqtt.listen(app, conf['mosquitto'])
-            except ConnectionRefusedError:
-                app.logger.warning('Mosquitto refused to connect')
+        try:
+            mqtt.listen(app, conf['mosquitto'])
+        except ConnectionRefusedError:
+            app.logger.warning('Mosquitto refused to connect')
     else:
         app.logger.warning('No mosquitto password in server/conf.ini, skipping')
 

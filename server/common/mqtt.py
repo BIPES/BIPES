@@ -80,7 +80,6 @@ def listen(app, conf):
 # Get current password
 @bp.route('/public_conf', methods=('POST', 'GET'))
 def mqtt_public_conf():
-    password = ''
     if 'MQTT_PASSWORD' in current_app.config:
         return {
             'easyMQTT':{
