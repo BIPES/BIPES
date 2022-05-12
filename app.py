@@ -64,7 +64,8 @@ lang_str = [
 
 # Create app for developemnt mode
 def create_app(database="sqlite"):
-    assert database == "sqlite" or database == "postgresql", 'Invalid database engine "' + database + '"'
+    assert database == "sqlite" or database == "postgresql" or database == None, \
+           'Invalid database engine "' + database + '"'
 
     app = Flask(__name__)
 
