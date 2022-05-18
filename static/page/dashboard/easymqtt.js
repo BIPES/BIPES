@@ -113,20 +113,34 @@ class MQTTDatabase {
     return await response.json ()
   }
   /**
-   * Checks the income MQTT topic for comma divided data.
-   * @param {boolean} chartsPush - True to push data to current charts on grid.
+   * Checks the income MQTT topic for comma divided data (chart) or single number value (gauge).
+   * @param {boolean} push - True to push data to current plugins on grid.
    */
-  async write (topic, chunk, chartsPush){
+  async write (topic, chunk, push){
     let coordinates = chunk.split(',').map((item)=>item = parseFloat(item))
-    if (coordinates.every((item) => !isNaN(item)))
-      this.push (topic, coordinates, chartsPush)
+    if (coordinates.every((item) => !isNaN(item)) && coordinates.length > 1){
+      this.push(topic, coordinates, push, 'chart')
+      return
+    }
+
+    let value = parseFloat(chunk)
+    if (!isNaN(chunk))
+      this.push(topic, value, push, 'gauge')
   }
   /**
-   * Push identified topic and coordinates to memory.
-   * @param {boolean} chartsPush - True to push data to current charts on grid.
+   * Push identified topic and data to memory.
+   * @param {string} topic - Identified topic.
+   * @param {Number|Number[]} data - Identified data.
+   * @param {boolean} push - True to push data to current plugins on grid.
+   * @param {string|string[]} plugin - Type of plugin to push the data to.
    */
-  push (topic, coordinates, chartsPush) {
-    if (coordinates.constructor.name != 'Array')
+  push (topic, data, push, plugin){
+    if (plugin == 'gauge' && push === true){
+      this.ref.gaugesPush(topic, data)
+      return
+    }
+
+    if (!(data instanceof Array))
       return
 
     if (!this._data.hasOwnProperty(topic)){
@@ -135,10 +149,10 @@ class MQTTDatabase {
       this._coorLength[topic] = 0
     }
 
-    this._data[topic].push(coordinates)
+    this._data[topic].push(data)
     // Push to charts
-    if (this.ref !== undefined && chartsPush === true){
-      this.ref.chartsPush(topic, this._data[topic], coordinates, this._coorLength)
+    if (this.ref !== undefined && push === true){
+      this.ref.chartsPush(topic, this._data[topic], data, this._coorLength)
     }
   }
   /**
@@ -158,7 +172,6 @@ class MQTTDatabase {
       data = this._data[topic]
     else
       data = []
-
 
     const map1 = data.map(c => c.length)
     const max1 = Math.max(...map1)
@@ -195,7 +208,7 @@ class MQTTDatabase {
             datasets:datasets
       }
   }
-  transpose (mat) {
+  transpose (mat){
     for (var i = 0; i < mat.length; i++) {
           for (var j = 0; j < i; j++) {
               const tmp = mat[i][j]
@@ -210,7 +223,7 @@ class MQTTDatabase {
     })
     return mat
   }
-  randomColor() {
+  randomColor (){
     let a = parseInt(Math.random()*255)
     let b = 255 - a
     let c = 255 - a - b
@@ -235,8 +248,7 @@ class MQTTDatabase {
   onMessageArrived (message){
     let destination = Array(...message.destinationName.split('/'))
     let payload = String(message.payloadString)
-    let session = destination[0]
-    destination.shift()
+    let session = destination.shift()
     this.write(destination.join('/'), payload, true)
   }
   /** Subscribe to topics listed */

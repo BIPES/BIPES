@@ -9,7 +9,7 @@ import re
 from configparser import ConfigParser
 
 app_name = 'BIPES'
-app_version = '3.0.6'
+app_version = '3.0.7'
 
 # Default language on server mode
 # Note: this is overwritten by the Makefile's lang arg on the "make release" command.

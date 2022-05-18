@@ -38,7 +38,7 @@ class DataStorage {
     this.buffer = this.buffer.replace(re, '\r\n') //purge received string out
   }
   /** Push identified topic and coordinates to localStorage */
-  push (topic, coordinates) {
+  push (topic, coordinates){
     if (coordinates.constructor.name != 'Array')
       return
 
@@ -64,15 +64,15 @@ class DataStorage {
    * Remove topic from localStorage
    * @param {string} uid - Topic's uid.
    */
-  remove (uid) {
+  remove (uid){
 		this._keys.forEach((topic, index) => {
 		  if (topic == uid)
 			  this._keys.splice(index,1)
 		})
 		delete this._data[uid]
   }
-  chartData (topic, opt) {
-    if (!this._keys.includes(topic)) {
+  chartData (topic, opt){
+    if (!this._keys.includes(topic)){
       this._keys.push (topic)
       if (storage.has(`datastorage:${topic}`)) {
         this._data[topic] = JSON.parse(storage.fetch(`datastorage:${topic}`))
@@ -85,7 +85,7 @@ class DataStorage {
         storage.set(`datastorage:${topic}`, JSON.stringify(this._data[topic]))
       }
     }
-    let mat = this._data[topic].map(function(arr) {
+    let mat = this._data[topic].map(function(arr){
       return arr.slice();
     });
 
@@ -117,7 +117,7 @@ class DataStorage {
             datasets:datasets
       }
   }
-  transpose (mat) {
+  transpose (mat){
     for (var i = 0; i < mat.length; i++) {
           for (var j = 0; j < i; j++) {
               const tmp = mat[i][j]
@@ -132,7 +132,7 @@ class DataStorage {
     })
     return mat
   }
-  randomColor() {
+  randomColor (){
     let a = parseInt(Math.random()*255)
     let b = 255 - a
     let c = 255 - a - b
@@ -143,5 +143,4 @@ class DataStorage {
 }
 
 export let dataStorage = new DataStorage()
-
 

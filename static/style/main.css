@@ -379,6 +379,12 @@ button#chart:before {
 button#switch:before {
   background-position: left calc(-1.5rem*44) top;
 }
+button#range:before {
+  background-position: left calc(-1.5rem*48) top;
+}
+button#gauge:before {
+  background-position: left calc(-1.5rem*49) top;
+}
 nav #app-version {
   text-align: center;
   font-weight: normal;

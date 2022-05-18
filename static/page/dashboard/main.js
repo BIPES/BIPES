@@ -8,7 +8,7 @@ import {navigation} from '../../base/navigation.js'
 
 import {project} from '../project/main.js'
 import {Actions} from './action.js'
-import {Charts, Switches} from './plugins.js'
+import {plugins} from './plugins.js'
 
 import {dataStorage} from './datastorage.js'
 import {easyMQTT} from './easymqtt.js'
@@ -85,13 +85,8 @@ class Dashboard {
 
 		this.addMenu = new DashboardAddMenu($.addMenu, this.grid, $.addPlugin)
 
-		// Setup chart.js defaults
-	  if (Tool.fromUrl('theme') === 'dark'){
-      Chart.defaults.color = '#eee'
-      Chart.defaults.borderColor = 'rgba(255,255,255,0.1)'
-    } else {
-      Chart.defaults.color = '#222'
-    }
+    // Setup plugins to defaults
+    plugins.init()
 
     command.add(this, {
       add: this._add,
@@ -349,10 +344,8 @@ class DashboardGrid {
 	  this.parent = parent
 	  this.name = 'grid'
 	  this.ref              // Reference to the current grid
-
-		this.players = []
-		this.charts = []
-		this.switches = []
+    // Create arrays for each plugin
+		plugins.types.forEach(type => this[type] = [])
 		this.editiding
 		this.editingProp  // Store original position and current from plugin(string)
 		this.isGrabbing = false
@@ -414,12 +407,14 @@ class DashboardGrid {
     this._css = document.createElement('style')
     this._css.type = 'text/css'
     document.getElementsByTagName('head')[0].append(this._css)
-    this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.wide {}', 0)
+    this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.broad {}', 0)
     this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.square {}', 0)
+    this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.wide {}', 0)
     this._css.sheet.insertRule('section#dashboard .muuri .muuri-item.tiny {}', 0)
     this.css = {}
-    this.css.muuriWide = this._css.sheet.rules[2]
-    this.css.muuriSquare = this._css.sheet.rules[1]
+    this.css.muuriBroad = this._css.sheet.rules[3]
+    this.css.muuriSquare = this._css.sheet.rules[2]
+    this.css.muuriWide = this._css.sheet.rules[1]
     this.css.muuriTiny = this._css.sheet.rules[0]
 
     command.add([this.parent, this], {
@@ -447,16 +442,9 @@ class DashboardGrid {
 		this.editingPlugin = '';
 		setTimeout(() => {this.actions.deinit()},250)
 
-    this.players.forEach((player) => {
-      if (player.source == 'DASH')
-		    player.destroy()
-    })
-    this.charts.forEach((chart) => {
-      chart.destroy()
-    })
+		plugins.deinit(this)
+
     this.muuri.remove(this.muuri.getItems(), {removeElements: true})
-		this.players = []
-		this.charts = []
     this.ref = undefined
 	}
   /**
@@ -508,94 +496,30 @@ class DashboardGrid {
    * @param {Object} data - Object to be included.
    */
 	include (data){
-    let grab  = new DOM('div', {
-      id:'grab',
-      title:Msg['DragMe']
-    }).onevent('contextmenu', this, ()=>{
-      if (!this.parent.$.dashboard.classList.contains('on'))
-        this.parent.$.dashboard.classList.add('on')
-    })
-
-    let remove = new DOM('button', {
-      className:'button icon notext',
-      id:'dismiss',
-      title:Msg['DismissPlugin']
-    }).onclick(this, this.remove, [data]);
-
-    let silk = new DOM('div', {className:'silk'})
-	  switch (data.type) {
-	    case 'chart':
-
-	      data.target = new DOM('canvas', {className:'chart'})
-		    let content1 = new DOM('div')
-			    .append([
-			      silk,
-			      grab,
-				    remove,
-				    data.target,
-			    ])
-			  let container1 = new DOM('div', {sid:data.sid, className:'chart wide'})
-			    .append(content1)
-
-		    this.muuri.add(container1.$)
-
-		    this.charts.push(Charts.chart(data, data.target))
-
-	      silk.onevent('contextmenu', this, ()=>{
-	        DOM.switchState(this.parent.$.dashboard)
-	      })
-        grab.onclick(this, this.edit, [data, container1])
-
-		    break
-		  case 'switch':
-		    data.target = new DOM('button', {className:'press'})
-		    let content3 = new DOM('div')
-			    .append([
-			      //silk,
-			      grab,
-				    remove,
-				    data.target,
-			    ])
-			  let container3 = new DOM('div', {sid:data.sid, className:'switch tiny'})
-			    .append(content3)
-
-		    this.muuri.add(container3.$)
-
-		    this.switches.push(Switches.switch(data, data.target))
-
-        data.target.onevent('contextmenu', this, ()=>{
-          DOM.switchState(this.parent.$.dashboard)
-        })
-        grab.onclick(this, this.edit, [data, container3])
-		    break
-		  }
+    let _$ = {
+      grab: new DOM('div', {
+        id:'grab',
+        title:Msg['DragMe']
+      }).onevent('contextmenu', this, ()=>{
+        if (!this.parent.$.dashboard.classList.contains('on'))
+          this.parent.$.dashboard.classList.add('on')
+      }),
+      remove: new DOM('button', {
+        className:'button icon notext',
+        id:'dismiss',
+        title:Msg['DismissPlugin']
+      }).onclick(this, this.remove, [data]),
+      silk: new DOM('div', {className:'silk'})
+    }
+    plugins.include(this, data, _$)
   }
   /*
    * Remove a plugin.
    * @param {Object} data - Plugin.
    */
 	remove (data){
-
-
-		switch (data.type) {
-		  case 'plugin':
-		    this.players.forEach((player, index) => {
-			    if (player.sid == data.sid) {
-				      if (player.source = 'DASH')
-				        player.destroy()
-			      this.players.splice(index,1)
-			    }
-		    })
-		    break
-		  case 'chart':
-		    this.charts.forEach((chart, index) => {
-		      if (chart.sid == data.sid){
-		        chart.destroy()
-		        this.charts.splice(index,1)
-		      }
-		    })
-		    break
-		}
+	  // Remove plugin
+	  plugins.remove(this, data)
 
 		if (this.editingPlugin == data.sid) {
 			this.$.grid.$.classList.remove('on')
@@ -736,14 +660,14 @@ class DashboardGrid {
       setTimeout(() => {this.resize()}, 500)
     }, 15)
 	}
-	/** On resize event, compute plugin resize widths and set actions mode (tall/wide). */
+	/** On resize event, compute plugin resize widths and set actions mode (tall/broad). */
 	resize (){
     if (this.$.grid.width / 16 > 40){
-      this.$.actions.classList.add('wide')
+      this.$.actions.classList.add('broad')
       this.$.actions.classList.remove('tall')
     } else {
       this.$.actions.classList.add('tall')
-      this.$.actions.classList.remove('wide')
+      this.$.actions.classList.remove('broad')
     }
 
 	  if (this.editing) {
@@ -770,11 +694,14 @@ class DashboardGrid {
     else
       i = 3
 
-    this.css.muuriWide.style.width = `${c[i][0][0] - 1}px`
-    this.css.muuriWide.style.height = `${c[i][0][1]}px`
+    this.css.muuriBroad.style.width = `${c[i][0][0] - 1}px`
+    this.css.muuriBroad.style.height = `${c[i][0][1]}px`
 
     this.css.muuriSquare.style.width = `${c[i][1][0] - 1}px`
     this.css.muuriSquare.style.height = `${c[i][1][1]}px`
+
+    this.css.muuriWide.style.width = `${c[i][1][0] - 1}px`
+    this.css.muuriWide.style.height = `${c[i][2][1]}px`
 
     this.css.muuriTiny.style.width = `${c[i][2][0] - 1}px`
     this.css.muuriTiny.style.height = `${c[i][2][1]}px`
@@ -837,7 +764,7 @@ class DashboardGrid {
           if (this.chartBuffer[topic].refresh)
             this.ref.forEach(plugin => {
               if (plugin.sid === chart.sid){
-                Charts.regen(this.charts, plugin)
+                plugins.regen(this.charts, plugin)
               }
             })
           else {
@@ -866,8 +793,19 @@ class DashboardGrid {
     this.charts.forEach ((chart) => {
       this.ref.forEach(plugin => {
         if (plugin.sid === chart.sid && plugin.setup.source == source)
-          Charts.regen(this.charts, plugin)
+          plugins.regen(this.charts, plugin)
       })
+    })
+  }
+  /**
+   * Push data to current gauges.
+   * @param{array} topic - Point's topic.
+   * @param{array} data - Data point.
+   */
+  gaugesPush (topic, data, refresh) {
+    this.gauges.forEach ((gauge) => {
+      if (gauge.topic == topic)
+        gauge.update(data)
     })
   }
 }
@@ -878,7 +816,9 @@ class DashboardAddMenu {
     this.grid = grid
     this.plugins = {
       chart:'Chart',
-      switch: 'Switch'
+      switch: 'Switch',
+      range:'Range',
+      gauge:'Gauge'
     }
     let $ = this.$ = {}
     $.addMenu = dom
@@ -965,8 +905,6 @@ class DataStorageManager {
 
     $.storageManager.append($.wrapper)
     this.ref = grid_ref
-
-
 
     // Status shortcut
     $.statusMQTT = new DOM('div')
@@ -1129,7 +1067,7 @@ class DataStorageManager {
         if (chart.topic == id && chart.source == 'localStorage') {
           this.ref.ref.forEach(plugin => {
             if (plugin.sid === chart.sid)
-              Charts.regen(this.ref.charts, plugin)
+              plugins.regen(this.charts, plugin)
           })
         }
       })
@@ -1152,7 +1090,7 @@ class DataStorageManager {
             if (chart.topic == topic && chart.source == 'easyMQTT') {
               this.ref.ref.forEach(plugin => {
                 if (plugin.sid === chart.sid)
-                  Charts.regen(this.ref.charts, plugin)
+                  plugins.regen(this.ref.charts, plugin)
               })
             }
           })

@@ -97,10 +97,11 @@ section#dashboard #addMenu > div {
   margin-right: .75rem;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   margin-left: auto;
 }
 section#dashboard #addMenu.on > div {
-  margin-top: calc(100vh - 7.5rem);
+  margin-top: calc(100vh - 11.5rem);
 }
 section#dashboard #addMenu button {
   padding: .5em;
@@ -110,7 +111,7 @@ section#dashboard #addMenu button {
 }
 @media screen and (max-width:39.99rem) {
   section#dashboard #addMenu.on > div {
-    margin-top: calc(100vh - 6.5rem - 3rem);
+    margin-top: calc(100vh - 10.5rem - 3rem);
   }
 }
 @media screen and (min-width:40rem) and (orientation:portrait) {
@@ -179,6 +180,14 @@ section#dashboard .muuri #grab {
   position: absolute;
   z-index: 1;
 }
+section#dashboard #grid .muuri-item span,
+section#dashboard #grid .muuri-item button {
+  font-size: .8rem;
+}
+section#dashboard #grid .muuri-item h2,
+section#dashboard #grid .muuri-item h3 {
+  font-weight: normal;
+}
 section#dashboard #grid:not(.on):not(.ani) #silk {
   display: none;
 }
@@ -193,10 +202,10 @@ body.dark section#dashboard #grid.on #silk {
 body.light section#dashboard #grid.on #silk {
   background: rgba(125,125,125,.5);
 }
+/* Switch */
 section#dashboard #grid .muuri-item.switch button.press {
   height: 100%;
   width: 100%;
-  padding: 0;
   border-radius: 1rem;
   background: rgba(84,190,255,0.05);
   transition: .125s ease transform, .25s ease background-color;
@@ -212,6 +221,63 @@ section#dashboard #grid .muuri-item.switch button.press:hover {
 section#dashboard #grid .muuri-item.switch button.press:active {
     transform: scale(0.98);
 }
+
+/* Range */
+section#dashboard #grid .muuri-item.range span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 .25rem;
+  overflow: hidden;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+section#dashboard #grid .muuri-item.range .container {
+  display: flex;
+  padding: 0 .5rem;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+section#dashboard #grid .muuri-item.range input {
+  text-align: center;
+  font-size: 1rem;
+}
+section#dashboard #grid .muuri-item.range #raise:before,
+section#dashboard #grid .muuri-item.range #lower:before {
+  margin: .5rem;
+}
+
+/* Gauge */
+section#dashboard #grid .muuri-item.gauge .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+section#dashboard #grid .muuri-item.gauge .percentage {
+  position: absolute;
+  display: block;
+  width: 100%;
+  border-radius: 1rem;
+  background: rgba(84,190,255,0.15);
+  overflow: hidden;
+
+  transition: .25s ease margin-top, .25s ease height;
+  margin-top: 100%;
+  height: 0%;
+}
+
+section#dashboard #grid .muuri-item.gauge .value {
+  font-size: 1rem;
+}
+
 section#dashboard .muuri-item.chart > div {
   background-image: linear-gradient(90deg, rgba(84,190,255,0.05),rgba(84,190,255,0.05));
 }
@@ -266,10 +332,10 @@ section#dashboard #dashboard.on #grid.on .muuri-item .silk {
 	scrollbar-width: none;
 }
 
-section#dashboard #grid #actions.wide .silk {
+section#dashboard #grid #actions.broad .silk {
   display: none;
 }
-section#dashboard #grid #actions.wide {
+section#dashboard #grid #actions.broad {
   position: absolute;
   transition: .25s ease right;
   box-sizing: border-box;
@@ -284,14 +350,14 @@ section#dashboard #grid #actions.wide {
   box-shadow: 1rem 0 2rem rgba(0,0,0,0.2);
   transition-delay: .25s;
 }
-section#dashboard #grid #actions.wide > span {
+section#dashboard #grid #actions.broad > span {
   min-height: 100%;
   border-radius: 1rem;
 }
-section#dashboard #grid.on #actions.wide {
+section#dashboard #grid.on #actions.broad {
   right: 1rem;
 }
-#grid #actions.wide > span {
+#grid #actions.broad > span {
 	width: 14rem;
 }
 
@@ -346,7 +412,7 @@ section#dashboard #grid #actions > span > div {
 	padding: .5em 0;
 }
 section#dashboard #grid #actions .button, #grid #actions .switch {
-    transition: box-shadow ease .125s, .125s ease background-color, margin ease .125s;
+  transition: box-shadow ease .125s, .125s ease background-color, margin ease .125s;
 }
 section#dashboard #actions .switch {
 	border: 1px solid #7d7d7d;

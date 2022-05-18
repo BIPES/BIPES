@@ -35,32 +35,32 @@
      borderopacity="1"
      inkscape:pageshadow="0"
      inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
+     inkscape:pagecheckerboard="false"
      inkscape:document-units="mm"
      showgrid="true"
      units="px"
      width="432px"
      height="24px"
-     inkscape:zoom="16"
-     inkscape:cx="979.125"
-     inkscape:cy="41.4375"
-     inkscape:window-width="2560"
-     inkscape:window-height="1043"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="logos-5"
+     inkscape:zoom="90.509668"
+     inkscape:cx="1161.1633"
+     inkscape:cy="9.1205727"
+     inkscape:window-width="1280"
+     inkscape:window-height="1014"
+     inkscape:window-x="20"
+     inkscape:window-y="20"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g1189-3"
      showguides="false">
     <inkscape:grid
        type="xygrid"
        id="grid9"
        spacingx="6.35"
        spacingy="6.35"
-       enabled="false" />
+       enabled="true" />
     <inkscape:grid
        type="xygrid"
        id="grid1182"
-       enabled="false"
+       enabled="true"
        spacingx="0.26458334"
        spacingy="0.26458334"
        snapvisiblegridlinesonly="true" />
@@ -779,7 +779,8 @@
          id="path651" />
       <path
          d="m 3,3 h 8 v 8 H 3 Z m 10,0 h 8 v 8 H 13 Z M 3,13 h 8 v 8 H 3 Z m 15,0 h -2 v 3 h -3 v 2 h 3 v 3 h 2 v -3 h 3 v -2 h -3 z"
-         id="path653" />
+         id="path653"
+         sodipodi:nodetypes="cccccccccccccccccccccccccccc" />
     </g>
     <path
        d="m 184.15,6.35 h 6.35 v 6.35 h -6.35 z"
@@ -1666,6 +1667,50 @@
          d="M 9.37,5.51 C 9.19,6.15 9.1,6.82 9.1,7.5 c 0,4.08 3.32,7.4 7.4,7.4 0.68,0 1.35,-0.09 1.99,-0.27 C 17.45,17.19 14.93,19 12,19 8.14,19 5,15.86 5,12 5,9.07 6.81,6.55 9.37,5.51 Z M 12,3 c -4.97,0 -9,4.03 -9,9 0,4.97 4.03,9 9,9 4.97,0 9,-4.03 9,-9 0,-0.46 -0.04,-0.92 -0.1,-1.36 -0.98,1.37 -2.58,2.26 -4.4,2.26 -2.98,0 -5.4,-2.42 -5.4,-5.4 0,-1.81 0.89,-3.42 2.26,-4.4 C 12.92,3.04 12.46,3 12,3 Z"
          id="path1187"
          style="fill:#ffffff;fill-opacity:1" />
+    </g>
+    <g
+       style="fill:#000000"
+       id="g1189-3"
+       transform="matrix(0.26458333,0,0,0.26458333,304.8,-2e-8)">
+      <path
+         d="M 0,7.5590552e-8 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path1177-6"
+         style="fill:none" />
+      <g
+         id="g4125"
+         transform="translate(0,0.99999993)">
+        <path
+           d="M 7.0000293,17 H 17 c 3.31,0 6,-2.69 6,-6 C 23,7.6900003 20.31,5.0000003 17,5.0000003 H 7.0000293 c -3.31,0 -6,2.69 -6,5.9999997 0,3.31 2.69,6 6,6 z m 0,-9.9999997 H 17 c 2.21,0 4,1.79 4,3.9999997 0,2.21 -1.79,4 -4,4 H 7.0000293 c -2.21,0 -4,-1.79 -4,-4 0,-2.2099997 1.79,-3.9999997 4,-3.9999997 z"
+           id="path1179-7"
+           style="fill:#ffffff;fill-opacity:1"
+           sodipodi:nodetypes="ssssssssssssss" />
+        <path
+           d="m 19.00003,12.00003 v -2 l -2,-3e-5 -10e-7,-1.9999702 H 15.00003 V 10 l -2,3e-5 v 2 l 2,-3e-5 v 2.00003 h 2 V 12 Z"
+           id="path6514"
+           style="fill:#ffffff"
+           sodipodi:nodetypes="ccccccccccccc" />
+        <path
+           d="m 5.0000297,10.000001 v 2 h 4.9999993 v -2 z"
+           id="path6514-5"
+           sodipodi:nodetypes="ccccc"
+           style="fill:#ffffff" />
+      </g>
+    </g>
+    <g
+       style="fill:#000000"
+       id="g1249"
+       transform="matrix(0.26458333,0,0,0.26458333,311.15,-1.9999999e-8)">
+      <path
+         d="M 0,0 H 24 V 24 H 0 Z"
+         fill="none"
+         id="path1237" />
+      <path
+         id="path1239"
+         style="fill:#ffffff;fill-opacity:1"
+         d="M 1188.1328,4.0390625 C 1180.4101,3.9612134 1175.5178,12.294527 1179.3496,19 l 1.7207,-1 c -3.9617,-6.871709 3.416,-14.6990232 10.5098,-11.1503906 l 1.8496,-1.2304688 c -1.5821,-1.013905 -3.4179,-1.5615203 -5.2969,-1.5800781 z m 6.9473,2.8808594 -8.4903,5.6601561 c -0.7821,0.781237 -0.7821,2.048841 0,2.830078 0.7812,0.782164 2.0489,0.782164 2.8301,0 z m 1.3105,1.640625 -0.01,0.00977 -1.2305,1.8496095 c 1.1316,2.256714 1.1316,4.915161 0,7.171875 L 1196.6602,19 c 1.8785,-3.254118 1.7744,-7.286635 -0.2696,-10.4394531 z"
+         transform="translate(-1176)"
+         sodipodi:nodetypes="ccccccccccccccccc" />
     </g>
   </g>
 </svg>

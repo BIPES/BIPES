@@ -1,7 +1,7 @@
 "use strict";
 
 import {DOM} from '../../base/dom.js'
-import {Charts, Streams, Switches} from './plugins.js'
+import {Charts, Streams, Switches, Ranges, Gauges} from './plugins.js'
 export {Actions, Action}
 
 import {project} from '../project/main.js'
@@ -57,14 +57,6 @@ class Actions {
 	}
 	static _getType (plugin, key){
 	  let _dict = {
-	    'switch': {
-	      title: 'input',
-	      subtitle: 'input',
-	      target: 'dropdown',
-	      topic: 'input',
-	      messageOn: 'input',
-	      messageOff: 'input',
-	    },
 	    'chart': {
 	      topic: 'input',
 	      chartType: 'dropdown',
@@ -79,22 +71,37 @@ class Actions {
 	    'stream': {
 	      source: 'dropdown',
 	      manifest: 'input'
-	    }
+	    },
+	    'switch': {
+	      title: 'input',
+	      subtitle: 'input',
+	      target: 'dropdown',
+	      topic: 'input',
+	      messageOn: 'input',
+	      messageOff: 'input',
+	    },
+		  'range': {
+	      title: 'input',
+	      subtitle: 'input',
+	      target: 'dropdown',
+	      topic: 'input',
+	      minValue: 'input',
+	      maxValue: 'input',
+	      step: 'input'
+	    },
+	    'gauge': {
+	      title: 'input',
+	      subtitle: 'input',
+	      target: 'dropdown',
+	      topic: 'input',
+	      minValue: 'input',
+	      maxValue: 'input',
+	    },
 	  }
 	  return _dict[plugin][key]
 	}
 	static defaults (plugin){
 	  switch (plugin){
-	    case 'switch':
-	      return {
-          target: 'easyMQTT',
-	        title: '',
-	        subtitle: '',
-	        topic: 'iot_button',
-	        messageOn: 'turn_on',
-	        messageOff: 'turn_off',
-	        }
-	      break
 	    case 'stream':
 	      return {
 	        source:'DASH',
@@ -103,30 +110,53 @@ class Actions {
 	      break
 	    case 'chart':
         return {
-          source: 'localStorage',
+          source: 'easyMQTT',
           topic:'data',
           chartType: 'line',
           title: '',
           labels: 'Variable 1, Variable 2',
-          limitPoints: '100',
+          limitPoints: 100,
           xLabel: '',
           yLabel: '',
           timeseries: false
         }
+	      break
+	    case 'switch':
+	      return {
+          target: 'easyMQTT',
+	        title: 'Click',
+	        subtitle: 'Me',
+	        topic: 'button',
+	        messageOn: 'turn_on',
+	        messageOff: 'turn_off',
+	        }
+	      break
+	    case 'range':
+	      return {
+          target: 'easyMQTT',
+	        title: 'Range',
+	        subtitle: 'Description',
+	        topic: 'range',
+	        minValue: 0,
+	        maxValue: 100,
+	        step: 1
+	        }
+	      break
+	    case 'gauge':
+	      return {
+          target: 'easyMQTT',
+	        title: 'Gauge',
+	        subtitle: 'Unit',
+	        topic: 'gauge',
+	        minValue: 0,
+	        maxValue: 100
+	        }
 	      break
 	  }
 	}
 
 	static dict (plugin, key){
 	  let _dict = {
-	    'switch': {
-	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
-	      title: 'Title',
-	      subtitle: 'Subtitle',
-	      topic: 'Topic',
-	      messageOn: 'Switch on message',
-	      messageOff: 'Switch off message',
-	    },
 	    'chart': {
 	      topic: 'Topic',
 	      chartType: ['Chart type', ['line','scatter','bar','pie','radar']],
@@ -141,7 +171,32 @@ class Actions {
 	    'stream': {
 	      source: ["Standard",["MJPEG","DASH"]],
 	      manifest: 'Manifest address'
-	    }
+	    },
+	    'switch': {
+	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
+	      title: 'Title',
+	      subtitle: 'Subtitle',
+	      topic: 'Topic',
+	      messageOn: 'Switch on message',
+	      messageOff: 'Switch off message'
+	    },
+	    'range': {
+	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
+	      title: 'Title',
+	      subtitle: 'Subtitle',
+	      topic: 'Topic',
+	      minValue: 'Lower bound',
+	      maxValue: 'Upper bound',
+	      step: 'Step'
+	    },
+	    'gauge': {
+	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
+	      title: 'Title',
+	      subtitle: 'Subtitle',
+	      topic: 'Topic',
+	      minValue: 'Lower bound',
+	      maxValue: 'Upper bound'
+	    },
 	  }
 	  return _dict[plugin][key]
 	}
@@ -253,6 +308,33 @@ class Action {
 			        break
 			    break
 			  }
+	      case 'range':
+			    switch (this.key){
+			      case 'title':
+			      case 'subtitle':
+			      case 'topic':
+			      case 'minValue':
+			      case 'maxValue':
+			      case 'step':
+              data.setup[this.key] = str
+          		Ranges.regen(obj, data)
+              bipes.page.dashboard.commit()
+			        break
+			    break
+			  }
+	      case 'gauge':
+			    switch (this.key){
+			      case 'title':
+			      case 'subtitle':
+			      case 'topic':
+			      case 'minValue':
+			      case 'maxValue':
+              data.setup[this.key] = str
+          		Gauges.regen(obj, data)
+              bipes.page.dashboard.commit()
+			        break
+			    break
+			  }
 			}
 	}
 	dropdown (obj, data) {
@@ -285,7 +367,21 @@ class Action {
             Streams.regen(obj, data)
             bipes.page.dashboard.commit()
             break
-   		  }
+   		}
+		  case 'range':
+		    switch (this.key){
+		      case 'target':
+            data.setup.target = str,
+            bipes.page.dashboard.commit()
+        		break
+   		}
+		  case 'gauge':
+		    switch (this.key){
+		      case 'target':
+            data.setup.target = str,
+            bipes.page.dashboard.commit()
+        		break
+   		}
     }
   }
 
