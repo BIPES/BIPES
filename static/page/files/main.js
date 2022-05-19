@@ -71,12 +71,13 @@ class Files {
 
     // Codemirror
     this.codemirror = CodeMirror($.codemirror.$, Tool.fromUrl('theme'))
-
+    /* ::TODO:: Include more functionalities before replacing browser default.
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)
     $.section.append($.contextMenu)
 
     $.codemirror.onevent('contextmenu', this, this.showContextMenu)
+    */
   }
   init (){
     if (this.inited)
@@ -111,8 +112,8 @@ class Files {
       }
     }
   }
-  /** Create a context menu for codemirror */
-  showContextMenu (ev){
+  /** Create a context menu for codemirror [::TODO:: Limited, keeping browser default]*/
+  /*showContextMenu (ev){
     let str = '',
         doc = this.codemirror.state.doc.toString()
     for (const range of this.codemirror.state.selection.ranges){
@@ -129,7 +130,7 @@ class Files {
       }
     }
     ], ev)
-  }
+  }*/
 }
 
 class DeviceFiles {
@@ -165,6 +166,7 @@ class DeviceFiles {
       }, {
         event:'contextmenu',
         fun: (path, dom, ev) => {
+          ev.preventDefault()
           this.contextMenu.open([
             {
               id:'add',

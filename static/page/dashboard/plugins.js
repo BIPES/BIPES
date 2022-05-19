@@ -192,7 +192,8 @@ class Charts {
 
     grid.charts.push(Charts.chart(data, data.target))
 
-    _$.silk.onevent('contextmenu', grid, ()=>{
+    _$.silk.onevent('contextmenu', grid, (ev) => {
+      ev.preventDefault()
       DOM.switchState(grid.parent.$.dashboard)
     })
     _$.grab.onclick(grid, grid.edit, [data, container1])
@@ -345,7 +346,8 @@ class Switches {
     grid.muuri.add(container3.$)
     grid.switches.push(Switches.switch(data, data.target))
 
-    data.target.onevent('contextmenu', grid, ()=>{
+    data.target.onevent('contextmenu', grid, (ev) => {
+      ev.preventDefault()
       DOM.switchState(grid.parent.$.dashboard)
     })
     _$.grab.onclick(grid, grid.edit, [data, container3])
@@ -452,7 +454,8 @@ class Ranges {
     grid.muuri.add(container3.$)
     grid.ranges.push(Ranges.range(data, data.target))
 
-    data.target.onevent('contextmenu', grid, ()=>{
+    data.target.onevent('contextmenu', grid, (ev) => {
+      ev.preventDefault()
       DOM.switchState(grid.parent.$.dashboard)
     })
     _$.grab.onclick(grid, grid.edit, [data, container3])
@@ -526,7 +529,8 @@ class Gauges {
     grid.muuri.add(container3.$)
     grid.gauges.push(Gauges.gauge(data, data.target))
 
-    data.target.onevent('contextmenu', grid, ()=>{
+    data.target.onevent('contextmenu', grid, (ev) => {
+      ev.preventDefault()
       DOM.switchState(grid.parent.$.dashboard)
     })
     _$.grab.onclick(grid, grid.edit, [data, container3])

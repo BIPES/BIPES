@@ -172,7 +172,7 @@ class Dashboard {
 	  return {tree:{}}
 	}
 	/*
-   * Include include DOM to novigation
+   * Include include DOM to navigation
    * @param {string} sid - Dashboard's SID.
    * @param {Object} obj - Dashboard scope in the project.
    */
@@ -502,7 +502,8 @@ class DashboardGrid {
       grab: new DOM('div', {
         id:'grab',
         title:Msg['DragMe']
-      }).onevent('contextmenu', this, ()=>{
+      }).onevent('contextmenu', this, (ev) => {
+        ev.preventDefault()
         if (!this.parent.$.dashboard.classList.contains('on'))
           this.parent.$.dashboard.classList.add('on')
       }),
