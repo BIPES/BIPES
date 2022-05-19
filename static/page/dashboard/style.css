@@ -496,23 +496,23 @@ section#dashboard #storageManager #mqttSession {
 section#dashboard #storageManager #mqttSession:focus {
   background: rgba(84,190,255,0.25);
 }
-section#dashboard #storageManager > div > div {
+section#dashboard #storageManager div.header {
   text-align: right;
   padding-top: 1em;
 }
-body.light section#dashboard #storageManager span {
+body.light section#dashboard #storageManager span.list {
 	border: 1px solid #aaa;
 }
-body.dark section#dashboard #storageManager span {
+body.dark section#dashboard #storageManager span.list {
 	border: 1px solid #444;
 }
-body.light section#dashboard #storageManager span > div {
+body.light section#dashboard #storageManager span.list > div {
 	border-bottom: 1px solid #aaa;
 }
-body.dark section#dashboard #storageManager span > div {
+body.dark section#dashboard #storageManager span.list > div {
 	border-bottom: 1px solid #444;
 }
-section#dashboard #storageManager span {
+section#dashboard #storageManager span.list {
 	display: block;
 	padding: 0 .5em;
 	border-radius: 1em;

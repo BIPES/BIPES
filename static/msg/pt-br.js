@@ -157,6 +157,7 @@ var Msg = {
   'StopExecution':'Parar execução',
   'StopTimers':'Parar timers',
   'DeviceInfo':'Info. do dispositivo',
+  BridgeDataToEasyMQTT:'Bridge data to EasyMQTT',
 
   // Page Dashboard
   'DashboardName':'Nome do painel',

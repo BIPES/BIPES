@@ -103,7 +103,7 @@ class Charts {
       case 'localStorage':
 		    data2 = dataStorage.chartData(data.setup.topic, data)
 		    break
-		  case 'easyMQTT':
+		  case 'EasyMQTT':
 		    // Include dummy if not exist
 		    if (!databaseMQTT._inited)
 		      return {
@@ -294,7 +294,7 @@ class Switches {
     delete this
   }
   command () {
-    if (this.target == 'easyMQTT'){
+    if (this.target == 'EasyMQTT'){
       if (!this.state)
         databaseMQTT.client.send(`${easyMQTT.session}/${this.topic}`, this.messageOn, 0, false),
         this.dom.$.classList.add('on')
@@ -382,7 +382,7 @@ class Ranges {
 	 *                                 DOM to set current node value.
 	 */
   command (_set){
-    if (this.target == 'easyMQTT'){
+    if (this.target == 'EasyMQTT'){
       let value = this.input.value
       if (_set == 'lower')
         value = Number(this.input.value ) - this.step

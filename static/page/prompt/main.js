@@ -51,8 +51,8 @@ class Prompt {
                 'import os; os.uname()\r',
                 channel.targetDevice, [], command.tabUID
               ])
-            }),
-          ])
+            })
+      ])
 
     $.container = new DOM('div', {className:"container"})
       .append([

@@ -157,6 +157,7 @@ var Msg = {
   'DeviceInfo':'Device info',
 
   // Page Dashboard
+  BridgeDataToEasyMQTT:'Bridge data to EasyMQTT',
   'DashboardName':'Dashboard name',
   'Dashboard':'Dashboard',
   'Session':'Session',

@@ -58,7 +58,7 @@ class MQTTDatabase {
         .then(obj => {
           if (obj.hasOwnProperty(easyMQTT.session)){
             if(obj[easyMQTT.session].length === 0){
-              this.ref.regenCharts('easyMQTT')
+              this.ref.regenCharts('EasyMQTT')
               return
             }
             this.topics.fetching = []  // watch fetch resolve
@@ -76,7 +76,7 @@ class MQTTDatabase {
 
                     this.topics.fetching.splice(this.topics.fetching.indexOf(topic.topic), 1)
                     if (this.topics.fetching.length === 0){
-                      this.ref.regenCharts('easyMQTT')
+                      this.ref.regenCharts('EasyMQTT')
                     }
                 })
             })
@@ -152,7 +152,7 @@ class MQTTDatabase {
     this._data[topic].push(data)
     // Push to charts
     if (this.ref !== undefined && push === true){
-      this.ref.chartsPush(topic, this._data[topic], data, this._coorLength)
+      this.ref.chartsPush(topic, this._data[topic], data, 'EasyMQTT')
     }
   }
   /**

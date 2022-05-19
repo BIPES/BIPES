@@ -110,7 +110,7 @@ class Actions {
 	      break
 	    case 'chart':
         return {
-          source: 'easyMQTT',
+          source: 'EasyMQTT',
           topic:'data',
           chartType: 'line',
           title: '',
@@ -123,7 +123,7 @@ class Actions {
 	      break
 	    case 'switch':
 	      return {
-          target: 'easyMQTT',
+          target: 'EasyMQTT',
 	        title: 'Click',
 	        subtitle: 'Me',
 	        topic: 'button',
@@ -133,7 +133,7 @@ class Actions {
 	      break
 	    case 'range':
 	      return {
-          target: 'easyMQTT',
+          target: 'EasyMQTT',
 	        title: 'Range',
 	        subtitle: 'Description',
 	        topic: 'range',
@@ -144,7 +144,7 @@ class Actions {
 	      break
 	    case 'gauge':
 	      return {
-          target: 'easyMQTT',
+          target: 'EasyMQTT',
 	        title: 'Gauge',
 	        subtitle: 'Unit',
 	        topic: 'gauge',
@@ -161,7 +161,7 @@ class Actions {
 	      topic: 'Topic',
 	      chartType: ['Chart type', ['line','scatter','bar','pie','radar']],
 	      title: 'Title',
-	      source: ["Target", ["localStorage","easyMQTT"]],
+	      source: ["Target", ["localStorage","EasyMQTT"]],
 	      labels: 'Labels',
 	      timeseries: 'Is Unix timestamp',
 	      limitPoints: 'Limit to last datapoints',
@@ -173,7 +173,7 @@ class Actions {
 	      manifest: 'Manifest address'
 	    },
 	    'switch': {
-	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
+	      target: ["Target", ["EasyMQTT"]], //::TODO:: Add REPL option
 	      title: 'Title',
 	      subtitle: 'Subtitle',
 	      topic: 'Topic',
@@ -181,7 +181,7 @@ class Actions {
 	      messageOff: 'Switch off message'
 	    },
 	    'range': {
-	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
+	      target: ["Target", ["EasyMQTT"]], //::TODO:: Add REPL option
 	      title: 'Title',
 	      subtitle: 'Subtitle',
 	      topic: 'Topic',
@@ -190,7 +190,7 @@ class Actions {
 	      step: 'Step'
 	    },
 	    'gauge': {
-	      target: ["Target", ["easyMQTT"]], //::TODO:: Add REPL option
+	      target: ["Target", ["EasyMQTT"]], //::TODO:: Add REPL option
 	      title: 'Title',
 	      subtitle: 'Subtitle',
 	      topic: 'Topic',

@@ -537,7 +537,6 @@ button.icon.text, label.icon.text {
   background: rgba(0,0,0,0);
   z-index: 73;
   transition: background-color ease .25s;
-  font-weight: bold;
   top: 0;
   left: 0;
 }
@@ -564,6 +563,49 @@ body.dark .popup > div {
 .popup.on > div {
   opacity: 1;
 }
+
+/* checkswitch, a pretty checkbox */
+.checkswitch {
+  -webkit-tap-highlight-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+input.checkswitch[type="checkbox"] {
+  -webkit-tap-highlight-color: transparent;
+    display: none;
+}
+.checkswitch input:checked ~ span {
+    background: #3298dc;
+}
+.checkswitch span {
+    width: 2.5em;
+    height: 1.5em;
+    background: grey;
+    display: inline-block;
+    border-radius: 1.5em;
+    position: relative;
+    line-height: 1.5rem;
+}
+.checkswitch span::after {
+    content: "";
+    position: absolute;
+    top: 0.074em;
+    left: 0.075em;
+    width: 1.35em;
+    height: 1.35em;
+    background: rgb(255, 255, 255);
+    border-radius: 1.35em;
+    transition: left 0.25s ease-out 0s, transform 0.25s ease-out 0s;
+    box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px;
+}
+.checkswitch input:checked ~ span::after {
+    left: -0.27em;
+    transform: translateX(100%);
+}
+
 /* notifications */
 a#notification:after {
   content: '';

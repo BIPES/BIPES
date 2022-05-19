@@ -130,10 +130,10 @@ class Dashboard {
   }
   /*
    * On chunck receive, write to datastorage, then will refresh the charts.
-   * @param {string} chunk - Uncoming data.
+   * @param {string} chunk - Incoming data.
    */
   write (chunk){
-    dataStorage.write(chunk)
+    dataStorage.write(chunk, this.storagemanager.bridgeEasyMQTT.status)
   }
   /*
    * On load a project, load the page's scope of the project.
@@ -425,7 +425,7 @@ class DashboardGrid {
    * Init grid.
    */
   init (){
-    this.chartBuffer = {}
+    this.chartBuffer = {EasyMQTT:{}, localStorage:{}}
     this.chartBufferInverval = setInterval(()=>{this.chartWatcher()}, 250)
 
     this.ref = this.parent.tree[this.parent.currentSID].grid
@@ -436,6 +436,8 @@ class DashboardGrid {
    */
 	deinit (){
 	  clearInterval(this.chartBufferInverval)
+	  delete this.chartBuffer.EasyMQTT
+	  delete this.chartBuffer.localStorage
 	  this.chartBuffer = undefined
 
 		this.$.grid.$.classList.remove('on')
@@ -743,49 +745,48 @@ class DashboardGrid {
    * @param{array} topic - Points' topic.
    * @param{array} coordinates - Points coordinates.
    * @param{bool} refresh - If chart should be regenerated.
+   * @param{string} target - EasyMQTT or localStorage.
    */
-  chartsPush (topic, coordinates, refresh) {
-    if (!this.chartBuffer.hasOwnProperty(topic))
-      this.chartBuffer[topic] = {refresh:false, coord:[]}
+  chartsPush (topic, coordinates, refresh, target) {
+    if (!this.chartBuffer[target].hasOwnProperty(topic))
+      this.chartBuffer[target][topic] = {refresh:false, coord:[]}
 
-    this.chartBuffer[topic].coord.push(coordinates)
+    this.chartBuffer[target][topic].coord.push(coordinates)
     if (refresh)
-      this.chartBuffer[topic].refresh = true
-
+      this.chartBuffer[target][topic].refresh = true
   }
   /** Periodically update the charts with buffered data */
   chartWatcher (){
     if (this.chartBuffer === undefined)
       return
-
-    for (const topic in this.chartBuffer){
-      this.charts.forEach ((chart) => {
-        if (chart.topic == topic) {
-          if (this.chartBuffer[topic].refresh)
-            this.ref.forEach(plugin => {
-              if (plugin.sid === chart.sid){
-                plugins.regen(this.charts, plugin)
+    for(const target of ['EasyMQTT', 'localStorage']){
+      for (const topic in this.chartBuffer[target]){
+        this.charts.forEach ((chart) => {
+          if (chart.source === target && chart.topic == topic) {
+            if (this.chartBuffer[target][topic].refresh)
+              this.ref.forEach(plugin => {
+                if (plugin.sid === chart.sid)
+                  plugins.regen(this.charts, plugin)
+              })
+            else {
+              this.chartBuffer[target][topic].coord.forEach(coordinates => {
+                chart.data.labels.push(coordinates[0])
+                chart.data.datasets.forEach((_topic, index) => {
+                  _topic.data.push(coordinates[index + 1])
+                })
+              })
+              if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
+                chart.data.labels.splice (0, this.chartBuffer[target][topic].coord.length)
+                chart.data.datasets.forEach((_topic, index) => {
+                  _topic.data.splice (0, this.chartBuffer[target][topic].coord.length)
+                })
               }
-            })
-          else {
-            this.chartBuffer[topic].coord.forEach(coordinates => {
-              chart.data.labels.push(coordinates[0])
-              chart.data.datasets.forEach((_topic, index) => {
-                _topic.data.push(coordinates[index + 1])
-              })
-            })
-            if (chart.hasOwnProperty('limitPoints') && chart.data.labels.length > chart.limitPoints) {
-              chart.data.labels.splice (0, this.chartBuffer[topic].coord.length)
-              chart.data.datasets.forEach((_topic, index) => {
-                _topic.data.splice (0, this.chartBuffer[topic].coord.length)
-              })
+              chart.update()
             }
-            chart.update()
           }
-        }
-      })
-
-      delete this.chartBuffer[topic]
+        })
+        delete this.chartBuffer[target][topic]
+      }
     }
   }
   /** Regen charts from source criteria */
@@ -858,6 +859,8 @@ class DataStorageManager {
     this.parent = parent
 	  this.name = 'storagemanager'
 
+	  this.bridgeEasyMQTT = new BridgeEasyMQTT()
+
     let $ = this.$ = {}
     $.storageManager = dom
     $.storageManager.onclick (this, this.close)
@@ -880,9 +883,9 @@ class DataStorageManager {
         $.upload,
         $.uploadLabel
       ])
-    $.container = new DOM ('span')
+    $.container = new DOM('span', {className:'list'})
 
-    $.mqttH2 = new DOM('h2', {innerText: 'easyMQTT'})
+    $.mqttH2 = new DOM('h2', {innerText: 'EasyMQTT'})
     $.mqttInput = new DOM('input', {
       placeholder:Msg['Session'],
       id:'mqttSession',
@@ -893,13 +896,14 @@ class DataStorageManager {
         $.mqttH2,
         $.mqttInput
       ])
-    $.containerMQTT = new DOM ('span')
+    $.containerMQTT = new DOM ('span', {className:'list'})
 
     $.wrapper = new DOM('div')
       .append([
         $.mqttTitle,
         $.containerMQTT,
         $.title,
+        this.bridgeEasyMQTT.$.container,
         $.container
       ])
 
@@ -1087,7 +1091,7 @@ class DataStorageManager {
 		    })
         if (this.ref != undefined) {
           this.ref.charts.forEach ((chart) => {
-            if (chart.topic == topic && chart.source == 'easyMQTT') {
+            if (chart.topic == topic && chart.source == 'EasyMQTT') {
               this.ref.ref.forEach(plugin => {
                 if (plugin.sid === chart.sid)
                   plugins.regen(this.ref.charts, plugin)
@@ -1216,6 +1220,43 @@ class DataStorageManager {
     this.$.statusMQTTButton.classList.add('off')
     this.$.mqttH2.classList.remove('on')
     this.$.mqttH2.classList.add('off')
+  }
+}
+
+/** Allow to bridge incoming comma divided data to EasyMQTT,
+ * instead of storing in localStorage
+.*/
+class BridgeEasyMQTT {
+  constructor (){
+    this.status = false
+
+    let $ = this.$ = {}
+
+    $.input = new DOM('input', {
+      id:'bridgeEasyMQTT',
+      className:'checkswitch',
+      type:'checkbox',
+      value:'off'
+    }).onevent('change', this, this.switch)
+
+    $.container = new DOM('div', {className:'bridgeEasyMQTT'})
+      .append([
+        new DOM('div')
+          .append([
+            new DOM('label', {
+                className:'checkswitch',
+                for:'bridgeEasyMQTT',
+                innerText:Msg['BridgeDataToEasyMQTT']
+              }).append([
+                $.input,
+                new DOM('span')
+              ]),
+            new DOM('div') // ::TODO:: replace with DOM.help
+          ])
+      ])
+  }
+  switch (){
+    this.status = !this.status
   }
 }
 

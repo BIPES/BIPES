@@ -5,6 +5,10 @@ import {Tool} from '../../base/tool.js'
 
 import {DOM, Animate} from '../../base/dom.js'
 
+/* For EasyMQTT bridge */
+import {databaseMQTT} from './easymqtt.js'
+import {easyMQTT} from './easymqtt.js'
+
 /** Store incoming data in localStorage */
 class DataStorage {
   constructor (){
@@ -22,8 +26,12 @@ class DataStorage {
   deinit (){
     this.ref = undefined
   }
-  /** Checks the income data for useful chuncks, like ``$BIPES-DATA:`` for plotting */
-  write (chunk){
+  /**
+   * Checks the income data for useful chuncks, like ``$BIPES-DATA:`` for plotting
+   * @param {string} chunck - Incoming line.
+   * @param {bool} bridgeEasyMQTT - Bridge coordinates to EasyMQTT.
+   */
+  write (chunk, bridgeEasyMQTT){
     this.buffer += chunk
     let re = /\r\n(?:>>> )?\$(.*):(.*)\r\n/
     let match_
@@ -31,8 +39,12 @@ class DataStorage {
     if (re.test(this.buffer)) {
       match_ = this.buffer.match(re)
       if (match_.length == 3) {
-        let coordinates = match_ [2].split(',').map((item)=>item = parseFloat(item))
-        this.push(match_[1],coordinates)
+        if (bridgeEasyMQTT === true){
+          databaseMQTT.client.send(`${easyMQTT.session}/${match_[1]}`, match_[2], 0, false)
+        } else {
+          let coordinates = match_[2].split(',').map((item)=>item = parseFloat(item))
+          this.push(match_[1],coordinates)
+        }
       }
     }
     this.buffer = this.buffer.replace(re, '\r\n') //purge received string out
@@ -57,7 +69,7 @@ class DataStorage {
         this._coorLength[topic] = coordinates.length
         refresh = true
       }
-      this.ref.chartsPush(topic, coordinates, refresh)
+      this.ref.chartsPush(topic, coordinates, refresh, 'localStorage')
     }
   }
   /**

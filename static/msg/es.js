@@ -157,6 +157,7 @@ var Msg = {
   'ResetDevice':'Reset device',
   'StopExecution':'Stop execution',
   'StopTimers':'Stop timers',
+  BridgeDataToEasyMQTT:'Bridge data to EasyMQTT',
   'DeviceInfo':'Device info',
 
   // Page Dashboard
