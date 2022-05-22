@@ -1,3 +1,5 @@
+.. _relase-deploy:
+
 Release and deploy
 ========================================
 

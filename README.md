@@ -1,5 +1,7 @@
 # BIPES: Block based Integrated Platform for Embedded Systems
 
+![Inviting cover](docs/media/inviting-cover.svg)
+
 ## Build from source
 
 To build BIPES, run
@@ -40,12 +42,14 @@ Access it live at [bipes.net.br/3/docs](https://bipes.net.br/3/docs) or
 build it from the clone with:
 
 ```
-make doc
+make docs
 ```
 
 Then open *docs/_build/html/index.html*.
 
-Note: requires [sphinx](https://www.sphinx-doc.org/en/master/), [sphinx-js](https://pypi.org/project/sphinx-js/) and [furo](https://github.com/pradyunsg/furo).
+Note: requires [sphinx](https://www.sphinx-doc.org/en/master/), 
+[sphinx-js](https://pypi.org/project/sphinx-js/) and 
+[furo](https://github.com/pradyunsg/furo).
 
 ## Build release
 
@@ -66,4 +70,4 @@ loads the spanish version.
 With this, extract anywhere and open the desired *ide-\*.html* file to use BIPES 
 serverless.
 
-For more options, see the documentation.
+For more options, see the documentation.

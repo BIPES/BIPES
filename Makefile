@@ -78,7 +78,7 @@ umd-deps:
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 unpkg:
-	@printf "[3/7] Fetching $(PURPLE)xterm chart.js murri dash.js paho-mqtt$(NC).\n"
+	@printf "[3/7] Fetching $(PURPLE)xterm.js chart.js murri dash.js paho-mqtt$(NC).\n"
 	@wget -O static/libs/xterm.umd.js https://unpkg.com/xterm@4.15.0/lib/xterm.js
 	@wget -O static/libs/chart.umd.js https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js
 	@wget -O static/libs/chart-adapter-date-fns.bundle.umd.js https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js
@@ -181,12 +181,14 @@ ifdef WSLENV
 	sudo service mosquitto stop ; \
 	fi
 else
-	@read -p "Enable mosquitto service? (\"N\" will disable it if already enabled) [y/N]: " mos3 ; \
+	@read -p "Enable and start mosquitto service? (\"N\" will disable it if already enabled) [y/N]: " mos3 ; \
 	if [ "$$mos3" = 'y' ] || [ "$$mos3" = 'Y' ] ; \
 	then \
-	sudo systemctl enable mosquitto ; \
+	sudo systemctl enable mosquitto && \
+	sudo systemctl start  mosquitto  ; \
 	else \
-	sudo systemctl disable mosquitto ; \
+	sudo systemctl disable mosquitto && \
+	sudo systemctl stop    mosquitto  ; \
 	fi
 endif
 
@@ -264,7 +266,8 @@ clean: build-clean
 	@rm -rf package.json
 	@printf "$(BLUE)Build files cleared.$(NC)\n"
 
-doc:
+.PHONY: docs
+docs:
 	rm -rf docs/_build
 	@. venv/bin/activate && \
 	cd docs && make html
@@ -307,7 +310,7 @@ help:
 	                          version of the platform.\n\
 	  run $(PURPLE)database=DB$(NC)         Run in development mode.\n\
 	  clean                   Clean all build files.\n\
-	  doc                     Render the documentation into HTML.\n\
+	  docs                    Render the documentation into HTML.\n\
 	  mosquitto               Setup mosquitto MQTT broker.\n\
 	\n\
 	Deployment options:\n\
@@ -324,3 +327,4 @@ help:
 	                          if not provided, defaults to $(BLUE)sqlite$(NC).\n\
 	  lang=LANG               The $(PURPLE)lang$(NC)uage to set the release start page,\n\
 	                          if not provided, defaults to $(BLUE)en$(NC).\n"
+
