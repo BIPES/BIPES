@@ -17,6 +17,12 @@ A Dockerfile is planned, but is not ready yet.
 Quick start
 ---------------
 
+The video below shows the cloning and installation walkthrough:
+
+.. raw:: html
+
+   <iframe src="https://www.youtube-nocookie.com/embed/fD3WkZ2A_D8" frameborder="0" allow="picture-in-picture" allowfullscreen></iframe>
+
 First, install ``git`` and ``make`` in your system, then clone the repository:
 
 .. code-block:: bash
@@ -41,8 +47,8 @@ on port 5001.
 
 Just enter http://127.0.0.1:5001/ide in the browser after the script prompts
 "Running BIPES in development mode".
-This development mode is a special state that forbits the browser from caching
-the platform, allowing changes made to it to be applied instataneously.
+This development mode is a special state that forbids the browser from caching
+the platform, allowing changes made to it to be applied instantaneously.
 
 To stop running, press ``Ctrl+C`` in the terminal.
 
@@ -63,7 +69,7 @@ instead of SQLite as the database engine.
 Windows notes
 ^^^^^^^^^^^^^^^^^^^
 
-On Windows, please use [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install#install-wsl-command).
+On Windows, please use `WSL2 <https://docs.microsoft.com/en-us/windows/wsl/install#install-wsl-command>`_.
 
 Install the usual stuff like `make` and `git` in WSL, then proceed with `make` in the
 repository root directory.

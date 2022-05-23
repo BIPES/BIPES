@@ -55,4 +55,4 @@ Or the insights in this video:
 
 .. raw:: html
 
-   <iframe src="https://www.youtube-nocookie.com/embed/f-D1Bc6Njds" title="YouTube video player" frameborder="0" allow="picture-in-picture" allowfullscreen></iframe>
+   <iframe src="https://www.youtube-nocookie.com/embed/f-D1Bc6Njds" frameborder="0" allow="picture-in-picture" allowfullscreen></iframe>
