@@ -622,7 +622,7 @@ class WebSocketSetup {
     if (ev != undefined)
       ev.preventDefault()
     if (ev == undefined || ev.target.id == 'webSocketSetup'){
-      if (+new Date - this.mdTimestamp < 150 || ev == undefined){
+      if (+new Date - this.mdTimestamp < 250 || ev == undefined){
         this.$.wrapper.style.marginTop = '110vh'
         Animate.off(this.$.webSocketSetup.$, undefined, 125)
       }

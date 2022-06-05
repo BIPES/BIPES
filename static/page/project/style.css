@@ -43,3 +43,14 @@ section#project #ask-shared-project .header > span {
 section#project #ask-shared-project:not(.on) {
   display: none;
 }
+section#project .username {
+  background-color: rgba(68,153,204,.25);
+  display: flex;
+  padding: .5em 1em;
+  margin: 0 .5em;
+  border-radius: 1em;
+}
+section#project .username input {
+  border-bottom: 1px dashed #666;
+  margin: 0 .5em;
+}

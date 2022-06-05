@@ -98,7 +98,6 @@ var Msg = {
   'NotSupported':'Not supported',
   'ProjectTarget':'Project\'s target device',
   'ChangeTargetAnytime':'Change the project\'s target device at anytime.',
-  'Disconnect':'Disconnect',
   'GetInfo':'Get info',
   'TargetDevice':'Project\'s target device',
   'TargetFirmware':'Project\'s target firmware',
@@ -134,6 +133,7 @@ var Msg = {
   // Page Project
   'YourProjects':'Your projects',
   'SharedProjects':'Shared projects',
+  HelloUser:'Hello, ',
   'By':'By',
   'AUser':'a user',
   'EditedAt':'Edited at',

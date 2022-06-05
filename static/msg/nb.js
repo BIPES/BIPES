@@ -98,7 +98,6 @@ var Msg = {
   'NoConnectedLong':'No connected device, connect below!',
   'NewConnection':'New connection',
   'NotSupported':'Not supported',
-  'ProjectTarget':'Project\'s target device',
   'ChangeTargetAnytime':'Change the project\'s target device at anytime.',
   'Disconnect':'Disconnect',
   'GetInfo':'Get info',
@@ -134,6 +133,7 @@ var Msg = {
 
   // Page Project
   'NewWebSocket':'New WebSocket connection',
+  HelloUser:'Hello, ',
   'YourProjects':'Your projects',
   'SharedProjects':'Shared projects',
   'By':'By',

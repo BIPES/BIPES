@@ -98,7 +98,6 @@ var Msg = {
   'NoConnectedLong':'No connected device, connect below!',
   'NewConnection':'New connection',
   'NotSupported':'Not supported',
-  'ProjectTarget':'Project\'s target device',
   'ChangeTargetAnytime':'Change the project\'s target device at anytime.',
   'Disconnect':'Disconnect',
   'GetInfo':'Get info',
@@ -134,10 +133,11 @@ var Msg = {
   'Language':'Language',
 
   // Page Project
+  HelloUser:'Hello, ',
   'YourProjects':'Your projects',
   'SharedProjects':'Shared projects',
   'By':'By',
-  'AUser':'a user',
+  'AUser':'anonymous user',
   'EditedAt':'Edited at',
   'EmptyProject':'Empty project',
   'LoadMore':'Load more',

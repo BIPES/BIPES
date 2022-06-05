@@ -12,19 +12,19 @@ Blockly.Msg["DISPLAYS"] = "Displays";
 Blockly.Msg['SENSORS'] = "Sensors";
 Blockly.Msg['OUTPUTS'] = "Outputs / Actuators";
 Blockly.Msg['SOUNDS'] = "Geräusche";
-Blockly.Msg['COMM'] = "Communication";
-Blockly.Msg['TEMP_HUMI'] = "Temperature and Humidity";
-Blockly.Msg['PRESS'] = "Pressure";
-Blockly.Msg['FILES'] = "Files";
-Blockly.Msg['NET'] = "Network and Internet";
-Blockly.Msg['CONTROL'] = "Control";
-Blockly.Msg['SIMULATE'] = "Simulate";
-Blockly.Msg['IMU'] = "Inertial Measurement";
-Blockly.Msg['AIR'] = "Air Quality";
-Blockly.Msg['INSTALL_LIBRARY'] = "Install library";
-Blockly.Msg['DOCUMENTATION'] = "Documentation";
-Blockly.Msg['DOCUMENTATION_HOW'] = "Documentation and how to connect";
-Blockly.Msg['LOAD_EXAMPLE'] = "Load example";
+Blockly.Msg['COMM'] = "Kommunikation";
+Blockly.Msg['TEMP_HUMI'] = "Temperatur und Luftfeuchtigkeit";
+Blockly.Msg['PRESS'] = "Druck";
+Blockly.Msg['FILES'] = "Dateien";
+Blockly.Msg['NET'] = "Netzwerk und Internet";
+Blockly.Msg['CONTROL'] = "Kontrolle";
+Blockly.Msg['SIMULATE'] = "Simulieren";
+Blockly.Msg['IMU'] = "Trägheitsmessung";
+Blockly.Msg['AIR'] = "Luftqualität";
+Blockly.Msg['INSTALL_LIBRARY'] = "Bibliothek installieren";
+Blockly.Msg['DOCUMENTATION'] = "Dokumentation";
+Blockly.Msg['DOCUMENTATION_HOW'] = "Dokumentation und Verbindungsaufbau";
+Blockly.Msg['LOAD_EXAMPLE'] = "Beispiel laden";
 
 var Msg = {
   // Pages names
@@ -46,8 +46,8 @@ var Msg = {
   'Rename':'Umbenennen',
   'New':'Neu',
   'Share':'Teilen',
-  'UpdateShared':'Hochladen geteilt',
-  'Unshare':'Neue Version teilen',
+  'UpdateShared':'Neue Version teilen',
+  'Unshare':'Freigabe aufheben',
   'Upload':'Hochladen',
   'Import':'Importieren',
   'Filename':'Dateiname',
@@ -92,17 +92,16 @@ var Msg = {
   FetchingExample:'Fetching example {0}...',
 
   // Page Device
-  'Unknown':'unknown',
-  'ConnectedDevice':'Connected device',
+  'Unknown':'unbekannt',
+  'ConnectedDevice':'Verbundenes Gerät',
   'NotConnected':'nicht verbunden',
-  'NoConnectedLong':'No connected device, connect below!',
-  'NewConnection':'New connection',
-  'NotSupported':'Not supported',
-  'ProjectTarget':'Project\'s target device',
+  'NoConnectedLong':'Kein verbundenes Gerät, unten verbinden!',
+  'NewConnection':'Neue Verbindung',
+  'NotSupported':'Nicht unterstützt',
   'ChangeTargetAnytime':'Change the project\'s target device at anytime.',
   'Disconnect':'Disconnect',
   'GetInfo':'Get info',
-  'TargetDevice':'Project\'s target device',
+  'TargetDevice':'Zielgerät des Projekts',
   'TargetFirmware':'Project\'s target firmware',
   'ConnectedDevices':'Connected devices',
   'UsingThisDevice':'Using this device',
@@ -134,17 +133,18 @@ var Msg = {
   'Language':'Sprache',
 
   // Page Project
-  'YourProjects':'Your projects',
-  'SharedProjects':'Shared projects',
-  'By':'By',
-  'AUser':'a user',
-  'EditedAt':'Edited at',
-  'EmptyProject':'Empty project',
-  'LoadMore':'Load more',
-  'NoOlderProjects':'No older shared projects',
-  'SharedProjectDoesNotExist':'Shared project does not exist anymore',
-  ProjectFromURL:'Shared project from link',
-  ClickToImport:'Tap to import to your projects',
+  HelloUser:'Hallo, ',
+  'YourProjects':'Ihre Projekte',
+  'SharedProjects':'Gemeinsame Projekte',
+  'By':'Von',
+  'AUser':'anonymer Benutzer',
+  'EditedAt':'Bearbeitet bei',
+  'EmptyProject':'Leeres Projekt',
+  'LoadMore':'Mehr laden',
+  'NoOlderProjects':'Keine älteren freigegebenen Projekte',
+  'SharedProjectDoesNotExist':'Geteiltes Projekt existiert nicht mehr',
+  ProjectFromURL:'Freigegebenes Projekt von Link',
+  ClickToImport:'Tippen Sie auf , um in Ihre Projekte zu importieren',
 
   // Page Notification
   'Forum':'Forum',

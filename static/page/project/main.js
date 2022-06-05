@@ -22,13 +22,22 @@ class Project {
 
     this.username = storage.has('username') ?
                     storage.fetch('username') :
-                    storage.set('username', Msg['AUser'])
+                    storage.set('username', 'a user')
 
     let $ = this.$ = {}
 
     $.projects = new DOM('span', {className:'listy'})
 
     $.h2 = new DOM('h2', {innerText:Msg['PageProject']})
+    $.username = new DOM('input', {
+      value:this.username == 'a user' ? Msg['AUser'] : this.username
+    }).onevent('change', this, this.nameChange)
+    $.usernameWrapper = new DOM('span', {className: "username"})
+      .append([
+        new DOM('div', {innerText:Msg['HelloUser']}),
+        $.username,
+        new DOM('div', {innerText:'!'})
+      ])
     $.wrapper = new DOM('span', {className: "projects"})
       .append([
         new DOM('div', {id:'user-projects'})
@@ -54,7 +63,7 @@ class Project {
     ])
 
     $.container = new DOM('div', {className:'container'})
-      .append([$.h2, $.wrapper])
+      .append([$.h2, $.usernameWrapper, $.wrapper])
 
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)
@@ -68,7 +77,8 @@ class Project {
       new: this._new,
       remove: this._remove,
       update: this._update,
-      lazyUpdate: this._lazyUpdate
+      lazyUpdate: this._lazyUpdate,
+      nameChange: this._nameChange
     })
 
     let keys = storage.keys(/project-(.*)/)
@@ -257,6 +267,11 @@ class Project {
       child2.classList.add('on')
       DOM.get('#name', child2).disabled = false
     }
+
+    // Update author if changed globally
+    let _username = storage.fetch('username')
+    if (_username != this.current.project.author)
+      this.current.project.author = _username
   }
   deinit (){
     if(!this.inited)
@@ -498,7 +513,7 @@ class Project {
         this.shared.$Card({
           uid:obj.uid,
           name:proj.name,
-          author:proj.author,
+          author: proj.author == 'a user' ? Msg['AUser'] : proj.author,
           lastEdited:proj.lastEdited,
         }).$,
         this.shared.$.projects.$.firstChild
@@ -524,7 +539,9 @@ class Project {
       if (obj.uid !== proj.shared.uid)
         return
       // Update outside the update context, since soft affects the project list
-      let _obj = {name:proj.name, shared:proj.shared, lastEdited:proj.lastEdited}
+      // Note: this updates "Your project" list, not "Shared projects".
+      // There is no dynamic update in "Shared projects".
+      let _obj = {name:proj.name, author:proj.author, shared:proj.shared, lastEdited:proj.lastEdited}
       command.dispatch(this, 'lazyUpdate', [uid, _obj])
       // Now send actual update action
       this.update({project:proj}, uid)
@@ -580,6 +597,29 @@ class Project {
       this.new(ev, e.target.result)
     }
     reader.readAsText(file)
+  }
+  nameChange (){
+    if (this.$.username.value == undefined || this.$.username.value == '')
+        this.$.username.value = Msg['AUser']
+
+    let name = this.$.username.value == Msg['AUser'] ? 'a user' : this.$.username.value
+    command.dispatch(this, 'nameChange',
+      [name,
+      this.currentUID
+    ])
+
+    storage.set('username', name)
+
+    let obj = {...this.current.project}
+    obj.author = name
+
+    this.update({project:obj}, this.currentUID)
+  }
+  _nameChange (name){
+    if (name == 'a user')
+      name = Msg['AUser']
+
+    this.$.username.value = name
   }
 }
 /* Show shared projects */
@@ -713,7 +753,7 @@ class SharedProject {
         new DOM('div', {className:'row'}).append([
           new DOM('span', {
             id:'author',
-            innerText: `${Msg['By']} ${item.author}`
+            innerText: `${Msg['By']} ${item.author == 'a user' ? Msg['AUser'] : item.author}`
           }),
           new DOM('div', {
             id:'lastEdited',

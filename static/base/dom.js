@@ -425,7 +425,7 @@ class ContextMenu {
     if (ev != undefined)
       ev.preventDefault()
     if (ev == undefined || ev.target.id == 'contextMenu'){
-      if (+new Date - this.mdTimestamp < 150 || ev == undefined){
+      if (+new Date - this.mdTimestamp < 250 || ev == undefined){
         this.$.wrapper.$.style.height = '0px'
         Animate.off(this.$.contextMenu.$, undefined, 125)
         setTimeout(() => {this.$.wrapper.removeChilds()}, 125)
@@ -508,3 +508,5 @@ class ContextMenu {
     input.$.focus()
   }
 }
+
+
