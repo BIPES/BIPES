@@ -28,6 +28,7 @@ class DataStorage {
   }
   /**
    * Checks the income data for useful chuncks, like ``$BIPES-DATA:`` for plotting
+   * comma divided data (chart) or single number value (gauge).
    * @param {string} chunck - Incoming line.
    * @param {bool} bridgeEasyMQTT - Bridge coordinates to EasyMQTT.
    */
@@ -43,33 +44,49 @@ class DataStorage {
           databaseMQTT.client.send(`${easyMQTT.session}/${match_[1]}`, match_[2], 0, false)
         } else {
           let coordinates = match_[2].split(',').map((item)=>item = parseFloat(item))
-          this.push(match_[1],coordinates)
+          if (coordinates.every((item) => !isNaN(item)) && coordinates.length > 1){
+            this.push(match_[1],coordinates, 'chart')
+          } else {
+            let value = parseFloat(match_[2])
+            if (!isNaN(match_[2]))
+              this.push(match_[1], value, 'gauge')
+          }
         }
       }
     }
     this.buffer = this.buffer.replace(re, '\r\n') //purge received string out
   }
-  /** Push identified topic and coordinates to localStorage */
-  push (topic, coordinates){
-    if (coordinates.constructor.name != 'Array')
+  /**
+   * Push identified topic and data to localStorage.
+   * @param {string} topic - Identified topic.
+   * @param {Number|Number[]} data - Identified data.
+   * @param {string|string[]} plugin - Type of plugin to push the data to.
+   */
+  push (topic, data, plugin){
+    if (plugin == 'gauge' && this.ref !== undefined){
+      this.ref.gaugesPush(topic, data, 'Console')
+      return
+    }
+
+    if (data.constructor.name != 'Array')
       return
 
     if (!this._keys.includes(topic))
       this._keys.push (topic),
       this._data[topic] = []
 
-    this._data[topic].push(coordinates)
+    this._data[topic].push(data)
 
     storage.set(`datastorage:${topic}`, JSON.stringify(this._data[topic]))
     // Push to charts
     if (this.ref !== undefined){
       let refresh = this._data[topic].length == 5 ? true : false
 
-      if (parseInt(this._coorLength[topic]) < parseInt(coordinates.length) || this._coorLength[topic] === -Infinity) {
-        this._coorLength[topic] = coordinates.length
+      if (parseInt(this._coorLength[topic]) < parseInt(data.length) || this._coorLength[topic] === -Infinity) {
+        this._coorLength[topic] = data.length
         refresh = true
       }
-      this.ref.chartsPush(topic, coordinates, refresh, 'localStorage')
+      this.ref.chartsPush(topic, data, refresh, 'Console')
     }
   }
   /**
@@ -105,7 +122,7 @@ class DataStorage {
     if (!isNaN(limitPoints))
       mat = mat.slice(-limitPoints)
 
-    this.transpose (mat)
+    Tool.transpose(mat)
 
     let labels = opt.setup.labels.split(',').map((i)=>i.trim())
     labels = labels.length == 1 && labels[0] == '' ? [] : labels
@@ -114,7 +131,7 @@ class DataStorage {
 
 
     for (let i = 1; i < mat.length; i++){
-      let bd = i < 7 ? Tool.colors(i - 1) : this.randomColor()
+      let bd = i < 7 ? Tool.colors(i - 1) : Tool.randomColor()
 
       datasets.push ({
         label: i - 1 < labels.length  ? labels [i - 1]: `Data ${i}`,
@@ -128,29 +145,6 @@ class DataStorage {
             labels: mat[0],
             datasets:datasets
       }
-  }
-  transpose (mat){
-    for (var i = 0; i < mat.length; i++) {
-          for (var j = 0; j < i; j++) {
-              const tmp = mat[i][j]
-              mat[i][j] = mat[j][i]
-              mat[j][i] = tmp
-          }
-      }
-    mat.forEach((sets, index) => {
-      if (!sets.some(set => set != undefined)){
-        return mat.splice(index)
-      }
-    })
-    return mat
-  }
-  randomColor (){
-    let a = parseInt(Math.random()*255)
-    let b = 255 - a
-    let c = 255 - a - b
-
-    return [`rgba(${a},${b}.${c},0.8)`,`rgba(${a},${b}.${c},1.0)`]
-
   }
 }
 

@@ -158,6 +158,38 @@ class Tool {
   static round (num, prec){
     return Math.round((num + Number.EPSILON) * (Math.pow(10,prec)))/(Math.pow(10,prec))
   }
+  /**
+   * Transpose matrix.
+   * @param {array} mat - Matrix to transpose.
+   * @return - Transposed matrix.
+   **/
+  static transpose (mat){
+    for (var i = 0; i < mat.length; i++) {
+          for (var j = 0; j < i; j++) {
+              const tmp = mat[i][j]
+              mat[i][j] = mat[j][i]
+              mat[j][i] = tmp
+          }
+      }
+    mat.forEach((sets, index) => {
+      if (!sets.some(set => set != undefined)){
+        return mat.splice(index)
+      }
+    })
+    return mat
+  }
+  /**
+   * Generate random color.
+   * @return - Random color.
+   **/
+  static randomColor (){
+    let a = parseInt(Math.random()*255)
+    let b = 255 - a
+    let c = 255 - a - b
+
+    return [`rgba(${a},${b}.${c},0.8)`,`rgba(${a},${b}.${c},1.0)`]
+
+  }
 }
 /**
  * Handle API requests, return JSON on success and true on error.

@@ -425,7 +425,7 @@ class DashboardGrid {
    * Init grid.
    */
   init (){
-    this.chartBuffer = {EasyMQTT:{}, localStorage:{}}
+    this.chartBuffer = {EasyMQTT:{}, Console:{}}
     this.chartBufferInverval = setInterval(()=>{this.chartWatcher()}, 250)
 
     this.ref = this.parent.tree[this.parent.currentSID].grid
@@ -437,7 +437,7 @@ class DashboardGrid {
 	deinit (){
 	  clearInterval(this.chartBufferInverval)
 	  delete this.chartBuffer.EasyMQTT
-	  delete this.chartBuffer.localStorage
+	  delete this.chartBuffer.Console
 	  this.chartBuffer = undefined
 
 		this.$.grid.$.classList.remove('on')
@@ -760,7 +760,7 @@ class DashboardGrid {
   chartWatcher (){
     if (this.chartBuffer === undefined)
       return
-    for(const target of ['EasyMQTT', 'localStorage']){
+    for(const target of ['EasyMQTT', 'Console']){
       for (const topic in this.chartBuffer[target]){
         this.charts.forEach ((chart) => {
           if (chart.source === target && chart.topic == topic) {
@@ -803,11 +803,13 @@ class DashboardGrid {
    * Push data to current gauges.
    * @param{array} topic - Point's topic.
    * @param{array} data - Data point.
+   * @param{string} source - EasyMQTT or Console.
    */
-  gaugesPush (topic, data, refresh) {
+  gaugesPush (topic, data, source) {
     this.gauges.forEach ((gauge) => {
-      if (gauge.topic == topic)
+      if (gauge.topic == topic && gauge.source == source){
         gauge.update(data)
+      }
     })
   }
 }
@@ -877,7 +879,7 @@ class DataStorageManager {
 			  title:'Upload CSV',
 			  htmlFor:'uploadCSV'
 		  })
-    $.h2 = new DOM ('h2',   {innerText: 'localStorage'})
+    $.h2 = new DOM ('h2',   {innerText: 'Console (localStorage)'})
     $.title = new DOM ('div', {className: 'header'})
       .append([
         $.h2,
@@ -1069,10 +1071,10 @@ class DataStorageManager {
 		dataStorage.remove(id)
     if (this.ref != undefined) {
       this.ref.charts.forEach ((chart) => {
-        if (chart.topic == id && chart.source == 'localStorage') {
+        if (chart.topic == id && chart.source == 'Console') {
           this.ref.ref.forEach(plugin => {
             if (plugin.sid === chart.sid)
-              plugins.regen(this.charts, plugin)
+              plugins.regen(this.ref.charts, plugin)
           })
         }
       })

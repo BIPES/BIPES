@@ -2,11 +2,14 @@
 
 import {DOM} from '../../base/dom.js'
 import {Tool} from '../../base/tool.js'
-export {Charts, Streams, Switches, Ranges, Gauges}
+import {channel} from '../../base/channel.js'
+import {command} from '../../base/command.js'
 
 import {dataStorage} from './datastorage.js'
 import {databaseMQTT} from './easymqtt.js'
 import {easyMQTT} from './easymqtt.js'
+
+export {Charts, Streams, Switches, Ranges, Gauges}
 
 /** Handle all plugins types */
 export const plugins = {
@@ -65,6 +68,12 @@ export const plugins = {
 	 * @param {Object} _$ - Object of DOM elements: grab, remove, and silk.
 	 */
   include: (grid, data, _$) => {
+    // ::TODO:: Remove these patches caused by renames
+    if (data.setup.source == 'localStorage')
+     data.setup.source = 'Console'
+    else if (data.setup.source == 'easyMQTT')
+     data.setup.source = 'EasyMQTT'
+
     switch (data.type) {
       case 'chart':
         Charts.include(grid, data, _$)
@@ -100,7 +109,7 @@ class Charts {
   static chart (data, dom) {
     let data2
     switch (data.setup.source) {
-      case 'localStorage':
+      case 'Console':
 		    data2 = dataStorage.chartData(data.setup.topic, data)
 		    break
 		  case 'EasyMQTT':
@@ -303,6 +312,20 @@ class Switches {
         databaseMQTT.client.send(`${easyMQTT.session}/${this.topic}`, this.messageOff, 0, false),
         this.dom.$.classList.remove('on')
       this.state = !this.state
+    } else if  (this.target == 'Console'){
+      if (!this.state)
+        command.dispatch(channel, 'push', [
+          `${this.topic}(${this.messageOn})\r`,
+          channel.targetDevice, [], command.tabUID
+        ]),
+        this.dom.$.classList.add('on')
+      else
+        command.dispatch(channel, 'push', [
+          `${this.topic}(${this.messageOff})\r`,
+          channel.targetDevice, [], command.tabUID
+        ]),
+        this.dom.$.classList.remove('on')
+      this.state = !this.state
     }
   }
   static switch (data, dom) {
@@ -384,23 +407,32 @@ class Ranges {
 	 *                                 DOM to set current node value.
 	 */
   command (_set){
+    if (!['EasyMQTT', 'Console'].includes(this.target))
+      return
+
+    let value = this.input.value
+    if (_set == 'lower')
+      value = Number(this.input.value ) - this.step
+    else if (_set == 'raise')
+      value = Number(this.input.value) + this.step
+    else if (_set instanceof HTMLInputElement)
+      value = Number(this.input.value)
+
+    value = value < this.minValue ? this.minValue : value
+    value = value > this.maxValue ? this.maxValue : value
+
+    // Round value
+    value = Tool.round(value, this.precision)
+
+    this.input.value = value
+
     if (this.target == 'EasyMQTT'){
-      let value = this.input.value
-      if (_set == 'lower')
-        value = Number(this.input.value ) - this.step
-      else if (_set == 'raise')
-        value = Number(this.input.value) + this.step
-      else if (_set instanceof HTMLInputElement)
-        value = Number(this.input.value)
-
-      value = value < this.minValue ? this.minValue : value
-      value = value > this.maxValue ? this.maxValue : value
-
-      // Round value
-      value = Tool.round(value, this.precision)
-
-      this.input.value = value
       databaseMQTT.client.send(`${easyMQTT.session}/${this.topic}`, String(value), 0, false)
+    } else if (this.target == 'Console'){
+      command.dispatch(channel, 'push', [
+        `${this.topic}(${value})\r`,
+        channel.targetDevice, [], command.tabUID
+      ])
     }
   }
   static range (data, dom) {
@@ -467,13 +499,13 @@ class Gauges {
   constructor (data, dom){
     this.sid = data.sid
     this.dom = dom
-    this.target = data.setup.target
+    this.source = data.setup.source
     this.topic = data.setup.topic
     this.minValue = Number(data.setup.minValue)
     this.maxValue = Number(data.setup.maxValue)
   }
   destroy () {
-    this.target = undefined
+    this.source = undefined
     this.topic = ''
     this.minValue = undefined
     this.maxValue = undefined
@@ -504,7 +536,7 @@ class Gauges {
     for (const index in obj.gauges) {
       if (obj.gauges[index].sid == data.sid) {
         obj.gauges[index].destroy ()
-        obj.gauges[index] = Gauges.gauge(data, data.target)
+        obj.gauges[index] = Gauges.gauge(data, data.source)
       }
     }
   }
@@ -515,21 +547,21 @@ class Gauges {
 	 * @param {Object} _$ - Object of DOM elements: grab, remove, and silk.
 	 */
   static include(grid, data, _$){
-    data.target = new DOM('span')
+    data.source = new DOM('span')
     let content3 = new DOM('div')
       .append([
         //_$.silk,
         _$.grab,
 	      _$.remove,
-	      data.target,
+	      data.source,
       ])
     let container3 = new DOM('div', {sid:data.sid, className:'gauge tiny'})
       .append(content3)
 
     grid.muuri.add(container3.$)
-    grid.gauges.push(Gauges.gauge(data, data.target))
+    grid.gauges.push(Gauges.gauge(data, data.source))
 
-    data.target.onevent('contextmenu', grid, (ev) => {
+    data.source.onevent('contextmenu', grid, (ev) => {
       ev.preventDefault()
       DOM.switchState(grid.parent.$.dashboard)
     })

@@ -114,7 +114,7 @@ the translation files in upper case instead of camel case, for example:
 .. code-block:: javascript
   Blockly.Msg["DISPLAYS"] = "Displays";
   Blockly.Msg["LOOPS"] = "Laços";
-   Blockly.Msg['DOCUMENTATION'] = "Documentação";
+  Blockly.Msg['DOCUMENTATION'] = "Documentação";
 
  Then, at the template definition:
 

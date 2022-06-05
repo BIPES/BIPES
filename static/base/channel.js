@@ -173,7 +173,6 @@ class Channel {
     let call = this.callbacks[0]
 
     if (!call.hasOwnProperty('skip') && !/^[\x00-\x7F]{1}$/.test(call.cmd)){
-      console.log(call.cmd)
       call.cmd = call.cmd
           .replaceAll('\t', '    ')
       // Emulate command in paste mode

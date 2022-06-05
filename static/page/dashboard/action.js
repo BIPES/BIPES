@@ -92,7 +92,7 @@ class Actions {
 	    'gauge': {
 	      title: 'input',
 	      subtitle: 'input',
-	      target: 'dropdown',
+	      source: 'dropdown',
 	      topic: 'input',
 	      minValue: 'input',
 	      maxValue: 'input',
@@ -144,7 +144,7 @@ class Actions {
 	      break
 	    case 'gauge':
 	      return {
-          target: 'EasyMQTT',
+          source: 'EasyMQTT',
 	        title: 'Gauge',
 	        subtitle: 'Unit',
 	        topic: 'gauge',
@@ -161,7 +161,7 @@ class Actions {
 	      topic: 'Topic',
 	      chartType: ['Chart type', ['line','scatter','bar','pie','radar']],
 	      title: 'Title',
-	      source: ["Target", ["localStorage","EasyMQTT"]],
+	      source: ["Source", ["Console","EasyMQTT"]],
 	      labels: 'Labels',
 	      timeseries: 'Is Unix timestamp',
 	      limitPoints: 'Limit to last datapoints',
@@ -173,7 +173,7 @@ class Actions {
 	      manifest: 'Manifest address'
 	    },
 	    'switch': {
-	      target: ["Target", ["EasyMQTT"]], //::TODO:: Add REPL option
+	      target: ["Target", ['EasyMQTT','Console']],
 	      title: 'Title',
 	      subtitle: 'Subtitle',
 	      topic: 'Topic',
@@ -181,7 +181,7 @@ class Actions {
 	      messageOff: 'Switch off message'
 	    },
 	    'range': {
-	      target: ["Target", ["EasyMQTT"]], //::TODO:: Add REPL option
+	      target: ["Target", ['EasyMQTT','Console']],
 	      title: 'Title',
 	      subtitle: 'Subtitle',
 	      topic: 'Topic',
@@ -190,7 +190,7 @@ class Actions {
 	      step: 'Step'
 	    },
 	    'gauge': {
-	      target: ["Target", ["EasyMQTT"]], //::TODO:: Add REPL option
+	      source: ["Source", ["EasyMQTT", "Console"]],
 	      title: 'Title',
 	      subtitle: 'Subtitle',
 	      topic: 'Topic',
@@ -327,6 +327,7 @@ class Action {
 			      case 'title':
 			      case 'subtitle':
 			      case 'topic':
+			      case 'source':
 			      case 'minValue':
 			      case 'maxValue':
               data.setup[this.key] = str
@@ -357,6 +358,7 @@ class Action {
 		    switch (this.key){
 		      case 'target':
             data.setup.target = str,
+        		Switches.regen(obj, data),
             bipes.page.dashboard.commit()
         		break
    		}
@@ -372,13 +374,15 @@ class Action {
 		    switch (this.key){
 		      case 'target':
             data.setup.target = str,
+        		Ranges.regen(obj, data),
             bipes.page.dashboard.commit()
         		break
    		}
 		  case 'gauge':
 		    switch (this.key){
-		      case 'target':
-            data.setup.target = str,
+		      case 'source':
+            data.setup.source = str,
+        		Gauges.regen(obj, data),
             bipes.page.dashboard.commit()
         		break
    		}

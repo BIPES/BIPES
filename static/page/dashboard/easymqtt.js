@@ -136,7 +136,7 @@ class MQTTDatabase {
    */
   push (topic, data, push, plugin){
     if (plugin == 'gauge' && push === true){
-      this.ref.gaugesPush(topic, data)
+      this.ref.gaugesPush(topic, data, 'EasyMQTT')
       return
     }
 
@@ -184,7 +184,7 @@ class MQTTDatabase {
     if (!isNaN(limitPoints))
       mat = mat.slice(-limitPoints)
 
-    this.transpose (mat)
+    Tool.transpose(mat)
 
     let labels = opt.setup.labels.split(',').map((i)=>i.trim())
     labels = labels.length == 1 && labels[0] == '' ? [] : labels
@@ -193,7 +193,7 @@ class MQTTDatabase {
 
 
     for (let i = 1; i < mat.length; i++){
-      let bd = i < 7 ? Tool.colors(i - 1) : this.randomColor()
+      let bd = i < 7 ? Tool.colors(i - 1) : Tool.randomColor()
 
       datasets.push ({
         label: i - 1 < labels.length  ? labels [i - 1]: `Data ${i}`,
@@ -207,29 +207,6 @@ class MQTTDatabase {
             labels: mat[0],
             datasets:datasets
       }
-  }
-  transpose (mat){
-    for (var i = 0; i < mat.length; i++) {
-          for (var j = 0; j < i; j++) {
-              const tmp = mat[i][j]
-              mat[i][j] = mat[j][i]
-              mat[j][i] = tmp
-          }
-      }
-    mat.forEach((sets, index) => {
-      if (!sets.some(set => set != undefined)){
-        return mat.splice(index)
-      }
-    })
-    return mat
-  }
-  randomColor (){
-    let a = parseInt(Math.random()*255)
-    let b = 255 - a
-    let c = 255 - a - b
-
-    return [`rgba(${a},${b}.${c},0.8)`,`rgba(${a},${b}.${c},1.0)`]
-
   }
   /** Triggered when MQTT connection is established */
   onConnect (){
