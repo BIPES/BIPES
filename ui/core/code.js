@@ -29,7 +29,8 @@ Code.LANGUAGE_NAME = {
   'de': 'Deutsch',
   'nb': 'Norwegian',
   'zh-hans': 'Chinese (simplified)',
-  'zh-hant': 'Chinese (tradicional)'
+  'zh-hant': 'Chinese (tradicional)',
+  'he': 'Hebrew'
 };
 
 /**
