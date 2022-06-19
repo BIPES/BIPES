@@ -348,7 +348,7 @@ class DashboardGrid {
 		plugins.types.forEach(type => this[type] = [])
 		this.editiding
 		this.editingProp  // Store original position and current from plugin(string)
-		this.isGrabbing = false
+		this.isGrabbing = [false, undefined]
 
     // Hold data points to push to charts.
     this.chartBuffer
@@ -375,7 +375,7 @@ class DashboardGrid {
 		  dragHandle: '#grab',
 		  dragStartPredicate: (item, e) => {
 		    if (this.parent.$.dashboard.classList.contains('on')){
-		      this.isGrabbing = +new Date()
+		      this.isGrabbing = [+new Date(),item._element.dataset.sid]
 		      return true
 		    }
 		  }
@@ -389,8 +389,8 @@ class DashboardGrid {
 		  item._element.classList.add('grabbing')
     }).on('dragReleaseEnd', (item) => {
 		  item._element.classList.remove('grabbing')
-		  if (+new Date () - this.isGrabbing < 150) {
-        this.isGrabbing = false
+		  if (+new Date () - this.isGrabbing[0] < 150 && this.isGrabbing[1] == item._element.dataset.sid) {
+        this.isGrabbing = [false, undefined]
         let obj
         this.ref.forEach(p =>{
           if (p.sid === item._element.dataset.sid)
@@ -398,7 +398,7 @@ class DashboardGrid {
         })
         this.edit(obj, new DOM(item._element))
     } else
-      this.isGrabbing = false
+      this.isGrabbing = [false, undefined]
     }).on('move', () => {
 	    this.storeLayout()
     })
