@@ -40,3 +40,4 @@ export default function CodeMirror6 (dom, theme, props){
     parent: dom
   })
 }
+

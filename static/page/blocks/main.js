@@ -130,6 +130,8 @@ class Blocks {
         this.workspace
       )
       Blockly.Events.enable()
+      // Update code if generating
+      this.code.update()
     }
   }
   /*
@@ -142,6 +144,9 @@ class Blocks {
   update (ev){
     if (!ev.recordUndo)
         return
+
+    // Update code if generating
+    blocks.code.update()
 
     let xml = Blockly.Xml.domToText(
       Blockly.Xml.workspaceToDom(blocks.workspace)
@@ -227,7 +232,9 @@ class BlocksCode {
 
 
     this.codemirror = CodeMirror($.codemirror.$, Tool.fromUrl('theme'),
-      {contenteditable:false})
+      // Enabling this forbits copying since Codemirror gets unfocusable
+      //{contenteditable:true})
+    )
 
     command.add([this.parent, this], {
       execedOnTarget: this._execedOnTarget,
@@ -244,6 +251,9 @@ class BlocksCode {
    */
   show (){
     this.generating = !this.generating
+    if (this.generating)
+      this.update()
+
     DOM.switchState(this.$.container)
   }
   watcher (){
@@ -253,15 +263,19 @@ class BlocksCode {
     } else if (!prompt.locked){
       this.$.runButton.$.classList.remove('on')
     }
-    let code = Blockly.Python.workspaceToCode(this.parent.workspace)
-
+  }
+  /*
+   * Update generated code, only when the panel is visible.
+   */
+  update (){
     if (!this.generating)
       return
 
+    let code = Blockly.Python.workspaceToCode(this.parent.workspace)
     this.codemirror.dispatch({
       changes: {from:0, to:this.codemirror.state.doc.length,
         insert:code
-      }
+     }
     })
   }
   exec (){
