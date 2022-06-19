@@ -1,4 +1,4 @@
-.. _relase-deploy:
+.. _release-deploy:
 
 Release and deploy
 ========================================
@@ -158,6 +158,7 @@ Reload Apache:
 For more information about the Apache2 and mod_wsgi, refer to
 `Flask - mod_wsgi (Apache) <https://flask.palletsprojects.com/en/2.1.x/deploying/mod_wsgi/>`_
 
+.. _release-deploy-postgres:
 
 Database (PostgreSQL)
 ^^^^^^^^^^^^^^^^^^^^^^^

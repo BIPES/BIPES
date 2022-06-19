@@ -195,7 +195,9 @@ class Device {
   connectPipes (){
     this.pipe = Pipes({
       blocks:{
-        deviceTarget:(name) => {bipes.page.blocks.deviceTarget(name)}
+        deviceTarget:(name) => {
+          bipes.page.blocks.deviceTarget(name)
+        }
       }
     })
   }

@@ -22,7 +22,7 @@ copyright = '2021, Rafael Arouca,Jorge Marques,Caio Augusto Silva'
 author = 'Rafael Arouca,Jorge Marques,Caio Augusto Silva'
 
 # The full version, including alpha/beta/rc tags
-release = 'v3.0.3'
+release = 'v3.0.10'
 
 
 # -- General configuration ---------------------------------------------------

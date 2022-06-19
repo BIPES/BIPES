@@ -9,6 +9,7 @@ import {notification} from '../notification/main.js'
 import {files} from '../files/main.js'
 import {prompt} from '../prompt/main.js'
 import {project} from '../project/main.js'
+import {device} from '../device/main.js'
 
 import {knownDocs, knownExamples, knownLibs} from './external.js'
 
@@ -165,7 +166,8 @@ class Blocks {
     if (!this.inited)
       return
 
-    this.workspace.updateToolbox(blockly_toolbox[target])
+    let toolbox_id = device.deviceInfo[target].toolbox.replace('.xml', '')
+    this.workspace.updateToolbox(blockly_toolbox[toolbox_id])
     this.workspace.scrollCenter()
   }
   /**
@@ -179,7 +181,7 @@ class Blocks {
   }
   /**
    * Change target device.
-   * @param {string} target - Target device.
+   * @param {string} target - Target device toolbox.
    */
   deviceTarget (target){
     /* refreshes block pinout with device change */

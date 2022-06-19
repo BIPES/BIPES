@@ -58,13 +58,12 @@ To run it again in development mode, at the same directory, do
 
   make run
 
-
 In development mode, different languages are accessed by including the language
 code to the link, e.g. http://127.0.0.1:5001/ide-de loads the IDE in German.
 
-There are many additional options available that are described at
-:ref:`release and deploy <release-deploy>`, for example, how to use PostgreSQL
-instead of SQLite as the database engine.
+Additional options, such as :ref:`how to use PostgreSQL <release-deploy-postgres>`
+instead of SQLite as the database engine, are described at
+:ref:`release and deploy <release-deploy>`.
 
 Windows notes
 ^^^^^^^^^^^^^^^^^^^
