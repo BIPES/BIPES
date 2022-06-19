@@ -104,7 +104,7 @@ class Device {
         .append([
           new DOM('div', {className:'header'})
             .append([
-              new DOM('h3', {innerText:Msg['ProjectTarget']}),
+              new DOM('h3', {innerText:Msg['TargetDevice']}),
               new DOM('div').append([
                 $.targetDropdown,
                 $.targetFirmwareDropdown
@@ -559,6 +559,13 @@ class Device {
 class WebSocketSetup {
   constructor (dom, parent){
     this.mdTimestamp  // A timestamp to differentiate click and selection drag.
+    // Persistent configuration.
+    this.config = storage.has('WebSocketSetup') ?
+      storage.fetch('WebSocketSetup', true) :
+      storage.set('WebSocketSetup', {
+        address: 'ws://192.168.0.35:8266',
+        password: ''
+      }, true)
 
     let $ = this.$ = {}
     $.webSocketSetup = dom
@@ -572,12 +579,19 @@ class WebSocketSetup {
     $.urlLabel = new DOM('h4', {innerText:`${Msg['Address']}:`})
     $.urlInput = new DOM('input', {
       placeholder:`${Msg['DeviceAddress']}, ${Msg['eg']}. [ws/wss]://192.168.0.35:8266`,
-      value:'ws://192.168.0.35:8266'
+      value:this.config.address
+    }).onevent('change', this, () => {
+      this.config.address = this.$.urlInput.value
+      storage.set('WebSocketSetup', this.config, true)
     })
     $.passwordLabel = new DOM('h4', {innerText:`${Msg['Password']}:`})
     $.passwordInput = new DOM('input', {
       placeholder:Msg['DevicePassword'],
-      type:'password'
+      type:'password',
+      value:this.config.password
+    }).onevent('change', this, () => {
+      this.config.password = this.$.passwordInput.value
+      storage.set('WebSocketSetup', this.config, true)
     })
     $.buttonConnect = new DOM('button', {
       innerText:Msg['Connect'],

@@ -17,7 +17,7 @@ class StorageBroker {
     })
     return values
   }
-  fetch (reg){
+  fetch (reg, parse){
     let match
     if (typeof reg == "RegExp")
       match = this.fetchAll(reg)[0]
@@ -26,7 +26,7 @@ class StorageBroker {
     if (match == undefined || match == '')
       return false
     else
-      return match
+      return parse ? JSON.parse(match) : match
   }
   has (key){
     if (!localStorage.hasOwnProperty(key))
@@ -37,10 +37,10 @@ class StorageBroker {
     } else
       return true
   }
-  set (key, value){
+  set (key, value, stringify){
     if (value == undefined)
       value = '[]'
-    localStorage.setItem(key, value)
+    localStorage.setItem(key, stringify ? JSON.stringify(value) : value)
     return value
   }
   remove (key){
