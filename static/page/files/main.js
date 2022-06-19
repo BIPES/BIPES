@@ -482,7 +482,7 @@ class DeviceFiles {
       console.log('Files: Got file!')
       let str = new TextDecoder().decode(this.arrayBufferFile)
       // Converts MicroPython output \r into unix new line \n and 4 spaces to \t
-      let script = str
+      let script = str,
           filename = this.arrayBufferFilename,
           then = this.arrayBufferTarget
 

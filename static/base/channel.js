@@ -229,6 +229,8 @@ class Channel {
    * Return a command with paste mode enclosing
    */
   pasteMode (cmd){
+    if (this.current.name == 'WebSocket')
+      cmd = cmd.replaceAll('\n','\r\n')
     return `\x05${cmd}\x04`
   }
 
