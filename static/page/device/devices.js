@@ -1,14 +1,13 @@
 export let deviceSpecifications = {
-/*
 	"ESP8266" : {
     nodename:'esp8266',
     name:'ESP8266',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>ESP8266</b><br>",
-		"speed":"115200",
 		"boardID":"ESP module with ESP8266",
-		"img":"devinfo/media/Node-MCU-ESP.jpg",
+		"img":"Node-MCU-ESP.jpg",
 		"description":"<BR><BR><input type='button' onclick='loadDoc();' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.",
-		"toolbox":"esp8266.xml",
+		"toolbox":"esp32.xml",
 		"pinout": [
 	    ["D0 / GPIO16", "16"],
 	    ["D1 / GPIO05", "5"],
@@ -28,17 +27,15 @@ export let deviceSpecifications = {
 	    ["SD0 / GPIO07", "7"],
 	    ["CLK / GPIO06", "6"]
 		],
-		"serial_packet_size":"500"
-	},
+	},/*
 	"ESP32S2": {
     nodename:'esp32s2',
     name:'ESP32S2',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>ESP32 S2</b><br>",
-		"speed":"115200",
-		"boardID":"ESP32-S2",
 		"img":"devinfo/media/pinagem-franzininho-wifi-3ee791cdc4872c0837b81cd12994e047.png",
 		"description":"<BR><BR>Franzininho Wifi with CircuitPython. Image source and more details: https://docs.franzininho.com.br/docs/franzininho-wifi/franzininho-wifi/ ",
-		"toolbox":"esp32S2.xml",
+		"toolbox":"esp32.xml",
 		"pinout": [
 	    ["IO0/Switch", "0"],
 	    ["IO1/AN1", "1"],
@@ -67,57 +64,11 @@ export let deviceSpecifications = {
 	    ["IO24", "23"],
 	    ["IO25", "23"]
 		],
-		"serial_packet_size":"500"
-	},
-	"ESP32Basic": {
-    nodename:'esp32',
-    name:'ESP32Basic',
-		"title":"<b>ESP32 (Basic)</b><br>",
-		"speed":"115200",
-		"boardID":"ESP32",
-		"img":"devinfo/media/ESP32-Pinout.jpg",
-		"description":"",
-		"toolbox":"esp32-basic.xml",
-		"pinout": [
-			["D2 / CS / ADC2_2 / GPIO2", "2"],
-			["D4 / ADC2_0 / GPIO04", "4"],
-			["D12 / ADC2_5 / GPIO12", "12"],
-			["D13 / ADC2_4 / GPIO13", "13"],
-			["D14 / ADC2_6 / GPIO14", "14"],
-			["D15 / ADC2_3 / GPIO15", "15"],
-			["D18 / SCK / GPIO18", "18"],
-			["D19 / MISO / GPIO19", "19"],
-			["D21 / SDA / GPIO21", "21"],
-			["D22 / SCL / GPIO22 / RTS 0", "22"],
-			["D23 / MOSI / GPIO23", "23"],
-			["D25 / DAC 1 / ADC2_8 / GPIO25", "25"],
-			["D26 / DAC 2 / ADC2_9 / GPIO26", "26"],
-			["D27 / ADC2_7 / GPIO27", "27"],
-			["D32 / ADC1_4 / GPIO32", "32"],
-			["D33 / ADC1_5 / GPIO33", "33"],
-			["D34 / ADC1_6 / GPIO34", "34"],
-			["D35 / ADC1_7 / GPIO35", "35"],
-			["VP / ADC1_0 / GPIO36", "36"],
-			["VN / ADC1_3 / GPIO39", "39"],
-			["CS / GPIO05", "5"],
-			["TXD0 / GPIO01", "1"],
-			["RXD0 / GPIO03", "3"],
-			["RXD 1 / GPIO09", "9"],
-			["TXD 1 / GPIO10", "10"],
-			["RTS 1 / GPIO11", "11"],
-			["TXD2 / GPIO17", "17"],
-			["RXD2 / GPIO16", "16"],
-			["ADC2_1 / GPIO0", "0"],
-			["CTS2 / SPI_D / GPIO08", "8"],
-			["RTS2 / SPI_Q / GPIO07", "7"],
-			["CTS1 / SPI_CLK / GPIO06", "6"]
-		],
-		"serial_packet_size":"500"
 	},*/
 	"ESP32": {
     nodename:'esp32',
     name:'ESP32',
-		"languages":['MicroPython','CircuitPython'],
+		languages:['MicroPython','CircuitPython'],
 		"img":"ESP32.svg",
 		"title":"<b>ESP32</b><br>",
 		"description":"",
@@ -156,17 +107,16 @@ export let deviceSpecifications = {
 			["RTS2 / SPI_Q / GPIO07", "7"],
 			["CTS1 / SPI_CLK / GPIO06", "6"]
 		],
-		"serial_packet_size":"500"
-	},/*
+	},
 	"RPIPico": {
     nodename:'rpipico',
     name:'RPIPico',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>Raspberry Pi Pico</b><br>",
-		"speed":"115200",
 		"boardID":"Raspberry Pi Pico with RP2040",
-		"img":"devinfo/media/RPI_Pico.svg",
+		"img":"RPI_Pico.svg",
 		"description":"",
-		"toolbox":"rpi_pico.xml",
+		"toolbox":"esp32.xml",
 		"pinout": [
 			["LED / GPIO25", "25"],
 	    ["Pin 1 / GPIO0", "0"],
@@ -197,17 +147,16 @@ export let deviceSpecifications = {
 	    ["Pin 28 / ADC2 / GPIO28", "28"],
 	    ["Internal Temp Sensor / ADC3", "4"]
 		],
-		"serial_packet_size":"500"
 	},
 	"WemosD1mini": {
     nodename:'wemosd1mini',
     name:'WemosD1mini',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>ESP8266 - Wemos D1 Mini</b><br>",
-		"speed":"115200",
 		"boardID":"ESP module with ESP8266",
-		"img":"devinfo/media/Wemos-D1-Mini.png",
+		"img":"Wemos-D1-Mini.png",
 		"description":"<BR><BR><input type='button' onclick='loadDoc();' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed. Figure source: https://devonhubner.org/Using_MicroPython_with_a_WeMos_D1_Mini/",
-		"toolbox":"esp8266.xml",
+		"toolbox":"esp32.xml",
 		"pinout": [
 			["D0 / GPIO16", "16"],
 			["D5 / SCX / GPIO14", "14"],
@@ -221,15 +170,14 @@ export let deviceSpecifications = {
 			["RX / GPIO03", "3"],
 			["TX / GPIO01", "1"]
 		],
-		"serial_packet_size":"100"
 	},
 	"ESP32Oled": {
     nodename:'esp32',
     name:'ESP32oled',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>ESP32 board with OLED LCD and Battery</b><br>",
-		"speed":"115200",
 		"boardID":"ESP32",
-		"img":"devinfo/media/esp32-oled.png",
+		"img":"esp32-oled.png",
 		"description":"Yet another ESP32 board",
 		"toolbox":"esp32.xml",
 		"pinout": [
@@ -265,13 +213,13 @@ export let deviceSpecifications = {
 			["P22 / GPIO22", "22"],
 			["P23 / VSPI_MOSI / GPIO23", "23"]
 		],
-		"serial_packet_size":"500"
 	},
+	/*
 	"ESP32LoRa": {
     nodename:'esp32',
     name:'ESP32LoRa',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>ESP32 board with OLED LCD and LoRa</b><br>",
-		"speed":"115200",
 		"boardID":"ESP32",
 		"img":"devinfo/media/ESP32-LoRa.jpg",
 		"description":"Yet another ESP32 board",
@@ -302,8 +250,8 @@ export let deviceSpecifications = {
 	"M5Stick": {
     nodename:'m5stick',
     name:'M5Stick',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>M5Stick ESP32</b><br>",
-		"speed":"115200",
 		"boardID":"ESP32",
 		"img":"devinfo/media/m5stickc.png",
 		"description":"M5STICK-C is based on ESP32 processor. More info at:",
@@ -313,8 +261,8 @@ export let deviceSpecifications = {
 	"STM32Nucleo": {
     nodename:'stm32nucleo',
     name:'STM32Nucleo',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>mBed: NUCLEO-F446RE</b><br>",
-		"speed":"115200",
 		"boardID":"NUCLEO-F446RE with STM32F4x",
 		"img":"devinfo/media/NUCLEO-F446RE.png",
 		"description":"",
@@ -324,8 +272,8 @@ export let deviceSpecifications = {
 	"RPI4": {
     nodename:'rpi4',
     name:'RPI4',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>Raspberry Pi 4 </b><br>",
-		"speed":"115200",
 		"boardID":"Linux",
 		"img":"devinfo/media/rpi4.png",
 		"description":"Use Raspberry Pi 4 with WebSocketServerREPL. For OpenCV features, please install opencv with apt install python-opencv",
@@ -335,8 +283,8 @@ export let deviceSpecifications = {
 	"LegoEV3": {
     nodename:'legoev3',
     name:'LegoEV3',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>Lego EV3 </b><br>",
-		"speed":"115200",
 		"boardID":"ev3",
 		"img":"",
 		"description":"Help needed! We need a Lego EV3 to build the blocks to the intelligent brick, or help us designing the blocks, if you have an EV3 Inteligent Brick!",
@@ -346,8 +294,8 @@ export let deviceSpecifications = {
 	"BBBlack": {
     nodename:'bbblack',
     name:'BBBlack',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>Beagle Bone Black</b><br>",
-		"speed":"115200",
 		"boardID":"Linux",
 		"img":"devinfo/media/cape-headers.png",
 		"description":"",
@@ -357,8 +305,8 @@ export let deviceSpecifications = {
 	"BBC": {
     nodename:'bbc',
     name:'BBC',
+		languages:['MicroPython','CircuitPython'],
 		"title":"<b>BBC MicroBit</b><br>",
-		"speed":"115200",
 		"boardID":"micro:bit with nRF51822",
 		"img":"devinfo/media/microbit.png",
 		"description":"Image source and more info: <a href=https://microbit.org/get-started/user-guide/features-in-depth/>https://microbit.org/get-started/user-guide/features-in-depth/</a>",
@@ -368,7 +316,7 @@ export let deviceSpecifications = {
 	"Arduino": {
     nodename:'arduino',
     name:'Arduino',
-		"languages":['Snek'],
+		languages:['Snek'],
 		"img":"Arduino.svg",
 		"title":"<b>Arduino UNO and Arduino MEGA. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
 		"description":"",
@@ -395,16 +343,13 @@ export let deviceSpecifications = {
 			["A4", "A4"],
 			["A5", "A5"]
 		],
-
-		"serial_packet_size":"10"
-	},/*
+	},
 	"ArduinoUno2": {
     nodename:'arduino',
     name:'ArduinoUno2',
+		languages:['Snek'],
 		"title":"<b>Arduino UNO and Arduino MEGA. Image source: https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png</b><br>",
-		"speed":"115200",
-		"boardID":"Snek",
-		"img":"https://content.arduino.cc/assets/Pinout-UNOrev3_latest.png",
+		"img":"Arduino.svg",
 		"description":"",
 		"toolbox":"arduino.xml",
 		"pinout": [
@@ -429,8 +374,6 @@ export let deviceSpecifications = {
 			["A4", "A4"],
 			["A5", "A5"]
 		],
-
-		"serial_packet_size":"10"
-	}*/
+	}
 }
 
