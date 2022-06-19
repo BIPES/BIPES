@@ -54,6 +54,9 @@ var Msg = {
   'eg':"例如",
   Copy:'复制',
   ClearAll:'全部清除',
+  
+  // Channel
+  NotConnectedWarning:'No connection established with a device.',
 
   // Page Files
   'FileManager':'File manager',

@@ -75,7 +75,11 @@ class Channel {
   @param {String, Uint8Array} cmd - String or uint8 array.
   */
   push (cmd, targetDevice, callback, tabUID){
-    if (this.current == undefined || this.targetDevice != targetDevice)
+    if (this.current == undefined)
+        bipes.page.notification.send(Msg["NotConnectedWarning"])
+        return
+
+    if (this.targetDevice != targetDevice)
       return
 
     this.renewPing()
@@ -111,7 +115,11 @@ class Channel {
     }
   }
   rawPush (cmd, targetDevice){
-    if (!this.current || this.targetDevice != targetDevice)
+    if (this.current == undefined)
+      bipes.page.notification.send(Msg["NotConnectedWarning"])
+      return
+
+    if (this.targetDevice != targetDevice)
       return
 
     this.dirty = true
@@ -229,7 +237,7 @@ class Channel {
    * Return a command with paste mode enclosing
    */
   pasteMode (cmd){
-    if (this.current.name == 'WebSocket')
+    if (this.current != undefined && this.current.name == 'WebSocket')
       cmd = cmd.replaceAll('\n','\r\n')
     return `\x05${cmd}\x04`
   }
@@ -454,7 +462,7 @@ function _WebSocket (parent){
           window.bipes.channel.inString(event.data)
 
           if (event.data.includes("Access denied"))
-            window.bipes.page.notification.send("Wrong board password")
+            bipes.page.notification.send("Wrong board password")
         }
       }
     }

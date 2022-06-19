@@ -55,6 +55,9 @@ var Msg = {
   Copy:'Copiar',
   ClearAll:'Limpar todas',
 
+  // Channel
+  NotConnectedWarning:'Nenhum dispositivo conectado.',
+
   // Page Files
   'FileManager':'Gerenciador de arquivos',
   'HideShowProjectTree':'Ocultar/mostrar árvore de projecto',

@@ -112,6 +112,7 @@ the strings are injected directly into the ``Blockly`` object and are declared a
 the translation files in upper case instead of camel case, for example:
 
 .. code-block:: javascript
+
   Blockly.Msg["DISPLAYS"] = "Displays";
   Blockly.Msg["LOOPS"] = "Laços";
   Blockly.Msg['DOCUMENTATION'] = "Documentação";

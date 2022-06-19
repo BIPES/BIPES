@@ -54,6 +54,9 @@ var Msg = {
   'eg':"eg.",
   Copy:'Kopiere',
   ClearAll:'Clear all',
+  
+  // Channel
+  NotConnectedWarning:'No connection established with a device.',
 
   // Page Files
   'FileManager':'File manager',
