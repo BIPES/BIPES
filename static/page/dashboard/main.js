@@ -390,12 +390,12 @@ class DashboardGrid {
     }).on('dragReleaseEnd', (item) => {
 		  item._element.classList.remove('grabbing')
 		  if (+new Date () - this.isGrabbing[0] < 150 && this.isGrabbing[1] == item._element.dataset.sid) {
-        this.isGrabbing = [false, undefined]
         let obj
         this.ref.forEach(p =>{
           if (p.sid === item._element.dataset.sid)
             obj = p
         })
+        this.isGrabbing = [false, undefined]
         this.edit(obj, new DOM(item._element))
     } else
       this.isGrabbing = [false, undefined]
@@ -550,7 +550,7 @@ class DashboardGrid {
    * @param {Object} obj - Plugin.
    */
 	edit (obj, container, ev){
-	  if (this.animating || this.isGrabbing)
+	  if (this.animating || this.isGrabbing[1] != undefined)
 	    return
 
     container.id = 'editing'
@@ -592,7 +592,7 @@ class DashboardGrid {
 	    container:container
 	  }
 
-	  this.isGrabbing = false
+	  this.isGrabbing = [false, undefined]
 	}
 	/** Compute editor size */
 	_computeEditorSize(type, size){
