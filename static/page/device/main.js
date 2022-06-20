@@ -279,22 +279,22 @@ class Device {
     this.$.nav.$.classList.add('using')
     this.$.wrapper.$.classList.add('master')
     let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this.$.devices.$)
-    child.classList.add('on')
+    // User exited tab before resolving function
+    if (child !== null){
+      child.classList.add('on')
+    }
+
     // Update status bar
     this.$.statusTarget.innerText = `${str.nodename} ${str.version}`
     this.$.statusTargetButton.classList.add('on')
 
-    // If not inited, fill devices from StorageBroker (-->)
+    // If not inited, fill devices from StorageBroker
     if (!this.inited) {
       this.devices = JSON.parse(storage.fetch('device'))
-      this._devicePush(uid, timestamp, str, command.tabUID)
+      this._devicePush(channel.targetDevice, timestamp, str, command.tabUID)
     }
     // Update StorageBroker once
     storage.set('device', JSON.stringify(this.devices))
-    // (-->) then clear again, do this for any module with methods that could
-    // be called even deinited.
-    if (!this.inited)
-      this.devices = []
 
     // Request info
     setTimeout(()=>{this.fetchInfo(channel.targetDevice)},500)
@@ -343,7 +343,8 @@ class Device {
     // Only on a slave tab
     if (channel.targetDevice != undefined) {
       let child = DOM.get(`[data-uid=${channel.targetDevice}]`, this.$.devices.$)
-      child.classList.add('on')
+      if (child !== null)
+        child.classList.add('on')
     }
 
     this.inited = true
@@ -519,9 +520,11 @@ class Device {
 
     // Must find child to work between tabs
     let child = DOM.get(`[data-uid=${uid}]`, this.$.devices.$)
-    this.$.devices.$.removeChild(child)
-    if (this.$.devices.$.childElementCount == 0)
-      this._noDevice()
+    if (child !== null){
+      this.$.devices.$.removeChild(child)
+      if (this.$.devices.$.childElementCount == 0)
+        this._noDevice()
+    }
   }
   _statusNotConnected(){
       this.$.statusTarget.innerText = Msg['NotConnected']

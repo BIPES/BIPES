@@ -75,11 +75,13 @@ class Channel {
   @param {String, Uint8Array} cmd - String or uint8 array.
   */
   push (cmd, targetDevice, callback, tabUID){
-    if (this.current == undefined)
-        bipes.page.notification.send(Msg["NotConnectedWarning"])
-        return
 
-    if (this.targetDevice != targetDevice)
+    if (this.targetDevice == undefined){
+      bipes.page.notification.send(Msg["NotConnectedWarning"])
+      return
+    }
+
+    if (this.current == undefined || this.targetDevice != targetDevice)
       return
 
     this.renewPing()
@@ -115,11 +117,12 @@ class Channel {
     }
   }
   rawPush (cmd, targetDevice){
-    if (this.current == undefined)
+    if (this.targetDevice == undefined){
       bipes.page.notification.send(Msg["NotConnectedWarning"])
       return
+    }
 
-    if (this.targetDevice != targetDevice)
+    if (this.current == undefined || this.targetDevice != targetDevice)
       return
 
     this.dirty = true
