@@ -163,7 +163,7 @@ export let deviceSpecifications = {
 			["D6 / MISO / GPIO12", "12"],
 			["D7 / MOSI / GPIO13", "13"],
 			["D8 / SS / GPIO15", "15"],
-			["D4 / GPIO02", "2"],
+			["D4 / LED / GPIO02", "2"],
 			["D3 / GPIO00", "0"],
 			["D2 / SDA / GPIO04", "4"],
 			["D1 / SCL / GPIO05", "5"],
