@@ -67,7 +67,8 @@ class Channel {
         write:(chunk) => {bipes.page.dashboard.write(chunk)}
       },
       device:{
-        unuse:(uid) => {bipes.page.device.unuse(uid)}
+        unuse:(uid) => {bipes.page.device.unuse(uid)},
+        reconnect:(protocol) => {bipes.page.device.reconnect(protocol)}
       },
     })
   }
@@ -175,6 +176,8 @@ class Channel {
     this.pipe.prompt_off()
     this.pipe.prompt_write(`\r\n\x1b[31mDisconnected from ${currentProtocol}!\x1b[m\r\n`)
     this.targetDevice = undefined
+    // Check and reconnect under some circunstances
+    this.pipe.device_reconnect(currentProtocol)
   }
   handleCallback (out){
     // Remove backspaces and characters that antecends it
@@ -445,7 +448,8 @@ function _WebSocket (parent){
 
   this.config = {
     packetSize:10
-  }  /**
+  }
+  /**
    * Connect using websocket protocol.
    */
   this.connect = (callback, conf) => {
@@ -470,7 +474,7 @@ function _WebSocket (parent){
       }
     }
     this.ws.onclose = () => {
-      // onclose might be called even if onpen didn't exec
+      // onclose might be called even if onopen didn't exec
       if (this.parent.current != undefined)
         this.parent._disconnected()
     }

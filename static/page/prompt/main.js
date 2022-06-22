@@ -81,11 +81,13 @@ class Prompt {
     })
     this.prompt.open($.promptXterm.$)
     this.prompt.setOption('fontSize',14)
+    // Disable until connect.
+    this.prompt.setOption('disableStdin', true);
     this.prompt.onData((data) => {
       // If tab is master, write directly to reduce delay
-      if (channel.current != undefined)
+      if (channel.current !== undefined){
         channel.rawPush(data, channel.targetDevice)
-      else
+      } else
         command.dispatch(channel, 'rawPush', [data, channel.targetDevice])
     });
 
@@ -180,20 +182,12 @@ class Prompt {
   /** Enable the prompt. **/
   on (){
     this.$.statusTasksButton.classList.add('on')
-
-    if(!this.inited)
-      return
-
     this.prompt.setOption('disableStdin', false);
     this.prompt.focus();
   }
   /** Disable the prompt. */
   off (){
     this.$.statusTasksButton.classList.remove('on')
-
-    if(!this.inited)
-      return
-
     this.prompt.setOption('disableStdin', true);
     this.prompt.blur();
   }

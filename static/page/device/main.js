@@ -26,6 +26,7 @@ class Device {
 
     this.inited = false
     this.deviceInfo = deviceSpecifications
+    this.userDisconnectInput = false // Indicates if the user requested to disconnect.
 
     let $ = this.$ = {}
 
@@ -260,7 +261,22 @@ class Device {
       this.select(channel.targetDevice)
     channel.connect('webbluetooth', [this, this.use])
   }
-  use (){
+ /*
+  * Check if should reconnect after disconnection and do if so.
+  * @param{string} protocol - Protocol that was connected.
+  */
+  reconnect (protocol){
+    if (!this.userDisconnectInput){
+      if (protocol == "WebSocket" && this.webSocketSetup.config.reconnect){
+        setTimeout(()=>{this.connectWebSocket(
+          this.webSocketSetup.config.address,
+          this.webSocketSetup.config.password
+        )}, 1000)
+      }
+    }
+    this.userDisconnectInput = false
+  }
+   use (){
     let timestamp = +new Date()
 
     if (channel.targetDevice == undefined){
@@ -400,7 +416,10 @@ class Device {
             id:'disconnect',
             className:'icon text',
             innerText:Msg['Disconnect']
-          }).onclick(channel, channel.disconnect, [])
+          }).onclick(this, ()=>{
+            this.userDisconnectInput = true
+            channel.disconnect()
+          }, [])
         ])
       ])
   }
@@ -436,7 +455,7 @@ class Device {
           // Update status bar
           this.$.statusTarget.innerText = `${device.nodename} ${device.version}`
           this.$.statusTargetButton.classList.add('on')
-          prompt.$.statusTasksButton.classList.add('on')
+          prompt.on() // and prompt
         }
       })
       this.$.nav.$.classList.add('using')
@@ -495,20 +514,17 @@ class Device {
     storage.set('device', JSON.stringify(this.devices))
 
     // Only on a master tab
-    this.$.nav.$.classList.remove('using')
     this.$.wrapper.$.classList.remove('master')
     this._statusNotConnected()
-
     command.dispatch(this, 'unuse', [uid])
   }
   // Visual and instance object
   _unuse (uid){
     if (channel.targetDevice == uid){
-      channel.targetDevice = undefined
       this.$.nav.$.classList.remove('using')
       this._statusNotConnected()
+      channel.targetDevice = undefined
     }
-
     this.devices.forEach((item, index) => {
       if (item.uid == uid) {
         this.devices.splice(index,1)
@@ -527,9 +543,10 @@ class Device {
     }
   }
   _statusNotConnected(){
+      // Update status and prompt
       this.$.statusTarget.innerText = Msg['NotConnected']
       this.$.statusTargetButton.classList.remove('on')
-      prompt.$.statusTasksButton.classList.remove('on')
+      prompt.off() // and prompt
   }
   unresponsive (uid){
     this.devices.forEach((item, index) => {
@@ -569,13 +586,16 @@ class WebSocketSetup {
       storage.fetch('WebSocketSetup', true) :
       storage.set('WebSocketSetup', {
         address: 'ws://192.168.0.35:8266',
-        password: ''
+        password: '',
+        reconnect: false
       }, true)
+
+    this.parent = parent
 
     let $ = this.$ = {}
     $.webSocketSetup = dom
-    $.webSocketSetup.$.id = 'webSocketSetup'
-    $.webSocketSetup.$.classList.add('popup')
+    $.webSocketSetup.id = 'webSocketSetup'
+    $.webSocketSetup.classList.add('popup')
 
     $.webSocketSetup.onclick(this, this.close)
       .onevent('contextmenu', this, this.close)
@@ -604,7 +624,7 @@ class WebSocketSetup {
       id:'connect'
     }).onclick(this, () => {
       this.close()
-      parent.connectWebSocket($.urlInput.$.value, $.passwordInput.$.value)
+      parent.connectWebSocket(this.config.address, this.config.password)
     })
     $.buttonScan = new DOM('button', {
       innerText:Msg['ScanDevices'],
@@ -614,7 +634,24 @@ class WebSocketSetup {
     $.info = new DOM('span', {
       className:'icon text warnings',
       innerText:Msg['WSWarning']
+    });
+
+
+    [$.reconnectInput, $.reconnectContainer] = DOM.prototypeCheckSwitch({
+      id:'reconnectWebSocket',
+      className:'reconnectWebSocket',
+      innerText:Msg['ReconnectOnLost']
     })
+
+    $.reconnectContainer.onevent('click', this, (ev) => {
+      ev.preventDefault()
+      this.$.reconnectInput.$.checked = !this.$.reconnectInput.$.checked
+      this.config.reconnect = this.$.reconnectInput.$.checked
+      storage.set('WebSocketSetup', this.config, true)
+    })
+
+    $.reconnectInput.$.checked = this.config.reconnect === true ? true : false;
+
     $.wrapper = new DOM('div')
       .append([$.title, $.info]);
     this.webSocketScan = new WebSocketScan(this, $.wrapper)
@@ -622,7 +659,9 @@ class WebSocketSetup {
       DOM.switchState(this.webSocketScan.$.container.$)
       this.webSocketScan.$.inputPrefix.$.focus()
     })
+
     $.wrapper.append([
+        $.reconnectContainer,
         $.urlLabel, $.urlInput,
         $.passwordLabel, $.passwordInput,
         new DOM ('div').append([
@@ -631,6 +670,7 @@ class WebSocketSetup {
       ])
 
     $.webSocketSetup.append($.wrapper)
+
   }
   /**
   * Close the webSocketSetup menu.
@@ -653,7 +693,7 @@ class WebSocketSetup {
   open (){
     let $ = this.$
     setTimeout(() =>{
-      $.wrapper.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 20.5rem)`
+      $.wrapper.style.marginTop = window.innerWidth/16 > 40 ? '10vh' : `calc(${window.innerHeight}px - 21.5rem)`
       },125)
     setTimeout(() => {this.$.urlInput.$.focus()}, 125)
     Animate.on($.webSocketSetup.$, 125)

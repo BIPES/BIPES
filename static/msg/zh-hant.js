@@ -124,6 +124,7 @@ var Msg = {
   'DoneScanning':'Done scanning {0} IPs, found {1}:',
   'NewWebSocket':'New WebSocket connection',
 
+  ReconnectOnLost:'Reconnect if connection is lost',
   // Status bar
   'TasksRunning':'Tasks running',
   'StatusOngoingInput':'Ongoing input',

@@ -281,6 +281,9 @@ section#device #webSocketSetup #addressConf #scan {
   border-radius: 1rem;
   transition: background-color .25s ease;
 }
+section#device #webSocketSetup .reconnectWebSocket{
+  padding-top: 0 !important;
+}
 
 section#device #webSocketSetup #addressConf #scan:focus {
   background-color: rgba(68,153,204,.5);

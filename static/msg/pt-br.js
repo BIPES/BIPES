@@ -124,6 +124,7 @@ var Msg = {
   'InvalidPrefix':'Prefixo de rede inválido',
   'ScanningInfo':'Verificado {0} de {1} IPs, encontrado {2}:',
   'DoneScanning':'{0} IPs verificados, encontrado {1}:',
+  ReconnectOnLost:'Reconectar se perder a conexão',
   'NewWebSocket':'Nova conexão via WebSocket',
 
   // Status bar

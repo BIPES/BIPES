@@ -1233,30 +1233,14 @@ class BridgeEasyMQTT {
   constructor (){
     this.status = false
 
-    let $ = this.$ = {}
+    let $ = this.$ = {};
 
-    $.input = new DOM('input', {
+    [$.input, $.container] = DOM.prototypeCheckSwitch({
       id:'bridgeEasyMQTT',
-      className:'checkswitch',
-      type:'checkbox',
-      value:'off'
-    }).onevent('change', this, this.switch)
-
-    $.container = new DOM('div', {className:'bridgeEasyMQTT'})
-      .append([
-        new DOM('div')
-          .append([
-            new DOM('label', {
-                className:'checkswitch',
-                for:'bridgeEasyMQTT',
-                innerText:Msg['BridgeDataToEasyMQTT']
-              }).append([
-                $.input,
-                new DOM('span')
-              ]),
-            new DOM('div') // ::TODO:: replace with DOM.help
-          ])
-      ])
+      className:'bridgeEasyMQTT',
+      innerText:Msg['BridgeDataToEasyMQTT']
+    })
+    $.input.onevent('change', this, this.switch)
   }
   switch (){
     this.status = !this.status

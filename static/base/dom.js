@@ -274,7 +274,7 @@ class DOM {
   }
   /**
    * Prototype a DOM composed by input(file type) and label.
-   * @param {Object} str - id and className of the DOM element.
+   * @param {Object} str - id, className and innerText of the DOM element.
    * @param {string} str.id - Id of the DOM element.
    * @param {string} str.className - ClassName of the DOM element.
    * @param {string} str.innerText - Inner text of the DOM element.
@@ -288,6 +288,40 @@ class DOM {
       }).append(
         new DOM('input', {id:`${str.id}_input`, type:'file'})
       )
+  }
+  /**
+   * Prototype a DOM composed by input(checkbox) and label styled as as switch.
+   * @param {Object} str - id, className and innerText of the DOM element.
+   * @param {string} str.id - Id of the DOM element.
+   * @param {string} str.className - ClassName of the DOM element.
+   * @param {string} str.innerText - Inner text of the DOM element.
+   * @returns Array with input and container.
+   */
+  static prototypeCheckSwitch (str){
+    let input = new DOM('input', {
+      id:str.id,
+      name:str.id,
+      className:'checkswitch',
+      type:'checkbox',
+      value:false
+    })
+
+    let container = new DOM('div', {className:str.className})
+      .append([
+        new DOM('div')
+          .append([
+            new DOM('label', {
+                className:'checkswitch',
+                htmlFor:str.id,
+                innerText:str.innerText
+              }).append([
+                input,
+                new DOM('span')
+              ])
+          ])
+      ])
+
+    return [input, container]
   }
   /**
    * Prototype a DOM that allows data to be downloded on its creation.
@@ -508,5 +542,6 @@ class ContextMenu {
     input.$.focus()
   }
 }
+
 
 

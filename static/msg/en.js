@@ -124,6 +124,7 @@ var Msg = {
   'InvalidPrefix':'Invalid network prefix',
   'ScanningInfo':'Scanned {0} of {1} IPs, found {2}:',
   'DoneScanning':'Done scanning {0} IPs, found {1}:',
+  ReconnectOnLost:'Reconnect if connection is lost',
 
   // Status bar
   'TasksRunning':'Tasks running',
