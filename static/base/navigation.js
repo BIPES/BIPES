@@ -266,7 +266,23 @@ class Navigation {
     // Overwrite browser shortcut, for when the user calls
     // from a page that doesn't assign it.
     shortcut.add("Shift+Ctrl+R", () => {})
+    // Global shortcuts
+    // Preserve preferred order
+    let i = 1
+    let _ev = document.createEvent('HTMLEvents')
+    _ev.initEvent('contextmenu', true, false)
+    let _pages = DOM.getAll('a', this.$.nav)
+    _pages.forEach ((_page) => {
+      if (i <= 9){
+        shortcut.add(`Alt+${i}`, () => {_page.click()})
+        // Secondary click
+        shortcut.add(`Ctrl+Alt+${i}`, () => { _page.dispatchEvent(_ev)})
+      }
+      i++
+    })
   }
 }
 
-export let navigation = new Navigation()
+export let navigation = new Navigation()
+
+

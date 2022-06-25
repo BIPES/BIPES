@@ -18,7 +18,8 @@ class Prompt {
     $.promptXterm = new DOM('div', {className:"xterm"})
     $.stopProgramButton = new DOM('button', {
         innerText:Msg['StopExecution'],
-        className:'master'
+        className:'master',
+        title:'(Ctrl+Shift+S)'
       })
       .onclick(command, () => {
         command.dispatch(channel, 'rawPush', [
