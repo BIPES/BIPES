@@ -78,13 +78,14 @@ umd-deps:
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 unpkg:
-	@printf "[3/7] Fetching $(PURPLE)xterm.js chart.js murri dash.js paho-mqtt$(NC).\n"
+	@printf "[3/7] Fetching $(PURPLE)xterm.js chart.js murri dash.js paho-mqtt shortcuts.js$(NC).\n"
 	@wget -O static/libs/xterm.umd.js https://unpkg.com/xterm@4.15.0/lib/xterm.js
 	@wget -O static/libs/chart.umd.js https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js
 	@wget -O static/libs/chart-adapter-date-fns.bundle.umd.js https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js
 	@wget -O static/libs/muuri.umd.js https://raw.githubusercontent.com/haltu/muuri/master/dist/muuri.js
 	@wget -O static/libs/dash.umd.js  http://cdn.dashjs.org/latest/dash.all.min.js
 	@wget -O static/libs/paho-mqtt.umd.js  https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js
+	@wget -O static/libs/shortcuts.umd.js  http://www.openjs.com/scripts/events/keyboard_shortcuts/shortcut.js
 
 blockly:
 	@printf "[4/7] Fetching $(PURPLE)blockly$(NC).\n"

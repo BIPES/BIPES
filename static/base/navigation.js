@@ -224,7 +224,7 @@ class Navigation {
       }
     }
 
-    // Add dark/light theme swittcher to status
+    // Add dark/light theme switcher to status
     new DOM(DOM.get('div#status-bar #extra')).append([
       new DOM('button', {
         className: new URL(location.href).searchParams.get('theme') === 'dark' ? 'status-icon on' : 'status-icon',
@@ -263,7 +263,10 @@ class Navigation {
     // Select current language
     this.$.languageDropdown.$.value = document.documentElement.lang
 
+    // Overwrite browser shortcut, for when the user calls
+    // from a page that doesn't assign it.
+    shortcut.add("Shift+Ctrl+R", () => {})
   }
 }
 
-export let navigation = new Navigation()
+export let navigation = new Navigation()

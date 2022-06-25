@@ -45,6 +45,13 @@ class Channel {
       if (this.current != undefined)
         this.disconnect(true)
     })
+    // Global shortcuts
+    shortcut.add("Shift+Ctrl+S", () => {
+      command.dispatch(this, 'rawPush', [
+          '\x04',
+          this.targetDevice, [], this.tabUID
+        ])
+    })
   }
   renewPing (){
     clearTimeout(this.ping.timer)

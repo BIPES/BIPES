@@ -4,6 +4,7 @@ import {DOM, Animate} from '../../base/dom.js'
 import {Tool} from '../../base/tool.js'
 import {command} from '../../base/command.js'
 import {channel} from '../../base/channel.js'
+import {navigation} from '../../base/navigation.js'
 import {notification} from '../notification/main.js'
 
 import {files} from '../files/main.js'
@@ -93,6 +94,10 @@ class Blocks {
       this.toolbox(obj.device.target)
     // Update project on changes
     this.workspace.addChangeListener(this.update)
+
+    // Shortcuts
+    shortcut.add("Ctrl+Shift+L", () => {this.export.png()})
+    shortcut.add("Ctrl+Shift+Alt+L", () => {this.export.svg()})
   }
   /*
    * On hidden, deinitiate the page.
@@ -106,6 +111,10 @@ class Blocks {
     this.workspace.setVisible(false)
     this.code.deinit()
     this.inited = false
+
+    // Shortcuts
+    shortcut.remove("Ctrl+Shift+L")
+    shortcut.remove("Ctrl+Shift+Alt+L")
   }
   /*
    * On resize, resize the page.
@@ -212,12 +221,12 @@ class BlocksCode {
     let $ = this.$ = {}
 
     $.codeButton = new DOM('button', {
-      title:Msg['ViewBlocksCode'],
+      title:`${Msg['ViewBlocksCode']} (Ctrl+Shift+C)`,
       id:'code',
       className:'icon'
     }).onevent('click', this, this.show)
     $.runButton = new DOM('button', {
-      title:Msg['RunBlocks'],
+      title:`${Msg['RunBlocks']} (Ctrl+Shift+R)`,
       className:'icon',
       id:'run'
     }).onevent('click', this, this.exec)
@@ -244,9 +253,27 @@ class BlocksCode {
   }
   init (){
     this.interval = setInterval(() => {this.watcher()}, 250)
+
+    // Shortcuts
+    shortcut.add("Ctrl+Shift+C", () => {this.show()})
+    shortcut.add("Ctrl+Shift+R", () => {this.exec()})
+    shortcut.add("Ctrl+Shift+E", () => {
+      this.exec()
+      // Show console
+      if (navigation.current[0] !== '') {
+        let ev = document.createEvent('HTMLEvents')
+        ev.initEvent('contextmenu', true, false)
+        prompt.nav.dispatchEvent(ev)
+      }
+    })
   }
   deinit (){
     clearInterval(this.interval)
+
+    // Shortcuts
+    shortcut.remove("Ctrl+Alt+C")
+    shortcut.remove("Ctrl+Shift+E")
+    shortcut.remove("Ctrl+Shift+R")
   }
   /*
    * Show generated code.
