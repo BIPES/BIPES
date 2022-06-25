@@ -28,15 +28,19 @@ class Project {
 
     $.projects = new DOM('span', {className:'listy'})
 
-    $.h2 = new DOM('h2', {innerText:Msg['PageProject']})
+
     $.username = new DOM('input', {
       value:this.username == 'a user' ? Msg['AUser'] : this.username
     }).onevent('change', this, this.nameChange)
-    $.usernameWrapper = new DOM('span', {className: "username"})
+    $.header = new DOM('div', {className:'header'})
       .append([
-        new DOM('div', {innerText:Msg['HelloUser']}),
-        $.username,
-        new DOM('div', {innerText:'!'})
+        new DOM('h2', {innerText:Msg['PageProject']}),
+        new DOM('span', {className: "username"})
+        .append([
+          new DOM('div', {innerText:Msg['HelloUser']}),
+          $.username,
+          new DOM('div', {innerText:'!'})
+        ])
       ])
     $.wrapper = new DOM('span', {className: "projects"})
       .append([
@@ -63,7 +67,7 @@ class Project {
     ])
 
     $.container = new DOM('div', {className:'container'})
-      .append([$.h2, $.usernameWrapper, $.wrapper])
+      .append([$.header, $.wrapper])
 
     $.contextMenu = new DOM('div')
     this.contextMenu = new ContextMenu($.contextMenu, this)

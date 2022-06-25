@@ -47,10 +47,13 @@ section#project .username {
   background-color: rgba(68,153,204,.25);
   display: flex;
   padding: .5em 1em;
-  margin: 0 .5em;
+  margin-left: 1em;
   border-radius: 1em;
 }
 section#project .username input {
   border-bottom: 1px dashed #666;
   margin: 0 .5em;
+}
+section#project > .container > .header {
+    margin: 0.5rem 0.5rem 0.25rem 1rem;
 }

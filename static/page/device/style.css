@@ -322,6 +322,9 @@ section#device #webSocketSetup #addressFound .listy {
 section#device #webSocketSetup #addressFound .listy button > div {
   display: block;
 }
+section#device .reconnectWebSocket .checkswitch {
+  padding: .5em 0;
+}
 div#status-bar button#device:before {
   background-position: left calc(-1.25rem*21) top;
 }
@@ -335,3 +338,4 @@ div#status-bar button#firmware:before {
   background: none;
   width: 0;
 }
+
