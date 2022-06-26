@@ -105,6 +105,15 @@ var MSG = {
   dht_humi: "לקבל לחות DHT11/22",
   type: "סוּג",
 
+//Ultrasound
+  hcsr04_install: "התקן ספריית HCSR04",
+  hcsr04_init: "התחל חיישן על קולי HCSR04",
+  hcsr04_timeout: "זמן מקסימלי (מיקרו שנייה)",
+  echo_pin: "סיכת הד",
+  trigger_pin: "סיכת הדק",
+  get_distance: "קרא מרחק (חיישן על קולי)",
+  measure_distance: "מדד מרחק עם חיישן על קולי",
+
 //BMP180
   pressure: "לַחַץ",
   temperature: "טֶמפֶּרָטוּרָה",
@@ -150,4 +159,5 @@ Blockly.Msg['CAT_NET'] = "רשת ואינטרנט";
 Blockly.Msg['CAT_CONTROL'] = "לִשְׁלוֹט";
 Blockly.Msg['CAT_IMU'] = "מדידת אינרציה";
 Blockly.Msg['CAT_AIR'] = "איכות אוויר";
+Blockly.Msg['CAT_ULTRASOUND'] = "על קולי";
 

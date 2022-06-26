@@ -1775,31 +1775,31 @@ Blockly.Blocks['hcsr_init'] = {
         55,
         55,
         "*"))
-      .appendField("Start HCSR04 Ultrasound sensor")
+      .appendField(MSG["hcsr04_install"])
 	  ;
 
     this.appendValueInput("echo")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("echo pin"), "DHT_PIN_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["echo_pin"]), "DHT_PIN_MSG");
 
 
     this.appendValueInput("trigger")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("trigger pin"), "DHT_PIN_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["trigger_pin"]), "DHT_PIN_MSG");
 
 
     this.appendValueInput("timeout")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("timeout (us)"), "DHT_PIN_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["hcsr04_timeout"]), "DHT_PIN_MSG");
 
 
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Start HCSR04 ultrasound distance sensor");
+ this.setTooltip(MSG["hcsr_init"]);
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1808,10 +1808,10 @@ Blockly.Blocks['hcsr_init'] = {
 Blockly.Blocks['hcsr_read'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Get distance (ultrasound sensor)"), "MSG_READ_DHT_TEMP");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["get_distance"]), "MSG_READ_DHT_TEMP");
     this.setOutput(true, null);
     this.setColour(230);
- this.setTooltip("Measure distance with ultrasound sensor");
+ this.setTooltip(MSG["measure_distance"]);
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };

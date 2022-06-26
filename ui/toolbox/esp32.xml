@@ -1099,7 +1099,7 @@
       </block>
   </category>
 
-  <category name="Ultrasound">
+  <category name="%{BKY_CAT_ULTRASOUND}">
       <label text="HCSR04 ultrasound distance sensor"></label>
       <label text="Library: https://github.com/rsc1975/micropython-hcsr04"></label>
         <button text="Install HCSR04 library" callbackKey="installPyLib"></button>

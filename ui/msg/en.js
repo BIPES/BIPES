@@ -105,6 +105,15 @@ var MSG = {
   dht_humi: "get DHT11/22 humidity",
   type: "type",
 
+//Ultrasound
+  hcsr04_install: "Install HCSR04 library",
+  hcsr04_init: "Start HCSR04 Ultrasound Sensor",
+  hcsr04_timeout: "timeout (us)",
+  echo_pin: "echo pin",
+  trigger_pin: "trigger pin",
+  get_distance: "Get distance (Ultrasound sensor)",
+  measure_distance: "Measure distance with Ultrasound sensor",
+
 //BMP180
   pressure: "pressure",
   temperature: "temperature",
@@ -150,4 +159,5 @@ Blockly.Msg['CAT_NET'] = "Network and Internet";
 Blockly.Msg['CAT_CONTROL'] = "Control";
 Blockly.Msg['CAT_IMU'] = "Inertial Measurement";
 Blockly.Msg['CAT_AIR'] = "Air Quality";
+Blockly.Msg['CAT_ULTRASOUND'] = "Ultrasound";
 
