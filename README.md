@@ -1,6 +1,6 @@
 # BIPES: Block based Integrated Platform for Embedded Systems
 
-![Inviting cover](docs/media/inviting-cover.svg)
+<img src="docs/media/inviting-cover.svg" alt="Inviting cover" width="800" height="300"/>
 
 ## Build from source
 
@@ -70,4 +70,5 @@ loads the spanish version.
 With this, extract anywhere and open the desired *ide-\*.html* file to use BIPES 
 serverless.
 
-For more options, see the documentation.
+For more options, see the documentation.
+
