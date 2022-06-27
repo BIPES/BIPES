@@ -728,7 +728,6 @@
 
 
       <block type="hcsr_init">
-        <field name="BLOCK_HCSR_INIT">Start HCSR04 Ultrasound sensor</field>
         <value name="echo">
           <shadow type="pinout">
             <field name="PIN"></field>
@@ -1455,7 +1454,6 @@ _
       <button text="Load example: thingspeak" callbackKey="loadExample"></button>
       <button text="Documentation: mqtt" callbackKey="loadDoc"></button>
       <block type="mqtt_init">
-        <field name="BLOCK_MQTT_INIT">Start MQTT Client</field>
         <value name="server">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -1478,7 +1476,6 @@ _
         </value>
       </block>
       <block type="mqtt_add_to_buffer">
-        <field name="BLOCK_MQTT_ADD_TO_BUFFER">Add data to MQTT Buffer</field>
         <value name="fieldname">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -1487,7 +1484,6 @@ _
         <field name="MQTT_VALUE">Value</field>
       </block>
       <block type="mqtt_publish_buffer">
-        <field name="BLOCK_MQTT_PUBLISH">Publish Buffer to MQTT Topic</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -1495,8 +1491,7 @@ _
         </value>
       </block>
       <block type="mqtt_publish_payload">
-        <field name="BLOCK_MQTT_PUBLISH">Publish Payload to MQTT Topic</field>
-        <value name="topic">
+<category name="%{BKY_CAT_ULTRASOUND}">        <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
           </shadow>
@@ -1508,10 +1503,8 @@ _
         </value>
       </block>
       <block type="mqtt_set_callback">
-        <field name="BLOCK_MQTT_SET_CALLBACK">Set Callback to MQTT Messages</field>
       </block>
       <block type="mqtt_subscribe">
-        <field name="BLOCK_MQTT_SUBSCRIBE">Subscribe to MQTT Topic</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -1519,13 +1512,12 @@ _
         </value>
       </block>
       <block type="mqtt_check_msg">
-        <field name="BLOCK_MQTT_CHECK_MSG">Check for MQTT Server messages</field>
+
       </block>
       <block type="mqtt_wait_msg">
-        <field name="BLOCK_MQTT_WAIT_MSG">Wait for MQTT Server messages</field>
+
       </block>
       <block type="mqtt_disconnect">
-        <field name="BLOCK_MQTT_DISCONNECT">Disconnect MQTT Client</field>
       </block>
     </category>
     <category name="EasyMQTT">

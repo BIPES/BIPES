@@ -1084,7 +1084,6 @@
 
 
       <block type="hcsr_init">
-        <field name="BLOCK_HCSR_INIT">Start HCSR04 Ultrasound sensor</field>
         <value name="echo">
           <shadow type="pinout">
             <field name="PIN"></field>
