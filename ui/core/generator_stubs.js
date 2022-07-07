@@ -541,7 +541,11 @@ Blockly.Python['net_post_request_json'] = function(block) {
   Blockly.Python.definitions_['import_urequests'] = 'import urequests';
 
   var value_data2 = value_data.replace('\'','').replace('\'','');
-  var code = 'urequests.post(' + value_url + ', json={' + value_data2 + '})\n';
+  var value_data3 = value_data2.replace('(','[').replace(')',']');
+	console.log('TESTE = ' + value_data3);
+  var code = 'urequests.post(' + value_url + ', json=' + value_data3 + ')\n';
+	console.log('Code = ' + code);
+  //var code = 'urequests.post(' + value_url + ', json={' + value_data2 + '})\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
