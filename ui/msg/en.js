@@ -105,6 +105,15 @@ var MSG = {
   dht_humi: "get DHT11/22 humidity",
   type: "type",
 
+//Ultrasound
+  hcsr_install: "Install HCSR04 library",
+  hcsr_init: "Start HCSR04 Ultrasound Sensor",
+  hcsr_timeout: "timeout (us)",
+  echo_pin: "echo pin",
+  trigger_pin: "trigger pin",
+  get_distance: "Get distance (Ultrasound sensor)",
+  measure_distance: "Measure distance with Ultrasound sensor",
+
 //BMP180
   pressure: "pressure",
   temperature: "temperature",
@@ -125,6 +134,35 @@ var MSG = {
   net_http_server_requested_page: "Requested Web Page",
   net_http_server_send_response: "Send HTTP Response",
   net_http_server_send_html: "HTML",
+
+// MQTT
+  mqtt_init: "Start MQTT Client",
+  server_address: "Server Address",
+  server_port: "Server Port",
+  username: "Username",
+  password: "Password",
+  mqtt_add_to_buffer: "Add Data to MQTT Buffer",
+  field_name: "Field Name",
+  value: "Value",
+  mqtt_publish_buffer: "Publish Buffer to MQTT Topic",
+  mqtt_topic: "Topic",
+  qos: "QOS:",
+  mqtt_most_once: "0 - at most\u00A0once",
+  mqtt_least_once: "1 - at least\u00A0once",
+  mqtt_publish_payload: "Publish Payload to MQTT Topic",
+  payload: "Payload",
+  mqtt_subscribe: "Subscribe to MQTT Topic",
+  mqtt_set_callback: "Set Callback to MQTT Messages",
+  with: "with",
+  received_from: "received from",
+  do: "do",
+  mqtt_callback_tooltip: "Callback function must have topic and msg parameters",
+  mqtt_check_msg: "Check MQTT Server for pending messages",
+  mqtt_check_msg_tooltip: "Check if the server has any pending messages. Non-blocking method. Subscription messages will be passed to the callback.",
+  mqtt_wait_msg: "Wait for MQTT Server messages",
+  mqtt_wait_msg_tooltip: "Wait for server sending any message. Blocking method. Subscription messages will be passed to the callback.",
+  mqtt_disconnect: "Disconnect MQTT Client",
+  mqtt_disconnect_tooltip: "Disconnect the MQTT Client from Server.",
 
 //Splash screen
   splash_welcome: "Welcome to BIPES!",
@@ -150,4 +188,5 @@ Blockly.Msg['CAT_NET'] = "Network and Internet";
 Blockly.Msg['CAT_CONTROL'] = "Control";
 Blockly.Msg['CAT_IMU'] = "Inertial Measurement";
 Blockly.Msg['CAT_AIR'] = "Air Quality";
+Blockly.Msg['CAT_ULTRASOUND'] = "Ultrasound";
 

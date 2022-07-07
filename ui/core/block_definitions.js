@@ -1775,31 +1775,31 @@ Blockly.Blocks['hcsr_init'] = {
         55,
         55,
         "*"))
-      .appendField("Start HCSR04 Ultrasound sensor")
+      .appendField(MSG["hcsr_init"])
 	  ;
 
     this.appendValueInput("echo")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("echo pin"), "DHT_PIN_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["echo_pin"]), "DHT_PIN_MSG");
 
 
     this.appendValueInput("trigger")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("trigger pin"), "DHT_PIN_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["trigger_pin"]), "DHT_PIN_MSG");
 
 
     this.appendValueInput("timeout")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("timeout (us)"), "DHT_PIN_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["hcsr_timeout"]), "DHT_PIN_MSG");
 
 
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Start HCSR04 ultrasound distance sensor");
+ this.setTooltip(MSG["hcsr_init"]);
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1808,10 +1808,10 @@ Blockly.Blocks['hcsr_init'] = {
 Blockly.Blocks['hcsr_read'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Get distance (ultrasound sensor)"), "MSG_READ_DHT_TEMP");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["get_distance"]), "MSG_READ_DHT_TEMP");
     this.setOutput(true, null);
     this.setColour(230);
- this.setTooltip("Measure distance with ultrasound sensor");
+ this.setTooltip(MSG["measure_distance"]);
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1888,27 +1888,27 @@ Blockly.Blocks['dht_read_humidity'] = {
 Blockly.Blocks['mqtt_init'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Start MQTT Client"), "BLOCK_MQTT_INIT");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_init"]), "BLOCK_MQTT_INIT");
     this.appendValueInput("server")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Server Address"), "MQTT_SERVER");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["server_address"]), "MQTT_SERVER");
     this.appendValueInput("port")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Server Port"), "MQTT_PORT");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["server_port"]), "MQTT_PORT");
     this.appendValueInput("user")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Username"), "MQTT_USER");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["username"]), "MQTT_USER");
     this.appendValueInput("password")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Password"), "MQTT_PASSWORD");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["password"]), "MQTT_PASSWORD");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Start MQTT Client");
+    this.setTooltip(MSG["mqtt_start"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1917,18 +1917,18 @@ Blockly.Blocks['mqtt_init'] = {
 Blockly.Blocks['mqtt_add_to_buffer'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Add Data to MQTT Buffer"), "BLOCK_MQTT_ADD_TO_BUFFER");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_add_to_buffer"]), "BLOCK_MQTT_ADD_TO_BUFFER");
     this.appendValueInput("fieldname")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Field Name"), "MQTT_FIELDNAME");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["field_name"]), "MQTT_FIELDNAME");
     this.appendValueInput("value")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Value"), "MQTT_VALUE");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["value"]), "MQTT_VALUE");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Add Data to MQTT Buffer");
+    this.setTooltip(MSG["mqtt_add_to_buffer"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1937,23 +1937,23 @@ Blockly.Blocks['mqtt_add_to_buffer'] = {
 Blockly.Blocks['mqtt_publish_buffer'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Publish Buffer to MQTT Topic"), "BLOCK_MQTT_PUBLISH");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_publish_buffer"]), "BLOCK_MQTT_PUBLISH");
     this.appendValueInput("topic")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Topic"), "MQTT_TOPIC");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_topic"]), "MQTT_TOPIC");
     this.appendDummyInput()
-        .appendField('QOS:')
+        .appendField(MSG["QOS"])
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldDropdown([
-            ['0 - at most\u00A0once', '0'],
-            ['1 - at least\u00A0once', '1']
+            [MSG["mqtt_most_once"], '0'],
+            [MSG["mqtt_least_once"], '1']
         ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setInputsInline(false);
-    this.setTooltip("Publish Buffer to MQTT Server");
+    this.setTooltip(MSG["mqtt_publish_buffer"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1962,26 +1962,26 @@ Blockly.Blocks['mqtt_publish_buffer'] = {
 Blockly.Blocks['mqtt_publish_payload'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Publish Payload to MQTT Topic"), "BLOCK_MQTT_PUBLISH");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_publish_payload"]), "BLOCK_MQTT_PUBLISH");
     this.appendValueInput("topic")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Topic"), "MQTT_TOPIC");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_topic"]), "MQTT_TOPIC");
     this.appendValueInput("payload")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Payload"), "MQTT_PAYLOAD");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["payload"]), "MQTT_PAYLOAD");
     this.appendDummyInput()
-        .appendField('QOS:')
+        .appendField(MSG["qos"])
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldDropdown([
-            ['0 - at most\u00A0once', '0'],
-            ['1 - at least\u00A0once', '1']
+            [MSG["mqtt_most_once"], '0'],
+            [MSG["mqtt_least_once"], '1']
         ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setInputsInline(false);
-    this.setTooltip("Publish Payload to MQTT Server");
+    this.setTooltip(MSG["mqtt_publish_payload"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1990,15 +1990,15 @@ Blockly.Blocks['mqtt_publish_payload'] = {
 Blockly.Blocks['mqtt_subscribe'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Subscribe to MQTT Topic"), "BLOCK_MQTT_SUBSCRIBE");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_subscribe"]), "BLOCK_MQTT_SUBSCRIBE");
     this.appendValueInput("topic")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField(new Blockly.FieldLabelSerializable("Topic"), "MQTT_TOPIC");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_topic"]), "MQTT_TOPIC");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Subscribe to MQTT Topic");
+    this.setTooltip(MSG["mqtt_subscribe"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -2007,11 +2007,11 @@ Blockly.Blocks['mqtt_subscribe'] = {
 Blockly.Blocks['mqtt_set_callback'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Set Callback to MQTT Messages"), "BLOCK_MQTT_SET_CALLBACK");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_set_callback"]), "BLOCK_MQTT_SET_CALLBACK");
     this.appendDummyInput()
-        .appendField('with')
+        .appendField(MSG["with"])
         .appendField(new Blockly.FieldVariable('data_bytes'), 'MQTT_DATA_VAR')
-        .appendField('received from')
+        .appendField(MSG["received_from"])
         .appendField(new Blockly.FieldVariable(
           'topic',
           null,
@@ -2019,12 +2019,12 @@ Blockly.Blocks['mqtt_set_callback'] = {
           'String'
         ), 'MQTT_TOPIC_VAR');
     this.appendStatementInput('do')
-        .appendField('do');
+        .appendField(MSG["do"]);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setInputsInline(false);
-    this.setTooltip("Callback function must have topic and msg parameters");
+    this.setTooltip(MSG["mqtt_callback_tooltip"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -2033,11 +2033,11 @@ Blockly.Blocks['mqtt_set_callback'] = {
 Blockly.Blocks['mqtt_check_msg'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Check MQTT Server for pending messages"), "BLOCK_MQTT_CHECK_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_check_msg"]), "BLOCK_MQTT_CHECK_MSG");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Check if the server has any pending messages. Non-blocking method. Subscription messages will be passed to the callback.");
+    this.setTooltip(MSG["mqtt_check_msg_tooltip"]);
      this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -2046,11 +2046,11 @@ Blockly.Blocks['mqtt_check_msg'] = {
 Blockly.Blocks['mqtt_wait_msg'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Wait for MQTT Server messages"), "BLOCK_MQTT_WAIT_MSG");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_wait_msg"]), "BLOCK_MQTT_WAIT_MSG");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Wait for server sending any message. Blocking method. Subscription messages will be passed to the callback.");
+    this.setTooltip(MSG["mqtt_wait_msg_tooltip"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -2059,11 +2059,11 @@ Blockly.Blocks['mqtt_wait_msg'] = {
 Blockly.Blocks['mqtt_disconnect'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable("Disconnect MQTT Client"), "BLOCK_MQTT_DISCONNECT");
+        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_disconnect"]), "BLOCK_MQTT_DISCONNECT");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Disconnect the MQTT Client from Server.");
+    this.setTooltip(MSG["mqtt_disconnect_tooltip"]);
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };

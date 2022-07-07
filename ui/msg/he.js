@@ -105,6 +105,15 @@ var MSG = {
   dht_humi: "לקבל לחות DHT11/22",
   type: "סוּג",
 
+//Ultrasound
+  hcsr_install: "התקן ספריית HCSR04",
+  hcsr_init: "התחל חיישן על קולי HCSR04",
+  hcsr_timeout: "זמן מקסימלי (מיקרו שנייה)",
+  echo_pin: "סיכת הד",
+  trigger_pin: "סיכת הדק",
+  get_distance: "קרא מרחק (חיישן על קולי)",
+  measure_distance: "מדד מרחק עם חיישן על קולי",
+
 //BMP180
   pressure: "לַחַץ",
   temperature: "טֶמפֶּרָטוּרָה",
@@ -120,11 +129,40 @@ var MSG = {
   net_http_get_status: "קוד סטטוס HTTP",
   net_http_get_content: "תוכן תגובת HTTP",
   net_http_server_start: "הפעל את שרת האינטרנט HTTP",
-  net_http_server_start_port: "נמל",
+  net_http_server_start_port: "פורט",
   net_http_server_wait: "המתן ללקוח HTTP",
   net_http_server_requested_page: "דף אינטרנט מבוקש",
   net_http_server_send_response: "שלח תגובת HTTP",
   net_http_server_send_html: "HTML",
+
+// MQTT
+  mqtt_init: "התחל לקוח MQTT",
+  server_address: "כתובת שרת",
+  server_port: "פורט שרת",
+  username: "שם משתמש",
+  password: "סיסמה",
+  mqtt_add_to_buffer: "הוסף נתונים לתור MQTT",
+  field_name: "שם שדה",
+  value: "ערך",
+  mqtt_publish_buffer: "שלח תור לMQTT",
+  mqtt_topic: "נושא",
+  qos: "QOS:",
+  mqtt_most_once: "0 - עד\u00A0פעם\u00A0אחת",
+  mqtt_least_once: "1 - לפחות\u00A0פעם\u00A0אחת",
+  mqtt_publish_payload: "שלח נתונים לMQTT",
+  payload: "נתונים",
+  mqtt_subscribe: "הרשם לנושא MQTT",
+  mqtt_set_callback: "MQTT הגדר פונקציה להפעלה",
+  with: "עם",
+  received_from: "התקבל מ",
+  do: "עשה",
+  mqtt_callback_tooltip: "פונקציות להפעלה חייבות להפעיל פרמטרים של נושא (topic) והודעה (msg)",
+  mqtt_check_msg: "בדוק שרת MQTT להודעות ממתינות",
+  mqtt_check_msg_tooltip: "בדוק אם לשרת יש הודעות ממתינות. לא בולק. הודעה תועבר לפונקציה המוגדרת",
+  mqtt_wait_msg: "המתן להודעות משרת MQTT",
+  mqtt_wait_msg_tooltip: "המתן להודעות שרת MQTT. פונקציה בולקת. הודעה תועבר לפונקציה המוגדרצ.",
+  mqtt_disconnect: "נתק לקוח MQTT",
+  mqtt_disconnect_tooltip: "נתק לקוח MQTT מהשרת.",
 
 //Splash screen
   splash_welcome: "ברוכים הבאים ל-BIPES!",
@@ -150,4 +188,5 @@ Blockly.Msg['CAT_NET'] = "רשת ואינטרנט";
 Blockly.Msg['CAT_CONTROL'] = "לִשְׁלוֹט";
 Blockly.Msg['CAT_IMU'] = "מדידת אינרציה";
 Blockly.Msg['CAT_AIR'] = "איכות אוויר";
+Blockly.Msg['CAT_ULTRASOUND'] = "על קולי";
 
