@@ -39,6 +39,7 @@ offline:
 	cat ui/devinfo/devinfo.json >> ui/index_offline.html
 	echo "\`;" >> ui/index_offline.html
 	echo "</script>" >> ui/index_offline.html
+	cat ui/isOffline.js >> ui/index_offline.html
 	zip -q -r bipes_offline.zip *
 
  doc:
