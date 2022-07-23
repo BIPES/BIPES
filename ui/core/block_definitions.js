@@ -1141,6 +1141,121 @@ Blockly.Blocks['write_oled'] = {
   }
 };
 
+Blockly.Blocks['line_oled'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Draw a line on display");
+
+        this.appendValueInput("x1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Initial X position");
+    this.appendValueInput("y1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Initial Y position");
+        this.appendValueInput("x2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Final X position");
+    this.appendValueInput("y2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Final Y position");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Draw a line on OLED Display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['rect_oled'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Draw a rectangle outline on display");
+
+        this.appendValueInput("x1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Initial X position");
+    this.appendValueInput("y1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Initial Y position");
+        this.appendValueInput("x2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Width");
+    this.appendValueInput("y2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Height");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Draw a rectangle on OLED Display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+Blockly.Blocks['fill_rect_oled'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Draw a solid rectangle outline on display");
+
+        this.appendValueInput("x1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Initial X position");
+    this.appendValueInput("y1")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Initial Y position");
+        this.appendValueInput("x2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Width");
+    this.appendValueInput("y2")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Height");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Draw a line on OLED Display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['scroll_oled'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("scroll the display");
+
+        this.appendValueInput("x")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Scroll back(-) or forth(+)");
+    this.appendValueInput("y")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Scroll up (-) or down(+)");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+ this.setTooltip("Scroll the OLED Display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['init_tank'] = {
   init: function() {
     this.appendDummyInput()
@@ -1946,8 +2061,8 @@ Blockly.Blocks['mqtt_publish_buffer'] = {
         .appendField(MSG["QOS"])
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldDropdown([
-            [MSG["mqtt_most_once"], '0'],
-            [MSG["mqtt_least_once"], '1']
+          [MSG["mqtt_most_once"], '0'],
+          [MSG["mqtt_least_once"], '1']
         ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -1974,8 +2089,8 @@ Blockly.Blocks['mqtt_publish_payload'] = {
         .appendField(MSG["qos"])
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField(new Blockly.FieldDropdown([
-            [MSG["mqtt_most_once"], '0'],
-            [MSG["mqtt_least_once"], '1']
+          [MSG["mqtt_most_once"], '0'],
+          [MSG["mqtt_least_once"], '1']
         ]), 'MQTT_QOS');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -2038,7 +2153,7 @@ Blockly.Blocks['mqtt_check_msg'] = {
     this.setNextStatement(true, null);
     this.setColour(230);
     this.setTooltip(MSG["mqtt_check_msg_tooltip"]);
-     this.setHelpUrl("http://www.bipes.net.br");
+    this.setHelpUrl("http://www.bipes.net.br");
   }
 };
 
@@ -2046,7 +2161,7 @@ Blockly.Blocks['mqtt_check_msg'] = {
 Blockly.Blocks['mqtt_wait_msg'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_wait_msg"]), "BLOCK_MQTT_WAIT_MSG");
+    .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_wait_msg"]), "BLOCK_MQTT_WAIT_MSG");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -2059,7 +2174,7 @@ Blockly.Blocks['mqtt_wait_msg'] = {
 Blockly.Blocks['mqtt_disconnect'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_disconnect"]), "BLOCK_MQTT_DISCONNECT");
+    .appendField(new Blockly.FieldLabelSerializable(MSG["mqtt_disconnect"]), "BLOCK_MQTT_DISCONNECT");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -10681,7 +10796,102 @@ Blockly.Blocks['python_try_catch'] = {
   }
 };
 
+// Motors
+Blockly.Blocks['motor_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init Motors");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage(
+          "media/motor.jpg",
+          55,
+          55,
+          "*"));
+    this.appendValueInput("right_forward")
+      .setCheck(null)
+      .appendField("Right Forward");
+    this.appendValueInput("right_reverse")
+      .setCheck(null)
+      .appendField("Right Reverse");                  
+    this.appendValueInput("left_forward")
+      .setCheck(null)
+      .appendField("Left Forward");
+    this.appendValueInput("left_reverse")
+      .setCheck(null)
+      .appendField("Left Reverse");                  
+  }
+}
 
+Blockly.Blocks['forward_fast'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Forward Quickly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['forward_slow'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Forward Slowly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['reverse_fast'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Backward Quickly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['reverse_slow'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Go Backward Slowly");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['left'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Turn Left");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['right'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Turn Right");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+Blockly.Blocks['stop'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Stop!");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
 
 //neopixel
 Blockly.Blocks['neopixel_init'] = {

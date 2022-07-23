@@ -608,13 +608,15 @@ Code.init = function() {
 
   Code.workspace.registerButtonCallback('installPyLib', function(button) {
 
-	var lib = button.text_.split(" ")[1];
+	var lib = button.text_.split(" ")[1].toLowerCase();
 	console.log(button.text_);
 	console.log(lib)
 
 	var c = Channel.mux.currentChannel;
 
-        alert("This will automatic download and install the library on the connected board: " + lib + ". Internet is required for this operation. Install results will be shown on console tab: " + c);
+
+  alert("This will automatic download and install the library on the connected board: " + lib + ". Install results will be shown on console tab: " + c);
+
 	UI ['notify'].send('Installing library, check console: ' + c)
 
 	var msg = "Lib will be installed using: " + c;
@@ -623,28 +625,34 @@ Code.init = function() {
 	if (c == 'webserial') {
 		console.log('serial install');
 
-		//Download file
-		const xmlhttp = new XMLHttpRequest();
-		xmlhttp.onreadystatechange = function() {
-		  if (this.readyState == 4 && this.status == 200) {
-		    const installFileContent = this.responseText;
-		    console.log(installFileContent);
-		    Files.editor.getDoc().setValue(installFileContent);
-	            UI ['workspace'].file.value = lib + '.py';
+    var reader = new FileReader();
+    
+    reader.addEventListener('load', (e) => {
+      var installFileContent = e.target.result;
+      Files.editor.getDoc().setValue(installFileContent);
+      UI ['workspace'].file.value = lib + '.py';
 
-		    Files.file_save_as.className = 'py';
-		    Files.files_save_as();
-		    Files.listFiles();
-		    Files.listFiles();
+      Files.file_save_as.className = 'py';
+      Files.files_save_as();
+      Files.listFiles();
+      Files.listFiles();
+    }
+    )
 
-
-		  }
-		};
-		console.log("Getting /beta2/ui/pylibs/" + lib + '.py');
-		xmlhttp.open('GET', '/beta2/ui/pylibs/' + lib + '.py');
-		xmlhttp.send();
+    console.log("Getting pylibsBlobs/" + lib + '.js');
+    
+    if (lib == "ssd1306") {
+        reader.readAsText(ssd1306Blob);
+      } else if (lib == "rtttl")  {
+        reader.readAsText(rtttlBlob);
+      } else if (lib == "songs")  {
+        reader.readAsText(songsBlob);
+      } else if (lib == "hcsr04")  {
+        reader.readAsText(hcsr04Blob);
+    }  else {
+        console.log("Blob file not available for: " + lib + " library.");
+    }
 	} else {
-
 
 	var installCmd = `
 def bipesInstall(url, lib):
