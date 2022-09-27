@@ -178,27 +178,31 @@ def create_app(database="sqlite"):
       
     return app
 
-# Generate server/conf.ini file
-def conf_ini(flask=None, mosquitto=None):
+# Generate basic server/conf.ini file
+def conf_ini(flask_passwd=None, mosquitto_passwd=None, mosquitto_host=None):
     conf = ConfigParser()
     conf.read('server/conf.ini')
     # Setup file for the first time
-    if flask is not None:
-        conf['flask'] = {'password':flask}
+    if flask_passwd is not None:
+        conf['flask'] = {'password':flask_passwd}
+    
+    if 'postgresql' not in conf:
         conf['postgresql'] = {'host':'localhost',
                                 'database_api':'bipes_api',
                                 'database_mqtt':'bipes_mqtt',
                                 'user':'postgres',
                                 'password':''}
-        with open('server/conf.ini', 'w') as conf_file:
-            conf.write(conf_file)
-    if mosquitto is not None:
-        conf['mosquitto'] = {
-            'password':mosquitto,
-            'ssl':False
-        }
-        with open('server/conf.ini', 'w') as conf_file:
-            conf.write(conf_file)
+    if 'mosquitto' not in conf:
+        conf['mosquitto'] = {}
+            
+    if mosquitto_passwd is not None:
+        conf['mosquitto']['password'] = mosquitto_passwd
+        
+    if mosquitto_host is not None:
+        conf['mosquitto']['host'] = mosquitto_host
+        
+    with open('server/conf.ini', 'w') as conf_file:
+        conf.write(conf_file)
 
 # Build BIPES static release
 def build_release():

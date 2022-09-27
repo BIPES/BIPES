@@ -4,7 +4,7 @@
 
 ## Build from source
 
-To build BIPES, run
+To build BIPES in your system, run
 
 ```
 make
@@ -25,6 +25,34 @@ make run
 
 In development mode, different languages are acessed by including the language 
 code to the link, e.g. http://127.0.0.1:5001/ide-de loads the IDE in german.
+
+When configuring mosquitto MQTT broker, it will require root access to configure
+it in the system.
+Alternatively, you can setup inside docker.
+
+### Using Docker
+
+To build BIPES inside a docker container, run
+
+```
+make docker-build
+```
+
+after installing *docker* and *docker-compose-plugin*, and adding your user to the
+*docker* group (to run Docker without root).
+
+For subsequent runs in development mode, do 
+
+```
+make docker-run
+``` 
+
+The Docker version uses Docker Composes to connect a image running BIPES and
+other running Mosquitto, this is an elegant solution to manage two independent
+servicecs that communicate with each other.
+
+Note: most parameters are not available for Docker, but you can pass explicitly 
+modify the Makefiles and app.py defaults to achieve the same.
 
 ### Windows notes
 

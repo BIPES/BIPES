@@ -26,15 +26,25 @@ def listen(app, conf):
         app.config['MQTT_BROKER_WS_PORT'] = int(conf['ws_port'])
     else:
         app.config['MQTT_BROKER_WS_PORT'] = 9001
-    app.config['MQTT_BROKER_PORT'] = 1883
-    app.config['MQTT_USERNAME'] = 'bipes'
+    if 'broker_port' in conf:
+        app.config['MQTT_BROKER_PORT'] = int(conf['broker_port'])
+    else:
+        app.config['MQTT_BROKER_PORT'] = 1883
+    if 'username' in conf:
+        app.config['MQTT_USERNAME'] = conf['username']
+    else:
+        app.config['MQTT_USERNAME'] = 'bipes'
+        
     app.config['MQTT_PASSWORD'] = conf['password'].strip()
     if 'ssl' in conf:
-        app.config['MQTT_SSL'] = True if conf['ssl'] == 'true' else False
+        app.config['MQTT_SSL'] = True if conf['ssl'] == 'true' or conf['ssl'] == '1' else False
     else:
         app.config['MQTT_SSL'] = False
     app.config['MQTT_KEEPALIVE'] = 5
-    app.config['MQTT_TLS_ENABLED'] = False
+    if 'tls_enabled' in conf:
+        app.config['MQTT_TLS_ENABLED'] = True if conf['tls_enabled'] == 'true' or conf['tls_enabled'] == '1' else False
+    else:
+        app.config['MQTT_TLS_ENABLED'] = False
 
     mqtt = Mqtt()
 
@@ -113,7 +123,6 @@ def mqtt_select(session):
 def mqtt_select_distinct(session):
     obj = request.json
     cols = ['topic']
-
     db = dbase.connect(_db)
     if not dbase.has_table(db, (session,)):
         return {session:[]}

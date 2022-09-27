@@ -69,7 +69,6 @@ def exec(__db, _sql, identifier = None):
             from psycopg import sql
             data = db.execute(sql.SQL(_sql).format(sql.Identifier(identifier)))
         elif current_app.config['DATABASE'] == 'sqlite':
-            from psycopg import sql
             data = db.execute(_sql.format(identifier))
     db.commit()
     # Notice that exec does NOT close the database

@@ -104,7 +104,11 @@ class MQTTDatabase {
   }
   async do (url){
     const response = await fetch(`${window.location.href.match('^(.*)/ide')[1]}/mqtt/${url}`, {
-      method:'Get'
+      method:'Post',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({})
     })
 
     if (!response.ok)

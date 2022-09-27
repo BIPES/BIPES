@@ -1,0 +1,24 @@
+services:
+  webapp:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ../:/bipes
+    image: bipes/bipes_build
+    working_dir: /bipes
+    command: sh -c "make run" 
+    depends_on:
+      - mosquitto
+
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto-passwd:/etc/mosquitto/conf.d/passwd
+

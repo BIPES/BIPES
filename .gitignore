@@ -24,3 +24,7 @@ static/import/*
 
 licenses/
 docs/_build
+docker/*
+
+!docker/Dockerfile
+!docker/docker-compose.yml
