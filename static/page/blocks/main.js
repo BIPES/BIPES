@@ -243,8 +243,7 @@ class BlocksCode {
 
 
     this.codemirror = CodeMirror($.codemirror.$, Tool.fromUrl('theme'),
-      // Enabling this forbits copying since Codemirror gets unfocusable
-      //{contenteditable:true})
+      {contenteditable:false}
     )
 
     command.add([this.parent, this], {
