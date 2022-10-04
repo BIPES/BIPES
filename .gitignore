@@ -19,6 +19,8 @@ static/page/blocks/media
 /ide.html
 BIPES
 
+app.pyc
+
 server/*.txt
 static/import/*
 

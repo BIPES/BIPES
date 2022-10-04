@@ -51,27 +51,13 @@ greeting:
 umd-deps:
 	@printf "Fetching and building $(PURPLE)rollup$(NC) and \
 	$(PURPLE)codemirror$(NC) with npm.\n"
-	@npm install rollup@2.70.1 \
+	@npm install rollup@2.79.1 \
 	rollup-plugin-terser@7.0.2 \
-	@rollup/plugin-node-resolve@13.1.3 \
-	@codemirror/view@0.19.47 \
-	@codemirror/state@0.19.9 \
-	@codemirror/history@0.19.2 \
-	@codemirror/fold@0.19.3 \
-	@codemirror/language@0.19.8 \
-	@codemirror/gutter@0.19.9 \
-	@codemirror/commands@0.19.8 \
-	@codemirror/matchbrackets@0.19.4 \
-	@codemirror/closebrackets@0.19.1 \
-	@codemirror/search@0.19.9 \
-	@codemirror/autocomplete@0.19.14 \
-	@codemirror/comment@0.19.1 \
-	@codemirror/rectangular-selection@0.19.1 \
-	@codemirror/highlight@0.19.7 \
-	@codemirror/lint@0.19.6 \
-	@codemirror/lang-python@0.19.4 \
-	@codemirror/lang-markdown@0.19.6 \
-	@codemirror/theme-one-dark@0.19.1
+	@rollup/plugin-node-resolve@14.1.0 \
+	codemirror@6.0.1 \
+	@codemirror/lang-python@6.0.2 \
+	@codemirror/lang-markdown@6.0.1 \
+	@codemirror/theme-one-dark@6.1.0
 	@node_modules/.bin/rollup -c templates/libs/rollup.config.codemirror.js
 
 unpkg:
