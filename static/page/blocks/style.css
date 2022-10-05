@@ -122,3 +122,9 @@ section#blocks #codemirror button#copy {
 body.dark section#blocks .blocklyCommentTextarea {
   background-color: #333 !important;
 }
+
+body.dark section#blocks .blocklyEditableText.editing,
+body.dark .blocklyHtmlInput {
+  color: #000 !important;
+}
+
