@@ -12274,3 +12274,62 @@ Blockly.Blocks['mpu9250_temp'] = {
 };
 
 
+//Database Blocks
+
+Blockly.Blocks['db_connect'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Send data to a MySQL Database")
+        .appendField(new Blockly.FieldNumber(1, 1, 9, 1), "db_idconnect");
+    this.appendValueInput("db_host")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Host Addr");
+    this.appendValueInput("db_server")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Server");
+    this.appendValueInput("db_user")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("User");
+    this.appendValueInput("db_pass")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Password");
+    this.appendValueInput("db_database")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Database");
+    this.appendValueInput("db_table")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Table");
+    this.appendStatementInput("db_table_data")
+        .setCheck(null)
+        .setAlign(Blockly.ALIGN_RIGHT);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(135);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['data_value'] = {
+  init: function() {
+    this.appendValueInput("data_column")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Column");
+    this.appendValueInput("data_value")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Value");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(285);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};

@@ -6500,5 +6500,59 @@ Blockly.Python['mpu9250_temp'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
 };
 
+//Database
+Blockly.Python['db_connect'] = function(block) {
+	Blockly.Python.definitions_['import_urequests'] = 'import urequests';
+	Blockly.Python.definitions_['import_ujson'] = 'import ujson';
+  
+	var number_db_idconnect = block.getFieldValue('db_idconnect');
+	var db_host = Blockly.Python.valueToCode(block, 'db_host', Blockly.Python.ORDER_ATOMIC);
+	var db_server = Blockly.Python.valueToCode(block, 'db_server', Blockly.Python.ORDER_ATOMIC);
+	var db_user = Blockly.Python.valueToCode(block, 'db_user', Blockly.Python.ORDER_ATOMIC);
+	var db_pass = Blockly.Python.valueToCode(block, 'db_pass', Blockly.Python.ORDER_ATOMIC);
+	var db_database = Blockly.Python.valueToCode(block, 'db_database', Blockly.Python.ORDER_ATOMIC);
+	var db_table = Blockly.Python.valueToCode(block, 'db_table', Blockly.Python.ORDER_ATOMIC);
+	var cells_blocks = block.getInputTargetBlock('db_table_data');
 
+	//var cells_blocks = block.getInputTargetBlock('cells_values');
+	// TODO: Assemble Python into code variable.
+	Blockly.Python.definitions_['post_dbdata'] = 'def post_dbdata(db_host,db_server,db_user,db_pass,db_database,db_table, db_data):\n' + 
+		' request_data = ujson.dumps({"server": db_server,"user": db_user,"pass": db_pass,"database": db_database,"table": db_table,"parameters": db_data })\n'+
+		' r = urequests.post(db_host + "/" , headers = {"content-type": "application/json"}, data = request_data)\n print(r.content)\n r.close()';
+    Blockly.Python.definitions_['db_host' + number_db_idconnect] = 'db_host' + number_db_idconnect + '= ' + db_host;
+	Blockly.Python.definitions_['db_server' + number_db_idconnect] = 'db_server' + number_db_idconnect + '= ' + db_server;
+	Blockly.Python.definitions_['db_user' + number_db_idconnect] = 'db_user' + number_db_idconnect + '= ' + db_user;
+	Blockly.Python.definitions_['db_pass' + number_db_idconnect] = 'db_pass' + number_db_idconnect + '= ' + db_pass;
+	Blockly.Python.definitions_['db_database' + number_db_idconnect] = 'db_database' + number_db_idconnect + '= ' + db_database;
+	Blockly.Python.definitions_['db_table' + number_db_idconnect] = 'db_table' + number_db_idconnect + '= ' + db_table;
+	Blockly.Python.definitions_['db_row_data_' + number_db_idconnect] = 'db_row_data' + number_db_idconnect +' = {}';
+
+	if(cells_blocks)
+    var db_row_data_def = '';
+      do{
+        var cell_column = Blockly.Python.blockToCode(cells_blocks, 'data_column');
+        db_row_data_def += ' db_row_data' + number_db_idconnect +'['+cell_column.split(';')[0] +'] = ' + cell_column.split(';')[1]+'\n';
+      }while (cells_blocks = cells_blocks.getNextBlock());
+  
+    Blockly.Python.definitions_['db_row_data_cell'+ number_db_idconnect] = 'def update_db_row_data'+ number_db_idconnect+'():\n' + db_row_data_def;
+	
+	var code = 'update_db_row_data'+ number_db_idconnect +'()\n' +'post_dbdata(' + 
+	'db_host' + number_db_idconnect+
+	',db_server' + number_db_idconnect+
+	',db_user' + number_db_idconnect+
+	',db_pass' + number_db_idconnect+
+	',db_database' + number_db_idconnect+
+	',db_table' + number_db_idconnect+ 
+	',db_row_data' + number_db_idconnect+
+	')\n';
+	return code;
+  };
+
+  Blockly.Python['data_value'] = function(block) {
+    var value_column = Blockly.Python.valueToCode(block, 'data_column', Blockly.Python.ORDER_ATOMIC);
+	var value_value = Blockly.Python.valueToCode(block, 'data_value', Blockly.Python.ORDER_ATOMIC);
+    // TODO: Assemble Python into code variable.
+    var code = value_column + ';' + value_value;
+    return code;
+  };
 

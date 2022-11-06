@@ -2417,7 +2417,79 @@ _
         </value>
       </block>
     </category>
+
+    <category name="Database">
+      <label text="Send data to a MySQL database"></label>
+      <label text="PHP SCRIPT: https://gist.github.com"></label>
+  <block type="db_connect">
+    <field name="db_idconnect">1</field>
+    <value name="db_host">
+      <shadow type="text">
+        <field name="TEXT">http://192.168.0.1/php_script.php</field>
+      </shadow>
+    </value>
+   
+    <value name="db_server">
+      <shadow type="text">
+        <field name="TEXT"></field>
+      </shadow>
+    </value>
+    <value name="db_user">
+      <shadow type="text">
+        <field name="TEXT"></field>
+      </shadow>
+    </value>
+    <value name="db_pass">
+      <shadow type="text">
+        <field name="TEXT"></field>
+      </shadow>
+    </value>
+    <value name="db_database">
+      <shadow type="text">
+        <field name="TEXT"></field>
+      </shadow>
+    </value>
+     <value name="db_table">
+      <shadow type="text">
+        <field name="TEXT"></field>
+      </shadow>
+    </value>
+    <statement name="db_table_data">
+     <block type="data_value">
+        <value name="Column">
+          <shadow type="text">
+            <field name="TEXT">column name</field>
+          </shadow>
+        </value>
+        <value name="Value">
+          <shadow type="text">
+            <field name="TEXT">content</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+    
+  </block> 
+   <block type="data_value">
+        <value name="Column">
+          <shadow type="text">
+            <field name="TEXT">column name</field>
+          </shadow>
+        </value>
+        <value name="Value">
+          <shadow type="text">
+            <field name="TEXT">content</field>
+          </shadow>
+        </value>
+      </block>  
   </category>
+
+  </category>
+
+  
+  
+ 
+
 
 <category name="%{BKY_CAT_CONTROL}">
   <category name="PID">
