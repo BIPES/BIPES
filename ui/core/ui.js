@@ -638,7 +638,9 @@ workspace.prototype.changeTo = function (device) {
  */
 workspace.prototype.saveXML = function (uid) {
   let xmlText = '';
+  let rawXml = '';
   if (uid == undefined) {
+    rawXml = Blockly.Xml.workspaceToDom(Code.workspace).innerHTML;
     xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.workspaceToDom(Code.workspace));
     xmlText = this.writeWorkspace (xmlText, true);
   } else {
@@ -646,10 +648,25 @@ workspace.prototype.saveXML = function (uid) {
     xmlText = Blockly.Xml.domToPrettyText(Blockly.Xml.textToDom(localStorage [uid]));
   }
 
+  let project_name = '';
+  let regex_ = /<value name="project_description">.*?<\/value>/;
+  if (regex_.test(rawXml)) {
+    let project_description_chunk = rawXml.match (regex_) [0];
+    project_name = project_description_chunk.match (/<field name="TEXT">(.*?)<\/field>/)[1].slice();
+  } else {
+    project_name = "My BIPES Project";
+  }
+
+  if (project_name == '') {
+    project_name = 'workspace.bipes.xml';
+  } else {
+    project_name = project_name.replaceAll(' ', '') + '.bipes.xml';
+  }
+
   let data = "data:x-application/xml;charset=utf-8," + encodeURIComponent(xmlText);
 	let element = document.createElement('a');
 	element.setAttribute('href', data),
-	element.setAttribute('download', 'workspace.bipes.xml'),
+	element.setAttribute('download', project_name),
 	element.style.display = 'none';
 	document.body.appendChild(element);
 	element.click ();

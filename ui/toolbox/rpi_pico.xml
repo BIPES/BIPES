@@ -604,15 +604,15 @@
         </shadow>
       </value>
 
- <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">1</field>
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
         </shadow>
       </value>
 
- <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">0</field>
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
         </shadow>
       </value>
 
@@ -739,7 +739,9 @@
     <category name="NeoPixel LED Strip">
       <label text="NeoPixel RGB LED Strip"></label>
 
-        <button text="Documentation and how to connect: neopixel" callbackKey="loadDoc"></button>
+        <button text="Load example: Blink" callbackKey="loadExample"></button>
+        <button text="Load example: LarsonScanner" callbackKey="loadExample"></button>
+        <button text="Load example: TheaterChase" callbackKey="loadExample"></button>
 
       <block type="neopixel_init">
        <value name="pin">
@@ -1041,12 +1043,12 @@
       <block type="hcsr_init">
         <value name="echo">
           <shadow type="pinout">
-            <field name="PIN"></field>
+            <field name="echo pin"></field>
           </shadow>
         </value>
- <value name="trigger">
+        <value name="trigger">
           <shadow type="pinout">
-            <field name="PIN"></field>
+            <field name="trigger pin"></field>
           </shadow>
         </value>
   <value name="timeout">
@@ -1057,6 +1059,81 @@
       </block>
       <block type="hcsr_read">
       </block>
+
+  </category>
+
+  <category name="Time of Flight">
+      <label text="VL53L0X"></label>
+   <label text="Library: https://github.com/kevinmcaleer/vl53l0x"></label>
+        <button text="Install vl53l0x library" callbackKey="installPyLib"></button>
+
+
+
+    <block type="init_vl53l0x">
+      <value name="i2c">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
+        </shadow>
+      </value>
+
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
+        </shadow>
+      </value>
+
+    </block>
+
+    <block type="vl53l0x_read_tof"> </block>
+  </category>
+
+  <category name="Inertial Measurement">
+      <label text="MPU6050 IMU"></label>
+   <label text="Library: https://github.com/micropython-IMU/micropython-mpu9x50"></label>
+        <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
+        <button text="Install vector3d library (MPU6050)" callbackKey="installPyLib"></button>
+
+        <button text="Load example: mpu6050" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
+
+
+
+    <block type="init_mpu6050">
+      <value name="i2c">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
+        </shadow>
+      </value>
+
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
+        </shadow>
+      </value>
+
+    </block>
+
+    <block type="mpu6050_read_acc_x"> </block>
+    <block type="mpu6050_read_acc_y"> </block>
+    <block type="mpu6050_read_acc_z"> </block>
+
+    <block type="mpu6050_read_gyro_x"> </block>
+    <block type="mpu6050_read_gyro_y"> </block>
+    <block type="mpu6050_read_gyro_z"> </block>
+
+    <block type="mpu6050_read_temperature"> </block>
 
   </category>
 
@@ -1096,50 +1173,9 @@
       </block>
 	<block type="max30100_ir">
       </block>
-
-
-
-
   </category>
 
-  <category name="Inertial Measurement">
-      <label text="MPU6050 IMU"></label>
-   <label text="Library: https://github.com/"></label>
-        <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
-
-        <button text="Load example: mpu6050" callbackKey="loadExample"></button>
-        <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
-
-
-
-    <block type="init_mpu6050">
-
- <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">5</field>
-        </shadow>
-      </value>
-
- <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">4</field>
-        </shadow>
-      </value>
-
-    </block>
-
-    <block type="mpu6050_read_acc_x"> </block>
-    <block type="mpu6050_read_acc_y"> </block>
-    <block type="mpu6050_read_acc_z"> </block>
-
-    <block type="mpu6050_read_gyro_x"> </block>
-    <block type="mpu6050_read_gyro_y"> </block>
-    <block type="mpu6050_read_gyro_z"> </block>
-
-
-  </category>
-
-      <category name="OneWire">
+  <category name="OneWire">
       <label text="OneWire"></label>
 
         <button text="Load example: ds1820" callbackKey="loadExample"></button>
@@ -1167,12 +1203,24 @@
 
   <category name="RFID Reader">
       <label text="RC522 13.56MHz RFID Reader"></label>
-      <label text="Library: https://github.com/wendlers/micropython-mfrc522"></label>
+      <label text="Library: https://github.com/kevinmcaleer/pico-rfid"></label>
         <button text="Install mfrc522 library" callbackKey="installPyLib"></button>
         <button text="Load example: mfrc522" callbackKey="loadExample"></button>
         <button text="Documentation and how to connect: mfrc522" callbackKey="loadDoc"></button>
 
       <block type="rfid_rc522_init">
+        <value name="spi">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+
+        <value name="cs">
+          <shadow type="pinout">
+            <field name="CS"></field>
+          </shadow>
+        </value>
+
         <value name="sck">
           <shadow type="pinout">
             <field name="SCK"></field>
@@ -1196,16 +1244,10 @@
             <field name="RST"></field>
           </shadow>
         </value>
-
-        <value name="cs">
-          <shadow type="pinout">
-            <field name="RST"></field>
-          </shadow>
-        </value>
-
       </block>
       <block type="rfid_rc522_detect_card"></block>
       <block type="rfid_rc522_anticoll"></block>
+      <block type="rfid_rc522_serial_number"></block>
       <block type="rfid_rc522_read_card"></block>
       <block type="rfid_rc522_write_card"></block>
 
@@ -1255,17 +1297,42 @@
       <category name="UART">
       <label text="UART Serial Port"></label>
 <block type="uart_init">
+    <value name="port">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    <value name="baud">
+        <shadow type="math_number">
+          <field name="NUM">9800</field>
+        </shadow>
+      </value>
+      <value name="tx">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
+      <value name="rx">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
 </block>
 
 <block type="uart_write">
+  <value name="buf">
+    <shadow type="text">
+      <field name="TEXT">Hello</field>
+    </shadow>
+  </value>
 </block>
 <block type="uart_read">
-</block>
-<block type="uart_read_into">
 </block>
 <block type="uart_readline">
 </block>
 <block type="uart_read_all">
+</block>
+<block type="uart_any">
 </block>
 
       </category>
@@ -1459,313 +1526,6 @@
 <block type="uos_ioctl">
 </block>
 
-  </category>
-
-
-
-
-
-  <category name="Network">
-    <block type="wifi_client_connect">
-      <field name="NAME">Connect to Wifi network</field>
-      <value name="wifi_client_essid">
-        <shadow type="text">
-          <field name="TEXT"></field>
-        </shadow>
-      </value>
-      <value name="wifi_client_key">
-        <shadow type="text">
-          <field name="TEXT"></field>
-        </shadow>
-      </value>
-    </block>
-    <block type="net_ap_mode">
-      <field name="NAME">Configure Access Point Mode</field>
-      <value name="wifi_essid">
-        <shadow type="text">
-          <field name="TEXT"></field>
-        </shadow>
-      </value>
-      <value name="wifi_key">
-        <shadow type="text">
-          <field name="TEXT"></field>
-        </shadow>
-      </value>
-    </block>
-    <block type="wifi_client_scan_networks">
-      <field name="NET_SCAN_WIFI">Scan Wifi networks</field>
-    </block>
-    <block type="net_ifconfig">
-      <field name="NET_IFCONFIG">Wifi current IP</field>
-    </block>
-
-    <block type="net_wiznet5k_init">
-    </block>
-    <block type="net_wiznet5k_isconnected">
-    </block>
-    <block type="net_wiznet5k_regs">
-    </block>
-    <block type="net_wiznet5k_ifconfig">
-    </block>
-
-    <category name="HTTP Client">
-      <label text="HTTP Client"></label>
-
-    <block type="net_get_request">
-      <field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
-    </block>
-    <block type="net_post_request">
-      <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
-      <field name="NET_POST_REQUEST_DATA">Data</field>
-    </block>
-
-    </category>
-
-    <category name="HTTP Server">
-      <label text="HTTP Web Server"></label>
-      <button text="Load example: webserver" callbackKey="loadExample"></button>
-      <button text="Documentation: webserver" callbackKey="loadDoc"></button>
-
-    <block type="net_http_server_start">
-        <value name="port">
-          <shadow type="math_number">
-            <field name="NUM">80</field>
-          </shadow>
-        </value>
-    </block>
-    <block type="net_http_server_accept">
-    </block>
-    <block type="net_http_server_requested_page">
-    </block>
-    <block type="net_http_server_send_response">
-	 <value name="html">
-          <shadow type="text">
-            <field name="TEXT">You reached BIPES WebServer!</field>
-          </shadow>
-        </value>
-
-    </block>
-    <block type="net_http_server_close">
-    </block>
-
-    </category>
-
-    <category name="EMAIL">
-      <label text="Email sender using uMail"></label>
-      <label text="Library: https://github.com/shawwwn/uMail"></label>
-        <button text="Install umail library" callbackKey="installPyLib"></button>
-        <button text="Documentation: uMail" callbackKey="loadDoc"></button>
-
-      <block type="umail_init">
-	  <value name="host">
-          <shadow type="text">
-            <field name="TEXT">smtp.gmail.com</field>
-          </shadow>
-        </value>
-        <value name="port">
-          <shadow type="math_number">
-            <field name="NUM">587</field>
-          </shadow>
-        </value>
-        <value name="username">
-          <shadow type="text">
-            <field name="TEXT">email@gmail.com</field>
-          </shadow>
-        </value>
-        <value name="password">
-          <shadow type="text">
-            <field name="TEXT">gmail_password</field>
-          </shadow>
-        </value>
-      </block>
-
-      <block type="umail_send">
-	  <value name="to">
-          <shadow type="text">
-            <field name="TEXT">email@email.com</field>
-          </shadow>
-        </value>
-        <value name="subject">
-          <shadow type="text">
-            <field name="TEXT">Email from BIPES!</field>
-          </shadow>
-        </value>
-        <value name="contents">
-          <shadow type="text">
-            <field name="TEXT">BIPES is nice!</field>
-          </shadow>
-        </value>
-      </block>
-    </category>
-
-
-    <category name="NTP Time">
-     <label text="Network Time Protocol (NTP)"></label>
-     <label text="Adjusts RTC using Internet"></label>
-        <button text="Load example: ntp" callbackKey="loadExample"></button>
-        <button text="Documentation: ntp" callbackKey="loadDoc"></button>
-
-
-    <block type="net_ntp_sync">
-	 <value name="tz">
-          <shadow type="math_number">
-            <field name="NUM">3</field>
-          </shadow>
-        </value>
-
-
-    </block>
-    </category>
-
-    <category name="TCP/IP Socket">
-      <label text="TCP/IP Socket"></label>
-        <button text="Load example: starwars" callbackKey="loadExample"></button>
-        <button text="Documentation: sockets" callbackKey="loadDoc"></button>
-
-
-    <block type="net_socket_connect">
-	 <value name="host">
-          <shadow type="text">
-            <field name="TEXT">towel.blinkenlights.nl</field>
-          </shadow>
-        </value>
-	 <value name="port">
-          <shadow type="math_number">
-            <field name="NUM">23</field>
-          </shadow>
-        </value>
-
-    </block>
-    <block type="net_socket_receive">
-	<value name="bytes">
-          <shadow type="math_number">
-            <field name="NUM">500</field>
-          </shadow>
-        </value>
-
-
-    </block>
-    <block type="net_socket_send">
-     <value name="bytes">
-          <shadow type="text">
-            <field name="TEXT">Hello</field>
-          </shadow>
-        </value>
-
-    </block>
-    <block type="net_socket_close">
-    </block>
-
-    </category>
-
-    <category name="MQTT">
-      <label text="MQTT (Message Queue Telemetry Transport)"></label>
-      <block type="mqtt_init">
-        <value name="server">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-        <value name="port">
-          <shadow type="math_number">
-            <field name="NUM">1883</field>
-          </shadow>
-        </value>
-        <value name="user">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-        <value name="password">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="mqtt_add_to_buffer">
-
-        <value name="fieldname">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-        <field name="MQTT_VALUE">Value</field>
-      </block>
-      <block type="mqtt_publish_buffer">
-        <value name="topic">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="mqtt_publish_payload">
-<category name="%{BKY_CAT_ULTRASOUND}">        <value name="topic">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-        <value name="payload">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="mqtt_set_callback">
-        <field name="MQTT_CALLBACK">Callback Function</field>
-      </block>
-      <block type="mqtt_subscribe">
-        <value name="topic">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="mqtt_check_msg">
- 
-      </block>
-      <block type="mqtt_wait_msg">
-
-      </block>
-      <block type="mqtt_disconnect">
-
-      </block>
-    </category>
-    <category name="EasyMQTT">
-      <label text="IoT: EasyMQTT"></label>
-      <block type="easymqtt_init">
-        <field name="BLOCK_EASYMQTT_INIT">EasyMQTT Start</field>
-      </block>
-      <block type="easymqtt_publish_data">
-        <field name="BLOCK_EASYMQTT_PUBLISH">EasyMQTT Publish Data</field>
-        <value name="topic">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-        <value name="data">
-          <shadow type="math_number">
-            <field name="NUM"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="easymqtt_subscribe">
-        <value name="topic">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="easymqtt_receive_data"></block>
-      <block type="easymqtt_disconnect">
-        <field name="BLOCK_EASYMQTT_DISCONNECT">EasyMQTT Stop</field>
-      </block>
-    </category>
-
-  <category name="WebREPL">
-      <label text="WebREPL"></label>
-      <block type="webrepl_setup"></block>
-      <block type="webrepl_start"></block>
-    </category>
   </category>
 
 

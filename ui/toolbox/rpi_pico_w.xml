@@ -604,15 +604,15 @@
         </shadow>
       </value>
 
- <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">1</field>
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
         </shadow>
       </value>
 
- <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">0</field>
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
         </shadow>
       </value>
 
@@ -739,7 +739,9 @@
     <category name="NeoPixel LED Strip">
       <label text="NeoPixel RGB LED Strip"></label>
 
-        <button text="Documentation and how to connect: neopixel" callbackKey="loadDoc"></button>
+        <button text="Load example: Blink" callbackKey="loadExample"></button>
+        <button text="Load example: LarsonScanner" callbackKey="loadExample"></button>
+        <button text="Load example: TheaterChase" callbackKey="loadExample"></button>
 
       <block type="neopixel_init">
        <value name="pin">
@@ -1041,12 +1043,12 @@
       <block type="hcsr_init">
         <value name="echo">
           <shadow type="pinout">
-            <field name="PIN"></field>
+            <field name="echo pin"></field>
           </shadow>
         </value>
  <value name="trigger">
           <shadow type="pinout">
-            <field name="PIN"></field>
+            <field name="trigger pin"></field>
           </shadow>
         </value>
   <value name="timeout">
@@ -1057,6 +1059,83 @@
       </block>
       <block type="hcsr_read">
       </block>
+
+  </category>
+
+  <category name="Time of Flight">
+      <label text="VL53L0X"></label>
+   <label text="Library: https://github.com/kevinmcaleer/vl53l0x"></label>
+        <button text="Install vl53l0x library" callbackKey="installPyLib"></button>
+
+
+
+    <block type="init_vl53l0x">
+      <value name="i2c">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
+        </shadow>
+      </value>
+
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
+        </shadow>
+      </value>
+
+    </block>
+
+    <block type="vl53l0x_read_tof"> </block>
+  </category>
+
+
+
+  <category name="Inertial Measurement">
+      <label text="MPU6050 IMU"></label>
+   <label text="Library: https://github.com/micropython-IMU/micropython-mpu9x50"></label>
+        <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
+        <button text="Install vector3d library (MPU6050)" callbackKey="installPyLib"></button>
+
+        <button text="Load example: mpu6050" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
+
+
+
+    <block type="init_mpu6050">
+      <value name="i2c">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
+        </shadow>
+      </value>
+
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
+        </shadow>
+      </value>
+
+    </block>
+
+    <block type="mpu6050_read_acc_x"> </block>
+    <block type="mpu6050_read_acc_y"> </block>
+    <block type="mpu6050_read_acc_z"> </block>
+
+    <block type="mpu6050_read_gyro_x"> </block>
+    <block type="mpu6050_read_gyro_y"> </block>
+    <block type="mpu6050_read_gyro_z"> </block>
+
+    <block type="mpu6050_read_temperature"> </block>
 
   </category>
 
@@ -1102,77 +1181,51 @@
 
   </category>
 
-  <category name="Inertial Measurement">
-      <label text="MPU6050 IMU"></label>
-   <label text="Library: https://github.com/"></label>
-        <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
+  <category name="OneWire">
+    <label text="OneWire"></label>
 
-        <button text="Load example: mpu6050" callbackKey="loadExample"></button>
-        <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
+      <button text="Load example: ds1820" callbackKey="loadExample"></button>
+      <button text="Documentation and how to connect: ds1820" callbackKey="loadDoc"></button>
 
-
-
-    <block type="init_mpu6050">
-
- <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">5</field>
+    <block type="onewire_ds18x20_init">
+      <value name="pin">
+        <shadow type="pinout">
+          <field name="PIN"></field>
         </shadow>
       </value>
-
- <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">4</field>
-        </shadow>
-      </value>
-
     </block>
-
-    <block type="mpu6050_read_acc_x"> </block>
-    <block type="mpu6050_read_acc_y"> </block>
-    <block type="mpu6050_read_acc_z"> </block>
-
-    <block type="mpu6050_read_gyro_x"> </block>
-    <block type="mpu6050_read_gyro_y"> </block>
-    <block type="mpu6050_read_gyro_z"> </block>
-
-
+    <block type="onewire_ds18x20_scan"></block>
+    <block type="onewire_ds18x20_convert"></block>
+    <block type="onewire_ds18x20_read_temp">
+      <value name="rom">
+        <shadow type="math_number">
+          <field name="NUM">10000</field>
+        </shadow>
+      </value>
+    </block>
   </category>
-
-      <category name="OneWire">
-      <label text="OneWire"></label>
-
-        <button text="Load example: ds1820" callbackKey="loadExample"></button>
-        <button text="Documentation and how to connect: ds1820" callbackKey="loadDoc"></button>
-
-      <block type="onewire_ds18x20_init">
-        <value name="pin">
-          <shadow type="pinout">
-            <field name="PIN"></field>
-          </shadow>
-        </value>
-      </block>
-      <block type="onewire_ds18x20_scan"></block>
-      <block type="onewire_ds18x20_convert"></block>
-      <block type="onewire_ds18x20_read_temp">
-	  <value name="rom">
-          <shadow type="math_number">
-            <field name="NUM">10000</field>
-          </shadow>
-        </value>
-
-      </block>
-      </category>
 
 
   <category name="RFID Reader">
       <label text="RC522 13.56MHz RFID Reader"></label>
-      <label text="Library: https://github.com/wendlers/micropython-mfrc522"></label>
+      <label text="Library: https://github.com/kevinmcaleer/pico-rfid"></label>
         <button text="Install mfrc522 library" callbackKey="installPyLib"></button>
         <button text="Load example: mfrc522" callbackKey="loadExample"></button>
         <button text="Documentation and how to connect: mfrc522" callbackKey="loadDoc"></button>
 
       <block type="rfid_rc522_init">
+        <value name="spi">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+
+        <value name="cs">
+          <shadow type="pinout">
+            <field name="CS"></field>
+          </shadow>
+        </value>
+
         <value name="sck">
           <shadow type="pinout">
             <field name="SCK"></field>
@@ -1197,15 +1250,10 @@
           </shadow>
         </value>
 
-        <value name="cs">
-          <shadow type="pinout">
-            <field name="RST"></field>
-          </shadow>
-        </value>
-
       </block>
       <block type="rfid_rc522_detect_card"></block>
       <block type="rfid_rc522_anticoll"></block>
+      <block type="rfid_rc522_serial_number"></block>
       <block type="rfid_rc522_read_card"></block>
       <block type="rfid_rc522_write_card"></block>
 
@@ -1255,17 +1303,42 @@
       <category name="UART">
       <label text="UART Serial Port"></label>
 <block type="uart_init">
+    <value name="port">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    <value name="baud">
+        <shadow type="math_number">
+          <field name="NUM">9800</field>
+        </shadow>
+      </value>
+      <value name="tx">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
+      <value name="rx">
+        <shadow type="pinout">
+          <field name="PIN"></field>
+        </shadow>
+      </value>
 </block>
 
 <block type="uart_write">
+  <value name="buf">
+    <shadow type="text">
+      <field name="TEXT">Hello</field>
+    </shadow>
+  </value>
 </block>
 <block type="uart_read">
-</block>
-<block type="uart_read_into">
 </block>
 <block type="uart_readline">
 </block>
 <block type="uart_read_all">
+</block>
+<block type="uart_any">
 </block>
 
       </category>
@@ -1499,24 +1572,24 @@
       <field name="NET_IFCONFIG">Wifi current IP</field>
     </block>
 
-    <block type="net_wiznet5k_init">
-    </block>
-    <block type="net_wiznet5k_isconnected">
-    </block>
-    <block type="net_wiznet5k_regs">
-    </block>
-    <block type="net_wiznet5k_ifconfig">
-    </block>
-
     <category name="HTTP Client">
       <label text="HTTP Client"></label>
 
     <block type="net_get_request">
       <field name="BLOCK_NET_GET">Make HTTP GET Request URL</field>
+        <shadow type="String">
+          <field name="URL"></field>
+        </shadow>
     </block>
     <block type="net_post_request">
       <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
+        <shadow type="String">
+          <field name="URL"></field>
+        </shadow>
       <field name="NET_POST_REQUEST_DATA">Data</field>
+        <shadow type="String">
+          <field name="data"></field>
+        </shadow>
     </block>
 
     </category>
@@ -1699,7 +1772,7 @@
         </value>
       </block>
       <block type="mqtt_publish_payload">
-<category name="%{BKY_CAT_ULTRASOUND}">        <value name="topic">
+        <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
           </shadow>

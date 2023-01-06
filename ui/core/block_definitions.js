@@ -934,6 +934,58 @@ Blockly.Blocks['onewire_ds18x20_read_temp'] = {
 };
 
 
+//VL53L0X
+Blockly.Blocks['init_vl53l0x'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init VL53L0X");
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/vl53l0x.jpg",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("i2c")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("I2C");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['vl53l0x_read_tof'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Time of Flight"), "MSG_READ_TOF");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Time of Flight (mm)");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+
+
+
 //MPU6050
 Blockly.Blocks['init_mpu6050'] = {
   init: function() {
@@ -949,6 +1001,11 @@ Blockly.Blocks['init_mpu6050'] = {
         55,
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("i2c")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("I2C");
 
     this.appendValueInput("scl")
         .setCheck("Number")
@@ -1040,6 +1097,17 @@ Blockly.Blocks['mpu6050_read_gyro_z'] = {
   }
 };
 
+Blockly.Blocks['mpu6050_read_temperature'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Temperature"), "MSG_READ_MPU6050");
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("Temperature");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 //End of MPU6050
 
 Blockly.Blocks['init_oled'] = {
@@ -1079,9 +1147,8 @@ Blockly.Blocks['init_oled'] = {
 
 Blockly.Blocks['fill_oled'] = {
   init: function() {
-    this.appendValueInput("value")
-        .setCheck("Number")
-        .appendField("Fill OLED Display with ");
+    this.appendDummyInput()
+            .appendField("Fill OLED Display");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -1205,7 +1272,7 @@ Blockly.Blocks['rect_oled'] = {
 Blockly.Blocks['fill_rect_oled'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Draw a solid rectangle outline on display");
+        .appendField("Draw a solid rectangle on display");
 
         this.appendValueInput("x1")
         .setCheck("Number")
@@ -1228,7 +1295,7 @@ Blockly.Blocks['fill_rect_oled'] = {
     this.setNextStatement(true, null);
     this.setColour(230);
 
- this.setTooltip("Draw a line on OLED Display");
+ this.setTooltip("Draw a solid rectangle on OLED Display");
  this.setHelpUrl("http://www.bipes.net.br");
   }
 };
@@ -1354,7 +1421,7 @@ Blockly.Blocks['move_servo'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
 
- this.setTooltip("Move RC servo motor to degrees");
+ this.setTooltip("Move RC servo motor to +/- 90 degrees");
  this.setHelpUrl("http://www.bipes.net.ebr");
   }
 };
@@ -9465,7 +9532,7 @@ Blockly.Blocks['rfid_rc522_init'] = {
     this.appendDummyInput()
         .appendField("Init RC522 RFID Module");
 
- this.appendDummyInput()
+    this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
         "media/RC522.jpg",
         55,
@@ -9473,10 +9540,20 @@ Blockly.Blocks['rfid_rc522_init'] = {
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
 
+    this.appendValueInput("spi")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SPI");
+
+    this.appendValueInput("cs")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("CS");
+  
     this.appendValueInput("sck")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SCK");
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SCK");
 
     this.appendValueInput("mosi")
         .setCheck("Number")
@@ -9492,11 +9569,6 @@ Blockly.Blocks['rfid_rc522_init'] = {
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("RST");
-
-    this.appendValueInput("cs")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("CS");
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -9557,6 +9629,17 @@ Blockly.Blocks['rfid_rc522_anticoll'] = {
   }
 };
 
+Blockly.Blocks['rfid_rc522_serial_number'] = {
+
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldLabelSerializable("Read Serial Number"), "MSG_READ_SERIAL_NUMBER");
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Read Serial Number");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
 
 //rfid_rc522_read_card
@@ -10165,25 +10248,20 @@ Blockly.Blocks['uart_init'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Port:");
 
-    this.appendValueInput("speed")
+    this.appendValueInput("baud")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Baud rate:");
 
-    this.appendValueInput("bits")
+    this.appendValueInput("tx")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Start bit:");
+        .appendField("TX Pin:");
 
-    this.appendValueInput("stop")
+    this.appendValueInput("rx")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Stop bit:");
-
-    this.appendValueInput("par")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Parity:");
+        .appendField("RX Pin:");
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -10247,6 +10325,18 @@ Blockly.Blocks['uart_readline'] = {
     this.setTooltip('');
   }
 };
+
+Blockly.Blocks['uart_any'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Check to see if the uart has data");
+
+    this.setOutput(true);
+    this.setTooltip('');
+  }
+};
+
 
 Blockly.Blocks['uart_read_into'] = {
   init: function() {

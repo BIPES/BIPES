@@ -454,7 +454,7 @@ Code.reloadToolbox = function(XML_) {
 function loadExampleFromURL(pName){
 
     var request = new XMLHttpRequest();
-    request.open('GET', '/beta2/ui/examples/' + pName + '.xml', true);
+    request.open('GET', './examples/' + pName + '.xml', true);
     //request.open('GET', 'http://bipes.net.br/beta2/ui/examples/' + pName + '.xml', true);
     request.send(null);
     request.onreadystatechange = function () {
@@ -624,34 +624,69 @@ Code.init = function() {
 	
 	if (c == 'webserial') {
 		console.log('serial install');
+/*
+      //Download file
+      const xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          const installFileContent = this.responseText;
+          console.log(installFileContent);
+          Files.editor.getDoc().setValue(installFileContent);
+                UI ['workspace'].file.value = lib + '.py';
 
-    var reader = new FileReader();
-    
-    reader.addEventListener('load', (e) => {
-      var installFileContent = e.target.result;
-      Files.editor.getDoc().setValue(installFileContent);
-      UI ['workspace'].file.value = lib + '.py';
+          Files.file_save_as.className = 'py';
+          Files.files_save_as();
+          Files.listFiles();
+          Files.listFiles();
 
-      Files.file_save_as.className = 'py';
-      Files.files_save_as();
-      Files.listFiles();
-      Files.listFiles();
-    }
-    )
 
-    console.log("Getting pylibsBlobs/" + lib + '.js');
-    
-    if (lib == "ssd1306") {
-        reader.readAsText(ssd1306Blob);
-      } else if (lib == "rtttl")  {
-        reader.readAsText(rtttlBlob);
-      } else if (lib == "songs")  {
-        reader.readAsText(songsBlob);
-      } else if (lib == "hcsr04")  {
-        reader.readAsText(hcsr04Blob);
-    }  else {
-        console.log("Blob file not available for: " + lib + " library.");
-    }
+        }
+      };
+      console.log("Getting /beta2/ui/pylibs/" + lib + '.py');
+      xmlhttp.open('GET', '/beta2/ui/pylibs/' + lib + '.py');
+      xmlhttp.send();
+
+*/
+      var reader = new FileReader();
+      
+      reader.addEventListener('load', (e) => {
+        var installFileContent = e.target.result;
+        Files.editor.getDoc().setValue(installFileContent);
+        UI ['workspace'].file.value = lib + '.py';
+
+        Files.file_save_as.className = 'py';
+        Files.files_save_as();
+        Files.listFiles();
+        Files.listFiles();
+      }
+      )
+
+      console.log("Getting pylibsBlobs/" + lib + '.js');
+      
+      if (lib == "ssd1306") {
+          reader.readAsText(ssd1306Blob);
+        } else if (lib == "rtttl")  {
+          reader.readAsText(rtttlBlob);
+        } else if (lib == "songs")  {
+          reader.readAsText(songsBlob);
+        } else if (lib == "hcsr04")  {
+          reader.readAsText(hcsr04Blob);
+        } else if (lib == "imu")  {
+          reader.readAsText(imuBlob);
+        } else if (lib == "vector3d")  {
+          reader.readAsText(vector3dBlob);
+        } else if (lib == "vl53l0x") {
+          reader.readAsText(vl53l0xBlob);
+        } else if (lib == "pca9685") {
+          reader.readAsText(pca9685Blob);
+        } else if (lib == "servo") {
+          reader.readAsText(servoBlob);
+        } else if (lib == "mfrc522") {
+          reader.readAsText(mfrc522Blob);
+        } else {
+          console.log("Blob file not available for: " + lib + " library.");
+        }
+
 	} else {
 
 	var installCmd = `

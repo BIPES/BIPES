@@ -360,58 +360,87 @@ Blockly.Python['onewire_ds18x20_read_temp'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+// vl53l0x
+Blockly.Python['init_vl53l0x'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+	var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
+  
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_vl53l0x'] = 'from vl53l0x import VL53L0X';
+  
+	  var code = 'i2cToF=I2C(' + i2c + ', scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	  code += "tof = VL53L0X(i2cToF)\n";
+  
+	return code;
+  };
+  
+  
+  Blockly.Python['vl53l0x_read_tof'] = function(block) {
+	var code = 'tof.ping()';
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+  
+
 //MPU6050
 
 Blockly.Python['init_mpu6050'] = function(block) {
   var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
   var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+  var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_imu'] = 'import imu';
+  Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+  Blockly.Python.definitions_['import_imu'] = 'from imu import MPU6050';
 
-//  var code = 'i2c=I2C(-1, scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	var code = 'i2cMPU6050=I2C(' + i2c + ', scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
  //     code += 'oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2c)\n';
-    var code = "imu.init_MPU()\nimu.calibrate_sensors()\n";
+    code += "imu = MPU6050(i2cMPU6050)\n";
 
   return code;
 };
 
 
 Blockly.Python['mpu6050_read_acc_x'] = function(block) {
-  var code = 'imu.read_mpu6050v(1)';
+  var code = 'imu.accel.x';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
 Blockly.Python['mpu6050_read_acc_y'] = function(block) {
-  var code = 'imu.read_mpu6050v(2)';
+  var code = 'imu.accel.y';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
 Blockly.Python['mpu6050_read_acc_z'] = function(block) {
-  var code = 'imu.read_mpu6050v(3)';
+  var code = 'imu.accel.z';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
 Blockly.Python['mpu6050_read_gyro_x'] = function(block) {
-  var code = 'imu.read_mpu6050v(4)';
+  var code = 'imu.gyro.x';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
 Blockly.Python['mpu6050_read_gyro_y'] = function(block) {
-  var code = 'imu.read_mpu6050v(5)';
+  var code = 'imu.gyro.y';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
 Blockly.Python['mpu6050_read_gyro_z'] = function(block) {
-  var code = 'imu.read_mpu6050v(6)';
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
-
+	var code = 'imu.gyro.z';
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+  
+  Blockly.Python['mpu6050_read_temperature'] = function(block) {
+	var code = 'imu.temperature';
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+  
+	
 
 
 
@@ -422,15 +451,14 @@ Blockly.Python['init_oled'] = function(block) {
   var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
   var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  Blockly.Python.definitions_['import_oled_a'] = 'from machine import I2C';
+  Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
   Blockly.Python.definitions_['import_ssd'] = 'import ssd1306';
   Blockly.Python.definitions_['import_sleep'] = 'from time import sleep';
 
-  var code = 'i2c=I2C(' + i2c + ', scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+  var code = 'i2cOLED=I2C(' + i2c + ', scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
       code += 'oled_width = 128\n';
       code += 'oled_height = 64\n';
-      code += 'oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2c)\n';
+      code += 'oled = ssd1306.SSD1306_I2C(oled_width, oled_height, i2cOLED)\n';
 
   return code;
 };
@@ -441,8 +469,7 @@ Blockly.Python['clear_oled'] = function(block) {
 };
 
 Blockly.Python['fill_oled'] = function(block) {
-  var v = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-  var code = 'oled.fill(' + v + ')\noled.show()\n';
+  var code = 'oled.fill(1)\noled.show()\n';
   return code;
 };
 
@@ -535,15 +562,25 @@ Blockly.Python['init_servo'] = function(block) {
   // TODO: Assemble Python into code variable.
   Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  var code = 'pservo = Pin(' + pin + ')\n';
-      code += 'servo = PWM(pservo,freq=50)\n';
+  var code = 'def setServoAngle(angle):\n'
+      code += '	angle = -angle\n'
+	  code += '	if angle < -90:\n'
+	  code += '		angle = -90\n'
+	  code += '	elif angle > 90:\n'
+	  code += '		angle = 90\n'
+	  code += '	angle = (((angle + 90) / 180) * 6500) + 1500\n'
+	  code += '	servo.duty_u16(int(angle))\n'
+	  code += '\n'
+  	  code += 'pservo = Pin(' + pin + ')\n';
+      code += 'servo = PWM(pservo)\n';
+	  code += 'servo.freq(50)\n';
   return code;
 };
 
 Blockly.Python['move_servo'] = function(block) {
   var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
 
-  var code = 'servo.duty(' + value_angle + ')\n';
+  var code = 'setServoAngle(' + value_angle + ')\n';
   return code;
 };
 
@@ -631,7 +668,7 @@ Blockly.Python['wifi_client_connect'] = function(block) {
 	} else {
 		Blockly.Python.definitions_['import_network'] = 'import network';
 		Blockly.Python.definitions_['import_time'] = 'import time';
-		var code = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \nsta_if.scan() \nsta_if.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ') \nprint("Waiting for Wifi connection")\nwhile not sta_if.isconnected(): time.sleep(1)\nprint("Connected")\n';
+		var code = 'sta_if = network.WLAN(network.STA_IF)\nsta_if.active(True)\nsta_if.connect(' + value_wifi_client_essid + ',' + value_wifi_client_key + ') \nprint("Waiting for Wifi connection")\nwhile not sta_if.isconnected(): time.sleep(1)\nprint("Connected")\n';
 	}
 	return code;
 };
@@ -647,7 +684,7 @@ Blockly.Python['wifi_client_scan_networks'] = function(block) {
 		var code = 'scan_wifi()';
 	} else {
 		Blockly.Python.definitions_['import_network'] = 'import network';
-		Blockly.Python.definitions_['import_network_sta_init'] = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True) \n';
+		Blockly.Python.definitions_['import_network_sta_init'] = 'sta_if = network.WLAN(network.STA_IF); sta_if.active(True)\n';
 		var code = 'sta_if.scan()';
 	}
 	return [code, Blockly.Python.ORDER_NONE];
@@ -4769,15 +4806,26 @@ Blockly.Python['char_lcd_display'] = function(block) {
 //MFRC522 RFID module
 
 Blockly.Python['rfid_rc522_init'] = function(block) {
-  var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);
-  var mosi = Blockly.Python.valueToCode(block, 'mosi', Blockly.Python.ORDER_ATOMIC);
+	var spi = Blockly.Python.valueToCode(block, 'spi', Blockly.Python.ORDER_ATOMIC);
+	var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);
+	var mosi = Blockly.Python.valueToCode(block, 'mosi', Blockly.Python.ORDER_ATOMIC);
   var miso = Blockly.Python.valueToCode(block, 'miso', Blockly.Python.ORDER_ATOMIC);
   var rst = Blockly.Python.valueToCode(block, 'rst', Blockly.Python.ORDER_ATOMIC);
   var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
+  Blockly.Python.definitions_['import_mfrc522'] = 'from mfrc522 import MFRC522';
 
-  //var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
-  var code = 'rdr=mfrc522.MFRC522(' + sck + ',' + mosi + ',' + miso + ',' + rst + ',' + cs + ')\n';
+  var code = 'rdr=MFRC522(spi_id=' + spi + ', sck=' + sck + ', mosi=' + mosi + ', miso=' + miso + ', rst=' + rst + ', cs=' + cs +')\n';
+      code += 'rdr.init()\n';
+      code += '\n';
+	  code += 'def getSerialNumber():\n';
+	  code += '	serialNumber = 0\n';
+	  code += '	(stat, tag_type) = rdr.request(rdr.REQIDL)\n';
+	  code += '	if stat == rdr.OK:\n';
+	  code += '		(stat, uid) = rdr.SelectTagSN()\n';
+	  code += '		if stat == rdr.OK:\n';
+	  code += '			serialNumber = int.from_bytes(bytes(uid),"little",False)\n';
+	  code += '	return serialNumber\n';
+      code += '\n';
   return code;
 };
 
@@ -4786,9 +4834,8 @@ Blockly.Python['rfid_rc522_detect_card'] = function(block) {
   var stat = Blockly.Python.valueToCode(block, 'stat', Blockly.Python.ORDER_ATOMIC);
   var tag = Blockly.Python.valueToCode(block, 'tag', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
-
-  var code = '(' + stat + ',' + tag + ') = rdr.request(rdr.REQIDL)\n';
+  var code = 'rdr.init()\n'
+      code += '(' + stat + ',' + tag + ') = rdr.request(rdr.REQIDL)\n';
   //return [code, Blockly.Python.ORDER_NONE];
   return code;
 };
@@ -4801,12 +4848,14 @@ Blockly.Python['rfid_rc522_anticoll'] = function(block) {
   var code = '(' + stat + ',' + tag + ') = rdr.anticoll()\n';
   return code;
 
-  //Blockly.Python.definitions_['import_mfrc522'] = 'import mfrc522';
-  //var code = 'rdr.anticoll()';
-  //return [code, Blockly.Python.ORDER_NONE];
 };
 
-
+Blockly.Python['rfid_rc522_serial_number'] = function(block) {
+	code =  'getSerialNumber()\n'
+  return [code, Blockly.Python.ORDER_NONE];; 
+};
+  
+  
 Blockly.Python['rfid_rc522_read_card'] = function(block) {
   var code = 'rdr=mfrc522.MFRC522(0,2,4,5,14)\n';
   return code;
@@ -5032,9 +5081,10 @@ Blockly.Python['net_http_server_start'] = function(block) {
 
 		var code = "http_addr = socket.getaddrinfo('0.0.0.0'," + port + ")[0][-1]\n";
 		code += 's = socket.socket()\n';
+		code += 's.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)\n';
 		code += 's.bind(http_addr)\n';
 		code += 's.listen(1)\n';
-		code += "print('BIPES HTTP Server Listening on', http_addr)\n";
+		code += "print('BIPES HTTP Server Listening on', sta_if.ifconfig()[0])\n";
 	}
 
   return code;
@@ -5064,12 +5114,11 @@ Blockly.Python['net_http_server_accept'] = function(block) {
 		//code += "\tprint("Sent", buf[:size], size, "bytes")\n";
 	} else {
 	  var code = "cl, http_addr = s.accept()\n";
-	      code += "print('client connected from', http_addr)\n";
+//	      code += "print('client connected from', http_addr)\n";
 	      code += "cl_file = cl.makefile('rwb', 0)\n";
 	      code += "while True:\n";
 	      code += "    line = cl_file.readline()\n";
 	      code += "    lineS = str(line, 'utf8')\n";
-	      code += "    print(line)\n";
 	      code += "    if lineS.startswith('GET /'):\n";
 	      code += "        http_request_page = (lineS.split('/')[1]).split(' ')[0]\n";
 	      code += "        print('Request page = ' + http_request_page)\n";
@@ -5185,15 +5234,14 @@ Blockly.Python['gsm_modem_response'] = function(block) {
 Blockly.Python['uart_init'] = function(block) {
   //Reference: 
   var port = Blockly.Python.valueToCode(block, 'port', Blockly.Python.ORDER_ATOMIC);
-  var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
-  var bits = Blockly.Python.valueToCode(block, 'bits', Blockly.Python.ORDER_ATOMIC);
-  var par = Blockly.Python.valueToCode(block, 'par', Blockly.Python.ORDER_ATOMIC);
-  var stop = Blockly.Python.valueToCode(block, 'stop', Blockly.Python.ORDER_ATOMIC);
+  var baud = Blockly.Python.valueToCode(block, 'baud', Blockly.Python.ORDER_ATOMIC);
+  var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
+  var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_machine_uart'] = 'from machine import uart';
+  Blockly.Python.definitions_['import_machine_uart'] = 'from machine import UART';
+  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 
-  var code = 'uart = UART(1, 9600)\n';
-      code += "uart.init(" + speed + ', bits=' + bits + ', parity=' + par + ', stop=' + stop + ')\n';
+  var code = 'uart = UART(' + port + ', baudrate=' + baud + ', tx=Pin(' + tx + '), rx=Pin(' + rx + '))\n';
 
   return code;
 };
@@ -5209,7 +5257,7 @@ Blockly.Python['uart_write'] = function(block) {
 Blockly.Python['uart_read'] = function(block) {
   var s = Blockly.Python.valueToCode(block, 's', Blockly.Python.ORDER_ATOMIC);
 
-  var code = 'uart.read(' + s + ')';
+  var code = 'uart.read(' + s + ').decode()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5217,7 +5265,7 @@ Blockly.Python['uart_read'] = function(block) {
 
 Blockly.Python['uart_read_all'] = function(block) {
 
-  var code = 'uart.read()';
+  var code = 'uart.read().decode()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5225,12 +5273,18 @@ Blockly.Python['uart_read_all'] = function(block) {
 
 Blockly.Python['uart_readline'] = function(block) {
 
-  var code = 'uart.readline()';
+  var code = 'uart.readline().decode()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['uart_any'] = function(block) {
 
+	var code = 'uart.any()';
+  
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+  
 Blockly.Python['uart_read_into'] = function(block) {
   var b = Blockly.Python.valueToCode(block, 'buffer', Blockly.Python.ORDER_ATOMIC);
 
@@ -6474,8 +6528,8 @@ Blockly.Python['mpu9250_init'] = function(block) {
 	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
 	Blockly.Python.definitions_['import_mpu9250'] = 'from mpu9250 import MPU9250';
 
-	var code =  'i2c=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
-	    code += 'mpu9250s = MPU9250(i2c)\n';
+	var code =  'i2cMPU9250=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	    code += 'mpu9250s = MPU9250(i2cMPU9250)\n';
 
 	return code;
 };
