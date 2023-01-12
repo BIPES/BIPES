@@ -683,6 +683,8 @@ Code.init = function() {
           reader.readAsText(servoBlob);
         } else if (lib == "mfrc522") {
           reader.readAsText(mfrc522Blob);
+        } else if (lib == "max7219") {
+          reader.readAsText(max7219Blob);
         } else {
           console.log("Blob file not available for: " + lib + " library.");
         }

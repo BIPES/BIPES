@@ -485,9 +485,9 @@ Blockly.Python['write_oled'] = function(block) {
   
 	var code = 'oled.text(' + t + ', ' + x + ', ' + y + ')\noled.show()\n';
 	return code;
-  };
+};
   
-  Blockly.Python['line_oled'] = function(block) {
+Blockly.Python['line_oled'] = function(block) {
 	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
 	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
 	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
@@ -495,7 +495,7 @@ Blockly.Python['write_oled'] = function(block) {
   
 	var code = 'oled.line(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\noled.show()\n';
 	return code;
-  };
+};
   
   Blockly.Python['rect_oled'] = function(block) {
 	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
@@ -719,6 +719,220 @@ Blockly.Python['dht_read_humidity'] = function(block) {
   var code = 'dhts.humidity()';
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+Blockly.Python['max7219_init'] = function(block) {
+	var spi = Blockly.Python.valueToCode(block, 'spi', Blockly.Python.ORDER_ATOMIC);
+	var clk = Blockly.Python.valueToCode(block, 'clk', Blockly.Python.ORDER_ATOMIC);
+	var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
+	var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
+  
+	Blockly.Python.definitions_['import_max7219'] = 'import max7219';
+	Blockly.Python.definitions_['import_Pin_SPI'] = 'from machine import Pin,SPI';
+  
+	var code = 'spi' + spi + '=SPI(' + spi + ',baudrate=10000000, polarity=1, phase=0, sck=Pin(' + clk + '), mosi=Pin(' + tx + '))\n';
+	code += 'cs = Pin(' + cs + ', Pin.OUT)\n';
+	code += 'matrix = max7219.Matrix8x8(spi' + spi + ', cs , 1)\n';
+	return code;
+};
+  
+Blockly.Python['max7219_write'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var t = Blockly.Python.valueToCode(block, 'character', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'matrix.text(' + t + ', ' + x + ', ' + y + ', 1)\nmatrix.show()\n';
+	return code;
+};
+
+Blockly.Python['max7219_clear'] = function(block) {
+	var code = 'matrix.fill(0)\nmatrix.show()\n';
+	return code;
+};
+  
+Blockly.Python['max7219_fill'] = function(block) {
+	var code = 'matrix.fill(1)\nmatrix.show()\n';
+	return code;
+};
+  
+Blockly.Python['max7219_line'] = function(block) {
+	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
+	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
+	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
+	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'matrix.line(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\nmatrix.show()\n';
+	return code;
+};
+	
+Blockly.Python['max7219_rect'] = function(block) {
+	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
+	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
+	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
+	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'matrix.rect(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\nmatrix.show()\n';
+	return code;
+};
+
+Blockly.Python['max7219_fill_rect'] = function(block) {
+	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
+	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
+	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
+	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'matrix.fill_rect(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\nmatrix.show()\n';
+	return code;
+};
+
+Blockly.Python['max7219_scroll'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'matrix.scroll(' + x + ', ' + y + ')\nmatrix.show()\n';
+	return code;
+};
+  
+Blockly.Python['max7219_brig'] = function(block) {
+	var pIn = Blockly.Python.valueToCode(block, 'brig', Blockly.Python.ORDER_ATOMIC);
+	var code = 'matrix.brightness(' + pIn + ')\n';
+	return code;
+  };
+  
+  Blockly.Python['max7219_custom'] = function (block) {
+    var checkbox_a0 = block.getFieldValue('A0') == 'TRUE';
+    var checkbox_a1 = block.getFieldValue('A1') == 'TRUE';
+    var checkbox_a2 = block.getFieldValue('A2') == 'TRUE';
+    var checkbox_a3 = block.getFieldValue('A3') == 'TRUE';
+    var checkbox_a4 = block.getFieldValue('A4') == 'TRUE';
+    var checkbox_a5 = block.getFieldValue('A5') == 'TRUE';
+    var checkbox_a6 = block.getFieldValue('A6') == 'TRUE';
+    var checkbox_a7 = block.getFieldValue('A7') == 'TRUE';
+    var checkbox_b0 = block.getFieldValue('B0') == 'TRUE';
+    var checkbox_b1 = block.getFieldValue('B1') == 'TRUE';
+    var checkbox_b2 = block.getFieldValue('B2') == 'TRUE';
+    var checkbox_b3 = block.getFieldValue('B3') == 'TRUE';
+    var checkbox_b4 = block.getFieldValue('B4') == 'TRUE';
+    var checkbox_b5 = block.getFieldValue('B5') == 'TRUE';
+    var checkbox_b6 = block.getFieldValue('B6') == 'TRUE';
+    var checkbox_b7 = block.getFieldValue('B7') == 'TRUE';
+    var checkbox_c0 = block.getFieldValue('C0') == 'TRUE';
+    var checkbox_c1 = block.getFieldValue('C1') == 'TRUE';
+    var checkbox_c2 = block.getFieldValue('C2') == 'TRUE';
+    var checkbox_c3 = block.getFieldValue('C3') == 'TRUE';
+    var checkbox_c4 = block.getFieldValue('C4') == 'TRUE';
+    var checkbox_c5 = block.getFieldValue('C5') == 'TRUE';
+    var checkbox_c6 = block.getFieldValue('C6') == 'TRUE';
+    var checkbox_c7 = block.getFieldValue('C7') == 'TRUE';
+    var checkbox_d0 = block.getFieldValue('D0') == 'TRUE';
+    var checkbox_d1 = block.getFieldValue('D1') == 'TRUE';
+    var checkbox_d2 = block.getFieldValue('D2') == 'TRUE';
+    var checkbox_d3 = block.getFieldValue('D3') == 'TRUE';
+    var checkbox_d4 = block.getFieldValue('D4') == 'TRUE';
+    var checkbox_d5 = block.getFieldValue('D5') == 'TRUE';
+    var checkbox_d6 = block.getFieldValue('D6') == 'TRUE';
+    var checkbox_d7 = block.getFieldValue('D7') == 'TRUE';
+    var checkbox_e0 = block.getFieldValue('E0') == 'TRUE';
+    var checkbox_e1 = block.getFieldValue('E1') == 'TRUE';
+    var checkbox_e2 = block.getFieldValue('E2') == 'TRUE';
+    var checkbox_e3 = block.getFieldValue('E3') == 'TRUE';
+    var checkbox_e4 = block.getFieldValue('E4') == 'TRUE';
+    var checkbox_e5 = block.getFieldValue('E5') == 'TRUE';
+    var checkbox_e6 = block.getFieldValue('E6') == 'TRUE';
+    var checkbox_e7 = block.getFieldValue('E7') == 'TRUE';
+    var checkbox_f0 = block.getFieldValue('F0') == 'TRUE';
+    var checkbox_f1 = block.getFieldValue('F1') == 'TRUE';
+    var checkbox_f2 = block.getFieldValue('F2') == 'TRUE';
+    var checkbox_f3 = block.getFieldValue('F3') == 'TRUE';
+    var checkbox_f4 = block.getFieldValue('F4') == 'TRUE';
+    var checkbox_f5 = block.getFieldValue('F5') == 'TRUE';
+    var checkbox_f6 = block.getFieldValue('F6') == 'TRUE';
+    var checkbox_f7 = block.getFieldValue('F7') == 'TRUE';
+    var checkbox_g0 = block.getFieldValue('G0') == 'TRUE';
+    var checkbox_g1 = block.getFieldValue('G1') == 'TRUE';
+    var checkbox_g2 = block.getFieldValue('G2') == 'TRUE';
+    var checkbox_g3 = block.getFieldValue('G3') == 'TRUE';
+    var checkbox_g4 = block.getFieldValue('G4') == 'TRUE';
+    var checkbox_g5 = block.getFieldValue('G5') == 'TRUE';
+    var checkbox_g6 = block.getFieldValue('G6') == 'TRUE';
+    var checkbox_g7 = block.getFieldValue('G7') == 'TRUE';
+    var checkbox_h0 = block.getFieldValue('H0') == 'TRUE';
+    var checkbox_h1 = block.getFieldValue('H1') == 'TRUE';
+    var checkbox_h2 = block.getFieldValue('H2') == 'TRUE';
+    var checkbox_h3 = block.getFieldValue('H3') == 'TRUE';
+    var checkbox_h4 = block.getFieldValue('H4') == 'TRUE';
+    var checkbox_h5 = block.getFieldValue('H5') == 'TRUE';
+    var checkbox_h6 = block.getFieldValue('H6') == 'TRUE';
+    var checkbox_h7 = block.getFieldValue('H7') == 'TRUE';
+
+	var code = 'matrix.pixel(0, 0, ' + Number(checkbox_a0) + ')\n'
+	code += 'matrix.pixel(1, 0, ' + Number(checkbox_a1) + ')\n'
+	code += 'matrix.pixel(2, 0, ' + Number(checkbox_a2) + ')\n'
+	code += 'matrix.pixel(3, 0, ' + Number(checkbox_a3) + ')\n'
+	code += 'matrix.pixel(4, 0, ' + Number(checkbox_a4) + ')\n'
+	code += 'matrix.pixel(5, 0, ' + Number(checkbox_a5) + ')\n'
+	code += 'matrix.pixel(6, 0, ' + Number(checkbox_a6) + ')\n'
+	code += 'matrix.pixel(7, 0, ' + Number(checkbox_a7) + ')\n'
+	code += 'matrix.pixel(0, 1, ' + Number(checkbox_b0) + ')\n'
+	code += 'matrix.pixel(1, 1, ' + Number(checkbox_b1) + ')\n'
+	code += 'matrix.pixel(2, 1, ' + Number(checkbox_b2) + ')\n'
+	code += 'matrix.pixel(3, 1, ' + Number(checkbox_b3) + ')\n'
+	code += 'matrix.pixel(4, 1, ' + Number(checkbox_b4) + ')\n'
+	code += 'matrix.pixel(5, 1, ' + Number(checkbox_b5) + ')\n'
+	code += 'matrix.pixel(6, 1, ' + Number(checkbox_b6) + ')\n'
+	code += 'matrix.pixel(7, 1, ' + Number(checkbox_b7) + ')\n'
+	code += 'matrix.pixel(0, 2, ' + Number(checkbox_c0) + ')\n'
+	code += 'matrix.pixel(1, 2, ' + Number(checkbox_c1) + ')\n'
+	code += 'matrix.pixel(2, 2, ' + Number(checkbox_c2) + ')\n'
+	code += 'matrix.pixel(3, 2, ' + Number(checkbox_c3) + ')\n'
+	code += 'matrix.pixel(4, 2, ' + Number(checkbox_c4) + ')\n'
+	code += 'matrix.pixel(5, 2, ' + Number(checkbox_c5) + ')\n'
+	code += 'matrix.pixel(6, 2, ' + Number(checkbox_c6) + ')\n'
+	code += 'matrix.pixel(7, 2, ' + Number(checkbox_c7) + ')\n'
+	code += 'matrix.pixel(0, 3, ' + Number(checkbox_d0) + ')\n'
+	code += 'matrix.pixel(1, 3, ' + Number(checkbox_d1) + ')\n'
+	code += 'matrix.pixel(2, 3, ' + Number(checkbox_d2) + ')\n'
+	code += 'matrix.pixel(3, 3, ' + Number(checkbox_d3) + ')\n'
+	code += 'matrix.pixel(4, 3, ' + Number(checkbox_d4) + ')\n'
+	code += 'matrix.pixel(5, 3, ' + Number(checkbox_d5) + ')\n'
+	code += 'matrix.pixel(6, 3, ' + Number(checkbox_d6) + ')\n'
+	code += 'matrix.pixel(7, 3, ' + Number(checkbox_d7) + ')\n'
+	code += 'matrix.pixel(0, 4, ' + Number(checkbox_e0) + ')\n'
+	code += 'matrix.pixel(1, 4, ' + Number(checkbox_e1) + ')\n'
+	code += 'matrix.pixel(2, 4, ' + Number(checkbox_e2) + ')\n'
+	code += 'matrix.pixel(3, 4, ' + Number(checkbox_e3) + ')\n'
+	code += 'matrix.pixel(4, 4, ' + Number(checkbox_e4) + ')\n'
+	code += 'matrix.pixel(5, 4, ' + Number(checkbox_e5) + ')\n'
+	code += 'matrix.pixel(6, 4, ' + Number(checkbox_e6) + ')\n'
+	code += 'matrix.pixel(7, 4, ' + Number(checkbox_e7) + ')\n'
+	code += 'matrix.pixel(0, 5, ' + Number(checkbox_f0) + ')\n'
+	code += 'matrix.pixel(1, 5, ' + Number(checkbox_f1) + ')\n'
+	code += 'matrix.pixel(2, 5, ' + Number(checkbox_f2) + ')\n'
+	code += 'matrix.pixel(3, 5, ' + Number(checkbox_f3) + ')\n'
+	code += 'matrix.pixel(4, 5, ' + Number(checkbox_f4) + ')\n'
+	code += 'matrix.pixel(5, 5, ' + Number(checkbox_f5) + ')\n'
+	code += 'matrix.pixel(6, 5, ' + Number(checkbox_f6) + ')\n'
+	code += 'matrix.pixel(7, 5, ' + Number(checkbox_f7) + ')\n'
+	code += 'matrix.pixel(0, 6, ' + Number(checkbox_g0) + ')\n'
+	code += 'matrix.pixel(1, 6, ' + Number(checkbox_g1) + ')\n'
+	code += 'matrix.pixel(2, 6, ' + Number(checkbox_g2) + ')\n'
+	code += 'matrix.pixel(3, 6, ' + Number(checkbox_g3) + ')\n'
+	code += 'matrix.pixel(4, 6, ' + Number(checkbox_g4) + ')\n'
+	code += 'matrix.pixel(5, 6, ' + Number(checkbox_g5) + ')\n'
+	code += 'matrix.pixel(6, 6, ' + Number(checkbox_g6) + ')\n'
+	code += 'matrix.pixel(7, 6, ' + Number(checkbox_g7) + ')\n'
+	code += 'matrix.pixel(0, 7, ' + Number(checkbox_h0) + ')\n'
+	code += 'matrix.pixel(1, 7, ' + Number(checkbox_h1) + ')\n'
+	code += 'matrix.pixel(2, 7, ' + Number(checkbox_h2) + ')\n'
+	code += 'matrix.pixel(3, 7, ' + Number(checkbox_h3) + ')\n'
+	code += 'matrix.pixel(4, 7, ' + Number(checkbox_h4) + ')\n'
+	code += 'matrix.pixel(5, 7, ' + Number(checkbox_h5) + ')\n'
+	code += 'matrix.pixel(6, 7, ' + Number(checkbox_h6) + ')\n'
+	code += 'matrix.pixel(7, 7, ' + Number(checkbox_h7) + ')\n'
+	code += 'matrix.show()\n'
+    return code;
+};
+
+
 
 Blockly.Python['tm1640_init'] = function(block) {
   var clk = Blockly.Python.valueToCode(block, 'clk', Blockly.Python.ORDER_ATOMIC);
@@ -4504,21 +4718,30 @@ Blockly.Python['timer'] = function(block) {
 
 Blockly.Python['pico_timer'] = function(block) {
 
-  var interval = block.getFieldValue('interval');
-  var timerNumber = block.getFieldValue('timerNumber');
-  var statements_name = Blockly.Python.statementToCode(block, 'statements');
+	var interval = block.getFieldValue('interval');
+	var timerNumber = block.getFieldValue('timerNumber');
+	var statements_name = Blockly.Python.statementToCode(block, 'statements');
+	
+	Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
+	Blockly.Python.definitions_['import_timer_start'] = 'tim=Timer()'; //-1)';
   
-  Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
-  Blockly.Python.definitions_['import_timer_start'] = 'tim=Timer()'; //-1)';
+	Blockly.Python.definitions_['import_timer_callback'] = '\n#Timer Function Callback\ndef timerFunc(t):\n' + statements_name + '\n\n'; 
+  
+	var code = 'tim.init(period=' + interval + ', mode=Timer.PERIODIC, callback=timerFunc)\n';
+			   
+	return code;
+  };
+  
+  Blockly.Python['pico_stop_timer'] = function(block) {
 
-  Blockly.Python.definitions_['import_timer_callback'] = '\n#Timer Function Callback\ndef timerFunc(t):\n' + statements_name + '\n\n'; 
-
-  var code = 'tim.init(period=' + interval + ', mode=Timer.PERIODIC, callback=timerFunc)\n';
-             
-  return code;
-};
-
-
+	Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
+  
+	var code = 'tim.deinit()\n';
+			   
+	return code;
+  };
+  
+	
 
 Blockly.Python['deep_sleep8266'] = function(block) {
 	var value_interval = Blockly.Python.valueToCode(block, 'interval', Blockly.Python.ORDER_ATOMIC);
