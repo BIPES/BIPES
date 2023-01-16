@@ -1432,8 +1432,11 @@ Blockly.Blocks['move_servo'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
 
- this.setTooltip("Move RC servo motor to +/- 90 degrees");
- this.setHelpUrl("http://www.bipes.net.ebr");
+  this.setTooltip("Move RC servo motor to +/- 90 degrees");
+  this.setHelpUrl("http://www.bipes.net.ebr");
+  },
+  setID: function(id_) {
+    this.setFieldValue(id_, "SERVO_ID")
   }
 };
 

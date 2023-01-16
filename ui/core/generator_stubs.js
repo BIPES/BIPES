@@ -558,6 +558,7 @@ Blockly.Python['tank_turn'] = function(block) {
 };
 
 Blockly.Python['init_servo'] = function(block) {
+	var number_id = block.getFieldValue('SERVO_ID');
 	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
 
 	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
@@ -574,11 +575,11 @@ Blockly.Python['init_servo'] = function(block) {
 	+ ` tics = pulse_target * timer_resolution // 20000\n`
 	+ ` servo.duty_u16(tics)\n`
 
-	this.setID(pin)
+	this.setID(number_id)
 
-	var code = `pservo${pin} = Pin(${pin})\n`;
-	code += `servo${pin} = PWM(pservo${pin})\n`;
-	code += `servo${pin}.freq(50)\n`;
+	var code = `pservo${number_id} = Pin(${pin})\n`;
+	code += `servo${number_id} = PWM(pservo${number_id})\n`;
+	code += `servo${number_id}.freq(50)\n`;
 	return code;
 };
 
@@ -587,6 +588,8 @@ Blockly.Python['move_servo'] = function(block) {
 	var number_id = block.getFieldValue('SERVO_ID');
 	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
  
+	this.setID(number_id)
+
 	var code = `setServoAngle(servo${number_id},` + value_angle + `)\n`;
 	return code;
 };
