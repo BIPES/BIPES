@@ -563,13 +563,15 @@ Blockly.Python['init_servo'] = function(block) {
 	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 
-	Blockly.Python.definitions_['setServoAngle'] =  `def setServoAngle(servo, angle):\n`
+	Blockly.Python.definitions_['setServoAngle'] =  ``
+	+ `def setServoAngle(servo, angle):\n`
 	+ ` pulse_min_usec=600\n`
 	+ ` pulse_max_usec=2300\n`
+	+ ` timer_resolution=65535\n`
 	+ ` pulse_range_usec=pulse_max_usec-pulse_min_usec\n`
 	+ ` angle = max(min(angle, 90),-90) + 90\n`
 	+ ` pulse_target = (angle * pulse_range_usec // 180) + pulse_min_usec\n`
-	+ ` tics = pulse_target * 65535 // 20000\n`
+	+ ` tics = pulse_target * timer_resolution // 20000\n`
 	+ ` servo.duty_u16(tics)\n`
 
 	this.setID(pin)
