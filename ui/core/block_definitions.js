@@ -1393,8 +1393,8 @@ Blockly.Blocks['init_servo'] = {
     this.appendDummyInput()
     .appendField(new Blockly.FieldImage(
       "media/servo.png",
-      55,
-      55,
+      45,
+      45,
       "*"))
     .appendField("Init RC Servo Motor");
     this.appendDummyInput()
@@ -1406,7 +1406,7 @@ Blockly.Blocks['init_servo'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip("Init and set PWM with frequency (1Hz to 40MHz) and duty (0-1023)");
+    this.setTooltip("Initialize Servo");
     this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#pwm-pulse-width-modulation");
  },
   setID: function(id_) {
