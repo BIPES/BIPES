@@ -1389,29 +1389,28 @@ Blockly.Blocks['tank_turn'] = {
 };
 
 Blockly.Blocks['init_servo'] = {
-  init: function() {
-
- this.appendDummyInput()
-      .appendField(new Blockly.FieldImage(
-        "media/servo.png",
-        55,
-        55,
-        "*"))
-      .appendField("Init RC Servo Motor")
-	  ;
-
-
+  init: function(){
+    this.appendDummyInput()
+    .appendField(new Blockly.FieldImage(
+      "media/servo.png",
+      55,
+      55,
+      "*"))
+    .appendField("Init RC Servo Motor");
+    this.appendDummyInput()
+        .appendField("Servo #")
+        .appendField(new Blockly.FieldNumber(0, 0, 50, 1), "SERVO_ID");
     this.appendValueInput("pin")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Pin");
-    this.setColour(230);
-
+        .setCheck(null)
+	      .appendField("Pin");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-
- this.setTooltip("Init RC servo motor");
- this.setHelpUrl("http://www.bipes.net.ebr");
+    this.setColour(230);
+    this.setTooltip("Init and set PWM with frequency (1Hz to 40MHz) and duty (0-1023)");
+    this.setHelpUrl("https://docs.micropython.org/en/latest/esp32/quickref.html#pwm-pulse-width-modulation");
+ },
+  setID: function(id_) {
+    this.setFieldValue(id_, "SERVO_ID")
   }
 };
 
@@ -1420,13 +1419,14 @@ Blockly.Blocks['move_servo'] = {
   init: function() {
 
 
- this.appendDummyInput().appendField("Move Servo Motor");
-
-
-    this.appendValueInput("angle")
-        .setCheck("Number")
+    this.appendDummyInput().appendField("Move Servo Motor");
+    this.appendValueInput('angle')
+        .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Angle");
+        .appendField("Servo #")
+        .appendField(new Blockly.FieldNumber(0, 0, 50, 1), "SERVO_ID")
+        .appendField("ANGLE");
+
     this.setColour(230);
 
     this.setPreviousStatement(true, null);

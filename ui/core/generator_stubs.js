@@ -558,30 +558,35 @@ Blockly.Python['tank_turn'] = function(block) {
 };
 
 Blockly.Python['init_servo'] = function(block) {
-  var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  // TODO: Assemble Python into code variable.
+  var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
+
   Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  var code = 'def setServoAngle(angle):\n'
-      code += '	angle = -angle\n'
-	  code += '	if angle < -90:\n'
-	  code += '		angle = -90\n'
-	  code += '	elif angle > 90:\n'
-	  code += '		angle = 90\n'
-	  code += '	angle = (((angle + 90) / 180) * 6500) + 1500\n'
-	  code += '	servo.duty_u16(int(angle))\n'
-	  code += '\n'
-  	  code += 'pservo = Pin(' + pin + ')\n';
-      code += 'servo = PWM(pservo)\n';
-	  code += 'servo.freq(50)\n';
+
+  this.setID(pin)
+
+  var code = `def setServoAngle(servo, angle):\n`
+      code += `	angle = -angle\n`
+	  code += `	if angle < -90:\n`
+	  code += `		angle = -90\n`
+	  code += `	elif angle > 90:\n`
+	  code += `		angle = 90\n`
+	  code += `	angle = (((angle + 90) / 180) * 6500) + 1500\n`
+	  code += `	servo.duty_u16(int(angle))\n`
+	  code += `\n`
+  	  code += `pservo${pin} = Pin(${pin})\n`;
+      code += `servo${pin} = PWM(pservo${pin})\n`;
+	  code += `servo${pin}.freq(50)\n`;
   return code;
 };
 
 Blockly.Python['move_servo'] = function(block) {
-  var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
 
-  var code = 'setServoAngle(' + value_angle + ')\n';
-  return code;
+	var number_id = block.getFieldValue('SERVO_ID');
+	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+ 
+	var code = `setServoAngle(servo${number_id},` + value_angle + `)\n`;
+	return code;
 };
 
 Blockly.Python['net_get_request'] = function(block) {
