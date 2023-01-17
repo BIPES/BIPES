@@ -559,6 +559,7 @@ Blockly.Python['tank_turn'] = function(block) {
 
 Blockly.Python['init_servo'] = function(block) {
 	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_NONE);
+	var number_id = block.getFieldValue('SERVO_ID');
 
 	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
@@ -577,8 +578,8 @@ Blockly.Python['init_servo'] = function(block) {
 	this.setID(pin)
 
 	var code = `pservo${pin} = Pin(${pin})\n`;
-	code += `servo${pin} = PWM(pservo${pin})\n`;
-	code += `servo${pin}.freq(50)\n`;
+	code += `servo${number_id} = PWM(pservo${pin})\n`;
+	code += `servo${number_id}.freq(50)\n`;
 	return code;
 };
 
