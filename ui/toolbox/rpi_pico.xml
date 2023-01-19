@@ -1088,7 +1088,6 @@
 
 
 
-
   </category>
 
   <category name="Sensors">
@@ -1172,6 +1171,7 @@
 
     <block type="vl53l0x_read_tof"> </block>
   </category>
+
 
   <category name="Inertial Measurement">
       <label text="MPU6050 IMU"></label>
@@ -1276,7 +1276,6 @@
             <field name="NUM">10000</field>
           </shadow>
         </value>
-
       </block>
       </category>
 

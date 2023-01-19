@@ -1173,7 +1173,6 @@
   </category>
 
 
-
   <category name="Inertial Measurement">
       <label text="MPU6050 IMU"></label>
    <label text="Library: https://github.com/micropython-IMU/micropython-mpu9x50"></label>
@@ -1254,10 +1253,6 @@
       </block>
 	<block type="max30100_ir">
       </block>
-
-
-
-
   </category>
 
   <category name="OneWire">
@@ -1328,7 +1323,6 @@
             <field name="RST"></field>
           </shadow>
         </value>
-
       </block>
       <block type="rfid_rc522_detect_card"></block>
       <block type="rfid_rc522_anticoll"></block>
