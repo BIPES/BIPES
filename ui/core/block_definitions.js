@@ -3899,7 +3899,7 @@ Blockly.Blocks["esp32_wake_on_touch"] = {
         this.setColour(0);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
- this.setTooltip(".. function:: wake_on_touch(wake) Configure whether or not a touch will wake the device from sleep. *wake* should be a boolean value. ");
+ this.setTooltip(".. function:: wake_on_touch(wake) Configure whether or not a touch will wake the device from sleep. *wake* should be a gpio_get value. ");
  this.setHelpUrl("https://docs.micropython.org/en/latest/library/esp32.html");
   }
 };
@@ -10011,6 +10011,11 @@ Blockly.Blocks['char_lcd_init'] = {
         //.setAlign(Blockly.ALIGN_CENTRE);
 	  //
 
+    this.appendValueInput("i2c")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("I2C");
+
     this.appendValueInput("sda")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -10021,10 +10026,10 @@ Blockly.Blocks['char_lcd_init'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("SCL");
 
-    this.appendValueInput("lines")
+    this.appendValueInput("rows")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Lines");
+        .appendField("Rows");
 
     this.appendValueInput("columns")
         .setCheck("Number")
@@ -10094,14 +10099,13 @@ Blockly.Blocks['char_lcd_backlight'] = {
     this.appendDummyInput()
         .appendField("LCD Backlight");
 
-    this.appendValueInput("state")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("ON/OFF");
-
+  	this.appendDummyInput()
+   		.appendField("On/Off:")
+			.appendField(new Blockly.FieldDropdown([["ON","ON"], ["OFF","OFF"]]), "on_off");
+			
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip('Turn On/Off the backlight');
   }
 };
 
@@ -10111,14 +10115,14 @@ Blockly.Blocks['char_lcd_display'] = {
     this.appendDummyInput()
         .appendField("LCD Power");
 
-    this.appendValueInput("state")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("ON/OFF");
+  	this.appendDummyInput()
+   		.appendField("On/Off:")
+			.appendField(new Blockly.FieldDropdown([["ON","ON"], ["OFF","OFF"]]), "on_off");
+			
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('');
+    this.setTooltip('Turn ON/Off the display');
   }
 };
 

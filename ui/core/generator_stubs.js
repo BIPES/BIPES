@@ -5003,8 +5003,20 @@ Blockly.Python['hcsr_read'] = function(block) {
 //I2C Character LCD
 
 Blockly.Python['char_lcd_init'] = function(block) {
-  Blockly.Python.definitions_['import_i2c_lcd'] = 'from esp8266_i2c_lcd import I2cLcd';
-  var code = 'lcd = I2cLcd(i2c, DEFAULT_I2C_ADDR, 2, 16)\n';
+  Blockly.Python.definitions_['import_i2c'] = 'from machine import I2C';
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+  Blockly.Python.definitions_['import_lcd_api'] = 'from lcd_api import LcdApi';
+  Blockly.Python.definitions_['import_pico_i2c_lcd'] = 'from pico_i2c_lcd import I2cLcd';
+  
+  var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
+  var pSda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+  var pScl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+  var rows = Blockly.Python.valueToCode(block, 'rows', Blockly.Python.ORDER_ATOMIC);
+  var cols = Blockly.Python.valueToCode(block, 'columns', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'I2C_ADDR = 0x27\n'
+  code += 'lcdi2c=I2C(' + i2c + ', scl=Pin(' + pScl + '), sda=Pin(' + pSda + '), freq=400000)\n';
+  code += 'lcd = I2cLcd(lcdi2c, I2C_ADDR, ' + rows + ', ' + cols + ')\n'
   return code;
 };
 
@@ -5014,22 +5026,38 @@ Blockly.Python['char_lcd_clear'] = function(block) {
 };
 
 Blockly.Python['char_lcd_putstr'] = function(block) {
-  var code = "lcd.putstr('test')\n";
+  var text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+
+  var code = "lcd.putstr(" + text + ")\n";
   return code;
 };
 
 Blockly.Python['char_lcd_moveto'] = function(block) {
-  var code = 'lcd.move_to(0,0)\n';
+  var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+  var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'lcd.move_to(' + x + ', ' + y + ')\n';
   return code;
 };
 
 Blockly.Python['char_lcd_backlight'] = function(block) {
+  var on_off = block.getFieldValue('on_off');
   var code = 'lcd.backlight_on()\n';
+  
+  if (on_off == 'OFF') {
+  	code = 'lcd.backlight_off()\n';
+  }
+  
   return code;
 };
 
 Blockly.Python['char_lcd_display'] = function(block) {
+  var on_off = block.getFieldValue('on_off');
   var code = 'lcd.display_on()\n';
+  
+  if (on_off == 'OFF') {
+  	code = 'lcd.display_off()\n';
+  }
   return code;
 };
 
