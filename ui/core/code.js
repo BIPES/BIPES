@@ -685,6 +685,10 @@ Code.init = function() {
           reader.readAsText(mfrc522Blob);
         } else if (lib == "max7219") {
           reader.readAsText(max7219Blob);
+        } else if (lib == "pico_i2c_lcd") {
+          reader.readAsText(pico_i2c_lcdBlob);
+        } else if (lib == "lcd_api") {
+          reader.readAsText(lcd_apiBlob);
         } else {
           console.log("Blob file not available for: " + lib + " library.");
         }
