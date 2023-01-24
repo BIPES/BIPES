@@ -899,6 +899,53 @@
 			<block type="char_lcd_display">
 			</block>
 
+	    <block type="char_lcd_custom">
+			 		<value name="id">
+		      <shadow type="math_number">
+		        <field name="NUM">0</field>
+		      </shadow>
+		    </value>
+	      <field name="A0">FALSE</field>
+	      <field name="A1">FALSE</field>
+	      <field name="A2">FALSE</field>
+	      <field name="A3">FALSE</field>
+	      <field name="A4">FALSE</field>
+	      <field name="B0">FALSE</field>
+	      <field name="B1">FALSE</field>
+	      <field name="B2">FALSE</field>
+	      <field name="B3">FALSE</field>
+	      <field name="B4">FALSE</field>
+	      <field name="C0">FALSE</field>
+	      <field name="C1">FALSE</field>
+	      <field name="C2">FALSE</field>
+	      <field name="C3">FALSE</field>
+	      <field name="C4">FALSE</field>
+	      <field name="D0">FALSE</field>
+	      <field name="D1">FALSE</field>
+	      <field name="D2">FALSE</field>
+	      <field name="D3">FALSE</field>
+	      <field name="D4">FALSE</field>
+	      <field name="E0">FALSE</field>
+	      <field name="E1">FALSE</field>
+	      <field name="E2">FALSE</field>
+	      <field name="E3">FALSE</field>
+	      <field name="E4">FALSE</field>
+	      <field name="F0">FALSE</field>
+	      <field name="F1">FALSE</field>
+	      <field name="F2">FALSE</field>
+	      <field name="F3">FALSE</field>
+	      <field name="F4">FALSE</field>
+	      <field name="G0">FALSE</field>
+	      <field name="G1">FALSE</field>
+	      <field name="G2">FALSE</field>
+	      <field name="G3">FALSE</field>
+	      <field name="G4">FALSE</field>
+	      <field name="H0">FALSE</field>
+	      <field name="H1">FALSE</field>
+	      <field name="H2">FALSE</field>
+	      <field name="H3">FALSE</field>
+	      <field name="H4">FALSE</field>
+	    </block>
 	  </category>
 
   <category name="LED Matrix">
