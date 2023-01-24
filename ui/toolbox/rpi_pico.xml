@@ -828,54 +828,74 @@
        </value>
       </block>
 
-      <block type="neopixel_write"></block>
-      
+	    <block type="neopixel_write"></block>
+		</category>
 
-</category>
+	  <category name="Character Display">
+	    <label text="PCF8574 Display Controller"></label>
 
+	    <label text="Library: https://github.com/T-622/RPI-PICO-I2C-LCD"></label>
+	    <button text="Install lcd_api library" callbackKey="installPyLib"></button>
+	    <button text="Install pico_i2c_lcd library" callbackKey="installPyLib"></button>
 
+			<block type="char_lcd_init">
+	      <value name="i2c">
+	        <shadow type="math_number">
+	          <field name="NUM">0</field>
+	        </shadow>
+	      </value>
+	      <value name="scl">
+	        <shadow type="pinout">
+	          <field name="SCL"></field>
+	        </shadow>
+	      </value>
+	      <value name="sda">
+	        <shadow type="pinout">
+	          <field name="SDA"></field>
+	        </shadow>
+	      </value>
+				 <value name="rows">
+	        <shadow type="math_number">
+	          <field name="NUM">2</field>
+	        </shadow>
+	      </value>
+		 		<value name="columns">
+	        <shadow type="math_number">
+	          <field name="NUM">16</field>
+	        </shadow>
+	      </value>
+			</block>
+		
+			<block type="char_lcd_clear"></block>
 
-  <category name="Character display">
-      <label text="PCF8574 Display controller"></label>
+			<block type="char_lcd_putstr">
+				<value name="text">
+		    	<shadow type="text">
+		      	<field name="TEXT">Hello</field>
+		       </shadow>
+		     </value>
+			</block>
+			
+			<block type="char_lcd_moveto">
+				 <value name="x">
+		      <shadow type="math_number">
+		        <field name="NUM">0</field>
+		      </shadow>
+		    </value>
+		 		<value name="y">
+		      <shadow type="math_number">
+		        <field name="NUM">0</field>
+		      </shadow>
+		    </value>
+			</block>
+			
+			<block type="char_lcd_backlight">
+			</block>
+			
+			<block type="char_lcd_display">
+			</block>
 
-      <label text="Library: https://github.com/dhylands/python_lcd"></label>
-      <button text="Install I2CLCD library" callbackKey="installPyLib"></button>
-	<block type="char_lcd_init">
-        <value name="scl">
-          <shadow type="pinout">
-            <field name="SCL"></field>
-          </shadow>
-        </value>
-
-        <value name="sda">
-          <shadow type="pinout">
-            <field name="SDA"></field>
-          </shadow>
-        </value>
-
-	 <value name="lines">
-        <shadow type="math_number">
-          <field name="NUM">4</field>
-        </shadow>
-      </value>
-
-	 <value name="columns">
-        <shadow type="math_number">
-          <field name="NUM">20</field>
-        </shadow>
-      </value>
-
-
-
-
-	</block>
-	<block type="char_lcd_clear"></block>
-	<block type="char_lcd_putstr"></block>
-	<block type="char_lcd_moveto"></block>
-	<block type="char_lcd_backlight"></block>
-	<block type="char_lcd_display"></block>
-
-  </category>
+	  </category>
 
   <category name="LED Matrix">
     <label text="MAX7219 LED Matrix"></label>
