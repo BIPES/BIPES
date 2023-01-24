@@ -5061,6 +5061,65 @@ Blockly.Python['char_lcd_display'] = function(block) {
   return code;
 };
 
+Blockly.Python['char_lcd_custom'] = function (block) {
+  var id = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_ATOMIC);
+  var checkbox_a0 = block.getFieldValue('A0') == 'TRUE';
+  var checkbox_a1 = block.getFieldValue('A1') == 'TRUE';
+  var checkbox_a2 = block.getFieldValue('A2') == 'TRUE';
+  var checkbox_a3 = block.getFieldValue('A3') == 'TRUE';
+  var checkbox_a4 = block.getFieldValue('A4') == 'TRUE';
+  var checkbox_b0 = block.getFieldValue('B0') == 'TRUE';
+  var checkbox_b1 = block.getFieldValue('B1') == 'TRUE';
+  var checkbox_b2 = block.getFieldValue('B2') == 'TRUE';
+  var checkbox_b3 = block.getFieldValue('B3') == 'TRUE';
+  var checkbox_b4 = block.getFieldValue('B4') == 'TRUE';
+  var checkbox_c0 = block.getFieldValue('C0') == 'TRUE';
+  var checkbox_c1 = block.getFieldValue('C1') == 'TRUE';
+  var checkbox_c2 = block.getFieldValue('C2') == 'TRUE';
+  var checkbox_c3 = block.getFieldValue('C3') == 'TRUE';
+  var checkbox_c4 = block.getFieldValue('C4') == 'TRUE';
+  var checkbox_d0 = block.getFieldValue('D0') == 'TRUE';
+  var checkbox_d1 = block.getFieldValue('D1') == 'TRUE';
+  var checkbox_d2 = block.getFieldValue('D2') == 'TRUE';
+  var checkbox_d3 = block.getFieldValue('D3') == 'TRUE';
+  var checkbox_d4 = block.getFieldValue('D4') == 'TRUE';
+  var checkbox_e0 = block.getFieldValue('E0') == 'TRUE';
+  var checkbox_e1 = block.getFieldValue('E1') == 'TRUE';
+  var checkbox_e2 = block.getFieldValue('E2') == 'TRUE';
+  var checkbox_e3 = block.getFieldValue('E3') == 'TRUE';
+  var checkbox_e4 = block.getFieldValue('E4') == 'TRUE';
+  var checkbox_f0 = block.getFieldValue('F0') == 'TRUE';
+  var checkbox_f1 = block.getFieldValue('F1') == 'TRUE';
+  var checkbox_f2 = block.getFieldValue('F2') == 'TRUE';
+  var checkbox_f3 = block.getFieldValue('F3') == 'TRUE';
+  var checkbox_f4 = block.getFieldValue('F4') == 'TRUE';
+  var checkbox_g0 = block.getFieldValue('G0') == 'TRUE';
+  var checkbox_g1 = block.getFieldValue('G1') == 'TRUE';
+  var checkbox_g2 = block.getFieldValue('G2') == 'TRUE';
+  var checkbox_g3 = block.getFieldValue('G3') == 'TRUE';
+  var checkbox_g4 = block.getFieldValue('G4') == 'TRUE';
+  var checkbox_h0 = block.getFieldValue('H0') == 'TRUE';
+  var checkbox_h1 = block.getFieldValue('H1') == 'TRUE';
+  var checkbox_h2 = block.getFieldValue('H2') == 'TRUE';
+  var checkbox_h3 = block.getFieldValue('H3') == 'TRUE';
+  var checkbox_h4 = block.getFieldValue('H4') == 'TRUE';
+
+  var line1 = Number(checkbox_a0) * 2**4 + Number(checkbox_a1) * 2**3 + Number(checkbox_a2) * 2**2 + Number(checkbox_a3) * 2**1 + Number(checkbox_a4) * 2**0;
+  var line2 = Number(checkbox_b0) * 2**4 + Number(checkbox_b1) * 2**3 + Number(checkbox_b2) * 2**2 + Number(checkbox_b3) * 2**1 + Number(checkbox_b4) * 2**0;
+  var line3 = Number(checkbox_c0) * 2**4 + Number(checkbox_c1) * 2**3 + Number(checkbox_c2) * 2**2 + Number(checkbox_c3) * 2**1 + Number(checkbox_c4) * 2**0;
+  var line4 = Number(checkbox_d0) * 2**4 + Number(checkbox_d1) * 2**3 + Number(checkbox_d2) * 2**2 + Number(checkbox_d3) * 2**1 + Number(checkbox_d4) * 2**0
+  var line5 = Number(checkbox_e0) * 2**4 + Number(checkbox_e1) * 2**3 + Number(checkbox_e2) * 2**2 + Number(checkbox_e3) * 2**1 + Number(checkbox_e4) * 2**0;
+  var line6 = Number(checkbox_f0) * 2**4 + Number(checkbox_f1) * 2**3 + Number(checkbox_f2) * 2**2 + Number(checkbox_f3) * 2**1 + Number(checkbox_f4) * 2**0;
+  var line7 = Number(checkbox_g0) * 2**4 + Number(checkbox_g1) * 2**3 + Number(checkbox_g2) * 2**2 + Number(checkbox_g3) * 2**1 + Number(checkbox_g4) * 2**0;
+  var line8 = Number(checkbox_h0) * 2**4 + Number(checkbox_h1) * 2**3 + Number(checkbox_h2) * 2**2 + Number(checkbox_h3) * 2**1 + Number(checkbox_h4) * 2**0;
+
+	var code = 'data'+ id +' = bytearray([' + line1 + ', ' + line2 + ', ' + line3 + ', ' + line4 +', ' + line5 + ', ' + line6 + ', ' + line7 + ', ' + line8 + '])\n'
+	code += 'lcd.custom_char(' + id + ', data' + id +')\n'
+	code += 'lcd.putchar(chr(' + id +'))\n'
+  return code;
+};
+
+
 
 //MFRC522 RFID module
 

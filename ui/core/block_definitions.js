@@ -10126,6 +10126,70 @@ Blockly.Blocks['char_lcd_display'] = {
   }
 };
 
+Blockly.Blocks['char_lcd_custom'] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Char LCD layout");
+	    this.appendValueInput("id")
+	        .setCheck("Number")
+	        .setAlign(Blockly.ALIGN_RIGHT)
+	        .appendField("ID (0 - 7)");
+      this.appendDummyInput()
+        .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A0")
+        .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A1")
+        .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A2")
+        .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A3")
+        .appendField(new Blockly.FieldCheckbox(true, null, {checkCharacter: '\u2713'}), "A4")
+      this.appendDummyInput()
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "B0")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "B1")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "B2")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "B3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "B4")
+      this.appendDummyInput()
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "C0")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "C1")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "C2")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "C3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "C4")
+      this.appendDummyInput()
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "D0")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "D1")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "D2")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "D3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "D4")
+      this.appendDummyInput()
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "E0")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "E1")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "E2")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "E3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "E4")
+      this.appendDummyInput()
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "F0")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "F1")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "F2")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "F3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "F4")
+      this.appendDummyInput()
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "G0")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "G1")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "G2")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "G3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "G4")
+      this.appendDummyInput()
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "H0")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "H1")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "H2")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "H3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "H4")
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+      this.setTooltip("Write to LCD");
+      this.setHelpUrl("http://www.bipes.net.br");
+    }
+};
+
 
 //uMail
 Blockly.Blocks['umail_init'] = {
