@@ -68,7 +68,7 @@ var pca9685Blob = new Blob([
 "                value = 4095 - value\n" + 
 "            return value\n" + 
 "        if not 0 <= value <= 4095:\n" + 
-"            raise ValueError("Out of range")\n" + 
+"            raise ValueError('Out of range')\n" + 
 "        if invert:\n" + 
 "            value = 4095 - value\n" + 
 "        if value == 0:\n" + 
