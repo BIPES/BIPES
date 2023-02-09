@@ -46,7 +46,7 @@ var MSG = {
   serialFroozen: "Serial connection is unresponsive.",
   notAvailableFlag: "$1 is not available on your browser.\r\nPlease make sure the $1 flag is enabled.",
 
-//Blocks
+  //Blocks
   block_delay: "delay",
   seconds: "seconds",
   milliseconds: "milliseconds",
@@ -105,7 +105,7 @@ var MSG = {
   dht_humi: "get DHT11/22 humidity",
   type: "type",
 
-//Ultrasound
+  //Ultrasound
   hcsr_install: "Install HCSR04 library",
   hcsr_init: "Start HCSR04 Ultrasound Sensor",
   hcsr_timeout: "timeout (us)",
@@ -114,17 +114,17 @@ var MSG = {
   get_distance: "Get distance (Ultrasound sensor)",
   measure_distance: "Measure distance with Ultrasound sensor",
 
-//BMP180
+  //BMP180
   pressure: "pressure",
   temperature: "temperature",
   altitude: "altitude",
   bmp180_init: "Init BMP180",
 
-//SHT20
+  //SHT20
   init_sht20: "Init SHT20",
   humidity: "humidity",
 
-//Network
+  //Network
   net_http_get: "HTTP GET Request",
   net_http_get_status: "HTTP Status code",
   net_http_get_content: "HTTP Response content",
@@ -135,7 +135,7 @@ var MSG = {
   net_http_server_send_response: "Send HTTP Response",
   net_http_server_send_html: "HTML",
 
-// MQTT
+  // MQTT
   mqtt_init: "Start MQTT Client",
   server_address: "Server Address",
   server_port: "Server Port",
@@ -164,7 +164,7 @@ var MSG = {
   mqtt_disconnect: "Disconnect MQTT Client",
   mqtt_disconnect_tooltip: "Disconnect the MQTT Client from Server.",
 
-//PWM
+  //PWM
   pwm_num: "PWM #",
   frequenzy: "Frequency",
   duty_cycle: "Duty Cycle",
@@ -176,7 +176,7 @@ var MSG = {
   pwm_init_tooltip: "Init PWM",
   pwm_deinit: "deinit PWM #",
 
-//NeoPixel
+  //NeoPixel
   np_init: "Init NeoPixel",
   np_num_leds: "Number of LEDs",
   np_init_tooltip: "Init NeoPixel on the specified pin",
@@ -195,7 +195,7 @@ var MSG = {
   lightness: "Lightness",
   np_color_tooltip_HSL: "HUE to RGB color, Hue from 0º to 360º, Saturation and Lightness from 0% to 100%.",
 
-//I2C Char LCD
+  //I2C Char LCD
   i2c_lcd_init: "Init I2C Character LCD Display",
   i2c_lcd_lines: "Lines",
   i2c_lcd_col: "Columns",
@@ -208,18 +208,18 @@ var MSG = {
   i2c_lcd_power: "LCD Power",
   i2c_lcd_power_tooltip: "Set this to true/false or 1/0",
 
-//RC Servo Motor
+  //RC Servo Motor
   servo_init: "Init RC Servo Motor",
   servo_init_tooltip: "Init RC servo motor",
   servo_move: "Move Servo Motor",
   angle: "Angle",
 
-//Stepper Motor
+  //Stepper Motor
   stepper_init: "Init Stepper Motor",
   stepper_step: "Stepper Step",
   steps: "Steps",
 
-//DC Motor
+  //DC Motor
   dc_motor_init: "Init DC Motor",
   dc_motor_power: "Set DC Motor Power",
   power: "Power",
@@ -227,7 +227,7 @@ var MSG = {
   direction: "Direction",
   dc_motor_stop: "Stop DC Motor",
 
-//Sound
+  //Sound
   sound_tone: "Tone (Hz)",
   sound_duration: "Duration (s):",
   sound_infinite: "(0 for infinite duration)",
@@ -238,13 +238,13 @@ var MSG = {
   rtttl_play: "Play song (RTTTL)",
   song: "Song",
 
-//Splash screen
+  //Splash screen
   splash_welcome: "Welcome to BIPES!",
   splash_footer: "Do not show this screen again",
   splash_close: "Close",
   splash_message: "<p><b>BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.  <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about BIPES</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p><p>Now you can easily load MicroPython on your ESP32 or ESP8226 to use with BIPES: <a href=https://bipes.net.br/flash/esp-web-tools/>https://bipes.net.br/flash/esp-web-tools/</a></p><p>Checkout BIPES Book at <a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>Thank you from the BIPES Team!</p>"
 
-  
+
 
 };
 
@@ -276,4 +276,3 @@ Blockly.Msg['TXT_ULTRASOUND_LIB'] = "Install HCSR04 library";
 Blockly.Msg['TXT_SERVO_DESCRIPTION'] = "Hobby RC Servo Motor";
 Blockly.Msg['TXT_STEPPER_DESCRIPTION'] = "Stepper Motor";
 Blockly.Msg['TXT_DC_MOTOR_DESCRIPTION'] = "DC Motor";
-//%{BKY_CAT_CHAR_DISP}

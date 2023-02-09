@@ -46,7 +46,7 @@ var MSG = {
   serialFroozen: "Serielle Verbindung antwortet nicht.",
   notAvailableFlag: "$1 ist nicht verfügbar in Ihrem Browser.\r\nBitte sicherstellen, dass das $1 Flag aktiviert ist.",
 
-//Blocks
+  //Blocks
   block_delay: "warte",
   seconds: "Sekunden",
   milliseconds: "Millisekunden",
@@ -106,7 +106,7 @@ var MSG = {
   dht_humi: "hole DHT11/22 Luftfeuchtigkeit",
   type: "Typ",
 
-//Ultrasound
+  //Ultrasound
   hcsr_install: "Installiere HCSR04 Bibliothek",
   hcsr_init: "Starte HCSR04 Ultraschall Sensor",
   hcsr_timeout: "Time-out (us)",
@@ -115,17 +115,17 @@ var MSG = {
   get_distance: "Messe Abstand (Ultraschall sensor)",
   measure_distance: "Messe Abstände mit dem Ultraschall sensor",
 
-//BMP180
+  //BMP180
   pressure: "Luftdruck",
   temperature: "Temperatur",
   altitude: "Seehöhe",
   bmp180_init: "Initialisiere BMP180",
 
-//SHT20
+  //SHT20
   init_sht20: "Initialisiere SHT20",
-  humidity: "Luftfeuchtigkeit",  
-  
-//Network
+  humidity: "Luftfeuchtigkeit",
+
+  //Network
   net_http_get: "HTTP GET Request",
   net_http_get_status: "HTTP Statuscode",
   net_http_get_content: "HTTP Response Inhalt",
@@ -135,8 +135,8 @@ var MSG = {
   net_http_server_requested_page: "Angeforderte Webseite",
   net_http_server_send_response: "Sende HTTP Response",
   net_http_server_send_html: "HTML",
-  
-// MQTT
+
+  // MQTT
   mqtt_init: "Starte MQTT Client",
   server_address: "Server Addresse",
   server_port: "Server Port",
@@ -165,7 +165,7 @@ var MSG = {
   mqtt_disconnect: "Trenne Verbindung des MQTT Client",
   mqtt_disconnect_tooltip: "Trenne die Verbindung des MQTT Clienten vom Server.",
 
-//PWM
+  //PWM
   pwm_num: "PWM #",
   frequency: "Frequenz",
   duty_cycle: "Duty Cycle",
@@ -177,7 +177,7 @@ var MSG = {
   pwm_init_tooltip: "Initialisiert PWM",
   pwm_deinit: "Deinitialisiere PWM #",
 
-//NeoPixel
+  //NeoPixel
   np_init: "Initialisiere NeoPixel",
   np_num_leds: "Anzahl der LEDs",
   np_init_tooltip: "Initialisiere NeoPixel an spezifischem Pin",
@@ -196,7 +196,7 @@ var MSG = {
   lightness: "Helligkeit",
   np_color_tooltip_HSL: "Wähle eine Farbe mit HSL Werten. Farbton von 0º bis 360º, Sättigung und Helligkeit von 0% bis 100%.",
 
-//I2C Char LCD
+  //I2C Char LCD
   i2c_lcd_init: "Initialisiere I2C LCD Display",
   i2c_lcd_lines: "Zeilen",
   i2c_lcd_col: "Spalten",
@@ -209,18 +209,18 @@ var MSG = {
   i2c_lcd_power: "LCD Power",
   i2c_lcd_power_tooltip: "Setze den Wert auf wahr/falsch oder 1/0",
 
-//RC Servo Motor
+  //RC Servo Motor
   servo_init: "Initialisiere RC Servo Motor",
   servo_init_tooltip: "Initialisiere RC servo motor",
   servo_move: "Bewege Servo Motor",
   angle: "Winkel",
 
-//Stepper Motor
+  //Stepper Motor
   stepper_init: "Initialisiere Schrittmotor",
   stepper_step: "Bewege Schrittmotor",
   steps: "Schritte",
 
-//DC Motor
+  //DC Motor
   dc_motor_init: "Initialisiere DC Motor",
   dc_motor_power: "Stelle Strom ein",
   power: "Strom",
@@ -228,7 +228,7 @@ var MSG = {
   direction: "Richtung",
   dc_motor_stop: "Stoppe DC Motor",
 
-//Sound
+  //Sound
   sound_tone: "Ton (Hz)",
   sound_duration: "Dauer (s):",
   sound_infinite: "(0 für unendlich lange Dauer)",
@@ -240,7 +240,7 @@ var MSG = {
   song: "Lied",
 
 
-//Splash screen
+  //Splash screen
   splash_welcome: "Willkommen bei BIPES",
   splash_footer: "Dieses Fenster nicht mehr anzeigen",
   splash_close: "Schließen",
