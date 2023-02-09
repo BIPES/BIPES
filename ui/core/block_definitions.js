@@ -10925,7 +10925,7 @@ Blockly.Blocks['neopixel_init'] = {
 Blockly.Blocks['neopixel_control_CPY'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabel("Control NeoPixel"), "MSG_NEOPIXEL");
+        .appendField(new Blockly.FieldLabel(MSG["np_controll"]), "MSG_NEOPIXEL");
 
     this.appendValueInput("pin")
         .setCheck(null)
@@ -10947,7 +10947,7 @@ Blockly.Blocks['neopixel_control_CPY'] = {
 Blockly.Blocks['neopixel_control'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabel("Control NeoPixel"), "MSG_NEOPIXEL");
+        .appendField(new Blockly.FieldLabel(MSG["np_controll"]), "MSG_NEOPIXEL");
 
     this.appendValueInput("address")
         .setCheck(null)
@@ -10970,7 +10970,7 @@ Blockly.Blocks['neopixel_control'] = {
 Blockly.Blocks['neopixel_write'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldLabel("Write NeoPixel"), "MSG_NEOPIXEL");
+        .appendField(new Blockly.FieldLabel(MSG["np_write"]), "MSG_NEOPIXEL");
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);

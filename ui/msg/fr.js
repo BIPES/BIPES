@@ -105,6 +105,25 @@ var MSG = {
   dht_humi: "get DHT11/22 humidity",
   type: "type",
 
+  //Ultrasound
+  hcsr_install: "Install HCSR04 library",
+  hcsr_init: "Start HCSR04 Ultrasound Sensor",
+  hcsr_timeout: "timeout (us)",
+  echo_pin: "echo pin",
+  trigger_pin: "trigger pin",
+  get_distance: "Get distance (Ultrasound sensor)",
+  measure_distance: "Measure distance with Ultrasound sensor",
+
+  //BMP180
+  pressure: "pressure",
+  temperature: "temperature",
+  altitude: "altitude",
+  bmp180_init: "Init BMP180",
+
+  //SHT20
+  init_sht20: "Init SHT20",
+  humidity: "humidity",
+  
   //Network
   net_http_get: "HTTP GET Request",
   net_http_get_status: "HTTP Status code",

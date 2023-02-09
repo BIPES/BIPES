@@ -260,3 +260,19 @@ Blockly.Msg['CAT_PRESS'] = "Trykk";
 Blockly.Msg['CAT_FILES'] = "Filer";
 Blockly.Msg['CAT_NET'] = "Nettverk og Internet";
 Blockly.Msg['CAT_CONTROL'] = "Kontroll";
+Blockly.Msg['CAT_IMU'] = "Inertial Measurement";
+Blockly.Msg['CAT_AIR'] = "Air Quality";
+Blockly.Msg['CAT_ULTRASOUND'] = "Ultrasound";
+Blockly.Msg['CAT_NEO'] = "NeoPixel LED Strip";
+Blockly.Msg['CAT_CHAR_DISP'] = "Character display";
+Blockly.Msg['CAT_RELAY'] = "Relay";
+Blockly.Msg['CAT_SERVO'] = "RC Servo Motor";
+Blockly.Msg['CAT_STEPPER'] = "Stepper Motor";
+Blockly.Msg['CAT_DC_MOTOR'] = "DC Motor";
+
+//Toolbox Text
+Blockly.Msg['TXT_ULTRASOUND_DESCRIPTION'] = "HCSR04 ultrasound distance sensor";
+Blockly.Msg['TXT_ULTRASOUND_LIB'] = "Install HCSR04 library";
+Blockly.Msg['TXT_SERVO_DESCRIPTION'] = "Hobby RC Servo Motor";
+Blockly.Msg['TXT_STEPPER_DESCRIPTION'] = "Stepper Motor";
+Blockly.Msg['TXT_DC_MOTOR_DESCRIPTION'] = "DC Motor";
