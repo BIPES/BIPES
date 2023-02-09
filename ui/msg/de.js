@@ -35,7 +35,7 @@ var MSG = {
   serialTooltip: "Über USB oder Bluetooth verbinden (Web Serial API, HTTPS).",
   toolbarTooltip: "Werkzeugleiste anzeigen",
   wrongDevicePin: "Gerät wurde gewechselt, Bitte Pinzuweisung überprüfen!",
-  notDefined: "not definiert",
+  notDefined: "nicht definiert",
   editAsFileValue: "Als Datei bearbeiten",
   editAsFileTooltip: "Python Code bearbeiten und auf dem Gerät speichern.",
   forumTooltip: "Hilfe im Diskussionsforum.",
@@ -44,7 +44,7 @@ var MSG = {
   deviceUnavailable: "Gerät '%1' nicht verfügbar.",
   notConnected: "Es besteht keine Datenverbindung.",
   serialFroozen: "Serielle Verbindung antwortet nicht.",
-  notAvailableFlag: "$1 ist not verfügbar in Ihrem Browser.\r\nBitte sicherstellen, dass das $1 Flag aktiviert ist.",
+  notAvailableFlag: "$1 ist nicht verfügbar in Ihrem Browser.\r\nBitte sicherstellen, dass das $1 Flag aktiviert ist.",
 
 //Blocks
   block_delay: "warte",
@@ -70,9 +70,9 @@ var MSG = {
   wifi_connect: "mit WLAN-Netz verbinden",
   wifi_name: "Netzwerkname",
   wifi_key: "Netzwerkschlüssel / Passwort",
-  easymqtt_start: "EasyMQTT Startasdfddd",
+  easymqtt_start: "EasyMQTT Starten",
   easymqtt_publish: "EasyMQTT veröffentliche Daten",
-  easymqtt_subscribe: "EasyMQTT aboniere Topic",
+  easymqtt_subscribe: "EasyMQTT abboniere Topic",
   easymqtt_receive: "EasyMQTT empfange Daten",
   easymqtt_disconnect: "EasyMQTT trennen",
   topic: "Topic",
@@ -84,9 +84,9 @@ var MSG = {
   file_close: "Datei schließen",
   file_write_line: "Zeile in Datei schreiben",
   file_line: "Zeile",
-  try1: "try",
-  exp1: "except",
-  ntp_sync: "sync date and time with NTP",
+  try1: "versuche",
+  exp1: "falls Fehler",
+  ntp_sync: "Synchronisiere Datum und Uhrzeit mit NTP",
   timezone: "Zeitzone",
   project_info: "Projektinfo",
   project_info_author: "Autor",
@@ -106,10 +106,64 @@ var MSG = {
   dht_humi: "hole DHT11/22 Luftfeuchtigkeit",
   type: "Typ",
 
+//Ultrasound
+  hcsr_install: "Installiere HCSR04 Bibliothek",
+  hcsr_init: "Starte HCSR04 Ultraschall Sensor",
+  hcsr_timeout: "Time-out (us)",
+  echo_pin: "Echo Pin",
+  trigger_pin: "Trigger Pin",
+  get_distance: "Messe Abstand (Ultraschall sensor)",
+  measure_distance: "Messe Abstände mit dem Ultraschall sensor",
+
+//BMP180
+  pressure: "Luftdruck",
+  temperature: "Temperatur",
+  altitude: "Seehöhe",
+  bmp180_init: "Initialisiere BMP180",
+
+//SHT20
+  init_sht20: "Initialisiere SHT20",
+  humidity: "Luftfeuchtigkeit",  
+  
 //Network
   net_http_get: "HTTP GET Request",
   net_http_get_status: "HTTP Statuscode",
   net_http_get_content: "HTTP Response Inhalt",
+  net_http_server_start: "Starte HTTP Web Server",
+  net_http_server_start_port: "Port",
+  net_http_server_wait: "Warte auf HTTP Client",
+  net_http_server_requested_page: "Angeforderte Webseite",
+  net_http_server_send_response: "Sende HTTP Response",
+  net_http_server_send_html: "HTML",
+  
+// MQTT
+  mqtt_init: "Starte MQTT Client",
+  server_address: "Server Addresse",
+  server_port: "Server Port",
+  username: "Benutzername",
+  password: "Passwort",
+  mqtt_add_to_buffer: "Füge Daten zu MQTT Buffer hinzu",
+  field_name: "Feld Name",
+  value: "Wert",
+  mqtt_publish_buffer: "Veröffentliche Buffer in MQTT Topic",
+  mqtt_topic: "Topic",
+  qos: "QOS:",
+  mqtt_most_once: "0 - maximal\u00A0einmal",
+  mqtt_least_once: "1 - mindestend\u00A0einmal",
+  mqtt_publish_payload: "Veröffentliche Payload in MQTT Topic",
+  payload: "Payload",
+  mqtt_subscribe: "Abboniere MQTT Topic",
+  mqtt_set_callback: "Setze Callback für MQTT Nachrichten",
+  with: "mit",
+  received_from: "erhalte von",
+  do: "mache",
+  mqtt_callback_tooltip: "Callback Funktionen müssen ein Topic und Nachrichten Parameter haben",
+  mqtt_check_msg: "Frage MQTT Server nach ausstehenden Nachrichten",
+  mqtt_check_msg_tooltip: "Frage den Server ob er ausstehende Nachrichten hat. Nicht-blockierende Methode. Abbonierte Nachrichten werden an die Callback Funktion weitergegeben.",
+  mqtt_wait_msg: "Warte auf Nachrichten von MQTT Server",
+  mqtt_wait_msg_tooltip: "Warte auf Nachrichten vom Server. Blockierende Methode. Abbonierte Nachrichten werden an die Callback Funktion weitergegeben.",
+  mqtt_disconnect: "Trenne Verbindung des MQTT Client",
+  mqtt_disconnect_tooltip: "Trenne die Verbindung des MQTT Clienten vom Server.",
 
 //Splash screen
   splash_welcome: "Willkommen bei BIPES",
@@ -128,7 +182,11 @@ Blockly.Msg['CAT_DISPLAYS'] = "Displays";
 Blockly.Msg['CAT_SENSORS'] = "Sensoren";
 Blockly.Msg['CAT_OUTPUTS'] = "Ausgänge / Aktuatoren";
 Blockly.Msg['CAT_COMM'] = "Kommunikation";
+Blockly.Msg['CAT_TEMP_HUMI'] = "Temperatur und Luftfeuchtigkeit";
+Blockly.Msg['CAT_PRESS'] = "Luftdruck";
 Blockly.Msg['CAT_FILES'] = "Dateien";
 Blockly.Msg['CAT_NET'] = "Netzwerk und Internet";
 Blockly.Msg['CAT_CONTROL'] = "Regelung";
-
+Blockly.Msg['CAT_IMU'] = "Trägheitsmessung";
+Blockly.Msg['CAT_AIR'] = "Luftqualität";
+Blockly.Msg['CAT_ULTRASOUND'] = "Ultraschall";
