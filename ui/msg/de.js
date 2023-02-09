@@ -165,13 +165,86 @@ var MSG = {
   mqtt_disconnect: "Trenne Verbindung des MQTT Client",
   mqtt_disconnect_tooltip: "Trenne die Verbindung des MQTT Clienten vom Server.",
 
+//PWM
+  pwm_num: "PWM #",
+  frequency: "Frequenz",
+  duty_cycle: "Duty Cycle",
+  pwm_num_pico: "RPi Pico PWM #",
+  pwm_tooltip: "Initialisiere und aktiviere PWM mit einer Frequenz (1Hz bis 40MHz) und Duty Cycle (0-1023)",
+  pwm_freq_tooltip: "Bestimme PWM Frequenz von 1Hz bis 40MHz",
+  pwm_duty_tooltip: "Bestimme PWM Duty Cycle 0-1023",
+  pwm_init: "Initalisieren",
+  pwm_init_tooltip: "Initialisiert PWM",
+  pwm_deinit: "Deinitialisiere PWM #",
+
+//NeoPixel
+  np_init: "Initialisiere NeoPixel",
+  np_num_leds: "Anzahl der LEDs",
+  np_init_tooltip: "Initialisiere NeoPixel an spezifischem Pin",
+  np_controll: "Steuere NeoPixel",
+  color: "Farbe",
+  np_controll_tooltip: "Stelle eine beliebige Farbe für ein Pixel ein",
+  np_write: "Schreibe NeoPixel",
+  red: "Rot",
+  green: "Grün",
+  blue: "Blau",
+  np_write_tooltip: "Schreibt die Daten auf NeoPixel Bus und aktualisiert die Pixel",
+  np_color_tooltip_rgb: "Wähle eine Farbe mit RGB Werten (0-255) ein",
+  np_color_tooltip_picker: "Wähle eine beliebige Farbe für ein Pixel",
+  hue: "Farbton",
+  saturation: "Sättigung",
+  lightness: "Helligkeit",
+  np_color_tooltip_HSL: "Wähle eine Farbe mit HSL Werten. Farbton von 0º bis 360º, Sättigung und Helligkeit von 0% bis 100%.",
+
+//I2C Char LCD
+  i2c_lcd_init: "Initialisiere I2C LCD Display",
+  i2c_lcd_lines: "Zeilen",
+  i2c_lcd_col: "Spalten",
+  i2c_lcd_clear: "Lösche LCD",
+  i2c_lcd_write: "Schreibe Text auf LCD",
+  text: "Text",
+  i2c_lcd_move: "Bewege den LCD Cursor zu Punkt",
+  i2c_lcd_backlight: "LCD Hintergrundbeleuchtung",
+  i2c_lcd_backlight_tooltip: "Setze den Wert auf wahr/falsch oder 1/0",
+  i2c_lcd_power: "LCD Power",
+  i2c_lcd_power_tooltip: "Setze den Wert auf wahr/falsch oder 1/0",
+
+//RC Servo Motor
+  servo_init: "Initialisiere RC Servo Motor",
+  servo_init_tooltip: "Initialisiere RC servo motor",
+  servo_move: "Bewege Servo Motor",
+  angle: "Winkel",
+
+//Stepper Motor
+  stepper_init: "Initialisiere Schrittmotor",
+  stepper_step: "Bewege Schrittmotor",
+  steps: "Schritte",
+
+//DC Motor
+  dc_motor_init: "Initialisiere DC Motor",
+  dc_motor_power: "Stelle Strom ein",
+  power: "Strom",
+  dc_motor_dir: "Stelle Richtung des DC Motors ein",
+  direction: "Richtung",
+  dc_motor_stop: "Stoppe DC Motor",
+
+//Sound
+  sound_tone: "Ton (Hz)",
+  sound_duration: "Dauer (s):",
+  sound_infinite: "(0 für unendlich lange Dauer)",
+  sound_tone_tooltip: "Sound - Ton Generator",
+  sound_note: "Spiele Note",
+  note: "Note",
+  sound_note_tooltip: "Sound - Ton Generator (Musik Note)",
+  rtttl_play: "Spiele Lied (RTTTL)",
+  song: "Lied",
+
+
 //Splash screen
   splash_welcome: "Willkommen bei BIPES",
   splash_footer: "Dieses Fenster nicht mehr anzeigen",
   splash_close: "Schließen",
   splash_message: "<p><b>BIPES (Block based Integrated Platform for Embedded Systems)</B> erlaubt blockbasierte Programmierung für verschiedene eingebetteter Systeme und IoT-Module mit Hilfe von MicroPython, CircuitPython, Python oder Snek. Es ist möglich sich mit verschiedenen Arten von Boards zu verbinden, sie zu programmieren, zu debuggen und sie zu überwachen, wahlweise über Netzwerk, USB oder Bluetooth. Kompatible Boards sind unter anderem STM32, ESP32, ESP8266, Raspberry Pi Pico und sogar Arduino. <a href=https://bipes.net.br/wp/boards/>Die Liste der kompatible Boards findest du hier</a>. <p><b>BIPES</b> ist vollständig <a href=https://bipes.net.br/wp/development/>Open Source</a> und basiert auf HTML und JavaScript, sodass keine Software installiert werden muss und auch offline gearbeitet werden kann! Wir hoffen BIPES ist nützlich für dich und dass du viel Spaß damit hast. Falls du Hilfe brauchst, haben wir jetzt <a href=https://github.com/BIPES/BIPES/discussions> ein Diskussionsforum</a>, wo wir auch über <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>neue Features berichten und Neuigkeiten ankündigen</a>. Du bist eingeladen es auch zu benutzen, zum Beispiel für Feedback oder Verbesserungsvorschläge! </p><p>Es ist jetzt auch möglich MicroPython direkt vom Browser aus auf deinen ESP32 oder ESP8266 zu flashen um BIPES benutzen zu können: <a href=https://bipes.net.br/flash/esp-web-tools/>https://bipes.net.br/flash/esp-web-tools/</a></p> <p>Viele Dank vom BIPES Team!</p>"
-
-  
 
 };
 
@@ -190,3 +263,17 @@ Blockly.Msg['CAT_CONTROL'] = "Regelung";
 Blockly.Msg['CAT_IMU'] = "Trägheitsmessung";
 Blockly.Msg['CAT_AIR'] = "Luftqualität";
 Blockly.Msg['CAT_ULTRASOUND'] = "Ultraschall";
+Blockly.Msg['CAT_NEO'] = "NeoPixel LED Streifen";
+Blockly.Msg['CAT_CHAR_DISP'] = "LCD Display";
+Blockly.Msg['CAT_RELAY'] = "Relais";
+Blockly.Msg['CAT_SERVO'] = "RC Servo Motor";
+Blockly.Msg['CAT_STEPPER'] = "Schrittmotor";
+Blockly.Msg['CAT_DC_MOTOR'] = "DC Motor";
+
+//Toolbox Text
+Blockly.Msg['TXT_ULTRASOUND_DESCRIPTION'] = "HCSR04 Ultraschall Abstandssensor";
+Blockly.Msg['TXT_ULTRASOUND_LIB'] = "Installiere HCSR04 Bibliothek";
+Blockly.Msg['TXT_SERVO_DESCRIPTION'] = "Hobby RC Servo Motor";
+Blockly.Msg['TXT_STEPPER_DESCRIPTION'] = "Schrittmotor";
+Blockly.Msg['TXT_DC_MOTOR_DESCRIPTION'] = "DC Motor";
+//%{BKY_CAT_CHAR_DISP}
