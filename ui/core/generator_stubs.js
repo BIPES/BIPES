@@ -606,13 +606,20 @@ Blockly.Python['net_ifconfig'] = function(block) {
 };
 
 Blockly.Python['net_ap_mode'] = function(block) {
-  var value_wifi_essid = Blockly.Python.valueToCode(block, 'wifi_essid', Blockly.Python.ORDER_ATOMIC);
-  var value_wifi_key = Blockly.Python.valueToCode(block, 'wifi_key', Blockly.Python.ORDER_ATOMIC);
+	var value_wifi_essid = Blockly.Python.valueToCode(block, 'wifi_essid', Blockly.Python.ORDER_ATOMIC);
+	var value_wifi_key = Blockly.Python.valueToCode(block, 'wifi_key', Blockly.Python.ORDER_ATOMIC);
 
-  Blockly.Python.definitions_['import_network'] = 'import network';
-  var code = 'ap = network.WLAN(network.AP_IF) \nap.active(True) \nap.config(essid=' + value_wifi_essid + ', password=' + value_wifi_key + ') \n';
+	Blockly.Python.definitions_['import_network'] = 'import network';
+	if (UI ['workspace'].selector.value == "Raspberry Pi Pico" || UI ['workspace'].selector.value == "Raspberry Pi Pico W") {
+		var code = 'ap = network.WLAN(network.AP_IF) \n';
+		code += 'ap.config(essid=' + value_wifi_essid + ') \n';
+		code += 'ap.config(password=' + value_wifi_key + ') \n';
+		code += 'ap.active(True) \n';
+	} else {
+		var code = 'ap = network.WLAN(network.AP_IF) \nap.active(True) \nap.config(essid=' + value_wifi_essid + ', password=' + value_wifi_key + ') \n';
+	}
  
-  return code;
+	return code;
 };
 
 Blockly.Python['wifi_client_connect'] = function(block) {
