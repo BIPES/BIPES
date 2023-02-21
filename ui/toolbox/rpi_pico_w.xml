@@ -1883,6 +1883,8 @@
 
     <category name="MQTT">
       <label text="MQTT (Message Queue Telemetry Transport)"></label>
+      <button text="Install simple library" callbackKey="installPyLib"></button>
+      <button text="Install robust library" callbackKey="installPyLib"></button>
       <block type="mqtt_init">
         <value name="server">
           <shadow type="text">
@@ -1955,6 +1957,9 @@
     </category>
     <category name="EasyMQTT">
       <label text="IoT: EasyMQTT"></label>
+      <button text="Load example: easymqtt" callbackKey="loadExample"></button>
+      <button text="Install simple library" callbackKey="installPyLib"></button>
+      <button text="Install robust library" callbackKey="installPyLib"></button>
       <block type="easymqtt_init">
         <field name="BLOCK_EASYMQTT_INIT">EasyMQTT Start</field>
       </block>

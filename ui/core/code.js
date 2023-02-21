@@ -689,6 +689,10 @@ Code.init = function() {
           reader.readAsText(pico_i2c_lcdBlob);
         } else if (lib == "lcd_api") {
           reader.readAsText(lcd_apiBlob);
+        } else if (lib == "simple") {
+          reader.readAsText(simpleBlob);
+        } else if (lib == "robust") {
+          reader.readAsText(robustBlob);
         } else {
           console.log("Blob file not available for: " + lib + " library.");
         }
