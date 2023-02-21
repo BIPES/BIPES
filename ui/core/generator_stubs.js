@@ -6525,15 +6525,20 @@ Blockly.Python['db_connect'] = function(block) {
 	Blockly.Python.definitions_['db_pass' + number_db_idconnect] = 'db_pass' + number_db_idconnect + '= ' + db_pass;
 	Blockly.Python.definitions_['db_database' + number_db_idconnect] = 'db_database' + number_db_idconnect + '= ' + db_database;
 	Blockly.Python.definitions_['db_table' + number_db_idconnect] = 'db_table' + number_db_idconnect + '= ' + db_table;
-	Blockly.Python.definitions_['db_row_data_' + number_db_idconnect] = 'db_row_data' + number_db_idconnect +' = {}';
+	Blockly.Python.definitions_['db_row_data_' + number_db_idconnect] = 'db_row_data' + number_db_idconnect +' = []';
 
 	if(cells_blocks)
     var db_row_data_def = '';
+	db_row_data_def += ' global db_row_data' + number_db_idconnect + '\n';
+	db_row_data_def += ' db_row_data' + number_db_idconnect + ' = []\n';
       do{
         var cell_column = Blockly.Python.blockToCode(cells_blocks, 'data_column');
-        db_row_data_def += ' db_row_data' + number_db_idconnect +'['+cell_column.split(';')[0] +'] = ' + cell_column.split(';')[1]+'\n';
+        db_row_data_def += ' db_row_data' + number_db_idconnect + ' += [' +  
+							'{"column": ' + cell_column.split(';')[0] + ',' + 
+							' "type": "' + cell_column.split(';')[2] + '",' + 
+							' "data": ' + cell_column.split(';')[1] + '}]' + '\n';				
+							
       }while (cells_blocks = cells_blocks.getNextBlock());
-  
     Blockly.Python.definitions_['db_row_data_cell'+ number_db_idconnect] = 'def update_db_row_data'+ number_db_idconnect+'():\n' + db_row_data_def;
 	
 	var code = 'update_db_row_data'+ number_db_idconnect +'()\n' +'post_dbdata(' + 
@@ -6544,15 +6549,17 @@ Blockly.Python['db_connect'] = function(block) {
 	',db_database' + number_db_idconnect+
 	',db_table' + number_db_idconnect+ 
 	',db_row_data' + number_db_idconnect+
-	')\n';
+	')\n' +
+	'print(db_row_data1) \n';
 	return code;
   };
 
   Blockly.Python['data_value'] = function(block) {
     var value_column = Blockly.Python.valueToCode(block, 'data_column', Blockly.Python.ORDER_ATOMIC);
 	var value_value = Blockly.Python.valueToCode(block, 'data_value', Blockly.Python.ORDER_ATOMIC);
+	var value_type = block.getFieldValue('data_type');
     // TODO: Assemble Python into code variable.
-    var code = value_column + ';' + value_value;
+    var code = value_column + ';' + value_value + ';'+ value_type;
     return code;
   };
 

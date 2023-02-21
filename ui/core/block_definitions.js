@@ -12318,6 +12318,9 @@ Blockly.Blocks['db_connect'] = {
 
 Blockly.Blocks['data_value'] = {
   init: function() {
+    this.appendDummyInput()
+        .appendField("data_type")
+        .appendField(new Blockly.FieldDropdown([["NUMBER","num"], ["BOOLEAN","boo"], ["TEXT","txt"], ["DATE","dat"]]), "data_type");
     this.appendValueInput("data_column")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
