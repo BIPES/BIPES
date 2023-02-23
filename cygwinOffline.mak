@@ -41,6 +41,11 @@
 	echo -n ui/toolbox/linux.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html
 	echo  "'>" >> ui/index_offline.html
 	cat ui/toolbox/linux.xml | grep -v "<document>" >> ui/index_offline.html
+	echo "Including file ui/toolbox/makernano.xml" 
+	echo -n "<document style='display: none' id='"OFFLINE_ >> ui/index_offline.html
+	echo -n ui/toolbox/makernano.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html
+	echo  "'>" >> ui/index_offline.html
+	cat ui/toolbox/makernano.xml | grep -v "<document>" >> ui/index_offline.html
 	echo "Including file ui/toolbox/makerpi.xml" 
 	echo -n "<document style='display: none' id='"OFFLINE_ >> ui/index_offline.html
 	echo -n ui/toolbox/makerpi.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html
