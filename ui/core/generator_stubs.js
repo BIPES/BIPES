@@ -4727,7 +4727,11 @@ Blockly.Python['timer'] = function(block) {
   globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') + '\n' : '';
 
   Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
-  Blockly.Python.definitions_[`import_timer_start${timerNumber}`] = `tim${timerNumber} = Timer(${timerNumber})`;
+  if (UI ['workspace'].selector.value == "RPI_Pico" || UI ['workspace'].selector.value == "RPI_Pico_W" || UI ['workspace'].selector.value == "MakerPi") {
+	Blockly.Python.definitions_[`import_timer_start${timerNumber}`] = `tim${timerNumber} = Timer()`;
+  } else {
+	Blockly.Python.definitions_[`import_timer_start${timerNumber}`] = `tim${timerNumber} = Timer(${timerNumber})`;
+  }
 
   Blockly.Python.definitions_[`import_timer_callback${timerNumber}`] = `\n#Timer Function Callback\ndef timerFunc${timerNumber}(t):\n${globals}${statements_name}\n\n`;
 
@@ -4735,33 +4739,6 @@ Blockly.Python['timer'] = function(block) {
              
   return code
 };
-
-Blockly.Python['pico_timer'] = function(block) {
-
-	var interval = block.getFieldValue('interval');
-	var timerNumber = block.getFieldValue('timerNumber');
-	var statements_name = Blockly.Python.statementToCode(block, 'statements');
-	
-	Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
-	Blockly.Python.definitions_['import_timer_start'] = 'tim=Timer()'; //-1)';
-  
-	Blockly.Python.definitions_['import_timer_callback'] = '\n#Timer Function Callback\ndef timerFunc(t):\n' + statements_name + '\n\n'; 
-  
-	var code = 'tim.init(period=' + interval + ', mode=Timer.PERIODIC, callback=timerFunc)\n';
-			   
-	return code;
-  };
-  
-  Blockly.Python['pico_stop_timer'] = function(block) {
-
-	Blockly.Python.definitions_['import_timer'] = 'from machine import Timer';
-  
-	var code = 'tim.deinit()\n';
-			   
-	return code;
-  };
-  
-	
 
 Blockly.Python['deep_sleep8266'] = function(block) {
 	var value_interval = Blockly.Python.valueToCode(block, 'interval', Blockly.Python.ORDER_ATOMIC);

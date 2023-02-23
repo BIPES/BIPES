@@ -503,7 +503,7 @@ Blockly.Blocks['timer'] = {
     this.setColour(135);
     this.appendDummyInput()
         .appendField("Timer #")
-        .appendField(new Blockly.FieldNumber(2, 0, 9, 1), "timerNumber")
+        .appendField(new Blockly.FieldNumber(0, 0, 9, 1), "timerNumber")
         .appendField("do")
         .appendField(new Blockly.FieldDropdown([["every","PERIODIC"], ["once in","ONE_SHOT"]]), "MODE")
         .appendField(new Blockly.FieldNumber(1000, 0, Infinity, 1), "interval")
