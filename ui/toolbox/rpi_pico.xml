@@ -1185,15 +1185,15 @@
       <block type="hcsr_init">
         <value name="echo">
           <shadow type="pinout">
-            <field name="echo pin"></field>
+            <field name="ECHO"></field>
           </shadow>
         </value>
         <value name="trigger">
           <shadow type="pinout">
-            <field name="trigger pin"></field>
+            <field name="TRIGGER"></field>
           </shadow>
         </value>
-  <value name="timeout">
+        <value name="timeout">
           <shadow type="math_number">
             <field name="NUM">10000</field>
           </shadow>
@@ -1282,24 +1282,49 @@
   <category name="GPS">
       <label text="Global Positioning System sensor"></label>
    <label text="Library: https://github.com/"></label>
-        <button text="Install GPS library" callbackKey="installPyLib"></button>
+        <button text="Install mini_micropyGPS library" callbackKey="installPyLib"></button>
 
-	<block type="gps_init">
-      </block>
-	<block type="gps_update">
-      </block>
-	<block type="gps_get_lat">
-      </block>
-	<block type="gps_get_long">
-      </block>
-	<block type="gps_get_height">
-      </block>
-	<block type="gps_get_speed">
-      </block>
-	<block type="gps_get_datetime">
-      </block>
+    <block type="gps_init">
+      <value name="uart">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
 
+      <value name="tx">
+        <shadow type="pinout">
+          <field name="TX"></field>
+        </shadow>
+      </value>
 
+      <value name="rx">
+        <shadow type="pinout">
+          <field name="RX"></field>
+        </shadow>
+      </value>
+
+      <value name="bps">
+        <shadow type="math_number">
+          <field name="NUM">9600</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="gps_update">
+    </block>
+    <block type="gps_get_lat">
+    </block>
+    <block type="gps_get_long">
+    </block>
+    <block type="gps_get_height">
+    </block>
+    <block type="gps_get_speed">
+    </block>
+    <block type="gps_get_date">
+    </block>
+    <block type="gps_get_time">
+    </block>
+    <block type="gps_coord_format">
+    </block>
   </category>
 
   <category name="Oximeter">
@@ -1446,7 +1471,7 @@
       </value>
     <value name="baud">
         <shadow type="math_number">
-          <field name="NUM">9800</field>
+          <field name="NUM">9600</field>
         </shadow>
       </value>
       <value name="tx">

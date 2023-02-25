@@ -1311,24 +1311,49 @@
   <category name="GPS">
       <label text="Global Positioning System sensor"></label>
    <label text="Library: https://github.com/"></label>
-        <button text="Install GPS library" callbackKey="installPyLib"></button>
+        <button text="Install mini_micropyGPS library" callbackKey="installPyLib"></button>
 
 	<block type="gps_init">
-      </block>
-	<block type="gps_update">
-      </block>
-	<block type="gps_get_lat">
-      </block>
-	<block type="gps_get_long">
-      </block>
-	<block type="gps_get_height">
-      </block>
-	<block type="gps_get_speed">
-      </block>
-	<block type="gps_get_datetime">
-      </block>
+    <value name="uart">
+      <shadow type="math_number">
+        <field name="NUM">0</field>
+      </shadow>
+    </value>
 
+    <value name="tx">
+      <shadow type="pinout">
+        <field name="TX"></field>
+      </shadow>
+    </value>
 
+    <value name="rx">
+      <shadow type="pinout">
+        <field name="RX"></field>
+      </shadow>
+    </value>
+
+    <value name="bps">
+      <shadow type="math_number">
+        <field name="NUM">9600</field>
+      </shadow>
+    </value>
+  </block>
+    <block type="gps_update">
+    </block>
+    <block type="gps_get_lat">
+    </block>
+    <block type="gps_get_long">
+    </block>
+    <block type="gps_get_height">
+    </block>
+    <block type="gps_get_speed">
+    </block>
+    <block type="gps_get_date">
+    </block>
+    <block type="gps_get_time">
+    </block>
+    <block type="gps_coord_format">
+    </block>
   </category>
 
   <category name="Oximeter">

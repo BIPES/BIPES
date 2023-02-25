@@ -693,6 +693,9 @@ Code.init = function() {
           reader.readAsText(simpleBlob);
         } else if (lib == "robust") {
           reader.readAsText(robustBlob);
+        } else if (lib == "mini_micropygps") {
+          lib = "mini_micropyGPS"
+          reader.readAsText(mini_micropyGPSBlob);
         } else {
           console.log("Blob file not available for: " + lib + " library.");
         }
