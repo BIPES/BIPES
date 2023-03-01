@@ -551,7 +551,7 @@
     </block>
 
 
-    <block type="pwm_pico">
+    <block type="pwm">
       <value name="pin">
         <shadow type="pinout">
           <field name="PIN"></field>
@@ -577,7 +577,7 @@
       </value>
     </block>
 
-    <block type="pwm.duty_pico">
+    <block type="pwm.duty">
       <value name="duty">
         <shadow type="math_number">
           <field name="NUM">50</field>
