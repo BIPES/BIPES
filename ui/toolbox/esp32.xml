@@ -2418,7 +2418,7 @@ _
       </block>
     </category>
 
-    <category name="Database">
+<category name="Database">
       <label text="Send data to a MySQL database"></label>
       <label text="PHP SCRIPT: https://gist.github.com"></label>
   <block type="db_connect">

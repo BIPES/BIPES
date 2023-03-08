@@ -6514,8 +6514,6 @@ Blockly.Python['db_connect'] = function(block) {
 	var db_table = Blockly.Python.valueToCode(block, 'db_table', Blockly.Python.ORDER_ATOMIC);
 	var cells_blocks = block.getInputTargetBlock('db_table_data');
 
-	//var cells_blocks = block.getInputTargetBlock('cells_values');
-	// TODO: Assemble Python into code variable.
 	Blockly.Python.definitions_['post_dbdata'] = 'def post_dbdata(db_host,db_server,db_user,db_pass,db_database,db_table, db_data):\n' + 
 		' request_data = ujson.dumps({"server": db_server,"user": db_user,"pass": db_pass,"database": db_database,"table": db_table,"parameters": db_data })\n'+
 		' r = urequests.post(db_host + "/" , headers = {"content-type": "application/json"}, data = request_data)\n print(r.content)\n r.close()';
@@ -6541,17 +6539,16 @@ Blockly.Python['db_connect'] = function(block) {
       }while (cells_blocks = cells_blocks.getNextBlock());
     Blockly.Python.definitions_['db_row_data_cell'+ number_db_idconnect] = 'def update_db_row_data'+ number_db_idconnect+'():\n' + db_row_data_def;
 	
-	var code = 'update_db_row_data'+ number_db_idconnect +'()\n' +'post_dbdata(' + 
-	'db_host' + number_db_idconnect+
-	',db_server' + number_db_idconnect+
-	',db_user' + number_db_idconnect+
-	',db_pass' + number_db_idconnect+
-	',db_database' + number_db_idconnect+
-	',db_table' + number_db_idconnect+ 
-	',db_row_data' + number_db_idconnect+
-	')\n' +
-	'print(db_row_data1) \n';
-	return code;
+	var code =  'update_db_row_data'+ number_db_idconnect +'()\n' +'post_dbdata(' + 
+				'db_host' + number_db_idconnect+
+				',db_server' + number_db_idconnect+
+				',db_user' + number_db_idconnect+
+				',db_pass' + number_db_idconnect+
+				',db_database' + number_db_idconnect+
+				',db_table' + number_db_idconnect+ 
+				',db_row_data' + number_db_idconnect+
+				')\n';
+				return code;
   };
 
   Blockly.Python['data_value'] = function(block) {
