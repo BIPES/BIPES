@@ -10760,7 +10760,12 @@ Blockly.Blocks['max30100_init'] = {
         "*"));
         //.setAlign(Blockly.ALIGN_CENTRE);
 
-    this.appendValueInput("scl")
+        this.appendValueInput("i2c")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("I2C");
+
+        this.appendValueInput("scl")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("SCL");

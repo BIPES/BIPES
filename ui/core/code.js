@@ -696,6 +696,8 @@ Code.init = function() {
         } else if (lib == "mini_micropygps") {
           lib = "mini_micropyGPS"
           reader.readAsText(mini_micropyGPSBlob);
+        } else if (lib == "max30100") {
+          reader.readAsText(max30100Blob);
         } else {
           console.log("Blob file not available for: " + lib + " library.");
         }

@@ -1361,21 +1361,33 @@
    <label text="Library: https://github.com/"></label>
         <button text="Install MAX30100 library" callbackKey="installPyLib"></button>
 
-	<block type="max30100_init">
-      </block>
-	<block type="max30100_read">
-      </block>
-	<block type="max30100_red">
-      </block>
-	<block type="max30100_ir">
-      </block>
+	  <block type="max30100_init">
+      <value name="i2c">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
 
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
+        </shadow>
+      </value>
 
-
-
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
+        </shadow>
+      </value>
+    </block>
+	  <block type="max30100_read">
+    </block>
+	  <block type="max30100_red">
+    </block>
+	  <block type="max30100_ir">
+    </block>
   </category>
-
-
+  
       <category name="OneWire">
       <label text="OneWire"></label>
 

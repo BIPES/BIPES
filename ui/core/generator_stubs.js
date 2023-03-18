@@ -4970,10 +4970,10 @@ Blockly.Python['hcsr_read'] = function(block) {
 //I2C Character LCD
 
 Blockly.Python['char_lcd_init'] = function(block) {
-  Blockly.Python.definitions_['import_i2c'] = 'from machine import I2C';
-	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  Blockly.Python.definitions_['import_lcd_api'] = 'from lcd_api import LcdApi';
-  Blockly.Python.definitions_['import_pico_i2c_lcd'] = 'from pico_i2c_lcd import I2cLcd';
+Blockly.Python.definitions_['import_i2c'] = 'from machine import I2C';
+Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+Blockly.Python.definitions_['import_lcd_api'] = 'from lcd_api import LcdApi';
+Blockly.Python.definitions_['import_pico_i2c_lcd'] = 'from pico_i2c_lcd import I2cLcd';
   
   var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
   var pSda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
@@ -5582,32 +5582,34 @@ Blockly.Python['uart_read_into'] = function(block) {
 
 //MAX30100 oximeter
 Blockly.Python['max30100_init'] = function(block) {
-  var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-  var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+	var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
 
-  var code = '#TODO: init max30100\n';
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_MAX30100'] = 'import max30100';	
 
-  return code;
+	var code = 'i2cMAX30100=I2C(' + i2c + ', scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	code += 'max30100Sensor = max30100.MAX30100(i2c = i2cMAX30100)\n';
+	code += 'max30100Sensor.enable_spo2()\n'
+  	return code;
 };
 
 Blockly.Python['max30100_read'] = function(block) {
 
-  var code = '#read max30100\n';
-
+  var code = 'max30100Sensor.read_sensor()\n';
   return code;
 };
 
 Blockly.Python['max30100_red'] = function(block) {
 
-  var code = '1';
-
+  var code = 'max30100Sensor.red\n'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['max30100_ir'] = function(block) {
 
-  var code = '2';
-
+  var code = 'max30100Sensor.ir\n'
   return [code, Blockly.Python.ORDER_NONE];
 };
 
