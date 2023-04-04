@@ -2420,7 +2420,7 @@ _
 
 <category name="Database">
       <label text="Send data to a MySQL database"></label>
-      <label text="PHP SCRIPT: http://bipes.net.br/docs/block-tutorials/mysql_esp32.html"></label>
+      <label text="PHP SCRIPT: http://bipes.net.br/docs/block-tutorials/mysql-esp32.html"></label>
   <block type="db_connect">
     <field name="db_idconnect">1</field>
     <value name="db_host">
