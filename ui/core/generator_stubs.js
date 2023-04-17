@@ -4767,9 +4767,9 @@ Blockly.Python['pwm'] = function(block) {
 	var code = `pwm${value_pin} = PWM(Pin(${value_pin}))\n`;
 		code += `pwm${value_pin}.freq(${value_frequency})\n`;
 		code += `try:\n`;
-  	    code += `\tpwm${number_id}.duty(${value_duty})\n`;
+  	    code += `\tpwm${value_pin}.duty(${value_duty})\n`;
 	    code += `except:\n`;
-	    code += `\tpwm${number_id}.duty_u16(${value_duty})\n`;
+	    code += `\tpwm${value_pin}.duty_u16(${value_duty})\n`;
 	return code;
 };
 
