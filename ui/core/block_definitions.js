@@ -1561,6 +1561,176 @@ Blockly.Blocks['wifi_client_scan_networks'] = {
 };
 
 
+Blockly.Blocks['tm1637_init'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/tm1637.jpg",
+        55,
+        55,
+        "*"))
+      .appendField("Initialize TM1637 4 Digit Display")
+	  ;
+
+    this.appendValueInput("clk")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("CLK");
+
+    this.appendValueInput("dio")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("DIO");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("Initialize TM1637 4 Digit Display");
+ this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1637_write_char'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Write a Single Character to Display");
+
+    this.appendValueInput("character")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Character");
+
+    this.appendValueInput("position")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Position (0-3)");
+  
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+    this.setTooltip("Write a character to the display");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1637_write_text'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Write Text to Display");
+
+    this.appendValueInput("text")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Text");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+    this.setTooltip("Write text to the display");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1637_set_time'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Write Time to Display");
+
+    this.appendValueInput("hour")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Hour");
+
+    this.appendValueInput("minute")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Minute");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+    this.setTooltip("Write time to the display");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1637_set_temperature'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Write Temperature to Display");
+    this.appendValueInput("temperature")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Temperature (°C)");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Write temperature to the display");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1637_scroll_text'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Scroll Text to Display");
+
+    this.appendValueInput("text")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Text");
+
+    this.appendValueInput("speed")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Speed (ms)");
+  
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+    this.setTooltip("Scroll text to the display");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1637_clear'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Clear the Display");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+    this.setTooltip("Clear the display");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
+Blockly.Blocks['tm1637_set_brightness'] = {
+  init: function() {
+    this.appendDummyInput()
+      .appendField("Set the Brightness of the Display");
+
+    this.appendValueInput("brightness")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("BRIGHTNESS (0-7)");
+  
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+
+    this.setColour(230);
+    this.setTooltip("Set the brightness of the display");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['max7219_init'] = {
   init: function() {
     this.appendDummyInput()
@@ -10044,7 +10214,7 @@ Blockly.Blocks['char_lcd_init'] = {
 
 Blockly.Blocks['char_lcd_clear'] = {
   init: function() {
-    this.setColour(135);
+    this.setColour(230);
     this.appendDummyInput()
         .appendField("Clear LCD");
 
@@ -10057,7 +10227,7 @@ Blockly.Blocks['char_lcd_clear'] = {
 
 Blockly.Blocks['char_lcd_putstr'] = {
   init: function() {
-    this.setColour(135);
+    this.setColour(230);
     this.appendDummyInput()
         .appendField("Write text on LCD");
 
@@ -10073,7 +10243,7 @@ Blockly.Blocks['char_lcd_putstr'] = {
 
 Blockly.Blocks['char_lcd_moveto'] = {
   init: function() {
-    this.setColour(135);
+    this.setColour(230);
     this.appendDummyInput()
         .appendField("Move LCD Cursor to");
 
@@ -10095,7 +10265,7 @@ Blockly.Blocks['char_lcd_moveto'] = {
 
 Blockly.Blocks['char_lcd_backlight'] = {
   init: function() {
-    this.setColour(135);
+    this.setColour(230);
     this.appendDummyInput()
         .appendField("LCD Backlight");
 
@@ -10111,7 +10281,7 @@ Blockly.Blocks['char_lcd_backlight'] = {
 
 Blockly.Blocks['char_lcd_display'] = {
   init: function() {
-    this.setColour(135);
+    this.setColour(230);
     this.appendDummyInput()
         .appendField("LCD Power");
 

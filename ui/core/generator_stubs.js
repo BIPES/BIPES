@@ -739,6 +739,78 @@ Blockly.Python['dht_read_humidity'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+/// TM1637 Display
+Blockly.Python['tm1637_init'] = function(block) {
+	var clk = Blockly.Python.valueToCode(block, 'clk', Blockly.Python.ORDER_ATOMIC);
+	var dio = Blockly.Python.valueToCode(block, 'dio', Blockly.Python.ORDER_ATOMIC);
+  
+	Blockly.Python.definitions_['import_tm1637'] = 'import tm1637';
+	Blockly.Python.definitions_['import_Pin'] = 'from machine import Pin';
+  
+    var code = 'tm = tm1637.TM1637(clk = Pin('+ clk + '), dio = Pin(' + dio + '))\n';
+	return code;
+}
+
+/// TM1637 Write a character at a position
+Blockly.Python['tm1637_write_char'] = function(block) {
+	var position = Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC);
+	var character = Blockly.Python.valueToCode(block, 'character', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tm.write([tm.encode_char(' + character + ')], ' + position + ')\n';
+	return code;
+}
+
+/// TM1637 Write Text
+Blockly.Python['tm1637_write_text'] = function(block) {
+	var position = Blockly.Python.valueToCode(block, 'position', Blockly.Python.ORDER_ATOMIC);
+	var text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tm.show(' + text + ')\n';
+	return code;
+}
+
+/// TM1637 Scroll Text
+Blockly.Python['tm1637_scroll_text'] = function(block) {
+	var text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+	var speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tm.scroll(' + text + ', ' + speed + ')\n';
+	return code;
+}
+
+/// TM1637 Clear Display
+Blockly.Python['tm1637_clear'] = function(block) {
+  
+	var code = 'tm.write([0, 0, 0, 0])\n';
+	return code;
+}
+
+/// TM1637 Set Brightness
+Blockly.Python['tm1637_set_brightness'] = function(block) {
+	var brightness = Blockly.Python.valueToCode(block, 'brightness', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tm.brightness(' + brightness + ')\n';
+	return code;
+}
+
+/// TM1637 Set Time
+Blockly.Python['tm1637_set_time'] = function(block) {
+	var hour = Blockly.Python.valueToCode(block, 'hour', Blockly.Python.ORDER_ATOMIC);
+	var minute = Blockly.Python.valueToCode(block, 'minute', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tm.numbers(' + hour + ', ' + minute + ')\n';
+	return code;
+}
+
+/// TM1637 Set Temperature
+Blockly.Python['tm1637_set_temperature'] = function(block) {
+	var temperature = Blockly.Python.valueToCode(block, 'temperature', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tm.temperature(' + temperature + ')\n';
+	return code;
+}
+
+/// MAX7219 Display
 Blockly.Python['max7219_init'] = function(block) {
 	var spi = Blockly.Python.valueToCode(block, 'spi', Blockly.Python.ORDER_ATOMIC);
 	var clk = Blockly.Python.valueToCode(block, 'clk', Blockly.Python.ORDER_ATOMIC);
