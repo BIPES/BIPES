@@ -1185,12 +1185,12 @@
     <block type="tm1637_init">
       <value name="clk">
         <shadow type="pinout">
-          <field name="CLK"></field>
+          <field name="NUM"></field>
         </shadow>
       </value>
       <value name="dio">
         <shadow type="pinout">
-          <field name="DIO"></field>
+          <field name="NUM"></field>
         </shadow>
       </value>
     </block>
@@ -1198,12 +1198,12 @@
     <block type="tm1637_write_char">
       <value name="character">
         <shadow type="text">
-          <field name="Character">E</field>
+          <field name="TEXT">E</field>
         </shadow>
       </value>
       <value name="position">
         <shadow type="math_number">
-          <field name="Position (0-3)">2</field>
+          <field name="NUM">2</field>
         </shadow>
       </value>
     </block>
@@ -1211,7 +1211,7 @@
     <block type="tm1637_write_text">
       <value name="text">
         <shadow type="text">
-          <field name="Text">COOL</field>
+          <field name="TEXT">COOL</field>
         </shadow>
       </value>
     </block>
@@ -1219,12 +1219,12 @@
     <block type="tm1637_scroll_text">
       <value name="text">
         <shadow type="text">
-          <field name="Text">HELLO WORLD</field>
+          <field name="TEXT">HELLO WORLD</field>
         </shadow>
       </value>
       <value name="speed">
         <shadow type="math_number">
-          <field name="Speed (ms)">1000</field>
+          <field name="NUM">1000</field>
         </shadow>
       </value>
     </block>
@@ -1232,12 +1232,12 @@
     <block type="tm1637_set_time">
       <value name="hour">
         <shadow type="math_number">
-          <field name="Hour (0-23)">11</field>
+          <field name="NUM">11</field>
         </shadow>
       </value>
       <value name="minute">
         <shadow type="math_number">
-          <field name="Minute (0-59)">45</field>
+          <field name="NUM">45</field>
         </shadow>
       </value>
     </block>
@@ -1245,7 +1245,7 @@
     <block type="tm1637_set_temperature">
       <value name="temperature">
         <shadow type="math_number">
-          <field name="Temperature (°C)">23</field>
+          <field name="NUM">23</field>
         </shadow>
       </value>
     </block>
@@ -1253,7 +1253,7 @@
     <block type="tm1637_set_brightness">
       <value name="brightness">
         <shadow type="math_number">
-          <field name="Brightness (0-7)">7</field>
+          <field name="NUM">7</field>
         </shadow>
       </value>
     </block>
