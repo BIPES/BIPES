@@ -805,8 +805,9 @@ Blockly.Python['tm1637_set_time'] = function(block) {
 /// TM1637 Set Temperature
 Blockly.Python['tm1637_set_temperature'] = function(block) {
 	var temperature = Blockly.Python.valueToCode(block, 'temperature', Blockly.Python.ORDER_ATOMIC);
-  
-	var code = 'tm.temperature(' + temperature + ')\n';
+	var degree = block.getFieldValue('DEGREE_TYPE');
+
+	var code = 'tm.temperature(' + temperature + ', ' + degree + ')\n';
 	return code;
 }
 
@@ -6912,6 +6913,5 @@ Blockly.Python['mpu9250_temp'] = function(block) {
 	var code = 'mpu9250s.temperature';
 	return [code, Blockly.Python.ORDER_NONE];
 };
-
 
 

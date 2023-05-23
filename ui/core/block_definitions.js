@@ -1664,8 +1664,13 @@ Blockly.Blocks['tm1637_set_temperature'] = {
     this.appendValueInput("temperature")
       .setCheck("Number")
       .setAlign(Blockly.ALIGN_RIGHT)
-      .appendField("Temperature (°C)");
-
+      .appendField("Temperature");
+    this.appendDummyInput()
+      .appendField("Degrees")
+      .appendField(new Blockly.FieldDropdown([
+                   ['C', 'True'],
+                   ['F', 'False']
+      ]), 'DEGREE_TYPE');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -12928,5 +12933,4 @@ Blockly.Blocks['mpu9250_temp'] = {
     this.setHelpUrl("");
   }
 };
-
 
