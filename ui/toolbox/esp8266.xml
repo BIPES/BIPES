@@ -2012,8 +2012,7 @@ _
           </shadow>
         </value>
       </block>
-      <block type="mqtt_publish_payload">
-<category name="%{BKY_CAT_ULTRASOUND}">        <value name="topic">
+      <block type="mqtt_publish_payload">    <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
           </shadow>
