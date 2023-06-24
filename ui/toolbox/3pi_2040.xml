@@ -590,6 +590,68 @@
 
   <category name="Displays">
 
+    <category name="RGB LEDs">
+      <label text="RGB LEDs"></label>
+      <block type="threepi_rgb_leds_set">
+        <value name="address">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+
+        <value name="color">
+          <block type="neopixel_color_colors"></block>
+        </value>
+      </block>
+      <block type="neopixel_color_numbers">
+       <value name="red">
+        <shadow type="math_number">
+          <field name="NUM">50</field>
+        </shadow>
+       </value>
+       <value name="green">
+        <shadow type="math_number">
+          <field name="NUM">152</field>
+        </shadow>
+       </value>
+       <value name="blue">
+        <shadow type="math_number">
+          <field name="NUM">220</field>
+        </shadow>
+       </value>
+      </block>
+
+
+      <block type="HSL_to_RGB">
+        <value name="hue">
+        <shadow type="math_number">
+          <field name="NUM">204</field>
+        </shadow>
+        </value>
+        <value name="saturation">
+        <shadow type="math_number">
+          <field name="NUM">70.8</field>
+        </shadow>
+        </value>
+        <value name="lightness">
+        <shadow type="math_number">
+          <field name="NUM">52.9</field>
+        </shadow>
+        </value>
+      </block>
+
+      <block type="threepi_rgb_leds_set_brightness">
+        <value name="brightness">
+          <shadow type="math_number">
+            <field name="NUM">31</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="threepi_rgb_leds_off"></block>
+      <block type="threepi_rgb_leds_show"></block>
+
+    </category>
+
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
       <button text="Install ssd1306 library" callbackKey="installPyLib"></button>

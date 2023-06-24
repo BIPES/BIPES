@@ -6538,3 +6538,36 @@ Blockly.Python['threepi_motors_off'] = function(block) {
 	return code
 };
 
+Blockly.Python['threepi_rgb_leds_set_brightness'] = function(block) {
+	var value_brightness = Blockly.Python.valueToCode(block, 'brightness', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
+	var code = 'threepi_rgb_leds.set_brightness(' + value_brightness + ')\n';
+	return code
+};
+
+Blockly.Python['threepi_rgb_leds_show'] = function(block) {
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
+	var code = 'threepi_rgb_leds.show()\n';
+	return code
+};
+
+Blockly.Python['threepi_rgb_leds_off'] = function(block) {
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
+	var code = 'threepi_rgb_leds.off()\n';
+	return code
+};
+
+Blockly.Python['threepi_rgb_leds_set'] = function(block) {
+	var value_address = Blockly.Python.valueToCode(block, 'address', Blockly.Python.ORDER_ATOMIC);
+	var value_color = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
+	var code = 'threepi_rgb_leds.set(' + value_address + ',' + value_color + ')\n';
+	return code
+};
+
