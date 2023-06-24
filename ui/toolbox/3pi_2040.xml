@@ -1215,6 +1215,36 @@
 
 
   <category name="Actuators">
+      <category name="Motors">
+        <label text="Motors"></label>
+          <block type="threepi_set_motor_speeds">
+            <value name="lspeed">
+              <shadow type="math_number">
+                <field name="NUM">1000</field>
+              </shadow>
+            </value>
+            <value name="rspeed">
+              <shadow type="math_number">
+                <field name="NUM">1000</field>
+              </shadow>
+            </value>
+          </block>
+          <block type="threepi_set_motor_left_speed">
+            <value name="speed">
+              <shadow type="math_number">
+                <field name="NUM">1000</field>
+              </shadow>
+            </value>
+          </block>
+          <block type="threepi_set_motor_right_speed">
+            <value name="speed">
+              <shadow type="math_number">
+                <field name="NUM">1000</field>
+              </shadow>
+            </value>
+          </block>
+          <block type="threepi_motors_off"></block>
+      </category>
 
 
     <category name="Relay">

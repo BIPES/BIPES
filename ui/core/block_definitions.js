@@ -12274,3 +12274,62 @@ Blockly.Blocks['mpu9250_temp'] = {
 };
 
 
+// Pololu 3pi+ 2040
+Blockly.Blocks['threepi_set_motor_left_speed'] = {
+  init: function() {
+    this.appendValueInput("speed")
+        .setCheck("Number")
+        .appendField("set motor left speed");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set motor left speed");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_set_motor_right_speed'] = {
+  init: function() {
+    this.appendValueInput("speed")
+        .setCheck("Number")
+        .appendField("set motor right speed");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set motor right speed");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_set_motor_speeds'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("set motor speeds");
+    this.appendValueInput("lspeed")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("left");
+    this.appendValueInput("rspeed")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("right");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set motor speeds");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_motors_off'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("motors off");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("motors off");
+    this.setHelpUrl("");
+  }
+};
+
