@@ -6613,3 +6613,30 @@ Blockly.Python['threepi_check_button_c'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
 };
 
+Blockly.Python['threepi_bump_calibrate'] = function(block) {
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
+	var code = 'threepi_bump_sensors.calibrate()\n';
+	return code
+};
+
+Blockly.Python['threepi_bump_read'] = function(block) {
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
+	var code = 'threepi_bump_sensors.read()\n';
+	return code
+};
+
+Blockly.Python['threepi_bump_left_is_pressed'] = function(block) {
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
+	var code = 'threepi_bump_sensors.left_is_pressed()';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['threepi_bump_right_is_pressed'] = function(block) {
+	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
+	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
+	var code = 'threepi_bump_sensors.right_is_pressed()';
+	return [code, Blockly.Python.ORDER_NONE];
+};

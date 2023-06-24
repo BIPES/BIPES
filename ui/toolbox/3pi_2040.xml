@@ -1082,6 +1082,14 @@
       <block type="threepi_check_button_c"></block>
     </category>
 
+    <category name="Bump">
+      <label text="Bump"></label>
+      <block type="threepi_bump_calibrate"></block>
+      <block type="threepi_bump_read"></block>
+      <block type="threepi_bump_left_is_pressed"></block>
+      <block type="threepi_bump_right_is_pressed"></block>
+    </category>
+
     <category name="DHT11/22 Sensor">
       <label text="DHT11/11 Temperature and Humidity Sensor"></label>
       <block type="dht_init">

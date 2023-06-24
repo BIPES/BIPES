@@ -12459,3 +12459,48 @@ Blockly.Blocks['threepi_check_button_c'] = {
   }
 };
 
+Blockly.Blocks['threepi_bump_calibrate'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Calibrate Bump");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("calibrate bump sensor");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_bump_read'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read Bump");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("read bump sensor");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_bump_left_is_pressed'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Bump Left");
+    this.setColour(230);
+    this.setTooltip("Check if left bump sensor is pressed");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_bump_right_is_pressed'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Bump Right");
+    this.setColour(230);
+    this.setTooltip("Check if right bump sensor is pressed");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
