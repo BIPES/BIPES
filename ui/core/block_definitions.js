@@ -12393,3 +12393,69 @@ Blockly.Blocks['threepi_rgb_leds_set'] = {
   }
 };
 
+Blockly.Blocks['threepi_read_button_a'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read A Button");
+    this.setColour(230);
+    this.setTooltip("Read the A button");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_read_button_b'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read B Button");
+    this.setColour(230);
+    this.setTooltip("Read the B button");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_read_button_c'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read C Button");
+    this.setColour(230);
+    this.setTooltip("Read the C button");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_check_button_a'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Check A Button");
+    this.setColour(230);
+    this.setTooltip("Check the A button for press");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_check_button_b'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Check B Button");
+    this.setColour(230);
+    this.setTooltip("Check the B button for press");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_check_button_c'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Check C Button");
+    this.setColour(230);
+    this.setTooltip("Check the C button for press");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+

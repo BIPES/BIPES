@@ -1072,6 +1072,16 @@
   </category>
 
   <category name="Sensors">
+    <category name="Buttons">
+      <label text="Buttons"></label>
+      <block type="threepi_read_button_a"></block>
+      <block type="threepi_read_button_b"></block>
+      <block type="threepi_read_button_c"></block>
+      <block type="threepi_check_button_a"></block>
+      <block type="threepi_check_button_b"></block>
+      <block type="threepi_check_button_c"></block>
+    </category>
+
     <category name="DHT11/22 Sensor">
       <label text="DHT11/11 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
