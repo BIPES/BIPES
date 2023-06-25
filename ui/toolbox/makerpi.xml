@@ -621,7 +621,7 @@
   </category>
 
 
-  <category name="Displays">
+  <category name="%{BKY_CAT_DISPLAYS}">
 
     <category name="OLED Display">
       <label text="SSD1306 OLED I2C Display"></label>
@@ -875,7 +875,7 @@
 
 
 
-  <category name="Character display">
+  <category name="%{BKY_CAT_CHAR_DISP}">
       <label text="PCF8574 Display controller"></label>
 
       <label text="Library: https://github.com/dhylands/python_lcd"></label>
@@ -1042,8 +1042,8 @@
 
   </category>
 
-  <category name="Sensors">
-    <category name="DHT11/22 Sensor">
+  <category name="%{BKY_CAT_SENSORS}">
+    <category name="%{BKY_CAT_TEMP_HUMI}">
       <label text="DHT11/11 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
@@ -1065,10 +1065,10 @@
     </category>
 
 
-  <category name="Ultrasound">
-      <label text="HCSR04 ultrasound distance sensor"></label>
+  <category name="%{BKY_CAT_ULTRASOUND}">
+      <label text="%{BKY_TXT_ULTRASOUND_DESCRIPTION}"></label>
       <label text="Library: https://github.com/rsc1975/micropython-hcsr04"></label>
-        <button text="Install HCSR04 library" callbackKey="installPyLib"></button>
+        <button text="%{BKY_TXT_ULTRASOUND_LIB}" callbackKey="installPyLib"></button>
 
 
       <block type="hcsr_init">
@@ -1136,7 +1136,7 @@
 
   </category>
 
-  <category name="Inertial Measurement">
+  <category name="%{BKY_CAT_IMU}">
       <label text="MPU6050 IMU"></label>
    <label text="Library: https://github.com/"></label>
         <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
@@ -1248,11 +1248,11 @@
   </category>
 
 
-  <category name="Actuators">
+  <category name="%{BKY_CAT_OUTPUTS}">
 
 
-    <category name="Relay">
-      <label text="Relay"></label>
+    <category name="%{BKY_CAT_RELAY}">
+      <label text="%{BKY_CAT_RELAY}"></label>
       <block type="relay_switch">
         <value name="pin">
           <shadow type="pinout">
@@ -1262,8 +1262,8 @@
       </block>
     </category>
 
-  <category name="RC Servo">
-      <label text="Hobby RC Servo Motor"></label>
+  <category name="%{BKY_CAT_SERVO}">
+      <label text="%{BKY_TXT_SERVO_DESCRIPTION}"></label>
     <block type="init_servo">
         <value name="pin">
           <shadow type="pinout">
@@ -1284,8 +1284,8 @@
 
   </category>
 
-  <category name="Communication">
-      <label text="Communication"></label>
+  <category name="%{BKY_CAT_COMM}">
+      <label text="%{BKY_CAT_COMM}"></label>
       <category name="UART">
       <label text="UART Serial Port"></label>
 <block type="uart_init">
@@ -1371,7 +1371,7 @@
   </category>
 
 
-  <category name="Files">
+  <category name="%{BKY_CAT_FILES}">
       <label text="Read and write files"></label>
 <block type="file_open_write">
 
@@ -1499,7 +1499,7 @@
 
 
 
-  <category name="Network">
+  <category name="%{BKY_CAT_NET}">
     <block type="wifi_client_connect">
       <field name="NAME">Connect to Wifi network</field>
       <value name="wifi_client_essid">

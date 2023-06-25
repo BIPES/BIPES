@@ -385,7 +385,7 @@
     </block>
   </category>
 
-  <category name="RC Servo Motor">
+  <category name="%{BKY_CAT_SERVO}">
       <label text="Snek RC Servo Motor"></label>
     <block type="snek_servo_move">
       <value name="pin">
