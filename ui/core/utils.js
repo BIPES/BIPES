@@ -674,7 +674,7 @@ class files {
         this.watcher_calledCount = 0;
         mux.bufferPush (`import os, sys; os.stat('${src_fname}')\r`);
         //mux.bufferPush (`import uos, sys; uos.stat('${src_fname}')\r`);
-        mux.bufferPush (`with open('${src_fname}', 'rb') as infile:\rwhile True:\rresult = infile.read(32)\rif result == b'':\rbreak\r\blen = sys.stdout.write(result)\r`, () => {}); //Includes dummy callback due to '>>> '
+        mux.bufferPush (`with open('${src_fname}', 'rb') as infile:\rwhile True:\rresult = infile.read(32)\rif result == b'':\rbreak\r\b_bytes_written = sys.stdout.write(result)\r`, () => {}); //Includes dummy callback due to '>>> '
         mux.bufferPush ("\r\r\r", () => {
           this.watcher = setInterval ( () => {
             if (Files.get_file_webserial_ ()) {
