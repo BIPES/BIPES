@@ -380,36 +380,36 @@
   </category>
 
   <category name="Motors">
-    <label text="Motors"></Label>
-      <block type="motor_init">
-       <value name="right_forward">
-          <shadow type="pinout">
-            <field name="Right Forward"></field>
-          </shadow>
-       </value>
-       <value name="right_reverse">
-          <shadow type="pinout">
-            <field name="Right Reverse"></field>
-          </shadow>
-       </value>
-       <value name="left_forward">
-          <shadow type="pinout">
-            <field name="Left Forward"></field>
-          </shadow>
-       </value>
-       <value name="left_reverse">
-          <shadow type="pinout">
-            <field name="Left Reverse"></field>
-          </shadow>
-       </value>
-      </block>
-      <block type="forward_fast"></block>
-      <block type="forward_slow"></block>
-      <block type="reverse_fast"></block>
-      <block type="reverse_slow"></block>
-      <block type="left"></block>
-      <block type="right"></block>
-      <block type="stop"></block>
+    <label text="Motors"></label>
+    <block type="motor_init">
+      <value name="right_forward">
+        <shadow type="pinout">
+          <field name="Right Forward"></field>
+        </shadow>
+      </value>
+      <value name="right_reverse">
+        <shadow type="pinout">
+          <field name="Right Reverse"></field>
+        </shadow>
+      </value>
+      <value name="left_forward">
+        <shadow type="pinout">
+          <field name="Left Forward"></field>
+        </shadow>
+      </value>
+      <value name="left_reverse">
+        <shadow type="pinout">
+          <field name="Left Reverse"></field>
+        </shadow>
+      </value>
+    </block>
+    <block type="forward_fast"></block>
+    <block type="forward_slow"></block>
+    <block type="reverse_fast"></block>
+    <block type="reverse_slow"></block>
+    <block type="left"></block>
+    <block type="right"></block>
+    <block type="stop"></block>
   </category>
 
   <category name="Sounds">
