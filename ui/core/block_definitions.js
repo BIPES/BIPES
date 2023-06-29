@@ -12330,6 +12330,66 @@ Blockly.Python['threepi_motors_off'] = function(block) {
 	return code
 };
 
+Blockly.Blocks['threepi_rgb_leds_set_brightness'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs set");
+    this.appendValueInput("brightness")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("brightness");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set RGB LEDs brightness");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_rgb_leds_show'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs show");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("show RGB LEDs");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_rgb_leds_off'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs off");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("turn off RGB LEDs");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_rgb_leds_set'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs set");
+    this.appendValueInput("address")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("LED");
+      this.appendValueInput("color")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("Color");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("control RGB LEDs");
+    this.setHelpUrl("");
+  }
+};
+
 Blockly.Blocks['threepi_read_button_a'] = {
   init: function() {
     this.appendDummyInput()
