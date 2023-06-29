@@ -12274,6 +12274,238 @@ Blockly.Blocks['mpu9250_temp'] = {
 };
 
 
+
+// Pololu 3pi+ 2040
+Blockly.Blocks['threepi_set_motor_left_speed'] = {
+  init: function() {
+    this.appendValueInput("speed")
+        .setCheck("Number")
+        .appendField("set motor left speed");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set motor left speed");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_set_motor_right_speed'] = {
+  init: function() {
+    this.appendValueInput("speed")
+        .setCheck("Number")
+        .appendField("set motor right speed");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set motor right speed");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_set_motor_speeds'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("set motor speeds");
+    this.appendValueInput("lspeed")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("left");
+    this.appendValueInput("rspeed")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("right");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set motor speeds");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_motors_off'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("motors off");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("motors off");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_rgb_leds_set_brightness'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs set");
+    this.appendValueInput("brightness")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("brightness");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("set RGB LEDs brightness");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_rgb_leds_show'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs show");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("show RGB LEDs");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_rgb_leds_off'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs off");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("turn off RGB LEDs");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_rgb_leds_set'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("RGB LEDs set");
+    this.appendValueInput("address")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("LED");
+      this.appendValueInput("color")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("Color");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("control RGB LEDs");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_read_button_a'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read A Button");
+    this.setColour(230);
+    this.setTooltip("Read the A button");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_read_button_b'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read B Button");
+    this.setColour(230);
+    this.setTooltip("Read the B button");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_read_button_c'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read C Button");
+    this.setColour(230);
+    this.setTooltip("Read the C button");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_check_button_a'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Check A Button");
+    this.setColour(230);
+    this.setTooltip("Check the A button for press");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_check_button_b'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Check B Button");
+    this.setColour(230);
+    this.setTooltip("Check the B button for press");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_check_button_c'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Check C Button");
+    this.setColour(230);
+    this.setTooltip("Check the C button for press");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_bump_calibrate'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Calibrate Bump");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("calibrate bump sensor");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_bump_read'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Read Bump");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("read bump sensor");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_bump_left_is_pressed'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Bump Left");
+    this.setColour(230);
+    this.setTooltip("Check if left bump sensor is pressed");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['threepi_bump_right_is_pressed'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Bump Right");
+    this.setColour(230);
+    this.setTooltip("Check if right bump sensor is pressed");
+    this.setOutput(true, null);
+    this.setHelpUrl("");
+  }
+};
+
 //Database Blocks
 
 Blockly.Blocks['db_connect'] = {
@@ -12336,3 +12568,4 @@ Blockly.Blocks['data_value'] = {
  this.setHelpUrl("");
   }
 };
+
