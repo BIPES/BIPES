@@ -1,6 +1,11 @@
 	echo "Generating offline version"
 	echo > ui/index_offline.html
 	cat ui/index.html >> ui/index_offline.html
+	echo "Including file ui/toolbox/3pi_2040.xml" 
+	echo -n "<document style='display: none' id='"OFFLINE_ >> ui/index_offline.html
+	echo -n ui/toolbox/3pi_2040.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html
+	echo  "'>" >> ui/index_offline.html
+	cat ui/toolbox/3pi_2040.xml | grep -v "<document>" >> ui/index_offline.html
 	echo "Including file ui/toolbox/arduino.xml" 
 	echo -n "<document style='display: none' id='"OFFLINE_ >> ui/index_offline.html
 	echo -n ui/toolbox/arduino.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html
