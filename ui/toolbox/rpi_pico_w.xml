@@ -1678,61 +1678,61 @@
 
 
   <category name="Files">
-      <label text="Read and write files"></label>
+    <label text="Read and write files"></label>
 <block type="file_open_write">
-
+  <value name="fileHandle">
+    <shadow type="text">
+      <field name="TEXT">f</field>
+    </shadow>
+  </value>
   <value name="filename">
         <shadow type="text">
           <field name="TEXT">file.txt</field>
         </shadow>
       </value>
-
 </block>
+
 <block type="file_open_read">
-
+  <value name="fileHandle">
+    <shadow type="text">
+      <field name="TEXT">f</field>
+    </shadow>
+  </value>
   <value name="filename">
         <shadow type="text">
           <field name="TEXT">file.txt</field>
         </shadow>
       </value>
-
-
 </block>
+
 <block type="file_write">
-
-
+  <value name="fileHandle">
+    <shadow type="text">
+      <field name="TEXT">f</field>
+    </shadow>
+  </value>
   <value name="data">
         <shadow type="text">
           <field name="TEXT">File contents</field>
         </shadow>
       </value>
-
-
-  <value name="filename">
-        <shadow type="text">
-          <field name="TEXT">file.txt</field>
-        </shadow>
-      </value>
-
 </block>
+
 <block type="file_read">
 
-  <value name="filename">
+  <value name="fileHandle">
         <shadow type="text">
-          <field name="TEXT">file.txt</field>
+          <field name="TEXT">f</field>
         </shadow>
       </value>
-
 </block>
-<block type="file_close">
 
-  <value name="filename">
+<block type="file_close">
+  <value name="fileHandle">
         <shadow type="text">
-          <field name="TEXT">file.txt</field>
+          <field name="TEXT">f</field>
         </shadow>
       </value>
-
-
 </block>
 
       <label text="Disk file operations"></label>

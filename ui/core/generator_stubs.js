@@ -4927,8 +4927,9 @@ Blockly.Python['file_open'] = function(block) {
 };
 
 Blockly.Python['file_open_write'] = function(block) {
-  var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
-  var code = 'f = open(' + pIn + ', \'a+\')\n';
+	var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
+	var pHandle = Blockly.Python.valueToCode(block, 'fileHandle', Blockly.Python.ORDER_ATOMIC);
+	var code = pHandle + ' = open(' + pIn + ', \'a+\')\n';
   //var code = 'f = open(' + pIn + ', \'w\')\n';
   return code;
 };
@@ -4936,14 +4937,16 @@ Blockly.Python['file_open_write'] = function(block) {
 
 Blockly.Python['file_open_read'] = function(block) {
   var pIn = Blockly.Python.valueToCode(block, 'filename', Blockly.Python.ORDER_ATOMIC);
-  var code = 'f = open(' + pIn + ')\n';
+  var pHandle = Blockly.Python.valueToCode(block, 'fileHandle', Blockly.Python.ORDER_ATOMIC);
+  var code = pHandle + ' = open(' + pIn + ')\n';
+//  var code = 'f = open(' + pIn + ')\n';
   return code;
 };
 
 Blockly.Python['file_close'] = function(block) {
-  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var pHandle = Blockly.Python.nameDB_.getName(block.getFieldValue('fileHandle'), Blockly.VARIABLE_CATEGORY_NAME);
  
-  var code = variable_filename + '.close()\n';
+  var code = pHandle + '.close()\n';
   return code;
 };
 
@@ -4955,9 +4958,9 @@ Blockly.Python['file_close_old'] = function(block) {
 };
 
 Blockly.Python['file_read'] = function(block) {
-  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
+  var pHandle = Blockly.Python.nameDB_.getName(block.getFieldValue('fileHandle'), Blockly.VARIABLE_CATEGORY_NAME);
  
-  var code = variable_filename + '.read()\n';
+  var code = pHandle + '.read()\n';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -4969,10 +4972,10 @@ Blockly.Python['file_read_old'] = function(block) {
 };
 
 Blockly.Python['file_write'] = function(block) {
-  var variable_filename = Blockly.Python.nameDB_.getName(block.getFieldValue('filename'), Blockly.VARIABLE_CATEGORY_NAME);
-  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
+	var pHandle = Blockly.Python.nameDB_.getName(block.getFieldValue('fileHandle'), Blockly.VARIABLE_CATEGORY_NAME);
+	var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
  
-  var code = variable_filename + '.write(' + value_data + ')\n';
+  var code = pHandle + '.write(' + value_data + ')\n';
 
   return code;
 };

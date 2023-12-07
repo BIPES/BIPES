@@ -2231,9 +2231,14 @@ Blockly.Blocks['tm1640_custom'] = {
 Blockly.Blocks['file_open_write'] = {
   init: function() {
    this.appendDummyInput()
-        .appendField("Open text file for writing");
+        .appendField("Open text file for writing");;
+        
+        this.appendValueInput("fileHandle")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("handle");
 
- this.appendValueInput("filename")
+        this.appendValueInput("filename")
         .setCheck("String")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("filename");
@@ -2249,13 +2254,18 @@ Blockly.Blocks['file_open_write'] = {
 
 Blockly.Blocks['file_open_read'] = {
   init: function() {
-   this.appendDummyInput()
-        .appendField("Open text file for reading");
+    this.appendDummyInput()
+      .appendField("Open text file for reading");
 
- this.appendValueInput("filename")
-        .setCheck("String")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("filename");
+    this.appendValueInput("fileHandle")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("handle");
+
+    this.appendValueInput("filename")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("filename");
 
  this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -2269,8 +2279,11 @@ Blockly.Blocks['file_open_read'] = {
 Blockly.Blocks['file_close'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(MSG["file_close"])
-        .appendField(new Blockly.FieldVariable("file"), "filename");
+        .appendField(MSG["file_close"]);
+    this.appendValueInput("fileHandle")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("handle");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -2301,12 +2314,15 @@ Blockly.Blocks['file_close_old'] = {
 Blockly.Blocks['file_write'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Write to file")
-        .appendField(new Blockly.FieldVariable("file"), "filename");
+      .appendField("Write to file");
+    this.appendValueInput("fileHandle")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("handle");
     this.appendValueInput("data")
-        .setCheck(null)
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Data:");
+      .setCheck(null)
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Data:");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -2404,8 +2420,11 @@ Blockly.Blocks['file_open'] = {
 Blockly.Blocks['file_read'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Read data from the file")
-        .appendField(new Blockly.FieldVariable("file"), "filename");
+        .appendField("Read data from the file");
+    this.appendValueInput("fileHandle")
+        .setCheck("String")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("fileHandle");
     this.setOutput(true, null);
     this.setColour(230);
  this.setTooltip("Read data from a file");
