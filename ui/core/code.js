@@ -700,6 +700,12 @@ Code.init = function() {
           reader.readAsText(max30100Blob);
         } else if (lib == "tm1637") {
           reader.readAsText(tm1637Blob);
+        } else if (lib == "gy33uart") {
+          lib = "gy33UART"
+          reader.readAsText(gy33UARTBlob);
+        } else if (lib == "gy33i2c") {
+          lib = "gy33I2C"
+          reader.readAsText(gy33I2CBlob);
         } else {
           console.log("Blob file not available for: " + lib + " library.");
         }

@@ -5689,6 +5689,119 @@ Blockly.Python['max30100_ir'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+//GY33 I2C Module
+Blockly.Python['gy33_i2c_init'] = function(block) {
+	var id = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var freq = Blockly.Python.valueToCode(block, 'freq', Blockly.Python.ORDER_ATOMIC);
+	var addr = Blockly.Python.valueToCode(block, 'addr', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_i2c_pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_gy33_i2c'] = 'import gy33I2C';
+
+	var code =  'i2cGY33 = I2C(id=' + id + ', sda=Pin(' + sda + '), scl=Pin(' + scl + '), freq=' + freq + ')\n';
+	    code += 'gy33_i2c = gy33I2C.GY33_I2C(i2cGY33, ' + addr + ')\n';
+	return code;
+};
+Blockly.Python['gy33_i2c_led_pwr'] = function(block) {
+	var pwr = Blockly.Python.valueToCode(block, 'led_pwr', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'gy33_i2c.set_led(' + pwr + ')\n';
+	return code;
+};
+Blockly.Python['gy33_i2c_cal_white_balance'] = function(block) {
+	var code = 'gy33_i2c.calibrate_white_balance()\n';
+	return code;
+};
+Blockly.Python['gy33_i2c_cal_white'] = function(block) {
+	var code = 'gy33_i2c.calibrate_white()\n';
+	return code;
+};
+Blockly.Python['gy33_i2c_cal_black'] = function(block) {
+	var code = 'gy33_i2c.calibrate_black()\n';
+	return code;
+};
+Blockly.Python['gy33_i2c_get_raw'] = function(block) {
+	var code = 'gy33_i2c.read_raw()\n';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+Blockly.Python['gy33_i2c_get_all'] = function(block) {
+	var code = 'gy33_i2c.read_all()\n';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+Blockly.Python['gy33_i2c_get_calibrated'] = function(block) {
+	var code = 'gy33_i2c.read_calibrated()';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+  
+
+
+//GY33 UART Module
+Blockly.Python['gy33_uart_init'] = function(block) {
+	var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
+	var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
+	var bps = Blockly.Python.valueToCode(block, 'bps', Blockly.Python.ORDER_ATOMIC);
+	var uart = Blockly.Python.valueToCode(block, 'uart', Blockly.Python.ORDER_ATOMIC);
+
+	Blockly.Python.definitions_['import_uart_pin'] = 'from machine import UART, Pin';
+	Blockly.Python.definitions_['import_gy33_uart'] = 'import gy33UART';
+
+	var code =  'uartGY33 = UART(' + uart + ', baudrate = ' + bps + ', tx=Pin(' + tx + '), rx=Pin(' + rx + '))\n';
+	    code += 'gy33_uart = gy33UART.GY33_UART(uartGY33)\n';
+		code += 'gy33_uart.set_output(False, False, False)\n';
+	return code;
+};
+Blockly.Python['gy33_uart_led_pwr'] = function(block) {
+	var pwr = Blockly.Python.valueToCode(block, 'led_pwr', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'gy33_uart.set_led(' + pwr + ')\n';
+	return code;
+};
+Blockly.Python['gy33_uart_integration_time'] = function(block) {
+	var time = block.getFieldValue('TIME');
+
+	var code = 'gy33_uart.set_integration_time(' + time + ')\n';
+	return code;
+};
+Blockly.Python['gy33_uart_uart_baud_rate'] = function(block) {
+	var baudrate = block.getFieldValue('BAUDRATE');
+
+	var code = 'gy33_uart.set_baudrate(' + baudrate + ')\n';
+	return code;
+};
+Blockly.Python['gy33_uart_i2c_addr'] = function(block) {
+	var addr = Blockly.Python.valueToCode(block, 'addr', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'gy33_uart.set_i2c_addr(' + addr + ')\n';
+	return code;
+};
+Blockly.Python['gy33_uart_cal_white_balance'] = function(block) {
+	var code = 'gy33_uart.calibrate_white_balance()\n';
+	return code;
+};
+Blockly.Python['gy33_uart_cal_white'] = function(block) {
+	var code = 'gy33_uart.calibrate_white()\n';
+	return code;
+};
+Blockly.Python['gy33_uart_cal_black'] = function(block) {
+	var code = 'gy33_uart.calibrate_black()\n';
+	return code;
+};
+Blockly.Python['gy33_uart_get_raw'] = function(block) {
+	var code = 'gy33_uart.get_raw()\n';
+	return [code, Blockly.Python.ORDER_NONE];
+};
+Blockly.Python['gy33_uart_get_lcc'] = function(block) {
+var code = 'gy33_uart.get_lcc()\n';
+return [code, Blockly.Python.ORDER_NONE];
+};
+Blockly.Python['gy33_uart_get_processed'] = function(block) {
+var code = 'gy33_uart.get_processed()';
+return [code, Blockly.Python.ORDER_NONE];
+};
+  
+
 //GPS Module
 Blockly.Python['gps_init'] = function(block) {
 	var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
@@ -5699,7 +5812,7 @@ Blockly.Python['gps_init'] = function(block) {
 	Blockly.Python.definitions_['import_uart'] = 'from machine import UART';
 	Blockly.Python.definitions_['import_micropyGPS'] = 'from mini_micropyGPS import MicropyGPS';
 
-	var code =  'uartGPS = UART(' + uart + ', tx=' + tx + ', rx=' + rx + ')\n';
+	var code =  'uartGPS = UART(' + uart + ', tx=Pin(' + tx + '), rx=Pin(' + rx + '))\n';
 	    code += 'uartGPS.init(' + bps + ', bits=8, parity=None, stop=1)\n';
 	    code += 'gps = MicropyGPS()\n';
 	return code;

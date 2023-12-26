@@ -1341,6 +1341,137 @@
 
   </category>
 
+  <category name="GY33 I2C">
+    <label text="GY33 Color Sensor - I2C"></label>
+    <label text="Library: https://github.com/QuirkyCort/micropython-gy33"></label>
+    <button text="Install gy33I2C library" callbackKey="installPyLib"></button>
+
+    <block type="gy33_i2c_init">
+      <value name="id">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA"></field>
+        </shadow>
+      </value>
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL"></field>
+        </shadow>
+      </value>
+      <value name="freq">
+        <shadow type="math_number">
+          <field name="NUM">100000</field>
+        </shadow>
+      </value>
+      <value name="addr">
+        <shadow type="math_number">
+          <field name="NUM">90</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="gy33_i2c_led_pwr">
+      <value name="led_pwr">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="gy33_i2c_cal_white_balance">
+    </block>
+
+    <block type="gy33_i2c_cal_white">
+    </block>
+
+    <block type="gy33_i2c_cal_black">
+    </block>
+
+    <block type="gy33_i2c_get_all">
+    </block>
+
+    <block type="gy33_i2c_get_raw">
+    </block>
+
+    <block type="gy33_i2c_get_calibrated">
+    </block>
+
+  </category>
+
+  <category name="GY33 UART">
+    <label text="GY33 Color Sensor - UART"></label>
+    <label text="Library: https://github.com/QuirkyCort/micropython-gy33"></label>
+    <button text="Install gy33UART library" callbackKey="installPyLib"></button>
+
+    <block type="gy33_uart_init">
+      <value name="uart">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="tx">
+        <shadow type="pinout">
+          <field name="TX"></field>
+        </shadow>
+      </value>
+      <value name="rx">
+        <shadow type="pinout">
+          <field name="RX"></field>
+        </shadow>
+      </value>
+      <value name="bps">
+        <shadow type="math_number">
+          <field name="NUM">9600</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="gy33_uart_led_pwr">
+      <value name="led_pwr">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="gy33_uart_integration_time">
+    </block>
+
+    <block type="gy33_uart_baud_rate">
+    </block>
+
+    <block type="gy33_uart_i2c_addr">
+      <value name="addr">
+        <shadow type="math_number">
+          <field name="NUM">41</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="gy33_uart_cal_white_balance">
+    </block>
+
+    <block type="gy33_uart_cal_white">
+    </block>
+
+    <block type="gy33_uart_cal_black">
+    </block>
+
+    <block type="gy33_uart_get_raw">
+    </block>
+
+    <block type="gy33_uart_get_lcc">
+    </block>
+
+    <block type="gy33_uart_get_processed">
+    </block>
+
+  </category>
+
   <category name="GPS">
       <label text="Global Positioning System sensor"></label>
    <label text="Library: https://github.com/"></label>

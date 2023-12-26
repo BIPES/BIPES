@@ -11014,6 +11014,303 @@ Blockly.Blocks['max30100_ir'] = {
   }
 };
 
+// GY33 I2C
+//
+Blockly.Blocks['gy33_i2c_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init GY33 I2C Module");
+
+  this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/GY-33.jpg",
+        65,
+        65,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+  this.appendValueInput("id")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("ID");
+
+  this.appendValueInput("sda")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SDA");
+
+  this.appendValueInput("scl")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SCL");
+
+  this.appendValueInput("freq")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Frequency");
+
+      this.appendValueInput("addr")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Address");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Initalizes the GY-33 I2C Interface');
+  }
+};
+
+Blockly.Blocks['gy33_i2c_led_pwr'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Set LED Power");
+    this.appendValueInput("led_pwr")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Power");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Sets the brightness of the LED (0 - 10)');
+  }
+};
+  
+Blockly.Blocks['gy33_i2c_cal_white_balance'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("White Balance Calibrate");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Performs a white balance calibration. The sensor should first be placed on a suitable white surface.');
+  }
+};
+
+Blockly.Blocks['gy33_i2c_cal_white'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("White Calibrate");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Performs a white calibration. The sensor should first be placed on a suitable white surface.');
+  }
+};
+
+Blockly.Blocks['gy33_i2c_cal_black'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Black Calibrate");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Performs a black calibration. The sensor should first be placed on a suitable black surface.');
+  }
+};
+
+Blockly.Blocks['gy33_i2c_get_raw'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get Raw Data");
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Returns a tuple containing only the Raw Red, Raw Green, Raw Blue, Clear values.");
+  }
+};
+
+Blockly.Blocks['gy33_i2c_get_all'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get All Data");
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Returns a tuple containing the Raw Red, Raw Green, Raw Blue, Clear, Lux, Color Temperature, Red, Green, Blue, Color values");
+  }
+};
+
+Blockly.Blocks['gy33_i2c_get_calibrated'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get Calibrated Data");
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Returns a tuple containing only the calibrated Red, Green, Blue, and Clear values.");
+  }
+};
+
+// GY33 UART 
+//
+Blockly.Blocks['gy33_uart_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init GY33 UART Module");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/GY-33.jpg",
+        65,
+        65,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("uart")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("UART");
+
+    this.appendValueInput("tx")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("TX");
+
+    this.appendValueInput("rx")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("RX");
+
+    this.appendValueInput("bps")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Baud Rate");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Initalizes the GY-33 UART');
+  }
+};
+
+Blockly.Blocks['gy33_uart_led_pwr'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Set LED Power");
+    this.appendValueInput("led_pwr")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Power");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Sets the brightness of the LED (0 - 10)');
+  }
+};
+
+Blockly.Blocks['gy33_uart_integration_time'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Set Integration Time");
+    this.appendDummyInput()
+      .appendField("Time (ms)")
+      .appendField(new Blockly.FieldDropdown([
+        ['700', '700'],
+        ['154', '154'],
+        ['100 (Default)', '100'],
+        ['24', '24'],
+        ['2.4', '2.4']
+]), 'TIME');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Sets the integration time in milliseconds');
+  }
+};
+
+Blockly.Blocks['gy33_uart_baud_rate'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Set Internal UART Baudrate");
+    this.appendDummyInput()
+      .appendField("Time (ms)")
+      .appendField(new Blockly.FieldDropdown([
+        ['9600', '9600'],
+        ['115200', '115200']
+]), 'BAUDRATE');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Sets the baudrate');
+  }
+};
+
+Blockly.Blocks['gy33_uart_i2c_addr'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Set I2C Address");
+    this.appendValueInput("addr")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Address");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Sets the desired i2c address. Must be between 0 to 127');
+  }
+};
+
+Blockly.Blocks['gy33_uart_cal_white_balance'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("White Balance Calibrate");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Performs a white balance calibration. The sensor should first be placed on a suitable white surface.');
+  }
+};
+
+Blockly.Blocks['gy33_uart_cal_white'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("White Calibrate");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Performs a white calibration. The sensor should first be placed on a suitable white surface.');
+  }
+};
+
+Blockly.Blocks['gy33_uart_cal_black'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Black Calibrate");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Performs a black calibration. The sensor should first be placed on a suitable black surface.');
+  }
+};
+
+Blockly.Blocks['gy33_uart_get_raw'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get Raw Data");
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Returns a list containing the raw Red, Green, Blue, Clear values.");
+  }
+};
+
+Blockly.Blocks['gy33_uart_get_lcc'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get LCC Data");
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Returns a list containing the Lux (brightness), Color Temperature, Color values.");
+  }
+};
+
+Blockly.Blocks['gy33_uart_get_processed'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get Processed Data");
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Returns a list containing the processed Red, Green, Blue values.");
+  }
+};
+
 //GPS Module
 //
 Blockly.Blocks['gps_init'] = {
