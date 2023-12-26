@@ -1285,14 +1285,16 @@
         </shadow>
       </value>
       </block>
-	<block type="gps_update"> </block>
-	<block type="gps_coord_format"> </block>
-	<block type="gps_get_lat"> </block>
-	<block type="gps_get_long"> </block>
-	<block type="gps_get_height"> </block>
-	<block type="gps_get_speed"> </block>
-	<block type="gps_get_date"> </block>
-	<block type="gps_get_time"> </block>
+    <block type="gps_update"> </block>
+    <block type="gps_coord_format"> </block>
+    <block type="gps_get_lat"> </block>
+    <block type="gps_get_long"> </block>
+    <block type="gps_get_height"> </block>
+    <block type="gps_get_speed"> </block>
+    <block type="gps_get_date">
+    </block>
+    <block type="gps_get_time">
+    </block>
   </category>
 
   <category name="Oximeter">
