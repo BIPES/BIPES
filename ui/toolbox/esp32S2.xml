@@ -1303,8 +1303,10 @@
       </block>
 	<block type="gps_get_speed">
       </block>
-	<block type="gps_get_datetime">
-      </block>
+  <block type="gps_get_date">
+  </block>
+  <block type="gps_get_time">
+  </block>
 
 
   </category>

@@ -1136,19 +1136,19 @@ Blockly.Blocks['init_oled'] = {
         //.setAlign(Blockly.ALIGN_CENTRE);
 
     this.appendValueInput("i2c")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("I2C");
-
-    this.appendValueInput("scl")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SCL");
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("I2C");
 
     this.appendValueInput("sda")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SDA");
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SDA");
+
+    this.appendValueInput("scl")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SCL");
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -12187,6 +12187,309 @@ Blockly.Blocks['bluetooth_repl_setup'] = {
  this.setHelpUrl("www.bipes.net.br");
   }
 };
+
+//Russ Hughes ST7789 display
+Blockly.Blocks['rh_st7789_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+      .appendField("Init SPI ST7789 TFT Display");
+
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/st7789.png",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("spi")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SPI");
+
+    this.appendValueInput("backlight")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Backlight");
+
+    this.appendValueInput("reset")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Reset");
+
+
+    this.appendValueInput("dc")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("DC");
+
+    this.appendValueInput("cs")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("CS");
+
+    this.appendValueInput("sck")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("SCK");
+
+    this.appendValueInput("mosi")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("MOSI");
+
+      this.appendValueInput("width")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Width");
+
+      this.appendValueInput("height")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Height");
+
+      this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Rotation")
+        .appendField(new Blockly.FieldDropdown([
+          ['Portrait', '0'],
+          ['Landscape', '1'],
+          ['Inverted Portrait', '2'],
+          ['Inverted Landscape', '3']
+        ]), 'ROTATION_TYPE');
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Initialize the TFT Display');
+  }
+};
+
+Blockly.Blocks['rh_st7789_fg_color_numbers'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Red");
+    this.appendValueInput("fg_red")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Green");
+    this.appendValueInput("fg_green")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Blue");
+    this.appendValueInput("fg_blue")
+        .setCheck(null);
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("TFT RGB ");
+  }
+};
+
+Blockly.Blocks['rh_st7789_bg_color_numbers'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Red");
+    this.appendValueInput("bg_red")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Green");
+    this.appendValueInput("bg_green")
+        .setCheck(null);
+    this.appendDummyInput()
+        .appendField("Blue");
+    this.appendValueInput("bg_blue")
+        .setCheck(null);
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip("TFT RGB ");
+  }
+};
+
+Blockly.Blocks['rh_st7789_text'] = {
+  init: function() {
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.appendDummyInput()
+      .appendField("Write text on the display\n");
+
+    this.appendValueInput("x")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("X position");
+
+    this.appendValueInput("y")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Y position");
+
+    this.appendValueInput("text")
+      .setCheck("String")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Text");
+
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Font")
+        .appendField(new Blockly.FieldDropdown([
+          ['8x8', 'vga2_8x8'],
+          ['8x16', 'vga2_8x16'],
+          ['16x16', 'vga2_16x16'],
+          ['16x32', 'vga2_16x32'],
+          ['Bold 16x16', 'vga2_bold_16x16'],
+          ['Bold 16x32', 'vga2_bold_16x32']
+        ]), 'FONT_TYPE');
+
+      this.appendValueInput("fg_color")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("Foreground Color");
+  
+      this.appendValueInput("bg_color")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck("Number")
+        .appendField("Background Color");
+  
+           
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Write Text on the TFT Display');
+  }
+};
+
+Blockly.Blocks['rh_st7789_rect'] = {
+  init: function() {
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.appendDummyInput()
+      .appendField("Draw a rectangle on the display\n");
+
+    this.appendValueInput("x")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("X position");
+
+    this.appendValueInput("y")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Y position");
+
+    this.appendValueInput("width")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Width");
+
+    this.appendValueInput("height")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Height");
+
+    this.appendValueInput("fg_color")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .setCheck("Number")
+      .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Draw a rectangle on the TFT Display');
+  }
+};
+
+Blockly.Blocks['rh_st7789_fill_rect'] = {
+  init: function() {
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.appendDummyInput()
+      .appendField("Draw a filled rectangle on the display\n");
+
+    this.appendValueInput("x")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("X position");
+
+    this.appendValueInput("y")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Y position");
+
+    this.appendValueInput("width")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Width");
+
+    this.appendValueInput("height")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Height");
+
+    this.appendValueInput("fg_color")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .setCheck("Number")
+      .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Draw a filled rectangle on the TFT Display');
+  }
+};
+
+Blockly.Blocks['rh_st7789_line'] = {
+  init: function() {
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.appendDummyInput()
+      .appendField("Draw on the display\n");
+
+    this.appendValueInput("x1")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Initial X position");
+
+    this.appendValueInput("y1")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Initial Y position");
+
+    this.appendValueInput("x2")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Final X position");
+
+    this.appendValueInput("y2")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Final Y position");
+
+    this.appendValueInput("fg_color")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .setCheck("Number")
+      .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Draw a line on the TFT Display');
+  }
+};
+
+Blockly.Blocks['rh_st7789_fill'] = {
+  init: function() {
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.appendDummyInput()
+      .appendField("Fill the display\n");
+
+    this.appendValueInput("fg_color")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .setCheck("Number")
+      .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Fill the TFT Display with a color');
+  }
+};
+
 
 //ST7789 display
 Blockly.Blocks['st7789_init'] = {

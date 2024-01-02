@@ -6331,6 +6331,123 @@ Blockly.Python['bluetooth_repl_setup'] = function(block) {
   return code;
 };
 
+//Russ Hughes ST7789 display
+Blockly.Python['rh_st7789_init'] = function(block) {
+	var bl = Blockly.Python.valueToCode(block, 'backlight', Blockly.Python.ORDER_ATOMIC);
+	var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);
+	var mosi = Blockly.Python.valueToCode(block, 'mosi', Blockly.Python.ORDER_ATOMIC);
+	var reset = Blockly.Python.valueToCode(block, 'reset', Blockly.Python.ORDER_ATOMIC);
+	var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
+	var dc = Blockly.Python.valueToCode(block, 'dc', Blockly.Python.ORDER_ATOMIC);
+	var spi = Blockly.Python.valueToCode(block, 'spi', Blockly.Python.ORDER_ATOMIC);
+	var width = Blockly.Python.valueToCode(block, 'width', Blockly.Python.ORDER_ATOMIC);
+	var height = Blockly.Python.valueToCode(block, 'height', Blockly.Python.ORDER_ATOMIC);
+	var rotation = block.getFieldValue('ROTATION_TYPE');
+  
+	Blockly.Python.definitions_['import_pin_spi'] = 'from machine import Pin, SPI';
+	Blockly.Python.definitions_['import_st7789'] = 'import st7789';
+	Blockly.Python.definitions_['import_vga2_8x8'] = 'import vga2_8x8';
+	Blockly.Python.definitions_['import_vga2_8x16'] = 'import vga2_8x16';
+	Blockly.Python.definitions_['import_vga2_16x16'] = 'import vga2_16x16';
+	Blockly.Python.definitions_['import_vga2_16x32'] = 'import vga2_16x32';
+	Blockly.Python.definitions_['import_bold_vga2_16x16'] = 'import vga2_bold_16x16';
+	Blockly.Python.definitions_['import_bold_vga2_16x32'] = 'import vga2_bold_16x32';
+
+
+	var code = 'spi'+spi+' = SPI(' + spi + ', baudrate=31250000, polarity=1, phase=0, sck=machine.Pin(' + sck + '), mosi=machine.Pin(' + mosi + '))\n';
+		code += 'tft = st7789.ST7789(spi'+spi+', ' + width + ',  ' + height + ', '
+		code += 'reset=Pin(' + reset + ', Pin.OUT), '
+		code += 'cs=Pin(' + cs + ', Pin.OUT), '
+		code += 'dc=Pin(' + dc + ', Pin.OUT),'
+		code += 'backlight=Pin(' + bl + ', Pin.OUT),'
+		code += 'rotation=' + rotation + ')\n';
+		code += 'tft.init()\n';
+	return code;
+}
+
+Blockly.Python['rh_st7789_fg_color_numbers'] = function(block) {
+	var value_red = Blockly.Python.valueToCode(block, 'fg_red', Blockly.Python.ORDER_ATOMIC);
+	var value_green = Blockly.Python.valueToCode(block, 'fg_green', Blockly.Python.ORDER_ATOMIC);
+	var value_blue = Blockly.Python.valueToCode(block, 'fg_blue', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = `${value_red},${value_green},${value_blue}`;
+  
+	return [code, Blockly.Python.ORDER_NONE];
+  };  
+
+  Blockly.Python['rh_st7789_bg_color_numbers'] = function(block) {
+	var value_red = Blockly.Python.valueToCode(block, 'bg_red', Blockly.Python.ORDER_ATOMIC);
+	var value_green = Blockly.Python.valueToCode(block, 'bg_green', Blockly.Python.ORDER_ATOMIC);
+	var value_blue = Blockly.Python.valueToCode(block, 'bg_blue', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = `${value_red},${value_green},${value_blue}`;
+  
+	return [code, Blockly.Python.ORDER_NONE];
+  };  
+
+Blockly.Python['rh_st7789_text'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var text = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+	var font = block.getFieldValue('FONT_TYPE');
+	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
+	var bg_color= Blockly.Python.valueToCode(block, 'bg_color', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tft.text(' + font + ', ' + text + ', ' + x + ', ' + y + ', '
+	    code += 'st7789.color565' + fg_color + ', '
+		code += 'st7789.color565' + bg_color + ')\n';
+	return code;
+}
+
+Blockly.Python['rh_st7789_rect'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var width = Blockly.Python.valueToCode(block, 'width', Blockly.Python.ORDER_ATOMIC);
+	var height = Blockly.Python.valueToCode(block, 'height', Blockly.Python.ORDER_ATOMIC);
+	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tft.rect(' + x + ', ' + y + ', '
+	    code += width + ', ' + height
+		code += ', st7789.color565' + fg_color + ')\n';
+	return code;
+}
+
+Blockly.Python['rh_st7789_fill_rect'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var width = Blockly.Python.valueToCode(block, 'width', Blockly.Python.ORDER_ATOMIC);
+	var height = Blockly.Python.valueToCode(block, 'height', Blockly.Python.ORDER_ATOMIC);
+	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tft.fill_rect(' + x + ', ' + y + ', '
+	    code += width + ', ' + height
+		code += ', st7789.color565' + fg_color + ')\n';
+	return code;
+}
+
+Blockly.Python['rh_st7789_line'] = function(block) {
+	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
+	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
+	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
+	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
+	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tft.line(' + x1 + ', ' + y1 + ', '
+	    code += x2 + ', ' + y2
+		code += ', st7789.color565' + fg_color + ')\n';
+	return code;
+}
+
+Blockly.Python['rh_st7789_fill'] = function(block) {
+	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tft.fill(st7789.color565' + fg_color + ')\n';
+	return code;
+}
+
+
+
+
 //ST7789 display
 Blockly.Python['st7789_init'] = function(block) {
   var bl = Blockly.Python.valueToCode(block, 'bl', Blockly.Python.ORDER_ATOMIC);

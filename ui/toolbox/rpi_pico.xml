@@ -586,14 +586,14 @@
             <field name="NUM">0</field>
           </shadow>
         </value>
-        <value name="scl">
-          <shadow type="pinout">
-            <field name="SCL"></field>
-          </shadow>
-        </value>
         <value name="sda">
           <shadow type="pinout">
-            <field name="SDA"></field>
+            <field name="PIN">0</field>
+          </shadow>
+        </value>
+        <value name="scl">
+          <shadow type="pinout">
+            <field name="PIN">1</field>
           </shadow>
         </value>
       </block>
@@ -703,6 +703,266 @@
       <block type="fill_oled"></block>
     </category>
 
+    <category name="TFT Display">
+      <label text="ST7789 TFT SPI Display"></label>
+      <label text="Use https://github.com/russhughes/st7789_mpy/tree/master/firmware/RP2 UF2 file"></label>
+  
+      <block type="rh_st7789_init">
+        <value name="spi">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="backlight">
+          <shadow type="pinout">
+            <field name="PIN">10</field>
+          </shadow>
+        </value>
+        <value name="reset">
+          <shadow type="pinout">
+            <field name="PIN">11</field>
+          </shadow>
+        </value>
+        <value name="dc">
+          <shadow type="pinout">
+            <field name="PIN">12</field>
+          </shadow>
+        </value>
+        <value name="cs">
+          <shadow type="pinout">
+            <field name="PIN">13</field>
+          </shadow>
+        </value>
+        <value name="sck">
+          <shadow type="pinout">
+            <field name="PIN">14</field>
+          </shadow>
+        </value>
+        <value name="mosi">
+          <shadow type="pinout">
+            <field name="PIN">15</field>
+          </shadow>
+        </value>
+        <value name="width">
+          <shadow type="math_number">
+            <field name="NUM">135</field>
+          </shadow>
+        </value>
+        <value name="height">
+          <shadow type="math_number">
+            <field name="NUM">240</field>
+          </shadow>
+        </value>
+      </block>
+
+     <block type="rh_st7789_text">
+        <value name="x">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="y">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="text">
+          <shadow type="text">
+            <field name="TEXT">Hello</field>
+          </shadow>
+        </value>
+        <value name="fg_color">
+        <block type="rh_st7789_fg_color_numbers">
+         <value name="fg_red">
+          <shadow type="math_number">
+            <field name="NUM">255</field>
+          </shadow>
+         </value>
+        <value name="fg_green">
+          <shadow type="math_number">
+            <field name="NUM">255</field>
+          </shadow>
+         </value>
+         <value name="fg_blue">
+          <shadow type="math_number">
+            <field name="NUM">255</field>
+          </shadow>
+         </value>
+        </block>
+       </value>
+       <value name="bg_color">
+        <block type="rh_st7789_bg_color_numbers">
+         <value name="bg_red">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+         <value name="bg_green">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+         <value name="bg_blue">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+         </value>
+        </block>
+       </value>
+      </block>
+
+      <block type="rh_st7789_rect">
+        <value name="x">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="y">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="width">
+          <shadow type="math_number">
+            <field name="NUM">135</field>
+          </shadow>
+        </value>
+        <value name="height">
+          <shadow type="math_number">
+            <field name="NUM">240</field>
+          </shadow>
+        </value>
+        <value name="fg_color">
+          <block type="rh_st7789_fg_color_numbers">
+            <value name="fg_red">
+              <shadow type="math_number">
+                <field name="NUM">255</field>
+              </shadow>
+            </value>
+            <value name="fg_green">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_blue">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+          </block>
+       </value>
+      </block>
+
+      <block type="rh_st7789_fill_rect">
+        <value name="x">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="y">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="width">
+          <shadow type="math_number">
+            <field name="NUM">135</field>
+          </shadow>
+        </value>
+        <value name="height">
+          <shadow type="math_number">
+            <field name="NUM">240</field>
+          </shadow>
+        </value>
+        <value name="fg_color">
+          <block type="rh_st7789_fg_color_numbers">
+            <value name="fg_red">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_green">
+              <shadow type="math_number">
+                <field name="NUM">255</field>
+              </shadow>
+            </value>
+            <value name="fg_blue">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+          </block>
+       </value>
+      </block>     
+
+      <block type="rh_st7789_line">
+        <value name="x1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="y1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="x2">
+          <shadow type="math_number">
+            <field name="NUM">135</field>
+          </shadow>
+        </value>
+        <value name="y2">
+          <shadow type="math_number">
+            <field name="NUM">240</field>
+          </shadow>
+        </value>
+        <value name="fg_color">
+          <block type="rh_st7789_fg_color_numbers">
+            <value name="fg_red">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_green">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_blue">
+              <shadow type="math_number">
+                <field name="NUM">255</field>
+              </shadow>
+            </value>
+          </block>
+       </value>
+      </block>
+      
+      <block type="rh_st7789_fill">
+        <value name="fg_color">
+          <block type="rh_st7789_fg_color_numbers">
+            <value name="fg_red">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_green">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_blue">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+          </block>
+       </value>
+      </block>
+      
+
+
+    </category>
+
     <category name="NeoPixel LED Strip">
       <label text="NeoPixel RGB LED Strip"></label>
 
@@ -713,7 +973,7 @@
       <block type="neopixel_init">
        <value name="pin">
           <shadow type="pinout">
-            <field name="Pin"></field>
+            <field name="PIN">0</field>
           </shadow>
        </value>
 
@@ -820,14 +1080,14 @@
 	          <field name="NUM">0</field>
 	        </shadow>
 	      </value>
-	      <value name="scl">
-	        <shadow type="pinout">
-	          <field name="SCL"></field>
-	        </shadow>
-	      </value>
 	      <value name="sda">
 	        <shadow type="pinout">
-	          <field name="SDA"></field>
+	          <field name="PIN">0</field>
+	        </shadow>
+	      </value>
+	      <value name="scl">
+	        <shadow type="pinout">
+	          <field name="PIN">1</field>
 	        </shadow>
 	      </value>
 				 <value name="rows">
@@ -932,18 +1192,18 @@
         </shadow>
       </value>
       <value name="clk">
-        <shadow type="math_number">
-          <field name="NUM">2</field>
+        <shadow type="pinout">
+          <field name="PIN">2</field>
         </shadow>
       </value>
       <value name="tx">
-        <shadow type="math_number">
-          <field name="NUM">3</field>
+        <shadow type="pinout">
+          <field name="PIN">3</field>
         </shadow>
       </value>
       <value name="cs">
-        <shadow type="math_number">
-          <field name="NUM">5</field>
+        <shadow type="pinout">
+          <field name="PIN">5</field>
         </shadow>
       </value>
     </block>
@@ -1136,12 +1396,12 @@
     <block type="tm1637_init">
       <value name="clk">
         <shadow type="pinout">
-          <field name="NUM"></field>
+          <field name="PIN">18</field>
         </shadow>
       </value>
       <value name="dio">
         <shadow type="pinout">
-          <field name="NUM"></field>
+          <field name="PIN">17</field>
         </shadow>
       </value>
     </block>
@@ -1476,7 +1736,6 @@
       <label text="Global Positioning System sensor"></label>
    <label text="Library: https://github.com/"></label>
         <button text="Install mini_micropyGPS library" callbackKey="installPyLib"></button>
-
     <block type="gps_init">
       <value name="uart">
         <shadow type="math_number">
