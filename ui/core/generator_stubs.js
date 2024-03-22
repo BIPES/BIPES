@@ -6425,6 +6425,30 @@ Blockly.Python['rh_st7789_fill_rect'] = function(block) {
 	return code;
 }
 
+Blockly.Python['rh_st7789_circle'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var radius = Blockly.Python.valueToCode(block, 'radius', Blockly.Python.ORDER_ATOMIC);
+	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tft.circle(' + x + ', ' + y + ', '
+	    code += width + ', ' + height
+		code += ', st7789.color565' + fg_color + ')\n';
+	return code;
+}
+
+Blockly.Python['rh_st7789_fill_circle'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var radius = Blockly.Python.valueToCode(block, 'radius', Blockly.Python.ORDER_ATOMIC);
+	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = 'tft.fill_circle(' + x + ', ' + y + ', '
+	    code += width + ', ' + height
+		code += ', st7789.color565' + fg_color + ')\n';
+	return code;
+}
+
 Blockly.Python['rh_st7789_line'] = function(block) {
 	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
 	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);

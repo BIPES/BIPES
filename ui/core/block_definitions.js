@@ -12434,6 +12434,72 @@ Blockly.Blocks['rh_st7789_fill_rect'] = {
   }
 };
 
+Blockly.Blocks['rh_st7789_circle'] = {
+  init: function() {
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.appendDummyInput()
+      .appendField("Draw a circle on the display\n");
+
+    this.appendValueInput("x")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("X position");
+
+    this.appendValueInput("y")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Y position");
+
+    this.appendValueInput("radius")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Radius");
+
+    this.appendValueInput("fg_color")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .setCheck("Number")
+      .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Draw a circle on the TFT Display');
+  }
+};
+
+Blockly.Blocks['rh_st7789_fill_circle'] = {
+  init: function() {
+    this.setColour(230);
+    this.setInputsInline(false);
+    this.appendDummyInput()
+      .appendField("Draw a filled circle on the display\n");
+
+    this.appendValueInput("x")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("X position");
+
+    this.appendValueInput("y")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Y position");
+
+    this.appendValueInput("radius")
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Radius");
+
+    this.appendValueInput("fg_color")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .setCheck("Number")
+      .appendField("Color");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Draw a filled circle on the TFT Display');
+  }
+};
+
 Blockly.Blocks['rh_st7789_line'] = {
   init: function() {
     this.setColour(230);

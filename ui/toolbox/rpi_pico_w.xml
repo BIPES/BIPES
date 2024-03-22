@@ -895,6 +895,80 @@
        </value>
       </block>     
 
+      <block type="rh_st7789_circle">
+        <value name="x">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="y">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="radius">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="fg_color">
+          <block type="rh_st7789_fg_color_numbers">
+            <value name="fg_red">
+              <shadow type="math_number">
+                <field name="NUM">255</field>
+              </shadow>
+            </value>
+            <value name="fg_green">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_blue">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+          </block>
+       </value>
+      </block>
+
+      <block type="rh_st7789_fill_circle">
+        <value name="x">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="y">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="radius">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="fg_color">
+          <block type="rh_st7789_fg_color_numbers">
+            <value name="fg_red">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="fg_green">
+              <shadow type="math_number">
+                <field name="NUM">255</field>
+              </shadow>
+            </value>
+            <value name="fg_blue">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+          </block>
+       </value>
+      </block>     
+
       <block type="rh_st7789_line">
         <value name="x1">
           <shadow type="math_number">
