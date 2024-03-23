@@ -6432,7 +6432,7 @@ Blockly.Python['rh_st7789_circle'] = function(block) {
 	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
   
 	var code = 'tft.circle(' + x + ', ' + y + ', '
-	    code += width + ', ' + height
+	    code += radius
 		code += ', st7789.color565' + fg_color + ')\n';
 	return code;
 }
@@ -6444,7 +6444,7 @@ Blockly.Python['rh_st7789_fill_circle'] = function(block) {
 	var fg_color = Blockly.Python.valueToCode(block, 'fg_color', Blockly.Python.ORDER_ATOMIC);
   
 	var code = 'tft.fill_circle(' + x + ', ' + y + ', '
-	    code += width + ', ' + height
+	    code += radius
 		code += ', st7789.color565' + fg_color + ')\n';
 	return code;
 }
