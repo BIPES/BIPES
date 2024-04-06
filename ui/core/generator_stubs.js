@@ -5970,14 +5970,14 @@ Blockly.Python['stepper_init'] = function(block) {
   Blockly.Python.definitions_['import_time'] = 'import time';
 
   var code = `
-pins = [
-    Pin(` + p0 + `, Pin.OUT),  # 1
-    Pin(` + p1 + `, Pin.OUT),  # 2
-    Pin(` + p2 + `, Pin.OUT),  # 4
-    Pin(` + p3 + `, Pin.OUT),  # 8
-]
+stepper_pin0 = Pin(` + p0 + `, Pin.OUT)
+stepper_pin1 = Pin(` + p1 + `, Pin.OUT)
+stepper_pin2 = Pin(` + p2 + `, Pin.OUT)
+stepper_pin3 = Pin(` + p3 + `, Pin.OUT)
+stepper_pins = [stepper_pin0, stepper_pin1, stepper_pin2, stepper_pin3]
 
-phases = [ 1, 5, 4, 6, 2, 10, 8, 9 ]
+pos_dir_steps = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+neg_dir_steps = [[0,0,0,1],[0,0,1,0],[0,1,0,0],[1,0,0,0]]
 `;
 
   return code;
@@ -5988,11 +5988,17 @@ Blockly.Python['stepper_step'] = function(block) {
 
   //Source example: http://mpy-tut.zoic.org/tut/motors.html
   var code = `
-for i in range(1, ` + step + `):
-	for phase in phases:
-		for n, p in enumerate(pins):
-			pins[n](phase & 1 < < n)
-		time.sleep(0.001)
+for i in range(1, abs(` + step + `)):
+  if ` + step + ` >= 0:	
+	for step in pos_dir_steps:
+		for n in range(len(stepper_pins)):
+			stepper_pins[n].value(step[n])
+			time.sleep(0.001)
+  else:
+	for step in neg_dir_steps:
+		for n in range(len(stepper_pins)):
+			stepper_pins[n].value(step[n])
+			time.sleep(0.001)
 `;
 
   return code;
