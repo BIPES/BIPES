@@ -1866,7 +1866,7 @@ _
 </block>
 <block type="uart_read_all">
 </block>
-
+<!-- These blocks need development 
       </category>
       <category name="SPI">
       <label text="SPI"></label>
@@ -1882,7 +1882,7 @@ _
 </block>
 <block type="machine.SPI_SPI.write_readinto">
 </block>
-
+-->
       </category>
 
       <category name="GSM Modem">
@@ -1899,7 +1899,7 @@ _
 </block>
 
 
-
+<!-- These blocks need development 
       </category>
       <category name="I2C">
       <label text="I2c"></label>
@@ -1931,7 +1931,7 @@ _
 </block>
 <block type="machine.I2C_I2C.writeto_mem">
 </block>
-
+-->
       </category>
   </category>
  
@@ -2689,7 +2689,7 @@ _
     </block>
   </category>
 </category>
-
+<!-- The blocks below need development 
 <category name="micropython">
 <category name="btree">
 <block type="btree_open">
@@ -3759,3 +3759,4 @@ _
 </category>
 </category>
 </document>
+-->

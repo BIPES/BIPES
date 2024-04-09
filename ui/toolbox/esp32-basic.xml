@@ -619,44 +619,117 @@
 
 
   <category name="Character display">
-      <label text="PCF8574 Display controller"></label>
+    <label text="PCF8574 Display controller"></label>
 
-      <label text="Library: https://github.com/dhylands/python_lcd"></label>
-      <button text="Install I2CLCD library" callbackKey="installPyLib"></button>
-	<block type="char_lcd_init">
-        <value name="scl">
-          <shadow type="pinout">
-            <field name="SCL"></field>
-          </shadow>
-        </value>
-
-        <value name="sda">
-          <shadow type="pinout">
-            <field name="SDA"></field>
-          </shadow>
-        </value>
- 
-	 <value name="lines">
+    <label text="Library: https://github.com/T-622/RPI-PICO-I2C-LCD"></label>
+    <button text="Install lcd_api library" callbackKey="installPyLib"></button>
+    <button text="Install pico_i2c_lcd library" callbackKey="installPyLib"></button>
+    
+    <block type="char_lcd_init">
+      <value name="i2c">
         <shadow type="math_number">
-          <field name="NUM">4</field>
+          <field name="NUM">0</field>
         </shadow>
       </value>
 
-	 <value name="columns">
-        <shadow type="math_number">
-          <field name="NUM">20</field>
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="PIN">21</field>
         </shadow>
       </value>
 
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="PIN">22</field>
+        </shadow>
+      </value>
+  
+      <value name="rows">
+        <shadow type="math_number">
+          <field name="NUM">2</field>
+        </shadow>
+      </value>
 
+      <value name="columns">
+        <shadow type="math_number">
+          <field name="NUM">16</field>
+        </shadow>
+      </value>
+    </block>
 
- 
-	</block>
-	<block type="char_lcd_clear"></block>
-	<block type="char_lcd_putstr"></block>
-	<block type="char_lcd_moveto"></block>
-	<block type="char_lcd_backlight"></block>
-	<block type="char_lcd_display"></block>
+    <block type="char_lcd_clear"></block>
+
+    <block type="char_lcd_putstr">
+      <value name="text">
+        <shadow type="text">
+          <field name="TEXT">Hello</field>
+        </shadow>
+      </value>
+    </block>
+    
+    <block type="char_lcd_moveto">
+      <value name="x">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="y">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="char_lcd_backlight"></block>
+    <block type="char_lcd_display"></block>
+
+    <block type="char_lcd_custom">
+      <value name="id">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <field name="A0">FALSE</field>
+      <field name="A1">FALSE</field>
+      <field name="A2">FALSE</field>
+      <field name="A3">FALSE</field>
+      <field name="A4">FALSE</field>
+      <field name="B0">FALSE</field>
+      <field name="B1">FALSE</field>
+      <field name="B2">FALSE</field>
+      <field name="B3">FALSE</field>
+      <field name="B4">FALSE</field>
+      <field name="C0">FALSE</field>
+      <field name="C1">FALSE</field>
+      <field name="C2">FALSE</field>
+      <field name="C3">FALSE</field>
+      <field name="C4">FALSE</field>
+      <field name="D0">FALSE</field>
+      <field name="D1">FALSE</field>
+      <field name="D2">FALSE</field>
+      <field name="D3">FALSE</field>
+      <field name="D4">FALSE</field>
+      <field name="E0">FALSE</field>
+      <field name="E1">FALSE</field>
+      <field name="E2">FALSE</field>
+      <field name="E3">FALSE</field>
+      <field name="E4">FALSE</field>
+      <field name="F0">FALSE</field>
+      <field name="F1">FALSE</field>
+      <field name="F2">FALSE</field>
+      <field name="F3">FALSE</field>
+      <field name="F4">FALSE</field>
+      <field name="G0">FALSE</field>
+      <field name="G1">FALSE</field>
+      <field name="G2">FALSE</field>
+      <field name="G3">FALSE</field>
+      <field name="G4">FALSE</field>
+      <field name="H0">FALSE</field>
+      <field name="H1">FALSE</field>
+      <field name="H2">FALSE</field>
+      <field name="H3">FALSE</field>
+      <field name="H4">FALSE</field>
+	  </block>
 
   </category>
 
@@ -709,7 +782,7 @@
         </value>
        </block>
 
-       <block type="st7789_bl_power">
+      <block type="st7789_bl_power">
         <value name="val">
          <shadow type="math_number">
           <field name="NUM">50</field>
