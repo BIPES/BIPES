@@ -5056,8 +5056,9 @@ Blockly.Python.definitions_['import_pico_i2c_lcd'] = 'from pico_i2c_lcd import I
   var pScl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
   var rows = Blockly.Python.valueToCode(block, 'rows', Blockly.Python.ORDER_ATOMIC);
   var cols = Blockly.Python.valueToCode(block, 'columns', Blockly.Python.ORDER_ATOMIC);
+  var dropdown_lcd_hex_address = block.getFieldValue('LCD_hex_address');
 
-  var code = 'I2C_ADDR = 0x27\n'
+  var code = 'I2C_ADDR = ' + dropdown_lcd_hex_address + ' # NOTE: Be sure to set address\n'
   code += 'lcdi2c=I2C(' + i2c + ', scl=Pin(' + pScl + '), sda=Pin(' + pSda + '), freq=400000)\n';
   code += 'lcd = I2cLcd(lcdi2c, I2C_ADDR, ' + rows + ', ' + cols + ')\n'
   return code;

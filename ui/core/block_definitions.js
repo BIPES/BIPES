@@ -10194,9 +10194,14 @@ Blockly.Blocks['char_lcd_init'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_LEFT)
         .appendField("Init I2C Character LCD Display");
 
- this.appendDummyInput()
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("with the PCF8574 Display Controller");
+
+    this.appendDummyInput()
       .appendField(new Blockly.FieldImage(
         "media/lcd20x4.jpg",
         55,
@@ -10230,6 +10235,11 @@ Blockly.Blocks['char_lcd_init'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Columns");
 
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("LCD I2C Address")
+        .appendField(new Blockly.FieldDropdown([["0x27","0x27"], ["0x3F","0x3F"], ["",""], ["",""], ["0x20","0x20"], ["0x21","0x21"], ["0x22","0x22"], ["0x23","0x23"], ["0x24","0x24"], ["0x25","0x25"], ["0x26","0x26"], ["0x27","0x27"], ["0x38","0x38"], ["0x39","0x39"], ["0x3A","0x3A"], ["0x3B","0x3B"], ["0x3C","0x3C"], ["0x3D","0x3D"], ["0x3E","0x3E"], ["0x3F","0x3F"]]), "LCD_hex_address");
+    
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
