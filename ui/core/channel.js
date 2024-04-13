@@ -509,6 +509,11 @@ class webserial {
       const writer = this.port.writable.getWriter();
       writer.write(dataArrayBuffer).then (() => {writer.releaseLock(); this.buffer_.shift ()});
 	  }
+    const date_time_delay = Date.now();  // create a time delay variable
+    let current_date_time = null;  
+    do {
+      current_date_time = Date.now();
+    } while (current_date_time - date_time_delay < 100); // 100 millisecond delay between sending code chunk arrarys (repeated calls to serialWrite) to ensure accurate receipt of micropython code at the microcontroller.
 	}
 }
 
