@@ -6134,10 +6134,15 @@ Blockly.Python['motor_init'] = function(block) {
 	var value_right_reverse_pin = Blockly.Python.valueToCode(block, 'right_reverse', Blockly.Python.ORDER_NONE);
   
 	var code = 'FULL_POWER_LEVEL = 65024\n';
+	code = code + 'FREQUENCY = 1000\n';
 	code = code + `right_forward = PWM(Pin(${value_right_forward_pin}))\n`;
+	code = code + `right_forward.freq(FREQUENCY)\n`;
 	code = code + `right_reverse = PWM(Pin(${value_right_reverse_pin}))\n`;
+	code = code + `right_reverse.freq(FREQUENCY)\n`;
 	code = code + `left_forward = PWM(Pin(${value_left_forward_pin}))\n`;
+	code = code + `left_forward.freq(FREQUENCY)\n`;
 	code = code + `left_reverse = PWM(Pin(${value_left_reverse_pin}))\n`;
+	code = code + `left_reverse.freq(FREQUENCY)\n`;
 	code = code + '\n';	
 	code = code + 'def forward():\n';	
 	code = code + '	right_reverse.duty_u16(0)\n';	
