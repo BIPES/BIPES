@@ -308,6 +308,7 @@ class Tool {
   static makeAName (code, ext) {
     let desc = code.match(/#Description: '(.*)'/)
     let imp = [...code.matchAll(/import (.*)/g)]
+    let filename = ''
 
     if (ext == '') {
       return desc ? `${desc [1].slice()}${ext}` : 'My BIPES Project';
@@ -317,7 +318,13 @@ class Tool {
         desc [1] = 'code';
       }
       desc [1] = desc [1].toLowerCase()
-      return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.bipes.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.bipes.${ext}` : `my_project.bipes.${ext}`;
+      if (desc [1] == 'main') {
+        filename = 'main.py';
+      } else {
+        filename = desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.bipes.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.bipes.${ext}` : `my_project.bipes.${ext}`;
+      }
+//      return desc ? `${desc [1].replaceAll(' ', '_').replaceAll('.', '').slice().substring(0,30)}.bipes.${ext}` : imp.length ? `my_${imp.slice(-1)[0][1]}_project.bipes.${ext}` : `my_project.bipes.${ext}`;
+      return filename;
     }
   }
   /**Converts RGB to HEX
