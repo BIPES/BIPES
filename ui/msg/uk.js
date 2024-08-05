@@ -81,8 +81,8 @@ var MSG = {
     file_close: "закрити файл",
     file_write_line: "записати рядок у файл",
     file_line: "рядок",
-    try1: "спробувати",
-    exp1: "виключити",
+    try1: "виконувати",
+    exp1: "при помилці",
     ntp_sync: "синхронізувати дату і час з NTP",
     timezone: "часовий пояс",
     project_info: "Інформація про проект",
@@ -93,7 +93,7 @@ var MSG = {
     data_received: "отримано",
     easymqtt_receive: "EasyMQTT отримати дані",
     relay: "реле",
-    on: "включити",
+    on: "увімкнути",
     off: "вимкнути",
     relay_on: "реле на піні",
     yes: "так",
@@ -152,7 +152,7 @@ var MSG = {
     mqtt_most_once: "0 - не більше одного разу",
     mqtt_least_once: "1 - принаймні один раз",
     mqtt_publish_payload: "Опублікувати навантаження в MQTT тему",
-    payload: "Навантаження",
+    payload: "Послання",
     mqtt_subscribe: "Підписатися на MQTT тему",
     mqtt_set_callback: "Встановити зворотний виклик для MQTT повідомлень",
     with: "з",
@@ -167,16 +167,16 @@ var MSG = {
     mqtt_disconnect_tooltip: "Відключити MQTT клієнт від сервера.",
     
     // PWM
-    pwm_num: "PWM #",
+    pwm_num: "ШІМ #",
     frequenzy: "Частота",
     duty_cycle: "Робочий цикл",
-    pwm_num_pico: "RPi Pico PWM #",
-    pwm_tooltip: "Ініціалізувати та налаштувати PWM з частотою (1Гц до 40МГц) та робочим циклом (0-1023)",
-    pwm_freq_tooltip: "Встановити частоту PWM від 1Гц до 40МГц",
-    pwm_duty_tooltip: "Встановити діапазон робочого циклу PWM від 0 до 1023",
-    pwm_init: "ініціалізувати",
-    pwm_init_tooltip: "Ініціалізувати PWM",
-    pwm_deinit: "дезінціалізувати PWM #",
+    pwm_num_pico: "RPi Pico ШІМ #",
+    pwm_tooltip: "Ініціалізувати та налаштувати ШІМ з частотою (1Гц до 40МГц) та робочим циклом (0-1023)",
+    pwm_freq_tooltip: "Встановити частоту ШІМ від 1Гц до 40МГц",
+    pwm_duty_tooltip: "Встановити діапазон робочого циклу ШІМ від 0 до 1023",
+    pwm_init: "Ініціалізувати",
+    pwm_init_tooltip: "Ініціалізувати ШІМ",
+    pwm_deinit: "Дезінціалізувати ШІМ #",
 
     
     // NeoPixel
@@ -195,7 +195,7 @@ var MSG = {
     np_color_tooltip_picker: "Вибір кольору для світлодіода NeoPixel",
     hue: "Відтінок",
     saturation: "Насиченість",
-    lightness: "Світлотність",
+    lightness: "Світлість",
     np_color_tooltip_HSL: "HUE до RGB кольору, Відтінок від 0º до 360º, Насиченість і Світлотність від 0% до 100%.",
     
     // I2C Char LCD
@@ -255,8 +255,8 @@ var MSG = {
   };
   
 // Toolbox categories
-Blockly.Msg['CAT_TIMING'] = "Таймінг";
-Blockly.Msg['CAT_MACHINE'] = "Машини";
+Blockly.Msg['CAT_TIMING'] = "Час і затримка";
+Blockly.Msg['CAT_MACHINE'] = "Електроніка";
 Blockly.Msg['CAT_DISPLAYS'] = "Дисплеї";
 Blockly.Msg['CAT_SENSORS'] = "Датчики";
 Blockly.Msg['CAT_OUTPUTS'] = "Виходи / Актуатори";
@@ -280,7 +280,7 @@ Blockly.Msg['CAT_DC_MOTOR'] = "DC двигун";
 // Toolbox Text
 Blockly.Msg['TXT_ULTRASOUND_DESCRIPTION'] = "Ультразвуковий датчик відстані HCSR04";
 Blockly.Msg['TXT_ULTRASOUND_LIB'] = "Встановіть бібліотеку HCSR04";
-Blockly.Msg['TXT_SERVO_DESCRIPTION'] = "Хобі RC сервомотор";
+Blockly.Msg['TXT_SERVO_DESCRIPTION'] = "Сервомотор";
 Blockly.Msg['TXT_STEPPER_DESCRIPTION'] = "Кроковий двигун";
 Blockly.Msg['TXT_DC_MOTOR_DESCRIPTION'] = "DC двигун";
 
