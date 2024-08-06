@@ -30,7 +30,8 @@ Code.LANGUAGE_NAME = {
   'nb': 'Norwegian',
   'zh-hans': 'Chinese (simplified)',
   'zh-hant': 'Chinese (tradicional)',
-  'he': 'Hebrew'
+  'he': 'Hebrew',
+  'uk': 'Ukrainian'
 };
 
 /**
