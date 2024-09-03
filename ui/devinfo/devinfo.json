@@ -28,6 +28,34 @@
 			],
 			"serial_packet_size":"500"
 		},
+		"ESP32-CM" : {
+			"title":"<b>ESP32-Carlos-Matos</b><br>",
+			"speed":"115200",
+			"boardID":"ESP module with ESP32 do Carlos Matos", 
+			"img":"devinfo/media/ESP32-Pinout.jpg",
+			"description":"<BR><BR><input type='button' onclick='loadDoc();' value='Open Documentation' /> <BR><BR>To use ESP8266, simply connecto to MicroPython board using Wifi. Micropython must be previously installed.",
+			"toolbox":"esp32.xml",
+			"pinout": [
+		    ["D0 / GPIO16", "16"],
+		    ["D1 / GPIO05", "5"],
+		    ["D2 / GPIO04", "4"],
+		    ["D3 / GPIO00", "0"],
+		    ["D4 / LED / GPIO02", "2"],
+		    ["D5 / GPIO14", "14"],
+		    ["D6 / GPIO12", "12"],
+		    ["D7 / GPIO13", "13"],
+		    ["D8 / GPIO15", "15"],
+		    ["RX / GPIO03", "3"],
+		    ["TX / GPIO01", "1"],
+		    ["SD3 / GPIO10", "10"],
+		    ["SD2 / GPIO09", "9"],
+		    ["SD1 / GPIO08", "8"],
+		    ["CMD / GPIO11", "11"],
+		    ["SD0 / GPIO07", "7"],
+		    ["CLK / GPIO06", "6"]
+			],
+			"serial_packet_size":"500"
+		},
 		"ESP32S2": {
 			"title":"<b>ESP32 S2</b><br>",
 			"speed":"115200",
