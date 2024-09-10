@@ -219,7 +219,7 @@ Blockly.Python['gpio_get'] = function(block) {
 	else {
 		//value_pullup2="Pull.DOWN";
 		pTmp='';
-		pUpDown = ", Pin.PULL_DOWN";
+		pUpDown = '';
 	}
 
 	//For ESP32s2 with Circuit Python
@@ -436,13 +436,13 @@ Blockly.Python['init_oled'] = function(block) {
 };
 
 Blockly.Python['clear_oled'] = function(block) {
-  var code = 'oled.fill(0)\noled.show()\n';
+  var code = 'oled.fill(0)\n';
   return code;
 };
 
 Blockly.Python['fill_oled'] = function(block) {
   var v = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-  var code = 'oled.fill(' + v + ')\noled.show()\n';
+  var code = 'oled.fill(' + v + ')\n';
   return code;
 };
 
@@ -452,53 +452,15 @@ Blockly.Python['show_oled'] = function(block) {
 };
 
 Blockly.Python['write_oled'] = function(block) {
-	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
-	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
-	var t = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
-  
-	var code = 'oled.text(' + t + ', ' + x + ', ' + y + ')\noled.show()\n';
-	return code;
-  };
-  
-  Blockly.Python['line_oled'] = function(block) {
-	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
-	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
-	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
-	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
-  
-	var code = 'oled.line(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\noled.show()\n';
-	return code;
-  };
-  
-  Blockly.Python['rect_oled'] = function(block) {
-	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
-	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
-	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
-	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
-  
-	var code = 'oled.rect(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\noled.show()\n';
-	return code;
-  };
-  
-  Blockly.Python['fill_rect_oled'] = function(block) {
-	var x1 = Blockly.Python.valueToCode(block, 'x1', Blockly.Python.ORDER_ATOMIC);
-	var y1 = Blockly.Python.valueToCode(block, 'y1', Blockly.Python.ORDER_ATOMIC);
-	var x2 = Blockly.Python.valueToCode(block, 'x2', Blockly.Python.ORDER_ATOMIC);
-	var y2 = Blockly.Python.valueToCode(block, 'y2', Blockly.Python.ORDER_ATOMIC);
-  
-	var code = 'oled.fill_rect(' + x1 + ', ' + y1 + ', ' + x2 + ', ' + y2 + ', '+ 1 + ')\noled.show()\n';
-	return code;
-  };
-  
-  Blockly.Python['scroll_oled'] = function(block) {
-	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
-	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
-  
-	var code = 'oled.scroll(' + x + ', ' + y + ')\noled.show()\n';
-	return code;
-  };
-  
-  Blockly.Python['init_tank'] = function(block) {
+  var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+  var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+  var t = Blockly.Python.valueToCode(block, 'text', Blockly.Python.ORDER_ATOMIC);
+
+  var code = 'oled.text(' + t + ', ' + x + ', ' + y + ')\noled.show()\n';
+  return code;
+};
+
+Blockly.Python['init_tank'] = function(block) {
   var Xpos = Blockly.Python.valueToCode(block, 'Xpos', Blockly.Python.ORDER_ATOMIC);
   var Ypos = Blockly.Python.valueToCode(block, 'Ypos', Blockly.Python.ORDER_ATOMIC);
   var Angle = Blockly.Python.valueToCode(block, 'Angle', Blockly.Python.ORDER_ATOMIC);
@@ -567,26 +529,11 @@ Blockly.Python['net_get_request'] = function(block) {
 
 Blockly.Python['net_post_request'] = function(block) {
   var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
-  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['import_urequests'] = 'import urequests';
-  var code = 'urequests.post(' + value_url + ', data = ' + value_data + ')\n';
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['net_post_request_json'] = function(block) {
   var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
-  var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_urequests'] = 'import urequests';
-
-  var value_data2 = value_data.replace('\'','').replace('\'','');
-  var value_data3 = value_data2.replace('(','[').replace(')',']');
-	console.log('TESTE = ' + value_data3);
-  var code = 'urequests.post(' + value_url + ', json=' + value_data3 + ')\n';
-	console.log('Code = ' + code);
-//  var code = 'urequests.post(' + value_url + ', json={' + value_data2 + '})\n';
+  var code = 'urequests.post(\"' + value_url + '\", data = \"' + value_url + '\")\n';
   return [code, Blockly.Python.ORDER_NONE];
 };
-
 
 Blockly.Python['net_ifconfig'] = function(block) {
 
@@ -3105,33 +3052,7 @@ Blockly.Python["sd_mount"] = function(block) {
 	return code;
 };
 
-Blockly.Python["sd_mount_custom"] = function(block) {
-	/*
-	 * 
->>> import machine
->>> from machine import Pin
->>> s=machine.SDCard(slot=2, width=1, cd=None, wp=None, sck=Pin(18), miso=Pin(19), mosi=Pin(23), cs=Pin(15), freq=20000000)
->>> import os
->>> os.mount(s,'/sd')
->>> os.listdir('/sd')
-*/
-	Blockly.Python.definitions_['import_os'] = 'import os';
-	Blockly.Python.definitions_['import_machine'] = 'import machine';
-	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 
-	var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
-	var slot = Blockly.Python.valueToCode(block, 'slot', Blockly.Python.ORDER_ATOMIC);
-	var sck = Blockly.Python.valueToCode(block, 'sck', Blockly.Python.ORDER_ATOMIC);
-	var miso = Blockly.Python.valueToCode(block, 'miso', Blockly.Python.ORDER_ATOMIC);
-	var mosi = Blockly.Python.valueToCode(block, 'mosi', Blockly.Python.ORDER_ATOMIC);
-	var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
-	var freq = Blockly.Python.valueToCode(block, 'freq', Blockly.Python.ORDER_ATOMIC);
-
-	var code = "sdcard=machine.SDCard(slot=" + slot + ', width=1, cd=None, wp=None, sck=Pin(' + sck + '), miso=Pin(' + miso + '), mosi=Pin(' + mosi + '), cs=Pin(' + cs + '), freq=' + freq + ')\n';
-	code += "os.mount(sdcard, " + value_pIn + ")\n"; 
-
-	return code;
-};
 
 Blockly.Python["uos_remove"] = function(block) {
 		var value_pIn = Blockly.Python.valueToCode(block, 'pIn', Blockly.Python.ORDER_ATOMIC);
@@ -4712,7 +4633,42 @@ Blockly.Python['hcsr_init'] = function(block) {
 
   Blockly.Python.definitions_['import_time'] = 'import time';
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  Blockly.Python.definitions_['import_hcr'] = 'from hcsr04 import HCSR04';
+  Blockly.Python.definitions_['import_hcr'] = `
+
+from machine import time_pulse_us
+
+#Based on: https://github.com/lemariva/uPySensors
+class HCSR04:
+    def __init__(self, trigger_pin, echo_pin, echo_timeout_us=500*2*30):
+        self.echo_timeout_us = echo_timeout_us
+        self.trigger = Pin(trigger_pin, mode=Pin.OUT)
+        self.trigger.value(0)
+        self.echo = Pin(echo_pin, mode=Pin.IN)
+
+    def _send_pulse_and_wait(self):
+        self.trigger.value(0)
+        time.sleep_us(5)
+        self.trigger.value(1)
+        time.sleep_us(10)
+        self.trigger.value(0)
+        try:
+			pulse_time = time_pulse_us(self.echo, 1, self.echo_timeout_us)
+			return pulse_time
+        except OSError as ex:
+            if ex.args[0] == 110: # 110 = ETIMEDOUT
+                raise OSError('Out of range')
+            raise ex
+
+    def distance_mm(self):
+        pulse_time = self._send_pulse_and_wait()
+        mm = pulse_time * 100 // 582
+        return mm
+
+    def distance_cm(self):
+        pulse_time = self._send_pulse_and_wait()
+        cms = (pulse_time / 2) / 29.1
+        return cms
+`;
 
 /*
  * while 1:
@@ -4722,6 +4678,8 @@ Blockly.Python['hcsr_init'] = function(block) {
 	time.sleep(1)
 
 */
+
+
   var code = 'ultraSoundSensor = HCSR04(trigger_pin=' + pTrig + ', echo_pin=' + pEcho + ', echo_timeout_us=' + pTime + ')\n';
 
   return code;
@@ -4888,12 +4846,9 @@ Blockly.Python['net_wiznet5k_init'] = function(block) {
   var cs = Blockly.Python.valueToCode(block, 'cs', Blockly.Python.ORDER_ATOMIC);
   var rst = Blockly.Python.valueToCode(block, 'rst', Blockly.Python.ORDER_ATOMIC);
 
-  //Working nicely with RPI Pico. Before modifying, remmeber that this is workign with RIP Pico
-  Blockly.Python.definitions_['import_Pin_SPI'] = 'from machine import Pin,SPI';
-  Blockly.Python.definitions_['import_network'] = 'import network';
+  Blockly.Python.definitions_['import_network'] = 'import utime';
 
-  var code = 'spi' + spi + '=SPI(' + spi + ',2_000_000, mosi=Pin(19),miso=Pin(16),sck=Pin(18))\n';
-  code += 'nic = network.WIZNET5K(spi' + spi + ',Pin(' + cs + '),Pin(' + rst + '))\n';
+  var code = 'nic = network.WIZNET5K(' + spi + ',' + cs + ',' + rst + '\n';
 
   return code;
 
@@ -4902,7 +4857,7 @@ Blockly.Python['net_wiznet5k_init'] = function(block) {
 
 Blockly.Python['net_wiznet5k_isconnected'] = function(block) {
 
-  var code = 'nic.isconnected()';
+  var code = 'WIZNET5K.isconnected()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -4910,7 +4865,7 @@ Blockly.Python['net_wiznet5k_isconnected'] = function(block) {
 
 Blockly.Python['net_wiznet5k_regs'] = function(block) {
 
-  var code = 'nic.regs()';
+  var code = 'WIZNET5K.regs()';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5274,39 +5229,32 @@ Blockly.Python['max30100_ir'] = function(block) {
 
 //GPS Module
 Blockly.Python['gps_init'] = function(block) {
-	var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
-	var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
-	var bps = Blockly.Python.valueToCode(block, 'bps', Blockly.Python.ORDER_ATOMIC);
-	var uart = Blockly.Python.valueToCode(block, 'uart', Blockly.Python.ORDER_ATOMIC);
+  var tx = Blockly.Python.valueToCode(block, 'tx', Blockly.Python.ORDER_ATOMIC);
+  var rx = Blockly.Python.valueToCode(block, 'rx', Blockly.Python.ORDER_ATOMIC);
+  var bps = Blockly.Python.valueToCode(block, 'bps', Blockly.Python.ORDER_ATOMIC);
 
-	Blockly.Python.definitions_['import_uart'] = 'from machine import UART';
-	Blockly.Python.definitions_['import_micropyGPS'] = 'from mini_micropyGPS import MicropyGPS';
+  var code = '#TODO: init GPS\n';
 
-	var code =  'uartGPS = UART(' + uart + ', tx=' + tx + ', rx=' + rx + ')\n';
-	    code += 'uartGPS.init(' + bps + ', bits=8, parity=None, stop=1)\n';
-	    code += 'gps = MicropyGPS()\n';
-	return code;
+  return code;
 };
 
 Blockly.Python['gps_update'] = function(block) {
 
-	var code =  'if uartGPS.any():\n';
-	    code += '\tc=int.from_bytes(uartGPS.read(1), "big")\n';
-	    code += '\tstat = gps.update(chr(c))\n';
+  var code = '#update gps \n';
 
-	return code;
+  return code;
 };
 
 Blockly.Python['gps_get_lat'] = function(block) {
 
-  var code = 'gps.latitude';
+  var code = 'gps_lat';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 Blockly.Python['gps_get_long'] = function(block) {
 
-  var code = 'gps.longitude';
+  var code = 'gps_long';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5314,7 +5262,7 @@ Blockly.Python['gps_get_long'] = function(block) {
 
 Blockly.Python['gps_get_height'] = function(block) {
 
-  var code = 'gps.altitude';
+  var code = 'gps_speed';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
@@ -5322,32 +5270,18 @@ Blockly.Python['gps_get_height'] = function(block) {
 
 Blockly.Python['gps_get_speed'] = function(block) {
 
-  var code = 'gps.speed';
+  var code = 'gps_speed';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
 
 
-Blockly.Python['gps_get_date'] = function(block) {
+Blockly.Python['gps_get_datetime'] = function(block) {
 
-  var code = 'gps.date';
-
-  return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['gps_get_time'] = function(block) {
-
-  var code = 'gps.timestamp';
+  var code = 'gps_datetime';
 
   return [code, Blockly.Python.ORDER_NONE];
 };
-
-Blockly.Python['gps_coord_format'] = function(block) {
-	var dropdown_format = block.getFieldValue('format');
-	var code = 'gps.coord_format=\'' + dropdown_format + '\'\n';
-	return code;
-};
-
 
 //Optical Encoder
 Blockly.Python['encoder_init'] = function(block) {
@@ -5587,99 +5521,7 @@ Blockly.Python['python_try_catch'] = function(block) {
   return code;
 };
 
-Blockly.Python['motor_init'] = function(block) {
-	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
-  
-	var value_left_forward_pin = Blockly.Python.valueToCode(block, 'left_forward', Blockly.Python.ORDER_NONE);
-	var value_left_reverse_pin = Blockly.Python.valueToCode(block, 'left_reverse', Blockly.Python.ORDER_NONE);
-	var value_right_forward_pin = Blockly.Python.valueToCode(block, 'right_forward', Blockly.Python.ORDER_NONE);
-	var value_right_reverse_pin = Blockly.Python.valueToCode(block, 'right_reverse', Blockly.Python.ORDER_NONE);
-  
-	var code = 'FULL_POWER_LEVEL = 65024\n';
-	code = code + `right_forward = PWM(Pin(${value_right_forward_pin}))\n`;
-	code = code + `right_reverse = PWM(Pin(${value_right_reverse_pin}))\n`;
-	code = code + `left_forward = PWM(Pin(${value_left_forward_pin}))\n`;
-	code = code + `left_reverse = PWM(Pin(${value_left_reverse_pin}))\n`;
-	code = code + '\n';	
-	code = code + 'def forward():\n';	
-	code = code + '	right_reverse.duty_u16(0)\n';	
-	code = code + '	left_reverse.duty_u16(0)\n';
-	code = code + '	right_forward.duty_u16(FULL_POWER_LEVEL)\n';
-	code = code + '	left_forward.duty_u16(FULL_POWER_LEVEL)\n';
-	code = code + '\n';	
-	code = code + 'def forwardSlow():\n';	
-	code = code + '	right_reverse.duty_u16(0)\n';	
-	code = code + '	left_reverse.duty_u16(0)\n';
-	code = code + '	right_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
-	code = code + '	left_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
-	code = code + '\n';	
-	code = code + 'def reverse():\n';	
-	code = code + '	right_forward.duty_u16(0)\n';
-	code = code + '	left_forward.duty_u16(0)\n';
-	code = code + '	right_reverse.duty_u16(FULL_POWER_LEVEL)\n';	
-	code = code + '	left_reverse.duty_u16(FULL_POWER_LEVEL)\n';
-	code = code + '\n';	
-	code = code + 'def reverseSlow():\n';	
-	code = code + '	right_forward.duty_u16(0)\n';
-	code = code + '	left_forward.duty_u16(0)\n';
-	code = code + '	right_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';	
-	code = code + '	left_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';
-	code = code + '\n';	
-	code = code + 'def left():\n';	
-	code = code + '	left_forward.duty_u16(0)\n';
-	code = code + '	right_reverse.duty_u16(0)\n';
-	code = code + '	left_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';	
-	code = code + '	right_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
-	code = code + '\n';	
-	code = code + 'def right():\n';	
-	code = code + '	right_forward.duty_u16(0)\n';
-	code = code + '	left_reverse.duty_u16(0)\n';
-	code = code + '	right_reverse.duty_u16(FULL_POWER_LEVEL // 2)\n';	
-	code = code + '	left_forward.duty_u16(FULL_POWER_LEVEL // 2)\n';
-	code = code + '\n';	
-	code = code + 'def stop():\n';	
-	code = code + '	right_forward.duty_u16(0)\n';
-	code = code + '	left_forward.duty_u16(0)\n';
-	code = code + '	right_reverse.duty_u16(0)\n';	
-	code = code + '	left_reverse.duty_u16(0)\n';
-	return code;
-  };
-  
-Blockly.Python['forward_fast'] = function(block) {
-	var code = 'forward()\n';
-	return code;
-}
 
-Blockly.Python['forward_slow'] = function(block) {
-	var code = 'forwardSlow()\n';
-	return code;
-}
-
-Blockly.Python['reverse_fast'] = function(block) {
-	var code = 'reverse()\n';
-	return code;
-}
-
-Blockly.Python['reverse_slow'] = function(block) {
-	var code = 'reverseSlow()\n';
-	return code;
-}
-
-Blockly.Python['left'] = function(block) {
-	var code = 'left()\n';
-	return code;
-}
-
-Blockly.Python['right'] = function(block) {
-	var code = 'right()\n';
-	return code;
-}
-
-Blockly.Python['stop'] = function(block) {
-	var code = 'stop()\n';
-	return code;
-}
 
 Blockly.Python['neopixel_color_numbers'] = function(block) {
   var value_red = Blockly.Python.valueToCode(block, 'red', Blockly.Python.ORDER_ATOMIC);
@@ -6034,7 +5876,7 @@ Blockly.Python["rtttl_play"] = function(block) {
 	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
 	Blockly.Python.definitions_['import_rtttl'] = 'import rtttl, songs';
 
-	var code = 'play = rtttl.play(Pin(' + pin + '), songs.find(' + song + ')) \n';
+	var code = 'play = rtttl.play(Pin(' + pin + ', Pin.OUT), songs.find(' + song + ')) \n';
 	return code;
 };
 
@@ -6049,9 +5891,7 @@ Blockly.Python['tone'] = function(block) {
   	
 	var x = value_pin.replace('(','').replace(')','');
 
-	var code = 'pwm' + x + ' = PWM(Pin(' + x + '))\n';
-	code += 'pwm' + x + '.freq(' + value_frequency + ')\n';
-	code += 'pwm' + x + '.duty_u16(512)\n';
+	var code = 'pwm' + x + ' = PWM(Pin(' + x + '), freq=' + value_frequency + ', ' + ' duty=512)\n';
 	
 	var d1=parseFloat(d);
 	if (d1==0)
@@ -6074,9 +5914,7 @@ Blockly.Python['note'] = function(block) {
   	
 	var x = value_pin.replace('(','').replace(')','');
 
-	var code = 'pwm' + x + ' = PWM(Pin(' + x + '))\n';
-	code += 'pwm' + x + '.freq(' + value_frequency + ')\n';
-	code += 'pwm' + x + '.duty_u16(512)\n';
+	var code = 'pwm' + x + ' = PWM(Pin(' + x + '), freq=' + value_frequency + ', ' + ' duty=512)\n';
 	var d1=parseFloat(d);
 	if (d1==0)
 		code += '';
@@ -6174,23 +6012,6 @@ Blockly.Python['snek_gpio_get'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['snek_servo_move'] = function(block) {
-	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-	var value_pin = pin.replace('(', '').replace(')','');
-	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
-
-	var t_wait = "(" + value_angle + "/180)*0.002 + 0.0005";
-  
-	var code = 'talkto(' + value_pin + ')\n';
-	code += 'off()\n';
-	code += 'setpower(1)\n';
-	code += 'for turning in range(30) :\n';  // Give time to the servo reach it's angle
-	code += '  on()\n';
-	code += '  time.sleep(' + t_wait + ')\n';
-	code += '  off()\n';
-	code += '\n';
-	return code;
-};
 
 Blockly.Python['google_spreadsheet'] = function(block) {
   Blockly.Python.definitions_['import_prequests'] = 'import prequests';
@@ -6307,394 +6128,3 @@ Blockly.Python['http_get_content'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-//BMP180
-Blockly.Python['bmp180_init'] = function(block) {
-	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_bmp180'] = 'from bmp180 import BMP180';
-	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
-
-	var code = 'bus=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '), freq=100000)\n';
-	code += 'bmp180 = BMP180(bus)\n';
-	code += 'bmp180.oversample_sett = 2\n';
-	code += 'bmp180.baseline = 101325\n\n';
-
-	return code;
-};
-
-Blockly.Python['bmp180_temperature'] = function(block) {
-	var code = 'bmp180.temperature';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['bmp180_pressure'] = function(block) {
-	var code = 'bmp180.pressure';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['bmp180_altitude'] = function(block) {
-	var code = 'bmp180.altitude';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-
-//BMP280
-Blockly.Python['bmp280_init'] = function(block) {
-	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
-	Blockly.Python.definitions_['import_bmp280'] = 'from bmp280 import *';
-
-	var code = 'bus=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
-	code += 'bmp280 = BMP280(bus)\n';
-	code += 'bmp280.use_case(BMP280_CASE_WEATHER)\n';
-	code += 'bmp280.oversample(BMP280_OS_HIGH)\n';
-
-	return code;
-};
-
-Blockly.Python['bmp280_temperature'] = function(block) {
-	var code = 'bmp280.temperature';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['bmp280_pressure'] = function(block) {
-	var code = 'bmp280.pressure';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['bmp280_altitude'] = function(block) {
-	var code = 'bmp280.altitude';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['bmp280_measure'] = function(block) {
-	var code = 'bmp280.normal_measure()\n';
-	return code;
-};
-
-Blockly.Python['bmp280_sleep'] = function(block) {
-	var code = 'bmp280.sleep()\n';
-	return code;
-};
-
-
-//MCP23017
-Blockly.Python['mcp23017_init'] = function(block) {
-	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
-	Blockly.Python.definitions_['import_mcp23017'] = 'import mcp23017';
-	var code = 'mcpIO = mcp23017.MCP23017()\n';
-	return code;
-};
-
-Blockly.Python['mcp23017_setup'] = function(block) {
-	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-	var code = 'mcpIO.setup(' + value_pin + ',' + value_value + ')\n';
-	return code;
-};
-
-Blockly.Python['mcp23017_output'] = function(block) {
-	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-	var value_value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-	var code = 'mcpIO.output(' + value_pin + ',' + value_value + ')\n';
-	return code;
-
-};
-
-Blockly.Python['mcp23017_input'] = function(block) {
-	var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-	var code = 'mcpIO.input(' + value_pin + ')';
-
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-//CCS811
-Blockly.Python['ccs811_init'] = function(block) {
-	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
-	Blockly.Python.definitions_['import_ccs811'] = 'import CCS811';
-
-	var code = 'bus=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
-	code += 'sCCS811 = CCS811.CCS811(i2c=bus, addr=90)\n';
-
-	return code;
-};
-
-Blockly.Python['ccs811_data_ready'] = function(block) {
-	var code = 'sCCS811.data_ready()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['ccs811_eCO2'] = function(block) {
-	var code = 'sCCS811.eCO2';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['ccs811_tVOC'] = function(block) {
-	var code = 'sCCS811.tVOC';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-//SHT20
-Blockly.Python['sht20_init'] = function(block) {
-	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
-	Blockly.Python.definitions_['import_time_'] = 'import time';
-	Blockly.Python.definitions_['def_sht20_temperature'] = 'def sht20_temperature():\n\ti2c.writeto(0x40,b\'\\xf3\')\n\ttime.sleep_ms(70)\n\tt=i2c.readfrom(0x40, 2)\n\treturn -46.86+175.72*(t[0]*256+t[1])/65535\n';
-	Blockly.Python.definitions_['def_sht20_humidity'] = 'def sht20_humidity():\n\ti2c.writeto(0x40,b\'\\xf5\')\n\ttime.sleep_ms(70)\n\tt=i2c.readfrom(0x40, 2)\n\treturn -6+125*(t[0]*256+t[1])/65535';
-
-	var code = 'i2c=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
-
-	return code;
-};
-
-Blockly.Python['sht20_temperature'] = function(block) {
-	var code = 'sht20_temperature()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['sht20_humidity'] = function(block) {
-	var code = 'sht20_humidity()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-//MPU9250
-Blockly.Python['mpu9250_init'] = function(block) {
-	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
-	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
-	Blockly.Python.definitions_['import_mpu9250'] = 'from mpu9250 import MPU9250';
-
-	var code =  'i2c=I2C(scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
-	    code += 'mpu9250s = MPU9250(i2c)\n';
-
-	return code;
-};
-
-Blockly.Python['mpu9250_acc'] = function(block) {
-	var code = 'mpu9250s.acceleration';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['mpu9250_mag'] = function(block) {
-	var code = 'mpu9250s.magnetic';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['mpu9250_gyro'] = function(block) {
-	var code = 'mpu9250s.gyro';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['mpu9250_temp'] = function(block) {
-	var code = 'mpu9250s.temperature';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-//Database
-Blockly.Python['db_connect'] = function(block) {
-	Blockly.Python.definitions_['import_urequests'] = 'import urequests';
-	Blockly.Python.definitions_['import_ujson'] = 'import ujson';
-  
-	var number_db_idconnect = block.getFieldValue('db_idconnect');
-	var db_host = Blockly.Python.valueToCode(block, 'db_host', Blockly.Python.ORDER_ATOMIC);
-	var db_server = Blockly.Python.valueToCode(block, 'db_server', Blockly.Python.ORDER_ATOMIC);
-	var db_user = Blockly.Python.valueToCode(block, 'db_user', Blockly.Python.ORDER_ATOMIC);
-	var db_pass = Blockly.Python.valueToCode(block, 'db_pass', Blockly.Python.ORDER_ATOMIC);
-	var db_database = Blockly.Python.valueToCode(block, 'db_database', Blockly.Python.ORDER_ATOMIC);
-	var db_table = Blockly.Python.valueToCode(block, 'db_table', Blockly.Python.ORDER_ATOMIC);
-	var cells_blocks = block.getInputTargetBlock('db_table_data');
-
-	Blockly.Python.definitions_['post_dbdata'] = 'def post_dbdata(db_host,db_server,db_user,db_pass,db_database,db_table, db_data):\n' + 
-		' request_data = ujson.dumps({"server": db_server,"user": db_user,"pass": db_pass,"database": db_database,"table": db_table,"parameters": db_data })\n'+
-		' r = urequests.post(db_host + "/" , headers = {"content-type": "application/json"}, data = request_data)\n print(r.content)\n r.close()';
-    Blockly.Python.definitions_['db_host' + number_db_idconnect] = 'db_host' + number_db_idconnect + '= ' + db_host;
-	Blockly.Python.definitions_['db_server' + number_db_idconnect] = 'db_server' + number_db_idconnect + '= ' + db_server;
-	Blockly.Python.definitions_['db_user' + number_db_idconnect] = 'db_user' + number_db_idconnect + '= ' + db_user;
-	Blockly.Python.definitions_['db_pass' + number_db_idconnect] = 'db_pass' + number_db_idconnect + '= ' + db_pass;
-	Blockly.Python.definitions_['db_database' + number_db_idconnect] = 'db_database' + number_db_idconnect + '= ' + db_database;
-	Blockly.Python.definitions_['db_table' + number_db_idconnect] = 'db_table' + number_db_idconnect + '= ' + db_table;
-	Blockly.Python.definitions_['db_row_data_' + number_db_idconnect] = 'db_row_data' + number_db_idconnect +' = []';
-
-	if(cells_blocks)
-    var db_row_data_def = '';
-	db_row_data_def += ' global db_row_data' + number_db_idconnect + '\n';
-	db_row_data_def += ' db_row_data' + number_db_idconnect + ' = []\n';
-      do{
-        var cell_column = Blockly.Python.blockToCode(cells_blocks, 'data_column');
-        db_row_data_def += ' db_row_data' + number_db_idconnect + ' += [' +  
-							'{"column": ' + cell_column.split(';')[0] + ',' + 
-							' "type": "' + cell_column.split(';')[2] + '",' + 
-							' "data": ' + cell_column.split(';')[1] + '}]' + '\n';				
-							
-      }while (cells_blocks = cells_blocks.getNextBlock());
-    Blockly.Python.definitions_['db_row_data_cell'+ number_db_idconnect] = 'def update_db_row_data'+ number_db_idconnect+'():\n' + db_row_data_def;
-	
-	var code =  'update_db_row_data'+ number_db_idconnect +'()\n' +'post_dbdata(' + 
-				'db_host' + number_db_idconnect+
-				',db_server' + number_db_idconnect+
-				',db_user' + number_db_idconnect+
-				',db_pass' + number_db_idconnect+
-				',db_database' + number_db_idconnect+
-				',db_table' + number_db_idconnect+ 
-				',db_row_data' + number_db_idconnect+
-				')\n';
-				return code;
-  };
-
-  Blockly.Python['data_value'] = function(block) {
-    var value_column = Blockly.Python.valueToCode(block, 'data_column', Blockly.Python.ORDER_ATOMIC);
-	var value_value = Blockly.Python.valueToCode(block, 'data_value', Blockly.Python.ORDER_ATOMIC);
-	var value_type = block.getFieldValue('data_type');
-    // TODO: Assemble Python into code variable.
-    var code = value_column + ';' + value_value + ';'+ value_type;
-    return code;
-  };
-
-// Pololu 3pi+ 2040
-Blockly.Python['threepi_set_motor_speeds'] = function(block) {
-	var value_lspeed = Blockly.Python.valueToCode(block, 'lspeed', Blockly.Python.ORDER_ATOMIC);
-	var value_rspeed = Blockly.Python.valueToCode(block, 'rspeed', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pimotors'] = 'threepi_motors = threepi_robot.Motors()';
-	var code = 'threepi_motors.set_speeds(' + value_lspeed + "," + value_rspeed + ')\n';
-	return code
-};
-
-Blockly.Python['threepi_set_motor_left_speed'] = function(block) {
-	var value_speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pimotors'] = 'threepi_motors = threepi_robot.Motors()';
-	var code = 'threepi_motors.set_left_speed(' + value_speed + ')\n';
-	return code
-};
-
-Blockly.Python['threepi_set_motor_right_speed'] = function(block) {
-	var value_speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pimotors'] = 'threepi_motors = threepi_robot.Motors()';
-	var code = 'threepi_motors.set_right_speed(' + value_speed + ')\n';
-	return code
-};
-
-Blockly.Python['threepi_motors_off'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pimotors'] = 'threepi_motors = threepi_robot.Motors()';
-	var code = 'threepi_motors.off()\n';
-	return code
-};
-
-Blockly.Python['threepi_rgb_leds_set_brightness'] = function(block) {
-	var value_brightness = Blockly.Python.valueToCode(block, 'brightness', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
-	var code = 'threepi_rgb_leds.set_brightness(' + value_brightness + ')\n';
-	return code
-};
-
-Blockly.Python['threepi_rgb_leds_show'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
-	var code = 'threepi_rgb_leds.show()\n';
-	return code
-};
-
-Blockly.Python['threepi_rgb_leds_off'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
-	var code = 'threepi_rgb_leds.off()\n';
-	return code
-};
-
-Blockly.Python['threepi_rgb_leds_set'] = function(block) {
-	var value_address = Blockly.Python.valueToCode(block, 'address', Blockly.Python.ORDER_ATOMIC);
-	var value_color = Blockly.Python.valueToCode(block, 'color', Blockly.Python.ORDER_ATOMIC);
-
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pirgb_leds'] = 'threepi_rgb_leds = threepi_robot.RGBLEDs()';
-	var code = 'threepi_rgb_leds.set(' + value_address + ',' + value_color + ')\n';
-	return code
-};
-
-Blockly.Python['threepi_read_button_a'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibutton_a'] = 'threepi_button_a = threepi_robot.ButtonA()';
-	var code = 'threepi_button_a.is_pressed()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['threepi_read_button_b'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pi_button_b'] = 'threepi_button_b = threepi_robot.ButtonB()';
-	var code = 'threepi_button_b.is_pressed()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['threepi_read_button_c'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibutton_c'] = 'threepi_button_c = threepi_robot.ButtonC()';
-	var code = 'threepi_button_c.is_pressed()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['threepi_check_button_a'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibutton_a'] = 'threepi_button_a = threepi_robot.ButtonA()';
-	var code = 'threepi_button_a.check()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['threepi_check_button_b'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pi_button_b'] = 'threepi_button_b = threepi_robot.ButtonB()';
-	var code = 'threepi_button_b.check()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['threepi_check_button_c'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibutton_c'] = 'threepi_button_c = threepi_robot.ButtonC()';
-	var code = 'threepi_button_c.check()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['threepi_bump_calibrate'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
-	var code = 'threepi_bump_sensors.calibrate()\n';
-	return code
-};
-
-Blockly.Python['threepi_bump_read'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
-	var code = 'threepi_bump_sensors.read()\n';
-	return code
-};
-
-Blockly.Python['threepi_bump_left_is_pressed'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
-	var code = 'threepi_bump_sensors.left_is_pressed()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
-
-Blockly.Python['threepi_bump_right_is_pressed'] = function(block) {
-	Blockly.Python.definitions_['import_3pirobot'] = 'from pololu_3pi_2040_robot import robot as threepi_robot';
-	Blockly.Python.definitions_['make_3pibump_sensors'] = 'threepi_bump_sensors = threepi_robot.BumpSensors()';
-	var code = 'threepi_bump_sensors.right_is_pressed()';
-	return [code, Blockly.Python.ORDER_NONE];
-};
