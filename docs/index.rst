@@ -23,7 +23,6 @@ BIPES Developer Center
    :caption: Block tutorials
 
    block-tutorials/google-sheets-script
-   block-tutorials/mysql-esp32
 
 
 .. toctree::
