@@ -493,21 +493,28 @@ Blockly.Python['tank_turn'] = function(block) {
 };
 
 Blockly.Python['init_servo'] = function(block) {
-  var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-  // TODO: Assemble Python into code variable.
-  Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
-  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  var code = 'pservo = Pin(' + pin + ')\n';
-      code += 'servo = PWM(pservo,freq=50)\n';
-  return code;
-};
-
-Blockly.Python['move_servo'] = function(block) {
-  var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
-
-  var code = 'servo.duty(' + value_angle + ')\n';
-  return code;
-};
+	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	var code = 'pservo = Pin(' + pin + ')\n';
+		code += 'servo = PWM(pservo, freq=50)\n';
+	return code;
+  };
+  
+  Blockly.Python['move_servo'] = function(block) {
+	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+	
+	// Ajuste os valores de duty_min e duty_max conforme necessário
+	var duty_min = 30;   // Valor mínimo para 0 graus
+	var duty_max = 125;  // Valor máximo para 180 graus
+	
+	// Código para converter ângulo em duty cycle
+	var duty_code = 'int(' + duty_min + ' + (' + value_angle + ' / 180) * (' + duty_max + ' - ' + duty_min + '))';
+	
+	var code = 'servo.duty(' + duty_code + ')\n';
+	return code;
+  };
+  
 
 Blockly.Python['net_get_request'] = function(block) {
 	var value_url = Blockly.Python.valueToCode(block, 'URL', Blockly.Python.ORDER_ATOMIC);
@@ -4719,7 +4726,7 @@ Blockly.Python['char_lcd_backlight'] = function(block) {
 };
 
 Blockly.Python['char_lcd_display'] = function(block) {
-  var code = 'lcd.display_on()\n';
+  var code = 'lcd.display_on()\n';	
   return code;
 };
 
@@ -5405,67 +5412,60 @@ for i in range(1, ` + step + `):
 
 //DC Motor with H-Bridge
 Blockly.Python['dc_motor_init'] = function(block) {
-  var pwm = Blockly.Python.valueToCode(block, 'pwm', Blockly.Python.ORDER_ATOMIC);
-  var dir1 = Blockly.Python.valueToCode(block, 'dir1', Blockly.Python.ORDER_ATOMIC);
-  var dir2 = Blockly.Python.valueToCode(block, 'dir2', Blockly.Python.ORDER_ATOMIC);
-
-  Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-  Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
-
-  var code =  "dc_motor_pin_a = Pin(" + dir1 + ", Pin.OUT)\n";
-      code +=  "dc_motor_pin_b = Pin(" + dir2 + ", Pin.OUT)\n";
-      code +=  "dc_motor_pwm = PWM(" + pwm + ")\n";
-
-  return code;
-};
-
-Blockly.Python['dc_motor_power'] = function(block) {
-  var pwr = Blockly.Python.valueToCode(block, 'power', Blockly.Python.ORDER_ATOMIC);
-
-  var code = 'dc_motor_pwm.duty(' + pwr + ')\n';
-
-  return code;
-};
-
-Blockly.Python['dc_motor_direction'] = function(block) {
-  var dir = Blockly.Python.valueToCode(block, 'dir', Blockly.Python.ORDER_ATOMIC);
-
-  var code='\n';
-
-  if (dir == 0) 
-	code = `
-dc_motor_pin_a.value=0
-dc_motor_pin_b.value=0
-`;
-
-  if (dir == 1) 
-	code = `
-dc_motor_pin_a.value=1
-dc_motor_pin_b.value=0
-`;
-
-  if (dir == 2) 
-	code = `
-dc_motor_pin_a.value=0
-dc_motor_pin_b.value=1
-`;
-
-  if (dir == 3) 
-	code = `
-dc_motor_pin_a.value=1
-dc_motor_pin_b.value=1
-`;
-
-  return code;
-};
-
-Blockly.Python['dc_motor_stop'] = function(block) {
-
-  var code = 'dc_motor_pin_a.value=0\n';
-      code += 'dc_motor_pin_b.value=0\n';
-
-  return code;
-};
+	var motor_name = block.getFieldValue('motor_name');  // Nome do motor
+	var pwm = Blockly.Python.valueToCode(block, 'pwm', Blockly.Python.ORDER_ATOMIC);
+	var dir1 = Blockly.Python.valueToCode(block, 'dir1', Blockly.Python.ORDER_ATOMIC);
+	var dir2 = Blockly.Python.valueToCode(block, 'dir2', Blockly.Python.ORDER_ATOMIC);
+  
+	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+  
+	var code = motor_name + '_pin_a = Pin(' + dir1 + ', Pin.OUT)\n';
+	code += motor_name + '_pin_b = Pin(' + dir2 + ', Pin.OUT)\n';
+	code += motor_name + '_pwm = PWM(Pin(' + pwm + '))\n';
+	code += motor_name + '_pwm.freq(1000)\n';  // Definindo a frequência do PWM
+  
+	return code;
+  };
+  
+  Blockly.Python['dc_motor_power'] = function(block) {
+	var motor_name = block.getFieldValue('motor_name');  // Nome do motor
+	var pwr = Blockly.Python.valueToCode(block, 'power', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = motor_name + '_pwm.duty(' + pwr + ')\n';
+  
+	return code;
+  };
+  
+  Blockly.Python['dc_motor_direction'] = function(block) {
+	var motor_name = block.getFieldValue('motor_name');  // Nome do motor
+	var dir = Blockly.Python.valueToCode(block, 'dir', Blockly.Python.ORDER_ATOMIC);
+  
+	var code = '';
+	if (dir === '0') {
+	  code = motor_name + '_pin_a.value(0)\n';
+	  code += motor_name + '_pin_b.value(0)\n';
+	} else if (dir === '1') {
+	  code = motor_name + '_pin_a.value(1)\n';
+	  code += motor_name + '_pin_b.value(0)\n';
+	} else if (dir === '2') {
+	  code = motor_name + '_pin_a.value(0)\n';
+	  code += motor_name + '_pin_b.value(1)\n';
+	} else if (dir === '3') {
+	  code = motor_name + '_pin_a.value(1)\n';
+	  code += motor_name + '_pin_b.value(1)\n';
+	}
+  
+	return code;
+  };
+  
+  Blockly.Python['dc_motor_stop'] = function(block) {
+	var motor_name = block.getFieldValue('motor_name');  // Nome do motor
+	var code = motor_name + '_pin_a.value(0)\n';
+	code += motor_name + '_pin_b.value(0)\n';
+  
+	return code;
+  };
 
 
 //ESP32 specific functions

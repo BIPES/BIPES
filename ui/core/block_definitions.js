@@ -10406,8 +10406,6 @@ Blockly.Blocks['dc_motor_init'] = {
         55,
         55,
         "*"));
-        //.setAlign(Blockly.ALIGN_CENTRE);
-
 
     this.appendValueInput("pwm")
         .setCheck("Number")
@@ -10424,12 +10422,15 @@ Blockly.Blocks['dc_motor_init'] = {
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Dir2");
 
+    this.appendDummyInput()
+        .appendField("Motor Name")
+        .appendField(new Blockly.FieldTextInput('motor1'), 'motor_name');
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
   }
 };
-
 
 Blockly.Blocks['dc_motor_power'] = {
   init: function() {
@@ -10441,6 +10442,10 @@ Blockly.Blocks['dc_motor_power'] = {
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Power");
+
+    this.appendDummyInput()
+        //.appendField("Motor Name")
+        .appendField(new Blockly.FieldTextInput('motor1'), 'motor_name');
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -10455,10 +10460,14 @@ Blockly.Blocks['dc_motor_direction'] = {
     this.appendDummyInput()
         .appendField("Set DC Motor Direction");
 
-this.appendValueInput("dir")
+    this.appendValueInput("dir")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Direction");
+
+    this.appendDummyInput()
+        //.appendField("Motor Name")
+        .appendField(new Blockly.FieldTextInput('motor1'), 'motor_name');
 
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -10473,13 +10482,16 @@ Blockly.Blocks['dc_motor_stop'] = {
     this.appendDummyInput()
         .appendField("Stop DC Motor");
 
+    this.appendDummyInput()
+        //.appendField("Motor Name")
+        .appendField(new Blockly.FieldTextInput('motor1'), 'motor_name');
+
     this.setPreviousStatement(true);
     this.setNextStatement(true);
 
     this.setTooltip('');
   }
 };
-
 
 
 //ESP32 specific functions
