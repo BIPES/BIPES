@@ -479,37 +479,21 @@ class files {
 
         files.update_file_status(`Sending raw (USB) ${this.put_file_name}...`);
 
-        let decoderUint8 =  new TextDecoder().decode(this.put_file_data)
-          .replaceAll(/\\/g, '\\\\')
-          .replaceAll(["UNO", "UNO2"].includes(UI ['workspace'].selector.value)
-            ? /(\r\n|\r)/g : /(\r\n|\r|\n)/g,  '\\r')
-          .replaceAll(/'/g, "\\'")
-          .replaceAll(/"/g, '\\"')
-          .replaceAll(/\t/g, '    ');
-       
+        let decoderUint8 =  new TextDecoder().decode(this.put_file_data).replaceAll(/(\r\n|\r|\n)/g, '\\r').replaceAll(/'/g, "\\'").replaceAll(/"/g, '\\"').replaceAll(/\t/g, '    ');
         UI ['progress'].start(parseInt(decoderUint8.length/Channel ['webserial'].packetSize) + 1);
 
         //ctrl-C twice: interrupt any running program
         mux.clearBuffer ();
         mux.bufferUnshift ('\r\x03\x03');
 
-        if (UI ['workspace'].selector.value == "UNO" ||
-            UI ['workspace'].selector.value == "UNO2") {
-          mux.bufferPush ("eeprom.write()\n");
-          mux.bufferPush (`${decoderUint8}\n`, () => {files.update_file_status(`Sent ${Files.put_file_data.length} bytes`)});
-          mux.bufferPush ('\n\x04\x04');
-          files.update_file_status(`File ${this.put_file_name} sent.`);
-          break;
-        }
-        
         mux.bufferPush ("import struct\r");
 
-        //Workaround for ESP32S2 using CircuitPython
-        //Needs to remount filesystem in write mode
-        if (UI ['workspace'].selector.value == "ESP32S2") {
-          mux.bufferPush ("import storage\r");
-          mux.bufferPush ("storage.remount(\"/\", False)\r");
-        } 
+	//Workaround for ESP32S2 using CircuitPython
+	//Needs to remount filesystem in write mode
+	if (UI ['workspace'].selector.value == "ESP32S2") {
+		mux.bufferPush ("import storage\r");
+		mux.bufferPush ("storage.remount(\"/\", False)\r");
+	} 
 
         mux.bufferPush (`f=open('${this.put_file_name}', 'w')\r`);
 
@@ -674,7 +658,7 @@ class files {
         this.watcher_calledCount = 0;
         mux.bufferPush (`import os, sys; os.stat('${src_fname}')\r`);
         //mux.bufferPush (`import uos, sys; uos.stat('${src_fname}')\r`);
-        mux.bufferPush (`with open('${src_fname}', 'rb') as infile:\rwhile True:\rresult = infile.read(32)\rif result == b'':\rbreak\r\b_bytes_written = sys.stdout.write(result)\r`, () => {}); //Includes dummy callback due to '>>> '
+        mux.bufferPush (`with open('${src_fname}', 'rb') as infile:\rwhile True:\rresult = infile.read(32)\rif result == b'':\rbreak\r\blen = sys.stdout.write(result)\r`, () => {}); //Includes dummy callback due to '>>> '
         mux.bufferPush ("\r\r\r", () => {
           this.watcher = setInterval ( () => {
             if (Files.get_file_webserial_ ()) {

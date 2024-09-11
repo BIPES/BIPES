@@ -513,7 +513,7 @@
 
 <category name="%{BKY_CAT_DISPLAYS}">
 
-<category name="%{BKY_CAT_NEO}">
+<category name="NeoPixel LED">
       <label text="Single RGB LED with CircuitPython"></label>
 
       <block type="neopixel_control_CPY">
@@ -668,7 +668,7 @@
 
 
 
-  <category name="%{BKY_CAT_CHAR_DISP}">
+  <category name="Character display">
       <label text="PCF8574 Display controller"></label>
 
       <label text="Library: https://github.com/dhylands/python_lcd"></label>
@@ -1062,7 +1062,7 @@
   </category>
 
   <category name="%{BKY_CAT_SENSORS}">
-    <category name="%{BKY_CAT_TEMP_HUMI}">
+    <category name="DHT11/22 Sensor">
       <label text="DHT11/22 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
@@ -1127,13 +1127,14 @@
       </block>
   </category>
 
-  <category name="%{BKY_CAT_ULTRASOUND}">
-      <label text="%{BKY_TXT_ULTRASOUND_DESCRIPTION}"></label>
+  <category name="Ultrasound">
+      <label text="HCSR04 ultrasound distance sensor"></label>
       <label text="Library: https://github.com/rsc1975/micropython-hcsr04"></label>
-        <button text="%{BKY_TXT_ULTRASOUND_LIB}" callbackKey="installPyLib"></button>
+        <button text="Install HCSR04 library" callbackKey="installPyLib"></button>
 
 
       <block type="hcsr_init">
+        <field name="BLOCK_HCSR_INIT">Start HCSR04 Ultrasound sensor</field>
         <value name="echo">
           <shadow type="pinout">
             <field name="PIN"></field>
@@ -1343,8 +1344,8 @@
   </category>
 
   <category name="%{BKY_CAT_OUTPUTS}">
-    <category name="%{BKY_CAT_RELAY}">
-      <label text="%{BKY_CAT_RELAY}"></label>
+    <category name="Relay">
+      <label text="Relay"></label>
       <block type="relay_switch">
         <value name="pin">
           <shadow type="pinout">
@@ -1354,8 +1355,8 @@
       </block>
     </category>
 
-  <category name="%{BKY_CAT_SERVO}">
-      <label text="%{BKY_TXT_SERVO_DESCRIPTION}"></label>
+  <category name="RC Servo Motor">
+      <label text="Hobby RC Servo Motor"></label>
     <block type="init_servo">
         <value name="pin">
           <shadow type="pinout">
@@ -1374,8 +1375,8 @@
   </category>
 
 
-  <category name="%{BKY_CAT_STEPPER}">
-      <label text="%{BKY_TXT_STEPPER_DESCRIPTION}"></label>
+  <category name="Stepper Motor">
+      <label text="Stepper Motor"></label>
     <block type="stepper_init">
       <value name="p0">
         <shadow type="pinout">
@@ -1408,8 +1409,8 @@
     </block>
   </category>
 
-  <category name="%{BKY_CAT_DC_MOTOR}">
-      <label text="%{BKY_TXT_DC_MOTOR_DESCRIPTION}"></label>
+  <category name="DC Motor">
+      <label text="DC Motor"></label>
     <block type="dc_motor_init">
       <value name="pwm">
         <shadow type="pinout">
@@ -2070,6 +2071,7 @@ _
     <category name="MQTT">
       <label text="MQTT (Message Queue Telemetry Transport)"></label>
       <block type="mqtt_init">
+        <field name="BLOCK_MQTT_INIT">Start MQTT Client</field>
         <value name="server">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2092,7 +2094,7 @@ _
         </value>
       </block>
       <block type="mqtt_add_to_buffer">
-
+        <field name="BLOCK_MQTT_ADD_TO_BUFFER">Add data to MQTT Buffer</field>
         <value name="fieldname">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2101,6 +2103,7 @@ _
         <field name="MQTT_VALUE">Value</field>
       </block>
       <block type="mqtt_publish_buffer">
+        <field name="BLOCK_MQTT_PUBLISH">Publish Buffer to MQTT Topic</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2108,7 +2111,8 @@ _
         </value>
       </block>
       <block type="mqtt_publish_payload">
-<category name="%{BKY_CAT_ULTRASOUND}">        <value name="topic">
+        <field name="BLOCK_MQTT_PUBLISH">Publish Payload to MQTT Topic</field>
+        <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
           </shadow>
@@ -2120,9 +2124,11 @@ _
         </value>
       </block>
       <block type="mqtt_set_callback">
+        <field name="BLOCK_MQTT_SET_CALLBACK">Set Callback to MQTT Messages</field>
         <field name="MQTT_CALLBACK">Callback Function</field>
       </block>
       <block type="mqtt_subscribe">
+        <field name="BLOCK_MQTT_SUBSCRIBE">Subscribe to MQTT Topic</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2130,12 +2136,13 @@ _
         </value>
       </block>
       <block type="mqtt_check_msg">
-
+        <field name="BLOCK_MQTT_CHECK_MSG">Check for MQTT Server messages</field>
       </block>
       <block type="mqtt_wait_msg">
-
+        <field name="BLOCK_MQTT_WAIT_MSG">Wait for MQTT Server messages</field>
       </block>
       <block type="mqtt_disconnect">
+        <field name="BLOCK_MQTT_DISCONNECT">Disconnect MQTT Client</field>
       </block>
     </category>
     <category name="EasyMQTT">

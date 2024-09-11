@@ -512,7 +512,7 @@
 
 <category name="%{BKY_CAT_DISPLAYS}">
 
-<category name="%{BKY_CAT_NEO}">
+<category name="NeoPixel LED Strip">
       <label text="NeoPixel RGB LED Strip"></label>
 
         <button text="Documentation and how to connect: neopixel" callbackKey="loadDoc"></button>
@@ -618,7 +618,7 @@
 
 
 
-  <category name="%{BKY_CAT_CHAR_DISP}">
+  <category name="Character display">
       <label text="PCF8574 Display controller"></label>
 
       <label text="Library: https://github.com/dhylands/python_lcd"></label>
@@ -1012,8 +1012,7 @@
   </category>
 
   <category name="%{BKY_CAT_SENSORS}">
-
-    <category name="%{BKY_CAT_TEMP_HUMI}">
+    <category name="DHT11/22 Sensor">
       <label text="DHT11/22 Temperature and Humidity Sensor"></label>
       <block type="dht_init">
         <field name="BLOCK_DHT_INIT">Start DHT11/22 sensor</field>
@@ -1026,28 +1025,7 @@
       <block type="dht_measure"></block>
       <block type="dht_read_temp"></block>
       <block type="dht_read_humidity"></block>
-
-      <label text="SHT20 I2C Temperature and Humidity Sensor"></label>
-
-      <block type="sht20_init">
-	      <value name="scl">
-		<shadow type="math_number">
-		  <field name="NUM">22</field>
-		</shadow>
-	      </value>
-	      <value name="sda">
-		<shadow type="math_number">
-		  <field name="NUM">21</field>
-		</shadow>
-	      </value>
-      </block>
-
-    <block type="sht20_temperature"> </block>
-    <block type="sht20_humidity"> </block>
-
     </category>
-
-
 <!--Adicionando os blocos do Anenmômetro-->
     <category name="Anemômetro">
     <label text="Anenômetro"></label>
@@ -1099,13 +1077,14 @@
       </block>
   </category>
 
-  <category name="%{BKY_CAT_ULTRASOUND}">
-      <label text="%{BKY_TXT_ULTRASOUND_DESCRIPTION}"></label>
+  <category name="Ultrasound">
+      <label text="HCSR04 ultrasound distance sensor"></label>
       <label text="Library: https://github.com/rsc1975/micropython-hcsr04"></label>
-        <button text="%{BKY_TXT_ULTRASOUND_LIB}" callbackKey="installPyLib"></button>
+        <button text="Install HCSR04 library" callbackKey="installPyLib"></button>
 
 
       <block type="hcsr_init">
+        <field name="BLOCK_HCSR_INIT">Start HCSR04 Ultrasound sensor</field>
         <value name="echo">
           <shadow type="pinout">
             <field name="PIN"></field>
@@ -1128,40 +1107,26 @@
   </category>
 
   <category name="GPS">
-      <label text="Global Positioning System (GPS) sensor"></label>
-      <label text="Library: https://github.com/rafaelaroca/mini_micropyGPS"></label>
-      <button text="Install mini_micropyGPS library" callbackKey="installPyLib"></button>
+      <label text="Global Positioning System sensor"></label>
+   <label text="Library: https://github.com/"></label>
+        <button text="Install GPS library" callbackKey="installPyLib"></button>
 
-      <block type="gps_init">
-      <value name="uart">
-        <shadow type="math_number">
-          <field name="NUM">2</field>
-        </shadow>
-      </value>
-      <value name="tx">
-        <shadow type="math_number">
-          <field name="NUM">17</field>
-        </shadow>
-      </value>
-      <value name="rx">
-        <shadow type="math_number">
-          <field name="NUM">16</field>
-        </shadow>
-      </value>
-      <value name="bps">
-        <shadow type="math_number">
-          <field name="NUM">38400</field>
-        </shadow>
-      </value>
+	<block type="gps_init">
       </block>
-	<block type="gps_update"> </block>
-	<block type="gps_coord_format"> </block>
-	<block type="gps_get_lat"> </block>
-	<block type="gps_get_long"> </block>
-	<block type="gps_get_height"> </block>
-	<block type="gps_get_speed"> </block>
-	<block type="gps_get_date"> </block>
-	<block type="gps_get_time"> </block>
+	<block type="gps_update">
+      </block>
+	<block type="gps_get_lat">
+      </block>
+	<block type="gps_get_long">
+      </block>
+	<block type="gps_get_height">
+      </block>
+	<block type="gps_get_speed">
+      </block>
+	<block type="gps_get_datetime">
+      </block>
+
+
   </category>
 
   <category name="Oximeter">
@@ -1183,126 +1148,40 @@
 
   </category>
 
-  <category name="%{BKY_CAT_PRESS}">
-      <label text="BMP180"></label>
-   <label text="Library: https://github.com/micropython-IMU/micropython-bmp180"></label>
-        <button text="Install bmp180 library (BMP180)" callbackKey="installPyLib"></button>
+  <category name="Inertial Measurement">
+      <label text="MPU6050 IMU"></label>
+   <label text="Library: https://github.com/"></label>
+        <button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
 
-    <block type="bmp180_init">
-      <value name="scl">
+        <button text="Load example: mpu6050" callbackKey="loadExample"></button>
+        <button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
+
+
+
+    <block type="init_mpu6050">
+
+ <value name="scl">
         <shadow type="math_number">
           <field name="NUM">5</field>
         </shadow>
       </value>
-      <value name="sda">
+
+ <value name="sda">
         <shadow type="math_number">
           <field name="NUM">4</field>
         </shadow>
       </value>
+
     </block>
 
-    <block type="bmp180_temperature"> </block>
-    <block type="bmp180_pressure"> </block>
-    <block type="bmp180_altitude"> </block>
+    <block type="mpu6050_read_acc_x"> </block>
+    <block type="mpu6050_read_acc_y"> </block>
+    <block type="mpu6050_read_acc_z"> </block>
 
-    <label text="BMP280"></label>
-   <label text="Library: "></label>
-        <button text="Install bmp280 library (BMP280)" callbackKey="installPyLib"></button>
+    <block type="mpu6050_read_gyro_x"> </block>
+    <block type="mpu6050_read_gyro_y"> </block>
+    <block type="mpu6050_read_gyro_z"> </block>
 
-    <block type="bmp280_init">
-      <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">22</field>
-        </shadow>
-      </value>
-      <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">21</field>
-        </shadow>
-      </value>
-    </block>
-
-    <block type="bmp280_measure"> </block>
-    <block type="bmp280_sleep"> </block>
-    <block type="bmp280_temperature"> </block>
-    <block type="bmp280_pressure"> </block>
-
-
-  </category>
-
-  <category name="%{BKY_CAT_AIR}">
-      <label text="CCS811"></label>
-   <label text="Library: https://github.com/Notthemarsian/CCS811"></label>
-        <button text="Install CCS811 library" callbackKey="installPyLib"></button>
-
-    <block type="ccs811_init">
-      <value name="scl">
-        <shadow type="math_number">
-          <field name="NUM">22</field>
-        </shadow>
-      </value>
-      <value name="sda">
-        <shadow type="math_number">
-          <field name="NUM">21</field>
-        </shadow>
-      </value>
-    </block>
-
-    <block type="ccs811_data_ready"> </block>
-    <block type="ccs811_eCO2"> </block>
-    <block type="ccs811_tVOC"> </block>
-  </category>
-
-  <category name="%{BKY_CAT_IMU}">
-	<label text="MPU6050 IMU"></label>
-	<label text="Library: https://github.com/"></label>
-	<button text="Install imu library (MPU6050)" callbackKey="installPyLib"></button>
-	<button text="Load example: mpu6050" callbackKey="loadExample"></button>
-	<button text="Documentation and how to connect: mpu6050" callbackKey="loadDoc"></button>
-
-	<block type="init_mpu6050">
-		<value name="scl">
-		<shadow type="math_number">
-		<field name="NUM">5</field>
-		</shadow>
-		</value>
-		<value name="sda">
-		<shadow type="math_number">
-		<field name="NUM">4</field>
-		</shadow>
-		</value>
-	</block>
-
-	<block type="mpu6050_read_acc_x"> </block>
-	<block type="mpu6050_read_acc_y"> </block>
-	<block type="mpu6050_read_acc_z"> </block>
-
-	<block type="mpu6050_read_gyro_x"> </block>
-	<block type="mpu6050_read_gyro_y"> </block>
-	<block type="mpu6050_read_gyro_z"> </block>
-
-	<label text="MPU9250 IMU"></label>
-	<button text="Install mpu9250 library" callbackKey="installPyLib"></button>
-	<button text="Install mpu6500 library" callbackKey="installPyLib"></button>
-	<button text="Install ak8963 library" callbackKey="installPyLib"></button>
-
-	<block type="mpu9250_init">
-		<value name="scl">
-		<shadow type="math_number">
-		<field name="NUM">22</field>
-		</shadow>
-		</value>
-		<value name="sda">
-		<shadow type="math_number">
-		<field name="NUM">21</field>
-		</shadow>
-		</value>
-	</block>
-
-	<block type="mpu9250_acc"> </block>
-	<block type="mpu9250_gyro"> </block>
-	<block type="mpu9250_mag"> </block>
-	<block type="mpu9250_temp"> </block>
 
   </category>
 
@@ -1415,8 +1294,8 @@
   </category>
 
   <category name="%{BKY_CAT_OUTPUTS}">
-    <category name="%{BKY_CAT_RELAY}">
-      <label text="%{BKY_CAT_RELAY}"></label>
+    <category name="Relay">
+      <label text="Relay"></label>
       <block type="relay_switch">
         <value name="pin">
           <shadow type="pinout">
@@ -1426,35 +1305,8 @@
       </block>
     </category>
 
-    <category name="I/O Expander">
-	    <label text="I/O Expander"></label>
-	    <label text="MCP23017"></label>
-            <button text="Install mcp23017 library" callbackKey="installPyLib"></button>
-	    <label text="Library source: https://github.com/ShrimpingIt/micropython-mcp230xx/blob/master/mcp.py
-"></label>
-
-	    <block type="mcp23017_init">
-	      <value name="scl">
-		<shadow type="math_number">
-		  <field name="NUM">22</field>
-		</shadow>
-	      </value>
-	      <value name="sda">
-		<shadow type="math_number">
-		  <field name="NUM">21</field>
-		</shadow>
-	      </value>
-	    </block>
-
-	    <block type="mcp23017_setup"></block>
-	    <block type="mcp23017_output"></block>
-	    <block type="mcp23017_input"></block>
-
-    </category>
-
-
-  <category name="%{BKY_CAT_SERVO}">
-      <label text="%{BKY_TXT_SERVO_DESCRIPTION}"></label>
+  <category name="RC Servo Motor">
+      <label text="Hobby RC Servo Motor"></label>
     <block type="init_servo">
         <value name="pin">
           <shadow type="pinout">
@@ -1473,8 +1325,8 @@
   </category>
 
 
-  <category name="%{BKY_CAT_STEPPER}">
-      <label text="%{BKY_TXT_STEPPER_DESCRIPTION}"></label>
+  <category name="Stepper Motor">
+      <label text="Stepper Motor"></label>
     <block type="stepper_init">
       <value name="p0">
         <shadow type="pinout">
@@ -1507,8 +1359,8 @@
     </block>
   </category>
 
-  <category name="%{BKY_CAT_DC_MOTOR}">
-      <label text="%{BKY_TXT_DC_MOTOR_DESCRIPTION}"></label>
+  <category name="DC Motor">
+      <label text="DC Motor"></label>
     <block type="dc_motor_init">
       <value name="pwm">
         <shadow type="pinout">
@@ -1820,52 +1672,13 @@ _
 
       <label text="SD Card"></label>
 
-    <block type="sd_mount">
-      <value name="pIn">
+<block type="sd_mount">
+  <value name="pIn">
         <shadow type="text">
 		<field name="TEXT">/sd</field>
         </shadow>
       </value>
-    </block>
-
-    <block type="sd_mount_custom">
-      <value name="slot">
-        <shadow type="math_number">
-          <field name="NUM">2</field>
-        </shadow>
-      </value>
-      <value name="sck">
-        <shadow type="math_number">
-          <field name="NUM">18</field>
-        </shadow>
-      </value>
-      <value name="miso">
-        <shadow type="math_number">
-          <field name="NUM">19</field>
-        </shadow>
-      </value>
-      <value name="mosi">
-        <shadow type="math_number">
-          <field name="NUM">23</field>
-        </shadow>
-      </value>
-      <value name="cs">
-        <shadow type="math_number">
-          <field name="NUM">15</field>
-        </shadow>
-      </value>
-      <value name="freq">
-        <shadow type="math_number">
-          <field name="NUM">20000000</field>
-        </shadow>
-      </value>
-      <value name="pIn">
-        <shadow type="text">
-		<field name="TEXT">/sd</field>
-        </shadow>
-      </value>
-    </block>
-
+</block>
 
 <block type="uos_listdir">
   <value name="pIn">
@@ -2088,7 +1901,6 @@ _
       <field name="NET_POST_REQUEST_URL">Make HTTP POST Request URL</field>
       <field name="NET_POST_REQUEST_DATA">Data</field>
     </block>
-    <block type="net_post_request_json"></block>
 
     </category>
 
@@ -2233,6 +2045,7 @@ _
     <category name="MQTT">
       <label text="MQTT (Message Queue Telemetry Transport)"></label>
       <block type="mqtt_init">
+        <field name="BLOCK_MQTT_INIT">Start MQTT Client</field>
         <value name="server">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2255,7 +2068,7 @@ _
         </value>
       </block>
       <block type="mqtt_add_to_buffer">
-
+        <field name="BLOCK_MQTT_ADD_TO_BUFFER">Add data to MQTT Buffer</field>
         <value name="fieldname">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2264,6 +2077,7 @@ _
         <field name="MQTT_VALUE">Value</field>
       </block>
       <block type="mqtt_publish_buffer">
+        <field name="BLOCK_MQTT_PUBLISH">Publish Buffer to MQTT Topic</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2271,7 +2085,8 @@ _
         </value>
       </block>
       <block type="mqtt_publish_payload">
-<category name="%{BKY_CAT_ULTRASOUND}">        <value name="topic">
+        <field name="BLOCK_MQTT_PUBLISH">Publish Payload to MQTT Topic</field>
+        <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
           </shadow>
@@ -2283,9 +2098,11 @@ _
         </value>
       </block>
       <block type="mqtt_set_callback">
+        <field name="BLOCK_MQTT_SET_CALLBACK">Set Callback to MQTT Messages</field>
         <field name="MQTT_CALLBACK">Callback Function</field>
       </block>
       <block type="mqtt_subscribe">
+        <field name="BLOCK_MQTT_SUBSCRIBE">Subscribe to MQTT Topic</field>
         <value name="topic">
           <shadow type="text">
             <field name="TEXT"></field>
@@ -2293,12 +2110,13 @@ _
         </value>
       </block>
       <block type="mqtt_check_msg">
-
+        <field name="BLOCK_MQTT_CHECK_MSG">Check for MQTT Server messages</field>
       </block>
       <block type="mqtt_wait_msg">
-
+        <field name="BLOCK_MQTT_WAIT_MSG">Wait for MQTT Server messages</field>
       </block>
       <block type="mqtt_disconnect">
+        <field name="BLOCK_MQTT_DISCONNECT">Disconnect MQTT Client</field>
       </block>
     </category>
     <category name="EasyMQTT">
@@ -2417,79 +2235,7 @@ _
         </value>
       </block>
     </category>
-
-<category name="Database">
-      <label text="Send data to a MySQL database"></label>
-      <label text="PHP SCRIPT: http://bipes.net.br/docs/block-tutorials/mysql-esp32.html"></label>
-  <block type="db_connect">
-    <field name="db_idconnect">1</field>
-    <value name="db_host">
-      <shadow type="text">
-        <field name="TEXT">http://192.168.0.1/php_script.php</field>
-      </shadow>
-    </value>
-   
-    <value name="db_server">
-      <shadow type="text">
-        <field name="TEXT"></field>
-      </shadow>
-    </value>
-    <value name="db_user">
-      <shadow type="text">
-        <field name="TEXT"></field>
-      </shadow>
-    </value>
-    <value name="db_pass">
-      <shadow type="text">
-        <field name="TEXT"></field>
-      </shadow>
-    </value>
-    <value name="db_database">
-      <shadow type="text">
-        <field name="TEXT"></field>
-      </shadow>
-    </value>
-     <value name="db_table">
-      <shadow type="text">
-        <field name="TEXT"></field>
-      </shadow>
-    </value>
-    <statement name="db_table_data">
-     <block type="data_value">
-        <value name="Column">
-          <shadow type="text">
-            <field name="TEXT">column name</field>
-          </shadow>
-        </value>
-        <value name="Value">
-          <shadow type="text">
-            <field name="TEXT">content</field>
-          </shadow>
-        </value>
-      </block>
-    </statement>
-    
-  </block> 
-   <block type="data_value">
-        <value name="Column">
-          <shadow type="text">
-            <field name="TEXT">column name</field>
-          </shadow>
-        </value>
-        <value name="Value">
-          <shadow type="text">
-            <field name="TEXT">content</field>
-          </shadow>
-        </value>
-      </block>  
   </category>
-
-  </category>
-
-  
-  
- 
-
 
 <category name="%{BKY_CAT_CONTROL}">
   <category name="PID">
