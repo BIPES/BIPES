@@ -460,6 +460,18 @@ Blockly.Python['write_oled'] = function(block) {
   return code;
 };
 
+//Mostrar valores inteiros no display oled
+Blockly.Python['write_oled_int'] = function(block) {
+	var x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
+	var y = Blockly.Python.valueToCode(block, 'y', Blockly.Python.ORDER_ATOMIC);
+	var value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+  
+	// Código para definir a posição no display e imprimir o valor
+	var code = 'oled.text(str(' + value + '), ' + x + ', ' + y + ')\n';
+	
+	return code;
+  };
+
 Blockly.Python['init_tank'] = function(block) {
   var Xpos = Blockly.Python.valueToCode(block, 'Xpos', Blockly.Python.ORDER_ATOMIC);
   var Ypos = Blockly.Python.valueToCode(block, 'Ypos', Blockly.Python.ORDER_ATOMIC);

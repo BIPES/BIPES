@@ -1141,6 +1141,40 @@ Blockly.Blocks['write_oled'] = {
   }
 };
 
+//Impriver valores inteiros no display oled
+Blockly.Blocks['write_oled_int'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Print value on display");
+
+    // Campo para a posição X no display
+    this.appendValueInput("x")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("X position");
+        
+
+    // Campo para a posição Y no display
+    this.appendValueInput("y")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Y position");
+
+    // Campo para o valor inteiro que será impresso
+    this.appendValueInput("value")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Value");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+
+    this.setTooltip("Mostre um valor inteiro em uma posição especifica no display oled");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
+
 Blockly.Blocks['init_tank'] = {
   init: function() {
     this.appendDummyInput()
