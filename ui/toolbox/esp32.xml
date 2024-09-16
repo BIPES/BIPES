@@ -816,12 +816,12 @@
         </value>
         <value name="scl">
           <shadow type="math_number">
-            <field name="NUM">5</field>
+            <field name="NUM">22</field>
           </shadow>
         </value>
         <value name="sda">
           <shadow type="math_number">
-            <field name="NUM">4</field>
+            <field name="NUM">21</field>
           </shadow>
         </value>
     </block>
@@ -844,10 +844,26 @@
           <field name="TEXT">Hello</field>
         </shadow>
       </value>
-
-
-    
     </block>
+
+    <block type="write_oled_int">
+      <value name="x">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="y">
+        <shadow type="math_number">
+          <field name="NUM">40</field>
+        </shadow>
+      </value>
+      <value name="value">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+
     <block type="show_oled"></block>
     <block type="clear_oled"></block>
     <block type="fill_oled"></block>
