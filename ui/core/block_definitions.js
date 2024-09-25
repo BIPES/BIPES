@@ -1231,52 +1231,52 @@ Blockly.Blocks['tank_turn'] = {
 
 Blockly.Blocks['init_servo'] = {
   init: function() {
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldImage("media/servo.png", 55, 55, "*"))
+      .appendField("Init RC Servo Motor");
 
- this.appendDummyInput()
-      .appendField(new Blockly.FieldImage(
-        "media/servo.png",
-        55,
-        55,
-        "*"))
-      .appendField("Init RC Servo Motor")
-	  ;
-
+    this.appendDummyInput()
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Servo Name")
+      .appendField(new Blockly.FieldTextInput("servo1"), "servo_name");  // Adicionando o campo de nome
 
     this.appendValueInput("pin")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Pin");
-    this.setColour(230);
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Pin");
 
+    this.setColour(230);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
 
- this.setTooltip("Init RC servo motor");
- this.setHelpUrl("http://www.bipes.net.ebr");
+    this.setTooltip("Init RC servo motor");
+    this.setHelpUrl("http://www.bipes.net.ebr");
   }
 };
+
 
 
 Blockly.Blocks['move_servo'] = {
   init: function() {
-
-
- this.appendDummyInput().appendField("Move Servo Motor");
-
+    this.appendDummyInput()
+      .appendField("Move Servo Motor")
+      .appendField("Servo Name")
+      .appendField(new Blockly.FieldTextInput("servo1"), "servo_name");  // Adicionando o campo de nome
 
     this.appendValueInput("angle")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Angle");
-    this.setColour(230);
+      .setCheck("Number")
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField("Angle");
 
+    this.setColour(230);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
 
- this.setTooltip("Move RC servo motor to degrees");
- this.setHelpUrl("http://www.bipes.net.ebr");
+    this.setTooltip("Move RC servo motor to degrees");
+    this.setHelpUrl("http://www.bipes.net.ebr");
   }
 };
+
 
 Blockly.Blocks['net_get_request'] = {
   init: function() {

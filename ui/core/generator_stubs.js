@@ -505,27 +505,29 @@ Blockly.Python['tank_turn'] = function(block) {
 };
 
 Blockly.Python['init_servo'] = function(block) {
-	var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
-	Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
-	Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
-	var code = 'pservo = Pin(' + pin + ')\n';
-		code += 'servo = PWM(pservo, freq=50)\n';
-	return code;
-  };
-  
-  Blockly.Python['move_servo'] = function(block) {
-	var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
-	
-	// Ajuste os valores de duty_min e duty_max conforme necessário
-	var duty_min = 30;   // Valor mínimo para 0 graus
-	var duty_max = 125;  // Valor máximo para 180 graus
-	
-	// Código para converter ângulo em duty cycle
-	var duty_code = 'int(' + duty_min + ' + (' + value_angle + ' / 180) * (' + duty_max + ' - ' + duty_min + '))';
-	
-	var code = 'servo.duty(' + duty_code + ')\n';
-	return code;
-  };
+    var pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
+    var servo_name = block.getFieldValue('servo_name'); 
+    Blockly.Python.definitions_['import_pwm'] = 'from machine import PWM';
+    Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
+    var code = servo_name + ' = PWM(Pin(' + pin + '), freq=50)\n';
+    return code;
+};
+
+Blockly.Python['move_servo'] = function(block) {
+    var value_angle = Blockly.Python.valueToCode(block, 'angle', Blockly.Python.ORDER_ATOMIC);
+    var servo_name = block.getFieldValue('servo_name');  
+
+    
+    var duty_min = 30;   // Valor mínimo para 0 graus
+    var duty_max = 125;  // Valor máximo para 180 graus
+
+    // Código para converter ângulo em duty cycle
+    var duty_code = 'int(' + duty_min + ' + (' + value_angle + ' / 180) * (' + duty_max + ' - ' + duty_min + '))';
+
+    var code = servo_name + '.duty(' + duty_code + ')\n'; 
+    return code;
+};
+
   
 
 Blockly.Python['net_get_request'] = function(block) {
