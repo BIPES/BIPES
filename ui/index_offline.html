@@ -862,6 +862,8 @@ function eraseCookieModal(name) {
       <block type="var_to_float">  
         <field name="VAR">to float</field> 
       </block>
+      <block type="math_min"></block>
+      <block type="math_max"></block>
     </category>
     <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
@@ -998,8 +1000,21 @@ function eraseCookieModal(name) {
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
-
+    
+    <category name="Bluetooth" colour="290">
+      <block type="definir_variaveis_globais"></block>
+      <block type="math_min"></block>
+      <block type="math_max"></block>
+      <block type="config_bluetooth"></block>
+      <block type="handle_ble_data"></block>
+      <block type="iniciar_ble">
+        <field name="BLUETOOTH_NAME">Bluetooth Amado Board</field>
+      </block>
+      <block type="iniciar_loop"></block>
+    </category>
     <sep></sep>
+
+    
    <category name="BIPES">
     <block type="project_metadata">
       <value name="project_author">
@@ -2987,6 +3002,7 @@ _
     </category>
   </category>
 
+
 <category name="%{BKY_CAT_CONTROL}">
   <category name="PID">
     <button text="Install control library" callbackKey="installPyLib"></button>
@@ -3754,6 +3770,8 @@ _
 </block>
 </category>
 <category name="_thread">
+  <block type="iniciar_thread">
+  </block>
 </category>
 <category name="uarray">
 <block type="uarray_append">
@@ -4927,6 +4945,8 @@ _
       <block type="var_to_float">
         <field name="VAR">to float</field>
       </block>
+      <block type="math_min"></block>
+      <block type="math_max"></block>
     </category>
     <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
@@ -9217,6 +9237,8 @@ _
       <block type="var_to_float">  
         <field name="VAR">to float</field> 
       </block>
+      <block type="math_min"></block>
+      <block type="math_max"></block>
     </category>
     <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
       <block type="text"></block>
