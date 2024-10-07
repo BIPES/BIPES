@@ -484,6 +484,21 @@ Blockly.Blocks['thread'] = {
   }
 };
 
+//Novo bloco para criar uma função thread para rodar loops em paralelo
+Blockly.Blocks['iniciar_thread'] = {
+  init: function() {
+      this.appendValueInput("FUNCTION")
+          .setCheck("Function")
+          .appendField("Iniciar tarefa paralela com a função");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+      this.setTooltip("Inicia uma nova thread para executar a função especificada.");
+      this.setHelpUrl("");
+  }
+};
+
+
 
 
 
@@ -9317,134 +9332,7 @@ Blockly.Blocks['predict'] = {
   }
 };
 
-//RC522 RFID module
 
-Blockly.Blocks['rfid_rc522_init'] = {
-  init: function() {
-    this.setColour(135);
-    this.appendDummyInput()
-        .appendField("Init RC522 RFID Module");
-
- this.appendDummyInput()
-      .appendField(new Blockly.FieldImage(
-        "media/RC522.jpg",
-        55,
-        55,
-        "*"));
-        //.setAlign(Blockly.ALIGN_CENTRE);
-
-    this.appendValueInput("sck")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SCK");
-
-    this.appendValueInput("mosi")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("MOSI");
-
-    this.appendValueInput("miso")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("MISO");
-
-    this.appendValueInput("rst")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("RST");
-
-    this.appendValueInput("cs")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("CS");
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('');
-  }
-};
-
-Blockly.Blocks['rfid_rc522_detect_card'] = {
-  init: function() {
-    this.setColour(135);
-    this.appendDummyInput()
-        .appendField("Check if RFID Card is present");
-
-    this.appendValueInput("stat")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("status");
-
-    this.appendValueInput("tag")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("tag");
-
-
-    //this.setOutput(true);
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-
-    this.setTooltip('');
-  }
-};
-
-
-Blockly.Blocks['rfid_rc522_anticoll'] = {
-  init: function() {
-    this.setColour(135);
-    this.appendDummyInput()
-        .appendField("Get card identification (UID)");
-
-    this.appendValueInput("stat")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("status");
-
-    this.appendValueInput("tag")
-        .setCheck("Number")
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("tag");
-
-
-    //this.setOutput(true);
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-
-    this.setTooltip('');
-  }
-};
-
-
-
-//rfid_rc522_read_card
-Blockly.Blocks['rfid_rc522_read_card'] = {
-  init: function() {
-    this.setColour(135);
-    this.appendDummyInput()
-        .appendField("Read RFID Card Memory");
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('');
-  }
-};
-
-
-//rfid_rc522_write_card
-Blockly.Blocks['rfid_rc522_write_card'] = {
-  init: function() {
-    this.setColour(135);
-    this.appendDummyInput()
-        .appendField("Write RFID Card Memory");
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('');
-  }
-};
 
 
 
@@ -9575,6 +9463,136 @@ Blockly.Blocks['char_lcd_display'] = {
     this.setTooltip('');
   }
 };
+
+//RC522 RFID module
+
+Blockly.Blocks['rfid_rc522_init'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init RC522 RFID Module");
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/RC522.jpg",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("sck")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCK");
+
+    this.appendValueInput("mosi")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("MOSI");
+
+    this.appendValueInput("miso")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("MISO");
+
+    this.appendValueInput("rst")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("RST");
+
+    this.appendValueInput("cs")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("CS");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.Blocks['rfid_rc522_detect_card'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Check if RFID Card is present");
+
+    this.appendValueInput("stat")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("status");
+
+    this.appendValueInput("tag")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("tag");
+
+
+    //this.setOutput(true);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+
+Blockly.Blocks['rfid_rc522_anticoll'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Get card identification (UID)");
+
+    this.appendValueInput("stat")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("status");
+
+    this.appendValueInput("tag")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("tag");
+
+
+    //this.setOutput(true);
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+
+    this.setTooltip('');
+  }
+};
+
+
+
+//rfid_rc522_read_card
+Blockly.Blocks['rfid_rc522_read_card'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Read RFID Card Memory");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+
+//rfid_rc522_write_card
+Blockly.Blocks['rfid_rc522_write_card'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Write RFID Card Memory");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
 
 
 //uMail
@@ -11606,5 +11624,109 @@ Blockly.Blocks['http_get_content'] = {
 };
 
 
+//BLOCOS PARA USAR O BLUETOOTH BLE DA AMADOBOARD COM O APLICATIVO BLUEFRUIT DA ADAFRUIT
+// Bloco para configurar o Bluetooth
+Blockly.Blocks['config_bluetooth'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Configurar Bluetooth")
+        .appendField("Nome")
+        .appendField(new Blockly.FieldTextInput("Bluetooth Amado Board"), "BLUETOOTH_NAME");
+    this.setColour(290);
+    this.setTooltip("Configurar Bluetooth com nome personalizado");
+    this.setHelpUrl("");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+  }
+};
 
+// Novo bloco para a função handle_ble_data
+Blockly.Blocks['handle_ble_data'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Função de controle BLE");
+    this.appendStatementInput("BLE_LOGIC")
+        .setCheck(null)
+        .appendField("Configurar lógica de controle");
+    this.setColour(160);
+    this.setTooltip("Função para processar dados BLE e acionar dispositivos");
+    this.setHelpUrl("");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+  }
+};
+Blockly.Blocks['iniciar_ble'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Iniciar BLE com nome")
+        .appendField(new Blockly.FieldTextInput("Bluetooth Amado Board"), "BLUETOOTH_NAME");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Inicializa o Bluetooth BLE com o nome especificado");
+    this.setHelpUrl("");
+  }
+};
+
+
+// Bloco para iniciar o loop principal
+Blockly.Blocks['iniciar_loop'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Iniciar Loop de Controle");
+    this.setColour(120);
+    this.setTooltip("Iniciar o loop principal para controle via BLE");
+    this.setHelpUrl("");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+  }
+};
+
+
+Blockly.Blocks['definir_variaveis_globais'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Definir Variáveis Globais")
+        .appendField(new Blockly.FieldTextInput("variavel1"), "VAR1");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Define uma ou mais variáveis como globais.");
+    this.setHelpUrl("");
+  }
+};
+
+
+Blockly.Blocks['math_min'] = {
+  init: function() {
+    this.appendValueInput("VALUE1")
+        .setCheck("Number")
+        .appendField("min de");
+    this.appendValueInput("VALUE2")
+        .setCheck("Number")
+        .appendField("e");
+    this.setInputsInline(true);
+    this.setOutput(true, "Number");
+    this.setColour(230);
+    this.setTooltip("Retorna o menor dos dois valores.");
+    this.setHelpUrl("");
+  }
+};
+
+
+Blockly.Blocks['math_max'] = {
+  init: function() {
+    this.appendValueInput("VALUE1")
+        .setCheck("Number")
+        .appendField("max de");
+    this.appendValueInput("VALUE2")
+        .setCheck("Number")
+        .appendField("e");
+    this.setInputsInline(true);
+    this.setOutput(true, "Number");
+    this.setColour(230);
+    this.setTooltip("Retorna o maior dos dois valores.");
+    this.setHelpUrl("");
+  }
+};
 
