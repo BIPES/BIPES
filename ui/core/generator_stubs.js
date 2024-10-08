@@ -4358,31 +4358,27 @@ Blockly.Python['stop_timer'] = function(block) {
 
   return code;
 };
-Blockly.Python['thread'] = function(block) {
 
-  var interval = block.getFieldValue('interval');
-  var timerNumber = block.getFieldValue('timerNumber');
-  var statements_name = Blockly.Python.statementToCode(block, 'statements');
-  
-  Blockly.Python.definitions_['import_thread'] = 'import _thread';
 
-  Blockly.Python.definitions_['import_timer_callback' + timerNumber] = '\n#Thread function \ndef thread' + timerNumber + '():\n' + statements_name + '\n\n'; 
-
-  var code = '_thread.start_new_thread(thread' + timerNumber + ', ())\n';
-             
-  return code;
-};
-
-//Novo bloco para iniciar a função thread
+// Novo bloco para iniciar a função thread
 Blockly.Python['iniciar_thread'] = function(block) {
 	// Adiciona a importação do módulo _thread se ainda não tiver sido adicionado
 	Blockly.Python.definitions_['import_thread'] = 'import _thread';
-  
-	// Gera o código para iniciar uma nova thread
+
+	// Obtém o nome da função diretamente, sem parênteses adicionais
 	var function_name = Blockly.Python.valueToCode(block, 'FUNCTION', Blockly.Python.ORDER_ATOMIC);
+
+	// Garante que a função não tenha parênteses
+	function_name = function_name.replace('()', '');
+
+	// Remove parênteses extras ao redor da função, se houver
+	function_name = function_name.replace(/^\(+|\)+$/g, '');
+
+	// Gera o código para iniciar a thread sem os parênteses adicionais
 	var code = '_thread.start_new_thread(' + function_name + ', ())\n';
 	return code;
-  };
+};
+
 
   
 

@@ -468,21 +468,7 @@ Blockly.Blocks['pico_timer'] = {
 };
 
 
-Blockly.Blocks['thread'] = {
-  init: function() {
-    this.setColour(135);
-    this.appendDummyInput()
-        .appendField("Thread #")
-        .appendField(new Blockly.FieldNumber(2, 0, 9, 1), "timerNumber")
-        .appendField(" Interval (ms): ")
-        .appendField(new Blockly.FieldTextInput("1000"), "interval");
-    this.appendStatementInput("statements")
-        .setCheck("image");
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setTooltip('');
-  }
-};
+
 
 //Novo bloco para criar uma função thread para rodar loops em paralelo
 Blockly.Blocks['iniciar_thread'] = {
