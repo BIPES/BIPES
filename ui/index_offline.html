@@ -1002,15 +1002,11 @@ function eraseCookieModal(name) {
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
     
     <category name="Bluetooth" colour="290">
-      <block type="definir_variaveis_globais"></block>
-      <block type="math_min"></block>
-      <block type="math_max"></block>
-      <block type="config_bluetooth"></block>
+      <block type="configurar_e_iniciar_bluetooth"></block>
       <block type="handle_ble_data"></block>
-      <block type="iniciar_ble">
-        <field name="BLUETOOTH_NAME">Bluetooth Amado Board</field>
-      </block>
-      <block type="iniciar_loop"></block>
+      <block type="verificar_dados_ble"></block>
+      <block type="configurar_plotter_dados"></block>
+      <block type="chamar_formatar_dados_plotter"></block>
     </category>
     <sep></sep>
 

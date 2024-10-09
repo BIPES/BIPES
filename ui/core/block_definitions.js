@@ -11624,77 +11624,168 @@ Blockly.Blocks['http_get_content'] = {
 };
 
 
+
 //BLOCOS PARA USAR O BLUETOOTH BLE DA AMADOBOARD COM O APLICATIVO BLUEFRUIT DA ADAFRUIT
-// Bloco para configurar o Bluetooth
-Blockly.Blocks['config_bluetooth'] = {
+// Bloco combinado de configurar e iniciar o Bluetooth BLE
+Blockly.Blocks['configurar_e_iniciar_bluetooth'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Configurar Bluetooth")
-        .appendField("Nome")
-        .appendField(new Blockly.FieldTextInput("Bluetooth Amado Board"), "BLUETOOTH_NAME");
-    this.setColour(290);
-    this.setTooltip("Configurar Bluetooth com nome personalizado");
-    this.setHelpUrl("");
+        .appendField("Configurar e iniciar Bluetooth com nome")
+        .appendField(new Blockly.FieldTextInput("MeuBluetooth"), "BLUETOOTH_NAME");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Configura e inicia o Bluetooth BLE com o nome especificado.");
+    this.setHelpUrl("");
   }
 };
 
-// Novo bloco para a função handle_ble_data
+
 Blockly.Blocks['handle_ble_data'] = {
   init: function() {
+    this.appendValueInput("VAR")  // Entrada para o nome da variável
+        .setCheck("Variable")
+        .appendField("Definir dados BLE recebidos para");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Recebe os dados BLE e armazena na variável escolhida.");
+    this.setHelpUrl("");
+  }
+};
+
+
+
+
+Blockly.Blocks['verificar_dados_ble'] = {
+  init: function() {
     this.appendDummyInput()
-        .appendField("Função de controle BLE");
-    this.appendStatementInput("BLE_LOGIC")
-        .setCheck(null)
-        .appendField("Configurar lógica de controle");
+        .appendField("Verificar dados recebidos");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(65);
+    this.setTooltip("Verifica se há dados recebidos via BLE e chama a função handle_ble_data.");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['show_received_data'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("dados recebidos BLE (received_data)");
+    this.setOutput(true, "String");
+    this.setColour(230);
+    this.setTooltip("Retorna os dados recebidos via BLE");
+    this.setHelpUrl("");
+  }
+};
+
+
+//Blocos para enviar dados vai bluetooth
+Blockly.Blocks['configurar_plotter_dados'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Configurar plotter para sensores");
+    this.appendValueInput('SENSOR_0')
+        .setCheck('Number')
+        .appendField('Sensor 1');
+    this.setMutator(new Blockly.Mutator(['sensor_create']));
+    this.sensorCount_ = 1;
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Configura o plotter para enviar dados de múltiplos sensores.");
+    this.setHelpUrl("");
+  },
+  mutationToDom: function() {
+    var container = document.createElement('mutation');
+    container.setAttribute('sensor_count', this.sensorCount_);
+    return container;
+  },
+  domToMutation: function(xmlElement) {
+    this.sensorCount_ = parseInt(xmlElement.getAttribute('sensor_count'), 10);
+    this.updateShape_();
+  },
+  decompose: function(workspace) {
+    var containerBlock = workspace.newBlock('sensor_container');
+    containerBlock.initSvg();
+    var connection = containerBlock.getInput('STACK').connection;
+    for (var i = 1; i < this.sensorCount_; i++) {
+      var sensorBlock = workspace.newBlock('sensor_create');
+      sensorBlock.initSvg();
+      connection.connect(sensorBlock.previousConnection);
+      connection = sensorBlock.nextConnection;
+    }
+    return containerBlock;
+  },
+  compose: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var connections = [];
+    while (itemBlock) {
+      connections.push(itemBlock.valueConnection_);
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+    for (var i = 1; i <= this.sensorCount_; i++) {
+      var input = this.getInput('SENSOR_' + i);
+      if (input) {
+        this.removeInput('SENSOR_' + i);
+      }
+    }
+    this.sensorCount_ = connections.length + 1;
+    this.updateShape_();
+    for (var i = 1; i <= connections.length; i++) {
+      Blockly.Mutator.reconnect(connections[i - 1], this, 'SENSOR_' + i);
+    }
+  },
+  updateShape_: function() {
+    if (this.sensorCount_ && this.sensorCount_ > 1) {
+      for (var i = 1; i < this.sensorCount_; i++) {
+        if (!this.getInput('SENSOR_' + i)) {
+          var input = this.appendValueInput('SENSOR_' + i)
+              .setCheck('Number')
+              .appendField('Sensor ' + (i + 1));
+        }
+      }
+    }
+  }
+};
+
+Blockly.Blocks['chamar_formatar_dados_plotter'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Enviar dados ao plotter");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
     this.setColour(160);
-    this.setTooltip("Função para processar dados BLE e acionar dispositivos");
+    this.setTooltip("Chama a função que formata e envia os dados ao plotter");
     this.setHelpUrl("");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
   }
 };
-Blockly.Blocks['iniciar_ble'] = {
+
+// Bloco de contêiner do mutator (sensor container)
+Blockly.Blocks['sensor_container'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Iniciar BLE com nome")
-        .appendField(new Blockly.FieldTextInput("Bluetooth Amado Board"), "BLUETOOTH_NAME");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+        .appendField('sensores');
+    this.appendStatementInput('STACK');
     this.setColour(230);
-    this.setTooltip("Inicializa o Bluetooth BLE com o nome especificado");
-    this.setHelpUrl("");
+    this.contextMenu = false;
   }
 };
 
-
-// Bloco para iniciar o loop principal
-Blockly.Blocks['iniciar_loop'] = {
+// Bloco que adiciona sensor (sensor create)
+Blockly.Blocks['sensor_create'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Iniciar Loop de Controle");
-    this.setColour(120);
-    this.setTooltip("Iniciar o loop principal para controle via BLE");
-    this.setHelpUrl("");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-  }
-};
-
-
-Blockly.Blocks['definir_variaveis_globais'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Definir Variáveis Globais")
-        .appendField(new Blockly.FieldTextInput("variavel1"), "VAR1");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+        .appendField('adicionar sensor');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
     this.setColour(230);
-    this.setTooltip("Define uma ou mais variáveis como globais.");
-    this.setHelpUrl("");
+    this.contextMenu = false;
   }
 };
+
 
 
 Blockly.Blocks['math_min'] = {

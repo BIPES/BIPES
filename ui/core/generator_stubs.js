@@ -6155,13 +6155,12 @@ Blockly.Python['http_get_content'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-////BLOCOS PARA USAR O BLUETOOTH BLE DA AMADOBOARD COM O APLICATIVO BLUEFRUIT DA ADAFRUIT
-// Bloco `config_bluetooth`
-Blockly.Python['config_bluetooth'] = function(block) {
+Blockly.Python['configurar_e_iniciar_bluetooth'] = function(block) {
   var bluetooth_name = block.getFieldValue('BLUETOOTH_NAME');
-  var code = `import bluetooth
+  var code = `
+import bluetooth
 import time
-from machine import Pin, PWM
+from machine import Pin
 from micropython import const
 from ble_advertising import advertising_payload
 
@@ -6174,188 +6173,154 @@ _FLAG_NOTIFY = const(0x0010)
 
 _UART_UUID = bluetooth.UUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
 _UART_TX = (
-	bluetooth.UUID("6E400003-B5A3-F393-E0A9-E50E24DCCA9E"),
-	_FLAG_NOTIFY,
+    bluetooth.UUID("6E400003-B5A3-F393-E0A9-E50E24DCCA9E"),
+    _FLAG_NOTIFY,
 )
 _UART_RX = (
-	bluetooth.UUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"),
-	_FLAG_WRITE,
+    bluetooth.UUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E"),
+    _FLAG_WRITE,
 )
 _UART_SERVICE = (
-	_UART_UUID,
-	(_UART_TX, _UART_RX),
+    _UART_UUID,
+    (_UART_TX, _UART_RX),
 )
 
 _ADV_APPEARANCE_GENERIC_COMPUTER = const(128)
 
 class BLEUART:
-	def __init__(self, ble, name="${bluetooth_name}", rxbuf=100):
-		self._ble = ble
-		self._ble.active(True)
-		self._ble.irq(self._irq)
-		((self._tx_handle, self._rx_handle),) = self._ble.gatts_register_services((_UART_SERVICE,))
-		self._ble.gatts_set_buffer(self._rx_handle, rxbuf, True)
-		self._connections = set()
-		self._rx_buffer = bytearray()
-		self._handler = None
-		self._payload = advertising_payload(name=name, appearance=_ADV_APPEARANCE_GENERIC_COMPUTER)
-		self._advertise()
-		print("BLE Inicializado e anúncio iniciado.")
+    def __init__(self, ble, name="${bluetooth_name}", rxbuf=100):
+        self._ble = ble
+        self._ble.active(True)
+        self._ble.irq(self._irq)
+        ((self._tx_handle, self._rx_handle),) = self._ble.gatts_register_services((_UART_SERVICE,))
+        self._ble.gatts_set_buffer(self._rx_handle, rxbuf, True)
+        self._connections = set()
+        self._payload = advertising_payload(name=name, appearance=_ADV_APPEARANCE_GENERIC_COMPUTER)
+        self._advertise()
+        self._handler = None  # Adiciona o atributo handler para armazenar a função de callback
+        print("BLE Inicializado e anúncio iniciado.")
 
-	def irq(self, handler):
-		self._handler = handler
+    def irq(self, handler):
+        # Método para registrar a função de callback
+        self._handler = handler
 
-	def _irq(self, event, data):
-		if event == _IRQ_CENTRAL_CONNECT:
-			conn_handle, _, _ = data
-			self._connections.add(conn_handle)
-			print('Conectado')
-		elif event == _IRQ_CENTRAL_DISCONNECT:
-			conn_handle, _, _ = data
-			if conn_handle in self._connections:
-				self._connections.remove(conn_handle)
-			self._advertise()  # Reinicia o anúncio após desconexão
-			print('Desconectado')
-		elif event == _IRQ_GATTS_WRITE:
-			conn_handle, value_handle = data
-			if conn_handle in self._connections and value_handle == self._rx_handle:
-				self._rx_buffer += self._ble.gatts_read(self._rx_handle)
-				if self._handler:
-					self._handler()
+    def _irq(self, event, data):
+        if event == _IRQ_CENTRAL_CONNECT:
+            conn_handle, _, _ = data
+            self._connections.add(conn_handle)
+            print('Conectado')
+        elif event == _IRQ_CENTRAL_DISCONNECT:
+            conn_handle, _, _ = data
+            if conn_handle in self._connections:
+                self._connections.remove(conn_handle)
+            self._advertise()
+            print('Desconectado')
+        elif event == _IRQ_GATTS_WRITE:
+            conn_handle, value_handle = data
+            if conn_handle in self._connections and value_handle == self._rx_handle:
+                global received_data
+                received_data = self._ble.gatts_read(self._rx_handle).decode('utf-8')
+                print("Dados recebidos:", received_data)
+                if self._handler:
+                    self._handler()  # Chama o handler registrado se existir
 
-	def read(self, sz=None):
-		if not sz:
-			sz = len(self._rx_buffer)
-		result = self._rx_buffer[0:sz]
-		self._rx_buffer = self._rx_buffer[sz:]
-		return result
+    def write(self, data):
+        for conn_handle in self._connections:
+            self._ble.gatts_notify(conn_handle, self._tx_handle, data)
 
-	def write(self, data):
-		for conn_handle in self._connections:
-			self._ble.gatts_notify(conn_handle, self._tx_handle, data)
+    def close(self):
+        for conn_handle in self._connections:
+            self._ble.gap_disconnect(conn_handle)
+        self._connections.clear()
 
-	def close(self):
-		for conn_handle in self._connections:
-			self._ble.gap_disconnect(conn_handle)
-		self._connections.clear()
+    def _advertise(self, interval_us=500000):
+        self._ble.gap_advertise(interval_us, adv_data=self._payload)
+        print("Anúncio de Bluetooth ativo.")
 
-	def _advertise(self, interval_us=500000):
-		self._ble.gap_advertise(interval_us, adv_data=self._payload)
-		print("Anúncio de Bluetooth ativo.")
-
-# Função para sair do programa
-def exit_program():
-	global running
-	running = False
-	print("Saindo do programa...")
-`;
-  return code;
-};
-
-// Bloco `handle_ble_data`
-Blockly.Python['handle_ble_data'] = function(block) {
-  // Captura o código da lógica principal da função `handle_ble_data`
-  var statements_logic = Blockly.Python.statementToCode(block, 'BLE_LOGIC').trim();
-
-  // Extrai as linhas de declaração 'global' do bloco `BLE_LOGIC` e garante que fiquem no início da função
-  var globals_code = '';
-  var filtered_logic = statements_logic.split('\n').filter(line => {
-    if (line.trim().startsWith('global')) {
-      globals_code += line.trim() + '\n';
-      return false;  // Remove a linha 'global' do restante da lógica
-    }
-    return true;
-  }).join('\n');
-
-  // Corrige a indentação das variáveis globais para que estejam no nível da função
-  var indented_globals = globals_code.split('\n').map(line => '    ' + line.trim()).join('\n');
-
-  // Corrige manualmente a indentação do bloco logic, garantindo que `if`, `elif`, `else`, `while` estejam no mesmo nível,
-  // e o conteúdo dentro de `if`, `else`, e `while` tenha um nível de indentação a mais.
-  var indented_logic = '';
-  var inside_while = false;
-
-  filtered_logic.split('\n').forEach(line => {
-    const trimmed_line = line.trim();
-    
-    if (trimmed_line.startsWith('while')) {
-      inside_while = true;  // Começamos um bloco `while`
-      indented_logic += '        ' + trimmed_line + '\n';  // Indenta o `while` no nível da função principal
-    } else if (inside_while && (trimmed_line.startsWith('if') || trimmed_line.startsWith('elif') || trimmed_line.startsWith('else'))) {
-      // Se estamos dentro de um `while`, indentamos os `if`, `elif`, `else` dentro do `while`
-      indented_logic += '            ' + trimmed_line + '\n';  // Um nível adicional de indentação para `if`, `elif`, `else`
-    } else if (inside_while && trimmed_line === '') {
-      // Manter linhas vazias no mesmo nível quando dentro de `while`
-      indented_logic += '\n';
-    } else if (inside_while && !trimmed_line.startsWith('while')) {
-      // Conteúdo interno do `if`, `elif`, `else` dentro de `while` tem dois níveis adicionais de indentação
-      indented_logic += '                ' + trimmed_line + '\n';
-    } else {
-      // Fora do `while`, trata `if`, `elif`, `else` normalmente
-      if (trimmed_line.startsWith('if') || trimmed_line.startsWith('elif') || trimmed_line.startsWith('else')) {
-        indented_logic += '        ' + trimmed_line + '\n';  // Alinha `if`, `elif`, `else` no nível principal
-      } else {
-        indented_logic += '            ' + trimmed_line + '\n';  // Adiciona dois níveis de indentação para o conteúdo interno fora do `while`
-      }
-    }
-  });
-
-  // Define a função `handle_ble_data` com as variáveis globais no topo
-  var code = `def handle_ble_data():
-${indented_globals}
-    data = uart.read()
-    if data:
-        data = data.decode('utf-8')
-        print("Dados recebidos:", data)
-${indented_logic}
-`;
-
-  return code;
-};
-
-
-
-
-
-
-// Bloco `iniciar_ble`
-Blockly.Python['iniciar_ble'] = function(block) {
-  var bluetooth_name = block.getFieldValue('BLUETOOTH_NAME');
-  var code = `
 ble = bluetooth.BLE()
 uart = BLEUART(ble, name="${bluetooth_name}")
-
-# Registra o handler handle_ble_data depois que a função handle_ble_data já foi definida
-uart.irq(handle_ble_data)  # Registrar handler para receber dados BLE
-`;
-  return code;
-};
-  
-
-// Bloco `iniciar_loop`
-Blockly.Python['iniciar_loop'] = function(block) {
-  var code = `running = True
-while running:
-	try:
-		time.sleep(1)  # Aguarda por eventos
-	except KeyboardInterrupt:
-		uart.close()
-		print("Programa interrompido.")
+received_data = None
 `;
   return code;
 };
 
-  
-
-Blockly.Python['definir_variaveis_globais'] = function(block) {
-  var variable1 = block.getFieldValue('VAR1');
-
-  // Cria a declaração de variável global sem indentação incorreta
-  var code = 'global ' + variable1 + '\n';
-
-  // Garante que não há indentação alguma
-  return code.trimStart();
+Blockly.Python['handle_ble_data'] = function(block) {
+  var variable = Blockly.Python.valueToCode(block, 'VAR', Blockly.Python.ORDER_ATOMIC);  // Obtém a variável selecionada pelo usuário
+  var code = `def handle_ble_data():\n` +
+             `    global received_data, ${variable}  # Declara received_data e a variável escolhida como globais\n` +
+             `    if received_data:\n` +  
+             `        ${variable} = received_data  # Armazena os dados recebidos na variável escolhida\n` +
+             `        received_data = None  # Limpa os dados após o processamento\n`;
+  return code;
 };
+
+
+
+Blockly.Python['verificar_dados_ble'] = function(block) {
+  var code = `
+if received_data:
+    handle_ble_data()  # Processa os dados recebidos
+`;
+  return code;
+};
+
+
+Blockly.Python['show_received_data'] = function(block) {
+  var code = 'received_data';
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python['configurar_plotter_dados'] = function(block) {
+  var sensorCount = block.sensorCount_;
+  var code = 'def formatar_dados_para_plotter():\n';
+  
+  // Lista para armazenar as variáveis dos sensores
+  var sensorVars = [];
+
+  // Gera código para pegar os valores dos sensores
+  for (var i = 0; i < sensorCount; i++) {
+    var sensor = Blockly.Python.valueToCode(block, 'SENSOR_' + i, Blockly.Python.ORDER_ATOMIC);
+    if (sensor) {
+      sensorVars.push(sensor);  // Adiciona o sensor à lista de variáveis
+      code += '    global ' + sensor + '\n';  // Declara a variável como global
+    }
+  }
+
+  // Verifica se há sensores e gera o código de envio para o plotter
+  if (sensorVars.length > 0) {
+    // Formata a string de dados para incluir todos os sensores
+    var plotterData = sensorVars.map(function(sensor, index) {
+      return `{}`;  // Um placeholder '{}' para cada sensor
+    }).join(', ');  // Separe os sensores por vírgula
+    
+    // Gera a linha de código com todos os sensores
+    code += '    plotter_data = "' + plotterData + '{}".format(' + sensorVars.join(', ') + ', chr(0x0A))\n';
+    
+    // Envia os dados via Bluetooth
+    code += '    uart.write(plotter_data)\n';
+  } else {
+    code += '    pass  # Nenhum sensor configurado\n';  // Caso nenhum sensor esteja configurado
+  }
+
+  return code;
+};
+
+
+
+
+Blockly.Python['enviar_dados_ble'] = function(block) {
+  var code = `
+formatar_dados_para_plotter()  # Chama a função que formata e envia os dados ao plotter
+  `;
+  return code;
+};
+
+Blockly.Python['chamar_formatar_dados_plotter'] = function(block) {
+  var code = 'formatar_dados_para_plotter()\n';
+  return code;
+};
+
+
 
 
 Blockly.Python['math_min'] = function(block) {
