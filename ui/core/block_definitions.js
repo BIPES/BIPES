@@ -11807,3 +11807,113 @@ Blockly.Blocks['math_max'] = {
   }
 };
 
+//Blocos para a comunicação ESPNOW
+// Bloco de inicialização do WLAN
+Blockly.Blocks['init_wlan'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Initialize WLAN");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#4a2667');
+    this.setTooltip("Initializes the WLAN interface and configures the MAC address.");
+    this.setHelpUrl("");
+  }
+};
+
+// Bloco para obter o endereço MAC (só retorna a variável)
+Blockly.Blocks['get_mac_address'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Get Amado Board MAC address");
+    this.setOutput(true, 'String');
+    this.setColour('#4a2667');
+    this.setTooltip("Returns the ESP32 MAC address as a formatted string.");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['set_master'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Configurar ESP32 como Master");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#5a3783');
+    this.setTooltip("Configura a placa como master para ESPNOW");
+    this.setHelpUrl("");
+  }
+};
+
+
+Blockly.Blocks['add_peer'] = {
+  init: function() {
+    this.appendValueInput("MAC")
+        .setCheck("String")
+        .appendField("Adicionar Peer com MAC");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#5a3783');
+    this.setTooltip("Adiciona um peer (MAC) à lista de comunicação ESPNOW");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['receive_message'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Receber Mensagem ESPNOW");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("#7b49ad");
+    this.setTooltip("Recebe mensagens dos peers");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['set_peer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Configurar ESP32 como Peer");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour('#5a3783');
+    this.setTooltip("Configura a placa como peer para ESPNOW");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['send_message'] = {
+  init: function() {
+    this.appendValueInput("MESSAGE")
+        .setCheck("String")
+        .appendField("Enviar Mensagem para Master");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("#7b49ad");
+    this.setTooltip("Envia mensagem para o master ESPNOW");
+    this.setHelpUrl("");
+  }
+};
+
+
+Blockly.Blocks['send_message_to_peer'] = {
+  init: function() {
+    this.appendValueInput("MAC")
+        .setCheck(null)
+        .appendField("Enviar mensagem para peer com MAC");
+    this.appendValueInput("MESSAGE")
+        .setCheck(null)
+        .appendField("Mensagem");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("#7b49ad");
+    this.setTooltip("Envie uma mensagem para um peer específico usando seu MAC.");
+    this.setHelpUrl("");
+  }
+};
+
+
+
+
+

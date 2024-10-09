@@ -6334,7 +6334,152 @@ Blockly.Python['math_max'] = function(block) {
 };
   
   
-  
+//Blocos para comunicação ESPNOW
+// Gera o código para inicializar o WLAN (contém toda a lógica de WLAN e MAC)
+Blockly.Python['init_wlan'] = function(block) {
+  var code = `
+import network
+
+sta = network.WLAN(network.STA_IF)
+sta.active(True)
+
+mac = sta.config('mac')
+mac_formatted = "peer = bytes([{}])".format(
+    ', '.join(f"0x{b:02x}" for b in mac)
+)
+`;
+  return code;
+};
+
+// Gera o código para retornar apenas o endereço MAC já formatado
+Blockly.Python['get_mac_address'] = function(block) {
+  var code = 'mac_formatted';
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+
+Blockly.Python['set_master'] = function(block) {
+  var code = `
+import espnow
+import network
+
+sta = network.WLAN(network.STA_IF)
+sta.active(True)
+sta.disconnect()  # Garantir que o dispositivo não está conectado a uma rede Wi-Fi
+espnow_instance = espnow.ESPNow()
+espnow_instance.active(True)  # Ativando o ESPNow
+
+# Dicionário para associar o nome ao MAC
+mac_map = {}
+
+def add_mac_to_map(name, mac):
+    mac_map[name] = convert_mac(mac)
+
+def espnow_callback(peer, msg):
+    print('Received from:', peer, 'Message:', msg)
+`;
+  return code;
+};
+
+
+
+
+Blockly.Python['add_peer'] = function(block) {
+  var mac_variable = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);  // Captura a variável com o MAC correto
+
+  // Código para lidar com a conversão do MAC para bytes e adicionar o peer
+  var code = `
+def convert_mac(mac):
+    return bytes([int(x, 16) if isinstance(x, str) else x for x in mac])
+
+peer = convert_mac(${mac_variable})  # Converter o MAC para bytes
+espnow_instance.add_peer(peer)  # Adicionar o peer
+`;
+  return code;
+};
+
+
+
+
+
+Blockly.Python['receive_message'] = function(block) {
+  var code = `
+# Dicionário para associar o nome ao MAC
+mac_map = {}  # Dicionário vazio que será preenchido dinamicamente
+
+def add_mac_to_map(name, mac):
+    mac_map[name] = convert_mac(mac)
+
+# Adicionar peers ao mapa
+# Exemplo: add_mac_to_map("Placa1", ['0x94', '0xb5', '0x55', '0x7c', '0x6f', '0xc8'])
+
+while True:
+    peer, msg = espnow_instance.recv()
+    if msg:
+        for name, mac in mac_map.items():
+            if peer == mac:
+                print(f"Received message: {msg} from {name}")
+                break
+        else:
+            print(f"Received message: {msg} from unknown peer {peer}")
+    time.sleep(1)  # Delay para não sobrecarregar
+`;
+  return code;
+};
+
+
+
+
+
+
+
+Blockly.Python['set_peer'] = function(block) {
+  var mac_master = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);
+
+  // Garantir que o valor correto do MAC seja gerado
+  var code = `
+
+import espnow
+import network
+
+sta = network.WLAN(network.STA_IF)
+sta.active(True)
+sta.disconnect()  # Desconectar de qualquer rede Wi-Fi ativa
+espnow_instance = espnow.ESPNow()
+espnow_instance.active(True)  # Ativar o ESPNow
+`;
+  return code;
+};
+
+
+
+
+
+
+
+
+Blockly.Python['send_message'] = function(block) {
+  var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);
+
+  var code = `
+espnow_instance.send(peer, ${message}.encode('utf-8'))  # Enviar a mensagem para o peer
+`;
+  return code;
+};
+
+Blockly.Python['send_message_to_peer'] = function(block) {
+  var peer_mac = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);  // Variável ou MAC a ser passado
+  var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);  // Mensagem a ser enviada
+
+  // Gerar o código sem a necessidade de definir a função send_message_to_mac
+  var code = `
+peer = convert_mac(${peer_mac})  # Converter o MAC para bytes
+espnow_instance.add_peer(peer)  # Adicionar peer se ainda não estiver adicionado
+espnow_instance.send(peer, ${message}.encode('utf-8'))  # Enviar a mensagem
+print(f"Mensagem enviada para peer com MAC ${peer_mac}: ${message}")
+`;
+  return code;
+};
 
 
 
