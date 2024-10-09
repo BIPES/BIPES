@@ -6409,11 +6409,20 @@ Blockly.Python['receive_message'] = function(block) {
   var code = `
 peer, msg = espnow_instance.recv()  # Recebe a mensagem do peer
 if msg:
-    received_message = msg.decode('utf-8')  # Armazena a mensagem recebida
-    print(f'Received message: {received_message}')  # Exibe no console
-`;
-  return code;
+    received_message = msg.decode('utf-8')  # Armazena a mensagem recebida como string
+    try:
+        # Tentativa de converter de volta para inteiro ou float
+        if '.' in received_message:
+            received_value = float(received_message)  # Converte para float se houver ponto decimal
+        else:
+            received_value = int(received_message)  # Converte para int se não houver ponto decimal
+        print(f'Received value: {received_value}')  # Exibe o valor convertido
+    except ValueError:
+        print(f'Received message: {received_message}')  # Exibe a mensagem se não for um número
+  `;
+  return code.trim()+ '\n';
 };
+
 
 
 
@@ -6445,14 +6454,20 @@ espnow_instance.active(True)  # Ativar o ESPNow
 
 
 Blockly.Python['send_message'] = function(block) {
-  var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);
-  
+  var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);  // Captura a mensagem
   var code = `
-message_with_name = "Placa2: " + ${message}  # Adicionar o nome da placa diretamente à mensagem
-espnow_instance.send(peer, message_with_name.encode('utf-8'))  # Enviar a mensagem
-`;
-  return code;
+message_str = str(${message})  # Converte o valor (int ou float) para string
+espnow_instance.send(peer, message_str.encode('utf-8'))  # Envia a mensagem como string
+`;  // Garante que não haja indentação extra
+  return code.trim() + '\n';  // Adiciona apenas uma linha para evitar erros de indentação
 };
+
+
+
+
+
+
+
 
 
 
