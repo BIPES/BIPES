@@ -6385,7 +6385,8 @@ def espnow_callback(peer, msg):
 
 
 Blockly.Python['add_peer'] = function(block) {
-  var mac_variable = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);  // Captura a variável com o MAC correto
+  var mac_variable = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);  // Captura o MAC
+  var peer_name = Blockly.Python.valueToCode(block, 'NAME', Blockly.Python.ORDER_ATOMIC);  // Captura o nome/identificador da placa
 
   // Código para lidar com a conversão do MAC para bytes e adicionar o peer
   var code = `
@@ -6394,9 +6395,11 @@ def convert_mac(mac):
 
 peer = convert_mac(${mac_variable})  # Converter o MAC para bytes
 espnow_instance.add_peer(peer)  # Adicionar o peer
+peer_name = '${peer_name}'  # Adicionar o identificador da placa corretamente
 `;
   return code;
 };
+
 
 
 
@@ -6416,16 +6419,12 @@ def add_mac_to_map(name, mac):
 while True:
     peer, msg = espnow_instance.recv()
     if msg:
-        for name, mac in mac_map.items():
-            if peer == mac:
-                print(f"Received message: {msg} from {name}")
-                break
-        else:
-            print(f"Received message: {msg} from unknown peer {peer}")
+        print(f"Received message: {msg.decode('utf-8')}")  # Apenas exibe a mensagem recebida, sem detalhes do peer
     time.sleep(1)  # Delay para não sobrecarregar
 `;
   return code;
 };
+
 
 
 
@@ -6457,29 +6456,36 @@ espnow_instance.active(True)  # Ativar o ESPNow
 
 
 
-
 Blockly.Python['send_message'] = function(block) {
   var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);
-
+  
+  // Código simples para enviar a mensagem com um identificador fixo
   var code = `
-espnow_instance.send(peer, ${message}.encode('utf-8'))  # Enviar a mensagem para o peer
+message_with_name = "Placa2: " + ${message}  # Adicionar o nome da placa diretamente à mensagem
+espnow_instance.send(peer, message_with_name.encode('utf-8'))  # Enviar a mensagem
 `;
   return code;
 };
 
+
+
+
 Blockly.Python['send_message_to_peer'] = function(block) {
   var peer_mac = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);  // Variável ou MAC a ser passado
   var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);  // Mensagem a ser enviada
+  var peer_name = Blockly.Python.valueToCode(block, 'NAME', Blockly.Python.ORDER_ATOMIC);  // Nome/Identificador da placa
 
   // Gerar o código sem a necessidade de definir a função send_message_to_mac
   var code = `
 peer = convert_mac(${peer_mac})  # Converter o MAC para bytes
 espnow_instance.add_peer(peer)  # Adicionar peer se ainda não estiver adicionado
-espnow_instance.send(peer, ${message}.encode('utf-8'))  # Enviar a mensagem
-print(f"Mensagem enviada para peer com MAC ${peer_mac}: ${message}")
+message_with_name = f'{${peer_name}}: {${message}}'  # Adicionar o nome da placa na mensagem
+espnow_instance.send(peer, message_with_name.encode('utf-8'))  # Enviar a mensagem com o nome
+print(f"Mensagem enviada para peer com MAC ${peer_mac}: {message_with_name}")
 `;
   return code;
 };
+
 
 
 
