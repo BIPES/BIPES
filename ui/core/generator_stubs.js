@@ -6382,8 +6382,6 @@ def espnow_callback(peer, msg):
 };
 
 
-
-
 Blockly.Python['add_peer'] = function(block) {
   var mac_variable = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);  // Captura o MAC
   var peer_name = Blockly.Python.valueToCode(block, 'NAME', Blockly.Python.ORDER_ATOMIC);  // Captura o nome/identificador da placa
@@ -6400,30 +6398,27 @@ peer_name = '${peer_name}'  # Adicionar o identificador da placa corretamente
   return code;
 };
 
-
-
-
-
-
 Blockly.Python['receive_message'] = function(block) {
   var code = `
 peer, msg = espnow_instance.recv()  # Recebe a mensagem do peer
 if msg:
     received_message = msg.decode('utf-8')  # Armazena a mensagem recebida como string
-    try:
-        # Tentativa de converter de volta para inteiro ou float
-        if '.' in received_message:
-            received_value = float(received_message)  # Converte para float se houver ponto decimal
-        else:
-            received_value = int(received_message)  # Converte para int se não houver ponto decimal
-        print(f'Received value: {received_value}')  # Exibe o valor convertido
-    except ValueError:
-        print(f'Received message: {received_message}')  # Exibe a mensagem se não for um número
+    if ':' in received_message:
+        try:
+            # Separar o nome da variável e o valor recebido
+            var_name, value = received_message.split(':')  # Separar o nome da variável e o valor
+            # Armazenar o valor na variável correta
+            globals()[var_name] = float(value) if '.' in value else int(value)  # Converte e armazena dinamicamente
+            # Exibe no console o nome da variável e o valor recebido
+            print(f'Received variable {var_name}: {value}')
+        except ValueError:
+            print(f'Erro ao processar mensagem: {received_message}')  # Exibe a mensagem em caso de erro
+    else:
+        # Se a mensagem não contém ":", assume que é apenas o nome da variável
+        print(f'Received variable name: {received_message}')
   `;
-  return code.trim()+ '\n';
+  return code.trim() + '\n';
 };
-
-
 
 
 
@@ -6447,30 +6442,32 @@ espnow_instance.active(True)  # Ativar o ESPNow
   return code;
 };
 
-
-
-
-
-
-
 Blockly.Python['send_message'] = function(block) {
-  var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);  // Captura a mensagem
-  var code = `
-message_str = str(${message})  # Converte o valor (int ou float) para string
-espnow_instance.send(peer, message_str.encode('utf-8'))  # Envia a mensagem como string
-`;  // Garante que não haja indentação extra
-  return code.trim() + '\n';  // Adiciona apenas uma linha para evitar erros de indentação
+  var code = '';
+  
+  // Gera o código para todas as variáveis adicionadas
+  for (var i = 1; i <= block.varCount_; i++) {
+    var variable_name = Blockly.Python.valueToCode(block, 'VAR' + i, Blockly.Python.ORDER_ATOMIC) || 'undefined_var';
+    
+    // Verifica se o usuário optou por enviar uma string de descrição
+    if (block.getFieldValue('description_' + i)) {
+      var description = block.getFieldValue('description_' + i);
+      // Enviar descrição e valor
+      code += `
+message_str_${i} = f'{${description}}={${variable_name}}'  # Envia a descrição com o valor
+espnow_instance.send(peer, message_str_${i}.encode('utf-8'))  # Envia a mensagem para a master
+      `;
+    } else {
+      // Enviar apenas o valor
+      code += `
+message_str_${i} = f'{${variable_name}}'  # Envia apenas o valor
+espnow_instance.send(peer, message_str_${i}.encode('utf-8'))  # Envia a mensagem para a master
+      `;
+    }
+  }
+  
+  return code.trim() + '\n';
 };
-
-
-
-
-
-
-
-
-
-
 
 Blockly.Python['send_message_to_peer'] = function(block) {
   var peer_mac = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);

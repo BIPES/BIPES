@@ -11883,19 +11883,6 @@ Blockly.Blocks['set_peer'] = {
   }
 };
 
-Blockly.Blocks['send_message'] = {
-  init: function() {
-    this.appendValueInput("MESSAGE")
-        .setCheck("String")
-        .appendField("Enviar Mensagem para Master");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour("#7b49ad");
-    this.setTooltip("Envia mensagem para o master ESPNOW");
-    this.setHelpUrl("");
-  }
-};
-
 
 Blockly.Blocks['send_message_to_peer'] = {
   init: function() {
@@ -11913,7 +11900,119 @@ Blockly.Blocks['send_message_to_peer'] = {
   }
 };
 
+Blockly.Blocks['send_message'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Enviar mensagem para peer");
+    this.appendValueInput("VAR1")
+        .setCheck("String")
+        .appendField("Variável 1");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setMutator(new Blockly.Mutator(['send_message_add_var']));
+    this.varCount_ = 1;  // Inicializamos com 1 variável
+  },
 
+  mutationToDom: function() {
+    var container = document.createElement('mutation');
+    container.setAttribute('varCount', this.varCount_);
+    return container;
+  },
 
+  domToMutation: function(xmlElement) {
+    this.varCount_ = parseInt(xmlElement.getAttribute('varCount'), 10);
+    this.updateShape_();  // Reconstrói a forma após restaurar o estado
+  },
 
+  decompose: function(workspace) {
+    var containerBlock = workspace.newBlock('send_message_mutator');
+    containerBlock.initSvg();
+    var connection = containerBlock.getInput('STACK').connection;
+    for (var i = 1; i < this.varCount_; i++) {
+      var varBlock = workspace.newBlock('send_message_add_var');
+      varBlock.initSvg();
+      connection.connect(varBlock.previousConnection);
+      connection = varBlock.nextConnection;
+    }
+    return containerBlock;
+  },
+
+  compose: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var connections = [];
+    while (itemBlock) {
+      connections.push(itemBlock.valueConnection_);
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+
+    // Remove os inputs antigos
+    for (var i = 1; i <= this.varCount_; i++) {
+      var input = this.getInput('VAR' + i);
+      if (input) {
+        this.removeInput('VAR' + i);
+      }
+    }
+
+    // Atualiza o número de variáveis
+    this.varCount_ = connections.length + 1;
+    this.updateShape_();
+
+    // Reconecta os blocos às novas variáveis
+    for (var i = 1; i <= connections.length; i++) {
+      Blockly.Mutator.reconnect(connections[i - 1], this, 'VAR' + i);
+    }
+  },
+
+  updateShape_: function() {
+    // Reconstrói o número correto de variáveis
+    for (var i = 1; i <= this.varCount_; i++) {
+      if (!this.getInput('VAR' + i)) {
+        this.appendValueInput('VAR' + i)
+            .setCheck('String')
+            .appendField('Variável ' + i);
+      }
+    }
+  },
+
+  saveConnections: function(containerBlock) {
+    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var i = 1;
+    while (itemBlock) {
+      var input = this.getInput('VAR' + i);
+      itemBlock.valueConnection_ =
+          input && input.connection.targetConnection;
+      i++;
+      itemBlock = itemBlock.nextConnection &&
+          itemBlock.nextConnection.targetBlock();
+    }
+  }
+};
+
+// Bloco para adicionar variável
+Blockly.Blocks['send_message_mutator'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Adicionar variável");
+    this.appendStatementInput('STACK');
+    this.setColour(230);
+    this.setTooltip('');
+    this.contextMenu = false;
+  }
+};
+
+Blockly.Blocks['send_message_add_var'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Adicionar variável");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(230);
+    this.setTooltip('');
+    this.contextMenu = false;
+  }
+};
+
+// Registro do mutator
+Blockly.Extensions.registerMutator('send_message_mutator', Blockly.Blocks['send_message']);
 
