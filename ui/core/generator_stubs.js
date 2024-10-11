@@ -6412,21 +6412,25 @@ Blockly.Python['receive_message'] = function(block) {
   var code = `
 # Recepção de mensagens via ESP-NOW
 
+def mac_to_str(mac):
+    return ':'.join(['{:02x}'.format(b) for b in mac])
+
 peer, msg = espnow_instance.recv()  # Recebe a mensagem do peer
 if msg:
     received_message = msg.decode('utf-8')  # Armazena a mensagem recebida como string
-    print(f"Mensagem recebida: {received_message}")
+    peer_str = mac_to_str(peer)  # Converte o MAC para uma string legível
+    print(f"Mensagem recebida de {peer_str}: {received_message}")
 
     # Verifica se a mensagem é o nome da variável
     if 'VAR_' in received_message:
         current_var_name = received_message  # Armazena o nome da variável temporariamente
-        print(f"Nome da variável recebida: {current_var_name}")
+        print(f"Nome da variável recebida de {peer_str}: {current_var_name}")
     else:
         # Recebe o valor e associa ao nome da variável anterior
         if current_var_name:
             value = float(received_message) if '.' in received_message else int(received_message)
             received_vars[current_var_name] = value  # Armazena o valor no dicionário
-            print(f"Atribuiu o valor {value} à variável {current_var_name}")
+            print(f"Valor {value} atribuído à variável {current_var_name} de {peer_str}")
 
             # Atualiza as variáveis globais
             if current_var_name == 'VAR_1':
@@ -6437,11 +6441,10 @@ if msg:
             # Reseta o nome da variável temporariamente após atribuir o valor
             current_var_name = None
         else:
-            print(f"Valor recebido sem nome de variável: {received_message}")
+            print(f"Valor recebido de {peer_str} sem nome de variável: {received_message}")
 `;
   return code.trim() + '\n';
 };
-
 
 
 
@@ -6490,24 +6493,32 @@ espnow_instance.send(peer, message_str_${i}_value.encode('utf-8'))  # Envia o va
 
 
 
-
-
-
 Blockly.Python['send_message_to_peer'] = function(block) {
   var peer_mac = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);
   var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);
-  var peer_name = Blockly.Python.valueToCode(block, 'NAME', Blockly.Python.ORDER_ATOMIC);  
 
-  
+  // Gera o código com a verificação de peer já existente
   var code = `
+def add_peer_if_not_exists(peer_mac):
+    try:
+        espnow_instance.add_peer(peer_mac)
+        print(f"Peer {peer_mac} adicionado.")
+    except OSError as e:
+        if e.args[0] == -12395:  # ESP_ERR_ESPNOW_EXIST
+            print(f"Peer {peer_mac} já está adicionado.")
+        else:
+            raise e
+
 peer = convert_mac(${peer_mac})  # Converter o MAC para bytes
-espnow_instance.add_peer(peer)  # Adicionar peer se ainda não estiver adicionado
-message_with_name = f'{${peer_name}}: {${message}}'  # Adicionar o nome da placa na mensagem
-espnow_instance.send(peer, message_with_name.encode('utf-8'))  # Enviar a mensagem com o nome
-print(f"Mensagem enviada para peer com MAC ${peer_mac}: {message_with_name}")
+add_peer_if_not_exists(peer)  # Adicionar peer somente se ainda não estiver adicionado
+espnow_instance.send(peer, ${message}.encode('utf-8'))  # Enviar a mensagem
+print(f"Mensagem enviada para peer com MAC ${peer_mac}: ${message}")
 `;
-  return code;
+
+  return code + '\n';
 };
+
+
 
 
 

@@ -11903,27 +11903,36 @@ Blockly.Blocks['send_message_to_peer'] = {
 Blockly.Blocks['send_message'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Enviar mensagem para peer");
+        .appendField("Enviar mensagem para a Master");
     this.appendValueInput("VAR1")
         .setCheck("String")
         .appendField("Variável 1");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
+    this.setColour("#7b49ad");
     this.setMutator(new Blockly.Mutator(['send_message_add_var']));
     this.varCount_ = 1;  // Inicializamos com 1 variável
   },
 
+  // Salva o estado do bloco (mutação)
   mutationToDom: function() {
     var container = document.createElement('mutation');
-    container.setAttribute('varCount', this.varCount_);
+    container.setAttribute('varCount', this.varCount_);  // Salva o número de variáveis
     return container;
   },
 
+  // Restaura o estado do bloco (mutação) ao carregar o XML
   domToMutation: function(xmlElement) {
-    this.varCount_ = parseInt(xmlElement.getAttribute('varCount'), 10);
-    this.updateShape_();  // Reconstrói a forma após restaurar o estado
+    var count = parseInt(xmlElement.getAttribute('varCount'), 10);  // Restaura o número de variáveis
+    if (!isNaN(count)) {
+      this.varCount_ = count;
+    } else {
+      this.varCount_ = 1;  // Fallback para 1 variável
+    }
+    this.updateShape_();  // Reconstrói a forma com base no estado restaurado
   },
 
+  // Abre o mutator para permitir adicionar variáveis
   decompose: function(workspace) {
     var containerBlock = workspace.newBlock('send_message_mutator');
     containerBlock.initSvg();
@@ -11937,6 +11946,7 @@ Blockly.Blocks['send_message'] = {
     return containerBlock;
   },
 
+  // Atualiza o bloco quando o mutator é fechado
   compose: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var connections = [];
@@ -11954,7 +11964,7 @@ Blockly.Blocks['send_message'] = {
       }
     }
 
-    // Atualiza o número de variáveis
+    // Atualiza o número de variáveis com base no mutator
     this.varCount_ = connections.length + 1;
     this.updateShape_();
 
@@ -11964,8 +11974,16 @@ Blockly.Blocks['send_message'] = {
     }
   },
 
+  // Reconstrói a forma do bloco com base no número de variáveis
   updateShape_: function() {
-    // Reconstrói o número correto de variáveis
+    // Remove inputs antigos, se existirem
+    for (var i = 1; i <= this.varCount_; i++) {
+      if (this.getInput('VAR' + i)) {
+        this.removeInput('VAR' + i);
+      }
+    }
+
+    // Adiciona novos inputs de acordo com o estado salvo
     for (var i = 1; i <= this.varCount_; i++) {
       if (!this.getInput('VAR' + i)) {
         this.appendValueInput('VAR' + i)
@@ -11975,13 +11993,13 @@ Blockly.Blocks['send_message'] = {
     }
   },
 
+  // Salva as conexões para garantir que blocos conectados não se percam
   saveConnections: function(containerBlock) {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var i = 1;
     while (itemBlock) {
       var input = this.getInput('VAR' + i);
-      itemBlock.valueConnection_ =
-          input && input.connection.targetConnection;
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
       i++;
       itemBlock = itemBlock.nextConnection &&
           itemBlock.nextConnection.targetBlock();
@@ -11989,7 +12007,7 @@ Blockly.Blocks['send_message'] = {
   }
 };
 
-// Bloco para adicionar variável
+// Bloco para o mutator (interface de adição de variáveis)
 Blockly.Blocks['send_message_mutator'] = {
   init: function() {
     this.appendDummyInput()
@@ -12001,6 +12019,7 @@ Blockly.Blocks['send_message_mutator'] = {
   }
 };
 
+// Bloco que permite adicionar variáveis no mutator
 Blockly.Blocks['send_message_add_var'] = {
   init: function() {
     this.appendDummyInput()
