@@ -6408,45 +6408,57 @@ peer_name = '${peer_name}'  # Adicionar o identificador da placa corretamente
   return code;
 };
 
+Blockly.Blocks['receive_message'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Receber mensagem e armazenar variável");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(160);
+    this.setTooltip("Recebe mensagens via ESP-NOW e armazena variáveis.");
+    this.setHelpUrl("");
+  }
+};
+
 Blockly.Python['receive_message'] = function(block) {
   var code = `
-# Recepção de mensagens via ESP-NOW
-
-def mac_to_str(mac):
-    return ':'.join(['{:02x}'.format(b) for b in mac])
-
-peer, msg = espnow_instance.recv()  # Recebe a mensagem do peer
+peer, msg = espnow_instance.recv()  # Recebe a mensagem
 if msg:
-    received_message = msg.decode('utf-8')  # Armazena a mensagem recebida como string
-    peer_str = mac_to_str(peer)  # Converte o MAC para uma string legível
-    print(f"Mensagem recebida de {peer_str}: {received_message}")
+    received_message = msg.decode('utf-8')  # Decodifica a mensagem
+    print(f"Mensagem recebida: {received_message}")
 
+    # Converte o MAC para string legível
+    peer_str = ':'.join(['{:02x}'.format(b) for b in peer])
+    print(f"Mensagem recebida de {peer_str}: {received_message}")
+    
     # Verifica se a mensagem é o nome da variável
     if 'VAR_' in received_message:
-        current_var_name = received_message  # Armazena o nome da variável temporariamente
+        current_var_name = received_message  # Armazena o nome da variável
         print(f"Nome da variável recebida de {peer_str}: {current_var_name}")
     else:
-        # Recebe o valor e associa ao nome da variável anterior
+        # Recebe o valor e associa ao nome da variável
         if current_var_name:
-            value = float(received_message) if '.' in received_message else int(received_message)
-            received_vars[current_var_name] = value  # Armazena o valor no dicionário
+            try:
+                value = float(received_message) if '.' in received_message else int(received_message)
+            except ValueError:
+                value = received_message  # Trata como string se não puder ser convertido para número
+            received_vars[current_var_name] = value
             print(f"Valor {value} atribuído à variável {current_var_name} de {peer_str}")
-
-            # Atualiza as variáveis globais
-            if current_var_name == 'VAR_1':
-                var_1 = value
-            elif current_var_name == 'VAR_2':
-                var_2 = value
-
-            # Reseta o nome da variável temporariamente após atribuir o valor
+            
+            # Atualiza a variável global, acessível pelo nome
+            globals()[current_var_name.lower()] = value  # Armazena o valor em uma variável global pelo nome
             current_var_name = None
         else:
             print(f"Valor recebido de {peer_str} sem nome de variável: {received_message}")
+
+# Inicializa o dicionário de variáveis se necessário
+if 'var_1' not in globals():
+    globals()['var_1'] = 0
+if 'var_2' not in globals():
+    globals()['var_2'] = 0
 `;
-  return code.trim() + '\n';
+  return code + '\n';
 };
-
-
 
 
 
@@ -6511,10 +6523,27 @@ def add_peer_if_not_exists(peer_mac):
 
 peer = convert_mac(${peer_mac})  # Converter o MAC para bytes
 add_peer_if_not_exists(peer)  # Adicionar peer somente se ainda não estiver adicionado
-espnow_instance.send(peer, ${message}.encode('utf-8'))  # Enviar a mensagem
-print(f"Mensagem enviada para peer com MAC ${peer_mac}: ${message}")
+
+# Converte a mensagem para string se não for
+if isinstance(${message}, (int, float)):
+    message_str = str(${message})
+else:
+    message_str = ${message}
+
+espnow_instance.send(peer, message_str.encode('utf-8'))  # Enviar a mensagem
+print(f"Mensagem enviada para peer com MAC ${peer_mac}: {message_str}")
 `;
 
+  return code + '\n';
+};
+
+Blockly.Python['receive_message_master'] = function(block) {
+  var code = `
+peer, msg = espnow_instance.recv()  # Recebe a mensagem da master
+if msg:
+    received_message = msg.decode('utf-8')  # Decodifica a mensagem recebida
+    print(f"Mensagem recebida da master: {received_message}")
+`;
   return code + '\n';
 };
 

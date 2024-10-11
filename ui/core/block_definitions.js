@@ -12035,3 +12035,14 @@ Blockly.Blocks['send_message_add_var'] = {
 // Registro do mutator
 Blockly.Extensions.registerMutator('send_message_mutator', Blockly.Blocks['send_message']);
 
+Blockly.Blocks['receive_message_master'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Receber mensagem da Master");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(160);
+    this.setTooltip("Recebe mensagens enviadas pela master e processa.");
+    this.setHelpUrl("");
+  }
+};
