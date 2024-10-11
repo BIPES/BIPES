@@ -6430,33 +6430,38 @@ if msg:
     # Converte o MAC para string legível
     peer_str = ':'.join(['{:02x}'.format(b) for b in peer])
     print(f"Mensagem recebida de {peer_str}: {received_message}")
-    
+
     # Verifica se a mensagem é o nome da variável
     if 'VAR_' in received_message:
         current_var_name = received_message  # Armazena o nome da variável
         print(f"Nome da variável recebida de {peer_str}: {current_var_name}")
     else:
-        # Recebe o valor e associa ao nome da variável
+        # Inicializa um dicionário para a placa se não existir
+        if peer_str not in received_vars:
+            received_vars[peer_str] = {}
+
+        # Recebe o valor e associa ao nome da variável para essa placa
         if current_var_name:
             try:
                 value = float(received_message) if '.' in received_message else int(received_message)
             except ValueError:
                 value = received_message  # Trata como string se não puder ser convertido para número
-            received_vars[current_var_name] = value
+
+            # Armazena a variável no dicionário do peer
+            received_vars[peer_str][current_var_name] = value
             print(f"Valor {value} atribuído à variável {current_var_name} de {peer_str}")
-            
-            # Atualiza a variável global, acessível pelo nome
-            globals()[current_var_name.lower()] = value  # Armazena o valor em uma variável global pelo nome
+
             current_var_name = None
         else:
             print(f"Valor recebido de {peer_str} sem nome de variável: {received_message}")
 
-# Inicializa o dicionário de variáveis se necessário
+# Inicializa variáveis globais se necessário
 if 'var_1' not in globals():
     globals()['var_1'] = 0
 if 'var_2' not in globals():
     globals()['var_2'] = 0
 `;
+
   return code + '\n';
 };
 
