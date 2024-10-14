@@ -6408,17 +6408,6 @@ peer_name = '${peer_name}'  # Adicionar o identificador da placa corretamente
   return code;
 };
 
-Blockly.Blocks['receive_message'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Receber mensagem e armazenar variável");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(160);
-    this.setTooltip("Recebe mensagens via ESP-NOW e armazena variáveis.");
-    this.setHelpUrl("");
-  }
-};
 
 Blockly.Python['receive_message'] = function(block) {
   var code = `
@@ -6451,6 +6440,9 @@ if msg:
             received_vars[peer_str][current_var_name] = value
             print(f"Valor {value} atribuído à variável {current_var_name} de {peer_str}")
 
+            # Imprimir as variáveis armazenadas para esse peer_str
+            print(f"Variáveis armazenadas para o MAC {peer_str}: {list(received_vars[peer_str].keys())}")
+
             current_var_name = None
         else:
             print(f"Valor recebido de {peer_str} sem nome de variável: {received_message}")
@@ -6464,6 +6456,7 @@ if 'var_2' not in globals():
 
   return code + '\n';
 };
+
 
 
 
@@ -6542,6 +6535,7 @@ print(f"Mensagem enviada para peer com MAC ${peer_mac}: {message_str}")
   return code + '\n';
 };
 
+//Bloco para os dispositivos receber mensagem da master
 Blockly.Python['receive_message_master'] = function(block) {
   var code = `
 peer, msg = espnow_instance.recv()  # Recebe a mensagem da master
@@ -6552,6 +6546,13 @@ if msg:
   return code + '\n';
 };
 
+//Bloco para acessar os valores das variaveis associado ao mac no dicionario
+Blockly.Python['get_variable_value'] = function(block) {
+  var var_name = block.getFieldValue('VAR_NAME');  
+  var mac_addr = block.getFieldValue('MAC_ADDR');  
+  var code = `received_vars['${mac_addr}'].get('${var_name}')`;  
+  return [code, Blockly.Python.ORDER_ATOMIC];  // Retorna o valor
+};
 
 
 

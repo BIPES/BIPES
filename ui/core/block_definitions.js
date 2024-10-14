@@ -12041,8 +12041,30 @@ Blockly.Blocks['receive_message_master'] = {
         .appendField("Receber mensagem da Master");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(160);
+    this.setColour("#7b49ad");
     this.setTooltip("Recebe mensagens enviadas pela master e processa.");
     this.setHelpUrl("");
   }
 };
+
+
+Blockly.defineBlocksWithJsonArray([{
+  "type": "get_variable_value",
+  "message0": "obter valor de %1 para o MAC %2",
+  "args0": [
+    {
+      "type": "field_input",
+      "name": "VAR_NAME",
+      "text": "VAR_1"  // Nome da variável padrão
+    },
+    {
+      "type": "field_input",
+      "name": "MAC_ADDR",
+      "text": "00:00:00:00:00:00"  // MAC address padrão
+    }
+  ],
+  "output": null,  // Esse bloco vai retornar um valor
+  "colour": "#a278d1",
+  "tooltip": "Obtém o valor de uma variável para um MAC address",
+  "helpUrl": ""
+}]);
