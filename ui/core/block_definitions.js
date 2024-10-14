@@ -12068,3 +12068,25 @@ Blockly.defineBlocksWithJsonArray([{
   "tooltip": "Obtém o valor de uma variável para um MAC address",
   "helpUrl": ""
 }]);
+
+
+Blockly.Blocks['check_and_assign_value'] = {
+  init: function() {
+    this.appendValueInput("VAR")
+        .setCheck(null)
+        .appendField("se")
+        .appendField(new Blockly.FieldVariable("item"), "VAR")
+        .appendField("é None, definir para");
+    this.appendValueInput("DEFAULT")
+        .setCheck(null)
+        .appendField("valor padrão");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip("Verifica se a variável é None e, se for, define um valor padrão.");
+    this.setHelpUrl("");
+  }
+};
+
+

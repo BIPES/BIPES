@@ -6435,6 +6435,8 @@ if msg:
                 value = float(received_message) if '.' in received_message else int(received_message)
             except ValueError:
                 value = received_message  # Trata como string se não puder ser convertido para número
+            
+            print(f"Tipo de dado recebido para {current_var_name}: {type(value)}")
 
             # Armazena a variável no dicionário do peer
             received_vars[peer_str][current_var_name] = value
@@ -6548,12 +6550,29 @@ if msg:
 
 //Bloco para acessar os valores das variaveis associado ao mac no dicionario
 Blockly.Python['get_variable_value'] = function(block) {
-  var var_name = block.getFieldValue('VAR_NAME');  
-  var mac_addr = block.getFieldValue('MAC_ADDR');  
-  var code = `received_vars['${mac_addr}'].get('${var_name}')`;  
-  return [code, Blockly.Python.ORDER_ATOMIC];  // Retorna o valor
+  var var_name = block.getFieldValue('VAR_NAME');  // Nome da variável (ex: VAR_1)
+  var mac_addr = block.getFieldValue('MAC_ADDR');  // Endereço MAC (ex: 94:b5:55:7c:6f:c8)
+  
+  // Ajustando o código para acessar de forma segura
+  var code = `received_vars.get('${mac_addr}', {}).get('${var_name}', None)`;  
+
+  // Retorna o valor da variável ou None se não existir
+  return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
+
+Blockly.Python['check_and_assign_value'] = function(block) {
+  var variable_to_check = Blockly.Python.valueToCode(block, 'VAR', Blockly.Python.ORDER_ATOMIC);
+  var default_value = Blockly.Python.valueToCode(block, 'DEFAULT', Blockly.Python.ORDER_ATOMIC);
+
+  var code = `
+if ${variable_to_check} is None:
+  ${variable_to_check} = ${default_value}
+  print("${variable_to_check} era None e foi definido para o valor padrão: ${default_value}")
+`;
+
+  return code;
+};
 
 
 
