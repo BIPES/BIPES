@@ -11599,6 +11599,20 @@ Blockly.Blocks['try_catch'] = {
   }
 };
 
+Blockly.Blocks['try_except_oserror'] = {
+  init: function() {
+    this.appendDummyInput().appendField("try");  // Título do bloco 'try'
+    this.appendStatementInput("TRY").setCheck(null);  // Blocos encaixados no 'try'
+    this.appendDummyInput().appendField("except OSError");
+    this.appendStatementInput("EXCEPT").setCheck(null);  // Blocos encaixados no 'except'
+    this.setPreviousStatement(true, null);  // Adiciona a curvinha superior (permite encaixar)
+    this.setNextStatement(true, null);  // Adiciona a curvinha inferior (permite sequência)
+    this.setColour(230);  // Cor do bloco
+    this.setTooltip("Bloco try-except para capturar OSError.");
+    this.setHelpUrl("");
+  }
+};
+
 Blockly.Blocks['http_get_status'] = {
   init: function() {
     this.appendDummyInput()
