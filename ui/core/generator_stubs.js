@@ -629,7 +629,7 @@ Blockly.Python['dht_init'] = function(block) {
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
   Blockly.Python.definitions_['import_dht'] = 'import dht';
   Blockly.Python.definitions_['import_time'] = 'import time';
-  var code = 'dhts=dht.' + type + '(Pin(' + value_pin + '));dhts.measure();time.sleep(2)\n';
+  var code = 'dhts=dht.' + type + '(Pin(' + value_pin + '));dhts.measure();time.sleep(5)\n';
   return code;
 };
 
@@ -5534,7 +5534,6 @@ Blockly.Python['esp32_can_recv'] = function(block) {
 };
 
 
-
 Blockly.Python['python_try_catch'] = function(block) {
 
   var funct_code = Blockly.Python.statementToCode(block, 'try');
@@ -5543,7 +5542,6 @@ Blockly.Python['python_try_catch'] = function(block) {
   var code = "try:\n"+funct_code+"except:\n"+c+"\n";
   return code;
 };
-
 
 
 Blockly.Python['neopixel_color_numbers'] = function(block) {
@@ -6506,47 +6504,88 @@ espnow_instance.send(peer, message_str_${i}_value.encode('utf-8'))  # Envia o va
 
 
 Blockly.Python['send_message_to_peer'] = function(block) {
-  var peer_mac = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC);
-  var message = Blockly.Python.valueToCode(block, 'MESSAGE', Blockly.Python.ORDER_ATOMIC);
+  var peer_mac_code = Blockly.Python.valueToCode(block, 'MAC', Blockly.Python.ORDER_ATOMIC) || "'None'";
+  var variable_name_code = Blockly.Python.valueToCode(block, 'VAR_NAME', Blockly.Python.ORDER_ATOMIC) || "'None'";
+  var variable_value_code = Blockly.Python.valueToCode(block, 'VAR_VALUE', Blockly.Python.ORDER_ATOMIC) || "'None'";
 
-  // Gera o código com a verificação de peer já existente
   var code = `
-def add_peer_if_not_exists(peer_mac):
+peer_mac = ${peer_mac_code}
+variable_name = ${variable_name_code}
+variable_value = ${variable_value_code}
+
+print(f"peer_mac: {peer_mac}")
+print(f"variable_name: {variable_name}")
+print(f"variable_value: {variable_value}")
+
+def add_peer_if_not_exists(peer):
     try:
-        espnow_instance.add_peer(peer_mac)
-        print(f"Peer {peer_mac} adicionado.")
+        espnow_instance.add_peer(peer)
+        print(f"Peer {peer} adicionado.")
     except OSError as e:
         if e.args[0] == -12395:  # ESP_ERR_ESPNOW_EXIST
-            print(f"Peer {peer_mac} já está adicionado.")
+            print(f"Peer {peer} já está adicionado.")
         else:
             raise e
 
-peer = convert_mac(${peer_mac})  # Converter o MAC para bytes
-add_peer_if_not_exists(peer)  # Adicionar peer somente se ainda não estiver adicionado
+peer = convert_mac(peer_mac)
+add_peer_if_not_exists(peer)
 
-# Converte a mensagem para string se não for
-if isinstance(${message}, (int, float)):
-    message_str = str(${message})
-else:
-    message_str = ${message}
+# Enviar nome da variável e valor juntos
+message = 'VAR_' + str(variable_name) + ':' + str(variable_value)
+espnow_instance.send(peer, message.encode('utf-8'))
 
-espnow_instance.send(peer, message_str.encode('utf-8'))  # Enviar a mensagem
-print(f"Mensagem enviada para peer com MAC ${peer_mac}: {message_str}")
+print(f"Mensagem enviada para peer com MAC {peer_mac}: {message}")
 `;
 
   return code + '\n';
 };
+
 
 //Bloco para os dispositivos receber mensagem da master
 Blockly.Python['receive_message_master'] = function(block) {
   var code = `
+# Inicializa um dicionário global para armazenar as variáveis recebidas
+if 'received_vars' not in globals():
+    received_vars = {}
+
 peer, msg = espnow_instance.recv()  # Recebe a mensagem da master
+
 if msg:
     received_message = msg.decode('utf-8')  # Decodifica a mensagem recebida
     print(f"Mensagem recebida da master: {received_message}")
+
+    # Converte o MAC para string legível
+    peer_str = ':'.join(['{:02x}'.format(b) for b in peer])
+
+    # Verifica se a mensagem contém o nome da variável e o valor
+    if 'VAR_' in received_message and ':' in received_message:
+        var_name, var_value_str = received_message.split(':', 1)  # Divide em nome e valor
+        print(f"Nome da variável recebida de {peer_str}: {var_name}")
+        print(f"Valor recebido para {var_name}: {var_value_str}")
+
+        # Tenta converter o valor para int ou float, se possível
+        try:
+            if '.' in var_value_str:
+                var_value = float(var_value_str)
+            else:
+                var_value = int(var_value_str)
+        except ValueError:
+            var_value = var_value_str  # Mantém como string se não for possível converter
+
+        # Armazena a variável no dicionário do peer
+        if peer_str not in received_vars:
+            received_vars[peer_str] = {}
+        received_vars[peer_str][var_name] = var_value
+
+        print(f"Valor {var_value} atribuído à variável {var_name} de {peer_str}")
+        print(f"Variáveis armazenadas para o MAC {peer_str}: {list(received_vars[peer_str].keys())}")
+    else:
+        print(f"Mensagem recebida sem formato esperado: {received_message}")
 `;
   return code + '\n';
 };
+
+
 
 //Bloco para acessar os valores das variaveis associado ao mac no dicionario
 Blockly.Python['get_variable_value'] = function(block) {

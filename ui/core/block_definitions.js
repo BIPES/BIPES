@@ -11887,18 +11887,22 @@ Blockly.Blocks['set_peer'] = {
 Blockly.Blocks['send_message_to_peer'] = {
   init: function() {
     this.appendValueInput("MAC")
+        .setCheck("String")
+        .appendField("Enviar mensagem para MAC");
+    this.appendValueInput("VAR_NAME")
+        .setCheck("String")
+        .appendField("Nome da variável");
+    this.appendValueInput("VAR_VALUE")
         .setCheck(null)
-        .appendField("Enviar mensagem para peer com MAC");
-    this.appendValueInput("MESSAGE")
-        .setCheck(null)
-        .appendField("Mensagem");
+        .appendField("Valor da variável");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour("#7b49ad");
-    this.setTooltip("Envie uma mensagem para um peer específico usando seu MAC.");
+    this.setColour(230);
+    this.setTooltip("Envia uma variável e seu valor para um peer específico.");
     this.setHelpUrl("");
   }
 };
+
 
 Blockly.Blocks['send_message'] = {
   init: function() {
@@ -12083,7 +12087,7 @@ Blockly.Blocks['check_and_assign_value'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(230);
+    this.setColour("#a278d1");
     this.setTooltip("Verifica se a variável é None e, se for, define um valor padrão.");
     this.setHelpUrl("");
   }
