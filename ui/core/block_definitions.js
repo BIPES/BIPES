@@ -11836,7 +11836,7 @@ Blockly.Blocks['get_mac_address'] = {
 Blockly.Blocks['set_master'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Configurar ESP32 como Master");
+        .appendField("Set Amado Board as master");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour('#5a3783');
@@ -11850,7 +11850,7 @@ Blockly.Blocks['add_peer'] = {
   init: function() {
     this.appendValueInput("MAC")
         .setCheck("String")
-        .appendField("Adicionar Peer com MAC");
+        .appendField("Add board with MAC");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour('#5a3783');
@@ -11862,7 +11862,7 @@ Blockly.Blocks['add_peer'] = {
 Blockly.Blocks['receive_message'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Receber Mensagem ESPNOW");
+        .appendField("Receive messages from boards");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("#7b49ad");
@@ -11874,7 +11874,7 @@ Blockly.Blocks['receive_message'] = {
 Blockly.Blocks['set_peer'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Configurar ESP32 como Peer");
+        .appendField("Set ESP32 as secondary board");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour('#5a3783');
@@ -11888,16 +11888,16 @@ Blockly.Blocks['send_message_to_peer'] = {
   init: function() {
     this.appendValueInput("MAC")
         .setCheck("String")
-        .appendField("Enviar mensagem para MAC");
+        .appendField("Send message to board with MAC");
     this.appendValueInput("VAR_NAME")
         .setCheck("String")
-        .appendField("Nome da variável");
+        .appendField("Variable name");
     this.appendValueInput("VAR_VALUE")
         .setCheck(null)
-        .appendField("Valor da variável");
+        .appendField("Variable value");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(230);
+    this.setColour("#7b49ad");
     this.setTooltip("Envia uma variável e seu valor para um peer específico.");
     this.setHelpUrl("");
   }
@@ -11907,10 +11907,10 @@ Blockly.Blocks['send_message_to_peer'] = {
 Blockly.Blocks['send_message'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Enviar mensagem para a Master");
+        .appendField("Send message to Master");
     this.appendValueInput("VAR1")
         .setCheck("String")
-        .appendField("Variável 1");
+        .appendField("VAR 1");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("#7b49ad");
@@ -12015,7 +12015,7 @@ Blockly.Blocks['send_message'] = {
 Blockly.Blocks['send_message_mutator'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Adicionar variável");
+        .appendField("Add variable");
     this.appendStatementInput('STACK');
     this.setColour(230);
     this.setTooltip('');
@@ -12027,7 +12027,7 @@ Blockly.Blocks['send_message_mutator'] = {
 Blockly.Blocks['send_message_add_var'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Adicionar variável");
+        .appendField("Add variable");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setColour(230);
@@ -12042,7 +12042,7 @@ Blockly.Extensions.registerMutator('send_message_mutator', Blockly.Blocks['send_
 Blockly.Blocks['receive_message_master'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Receber mensagem da Master");
+        .appendField("Receive message from Master");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("#7b49ad");
@@ -12054,7 +12054,7 @@ Blockly.Blocks['receive_message_master'] = {
 
 Blockly.defineBlocksWithJsonArray([{
   "type": "get_variable_value",
-  "message0": "obter valor de %1 para o MAC %2",
+  "message0": "Get value of %1 for MAC %2",
   "args0": [
     {
       "type": "field_input",
@@ -12078,12 +12078,12 @@ Blockly.Blocks['check_and_assign_value'] = {
   init: function() {
     this.appendValueInput("VAR")
         .setCheck(null)
-        .appendField("se")
+        .appendField("If")
         .appendField(new Blockly.FieldVariable("item"), "VAR")
-        .appendField("é None, definir para");
+        .appendField("is None, set to");
     this.appendValueInput("DEFAULT")
         .setCheck(null)
-        .appendField("valor padrão");
+        .appendField("default value");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);

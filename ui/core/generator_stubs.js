@@ -626,10 +626,24 @@ Blockly.Python['wifi_client_scan_networks'] = function(block) {
 Blockly.Python['dht_init'] = function(block) {
   var value_pin = Blockly.Python.valueToCode(block, 'pin', Blockly.Python.ORDER_ATOMIC);
   var type = block.getFieldValue('DHT_TYPE');
+  
+  // Importa as bibliotecas necessárias
   Blockly.Python.definitions_['import_pin'] = 'from machine import Pin';
   Blockly.Python.definitions_['import_dht'] = 'import dht';
   Blockly.Python.definitions_['import_time'] = 'import time';
-  var code = 'dhts=dht.' + type + '(Pin(' + value_pin + '));dhts.measure();time.sleep(5)\n';
+  var code = 'dhts=dht.' + type + '(Pin(' + value_pin + '));dhts.measure();time.sleep(2)\n';
+  // Inicializa o sensor e captura a primeira leitura, que será ignorada
+  var code = 'dhts = dht.' + type + '(Pin(' + value_pin + '))\n';
+  code += 'time.sleep(2)  # Aguardar tempo para estabilizar o sensor\n';
+  
+  // Tenta a primeira leitura, ignorando o erro se falhar
+  code += 'try:\n';
+  code += '    dhts.measure()  # Primeira leitura que será ignorada\n';
+  code += 'except OSError as e:\n';
+  code += '    print("Primeira leitura ignorada devido a erro:", e)\n';
+  
+  code += 'time.sleep(5)\n';
+  
   return code;
 };
 
