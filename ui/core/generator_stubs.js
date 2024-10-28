@@ -1250,9 +1250,9 @@ Blockly.Python["builtins_reversed"] = function(block) {
 	return code;
 };
 Blockly.Python["builtins_round"] = function(block) {
-		Blockly.Python.definitions_['import_builtins'] = 'import builtins';
-	var code = "builtins.round()\n"; 
-	return code;
+  Blockly.Python.definitions_['import_builtins'] = 'import builtins';
+var code = "builtins.round()\n"; 
+return code;
 };
 Blockly.Python["builtins_setattr"] = function(block) {
 		Blockly.Python.definitions_['import_builtins'] = 'import builtins';

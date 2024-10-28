@@ -3171,8 +3171,6 @@ Blockly.Blocks["builtins_reversed"] = {
   }
 };
 
-
-
 Blockly.Blocks["builtins_round"] = {
   init: function() {
     this.appendDummyInput()
@@ -3184,7 +3182,6 @@ Blockly.Blocks["builtins_round"] = {
  this.setHelpUrl("https://docs.micropython.org/en/latest/library/builtins.html");
   }
 };
-
 
 
 Blockly.Blocks["builtins_setattr"] = {
