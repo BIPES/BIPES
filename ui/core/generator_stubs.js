@@ -6179,7 +6179,7 @@ Blockly.Python['http_get_content'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['configurar_e_iniciar_bluetooth'] = function(block) {
+Blockly.Python['configure_and_start_bluetooth'] = function(block) {
   var bluetooth_name = block.getFieldValue('BLUETOOTH_NAME');
   var code = `
 import bluetooth
@@ -6280,7 +6280,7 @@ Blockly.Python['handle_ble_data'] = function(block) {
 
 
 
-Blockly.Python['verificar_dados_ble'] = function(block) {
+Blockly.Python['check_ble_data'] = function(block) {
   var code = `
 if received_data:
     handle_ble_data()  # Processa os dados recebidos
@@ -6294,7 +6294,7 @@ Blockly.Python['show_received_data'] = function(block) {
   return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
-Blockly.Python['configurar_plotter_dados'] = function(block) {
+Blockly.Python['configure_data_plotter'] = function(block) {
   var sensorCount = block.sensorCount_;
   var code = 'def formatar_dados_para_plotter():\n';
   
@@ -6330,16 +6330,7 @@ Blockly.Python['configurar_plotter_dados'] = function(block) {
 };
 
 
-
-
-Blockly.Python['enviar_dados_ble'] = function(block) {
-  var code = `
-formatar_dados_para_plotter()  # Chama a função que formata e envia os dados ao plotter
-  `;
-  return code;
-};
-
-Blockly.Python['chamar_formatar_dados_plotter'] = function(block) {
+Blockly.Python['call_format_plotter_data'] = function(block) {
   var code = 'formatar_dados_para_plotter()\n';
   return code;
 };

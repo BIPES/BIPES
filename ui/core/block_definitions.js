@@ -11624,15 +11624,15 @@ Blockly.Blocks['http_get_content'] = {
 
 //BLOCOS PARA USAR O BLUETOOTH BLE DA AMADOBOARD COM O APLICATIVO BLUEFRUIT DA ADAFRUIT
 // Bloco combinado de configurar e iniciar o Bluetooth BLE
-Blockly.Blocks['configurar_e_iniciar_bluetooth'] = {
+Blockly.Blocks['configure_and_start_bluetooth'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Configurar e iniciar Bluetooth com nome")
-        .appendField(new Blockly.FieldTextInput("MeuBluetooth"), "BLUETOOTH_NAME");
+        .appendField("Configure and start Bluetooth with name")
+        .appendField(new Blockly.FieldTextInput("MyBluetooth"), "BLUETOOTH_NAME");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(230);
-    this.setTooltip("Configura e inicia o Bluetooth BLE com o nome especificado.");
+    this.setColour("#1E90FF");
+    this.setTooltip("Configures and starts the BLE Bluetooth with the specified name..");
     this.setHelpUrl("");
   }
 };
@@ -11642,11 +11642,11 @@ Blockly.Blocks['handle_ble_data'] = {
   init: function() {
     this.appendValueInput("VAR")  // Entrada para o nome da variável
         .setCheck("Variable")
-        .appendField("Definir dados BLE recebidos para");
+        .appendField("Set received BLE data to");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(230);
-    this.setTooltip("Recebe os dados BLE e armazena na variável escolhida.");
+    this.setColour("#1E90FF");
+    this.setTooltip("Receives BLE data and stores it in the chosen variable");
     this.setHelpUrl("");
   }
 };
@@ -11654,14 +11654,14 @@ Blockly.Blocks['handle_ble_data'] = {
 
 
 
-Blockly.Blocks['verificar_dados_ble'] = {
+Blockly.Blocks['check_ble_data'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Verificar dados recebidos");
+        .appendField("Check received data");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(65);
-    this.setTooltip("Verifica se há dados recebidos via BLE e chama a função handle_ble_data.");
+    this.setColour("#1E90FF");
+    this.setTooltip("Checks if there are received data via BLE and calls the handle_ble_data function.");
     this.setHelpUrl("");
   }
 };
@@ -11669,20 +11669,20 @@ Blockly.Blocks['verificar_dados_ble'] = {
 Blockly.Blocks['show_received_data'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("dados recebidos BLE (received_data)");
+        .appendField("received BLE data (received_data).");
     this.setOutput(true, "String");
     this.setColour(230);
-    this.setTooltip("Retorna os dados recebidos via BLE");
+    this.setTooltip("Returns the data received via BLE.");
     this.setHelpUrl("");
   }
 };
 
 
 //Blocos para enviar dados vai bluetooth
-Blockly.Blocks['configurar_plotter_dados'] = {
+Blockly.Blocks['configure_data_plotter'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Configurar plotter para sensores");
+        .appendField("Configure plotter for sensors");
     this.appendValueInput('SENSOR_0')
         .setCheck('Number')
         .appendField('Sensor 1');
@@ -11690,8 +11690,8 @@ Blockly.Blocks['configurar_plotter_dados'] = {
     this.sensorCount_ = 1;
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(230);
-    this.setTooltip("Configura o plotter para enviar dados de múltiplos sensores.");
+    this.setColour("#1E90FF");
+    this.setTooltip("Configures the plotter to send data from multiple sensors.");
     this.setHelpUrl("");
   },
   mutationToDom: function() {
@@ -11748,14 +11748,14 @@ Blockly.Blocks['configurar_plotter_dados'] = {
   }
 };
 
-Blockly.Blocks['chamar_formatar_dados_plotter'] = {
+Blockly.Blocks['call_format_plotter_data'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Enviar dados ao plotter");
+        .appendField("Send data to the plotter");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(160);
-    this.setTooltip("Chama a função que formata e envia os dados ao plotter");
+    this.setColour("#1E90FF");
+    this.setTooltip("Call the function that formats and sends data to the plotter");
     this.setHelpUrl("");
   }
 };
@@ -11764,9 +11764,9 @@ Blockly.Blocks['chamar_formatar_dados_plotter'] = {
 Blockly.Blocks['sensor_container'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField('sensores');
+        .appendField('sensors');
     this.appendStatementInput('STACK');
-    this.setColour(230);
+    this.setColour("#1E90FF");
     this.contextMenu = false;
   }
 };
@@ -11775,16 +11775,16 @@ Blockly.Blocks['sensor_container'] = {
 Blockly.Blocks['sensor_create'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField('adicionar sensor');
+        .appendField('add sensor');
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setColour(230);
+    this.setColour("1E90FF");
     this.contextMenu = false;
   }
 };
 
 
-
+//Blocos para pegar os  valores minimos e máximos na categoria Math
 Blockly.Blocks['math_min'] = {
   init: function() {
     this.appendValueInput("VALUE1")
@@ -11796,7 +11796,7 @@ Blockly.Blocks['math_min'] = {
     this.setInputsInline(true);
     this.setOutput(true, "Number");
     this.setColour(230);
-    this.setTooltip("Retorna o menor dos dois valores.");
+    this.setTooltip("Returns the lesser of the two values.");
     this.setHelpUrl("");
   }
 };
@@ -11813,7 +11813,7 @@ Blockly.Blocks['math_max'] = {
     this.setInputsInline(true);
     this.setOutput(true, "Number");
     this.setColour(230);
-    this.setTooltip("Retorna o maior dos dois valores.");
+    this.setTooltip("Returns the greater of the two values.");
     this.setHelpUrl("");
   }
 };
@@ -11851,7 +11851,7 @@ Blockly.Blocks['set_master'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour('#5a3783');
-    this.setTooltip("Configura a placa como master para ESPNOW");
+    this.setTooltip("Configures the board as a master for ESPNOW");
     this.setHelpUrl("");
   }
 };
@@ -11865,7 +11865,7 @@ Blockly.Blocks['add_peer'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour('#5a3783');
-    this.setTooltip("Adiciona um peer (MAC) à lista de comunicação ESPNOW");
+    this.setTooltip("Adds a peer (MAC) to the ESPNOW communication list");
     this.setHelpUrl("");
   }
 };
@@ -11877,7 +11877,7 @@ Blockly.Blocks['receive_message'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("#7b49ad");
-    this.setTooltip("Recebe mensagens dos peers");
+    this.setTooltip("Receives messages from peers.");
     this.setHelpUrl("");
   }
 };
@@ -11889,7 +11889,7 @@ Blockly.Blocks['set_peer'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour('#5a3783');
-    this.setTooltip("Configura a placa como peer para ESPNOW");
+    this.setTooltip("Configures the board as a peer for ESPNOW.");
     this.setHelpUrl("");
   }
 };
@@ -11909,7 +11909,7 @@ Blockly.Blocks['send_message_to_peer'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("#7b49ad");
-    this.setTooltip("Envia uma variável e seu valor para um peer específico.");
+    this.setTooltip("Sends a variable and its value to a specific peer.");
     this.setHelpUrl("");
   }
 };
@@ -12080,7 +12080,7 @@ Blockly.defineBlocksWithJsonArray([{
   ],
   "output": null,  // Esse bloco vai retornar um valor
   "colour": "#a278d1",
-  "tooltip": "Obtém o valor de uma variável para um MAC address",
+  "tooltip": "Get the value of a variable for a MAC address.",
   "helpUrl": ""
 }]);
 
@@ -12099,7 +12099,7 @@ Blockly.Blocks['check_and_assign_value'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour("#a278d1");
-    this.setTooltip("Verifica se a variável é None e, se for, define um valor padrão.");
+    this.setTooltip("Check if the variable is None, and if it is, set a default value.");
     this.setHelpUrl("");
   }
 };
