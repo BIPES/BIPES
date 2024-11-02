@@ -154,3 +154,45 @@
     width: 100%;
     height: 1px;
 }
+
+#piano-container {
+    display: grid;
+    grid-template-columns: repeat(32, 1fr);
+    grid-template-rows: repeat(8, 50px);
+    gap: 2px;
+    height: 800px;
+    overflow: auto;
+}
+
+.note {
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+.note.active {
+    opacity: 0.3;
+}
+
+.note::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+}
+
+.note-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.C4 { background: #cc6666; } 
+.D4 { background: #cc9966; } 
+.E4 { background: #cccc66; } 
+.F4 { background: #99cc66; }
+.G4 { background: #66cc66; } 
+.A4 { background: #66cc99; }
+.B4 { background: #6699cc; } 
+.C5 { background: #9966cc; } 

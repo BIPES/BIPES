@@ -396,18 +396,18 @@ document.body.appendChild(el);
 <div id="content_sound" class="content">
 
   <div id="containerSound" class="container-sound">
-    <div>
+    <div> 
       <div class="container-buttons">
         <div id="controls">
             <button class="sound-btn btn-save" id="openModalBtn" data-toggle="modal" onclick="openModal()">
               <i class="material-icons">save</i>
             </button>
 
-            <button class="sound-btn btn-play">
+            <button class="sound-btn btn-play" onclick="playMelody()">
               <i class="material-icons">play_arrow</i>
             </button>
 
-            <button class="sound-btn btn-pause">
+            <button class="sound-btn btn-pause" onclick="pauseMelody()">
               <i class="material-icons">pause</i>
             </button>
 
@@ -415,6 +415,11 @@ document.body.appendChild(el);
             <input type="number" id="bpm" class="input-bpm" value="120" max="300" min="60">
         </div>
     </div>
+
+    <div class="container-main-grid" >
+      <div id="piano-container" style="width: 100vw;"></div>
+    </div>
+  
 
     </div>
   </div>
