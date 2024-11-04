@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="google" value="notranslate">
   <meta name="viewport" content="width=device-width, user-scalable=no">
-  <title>BIPES Project</title>
+  <title>Amado Bipes</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/media/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/media/icon/favicon-32x32.png">
   <link rel="mask-icon" href="/media/icon/safari-pinned-tab.svg" color="#5bbad5">
@@ -62,32 +62,26 @@ function checkCookie() {
 
   gtag('config', 'UA-162001686-1');
 </script>
-  <link rel="stylesheet" href="style.css?ver=0.2.3.1125">
+  <link rel="stylesheet" href="style.css?ver=0.2.1.892356">
   <link rel="stylesheet" href="core/libs.css">
-  <script src="core/storage.js?ver=0.2.2.1125"></script>
-  <script src="core/blockly_compressed.js?ver=0.2.1.8260042"></script>
-  <script src="core/blocks_compressed.js?ver=0.2.1.8260042"></script>
-  <script src="core/javascript_compressed.js?ver=0.2.1.8260042"></script>
-  <script src="core/python_compressed.js?ver=0.2.3.9292231"></script>
-  <script src="core/code.js?ver=0.2.3.1125"></script>
-  <script src="core/channel.js?ver=0.2.3.1125"></script>
-  <script src="core/utils.js?ver=0.2.3.1125"></script>
-  <script src="core/ui.js?ver=0.2.3.1125"></script>
+  <script src="core/storage.js"></script>
+  <script src="core/blockly_compressed.js"></script>
+  <script src="core/blocks_compressed.js"></script>
+  <script src="core/javascript_compressed.js"></script>
+  <script src="core/python_compressed.js"></script>
+  <script src="core/code.js"></script>
+  <script src="core/channel.js?ver=0.2.1.892356"></script>
+  <script src="core/utils.js"></script>
+  <script src="core/ui.js?ver=0.2.1.892356"></script>
   <script src="core/queue.js"></script>
-  <script src="core/FileSaver.js"></script>
-  <script src="core/shortcut.js"></script>
-
 
   <!-- Custom Blocks for BIPES Project --> 
-  <script src="core/block_definitions.js?ver=0.2.3.11011813"></script> <!-- Rafael 24/03/2020 -->
-  <script src="core/generator_stubs.js?ver=0.2.3.11011813"></script> <!-- Rafael 24/03/2020 -->
+  <script src="core/block_definitions.js"></script> <!-- Rafael 24/03/2020 -->
+  <script src="core/generator_stubs.js"></script> <!-- Rafael 24/03/2020 -->
 
-  <!-- xterm part -->
+  <!-- WebREPL part -->
   <script src="core/xterm.js?ver=4.13.0"></script>
-
-  <!-- Codemirror -->
-  <script src="core/codemirror/codemirror.js"></script>
-  <script src="core/codemirror/mode/python/python.js"></script>
+  <script src="core/FileSaver.js"></script>
 
   <!-- Progressive Web Application setup -->
   <script type="module">
@@ -120,63 +114,87 @@ document.body.appendChild(el);
 </head>
 <body>
 
-  <div class="top-menu">
 
-    <div class="logo">BIPES</div>
-      <div class="tabs">
-        <div id="tab_blocks" class="tabon">...</div>
-        <div id="tab_console" class="taboff">Console</div>
-        <div id="tab_files" class="taboff">...</div>
-        <div id="tab_programs" class="taboff">...</div>
-        <div id="tab_device" class="taboff">...</div>
-        <div id="tab_iot" class="taboff">IOT</div>
-        <div id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</div>
-        <div id="tab_databoard" class="taboff">Databoard</div>
-      </div>
-      <button id="toolbarButton" class="notext icon medium" title="..."></button>
-      <div class="toolbar">
-      <div id="channel_connect">
-        <button class="icon" id="channelButton" title="Choose connection channel"></button>
-        <button class="icon" id="connectButton" title="Connect/Disconnect"></button>
-      </div>
-      <div class="icon" id="deviceSelect">
+
+  <table width="100%" height="100%">
+    <tr>
+      <td colspan=2 class="top-menu">
+
+            <div class="logo">BIPES</div>
+            <div class="tabs">
+                <div id="tab_blocks" class="tabon">...</div>
+                <div id="tab_console" class="taboff">Console</div>
+                <div id="tab_code" class="taboff">Code</div>
+                <div id="tab_files" class="taboff">Files</div>
+                <div id="tab_programs" class="taboff">Shared</div>
+                <div id="tab_device" class="taboff">Device</div>
+                <div id="tab_iot" class="taboff">IOT</div>
+                <div id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</div>
+            </div>
+
+  <script>
+
+  function installLib() {
+	  alert('This will download and install the library. Your board must be connected to the Internet');
+  }
+
+  //Code.workspace.registerButtonCallback("installPyLib", "installLib");
+
+  //Code.workspace.registerButtonCallback('installPyLib', function(button) {
+   //     alert("foo");
+    //  });
+
+
+  </script>
+  <button id="toolbarButton" class="notext icon medium" title="..."></button>
+  <div class="toolbar">
+    <div id="channel_connect">
+      <button class="icon" id="channelButton" title="Choose connection channel"></button>
+      <button class="icon" id="connectButton" title="Connect/Disconnect"></button>
+    </div>
+    <div class="icon" id="deviceSelect">
         <select id="device_selector">
-          <option value="AmadoBoard">Amado Board</option>
-          <option value="ESP8266">ESP8266</option>
-          <option value="ESP32S2">Franzininho Wifi (ESP32S2+CircuitPython)</option>
-          <option value="ESP8266">Wemos D1 mini</option>
-          <option value="ESP32">ESP32</option>
-          <option value="ESP32basic">ESP32 (Basic)</option>
-          <option value="M5STICK">m5stick (ESP32)</option>
-          <option value="Nucleo">ST Nucleo (mBed)</option>
-          <option value="BBBlack">Beagle Bone Black</option>
-          <option value="BBC">BBC Microbit</option>
-          <option value="RPI4">Raspberry Pi (any Linux)</option>
-          <option value="RPI_Pico">Raspberry Pi Pico</option>
-          <option value="UNO">Arduino UNO or MEGA (Snek @ 38400)</option>
-          <option value="UNO2">Arduino UNO or MEGA (Snek @ 115200)</option>
-          <option value="EV3">Lego EV3</option>
+            <option value="AmadoBoard">Amado Board</option>
+            <option value="ESP8266">ESP8266</option>
+            <option value="ESP32S2">Franzininho Wifi</option>
+            <option value="wemos_d1_mini">Wemos D1 mini</option>
+            <option value="ESP32">ESP32</option>
+            <option value="M5STICK">m5stick (ESP32)</option>
+            <option value="Nucleo">ST Nucleo (mBed)</option>
+            <option value="BBBlack">Beagle Bone Black</option>
+            <option value="BBC">BBC Microbit</option>
+            <option value="RPI4">Raspberry Pi (any Linux)</option>
+            <option value="RPI_Pico">Raspberry Pi Pico</option>
+            <option value="UNO">Arduino UNO or MEGA (Snek)</option>
+            <option value="EV3">Lego EV3</option>
         </select>
+
         <button id="runButton" class="notext primary icon" title="..."></button>
-      </div>
-
-        <button id="linkButton" class="notext icon" title="..."></button>
-
-        <button id="saveButton" class="notext icon" title="..."></button>
-
-        <label id="loadButton" for="loadXML"  class="notext button icon" title="..."></label>
-        <input name="XML" id="loadXML" type="file" accept=".xml" required="">
-
-        <!--<button id="trashButton" class="notext icon" title="..."></button>-->
-
-        <button id="notificationButton" class="notext icon" title="..."></button>
-
-        <button id="forumButton" class="notext icon" title="..."></button>
-
-        <button id="accountButton" class="notext icon" title="..."></button>
-      </div>
     </div>
 
+            <button id="linkButton" class="notext icon" title="..."></button>
+
+            <button id="saveButton" class="notext icon" title="..."></button>
+
+            <label id="loadButton" for="loadXML"  class="notext button icon" title="..."></label>
+            <input name="XML" id="loadXML" type="file" accept=".xml" required="">
+
+            <button id="trashButton" class="notext icon" title="..."></button>
+
+            <button id="languageButton" class="notext icon" title="..."></button>
+
+            <button id="notificationButton" class="notext icon" title="..."></button>
+
+            <button id="forumButton" class="notext icon" title="..."></button>
+    </div>
+
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" colspan=2 id="content_area">
+      </td>
+    </tr>
+  </table>
   <div class='channel-panel'>
     <button class='icon' id="bluetoothButton">Bluetooth</button>
     <div>
@@ -199,15 +217,23 @@ document.body.appendChild(el);
 
   <div id="content_blocks" class="content"></div>
   <div id="content_console" class="content">
-       <span class="icon" id="tipsGeneric"><tt>Ctrl+Insert</tt> to copy and <tt>Shift+Insert</tt> to paste</span>
+
+    <iframe src="bipes-micropython-unicorn/www-emu/index.html" width="100%" height="600" frameBorder="0"></iframe>
+
     <tr height="25%" id="termTR">
      <td>
         <div style="display:inline-block; vertical-align:top; ">
     <div id="term" class="xterm">
             </div>
         </div>
+<!--        
+	<br clear="both" />
+        <i>Terminal widget should be focused (text cursor visible) to accept input. Click on it if not.</i><br/>
+<i>To paste, press Ctrl+A, then Ctrl+V. To copy, use Ctrl+A and Ctrl+C</i> <br>
+
      </td>
      <td>
+-->
         <div id="file-boxes" >
 
             <button onclick="Tool.runPython(); return false;">Run block based program</button>
@@ -247,6 +273,24 @@ document.body.appendChild(el);
    </tr>
 </div>
 
+
+<!-- ################################################## -->
+  <div id="content_code" class="content">
+    <details open>
+      <summary>
+        <span>Python</span>
+        <button id="editAsFileButton" title="..."></button>
+      </summary>
+      <pre id="content_python"></pre>
+    </details>
+    <details>
+      <summary>
+        <span>XML</span>
+      </summary>
+      <pre id="content_xml"></pre>
+    </details>
+  </div>
+
 <!-- ################################################## -->
 
   <div id="content_programs" class="content">
@@ -281,67 +325,114 @@ document.body.appendChild(el);
 
   <div id="content_files" class="content">
 
-
-  <div id="file-boxes">
-  <div id="file-header">
-    <span>File manager</span>
-    <label id="putFileButton" for="put-file-select"  class="noteaxt button icon" title="Upload script to device"></label>
-    <input name="PutFileList" id="put-file-select" type="file" accept=".md,.py" required="">
-    <!--<input type="button" value="Run Blocks" onclick="Tool.runPython(); return false;" />-->
-
-  </div>
-  <!--<input type="button" value="Blocks to editable Python (here)" onclick="Tool.blocksToPython(); return false;" />-->
-
-
-  <!--<div class="file-box">
-  <strong>Send a file</strong>
-  <input type="file" id="put-file-select" />
-  <div id="put-file-list"></div>
-  <input type="button" value="Send to device" id="put-file-button" onclick="Files.put_file(); return false;" />
-  </div>-->
-  <div id="file-status">...</div>
-  <span id='filesPanel'>
-  <details open>
-  <summary>
-  <h2>On device</h2>
-  <button value="List Files" id="refreshFilesList" class="notext button icon" title="Refresh device file list" onclick="Files.listFiles();" /></button>
-  </summary>
-  <span id='fileList'>...</span>
-  </details>
-  <details open>
-  <summary><h2>Blocks to code</h2></summary>
-  <span id='blocks2Code'>
-    <div id='blocks2codePython' title="Code generated by the blocks with Blockly."></div>
-    <div id='blocks2codeXML' title="BIPES files with all blocks and configuration, like freeboard workspace.">workspace.bipes.xml<span>internal</span></div>
-  </span></details>
-  <details>
-  <summary><h2>Templates</h2></summary>
-  <span id='fileTemplate'>
-    <div onclick="Tool.getText('main.py');">main.py</div>
-    <div onclick="Tool.getText('ssd1306.py');">ssd1306.py</div>
-  </span>
-  </details>
-  </div>
-
-
-  <div>
-
-  <div id="file_save_as" class="py">
-  <input type=text id=content_file_name placeholder="Filename">
-  <button id="editor2DeviceButton" class="button icon text" onclick="Files.files_save_as();">Save</button>
-  <button id="generated2DeviceButton" class="button icon text" onclick="Files.file_save_as.className = 'py';  Files.files_save_as ();">Save a copy</button>
-  <button id="updateXMLButton"  class="button icon text" onclick="Files.editedXML2Workspace();">Push to workspace</button>
-  </div>
-  <textarea id="content_file_code" wrap="off"></textarea>
+<div style="width: 50%; float:left">
+  <center>
+ Text editor for files in device's filesystem:
+  </center>
+        <br>
+  <textarea id="content_file_code" cols=90 rows=20 wrap="off"></textarea>
+  <br>
+  Save as:
+  <input type=text id=content_file_name>
+  <input type="button" value="Save" onclick="Files.files_save_as(); return false;" />
+  <input type="button" value="Run" onclick="Files.run(UI ['workspace'].content_file_name.value); return false;" />
+  <input type="button" value="Stop" onclick="Tool.stopPython(); return false;" />
 
   <link rel="stylesheet" href="core/codemirror/codemirror.css">
-  </div>
+<script src="core/codemirror/codemirror.js"></script>
+<script src="core/codemirror/mode/python/python.js"></script>
+<script>
+  var editor = CodeMirror.fromTextArea(content_file_code, {
+    lineNumbers: true,
+    mode: "python"
+  });
+</script>
+
+<script>
+function getText(pName){
+
+    var request = new XMLHttpRequest();
+    request.open('GET', '/beta2/ui/pylibs/' + pName, true);
+    request.send(null);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            var type = request.getResponseHeader('Content-Type');
+            if (type.indexOf("text") !== 1) {
+
+    var Textarea = document.getElementById('content_file_code');
+    editor.getDoc().setValue(request.responseText);
+
+    var TextareaF = document.getElementById('content_file_name');
+    TextareaF.value = pName;
+
+
+                return request.responseText;
+            }
+        }
+    }
+}
+</script>
+
+  <br>
+  <br>
+  Python code templates and libraries:
+  <br>
+  (libraries and startup codes to load and send to your board)
+  <br>
+
+  <input type="button" value="main.py" onclick="getText('main.py'); return false;" />
+  <input type="button" value="SSD1306.py" onclick="getText('SSD1306.py'); return false;" />
+
+
+
 </div>
+
+<div style="width: 50%; float:right">
+
+    <center>
+Device file manager
+<br>
+  <div id="file-boxes" style="display:inline-block; vertical-align:top; width:230px;">
+
+            <input type="button" value="Run Blocks" onclick="Tool.runPython(); return false;" />
+            <input type="button" value="List Files" onclick="Files.listFiles(); return false;" />
+      <br>
+            <input type="button" value="Blocks to editable Python (here)" onclick="Tool.blocksToPython(); return false;" />
+
+      <!--
+            <input type="button" value="Test" onclick="updateTable(); return false;" />
+      -->
+            <div class="file-box">
+                <strong>Send a file</strong>
+                <input type="file" id="put-file-select" />
+                <div id="put-file-list"></div>
+                <input type="button" value="Send to device" id="put-file-button" onclick="Files.put_file(); return false;" />
+            </div>
+        <div class="file-box" id="file-status"><span style="color:#707070">(file operation status)</span></div>
+    </div>
+ </td>
+
+  </div>
+    <center>
+      <br>
+      <br>
+      <div id="fileList">
+      List of files will be shown here.
+      </div>
+
+</div>
+     
 
 <!-- ################################################## -->
 
   <div id="content_iot" class="content">
-     <iframe id="content_iot" src="freeboard/index.html" width="100%" height="100%" frameBorder="0"></iframe>
+	  <!--
+    <center>
+    <iframe id="content_iot" src="/sensors/index.php?id=1" width="100%" height="700" frameBorder="0"></iframe>
+    <center>
+	  -->
+     <iframe id="content_iot" src="freeboard/index.html?load=dashboard.json" width="100%" height="100%" frameBorder="0"></iframe>
+
   </div>
 
 <!-- ################################################## -->
@@ -352,36 +443,16 @@ document.body.appendChild(el);
 
 <!-- ################################################## -->
 
-<div id="content_databoard" class="content" style="padding: 0;">
-  <iframe id="databoard_iframe" src="../databoard/index.html" width="100%" height="100%" frameBorder="0"></iframe>
-</div>
 
-<!-- ################################################## -->
-
-</div>
 <div class='progress-bar'></div>
 <div class="notify"></div>
 <div class="notify-panel"></div>
-<div class="account-panel">
-  <span>
-    <span id="account_header">Hello, <span id="account_user" role="textbox" contenteditable>User</span>!</span>
-    <details open>
-    <summary>
-    <h2>Projects</h2>
-    <button value="New Project" id="newProjectButton" class="notext button icon" title="Create new project" onclick="/*UI ['workspace'].newProject();*/" /></button>
-    </summary>
-    <span id='ProjectList'></span>
-    </details>
-  </span>
-  <details open>
-  <summary>
-  <h2>Settings</h2>
-  </summary>
-  <span class="icon" id="languageIcon">
-  <select id="languageMenu"></select>
-  </span>
-  </details>
+<div class="language-panel">
+    <select id="languageMenu"></select>
 </div>
+</body>
+
+<a id='test' SRC = "toolbox/esp32.xml"></a>
 
 <script>
 
@@ -399,110 +470,27 @@ Channel ['mux'] = new mux ();
 var terminal = new Terminal ();
 term.init('#term') //init expanded class;
 
-//global Utilities variable and functions (see core/utils.js)
-var Files = new files ('#fileList');
-
 // global User Interface variable and functions (see core/ui.js) */
 var UI = {};
 UI ['responsive'] = new responsive ();
 UI ['notify'] = new notify ();
 UI ['progress'] = new progress ();
-UI ['account'] = new account ('#accountButton','.account-panel');
+UI ['language'] = new language ('#languageButton','.language-panel');
 UI ['notify-panel'] = new panel ('#notificationButton','.notify-panel');
 UI ['channel-panel'] = new channelPanel ('#channelButton','.channel-panel');
 UI ['toolbar'] = new panel ('#toolbarButton','.toolbar');
 UI ['workspace'] = new workspace ();
 
 
+
+/* global Utilities variable and functions (see core/utils.js) */
+var Files = new files ();
 //Make sure we wont use data from last session (BIPES serial to freeboard bridge)
 Tool.clearQueue ();
 
 window.onload = function() {
-	checkCookie()
-	loadPage(); //Load modal splash screen
-
-	//i18n
-	//Auto detect user language (from the browser)
-	var userLang = navigator.language || navigator.userLanguage + " ";
-	//alert ("The language is: " + userLang);
-	var addMsg="";
-
-	//Also, detect language from the URL
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-	pLang = urlParams.get('lang')
-
-	if (!userLang)
-		userLang='en';
-	if (!pLang)
-		pLang='en';
-
-	if ((userLang.startsWith("pt")) || (pLang.startsWith("pt"))) {	
-		addMsg="<p><a href=/beta2/ui/?lang=pt-br>Acessar o BIPES em Português</a>";
-		addMsg+=" | <a href=/beta2/ui/?lang=en>Access BIPES in English</a>";
-	}
-
-	if (MSG["splash_welcome"]) 
-		document.getElementById("modalTitle").innerHTML = MSG["splash_welcome"];
-	else
-		document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
-
-	if (MSG["splash_message"]) 
-		document.getElementById("modalMsg").innerHTML = MSG["splash_message"] + addMsg;
-	else
-		document.getElementById("modalMsg").innerHTML = "<p><b>**BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.  <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about BIPES</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p><p>Checkout BIPES Book: <a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>Thank you from the BIPES Team!</p>" + addMsg;
-
-	if (MSG["splash_footer"]) 
-		document.getElementById("modalFooter").innerHTML = MSG["splash_footer"];
-	else
-		document.getElementById("modalFooter").innerHTML = "Do not show this screen again";
-
-	if (MSG["splash_close"]) 
-		document.getElementById("modalClose").innerHTML = MSG["splash_close"];
-	else
-		document.getElementById("modalClose").innerHTML = "Close";
-
-
-
-	//if (userLang.startsWith("pt")) {
-	//	//alert("pt");
-	//	document.getElementById("modalTitle").innerHTML = MSG["splash_welcome"];
-	//} else {
-	//	//alert("en");
-	//	if (MSG["splash_welcome"]) {
-	//		document.getElementById("modalTitle").innerHTML = MSG["splash_welcome"];
-	//	}
-	//	else {
-	//		document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
-	//	}
-	//}
-
-	//BIPES keyboad hotkeys
-	//Source: http://www.openjs.com/scripts/events/keyboard_shortcuts/
-	//Includes core/shortcut.js
-	shortcut.add("Ctrl+Shift+L",function() {
-		//alert("BIPES hotkey: screenshot!");
-		Tool.exportScreenshot();
-	});
-
-	shortcut.add("Ctrl+Shift+E",function() {
-		//alert("BIPES hotkey: Run program and switch to console!");
-		Code.handleLink('console',1)
-		Tool.runPython();
-	});
-
-	shortcut.add("Ctrl+Shift+R",function() {
-		//alert("BIPES hotkey: Run program!");
-		Tool.runPython();
-	});
-
-	shortcut.add("Ctrl+Shift+S",function() {
-		//alert("BIPES hotkey: Stop program!");
-		Tool.stopPython();
-	});
-
-
-
+  checkCookie()
+  loadPage(); //Load modal splash screen
 };
 
 
@@ -600,9 +588,6 @@ color: white;
 
 BIPES
 -->
-</div>
-
-
 
 		<!-- The Modal -->
 		<div id="myModal" class="modal">
@@ -611,28 +596,56 @@ BIPES
 			    <div class="modal-content">
 				        <div class="modal-header">
 						      <span class="closeM">&times;</span>
-						      <h2><span id="modalTitle"></span></h2>
+						            <h2>Welcome do BIPES!</h2>
 							        </div>
 								    <div class="modal-body">
-									    <span id="modalMsg"></span>
 
 
+										    <p><b>BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.
+
+									    <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://bipes.net.br/wp/forums/>discussion forum</a>. Feel free to use it! Also, if we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p>
+									    <p>Thank you from the BIPES Team!</p>
+									    <p><b>News:</b>
+<br>
+aug-07-2021: BIPES Offline available for <a href=https://github.com/rafaelaroca/BIPES_ui_testing/releases/download/v2.1/BIPES_offline.zip>download here</a>
+<br>
+aug-07-2021: Support for Arduino Uno and Mega using <a href=https://bipes.net.br/snek-web-uploader/>Snek Lang</a>
+<br>
+aug-06-2021: Major code refactoring by Jorge Marques 
+<br>
+jul-31-2021: IoT dashboard with EasyMQTT and Serial/USB/Bluetooth datasources
+<br>
+jul-31-2021: IoT dashboard tab with classic/forest freeboard options
+<br>
+jul-31-2021: Maps, charts and other widgets on the IoT tab/freeboard
+<br>
+jul-30-2021: REPL over Bluetooth (ESP32)
+<br>
+jul-29-2021: Blocks for music using RTTTL and ESP32 Cam
+<br>
+jul-09-2021: BIPES IoT dashboard with freeboard available on IOT Tab 
+<br>
+jul-05-2021: Board model is now stored and automatically set when programs are shared 
+<br>
+
+									    <br>
 											    </div>
 											        <div class="modal-footer">
 													      
 													<br>
 													<center>
 														<input type="checkbox" name="checkfield" id="g01-01"  onchange="doalert(this)"/>
-														<span id="modalFooter"></span>
+														Do not show this screen again
 														<br>
 														<br>
-														<button onclick="closeModal()"><span id="modalClose"></span></button>
+														<button onclick="closeModal()">Close</button>
 
 													<br>
 													<br>
 													          </div>
 														    </div>
 
+		</div>
 
 <script>
 		// Get the modal

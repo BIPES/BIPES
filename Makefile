@@ -3,8 +3,11 @@ FILES_BLOCKLY1=blockly_compressed.js blocks_compressed.js javascript_compressed.
 FILES_WEBREPL=FileSaver.js term.js
 
 git-clone:
-	git clone https://github.com/google/blockly.git
-	git clone https://github.com/micropython/webrepl.git
+	if [ ! -d "blockly" ]; then \
+		git clone https://github.com/google/blockly.git; \
+	else \
+		echo "O diretório 'blockly' já existe, pulando clonagem."; \
+	fi
 
 copy:
 	cd blockly; cp -pr $(FILES_BLOCKLY1) ../$(DIR)/
@@ -16,11 +19,6 @@ copy-bipes-blocks:
 	cp bipes_blocks/block_definitions.js ui/
 	echo "Please, add <>"
 
-submodules:
-	git submodule init 'ui/freeboard'
-	git submodule update 'ui/freeboard'
-	git submodule init 'databoard'
-	git submodule update 'databoard'
 
 
 offline:
@@ -39,7 +37,6 @@ offline:
 	cat ui/devinfo/devinfo.json >> ui/index_offline.html
 	echo "\`;" >> ui/index_offline.html
 	echo "</script>" >> ui/index_offline.html
-	cat ui/isOffline.js >> ui/index_offline.html
 	zip -q -r bipes_offline.zip *
 
  doc:
