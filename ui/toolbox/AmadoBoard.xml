@@ -270,16 +270,30 @@
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
 
-    <category name="Bluetooth" colour="290">
-      <block type="configurar_e_iniciar_bluetooth"></block>
+    <category name="Bluetooth" colour="#1E90FF">
+      <block type="configure_and_start_bluetooth"></block>
       <block type="handle_ble_data"></block>
-      <block type="verificar_dados_ble"></block>
-      <block type="configurar_plotter_dados"></block>
-      <block type="chamar_formatar_dados_plotter"></block>
-      
-      
-      
+      <block type="check_ble_data"></block>
+      <block type="configure_data_plotter"></block>
+      <block type="call_format_plotter_data"></block>
     </category>
+
+    <category name="Espnow" colour="#7b49ad">
+    <block type="init_wlan"></block>
+      <block type="get_mac_address"></block>
+      <block type="set_master"></block>
+      <block type="add_peer"></block>
+      <block type="set_peer"></block>
+      <block type="receive_message"></block>
+      <block type="receive_message_master"></block>
+      <block type="send_message"></block>
+      <block type="send_message_to_peer"></block>
+      <block type="get_variable_value"></block>
+      <block type="check_and_assign_value"></block>
+      
+
+    </category>
+
     <sep></sep>
    <category name="BIPES">
     <block type="project_metadata">
