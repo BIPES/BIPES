@@ -1,3 +1,7 @@
+*{
+  font-family: 'Noto Sans', 'Helvetica', sans-serif;
+}
+
 html, body {
   height: 100%;
 }
@@ -8,7 +12,7 @@ body {
   margin: 0;
   overflow: hidden;
   overscroll-behavior: none; /*disable pull to refresh */
-  font-family: BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: 'Noto Sans',"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 label {

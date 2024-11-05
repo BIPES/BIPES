@@ -8,18 +8,28 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/media/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/media/icon/favicon-32x32.png">
   <link rel="mask-icon" href="/media/icon/safari-pinned-tab.svg" color="#5bbad5">
+  <link rel="stylesheet" href="core/sound/sound.css">
+
+  <!-- material icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <meta name="theme-color" content="#fff">
+
+  <!-- noto sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
   <!-- Progressive Web Application setup -->
   <link rel="manifest" href="manifest.json"></link>
   <script src="core/manup.js"></script>
   <!-- End of Progressive Web Application setup -->
 
+  <script defer src="core/sound/sound.js"></script>
+
 
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162001686-1"></script>
-
 
 
 <script>
@@ -132,6 +142,7 @@ document.body.appendChild(el);
         <div id="tab_iot" class="taboff">IOT</div>
         <div id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</div>
         <div id="tab_databoard" class="taboff">Databoard</div>
+        <div id="tab_sound" class="taboff" style="display: none;">Som</div>
       </div>
       <button id="toolbarButton" class="notext icon medium" title="..."></button>
       <div class="toolbar">
@@ -141,7 +152,7 @@ document.body.appendChild(el);
       </div>
       <div class="icon" id="deviceSelect">
         <select id="device_selector">
-          <option value="AmadoBoard">Amado Board</option>
+          <option value="AmadoBoard" selected>Amado Board</option>
           <option value="ESP8266">ESP8266</option>
           <option value="ESP32S2">Franzininho Wifi (ESP32S2+CircuitPython)</option>
           <option value="ESP8266">Wemos D1 mini</option>
@@ -357,6 +368,62 @@ document.body.appendChild(el);
 </div>
 
 <!-- ################################################## -->
+
+<div id="saveSoundModal" class="modal-sound">
+  <div class="modal-sound-content">
+      <div class="modal-sound-header">
+          <h3>Salvar uma melodia</h3>
+      </div>
+
+      <div class="modal-sound-body">
+          <form id="soundForm">
+              <div class="form-sound">
+                  <label for="savesoundDesc">Nome da melodia</label>
+                  <input type="text" id="savesoundDesc" class="input-save-sound" placeholder="Dê um nome a sua melodia" required>
+              </div>
+          </form>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="modal-sound-footer">
+          <button id="cancelBtn" class="btn btn-close-sound-modal" onclick="closeModal()">Cancelar</button>
+          <button id="savesoundBtn" class="btn btn-save-sound" onclick="saveMelody()">Salvar</button>
+      </div>
+  </div>
+</div>
+
+<div id="content_sound" class="content">
+
+  <div id="containerSound" class="container-sound">
+    <div> 
+      <div class="container-buttons">
+        <div id="controls">
+            <button class="sound-btn btn-save" id="openModalBtn" data-toggle="modal" onclick="openModal()">
+              <i class="material-icons">save</i>
+            </button>
+
+            <button class="sound-btn btn-play" onclick="playMelody()">
+              <i class="material-icons">play_arrow</i>
+            </button>
+
+            <button class="sound-btn btn-pause" onclick="pauseMelody()">
+              <i class="material-icons">pause</i>
+            </button>
+
+            <label for="bpm">BPM:</label>
+            <input type="number" id="bpm" class="input-bpm" value="120" max="300" min="60">
+        </div>
+    </div>
+
+    <div class="container-main-grid" >
+      <div id="piano-container" style="width: 100vw;"></div>
+    </div>
+  
+
+    </div>
+  </div>
+</div>
 
 </div>
 <div class='progress-bar'></div>
