@@ -1,0 +1,222 @@
+.modal-sprite {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-sprite-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  border-radius: 5px;
+}
+
+.modal-sprite-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-sprite-header h3 {
+  font-weight: normal;
+  font-size: 24px;
+}
+
+.modal-sprite-footer {
+  margin-top: 25px;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+.input-sprite {
+  /* width: 100%; */
+  border-radius: 8px;
+  border: 1px solid rgba(128, 128, 128, 0.392);
+  padding: 10px;
+  transition: 0.3s;
+}
+
+.input-sprite:focus {
+  border-color: #3298dc;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.179);
+}
+
+.btn-close-sprite-modal {
+  background-color: #f03a3e;
+}
+
+.btn-close-sprite-modal:hover {
+  background-color: #c23638;
+}
+
+.btn-save-sprite {
+  background-color: #198754;
+}
+
+.btn-save-sprite:hover {
+  background-color: #22754e;
+}
+
+.form-sprite {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.blocklyTreeIconClosed,
+.blocklyTreeIconOpen {
+  display: none;
+}
+
+#deviceSelect button {
+  margin-left: 3.5px;
+}
+
+.menu-btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block: 10px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
+
+.logo {
+  width: 180px;
+}
+
+/* atualizado */
+#sprite-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.spr-btn {
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 600;
+  font-size: 0.8em;
+  border-radius: 24px;
+  padding: 8px;
+  border: 2px solid white;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-add {
+  background-color: #6b90e0;
+  transition: background-color ease 300ms;
+}
+
+.btn-add:hover {
+  background-color: #4e6eb3;
+}
+
+.btn-remove {
+  background-color: #f03a3e;
+  transition: background-color ease 300ms;
+}
+
+.btn-remove:hover {
+  background-color: #c93133;
+}
+
+.btn-pen {
+  background-color: transparent;
+  transition: background-color ease 300ms;
+}
+
+.btn-pen:hover {
+  background-color: #f2f2f2;
+}
+
+/* atualizado */
+.sprite-btn-save {
+  background-color: #f0893e;
+  transition: background-color ease 300ms;
+}
+
+.sprite-btn-save:hover {
+  background-color: #d47836;
+}
+
+select,
+input {
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 6px;
+  /* width: 120px; */
+}
+
+input {
+  border: none;
+  border-bottom: 1px dashed #ccc;
+}
+
+#confirmation-message {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  font-family: "Ubuntu", sans-serif;
+  z-index: 1000;
+}
+
+/* atualizado */
+.sprite-container-main-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#grid-container {
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.grid-item {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.grid-item.active {
+  background-color: black;
+}
+
+.aspect-2-1 {
+  width: 65vw;
+  height: 65vh;
+  grid-template-columns: repeat(auto-fill, minmax(calc(65vw / 128 * 2), 1fr));
+  grid-template-rows: repeat(64, 1fr);
+}
+
+.aspect-1-1 {
+  width: 65vh;
+  height: 65vh;
+  grid-template-columns: repeat(auto-fill, minmax(calc(65vh / 64), 1fr));
+  grid-template-rows: repeat(64, 1fr);
+}
+
