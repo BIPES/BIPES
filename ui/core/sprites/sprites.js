@@ -155,7 +155,7 @@ function removeColumn() {
   }
 }
 
-function saveDesign() {
+const getSpriteData = () => {
   const design = [];
   const gridRows = gridContainer.querySelectorAll(".grid-item");
 
@@ -170,8 +170,27 @@ function saveDesign() {
     }
   });
 
-  console.log("Design salvo:", JSON.stringify(design));
+  return design;
+};
+
+function saveDesign() {
+  const spriteData = getSpriteData();
+  const nameInput = document.getElementById("spriteName");
+  const name = nameInput?.value?.trim() || "Sprite " + new Date().getTime();
+
+  const newSprite = {
+    name: name,
+    data: spriteData,
+  };
+
+  const prevSprites = JSON.parse(localStorage.getItem("bipes@sprites") || "[]");
+
+  const updatedSprites = [...prevSprites, newSprite];
+
+  localStorage.setItem("bipes@sprites", JSON.stringify(updatedSprites));
+
   showSaveConfirmation();
+  closeSaveSpriteModal();
 }
 
 function generateArray() {
@@ -221,7 +240,7 @@ function updateInputs() {
 
 function toggleEraser() {
   isErasing = !isErasing;
-  const eraserButton = document.querySelector("#controls button:nth-child(1)");
+  const eraserButton = document.querySelector("#sprite-controls button:nth-child(1)");
   const eraserIcon = document.getElementById("eraser-icon");
 
   if (isErasing) {
@@ -249,5 +268,20 @@ document.addEventListener("keydown", (event) => {
     redo();
   }
 });
+
+function openSaveSpriteModal() {
+  const spriteData = getSpriteData();
+
+  if (spriteData.length === 0) {
+    alert("Nenhum sprite para salvar!");
+    return;
+  }
+
+  document.getElementById("saveSpriteModal").style.display = "block";
+}
+
+function closeSaveSpriteModal() {
+  document.getElementById("saveSpriteModal").style.display = "none";
+}
 
 initializeGrid();

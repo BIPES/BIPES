@@ -9,7 +9,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./media/icon/dblocks-favicon.png">
   <link rel="mask-icon" href="/media/icon/safari-pinned-tab.svg" color="#5bbad5">
   <link rel="stylesheet" href="core/sound/sound.css">
-  <script defer src="core/sprites.js"></script>
+  <script defer src="core/sprites/sprites.js"></script>
+  <link rel="stylesheet" href="core/sprites/sprites.css">
 
   <!-- material icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -502,36 +503,60 @@ document.body.appendChild(el);
   </div>
 </div>
 
+<div id="saveSpriteModal" class="modal-sprite">
+  <div class="modal-sprite-content">
+    <div class="modal-sprite-header">
+      <h3 id="saveSpriteTitle">Salvar um Sprite</h3>
+    </div>
+
+    <div class="modal-sprite-body">
+      <form id="spriteForm" onsubmit="saveMelody(event)">
+        <div class="form-sprite">
+          <label for="spriteName" id="spriteNameLabel">Nome do Sprite</label>
+          <input type="text" id="spriteName" class="input-sprite" placeholder="Sprite name" required>
+        </div>
+      </form>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="modal-sprite-footer">
+      <button class="btn btn-close-sprite-modal" id="cancelSpriteSave" onclick="closeSaveSpriteModal()">Cancelar</button>
+      <button class="btn btn-save-sprite" id="confirmSpriteSave" onclick="saveDesign(event)">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <div id="content_display" class="content">
   <div id="SpritesDiv">
     <div class="menu-btns">
-      <div id="controls">
-          <button class="btn btn-pen" onclick="toggleEraser()">
-              <i class="material-icons" color='#0000' id="eraser-icon">edit</i>
-          </button>
-          <button class="spr-btn btn-add" onclick="addRow()">Adicionar Linha</button>
-          <button class="spr-btn btn-remove" onclick="removeRow()">Remover Linha</button>
-          <button class="spr-btn btn-add" onclick="addColumn()">Adicionar Coluna</button>
-          <button class="spr-btn btn-remove" onclick="removeColumn()">Remover Coluna</button>
-          <button class="spr-btn btn-save" data-bs-toggle="modal" data-bs-target="#saveSpriteModal" onclick="saveDesign()">Salvar Design</button>
-          <br>
-          <label for="colCount">Colunas:</label>
-          <input type="number" id="colCount" value="128" min="1" max="128" onchange="updateGridSize()">
-          <label for="rowCount">Linhas:</label>
-          <input type="number" id="rowCount" value="64" min="1" max="64" onchange="updateGridSize()">
-          <br>
-          <select id="aspectRatio" onchange="changeAspectRatio()">
-              <option value="2:1" selected>2:1</option>
-              <option value="1:1">1:1</option>
-          </select>
+      <div id="sprite-controls">
+        <button class="btn btn-pen" onclick="toggleEraser()">
+          <i class="material-icons" color="#0000" id="eraser-icon">edit</i>
+        </button>
+        <button class="spr-btn btn-add" onclick="addRow()">Adicionar Linha</button>
+        <button class="spr-btn btn-remove" onclick="removeRow()">Remover Linha</button>
+        <button class="spr-btn btn-add" onclick="addColumn()">Adicionar Coluna</button>
+        <button class="spr-btn btn-remove" onclick="removeColumn()">Remover Coluna</button>
+        <button class="spr-btn sprite-btn-save" data-bs-toggle="modal" data-bs-target="#saveSpriteModal" onclick="openSaveSpriteModal()">Salvar Design</button>
+        <br>
+        <label for="colCount">Colunas:</label>
+        <input type="number" id="colCount" value="128" min="1" max="128" onchange="updateGridSize()">
+        <label for="rowCount">Linhas:</label>
+        <input type="number" id="rowCount" value="64" min="1" max="64" onchange="updateGridSize()">
+        <br>
+        <select id="aspectRatio" onchange="changeAspectRatio()">
+          <option value="2:1" selected>2:1</option>
+          <option value="1:1">1:1</option>
+        </select>
       </div>
-  </div>
-  <div class="container-main-grid">
+    </div>
+    <div class="sprite-container-main-grid">
       <div id="grid-container"></div>
-  </div>
-
+    </div>
   </div>
 </div>
+
 
 </div>
 <div class='progress-bar'></div>
