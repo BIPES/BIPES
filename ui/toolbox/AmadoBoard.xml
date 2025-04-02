@@ -1258,6 +1258,13 @@
     <block type="show_oled"></block>
     <block type="clear_oled"></block>
     <block type="fill_oled"></block>
+      <block type="create_sprite">
+    <field name="SPRITE_NAME"></field>
+  </block>
+
+  <block type="draw_sprite">
+    <field name="SPRITE_NAME"></field>
+  </block>
     <!--
     <block type="init_tank">
       <value name="tankXpos">

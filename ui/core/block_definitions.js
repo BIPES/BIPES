@@ -12631,7 +12631,88 @@ Blockly.Blocks['create_list_with_repeated'] = {
   }
 };
 
+// sprites
 
+
+function getSpritesOptions(){
+  const savedSprites = localStorage.getItem('bipes@sprites');
+  let options = [];
+
+  if (savedSprites) {
+      const melodies = JSON.parse(savedSprites);
+      options = melodies.map(melody => [melody.name, melody.name]);
+  }
+
+  if (options.length === 0) {
+      options = [['Nenhum sprite disponível', 'NONE']];
+  }
+
+  return options;
+}
+
+function deleteSavedSprite(name){
+  const sprites = getSpritesOptions()
+
+  const spritesUpdated = sprites.filter(sprite => sprite[0] !== name)
+
+  localStorage.setItem('bipes@sprites', JSON.stringify(spritesUpdated))
+}
+
+Blockly.Blocks['create_sprite'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Criar sprite")
+        .appendField(new Blockly.FieldDropdown(() => {
+          const spritesOptions = getSpritesOptions()
+          
+          return spritesOptions
+        }), 'SPRITE_NAME')
+
+    this.customContextMenu = function(options) {
+        const spriteName = this.getFieldValue("SPRITE_NAME");
+
+        if (spriteName && spriteName !== 'NONE') {
+          options.push({
+            text: `Excluir '${spriteName}'`,
+            enabled: true,
+            callback: () => {
+              deleteSavedSprite(spriteName)
+              
+              const newOptions = getSpritesOptions()
+
+              const dropdownField = this.getField("SPRITE_NAME");
+              dropdownField.menuGenerator_ = newOptions;
+
+              dropdownField.setValue(newOptions[0][1]);
+            }
+          });
+        }
+      };
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colour="%{BKY_DISPLAY_HUE}");
+    this.setTooltip("Cria um sprite a partir de um nome selecionado");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['draw_sprite'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Exibir sprite")
+        .appendField(new Blockly.FieldDropdown(() => {
+          const spritesOptions = getSpritesOptions()
+          
+          return spritesOptions
+       }), 'SPRITE_NAME')
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colour="%{BKY_DISPLAY_HUE}");
+    this.setTooltip("Exibe o sprite selecionado na tela");
+    this.setHelpUrl("");
+  }
+};
 
 
 
