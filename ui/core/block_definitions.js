@@ -12638,9 +12638,11 @@ function getSpritesOptions(){
   const savedSprites = localStorage.getItem('bipes@sprites');
   let options = [];
 
+  //substituição do nome da várivel interna que estava como melody
   if (savedSprites) {
-      const melodies = JSON.parse(savedSprites);
-      options = melodies.map(melody => [melody.name, melody.name]);
+    const sprites = JSON.parse(savedSprites);
+    options = sprites.map(sprite => [sprite.name, sprite.name]);
+    
   }
 
   if (options.length === 0) {
@@ -12650,13 +12652,20 @@ function getSpritesOptions(){
   return options;
 }
 
+//Recupera os dados reais dos sprites salvos no localStorage
 function deleteSavedSprite(name){
-  const sprites = getSpritesOptions()
+  const spritesStr = localStorage.getItem('bipes@sprites')
+  let sprites = [];
 
-  const spritesUpdated = sprites.filter(sprite => sprite[0] !== name)
+  if (spritesStr) {
+    sprites = JSON.parse(spritesStr);
+  }
 
-  localStorage.setItem('bipes@sprites', JSON.stringify(spritesUpdated))
+  const spritesUpdated = sprites.filter(sprite => sprite.name !== name);
+
+  localStorage.setItem('bipes@sprites', JSON.stringify(spritesUpdated));
 }
+
 
 Blockly.Blocks['create_sprite'] = {
   init: function() {
@@ -12691,7 +12700,7 @@ Blockly.Blocks['create_sprite'] = {
 
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(colour="%{BKY_DISPLAY_HUE}");
+    this.setColour(210);
     this.setTooltip("Cria um sprite a partir de um nome selecionado");
     this.setHelpUrl("");
   }
@@ -12708,15 +12717,48 @@ Blockly.Blocks['draw_sprite'] = {
        }), 'SPRITE_NAME')
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(colour="%{BKY_DISPLAY_HUE}");
+    this.setColour(210);
     this.setTooltip("Exibe o sprite selecionado na tela");
     this.setHelpUrl("");
   }
 };
 
 
+Blockly.Blocks['inicializar_sprite'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("inicializar sprites");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(210);
+    this.setTooltip("Inicializa a classe Sprite e funções básicas.");
+    this.setHelpUrl("");
+  }
+};
 
+Blockly.Blocks['set_sprite_position'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("definir posição do sprite")
+        .appendField(new Blockly.FieldDropdown(getSpritesOptions), "SPRITE_NAME");
+    this.appendValueInput("POS_X")
+        .setCheck("Number")
+        .appendField("x");
+    this.appendValueInput("POS_Y")
+        .setCheck("Number")
+        .appendField("y");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(210);
+    this.setTooltip("Define a posição inicial do sprite.");
+    this.setHelpUrl("");
+  }
+};
 
-
-
+Blockly.Python['set_sprite_position'] = function(block) {
+  var spriteName = block.getFieldValue('SPRITE_NAME');
+  var value_x = Blockly.Python.valueToCode(block, 'POS_X', Blockly.Python.ORDER_ATOMIC) || 0;
+  var value_y = Blockly.Python.valueToCode(block, 'POS_Y', Blockly.Python.ORDER_ATOMIC) || 0;
+  return `${spriteName}.set_position(${value_x}, ${value_y})\n`;
+};
 

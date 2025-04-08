@@ -6850,78 +6850,21 @@ Blockly.Python['create_sprite'] = function(block) {
   const sprites = getSprites();
   var spriteData = sprites.find(sprite => sprite.name === spriteName)?.data;
   
-  var spriteClassCode = `
-class Sprite:
-    def __init__(self, sprite, pos_x=0, pos_y=0):
-        self.sprite = sprite
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-
-    def rotate(self, direction='clockwise', rotations=1):
-        rows = len(self.sprite)
-        cols = len(self.sprite[0]) if self.sprite else 0
-
-        for _ in range(rotations):
-            if direction == 'clockwise':
-                rotated = [[self.sprite[rows - 1 - i][j] for i in range(rows)] for j in range(cols)]
-            elif direction == 'counterclockwise':
-                rotated = [[self.sprite[i][cols - 1 - j] for i in range(rows)] for j in range(cols)]
-            else:
-                raise ValueError("Direction must be 'clockwise' or 'counterclockwise'")
-            self.sprite = rotated
-            rows, cols = len(self.sprite), len(self.sprite[0])
-
-    def draw(self, display):
-        x_init = self.pos_x
-        y_init = self.pos_y
-        for row in self.sprite:
-            self.pos_x = x_init
-            for px in row:
-                display.pixel(self.pos_x, self.pos_y, px)
-                self.pos_x += 1
-            self.pos_y += 1
-        self.pos_x = x_init
-        self.pos_y = y_init
-
-    def collides_with(self, other_sprite):
-        for y_offset, row in enumerate(self.sprite):
-            for x_offset, pixel in enumerate(row):
-                if pixel:
-                    x = self.pos_x + x_offset
-                    y = self.pos_y + y_offset
-                    other_x_start = other_sprite.pos_x
-                    other_y_start = other_sprite.pos_y
-                    other_x_end = other_x_start + len(other_sprite.sprite[0])
-                    other_y_end = other_y_start + len(other_sprite.sprite)
-                    if other_x_start <= x < other_x_end and other_y_start <= y < other_y_end:
-                        other_pixel = other_sprite.sprite[y - other_y_start][x - other_x_start]
-                        if other_pixel:
-                            return True
-        return False
-
-    def set_position(self, x, y):
-        self.pos_x = x
-        self.pos_y = y
-`;
-
-  var code = `${spriteClassCode}\n${spriteName} = Sprite(${JSON.stringify(spriteData)})\n`;
-  
+  var code = `${spriteName} = Sprite(${JSON.stringify(spriteData).replace(/"/g, '')})\n`;
   return code;
 };
 
+
 Blockly.Python['draw_sprite'] = function(block) {
   var spriteName = block.getFieldValue('SPRITE_NAME');
+  var code = `${spriteName}.draw(oled)\n`;
+  return code;
+};
 
-  const sprites = getSprites();
-  var spriteData = sprites.find(sprite => sprite.name === spriteName)?.data;
 
-  if (!spriteData) {
-    throw new Error('Dados do sprite não encontrados ou mal formatados');
-  }
 
-  var spriteDataString = JSON.stringify(spriteData);
-
-  var spriteClassCode = `
+Blockly.Python['inicializar_sprite'] = function(block) {
+  var code = `
 class Sprite:
     def __init__(self, sprite, pos_x=0, pos_y=0):
         self.sprite = sprite
@@ -6931,7 +6874,6 @@ class Sprite:
     def rotate(self, direction='clockwise', rotations=1):
         rows = len(self.sprite)
         cols = len(self.sprite[0]) if self.sprite else 0
-
         for _ in range(rotations):
             if direction == 'clockwise':
                 rotated = [[self.sprite[rows - 1 - i][j] for i in range(rows)] for j in range(cols)]
@@ -6943,16 +6885,10 @@ class Sprite:
             rows, cols = len(self.sprite), len(self.sprite[0])
 
     def draw(self, display):
-        x_init = self.pos_x
-        y_init = self.pos_y
-        for row in self.sprite:
-            self.pos_x = x_init
-            for px in row:
-                display.pixel(self.pos_x, self.pos_y, px)
-                self.pos_x += 1
-            self.pos_y += 1
-        self.pos_x = x_init
-        self.pos_y = y_init
+        for y_offset, row in enumerate(self.sprite):
+            for x_offset, px in enumerate(row):
+                display.pixel(self.pos_x + x_offset, self.pos_y + y_offset, px)
+
 
     def collides_with(self, other_sprite):
         for y_offset, row in enumerate(self.sprite):
@@ -6973,9 +6909,14 @@ class Sprite:
     def set_position(self, x, y):
         self.pos_x = x
         self.pos_y = y
-  `;
 
-  var code = `${spriteClassCode}\nsprite = Sprite(${spriteDataString})\nsprite.draw(display)\n`;
-
+`;
   return code;
+};
+
+Blockly.Python['set_sprite_position'] = function(block) {
+  var spriteName = block.getFieldValue('SPRITE_NAME');
+  var value_x = Blockly.Python.valueToCode(block, 'POS_X', Blockly.Python.ORDER_ATOMIC) || 0;
+  var value_y = Blockly.Python.valueToCode(block, 'POS_Y', Blockly.Python.ORDER_ATOMIC) || 0;
+  return `${spriteName}.set_position(${value_x}, ${value_y})\n`;
 };
