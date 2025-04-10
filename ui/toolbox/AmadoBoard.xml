@@ -197,6 +197,9 @@
       </block>
       <block type="var_to_float">  
       </block>
+      <block type="random_int">  
+      </block>
+      
       </category>
     </category>
 
@@ -1266,6 +1269,12 @@
     <field name="SPRITE_NAME"></field>
   </block>
   <block type="set_sprite_position"></block>
+  <block type="check_collision"> </block>
+  <block type="sprite_within_bounds"> </block>
+  <block type="move_sprite"></block>
+  <block type="move_sprite_limited"></block>
+  <block type="move_sprite_random"></block>
+  
     <!--
     <block type="init_tank">
       <value name="tankXpos">

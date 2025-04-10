@@ -2270,6 +2270,21 @@ Blockly.Blocks['var_to_float'] = {
     this.setHelpUrl("http://www.bipes.net.br");
   }
 };
+//Bloco para gerar valores aleatorios
+Blockly.Blocks['random_int'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Número aleatório de")
+        .appendField(new Blockly.FieldNumber(0), "MIN")
+        .appendField("até")
+        .appendField(new Blockly.FieldNumber(10), "MAX");
+    this.setOutput(true, "Number");
+    this.setColour(230);
+    this.setTooltip("Retorna um número inteiro aleatório entre dois valores.");
+    this.setHelpUrl("");
+  }
+};
+
 
 //Bloco para função Map
 Blockly.defineBlocksWithJsonArray([
@@ -12761,4 +12776,92 @@ Blockly.Python['set_sprite_position'] = function(block) {
   var value_y = Blockly.Python.valueToCode(block, 'POS_Y', Blockly.Python.ORDER_ATOMIC) || 0;
   return `${spriteName}.set_position(${value_x}, ${value_y})\n`;
 };
+
+
+Blockly.Blocks['check_collision'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("sprite")
+        .appendField(new Blockly.FieldDropdown(getSpritesOptions), "SPRITE_1")
+        .appendField("colide com")
+        .appendField(new Blockly.FieldDropdown(getSpritesOptions), "SPRITE_2");
+    this.setOutput(true, "Boolean");
+    this.setColour(230);
+    this.setTooltip("Verifica se dois sprites estão colidindo");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['sprite_within_bounds'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("sprite")
+        .appendField(new Blockly.FieldVariable("sprite1"), "SPRITE")
+        .appendField("dentro da tela?");
+    this.setOutput(true, "Boolean");
+    this.setColour(210);
+    this.setTooltip("Verifica se o sprite está dentro dos limites da tela.");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['move_sprite'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Mover sprite")
+        .appendField(new Blockly.FieldDropdown(getSpritesOptions), "SPRITE_NAME")
+        .appendField("para")
+        .appendField(new Blockly.FieldDropdown([
+          ["cima", "UP"],
+          ["baixo", "DOWN"],
+          ["esquerda", "LEFT"],
+          ["direita", "RIGHT"]
+        ]), "DIRECTION")
+        .appendField("em")
+        .appendField(new Blockly.FieldNumber(1, 1), "DIST")
+        .appendField("pixels");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("%{BKY_DISPLAY_HUE}");
+    this.setTooltip("Move o sprite na direção indicada pelo número de pixels.");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['move_sprite_limited'] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("Mover")
+      .appendField(new Blockly.FieldDropdown(getSpritesOptions), "SPRITE_NAME")
+      .appendField("em X")
+      .appendField(new Blockly.FieldNumber(0), "MOVE_X")
+      .appendField("e Y")
+      .appendField(new Blockly.FieldNumber(0), "MOVE_Y")
+      .appendField("com limite de tela");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(210);
+    this.setTooltip("Move o sprite apenas se permanecer dentro dos limites da tela.");
+    this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['move_sprite_random'] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField("mover sprite")
+      .appendField(new Blockly.FieldDropdown(() => {
+        return getSpritesOptions(); // Usa os sprites salvos no localStorage
+      }), "SPRITE_NAME")
+      .appendField("para posição aleatória na tela");
+
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(260);
+    this.setTooltip("Move o sprite para uma posição aleatória que caiba na tela");
+    this.setHelpUrl("");
+  }
+};
+
 

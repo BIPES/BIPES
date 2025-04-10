@@ -328,6 +328,15 @@ Blockly.Python['var_to_float'] = function(block) {
   
 	return [code, Blockly.Python.ORDER_NONE];
 };
+//Bloco para gerar valores aleatorios
+Blockly.Python['random_int'] = function(block) {
+  const min = block.getFieldValue('MIN');
+  const max = block.getFieldValue('MAX');
+  Blockly.Python.definitions_['import_random'] = 'from random import randint';
+  const code = `randint(${min}, ${max})`;
+  return [code, Blockly.Python.ORDER_FUNCTION_CALL];
+};
+
 
 //Bloco para a função map
 Blockly.Python['map_value'] = function(block) {
@@ -6867,9 +6876,37 @@ Blockly.Python['inicializar_sprite'] = function(block) {
   var code = `
 class Sprite:
     def __init__(self, sprite, pos_x=0, pos_y=0):
-        self.sprite = sprite
+        self.sprite = Sprite.trim_sprite(sprite)
         self.pos_x = pos_x
         self.pos_y = pos_y
+
+          
+    @staticmethod
+    def trim_sprite(sprite):
+        # Remove linhas completamente vazias (com só 0)
+        sprite = [row for row in sprite if any(pixel != 0 for pixel in row)]
+        
+        if not sprite:
+            return [[0]]  # evita sprite vazio
+
+        # Transpõe a matriz para analisar colunas como se fossem linhas
+        cols = list(zip(*sprite))
+        # Remove colunas completamente vazias
+        cols = [col for col in cols if any(pixel != 0 for pixel in col)]
+
+        # Transforma de volta para linhas
+        trimmed = [list(row) for row in zip(*cols)]
+        return trimmed
+
+    def is_within_bounds(self, display_width, display_height):
+      sprite_height = len(self.sprite)
+      sprite_width = len(self.sprite[0]) if sprite_height > 0 else 0
+
+      if (0 <= self.pos_x < display_width) and (0 <= self.pos_y < display_height) and \
+        (self.pos_x + sprite_width <= display_width) and (self.pos_y + sprite_height <= display_height):
+          return True
+      return False
+
 
     def rotate(self, direction='clockwise', rotations=1):
         rows = len(self.sprite)
@@ -6920,3 +6957,71 @@ Blockly.Python['set_sprite_position'] = function(block) {
   var value_y = Blockly.Python.valueToCode(block, 'POS_Y', Blockly.Python.ORDER_ATOMIC) || 0;
   return `${spriteName}.set_position(${value_x}, ${value_y})\n`;
 };
+
+Blockly.Python['check_collision'] = function(block) {
+  const sprite1 = block.getFieldValue('SPRITE_1');
+  const sprite2 = block.getFieldValue('SPRITE_2');
+  const code = `${sprite1}.collides_with(${sprite2})`;
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python['sprite_within_bounds'] = function(block) {
+  var sprite = Blockly.Python.variableDB_.getName(block.getFieldValue('SPRITE'), Blockly.Variables.NAME_TYPE);
+  var code = `${sprite}.is_within_bounds(128, 64)`;
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['move_sprite'] = function(block) {
+  var spriteName = block.getFieldValue('SPRITE_NAME');
+  var direction = block.getFieldValue('DIRECTION');
+  var dist = block.getFieldValue('DIST');
+
+  let code = '';
+  switch(direction) {
+    case 'UP':
+      code = `${spriteName}.pos_y -= ${dist}\n`;
+      break;
+    case 'DOWN':
+      code = `${spriteName}.pos_y += ${dist}\n`;
+      break;
+    case 'LEFT':
+      code = `${spriteName}.pos_x -= ${dist}\n`;
+      break;
+    case 'RIGHT':
+      code = `${spriteName}.pos_x += ${dist}\n`;
+      break;
+  }
+
+  return code;
+};
+
+Blockly.Python['move_sprite_limited'] = function(block) {
+  const spriteName = block.getFieldValue('SPRITE_NAME');
+  const moveX = Number(block.getFieldValue('MOVE_X'));
+  const moveY = Number(block.getFieldValue('MOVE_Y'));
+
+  const code = `
+if (${spriteName}.pos_x + ${moveX} >= 0 and ${spriteName}.pos_x + ${moveX} + len(${spriteName}.sprite[0]) <= 128 and
+    ${spriteName}.pos_y + ${moveY} >= 0 and ${spriteName}.pos_y + ${moveY} + len(${spriteName}.sprite) <= 64):
+    ${spriteName}.pos_x += ${moveX}
+    ${spriteName}.pos_y += ${moveY}
+`;
+
+  return code;
+};
+
+Blockly.Python['move_sprite_random'] = function (block) {
+  const spriteName = block.getFieldValue('SPRITE_NAME');
+
+  Blockly.Python.definitions_['import_random'] = 'from random import randint';
+
+  const code = `
+sprite_w = len(${spriteName}.sprite[0])
+sprite_h = len(${spriteName}.sprite)
+pos_x = randint(0, 128 - sprite_w)
+pos_y = randint(0, 64 - sprite_h)
+${spriteName}.set_position(pos_x, pos_y)
+`;
+  return code;
+};
+
