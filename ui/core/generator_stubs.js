@@ -6877,9 +6877,11 @@ Blockly.Python['create_sprite'] = function(block) {
   // Compacta antes de gerar o código
   spriteData = compactSpriteMatrix(spriteData);
 
-  var code = `${spriteName} = Sprite(${JSON.stringify(spriteData)})\n`;
+  // Adiciona declaração global
+  var code = `global ${spriteName}\n${spriteName} = Sprite(${JSON.stringify(spriteData)})\n`;
   return code;
 };
+
 
 
 Blockly.Python['draw_sprite'] = function(block) {
