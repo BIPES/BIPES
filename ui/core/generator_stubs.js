@@ -6853,13 +6853,31 @@ const getSprites = () => {
 
   return []
 }
+//Recorta a matriz para guardar somente os valores 1
+function compactSpriteMatrix(matrix) {
+  const top = matrix.findIndex(row => row.some(cell => cell === 1));
+  const bottom = matrix.length - [...matrix].reverse().findIndex(row => row.some(cell => cell === 1));
+  const left = matrix[0].findIndex((_, colIndex) => matrix.some(row => row[colIndex] === 1));
+  const right = matrix[0].length - [...matrix[0]].reverse().findIndex((_, colIndex) =>
+    matrix.some(row => row[colIndex] === 1)
+  );
+
+  return matrix.slice(top, bottom).map(row => row.slice(left, right));
+}
 
 Blockly.Python['create_sprite'] = function(block) {
   var spriteName = block.getFieldValue('SPRITE_NAME');
   const sprites = getSprites();
-  var spriteData = sprites.find(sprite => sprite.name === spriteName)?.data;
-  
-  var code = `${spriteName} = Sprite(${JSON.stringify(spriteData).replace(/"/g, '')})\n`;
+  let spriteData = sprites.find(sprite => sprite.name === spriteName)?.data;
+
+  if (!spriteData) {
+    throw new Error('Sprite não encontrado');
+  }
+
+  // Compacta antes de gerar o código
+  spriteData = compactSpriteMatrix(spriteData);
+
+  var code = `${spriteName} = Sprite(${JSON.stringify(spriteData)})\n`;
   return code;
 };
 
