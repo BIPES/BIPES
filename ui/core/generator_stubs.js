@@ -6878,10 +6878,10 @@ Blockly.Python['create_sprite'] = function(block) {
   spriteData = compactSpriteMatrix(spriteData);
 
   // Adiciona declaração global
-  var code = `global ${spriteName}\n${spriteName} = Sprite(${JSON.stringify(spriteData)})\n`;
+  //var code = `global ${spriteName}\n${spriteName} = Sprite(${JSON.stringify(spriteData)})\n`;
+  var code = `${spriteName} = Sprite(${JSON.stringify(spriteData)})\n`;
   return code;
 };
-
 
 
 Blockly.Python['draw_sprite'] = function(block) {
@@ -7042,6 +7042,13 @@ pos_x = randint(0, 128 - sprite_w)
 pos_y = randint(0, 64 - sprite_h)
 ${spriteName}.set_position(pos_x, pos_y)
 `;
+  return code;
+};
+
+//Declara uma váriavel como global
+Blockly.Python['declarar_global'] = function(block) {
+  var variavel = block.getFieldValue('VARIAVEL');
+  var code = `declarar_variavel_global('${variavel}')\n`;
   return code;
 };
 

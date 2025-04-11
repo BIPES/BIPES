@@ -208,6 +208,7 @@
     <category name="%{BKY_CAT_VARIABLES}" colour="%{BKY_VARIABLES_HUE}">
       <!--VARIAVEIS CRIADAS-->
       <category name="%{BKY_catVariables}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
+        
       <!--VARIAVEIS BOOLEANAS-->
       <category name="%{BKY_catbooleanVariable}" colour="%{BKY_VARIABLES_HUE}">
         <block type="new_logic_boolean"></block>
@@ -429,6 +430,7 @@
         <!--Comentando blocos da categoria python-->
       <category name="Python" colour="%{BKY_PROCEDURES_HUE}">
         <label text="Python"></label>
+        <block type="declarar_global"></block>
         <block type="try_catch"></block>
         <block type="try_except_oserror">
           <value name="TRY">
@@ -442,6 +444,7 @@
           <next>
           </next>
         </block>
+        
         <!--
             <block type="exec_python">
           <value name="command">

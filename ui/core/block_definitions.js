@@ -12864,4 +12864,16 @@ Blockly.Blocks['move_sprite_random'] = {
   }
 };
 
-
+//Declara uma váriavel como global
+Blockly.Blocks['declarar_global'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("declarar global")
+        .appendField(new Blockly.FieldTextInput("variavel"), "VARIAVEL");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(colour="%{BKY_PROCEDURES_HUE}"); 
+    this.setTooltip("Declara a variável como global para usar dentro de funções.");
+    this.setHelpUrl("");
+  }
+};
