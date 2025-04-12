@@ -138,10 +138,17 @@
   background-color: #c93133;
 }
 
-.btn-pen {
+.btn-eraser { 
   background-color: transparent;
-  transition: background-color ease 300ms;
+  color: black !important;
+  font-size: 24px;
 }
+
+.btn-eraser.active {
+  
+  color: red !important;
+}
+
 
 .btn-pen:hover {
   background-color: #f2f2f2;

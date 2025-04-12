@@ -10,6 +10,8 @@
   <link rel="mask-icon" href="/media/icon/safari-pinned-tab.svg" color="#5bbad5">
   <link rel="stylesheet" href="core/sound/sound.css">
   <script defer src="core/sprites/sprites.js"></script>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
   <link rel="stylesheet" href="core/sprites/sprites.css">
 
   <!-- material icons -->
@@ -531,13 +533,9 @@ document.body.appendChild(el);
   <div id="SpritesDiv">
     <div class="menu-btns">
       <div id="sprite-controls">
-        <button class="btn btn-pen" onclick="toggleEraser()">
-          <i class="material-icons" color="#0000" id="eraser-icon">edit</i>
+        <button class="btn btn-eraser" id="eraser-btn" onclick="toggleEraser()">
+          <i class='bx bx-eraser' id="eraser-icon"></i>
         </button>
-        <button class="spr-btn btn-add" onclick="addRow()">Adicionar Linha</button>
-        <button class="spr-btn btn-remove" onclick="removeRow()">Remover Linha</button>
-        <button class="spr-btn btn-add" onclick="addColumn()">Adicionar Coluna</button>
-        <button class="spr-btn btn-remove" onclick="removeColumn()">Remover Coluna</button>
         <button class="spr-btn sprite-btn-save" data-bs-toggle="modal" data-bs-target="#saveSpriteModal" onclick="openSaveSpriteModal()">Salvar Design</button>
         <br>
         <label for="colCount">Colunas:</label>

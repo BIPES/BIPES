@@ -240,19 +240,18 @@ function updateInputs() {
 
 function toggleEraser() {
   isErasing = !isErasing;
-  const eraserButton = document.querySelector("#sprite-controls button:nth-child(1)");
+  const eraserBtn = document.getElementById("eraser-btn");
   const eraserIcon = document.getElementById("eraser-icon");
 
   if (isErasing) {
-    eraserIcon.setAttribute("name", "eraser");
-    eraserButton.innerHTML =
-      '<box-icon name="eraser" color="#333333" id="eraser-icon"></box-icon>';
+    eraserBtn.classList.remove("active");
+    eraserIcon.className = 'bx bx-pencil';
   } else {
-    eraserIcon.setAttribute("name", "pencil");
-    eraserButton.innerHTML =
-      '<box-icon name="pencil" color="#333333" id="eraser-icon"></box-icon>';
+    eraserBtn.classList.add("active");
+    eraserIcon.className = 'bx bx-eraser';
   }
 }
+
 
 function changeAspectRatio() {
   aspectRatio = document.getElementById("aspectRatio").value;
