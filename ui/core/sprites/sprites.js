@@ -283,4 +283,14 @@ function closeSaveSpriteModal() {
   document.getElementById("saveSpriteModal").style.display = "none";
 }
 
+function clearDraw() {
+  addToUndoStack();
+
+  const cells = gridContainer.querySelectorAll(".grid-item");
+  cells.forEach(cell => {
+    cell.classList.remove("active");
+  });
+}
+
+
 initializeGrid();

@@ -1134,3 +1134,7 @@ button.icon.medium:before {
 #deviceSelect button {
   margin-left: 3.5px;
 }
+
+button{
+  cursor: pointer;
+}
