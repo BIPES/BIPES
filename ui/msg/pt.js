@@ -306,6 +306,12 @@ var MSG = {
   saveAMelody: "Guardar uma melodia",
   importAMelody: "Importar uma melodia",
   exportAMelody: "Exportar uma melodia",
+  
+  saveSpriteTitle: "Guardar um sprite",
+  spriteNameLabel: "Nome do sprite",
+  saveDesign: "Guardar desenho",
+  columns: "Colunas",
+  rows: "Linhas",
 };
 
 // Categorias da caixa de ferramentas

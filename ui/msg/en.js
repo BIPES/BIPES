@@ -303,9 +303,13 @@ var MSG = {
   export: "Export",
   saveAMelody: "Save a melody", 
   importAMelody: "Import a melody", 
-  exportAMelody: "Export a melody"
+  exportAMelody: "Export a melody",
   
-
+  saveSpriteTitle: "Save a sprite",
+  spriteNameLabel: "Sprite name",
+  saveDesign: "Save design",
+  columns: "Columns",
+  rows: "Rows",
 };
 
 //Toolbox categories

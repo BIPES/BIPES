@@ -508,13 +508,13 @@ document.body.appendChild(el);
 <div id="saveSpriteModal" class="modal-sprite">
   <div class="modal-sprite-content">
     <div class="modal-sprite-header">
-      <h3 id="saveSpriteTitle">Salvar um Sprite</h3>
+      <h3 title="..." id="saveSpriteTitle">Salvar um Sprite</h3>
     </div>
 
     <div class="modal-sprite-body">
       <form id="spriteForm" onsubmit="saveMelody(event)">
         <div class="form-sprite">
-          <label for="spriteName" id="spriteNameLabel">Nome do Sprite</label>
+          <label for="spriteName" id="spriteNameLabel" title="...">Nome do Sprite</label>
           <input type="text" id="spriteName" class="input-sprite" placeholder="Sprite name" required>
         </div>
       </form>
@@ -523,8 +523,8 @@ document.body.appendChild(el);
     <div class="divider"></div>
 
     <div class="modal-sprite-footer">
-      <button class="btn btn-close-sprite-modal" id="cancelSpriteSave" onclick="closeSaveSpriteModal()">Cancelar</button>
-      <button class="btn btn-save-sprite" id="confirmSpriteSave" onclick="saveDesign(event)">Salvar</button>
+      <button class="btn btn-close-sprite-modal" id="cancelSpriteSave" title="..." onclick="closeSaveSpriteModal()">Cancelar</button>
+      <button class="btn btn-save-sprite" title="..." id="confirmSpriteSave" onclick="saveDesign(event)">Salvar</button>
     </div>
   </div>
 </div>
@@ -540,11 +540,11 @@ document.body.appendChild(el);
         <button class="btn-eraser" id="eraser-btn" onclick="toggleEraser()">
           <i class='bx bx-eraser' id="eraser-icon"></i>
         </button>
-        <button class="spr-btn sprite-btn-save" data-bs-toggle="modal" data-bs-target="#saveSpriteModal" onclick="openSaveSpriteModal()">Salvar Design</button>
+        <button id="saveDesignBtn" class="spr-btn sprite-btn-save" data-bs-toggle="modal" data-bs-target="#saveSpriteModal" onclick="openSaveSpriteModal()">Salvar Design</button>
         <br>
-        <label for="colCount">Colunas:</label>
+        <label id="spriteColumns" for="colCount" title="...">Colunas:</label>
         <input type="number" id="colCount" value="128" min="1" max="128" onchange="updateGridSize()">
-        <label for="rowCount">Linhas:</label>
+        <label id="spriteRows" for="rowCount" title="...">Linhas:</label>
         <input type="number" id="rowCount" value="64" min="1" max="64" onchange="updateGridSize()">
         <br>
         <!-- <select id="aspectRatio" onchange="changeAspectRatio()">

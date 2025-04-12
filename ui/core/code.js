@@ -813,6 +813,15 @@ Code.initLanguage = function() {
   document.getElementById('confirmSave').textContent = MSG['save'];
   document.getElementById('confirmImport').textContent = MSG['import'];
   document.getElementById('confirmExport').textContent = MSG['export'];
+
+  // tab sprites
+  document.getElementById('saveSpriteTitle').textContent = MSG['saveSpriteTitle'];
+  document.getElementById('spriteNameLabel').textContent = MSG['spriteNameLabel'];
+  document.getElementById('cancelSpriteSave').textContent = MSG['cancel'];
+  document.getElementById('confirmSpriteSave').textContent = MSG['save'];
+  document.getElementById('saveDesignBtn').textContent = MSG['saveDesign'];
+  document.getElementById('spriteColumns').textContent = MSG['columns'];
+  document.getElementById('spriteRows').textContent = MSG['rows'];
 };
 
 /**

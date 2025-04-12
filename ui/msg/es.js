@@ -310,7 +310,11 @@ var MSG = {
   importAMelody: "Importar una melodía", 
   exportAMelody: "Exportar una melodía",
   
-
+  saveSpriteTitle: "Guardar un sprite",
+  spriteNameLabel: "Nombre del sprite",
+  saveDesign: "Guardar diseño",
+  columns: "Columnas",
+  rows: "Filas",
 };
 
 //Toolbox categories
