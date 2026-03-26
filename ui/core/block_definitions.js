@@ -1102,7 +1102,7 @@ Blockly.Blocks['vl53l0x_read_tof'] = {
 };
 
 //MPR121
-Blockly.Blocks['init_mpr121'] = {
+Blockly.Blocks['mpr121_init'] = {
   init: function() {
     this.setColour(135);
     this.appendDummyInput()

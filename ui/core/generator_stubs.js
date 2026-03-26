@@ -405,7 +405,7 @@ Blockly.Python['set_time_ds3231'] = function(block) {
   };
 
 // MPR121
-Blockly.Python['init_mpr121'] = function(block) {
+Blockly.Python['mpr121_init'] = function(block) {
 	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
 	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
 	var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);

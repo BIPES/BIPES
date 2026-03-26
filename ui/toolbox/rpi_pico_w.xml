@@ -1932,12 +1932,12 @@
       </value>
       <value name="sda">
         <shadow type="pinout">
-          <field name="SDA">0</field>
+          <field name="PIN">0</field>
         </shadow>
       </value>
       <value name="scl">
         <shadow type="pinout">
-          <field name="SCL">1</field>
+          <field name="PIN">1</field>
         </shadow>
       </value>
     </block>
