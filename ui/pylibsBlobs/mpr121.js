@@ -140,7 +140,7 @@ var mpr121Blob = new Blob([
 "        # Calibration Lock, CL=10 (baseline tracking enabled, initial value 5 high bits)\n" +
 "        # Proximity Enable, ELEPROX_EN=0 (proximity detection disabled)\n" +
 "        # Electrode Enable, ELE_EN=15 (enter run mode for 12 electrodes)\n" +
-"        self._register8(MPR121_ELECTRODE_CONFIG, 132)\n" +
+"        self._register8(MPR121_ELECTRODE_CONFIG, 143)\n" +
 "\n" +
 "    def set_thresholds(self, touch, release, electrode=None):\n" +
 "        '''Sets the touch and release thresholds (0-255) for a single electrode (0-11) or all electrodes'''\n" +
