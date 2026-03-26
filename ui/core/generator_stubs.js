@@ -420,9 +420,9 @@ Blockly.Python['mpr121_init'] = function(block) {
   };
 
     Blockly.Python['mpr121_key_pressed'] = function(block) {
-	var scl = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_ATOMIC);
+	var id = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_ATOMIC);
 
-	var code = 'mpr.is_touched('+ id + '))\n';
+	var code = 'mpr.is_touched(' + id + ')';
 	return [code, Blockly.Python.ORDER_NONE];
   };
  

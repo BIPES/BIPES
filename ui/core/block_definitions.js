@@ -1142,6 +1142,7 @@ Blockly.Blocks['mpr121_key_pressed'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Is Key Pressed");
+        
     this.appendValueInput("id")
         .setCheck("Number")
         .setAlign(Blockly.ALIGN_RIGHT)
