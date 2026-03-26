@@ -715,6 +715,8 @@ Code.init = function() {
           reader.readAsText(bh1750Blob);
         } else if (lib == "ds3231_gen") {
           reader.readAsText(ds3231_genBlob);
+        } else if (lib == "mpr121") {
+          reader.readAsText(mpr121Blob);
         } else {
           if (lib == "ccs811") {
             lib = "CCS811"

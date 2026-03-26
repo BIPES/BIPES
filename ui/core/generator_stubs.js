@@ -404,6 +404,29 @@ Blockly.Python['set_time_ds3231'] = function(block) {
 	return [code, Blockly.Python.ORDER_NONE];
   };
 
+// MPR121
+Blockly.Python['init_mpr121'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);
+	var sda = Blockly.Python.valueToCode(block, 'sda', Blockly.Python.ORDER_ATOMIC);
+	var i2c = Blockly.Python.valueToCode(block, 'i2c', Blockly.Python.ORDER_ATOMIC);
+  
+	Blockly.Python.definitions_['import_I2C_Pin'] = 'from machine import I2C, Pin';
+	Blockly.Python.definitions_['import_mpr121'] = 'from mpr121 import MPR121';
+  
+	  var code = 'i2c_mpr=I2C(' + i2c + ', scl=Pin(' + scl + '), sda=Pin(' + sda + '))\n';
+	  code += "mpr = MPR121(i2c_mpr)\n";
+  
+	return code;
+  };
+
+    Blockly.Python['mpr121_key_pressed'] = function(block) {
+	var scl = Blockly.Python.valueToCode(block, 'id', Blockly.Python.ORDER_ATOMIC);
+
+	var code = 'mpr.is_touched('+ id + '))\n';
+	return [code, Blockly.Python.ORDER_NONE];
+  };
+ 
+
 // vl53l0x
 Blockly.Python['init_vl53l0x'] = function(block) {
 	var scl = Blockly.Python.valueToCode(block, 'scl', Blockly.Python.ORDER_ATOMIC);

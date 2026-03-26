@@ -1101,6 +1101,58 @@ Blockly.Blocks['vl53l0x_read_tof'] = {
   }
 };
 
+//MPR121
+Blockly.Blocks['init_mpr121'] = {
+  init: function() {
+    this.setColour(135);
+    this.appendDummyInput()
+        .appendField("Init MPR121 Keypad");
+
+
+ this.appendDummyInput()
+      .appendField(new Blockly.FieldImage(
+        "media/mpr121.jpg",
+        55,
+        55,
+        "*"));
+        //.setAlign(Blockly.ALIGN_CENTRE);
+
+    this.appendValueInput("i2c")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("I2C");
+
+    this.appendValueInput("scl")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SCL");
+
+    this.appendValueInput("sda")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("SDA");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Initializes the MPR121 interface');
+  }
+};
+
+Blockly.Blocks['mpr121_key_pressed'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Is Key Pressed");
+    this.appendValueInput("id")
+        .setCheck("Number")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("KEY");
+
+    this.setOutput(true, null);
+    this.setColour(135);
+    this.setTooltip("Is key pressed");
+    this.setHelpUrl("http://www.bipes.net.br");
+  }
+};
 
 
 

@@ -1919,6 +1919,39 @@
 
   </category>
 
+  <category name="MPR121">
+    <label text="MPR121 Capacitive Touch Keypad"></label>
+    <label text="Library: https://github.com/mcauser/micropython-mpr121"></label>
+    <button text="Install mpr121 library" callbackKey="installPyLib"></button>
+
+    <block type="mpr121_init">
+      <value name="i2c">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="sda">
+        <shadow type="pinout">
+          <field name="SDA">0</field>
+        </shadow>
+      </value>
+      <value name="scl">
+        <shadow type="pinout">
+          <field name="SCL">1</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="mpr121_key_pressed">
+      <value name="id">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+    </block>
+
+  </category>
+
   <category name="GPS">
       <label text="Global Positioning System sensor"></label>
    <label text="Library: https://github.com/"></label>
