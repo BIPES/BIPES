@@ -1,4 +1,4 @@
-var mpr121 = new Blob([
+var mpr121Blob = new Blob([
 "'''\n" +
 "MicroPython MPR121 capacitive touch keypad and breakout board driver\n" +
 "https://github.com/mcauser/micropython-mpr121\n" +
