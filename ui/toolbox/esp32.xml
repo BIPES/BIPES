@@ -1,4 +1,5 @@
 <document>
+<category name="🧠 Core Programming" expanded="true">
   <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -263,13 +264,15 @@
       </block>
       <block type="lists_sort"></block>
     </category>
+</category> <!-- End of Core Programming category -->
 
-    <sep></sep>
+<category name="💼 Project" expanded="true">
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
+</category> <!-- End of Project category -->
 
-    <sep></sep>
-   <category name="BIPES">
+<category name="🧩 Custom" expanded="true">
+   <category name="CheeseBlocks">
     <block type="project_metadata">
       <value name="project_author">
         <shadow type="text">
@@ -299,16 +302,34 @@
     </block>
 
    </category>
-    <sep></sep>
+   <category name="SwissCHEESE">
+      <block type="swisscheese_led_status"></block>
+      <block type="swisscheese_led_level"></block>
+      <block type="swisscheese_button"></block>
+      <block type="swisscheese_rotary"></block>
+      <block type="swisscheese_tone"></block>
+      <block type="swisscheese_tone_ms"></block>
+      <block type="swisscheese_notone"></block>
+      <block type="swisscheese_ultrasonic"></block>
+      <block type="swisscheese_infrared"></block>
+      <block type="swisscheese_ldr"></block>
+      <block type="swisscheese_servo"></block>
+      <block type="swisscheese_motor_backward"></block>
+      <block type="swisscheese_motor_forward"></block>
+      <block type="swisscheese_motor_speed"></block>
+      <block type="swisscheese_motor_stop"></block>
+</category>
+</category> <!-- End of Custom category -->
+
     <!--
     <category name="Python" colour="%{BKY_LOGIC_HUE}">
     <category name="Machine" colour="%{BKY_VARIABLES_HUE}">
     -->
-
+<category name="💻 Hardware" expanded="false">
   <category name="Python">
 
       <label text="Python"></label>
-<block type="try_catch"></block>
+  <block type="try_catch"></block>
 
     <block type="exec_python">
   <value name="command">
@@ -1045,10 +1066,10 @@
       <block type="dht_read_temp"></block>
       <block type="dht_read_humidity"></block>
     </category>
-<!--Adicionando os blocos do Anenmômetro-->
+  <!--Adicionando os blocos do Anenmômetro-->
     <category name="Anemômetro">
     <label text="Anenômetro"></label>
-<!--Iniciar Anemômetro-->
+  <!--Iniciar Anemômetro-->
     <block type="anemo_init">
         <value name="Função">
           <shadow type="text">
@@ -1061,7 +1082,7 @@
           </shadow>
         </value>
       </block>
-<!--Parar Anemômetro-->
+  <!--Parar Anemômetro-->
       <block type="anemo_stop">
         <value name="Função">
           <shadow type="text">
@@ -1070,10 +1091,10 @@
         </value>
       </block>
   </category>
-<!--Adicionando os blocos do Pluviômetro--> 
+  <!--Adicionando os blocos do Pluviômetro--> 
   <category name="Pluviômetro">
     <label text= "Pluviômetro"></label>
-<!--Iniciar Pluviômetro-->
+  <!--Iniciar Pluviômetro-->
     <block type="pluvio_init">
         <value name="Função">
           <shadow type="text">
@@ -1086,7 +1107,7 @@
           </shadow>
         </value>
       </block>
-<!--Parar Pluviômetro-->
+  <!--Parar Pluviômetro-->
       <block type="pluvio_stop">
         <value name="Função">
           <shadow type="text">
@@ -1513,7 +1534,9 @@ _
   </category>
 
   </category>
+</category> <!-- End of Hardware category -->
 
+<category name="🌐 Connectivity" expanded="false">
   <category name="%{BKY_CAT_COMM}">
       <label text="%{BKY_CAT_COMM}"></label>
       <category name="UART">
@@ -2255,7 +2278,9 @@ _
       </block>
     </category>
   </category>
+</category> <!-- end of connectivity -->
 
+<category name="🔧 Advanced" expanded="false">
 <category name="%{BKY_CAT_CONTROL}">
   <category name="PID">
     <button text="Install control library" callbackKey="installPyLib"></button>
@@ -2320,7 +2345,6 @@ _
     </block>
   </category>
 </category>
-
 <category name="micropython">
 <category name="btree">
 <block type="btree_open">
@@ -3387,6 +3411,7 @@ _
 <category name="wipy">
 <block type="wipy_heartbeat">
 </block>
+</category>
 </category>
 </category>
 </document>

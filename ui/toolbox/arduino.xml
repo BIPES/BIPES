@@ -384,4 +384,10 @@
       </value>
     </block>
 </category>
+<sep/>
+<category name="SwissCheese">
+  <block type="sc_led_on"></block>
+  <block type="sc_led_off"></block>
+  <block type="sc_button"></block>
+</category>
 </document>

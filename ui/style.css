@@ -92,7 +92,7 @@ h1 {
   font-size: 2rem;
   font-weight: 600;
   line-height: 1.125;
-  color: #3298dc;
+  color: #e53935;
 }
 
 .top-menu > .logo:before  {
@@ -100,19 +100,23 @@ h1 {
   display:inline-block;
   width: 2rem;
   height: 2rem;
-  background-size: cover;
-  background-image: url(media/icons.svg);
-  background-size: auto 4rem;
-  background-position: left calc(-2rem*8) top; /* heigth * index in icons.svg */
+  background-image: url(Images/CheeseBlock.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .top-menu > .tabs {
-  margin: 0 0.5rem;
+  margin: 0 0.5rem 0 1rem;
   display: flex;
-  width: 100%;
-  overflow-x: auto;
-  padding: .5rem 0;
+  width: auto;
+  overflow: visible;
+  padding: 0;
+  height: 3.5rem;
+  align-items: center;
+  margin-right: auto;
 }
+
 .top-menu #channel_connect {
   display: flex;
   border-radius: 2rem;
@@ -242,7 +246,7 @@ input.checkswitch[type="checkbox"] {
     display: none;
 }
 .checkswitch input:checked ~ span {
-    background: #3298dc;
+    background: #e53935;
 }
 .checkswitch span {
     width: 2.5em;
@@ -312,14 +316,67 @@ input.checkswitch[type="checkbox"] {
 }
 
 /* Tabs */
+.advanced-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.advanced-tab-button {
+  border: none;
+  background: transparent;
+  padding: 0.75rem 0.9rem;
+  font: inherit;
+  cursor: pointer;
+  color: #111;
+  height: 3.5rem;
+}
+
+.advanced-tab-button:hover {
+  background: #eef7fd;
+  color: #e53935;
+}
+
+.advanced-tab-menu {
+  display: none;
+  position: fixed;
+  top: 3.5rem;
+  left: 32rem;
+  min-width: 11rem;
+  background: white;
+  border: 1px solid #d0d0d0;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.35rem 1rem rgba(0,0,0,0.18);
+  z-index: 100000;
+  overflow: visible;
+}
+
+.advanced-tab-menu > div {
+  padding: 0.7rem 1rem;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #111;
+  background: white;
+}
+
+.advanced-tab-menu > div:hover {
+  background: #eef7fd;
+  color: #e53935;
+}
+
 .tabs > div {
   min-width: auto !important;
-  padding: 0.75rem .75rem;
-  transition: box-shadow ease .125s, background-color linear .125s, border-color linear .125s, color linear .125s;
-  margin: 0 0.125rem;
-  border-radius: .25rem;
-  border: 1px solid #fff;
+  padding: 0 1rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  font-weight: 500;
 }
+
 @media (max-width:88rem) {
   .tabs > div {
     padding: .25rem;
@@ -329,16 +386,16 @@ input.checkswitch[type="checkbox"] {
 .tabs > div.on {
   box-shadow: 0 .125em .5em #ccc;
   white-space: nowrap;
-  background: #3298dc;
+  background: #e53935;
   color: #fff;
-  border-color: #3298dc;
+  border-color: #e53935;
 }
 .tabs > div {
   cursor: pointer;
 }
 .tabs > div:hover {
-  border-color: #3298dc;
-  color: #3298dc;
+  border-color: #e53935;
+  color: #e53935;
 }
 .tabs > div.on:hover {
   color: #fff !important;
@@ -629,9 +686,9 @@ pre.content {
 }
 #ProjectList > .current {
     box-shadow: 0 0.125em 0.25em rgba(0,0,0,0.2);
-    background: #3298dc;
+    background: #e53935;
     color: #fff;
-    border-color: #3298dc;
+    border-color: #e53935;
 }
 #ProjectList .current span {
   filter: invert(1);
@@ -890,7 +947,7 @@ button.icon.medium:before  {
 	padding: 1em;
 	position: fixed;
   box-shadow: 0 .125em .5em rgba(0,0,0,.6);
-  background: #3298dc;
+  background: #e53935;
   color:#fff;
 }
 .notify#show {
@@ -977,7 +1034,7 @@ button.icon.medium:before  {
 	content: '';
 	position: absolute;
 	height: 100%;
-	background: #3298dc;
+	background: #e53935;
 }
 .progress-bar div{
 	width: 0%;
@@ -1004,4 +1061,165 @@ button.icon.medium:before  {
     border-bottom: 1px dashed #666;
     font-weight: bold;
     padding-bottom: .125rem;
+}
+
+.settings-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 0.4rem;
+}
+
+#settingsMenuButton {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#settingsMenuButton:hover {
+  background: #eef7fd;
+}
+
+.settings-dropdown-menu {
+  display: none;
+  position: fixed;
+  top: 3.5rem;
+  right: 0.75rem;
+  min-width: 13rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.4rem 1rem rgba(0,0,0,0.15);
+  z-index: 100000;
+  flex-direction: column;
+  padding: 0.35rem;
+}
+
+.settings-dropdown-menu {
+  display: none;
+}
+
+/* Show when active */
+.settings-dropdown.open .settings-dropdown-menu {
+  display: flex;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 0.8rem;
+  border: none;
+  border-radius: 0.35rem;
+  background: white;
+  color: #111;
+  text-align: left;
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: #eef7fd;
+  color: #e53935;
+}
+
+.advanced-tab-menu {
+  display: none;
+}
+
+.advanced-tabs.open .advanced-tab-menu {
+  display: block;
+}
+
+/* ===== BRAND RED THEME ===== */
+
+/* Active tab */
+.tabs > div.on {
+  background: #e53935;
+  color: white;
+  border-color: #e53935;
+}
+
+/* Tab hover */
+.tabs > div:hover {
+  color: #e53935;
+  border-color: #e53935;
+}
+
+/* Advanced active */
+.advanced-tabs.on .advanced-tab-button {
+  background: #e53935;
+  color: white;
+}
+
+/* Dropdown hover */
+.advanced-tab-menu > div:hover,
+.menu-item:hover {
+  background: #ffebee;
+  color: #e53935;
+}
+
+/* Gear button hover */
+#settingsMenuButton:hover {
+  background: #ffebee;
+}
+
+/* Buttons (like run button outline) */
+button.primary {
+  background: #e53935;
+  border-color: #e53935;
+}
+
+button.primary:hover {
+  background: #c62828;
+  border-color: #c62828;
+}
+
+/* ===== Finish red branding overrides ===== */
+
+/* Board selector + run outline */
+#deviceSelect {
+  border-color: #e53935 !important;
+}
+
+#device_selector {
+  color: #e53935 !important;
+}
+
+#runButton {
+  border-color: #e53935 !important;
+}
+
+#runButton:hover {
+  box-shadow: -1px 0 3px #e53935 !important;
+}
+
+/* Splash / welcome modal */
+.modal-header,
+.modal-footer {
+  background-color: #e53935 !important;
+}
+
+/* Blockly selected sidebar category */
+.blocklyTreeSelected {
+  background-color: #e53935 !important;
+  color: white !important;
+}
+
+/* Text inside selected category */
+.blocklyTreeSelected .blocklyTreeLabel {
+  color: white !important;
+}
+
+/* Optional: sidebar hover */
+.blocklyTreeRow:hover {
+  background-color: #ffebee !important;
 }
