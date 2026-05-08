@@ -6359,13 +6359,244 @@ Blockly.Python['math_max'] = function(block) {
   var code = 'max(' + value1 + ', ' + value2 + ')';
   return [code, Blockly.Python.ORDER_FUNCTION_CALL];
 };
-  
-  
-  
 
 
 
 
+Blockly.Python['swisscheese_led_status'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+  const status = block.getFieldValue('STATUS');
 
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
 
-  
+  Blockly.Python.definitions_['sc_led_cache'] = '_sc_led_cache = {}';
+  Blockly.Python.definitions_['sc_get_led'] =
+    'def _sc_get_led(pin):\n' +
+    '    if pin not in _sc_led_cache:\n' +
+    '        _sc_led_cache[pin] = swisscheese_two.SCLed(pin)\n' +
+    '    return _sc_led_cache[pin]';
+
+  return `_sc_get_led(${pin}).${status === 'ON' ? 'on' : 'off'}()\n`;
+};
+
+Blockly.Python['swisscheese_led_level'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+  const level = Blockly.Python.valueToCode(block, 'LEVEL', Blockly.Python.ORDER_NONE) || '0';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_led_cache'] = '_sc_led_cache = {}';
+  Blockly.Python.definitions_['sc_get_led'] =
+    'def _sc_get_led(pin):\n' +
+    '    if pin not in _sc_led_cache:\n' +
+    '        _sc_led_cache[pin] = swisscheese_two.SCLed(pin)\n' +
+    '    return _sc_led_cache[pin]';
+
+  return `_sc_get_led(${pin}).brightness(${level})\n`;
+};
+
+Blockly.Python['swisscheese_button'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_button_cache'] = '_sc_button_cache = {}';
+  Blockly.Python.definitions_['sc_get_button'] =
+    'def _sc_get_button(pin):\n' +
+    '    if pin not in _sc_button_cache:\n' +
+    '        _sc_button_cache[pin] = swisscheese_two.SCButton(pin)\n' +
+    '    return _sc_button_cache[pin]';
+
+  return [`_sc_get_button(${pin}).read()`, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python['swisscheese_rotary'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_pot_cache'] = '_sc_pot_cache = {}';
+  Blockly.Python.definitions_['sc_get_pot'] =
+    'def _sc_get_pot(pin):\n' +
+    '    if pin not in _sc_pot_cache:\n' +
+    '        _sc_pot_cache[pin] = swisscheese_two.SCPotentiometer(pin)\n' +
+    '    return _sc_pot_cache[pin]';
+
+  return [`_sc_get_pot(${pin}).read()`, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python['swisscheese_tone'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+  const freq = Blockly.Python.valueToCode(block, 'FREQ', Blockly.Python.ORDER_NONE) || '1000';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_buzzer_cache'] = '_sc_buzzer_cache = {}';
+  Blockly.Python.definitions_['sc_get_buzzer'] =
+    'def _sc_get_buzzer(pin):\n' +
+    '    if pin not in _sc_buzzer_cache:\n' +
+    '        _sc_buzzer_cache[pin] = swisscheese_two.SCBuzzer(pin)\n' +
+    '    return _sc_buzzer_cache[pin]';
+
+  return `_sc_get_buzzer(${pin}).tone(${freq})\n`;
+};
+
+Blockly.Python['swisscheese_tone_ms'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+  const freq = Blockly.Python.valueToCode(block, 'FREQ', Blockly.Python.ORDER_NONE) || '1000';
+  const ms = Blockly.Python.valueToCode(block, 'MS', Blockly.Python.ORDER_NONE) || '500';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_buzzer_cache'] = '_sc_buzzer_cache = {}';
+  Blockly.Python.definitions_['sc_get_buzzer'] =
+    'def _sc_get_buzzer(pin):\n' +
+    '    if pin not in _sc_buzzer_cache:\n' +
+    '        _sc_buzzer_cache[pin] = swisscheese_two.SCBuzzer(pin)\n' +
+    '    return _sc_buzzer_cache[pin]';
+
+  return `_sc_get_buzzer(${pin}).tone(${freq}, ${ms})\n`;
+};
+
+Blockly.Python['swisscheese_notone'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_buzzer_cache'] = '_sc_buzzer_cache = {}';
+  Blockly.Python.definitions_['sc_get_buzzer'] =
+    'def _sc_get_buzzer(pin):\n' +
+    '    if pin not in _sc_buzzer_cache:\n' +
+    '        _sc_buzzer_cache[pin] = swisscheese_two.SCBuzzer(pin)\n' +
+    '    return _sc_buzzer_cache[pin]';
+
+  return `_sc_get_buzzer(${pin}).noTone()\n`;
+};
+
+Blockly.Python['swisscheese_ultrasonic'] = function(block) {
+  const trig = block.getFieldValue('TRIG');
+  const echo = block.getFieldValue('ECHO');
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_ultrasonic_cache'] = '_sc_ultrasonic_cache = {}';
+  Blockly.Python.definitions_['sc_get_ultrasonic'] =
+    'def _sc_get_ultrasonic(trig, echo):\n' +
+    '    key = (trig, echo)\n' +
+    '    if key not in _sc_ultrasonic_cache:\n' +
+    '        _sc_ultrasonic_cache[key] = swisscheese_two.SCUltrasonic(trig, echo)\n' +
+    '    return _sc_ultrasonic_cache[key]';
+
+  return [`_sc_get_ultrasonic(${trig}, ${echo}).read()`, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python['swisscheese_infrared'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_infrared_cache'] = '_sc_infrared_cache = {}';
+  Blockly.Python.definitions_['sc_get_infrared'] =
+    'def _sc_get_infrared(pin):\n' +
+    '    if pin not in _sc_infrared_cache:\n' +
+    '        _sc_infrared_cache[pin] = swisscheese_two.SCInfrared(pin)\n' +
+    '    return _sc_infrared_cache[pin]';
+
+  return [`_sc_get_infrared(${pin}).read()`, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python['swisscheese_ldr'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_ldr_cache'] = '_sc_ldr_cache = {}';
+  Blockly.Python.definitions_['sc_get_ldr'] =
+    'def _sc_get_ldr(pin):\n' +
+    '    if pin not in _sc_ldr_cache:\n' +
+    '        _sc_ldr_cache[pin] = swisscheese_two.SCLightSensor(pin)\n' +
+    '    return _sc_ldr_cache[pin]';
+
+  return [`_sc_get_ldr(${pin}).read()`, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python['swisscheese_servo'] = function(block) {
+  const pin = block.getFieldValue('PIN');
+  const angle = Blockly.Python.valueToCode(block, 'ANGLE', Blockly.Python.ORDER_NONE) || '90';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_servo_cache'] = '_sc_servo_cache = {}';
+  Blockly.Python.definitions_['sc_get_servo'] =
+    'def _sc_get_servo(pin):\n' +
+    '    if pin not in _sc_servo_cache:\n' +
+    '        _sc_servo_cache[pin] = swisscheese_two.SCServo(pin)\n' +
+    '    return _sc_servo_cache[pin]';
+
+  return `_sc_get_servo(${pin}).write(${angle})\n`;
+};
+
+Blockly.Python['swisscheese_motor_backward'] = function(block) {
+  const motor = block.getFieldValue('MOTOR');
+  const motorPin = motor === '1' ? 'swisscheese_two.M1' : 'swisscheese_two.M2';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_motor_cache'] = '_sc_motor_cache = {}';
+  Blockly.Python.definitions_['sc_get_motor'] =
+    'def _sc_get_motor(pin):\n' +
+    '    if pin not in _sc_motor_cache:\n' +
+    '        _sc_motor_cache[pin] = swisscheese_two.SCMotor(pin)\n' +
+    '    return _sc_motor_cache[pin]';
+
+  return `_sc_get_motor(${motorPin}).backward()\n`;
+};
+
+Blockly.Python['swisscheese_motor_forward'] = function(block) {
+  const motor = block.getFieldValue('MOTOR');
+  const motorPin = motor === '1' ? 'swisscheese_two.M1' : 'swisscheese_two.M2';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_motor_cache'] = '_sc_motor_cache = {}';
+  Blockly.Python.definitions_['sc_get_motor'] =
+    'def _sc_get_motor(pin):\n' +
+    '    if pin not in _sc_motor_cache:\n' +
+    '        _sc_motor_cache[pin] = swisscheese_two.SCMotor(pin)\n' +
+    '    return _sc_motor_cache[pin]';
+
+  return `_sc_get_motor(${motorPin}).forward()\n`;
+};
+
+Blockly.Python['swisscheese_motor_speed'] = function(block) {
+  const motor = block.getFieldValue('MOTOR');
+  const speed = Blockly.Python.valueToCode(block, 'SPEED', Blockly.Python.ORDER_NONE) || '255';
+  const motorPin = motor === '1' ? 'swisscheese_two.M1' : 'swisscheese_two.M2';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_motor_cache'] = '_sc_motor_cache = {}';
+  Blockly.Python.definitions_['sc_get_motor'] =
+    'def _sc_get_motor(pin):\n' +
+    '    if pin not in _sc_motor_cache:\n' +
+    '        _sc_motor_cache[pin] = swisscheese_two.SCMotor(pin)\n' +
+    '    return _sc_motor_cache[pin]';
+
+  return `_sc_get_motor(${motorPin}).speed(${speed})\n`;
+};
+
+Blockly.Python['swisscheese_motor_stop'] = function(block) {
+  const motor = block.getFieldValue('MOTOR');
+  const motorPin = motor === '1' ? 'swisscheese_two.M1' : 'swisscheese_two.M2';
+
+  Blockly.Python.definitions_['import_swisscheese_two'] = 'import swisscheese_two';
+
+  Blockly.Python.definitions_['sc_motor_cache'] = '_sc_motor_cache = {}';
+  Blockly.Python.definitions_['sc_get_motor'] =
+    'def _sc_get_motor(pin):\n' +
+    '    if pin not in _sc_motor_cache:\n' +
+    '        _sc_motor_cache[pin] = swisscheese_two.SCMotor(pin)\n' +
+    '    return _sc_motor_cache[pin]';
+
+  return `_sc_get_motor(${motorPin}).stop()\n`;
+};

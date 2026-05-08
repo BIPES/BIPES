@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="google" value="notranslate">
   <meta name="viewport" content="width=device-width, user-scalable=no">
-  <title>BIPES Project</title>
+  <title>CheeseBlocks</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/media/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/media/icon/favicon-32x32.png">
   <link rel="mask-icon" href="/media/icon/safari-pinned-tab.svg" color="#5bbad5">
@@ -122,17 +122,25 @@ document.body.appendChild(el);
 
   <div class="top-menu">
 
-    <div class="logo">BIPES</div>
+    <div class="logo">CheeseBlocks</div>
       <div class="tabs">
-        <div id="tab_blocks" class="tabon">...</div>
+        <div id="tab_blocks" class="tabon">Blocks</div>
         <div id="tab_console" class="taboff">Console</div>
-        <div id="tab_files" class="taboff">...</div>
-        <div id="tab_programs" class="taboff">...</div>
-        <div id="tab_device" class="taboff">...</div>
-        <div id="tab_iot" class="taboff">IOT</div>
-        <div id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</div>
-        <div id="tab_databoard" class="taboff">Databoard</div>
+        <div id="tab_files" class="taboff">Files</div>
+
+        <div class="advanced-tabs">
+          <button id="advancedTabButton" class="advanced-tab-button">Advanced ❯</button>
+
+          <div class="advanced-tab-menu">
+            <div id="tab_programs" class="taboff">Shared</div>
+            <div id="tab_device" class="taboff">Device</div>
+            <div id="tab_iot" class="taboff">IOT</div>
+            <div id="tab_mqtt" class="taboff" onclick='document.getElementById("easymqtt_iframe").contentWindow.startEasyMQTT(window.easyMQTT_session);'>EasyMQTT</div>
+            <div id="tab_databoard" class="taboff">Databoard</div>
+          </div>
+        </div>
       </div>
+      
       <button id="toolbarButton" class="notext icon medium" title="..."></button>
       <div class="toolbar">
       <div id="channel_connect">
@@ -159,21 +167,27 @@ document.body.appendChild(el);
         </select>
         <button id="runButton" class="notext primary icon" title="..."></button>
       </div>
+        <div class="settings-dropdown">
+        <button id="settingsMenuButton">⚙️</button>
 
-        <button id="linkButton" class="notext icon" title="..."></button>
+        <div class="settings-dropdown-menu">
 
-        <button id="saveButton" class="notext icon" title="..."></button>
+          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="menu-item">
+            📘 Tutorials
+          </a>
 
-        <label id="loadButton" for="loadXML"  class="notext button icon" title="..."></label>
-        <input name="XML" id="loadXML" type="file" accept=".xml" required="">
+          <button id="linkButton" class="menu-item">🔗 Share</button>
+          <button id="saveButton" class="menu-item">⬇ Download</button>
 
-        <!--<button id="trashButton" class="notext icon" title="..."></button>-->
+          <label id="loadButton" for="loadXML" class="menu-item">⬆ Upload</label>
+          <input name="XML" id="loadXML" type="file" accept=".xml" hidden>
 
-        <button id="notificationButton" class="notext icon" title="..."></button>
+          <button id="notificationButton" class="menu-item">🔔 Notifications</button>
+          <button id="forumButton" class="menu-item">❓ Help</button>
+          <button id="accountButton" class="menu-item">👤 Account</button>
 
-        <button id="forumButton" class="notext icon" title="..."></button>
-
-        <button id="accountButton" class="notext icon" title="..."></button>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -443,14 +457,14 @@ window.onload = function() {
 	}
 
 	if (MSG["splash_welcome"]) 
-		document.getElementById("modalTitle").innerHTML = MSG["splash_welcome"];
+		document.getElementById("modalTitle").innerHTML = "Welcome to CheeseBlocks!";
 	else
-		document.getElementById("modalTitle").innerHTML = "Welcome to BIPES!";
+		document.getElementById("modalTitle").innerHTML = "Welcome to CheeseBlocks!";
 
 	if (MSG["splash_message"]) 
-		document.getElementById("modalMsg").innerHTML = MSG["splash_message"] + addMsg;
+		document.getElementById("modalMsg").innerHTML = "<p><b>**CheeseBlocks: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.  <p><b>CheeseBlocks</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope CheeseBlocks is useful for you and that you can enjoy using CheeseBlocks. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about CheeseBlocks</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for CheeseBlocks!</p><p>Checkout CheeseBlocks Book: <a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>Thank you from the CheeseBlocks Team!</p>" + addMsg;
 	else
-		document.getElementById("modalMsg").innerHTML = "<p><b>**BIPES: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.  <p><b>BIPES</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope BIPES is useful for you and that you can enjoy using BIPES. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about BIPES</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for BIPES!</p><p>Checkout BIPES Book: <a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>Thank you from the BIPES Team!</p>" + addMsg;
+		document.getElementById("modalMsg").innerHTML = "<p><b>**CheeseBlocks: Block based Integrated Platform for Embedded Systems</B> allows text and block based programming for several types of embedded systems and Internet of Things modules using MicroPython, CircuitPython, Python or Snek. You can connect, program, debug and monitor several types of boards using network, USB or Bluetooth. Please check a list of <a href=https://bipes.net.br/wp/boards/>compatible boards here</a>. Compatible boards include STM32, ESP32, ESP8266, Raspberry Pi Pico and even Arduino.  <p><b>CheeseBlocks</b> is fully <a href=https://bipes.net.br/wp/development/>open source</a> and based on HTML and JavaScript, so no software install or configuration is needed and you can use it offline! We hope CheeseBlocks is useful for you and that you can enjoy using CheeseBlocks. If you need help, we now have a <a href=https://github.com/BIPES/BIPES/discussions>discussion forum</a>, where we also post <a href=https://github.com/BIPES/BIPES/discussions/categories/announcements>new features and announcements about CheeseBlocks</a>. Feel free to use it! Also, we invite you to use the forum to leave feedbacks and suggestions for CheeseBlocks!</p><p>Checkout CheeseBlocks Book: <a href=https://bipes.net.br/wp/book-livro/>https://bipes.net.br/wp/book-livro/</a></p> <p>Thank you from the CheeseBlocks Team!</p>" + addMsg;
 
 	if (MSG["splash_footer"]) 
 		document.getElementById("modalFooter").innerHTML = MSG["splash_footer"];
@@ -721,10 +735,80 @@ function eraseCookieModal(name) {
 	End of modal Splash Screen
 -->
 
+<script>
+const settingsButton = document.getElementById("settingsMenuButton");
+const settingsDropdown = document.querySelector(".settings-dropdown");
 
+// Toggle on click
+settingsButton.addEventListener("click", function (e) {
+  e.stopPropagation(); // prevent closing immediately
+  settingsDropdown.classList.toggle("open");
+});
 
+// Close when clicking outside
+document.addEventListener("click", function () {
+  settingsDropdown.classList.remove("open");
+});
+
+// Prevent closing when clicking inside menu
+settingsDropdown.addEventListener("click", function (e) {
+  e.stopPropagation();
+});
+</script>
+
+<script>
+const advancedButton = document.getElementById("advancedTabButton");
+const advancedDropdown = document.querySelector(".advanced-tabs");
+
+advancedButton.addEventListener("click", function (e) {
+  e.stopPropagation();
+  advancedDropdown.classList.toggle("open");
+});
+
+document.addEventListener("click", function () {
+  advancedDropdown.classList.remove("open");
+});
+
+advancedDropdown.addEventListener("click", function (e) {
+  e.stopPropagation();
+});
+</script>
+
+<script>
+function collapseToolbox() {
+  const toolbox = Blockly.getMainWorkspace().getToolbox();
+  if (!toolbox) return;
+
+  const categories = toolbox.getToolboxItems();
+
+  categories.forEach(cat => {
+    if (!cat.setExpanded) return;
+
+    const name = cat.getName();
+
+    if (
+      name.includes("Core Programming") ||
+      name.includes("Project") ||
+      name.includes("Custom")
+    ) {
+      cat.setExpanded(true);
+    } else {
+      cat.setExpanded(false);
+    }
+
+    // Also collapse ALL children by default
+    if (cat.getChildToolboxItems) {
+      cat.getChildToolboxItems().forEach(child => {
+        if (child.setExpanded) {
+          child.setExpanded(false);
+        }
+      });
+    }
+  });
+}
+
+// Wait for Blockly to fully load
+setTimeout(collapseToolbox, 500);
+</script>
 
 </html>
-
-
-
