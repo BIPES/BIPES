@@ -28,6 +28,30 @@
 			],
 			"serial_packet_size":"500"
 		},
+		"ESP32C3": {
+			"title":"<b>ESP32 C3</b><br>",
+			"speed":"115200",
+			"boardID":"ESP32C3", 
+			"img":"devinfo/media/esp32-c3.jpeg",
+			"description":"<BR><BR>ESP32-C3",
+			"toolbox":"esp32.xml",
+			"pinout": [
+		    ["GPIO0/ADC1-0", "0"],
+		    ["GPIO1/ADC1-1", "1"],
+		    ["GPIO2/D0/A0", "2"],
+		    ["GPIO3/D1/A1", "3"],
+		    ["GPIO4/D2/A2", "4"],
+		    ["GPIO5/D3/A3", "5"],
+		    ["GPIO6/D4/SDA", "6"],
+		    ["GPIO7/D5/SCL", "7"],
+		    ["GPIO8/D8/SCK", "8"],
+		    ["GPIO9/D9/MISO", "9"],
+		    ["GPIO10/D10/MOSI", "10"],
+		    ["GPIO20/D7/RX", "20"],
+		    ["GPIO21/D6/TX", "21"]
+			],
+			"serial_packet_size":"100"
+		},
 		"ESP32S2": {
 			"title":"<b>ESP32 S2</b><br>",
 			"speed":"115200",
