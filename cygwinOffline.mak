@@ -36,6 +36,11 @@
 	echo -n ui/toolbox/esp32S2.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html
 	echo  "'>" >> ui/index_offline.html
 	cat ui/toolbox/esp32S2.xml | grep -v "<document>" >> ui/index_offline.html
+	echo "Including file ui/toolbox/esp32c3.xml" 
+	echo -n "<document style='display: none' id='"OFFLINE_ >> ui/index_offline.html
+	echo -n ui/toolbox/esp32c3.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html
+	echo  "'>" >> ui/index_offline.html
+	cat ui/toolbox/esp32c3.xml | grep -v "<document>" >> ui/index_offline.html
 	echo "Including file ui/toolbox/esp8266.xml" 
 	echo -n "<document style='display: none' id='"OFFLINE_ >> ui/index_offline.html
 	echo -n ui/toolbox/esp8266.xml | sed -e 's/[\/\.]/_/g' -e 's/ui_//g' >> ui/index_offline.html

@@ -34,7 +34,7 @@
 			"boardID":"ESP32C3", 
 			"img":"devinfo/media/esp32-c3.jpeg",
 			"description":"<BR><BR>ESP32-C3",
-			"toolbox":"esp32.xml",
+			"toolbox":"esp32c3.xml",
 			"pinout": [
 		    ["GPIO0/ADC1-0", "0"],
 		    ["GPIO1/ADC1-1", "1"],
