@@ -519,7 +519,7 @@
       <block type="neopixel_init">
        <value name="pin">
           <shadow type="pinout">
-            <field name="Pin"></field>
+            <field name="PIN">2</field>
           </shadow>
        </value>
 
@@ -577,7 +577,6 @@
 
        <value name="color">
         <shadow type="neopixel_color_colors">
-          <field name="PIN"></field>
         </shadow>
        </value>
       </block>
@@ -689,37 +688,37 @@
 
         <value name="bl">
           <shadow type="pinout">
-            <field name="bl">2</field>
+            <field name="PIN">2</field>
           </shadow>
         </value>
 
         <value name="sck">
           <shadow type="pinout">
-            <field name="sck">8</field>
+            <field name="PIN">8</field>
           </shadow>
         </value>
 
         <value name="mosi">
           <shadow type="pinout">
-            <field name="mosi">10</field>
+            <field name="PIN">10</field>
           </shadow>
         </value>
 
         <value name="reset">
           <shadow type="pinout">
-            <field name="reset">3</field>
+            <field name="PIN">3</field>
           </shadow>
         </value>
 
         <value name="cs">
           <shadow type="pinout">
-            <field name="cs">4</field>
+            <field name="PIN">4</field>
           </shadow>
         </value>
 
         <value name="dc">
           <shadow type="pinout">
-            <field name="dc">5</field>
+            <field name="PIN">5</field>
           </shadow>
         </value>
        </block>
@@ -822,140 +821,128 @@
       <label text="SSD1306 OLED I2C Display"></label>
       <button text="Install ssd1306 library" callbackKey="installPyLib"></button>
 
-	    
       <block type="init_oled">
         <value name="i2c">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <value name="scl">
-          <shadow type="math_number">
-            <field name="NUM">5</field>
-          </shadow>
-        </value>
-        <value name="sda">
-          <shadow type="math_number">
-            <field name="NUM">4</field>
-          </shadow>
-        </value>
-    </block>
-    <block type="write_oled">
-
- <value name="x">
-        <shadow type="math_number">
-          <field name="NUM">40</field>
-        </shadow>
-      </value>
-
- <value name="y">
-        <shadow type="math_number">
-          <field name="NUM">40</field>
-        </shadow>
-      </value>
-
- <value name="text">
-        <shadow type="text">
-          <field name="TEXT">Hello</field>
-        </shadow>
-      </value>
-
-
-    
-    </block>
-    <block type="show_oled"></block>
-    <block type="clear_oled"></block>
-    <block type="fill_oled"></block>
-
-      <block type="init_tank">
-        <value name="tankXpos">
-          <shadow type="math_number">
-            <field name="NUM">64</field>
-          </shadow>
-        </value>
-        <value name="tankYpos">
-          <shadow type="math_number">
-            <field name="NUM">32</field>
-          </shadow>
-        </value>
-        <value name="tankAngle">
-          <shadow type="math_number">
-            <field name="NUM">90</field>
-          </shadow>
-        </value>
-    </block>
-	    
-      <block type="tank_move"></block>
-
-
-
-      <block type="tank_turn">
-        <value name="turn">
           <shadow type="math_number">
             <field name="NUM">0</field>
           </shadow>
         </value>
-    </block>
-
-
-
-    </category>
-
-    <category name="OLED2 Display">
-	    
-      <block type="oled2_init">
-        <value name="i2c">
-          <shadow type="math_number">
-            <field name="NUM">-1</field>
+        <value name="sda">
+          <shadow type="pinout">
+            <field name="PIN">6</field>
           </shadow>
         </value>
         <value name="scl">
-          <shadow type="math_number">
-            <field name="NUM">4</field>
+          <shadow type="pinout">
+            <field name="PIN">7</field>
           </shadow>
         </value>
-        <value name="sda">
+      </block>
+
+      <block type="write_oled">
+        <value name="x">
+          <shadow type="math_number">
+            <field name="NUM">40</field>
+          </shadow>
+        </value>
+        <value name="y">
+          <shadow type="math_number">
+            <field name="NUM">40</field>
+          </shadow>
+        </value>
+        <value name="text">
+          <shadow type="text">
+            <field name="TEXT">Hello</field>
+          </shadow>
+        </value>
+      </block>
+
+      <block type="line_oled">
+        <value name="x1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="y1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="x2">
+          <shadow type="math_number">
+            <field name="NUM">40</field>
+          </shadow>
+        </value>
+        <value name="y2">
+          <shadow type="math_number">
+            <field name="NUM">40</field>
+          </shadow>
+        </value>
+      </block>
+
+      <block type="rect_oled">
+        <value name="x1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="y1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="x2">
+          <shadow type="math_number">
+            <field name="NUM">60</field>
+          </shadow>
+        </value>
+        <value name="y2">
+          <shadow type="math_number">
+            <field name="NUM">40</field>
+          </shadow>
+        </value>
+      </block>
+
+      <block type="fill_rect_oled">
+        <value name="x1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>     
+        <value name="y1">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="x2">
+          <shadow type="math_number">
+            <field name="NUM">60</field>
+          </shadow>
+        </value>
+        <value name="y2">
+          <shadow type="math_number">
+            <field name="NUM">40</field>
+          </shadow>
+        </value>     
+      </block>     
+
+      <block type="scroll_oled">
+        <value name="x">
           <shadow type="math_number">
             <field name="NUM">5</field>
           </shadow>
+        </value>     
+        <value name="y">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
         </value>
-    </block>
+      </block>     
 
-    <block type="oled2_write">
+      <block type="clear_oled"></block>
 
-     <value name="x">
-      <shadow type="math_number">
-          <field name="NUM">15</field>
-        </shadow>
-      </value>
-
-      <value name="y">
-        <shadow type="math_number">
-          <field name="NUM">10</field>
-        </shadow>
-      </value>
-
-      <value name="font">
-        <shadow type="text">
-          <field name="TEXT">ubuntu_40</field>
-        </shadow>
-      </value>
-
-      <value name="text">
-        <shadow type="text">
-          <field name="TEXT">BIPES</field>
-        </shadow>
-      </value>
-    </block>
-
-    <block type="oled2_clear"></block>
-    <block type="oled2_show"></block>
-    <block type="oled2_list_fonts"></block>
-    <block type="oled2_install_lib"></block>
-
+      <block type="fill_oled"></block>
     </category>
-
-
 
   <category name="LED Matrix">
       <label text="TM1640 LED Matrix"></label>
