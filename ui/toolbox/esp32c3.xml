@@ -421,12 +421,12 @@
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">2</field>
         </shadow>
       </value>
       <value name="value">
         <shadow type="logic_boolean">
-          <field name="BOOL"></field>
+          <field name="BOOL">true</field>
         </shadow>
       </value>
     </block>
@@ -434,12 +434,12 @@
     <block type="gpio_get">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">2</field>
         </shadow>
       </value>
       <value name="pullup">
         <shadow type="logic_boolean">
-          <field name="BOOL"></field>
+          <field name="BOOL">true</field>
         </shadow>
       </value>
     </block>
@@ -448,7 +448,7 @@
     <block type="esp32_adc">
      <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">0</field>
         </shadow>
       </value>
     </block>
@@ -456,7 +456,7 @@
     <block type="pwm">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">3</field>
         </shadow>
       </value>
       <value name="frequency">
@@ -490,7 +490,7 @@
     <block type="pwm.init">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">3</field>
         </shadow>
       </value>
     </block>
@@ -500,7 +500,7 @@
     <block type="gpio_interrupt">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">4</field>
         </shadow>
       </value>
     </block>
@@ -1134,128 +1134,296 @@
     </category>
 
   <category name="LED Matrix">
-      <label text="TM1640 LED Matrix"></label>
-      <label text="Library: https://github.com/mcauser/micropython-tm1640"></label>
-        <button text="Install tm1640 library" callbackKey="installPyLib"></button>
-        <button text="Load example: tm1640" callbackKey="loadExample"></button>
-        <button text="Documentation and how to connect: tm1640" callbackKey="loadDoc"></button>
+    <label text="MAX7219 LED Matrix"></label>
+    <label text="Library: https://github.com/mcauser/micropython-max7219"></label>
+    <button text="Install max7219 library" callbackKey="installPyLib"></button>
 
-    <block type="tm1640_init">
-
- <value name="clk">
-        <shadow type="math_number">
-          <field name="NUM">14</field>
-        </shadow>
-      </value>
-
- <value name="dio">
-        <shadow type="math_number">
-          <field name="NUM">13</field>
-        </shadow>
-      </value>
-
-
-      </block>
-
-    <block type="tm1640_write">
-  <value name="vector">
-        <shadow type="text">
-          <field name="TEXT">1, 2, 4, 8, 16, 32, 64, 128</field>
-        </shadow>
-      </value>
-    </block>
-
-    <block type="tm1640_brig">
-    <value name="brig">
-        <shadow type="math_number">
-          <field name="NUM">7</field>
-        </shadow>
-      </value>
-
-    </block>
-
-
-    <block type="tm1640_num">
-    <value name="num">
+    <block type="max7219_init">
+      <value name="spi">
         <shadow type="math_number">
           <field name="NUM">0</field>
         </shadow>
       </value>
+      <value name="clk">
+        <shadow type="pinout">
+          <field name="PIN">2</field>
+        </shadow>
+      </value>
+      <value name="tx">
+        <shadow type="pinout">
+          <field name="PIN">3</field>
+        </shadow>
+      </value>
+      <value name="cs">
+        <shadow type="pinout">
+          <field name="PIN">5</field>
+        </shadow>
+      </value>
     </block>
 
-    <block type="tm1640_custom">
-                    <field name="A0">FALSE</field>
-                    <field name="A1">FALSE</field>
-                    <field name="A2">FALSE</field>
-                    <field name="A3">FALSE</field>
-                    <field name="A4">FALSE</field>
-                    <field name="A5">FALSE</field>
-                    <field name="A6">FALSE</field>
-                    <field name="A7">FALSE</field>
-                    <field name="B0">FALSE</field>
-                    <field name="B1">FALSE</field>
-                    <field name="B2">FALSE</field>
-                    <field name="B3">FALSE</field>
-                    <field name="B4">FALSE</field>
-                    <field name="B5">FALSE</field>
-                    <field name="B6">FALSE</field>
-                    <field name="B7">FALSE</field>
-                    <field name="C0">FALSE</field>
-                    <field name="C1">FALSE</field>
-                    <field name="C2">FALSE</field>
-                    <field name="C3">FALSE</field>
-                    <field name="C4">FALSE</field>
-                    <field name="C5">FALSE</field>
-                    <field name="C6">FALSE</field>
-                    <field name="C7">FALSE</field>
-                    <field name="D0">FALSE</field>
-                    <field name="D1">FALSE</field>
-                    <field name="D2">FALSE</field>
-                    <field name="D3">FALSE</field>
-                    <field name="D4">FALSE</field>
-                    <field name="D5">FALSE</field>
-                    <field name="D6">FALSE</field>
-                    <field name="D7">FALSE</field>
-                    <field name="E0">FALSE</field>
-                    <field name="E1">FALSE</field>
-                    <field name="E2">FALSE</field>
-                    <field name="E3">FALSE</field>
-                    <field name="E4">FALSE</field>
-                    <field name="E5">FALSE</field>
-                    <field name="E6">FALSE</field>
-                    <field name="E7">FALSE</field>
-                    <field name="F0">FALSE</field>
-                    <field name="F1">FALSE</field>
-                    <field name="F2">FALSE</field>
-                    <field name="F3">FALSE</field>
-                    <field name="F4">FALSE</field>
-                    <field name="F5">FALSE</field>
-                    <field name="F6">FALSE</field>
-                    <field name="F7">FALSE</field>
-                    <field name="G0">FALSE</field>
-                    <field name="G1">FALSE</field>
-                    <field name="G2">FALSE</field>
-                    <field name="G3">FALSE</field>
-                    <field name="G4">FALSE</field>
-                    <field name="G5">FALSE</field>
-                    <field name="G6">FALSE</field>
-                    <field name="G7">FALSE</field>
-                    <field name="H0">FALSE</field>
-                    <field name="H1">FALSE</field>
-                    <field name="H2">FALSE</field>
-                    <field name="H3">FALSE</field>
-                    <field name="H4">FALSE</field>
-                    <field name="H5">FALSE</field>
-                    <field name="H6">FALSE</field>
-                    <field name="H7">FALSE</field>
-                </block>
+    <block type="max7219_write">
+      <value name="x">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="y">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="character">
+        <shadow type="text">
+          <field name="TEXT">A</field>
+        </shadow>
+      </value>
+    </block>
 
+    <block type="max7219_line">
+      <value name="x1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="y1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="x2">
+        <shadow type="math_number">
+          <field name="NUM">7</field>
+        </shadow>
+      </value>
+      <value name="y2">
+        <shadow type="math_number">
+          <field name="NUM">7</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="max7219_rect">
+      <value name="x1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="y1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="x2">
+        <shadow type="math_number">
+          <field name="NUM">8</field>
+        </shadow>
+      </value>
+      <value name="y2">
+        <shadow type="math_number">
+          <field name="NUM">8</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="max7219_fill_rect">
+      <value name="x1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>     
+      <value name="y1">
+        <shadow type="math_number">
+          <field name="NUM">0</field>
+        </shadow>
+      </value>
+      <value name="x2">
+        <shadow type="math_number">
+          <field name="NUM">8</field>
+        </shadow>
+      </value>
+      <value name="y2">
+        <shadow type="math_number">
+          <field name="NUM">8</field>
+        </shadow>
+      </value>
+    </block>  
+
+    <block type="max7219_scroll">
+      <value name="x">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>     
+      <value name="y">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>     
+
+    <block type="max7219_clear"></block>
+    <block type="max7219_fill"></block>
+
+    <block type="max7219_brig">
+      <value name="brig">
+        <shadow type="math_number">
+          <field name="NUM">7</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="max7219_custom">
+      <field name="A0">FALSE</field>
+      <field name="A1">FALSE</field>
+      <field name="A2">FALSE</field>
+      <field name="A3">FALSE</field>
+      <field name="A4">FALSE</field>
+      <field name="A5">FALSE</field>
+      <field name="A6">FALSE</field>
+      <field name="A7">FALSE</field>
+      <field name="B0">FALSE</field>
+      <field name="B1">FALSE</field>
+      <field name="B2">FALSE</field>
+      <field name="B3">FALSE</field>
+      <field name="B4">FALSE</field>
+      <field name="B5">FALSE</field>
+      <field name="B6">FALSE</field>
+      <field name="B7">FALSE</field>
+      <field name="C0">FALSE</field>
+      <field name="C1">FALSE</field>
+      <field name="C2">FALSE</field>
+      <field name="C3">FALSE</field>
+      <field name="C4">FALSE</field>
+      <field name="C5">FALSE</field>
+      <field name="C6">FALSE</field>
+      <field name="C7">FALSE</field>
+      <field name="D0">FALSE</field>
+      <field name="D1">FALSE</field>
+      <field name="D2">FALSE</field>
+      <field name="D3">FALSE</field>
+      <field name="D4">FALSE</field>
+      <field name="D5">FALSE</field>
+      <field name="D6">FALSE</field>
+      <field name="D7">FALSE</field>
+      <field name="E0">FALSE</field>
+      <field name="E1">FALSE</field>
+      <field name="E2">FALSE</field>
+      <field name="E3">FALSE</field>
+      <field name="E4">FALSE</field>
+      <field name="E5">FALSE</field>
+      <field name="E6">FALSE</field>
+      <field name="E7">FALSE</field>
+      <field name="F0">FALSE</field>
+      <field name="F1">FALSE</field>
+      <field name="F2">FALSE</field>
+      <field name="F3">FALSE</field>
+      <field name="F4">FALSE</field>
+      <field name="F5">FALSE</field>
+      <field name="F6">FALSE</field>
+      <field name="F7">FALSE</field>
+      <field name="G0">FALSE</field>
+      <field name="G1">FALSE</field>
+      <field name="G2">FALSE</field>
+      <field name="G3">FALSE</field>
+      <field name="G4">FALSE</field>
+      <field name="G5">FALSE</field>
+      <field name="G6">FALSE</field>
+      <field name="G7">FALSE</field>
+      <field name="H0">FALSE</field>
+      <field name="H1">FALSE</field>
+      <field name="H2">FALSE</field>
+      <field name="H3">FALSE</field>
+      <field name="H4">FALSE</field>
+      <field name="H5">FALSE</field>
+      <field name="H6">FALSE</field>
+      <field name="H7">FALSE</field>
+    </block>
 
   </category>
 
+  <category name="4 Digit Display">
+    <label text="TM1637 Display"></label>
+    <label text="Library: https://github.com/mcauser/micropython-tm1637"></label>
+    <button text="Install tm1637 library" callbackKey="installPyLib"></button>
 
+    <block type="tm1637_init">
+      <value name="clk">
+        <shadow type="pinout">
+          <field name="PIN">18</field>
+        </shadow>
+      </value>
+      <value name="dio">
+        <shadow type="pinout">
+          <field name="PIN">17</field>
+        </shadow>
+      </value>
+    </block>
 
+    <block type="tm1637_write_char">
+      <value name="character">
+        <shadow type="text">
+          <field name="TEXT">E</field>
+        </shadow>
+      </value>
+      <value name="position">
+        <shadow type="math_number">
+          <field name="NUM">2</field>
+        </shadow>
+      </value>
+    </block>
 
+    <block type="tm1637_write_text">
+      <value name="text">
+        <shadow type="text">
+          <field name="TEXT">COOL</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="tm1637_scroll_text">
+      <value name="text">
+        <shadow type="text">
+          <field name="TEXT">HELLO WORLD</field>
+        </shadow>
+      </value>
+      <value name="speed">
+        <shadow type="math_number">
+          <field name="NUM">1000</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="tm1637_set_time">
+      <value name="hour">
+        <shadow type="math_number">
+          <field name="NUM">11</field>
+        </shadow>
+      </value>
+      <value name="minute">
+        <shadow type="math_number">
+          <field name="NUM">45</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="tm1637_set_temperature">
+      <value name="temperature">
+        <shadow type="math_number">
+          <field name="NUM">23</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="tm1637_set_brightness">
+      <value name="brightness">
+        <shadow type="math_number">
+          <field name="NUM">7</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="tm1637_clear"></block>
+  </category>
   </category>
 
   <category name="%{BKY_CAT_SENSORS}">
