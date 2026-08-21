@@ -492,17 +492,17 @@
     <block type="reset_cause_deep"></block>
       </category>
       <category name="In/Out Pins">
-      <label text="In/Out Pins"></label>
+      <label text="In/Out Pins">0</label>
     <block type="pinout"></block>
     <block type="gpio_set">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">0</field>
         </shadow>
       </value>
       <value name="value">
         <shadow type="logic_boolean">
-          <field name="BOOL"></field>
+          <field name="BOOL">TRUE</field>
         </shadow>
       </value>
     </block>
@@ -510,12 +510,12 @@
     <block type="gpio_get">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">0</field>
         </shadow>
       </value>
       <value name="pullup">
         <shadow type="logic_boolean">
-          <field name="BOOL"></field>
+          <field name="BOOL">TRUE</field>
         </shadow>
       </value>
     </block>
@@ -523,7 +523,7 @@
     <block type="adc_pico">
  <value name="pin">
      <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">26</field>
         </shadow>
       </value>
     </block>
@@ -532,7 +532,7 @@
     <block type="pwm">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">1</field>
         </shadow>
       </value>
       <value name="frequency">
@@ -566,7 +566,7 @@
     <block type="pwm.init">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">1</field>
         </shadow>
       </value>
     </block>
@@ -576,7 +576,7 @@
     <block type="gpio_interrupt">
       <value name="pin">
         <shadow type="pinout">
-          <field name="PIN"></field>
+          <field name="PIN">2</field>
         </shadow>
       </value>
     </block>

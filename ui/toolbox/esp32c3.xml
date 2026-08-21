@@ -426,7 +426,7 @@
       </value>
       <value name="value">
         <shadow type="logic_boolean">
-          <field name="BOOL">true</field>
+          <field name="BOOL">TRUE</field>
         </shadow>
       </value>
     </block>
@@ -439,7 +439,7 @@
       </value>
       <value name="pullup">
         <shadow type="logic_boolean">
-          <field name="BOOL">true</field>
+          <field name="BOOL">TRUE</field>
         </shadow>
       </value>
     </block>
