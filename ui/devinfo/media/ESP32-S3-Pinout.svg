@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1040" font-family="Arial, Helvetica, sans-serif">
+<rect x="0" y="0" width="1200" height="1040" fill="#fafafa"/>
+<text x="40" y="52" fill="#1a1a1a" font-size="34" font-weight="800">ESP32-S3-DevKitC-1</text>
+<rect x="40" y="70" width="150" height="34" rx="17" fill="#2fbf71"/>
+<text x="115" y="93" text-anchor="middle" fill="#0b1220" font-size="16" font-weight="800">PINOUT</text>
+<rect x="950" y="10" width="210" height="284" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5" rx="4"/>
+<text x="1055.0" y="30" text-anchor="middle" fill="#1a1a1a" font-size="13" font-style="italic" font-weight="700">Legend</text>
+<line x1="950" y1="38" x2="1160" y2="38" stroke="#1a1a1a" stroke-width="1"/>
+<rect x="962" y="47" width="18" height="16" rx="3" fill="#e53935" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="60" fill="#1a1a1a" font-size="12" font-weight="700">Power</text>
+<rect x="962" y="69" width="18" height="16" rx="3" fill="#1c1c1c" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="82" fill="#1a1a1a" font-size="12" font-weight="700">GND</text>
+<rect x="962" y="91" width="18" height="16" rx="3" fill="#f4c542" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="104" fill="#1a1a1a" font-size="12" font-weight="700">GPIO</text>
+<rect x="962" y="113" width="18" height="16" rx="3" fill="#2ecc71" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="126" fill="#1a1a1a" font-size="12" font-weight="700">Touch</text>
+<rect x="962" y="135" width="18" height="16" rx="3" fill="#7ec8e3" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="148" fill="#1a1a1a" font-size="12" font-weight="700">RTC</text>
+<rect x="962" y="157" width="18" height="16" rx="3" fill="#c0392b" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="170" fill="#1a1a1a" font-size="12" font-weight="700">Strap/Control</text>
+<rect x="962" y="179" width="18" height="16" rx="3" fill="#d9a441" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="192" fill="#1a1a1a" font-size="12" font-weight="700">SPI/JTAG</text>
+<rect x="962" y="201" width="18" height="16" rx="3" fill="#1abc9c" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="214" fill="#1a1a1a" font-size="12" font-weight="700">UART</text>
+<rect x="962" y="223" width="18" height="16" rx="3" fill="#e91e8c" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="236" fill="#1a1a1a" font-size="12" font-weight="700">ADC</text>
+<rect x="962" y="245" width="18" height="16" rx="3" fill="#8e44ad" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="258" fill="#1a1a1a" font-size="12" font-weight="700">USB</text>
+<rect x="962" y="267" width="18" height="16" rx="3" fill="#f5c518" stroke="#1a1a1a" stroke-width="1"/>
+<text x="988" y="280" fill="#1a1a1a" font-size="12" font-weight="700">RGB</text>
+<text x="40" y="115" fill="#6b7280" font-size="11">Generic N16R8-style DevKitC-1. Original diagram for BIPES — not an Espressif asset.</text>
+<text x="40" y="130" fill="#6b7280" font-size="11">* shared with octal PSRAM on -R8/-R16 modules, avoid if present.</text>
+<rect x="470" y="344" width="260" height="636" rx="16" fill="#16543a" stroke="#0b1220" stroke-width="2"/>
+<rect x="570.0" y="330" width="60" height="20" rx="4" fill="#16543a" stroke="#0b1220" stroke-width="2"/>
+<rect x="525.0" y="384" width="150" height="190" rx="6" fill="#9ca3af" stroke="#1a1a1a" stroke-width="2"/>
+<text x="600.0" y="473.0" text-anchor="middle" fill="#111827" font-size="13" font-weight="bold" font-family="Menlo,Consolas,monospace">ESP32-S3</text>
+<text x="600.0" y="493.0" text-anchor="middle" fill="#111827" font-size="11" font-family="Menlo,Consolas,monospace">WROOM-1</text>
+<rect x="515.8" y="950" width="54" height="20" rx="7" fill="#c7cdd6" stroke="#1a1a1a"/>
+<text x="542.8" y="944" text-anchor="middle" fill="#4b5563" font-size="9" font-family="Menlo,Consolas,monospace">USB</text>
+<circle cx="631.2" cy="960" r="8" fill="#0b1220" stroke="#c7cdd6"/>
+<text x="631.2" y="946" text-anchor="middle" fill="#c7cdd6" font-size="8" font-family="Menlo,Consolas,monospace">BOOT</text>
+<circle cx="678.0" cy="960" r="8" fill="#0b1220" stroke="#c7cdd6"/>
+<text x="678.0" y="946" text-anchor="middle" fill="#c7cdd6" font-size="8" font-family="Menlo,Consolas,monospace">RST</text>
+<circle cx="470" cy="376.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="376.0" x2="420" y2="376.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="377" y="365.0" width="43" height="22" rx="6" fill="#e53935"/><text x="398.5" y="381.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">3V3</text>
+<circle cx="470" cy="404.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="404.0" x2="420" y2="404.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="377" y="393.0" width="43" height="22" rx="6" fill="#e53935"/><text x="398.5" y="409.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">3V3</text>
+<circle cx="470" cy="432.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="432.0" x2="420" y2="432.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="377" y="421.0" width="43" height="22" rx="6" fill="#c0392b"/><text x="398.5" y="437.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RST</text>
+<circle cx="470" cy="460.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="460.0" x2="420" y2="460.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="449.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="385.0" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch4</text>
+<rect x="276" y="449.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_3</text>
+<rect x="229" y="449.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="250.5" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="164" y="449.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="194.5" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO4</text>
+<circle cx="470" cy="488.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="488.0" x2="420" y2="488.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="477.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="385.0" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch5</text>
+<rect x="276" y="477.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_4</text>
+<rect x="229" y="477.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="250.5" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="164" y="477.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="194.5" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO5</text>
+<circle cx="470" cy="516.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="516.0" x2="420" y2="516.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="505.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="385.0" y="521.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch6</text>
+<rect x="276" y="505.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="521.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_5</text>
+<rect x="229" y="505.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="250.5" y="521.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="164" y="505.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="194.5" y="521.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO6</text>
+<circle cx="470" cy="544.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="544.0" x2="420" y2="544.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="533.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="385.0" y="549.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch7</text>
+<rect x="276" y="533.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="549.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_6</text>
+<rect x="229" y="533.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="250.5" y="549.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="164" y="533.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="194.5" y="549.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO7</text>
+<circle cx="470" cy="572.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="572.0" x2="420" y2="572.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="561.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="385.0" y="577.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_4</text>
+<rect x="303" y="561.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="324.5" y="577.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="229" y="561.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="264.0" y="577.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO15</text>
+<circle cx="470" cy="600.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="600.0" x2="420" y2="600.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="589.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="385.0" y="605.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_5</text>
+<rect x="303" y="589.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="324.5" y="605.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="229" y="589.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="264.0" y="605.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO16</text>
+<circle cx="470" cy="628.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="628.0" x2="420" y2="628.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="617.0" width="70" height="22" rx="6" fill="#1abc9c"/><text x="385.0" y="633.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">U1_TXD</text>
+<rect x="276" y="617.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="633.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_6</text>
+<rect x="202" y="617.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="237.0" y="633.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO17</text>
+<circle cx="470" cy="656.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="656.0" x2="420" y2="656.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="645.0" width="70" height="22" rx="6" fill="#1abc9c"/><text x="385.0" y="661.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">U1_RXD</text>
+<rect x="276" y="645.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="661.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_7</text>
+<rect x="202" y="645.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="237.0" y="661.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO18</text>
+<circle cx="470" cy="684.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="684.0" x2="420" y2="684.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="673.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="385.0" y="689.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch8</text>
+<rect x="276" y="673.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="689.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_7</text>
+<rect x="211" y="673.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="241.5" y="689.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO8</text>
+<circle cx="470" cy="712.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="712.0" x2="420" y2="712.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="701.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="385.0" y="717.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch3</text>
+<rect x="276" y="701.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="717.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_2</text>
+<rect x="211" y="701.0" width="61" height="22" rx="6" fill="#c0392b"/><text x="241.5" y="717.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Strap</text>
+<rect x="146" y="701.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="176.5" y="717.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO3</text>
+<circle cx="470" cy="740.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="740.0" x2="420" y2="740.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="359" y="729.0" width="61" height="22" rx="6" fill="#c0392b"/><text x="389.5" y="745.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Strap</text>
+<rect x="285" y="729.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="320.0" y="745.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO46</text>
+<circle cx="470" cy="768.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="768.0" x2="420" y2="768.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="350" y="757.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="385.0" y="773.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch9</text>
+<rect x="276" y="757.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="311.0" y="773.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_8</text>
+<rect x="211" y="757.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="241.5" y="773.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO9</text>
+<circle cx="470" cy="796.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="796.0" x2="420" y2="796.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="341" y="785.0" width="79" height="22" rx="6" fill="#2ecc71"/><text x="380.5" y="801.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch10</text>
+<rect x="276" y="785.0" width="61" height="22" rx="6" fill="#d9a441"/><text x="306.5" y="801.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">S2_CS</text>
+<rect x="202" y="785.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="237.0" y="801.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_9</text>
+<rect x="128" y="785.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="163.0" y="801.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO10</text>
+<circle cx="470" cy="824.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="824.0" x2="420" y2="824.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="341" y="813.0" width="79" height="22" rx="6" fill="#2ecc71"/><text x="380.5" y="829.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch11</text>
+<rect x="258" y="813.0" width="79" height="22" rx="6" fill="#d9a441"/><text x="297.5" y="829.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">S2_MOSI</text>
+<rect x="184" y="813.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="219.0" y="829.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_0</text>
+<rect x="110" y="813.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="145.0" y="829.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO11</text>
+<circle cx="470" cy="852.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="852.0" x2="420" y2="852.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="341" y="841.0" width="79" height="22" rx="6" fill="#2ecc71"/><text x="380.5" y="857.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch12</text>
+<rect x="267" y="841.0" width="70" height="22" rx="6" fill="#d9a441"/><text x="302.0" y="857.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">S2_CLK</text>
+<rect x="193" y="841.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="228.0" y="857.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_1</text>
+<rect x="119" y="841.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="154.0" y="857.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO12</text>
+<circle cx="470" cy="880.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="880.0" x2="420" y2="880.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="341" y="869.0" width="79" height="22" rx="6" fill="#2ecc71"/><text x="380.5" y="885.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch13</text>
+<rect x="258" y="869.0" width="79" height="22" rx="6" fill="#d9a441"/><text x="297.5" y="885.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">S2_MISO</text>
+<rect x="184" y="869.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="219.0" y="885.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_2</text>
+<rect x="110" y="869.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="145.0" y="885.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO13</text>
+<circle cx="470" cy="908.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="908.0" x2="420" y2="908.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="341" y="897.0" width="79" height="22" rx="6" fill="#2ecc71"/><text x="380.5" y="913.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch14</text>
+<rect x="267" y="897.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="302.0" y="913.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_3</text>
+<rect x="193" y="897.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="228.0" y="913.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO14</text>
+<circle cx="470" cy="936.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="936.0" x2="420" y2="936.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="386" y="925.0" width="34" height="22" rx="6" fill="#e53935"/><text x="403.0" y="941.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">5V</text>
+<circle cx="470" cy="964.0" r="3.5" fill="#1a1a1a"/>
+<line x1="456" y1="964.0" x2="420" y2="964.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="377" y="953.0" width="43" height="22" rx="6" fill="#1c1c1c"/><text x="398.5" y="969.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GND</text>
+<circle cx="730" cy="376.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="376.0" x2="780" y2="376.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="365.0" width="43" height="22" rx="6" fill="#1c1c1c"/><text x="801.5" y="381.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GND</text>
+<circle cx="730" cy="404.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="404.0" x2="780" y2="404.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="393.0" width="70" height="22" rx="6" fill="#1abc9c"/><text x="815.0" y="409.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">U0_TXD</text>
+<rect x="854" y="393.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="889.0" y="409.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO43</text>
+<circle cx="730" cy="432.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="432.0" x2="780" y2="432.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="421.0" width="70" height="22" rx="6" fill="#1abc9c"/><text x="815.0" y="437.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">U0_RXD</text>
+<rect x="854" y="421.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="889.0" y="437.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO44</text>
+<circle cx="730" cy="460.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="460.0" x2="780" y2="460.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="449.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="801.5" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="827" y="449.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="862.0" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_0</text>
+<rect x="901" y="449.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="936.0" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch1</text>
+<rect x="975" y="449.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="1005.5" y="465.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO1</text>
+<circle cx="730" cy="488.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="488.0" x2="780" y2="488.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="477.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="801.5" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="827" y="477.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="862.0" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC1_1</text>
+<rect x="901" y="477.0" width="70" height="22" rx="6" fill="#2ecc71"/><text x="936.0" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Touch2</text>
+<rect x="975" y="477.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="1005.5" y="493.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO2</text>
+<circle cx="730" cy="516.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="516.0" x2="780" y2="516.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="505.0" width="52" height="22" rx="6" fill="#d9a441"/><text x="806.0" y="521.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">MTMS</text>
+<rect x="836" y="505.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="871.0" y="521.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO42</text>
+<circle cx="730" cy="544.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="544.0" x2="780" y2="544.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="533.0" width="52" height="22" rx="6" fill="#d9a441"/><text x="806.0" y="549.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">MTDI</text>
+<rect x="836" y="533.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="871.0" y="549.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO41</text>
+<circle cx="730" cy="572.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="572.0" x2="780" y2="572.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="561.0" width="52" height="22" rx="6" fill="#d9a441"/><text x="806.0" y="577.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">MTDO</text>
+<rect x="836" y="561.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="871.0" y="577.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO40</text>
+<circle cx="730" cy="600.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="600.0" x2="780" y2="600.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="589.0" width="52" height="22" rx="6" fill="#d9a441"/><text x="806.0" y="605.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">MTCK</text>
+<rect x="836" y="589.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="871.0" y="605.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO39</text>
+<circle cx="730" cy="628.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="628.0" x2="780" y2="628.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="617.0" width="79" height="22" rx="6" fill="#f5c518"/><text x="819.5" y="633.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RGB_LED</text>
+<rect x="863" y="617.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="898.0" y="633.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO38</text>
+<circle cx="730" cy="656.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="656.0" x2="780" y2="656.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="645.0" width="70" height="22" rx="6" fill="#d9a441"/><text x="815.0" y="661.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">SPIIO7</text>
+<rect x="854" y="645.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="889.0" y="661.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO37</text>
+<circle cx="730" cy="684.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="684.0" x2="780" y2="684.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="673.0" width="70" height="22" rx="6" fill="#d9a441"/><text x="815.0" y="689.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">SPIIO6</text>
+<rect x="854" y="673.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="889.0" y="689.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO36</text>
+<circle cx="730" cy="712.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="712.0" x2="780" y2="712.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="701.0" width="70" height="22" rx="6" fill="#d9a441"/><text x="815.0" y="717.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">SPIIO4</text>
+<rect x="854" y="701.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="889.0" y="717.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO35</text>
+<circle cx="730" cy="740.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="740.0" x2="780" y2="740.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="729.0" width="52" height="22" rx="6" fill="#c0392b"/><text x="806.0" y="745.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">BOOT</text>
+<rect x="836" y="729.0" width="61" height="22" rx="6" fill="#c0392b"/><text x="866.5" y="745.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Strap</text>
+<rect x="901" y="729.0" width="61" height="22" rx="6" fill="#f4c542"/><text x="931.5" y="745.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO0</text>
+<circle cx="730" cy="768.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="768.0" x2="780" y2="768.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="757.0" width="61" height="22" rx="6" fill="#c0392b"/><text x="810.5" y="773.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">Strap</text>
+<rect x="845" y="757.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="880.0" y="773.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO45</text>
+<circle cx="730" cy="796.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="796.0" x2="780" y2="796.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="785.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="815.0" y="801.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO48</text>
+<circle cx="730" cy="824.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="824.0" x2="780" y2="824.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="813.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="815.0" y="829.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO47</text>
+<circle cx="730" cy="852.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="852.0" x2="780" y2="852.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="841.0" width="43" height="22" rx="6" fill="#7ec8e3"/><text x="801.5" y="857.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">RTC</text>
+<rect x="827" y="841.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="862.0" y="857.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO21</text>
+<circle cx="730" cy="880.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="880.0" x2="780" y2="880.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="869.0" width="70" height="22" rx="6" fill="#8e44ad"/><text x="815.0" y="885.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">USB_D+</text>
+<rect x="854" y="869.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="889.0" y="885.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_9</text>
+<rect x="928" y="869.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="963.0" y="885.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO20</text>
+<circle cx="730" cy="908.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="908.0" x2="780" y2="908.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="897.0" width="70" height="22" rx="6" fill="#8e44ad"/><text x="815.0" y="913.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">USB_D-</text>
+<rect x="854" y="897.0" width="70" height="22" rx="6" fill="#e91e8c"/><text x="889.0" y="913.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">ADC2_8</text>
+<rect x="928" y="897.0" width="70" height="22" rx="6" fill="#f4c542"/><text x="963.0" y="913.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GPIO19</text>
+<circle cx="730" cy="936.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="936.0" x2="780" y2="936.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="925.0" width="43" height="22" rx="6" fill="#1c1c1c"/><text x="801.5" y="941.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GND</text>
+<circle cx="730" cy="964.0" r="3.5" fill="#1a1a1a"/>
+<line x1="744" y1="964.0" x2="780" y2="964.0" stroke="#9ca3af" stroke-width="1"/>
+<rect x="780" y="953.0" width="43" height="22" rx="6" fill="#1c1c1c"/><text x="801.5" y="969.0" text-anchor="middle" fill="#1a1a1a" font-size="11" font-family="Menlo,Consolas,monospace" font-weight="700">GND</text>
+</svg>
